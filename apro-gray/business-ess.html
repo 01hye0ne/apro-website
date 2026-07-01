@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 에너지저장시스템(ESS) (v2)</title>
+<meta name="description" content="에이프로(APRO)의 에너지저장시스템(ESS) — 배터리 에너지 저장 시스템·무인 이동체 전원 시스템·무정전 전원 장치. 국제 안전 규격을 준수한 맞춤형 에너지 저장 솔루션." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  @font-face{
+    font-family:"SUIT Variable";
+    src:url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2-variations");
+    font-weight:100 900;font-display:swap;
+  }
+  :root{
+    --g900:#1b2733;--g950:#0e161e;--secondary-bg:#f4f6f8;
+    --brand:#2c5790;--brand-2:#4077b7;--point-300:#9ab9df;--point-200:#c9d9ee;
+    --point-950:#17243a;--border-g:#e4e8ed;--teritary:#96a3b3;--icon-2:#5d6d7e;
+    --sec:#445464;--on-white-90:rgba(255,255,255,.9);
+    --white-300:rgba(255,255,255,.2);--maxw:1280px;
+    --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
+    --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--pre);background:var(--secondary-bg);color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:none}
+  p{margin:0}
+  a{text-decoration:none;color:inherit}
+  ::selection{background:var(--point-200);color:var(--point-950)}
+
+  .dash{flex-shrink:0;width:16px;height:16px;display:grid;place-content:center}
+  .dash::before{content:"";width:8px;height:2px;background:var(--icon-2)}
+
+  /* ===================== SUB-PAGE GNB ===================== */
+  .subgnb{position:fixed;top:20px;left:24px;z-index:100;height:40px;
+    display:flex;align-items:center;gap:12px;padding-right:12px;
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    animation:gnbIn .8s var(--ease) both}
+  .subgnb .back{width:28px;height:28px;flex-shrink:0;border:1px solid var(--sec);
+    display:grid;place-content:center;color:var(--g900);transition:background .2s,color .2s}
+  .subgnb .back:hover{background:var(--g900);color:#fff}
+  .subgnb .back svg{width:18px;height:18px}
+  .subgnb .lbl{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--g900);white-space:nowrap}
+  @keyframes gnbIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===================== DETAIL PAGE ===================== */
+  .detail{position:relative;height:100vh;min-height:800px;overflow:hidden;background:var(--secondary-bg)}
+  .detail .floor{position:absolute;left:0;right:0;bottom:0;height:46%;z-index:0;pointer-events:none}
+  .detail .floor img{width:100%;height:100%;object-fit:cover;object-position:center bottom}
+  /* full-width band: content spans edge-to-edge with a 24px gutter that lines up with the top-left '홈으로' button */
+  .detail .band{position:relative;z-index:1;width:100%;height:100%;padding:0 24px;display:flex;flex-direction:column}
+
+  /* ---- Business header tabs ---- */
+  .bizhdr{margin-top:80px;border:2px solid #fff;display:flex;gap:2px;padding:2px;animation:fadeDown .7s var(--ease) both}
+  .bizhdr .tab{flex:1;min-width:0;padding:12px;display:flex;flex-direction:column;gap:4px;opacity:.5;background:transparent;cursor:pointer;transition:opacity .25s,background .25s}
+  .bizhdr .tab:hover{opacity:.8}
+  .bizhdr .tab.active{opacity:1;background:#fff;cursor:default}
+  .bizhdr .tab .ttl{display:flex;gap:4px;align-items:center;color:var(--g900)}
+  .bizhdr .tab .num{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--suit);font-weight:600;font-size:17px;letter-spacing:-.34px}
+  .bizhdr .tab .num em{font-family:var(--rc);font-style:normal;font-size:14px;letter-spacing:-.28px;padding:0 2px}
+  .bizhdr .tab .kotxt{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bizhdr .tab .en{padding-left:4px;font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--sec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ---- Stage ---- */
+  .stage{flex:1;min-height:0;position:relative}
+  .stage .product{position:absolute;left:50%;top:50%;transform:translate(-50%,-48%);width:719px;max-width:60%;z-index:1;
+    animation:floatIn 1s var(--ease) both;filter:drop-shadow(0 30px 40px rgba(27,39,51,.14))}
+  .stage .product img{width:100%;height:auto}
+
+  /* ---- Left glass card ---- */
+  .glass{position:absolute;left:0;top:50%;transform:translateY(-50%);width:299px;z-index:3;
+    backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);background:rgba(255,255,255,.1);
+    border:1px solid var(--white-300);box-shadow:-14px 20px 16px -8px rgba(11,11,10,.05);
+    display:flex;flex-direction:column;transition:opacity .4s var(--ease),transform .4s var(--ease);
+    animation:softFade .8s var(--ease) both}
+  .glass.hidden{opacity:0;transform:translateY(-50%) translateX(-16px);pointer-events:none}
+  .glass .gtop{display:flex;justify-content:flex-end;padding:12px}
+  .glass .gtop .x{width:24px;height:24px;color:var(--g900);cursor:pointer;opacity:.7;transition:opacity .2s}
+  .glass .gtop .x:hover{opacity:1}
+  .glass .glist{display:flex;flex-direction:column;padding:8px 12px 8px 4px}
+  .glass .feat{display:flex;gap:4px;align-items:flex-start;padding:8px 0}
+  .glass .feat .dash{margin-top:4px}
+  .glass .feat p{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--sec)}
+  .glass .gfoot{border-top:1px solid var(--border-g);display:flex;justify-content:flex-end;align-items:center;gap:2px;padding:12px}
+  .glass .gfoot .cur{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--brand)}
+  .glass .gfoot .tot{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--teritary)}
+
+  /* ---- Right category lists ---- */
+  .cats{position:absolute;right:0;top:50%;transform:translateY(-50%);width:195px;z-index:3;display:flex;flex-direction:column;gap:12px;
+    animation:softFade .8s var(--ease) .08s both}
+  .cat{background:var(--secondary-bg);border:2px solid #fff;box-shadow:0 2px 2px rgba(11,11,10,.1);overflow:hidden}
+  .cat .chd{background:#fff;padding:8px 12px;font-family:var(--suit);font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--sec)}
+  .cat .cprod{display:flex;align-items:center;gap:4px;height:35px;padding:8px 8px 8px 4px;cursor:pointer;transition:background .2s}
+  .cat .cprod:hover{background:#eef1f4}
+  .cat .cprod .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--sec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cat .cprod.active{background:var(--brand-2)}
+  .cat .cprod.active:hover{background:var(--brand-2)}
+  .cat .cprod.active .nm{color:var(--on-white-90)}
+  .cat .cprod.active .dash::before{background:var(--on-white-90)}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes softFade{from{opacity:0}to{opacity:1}}
+  @keyframes floatIn{from{opacity:0;transform:translate(-50%,-42%)}to{opacity:1;transform:translate(-50%,-48%)}}
+
+  .mnote{display:none}
+  @media(max-width:1120px){
+    .bizhdr .tab .en{font-size:12px}
+    .stage .product{max-width:52%}
+  }
+  @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:120;display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
+</style>
+</head>
+<body>
+
+<!-- ===================== SUB-PAGE GNB ===================== -->
+<nav class="subgnb">
+  <a class="back" href="index.html" aria-label="홈으로">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M12 4 6 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <a class="lbl" href="index.html">홈으로</a>
+</nav>
+
+<!-- ===================== ESS DETAIL ===================== -->
+<section class="detail">
+  <div class="floor"><img src="../assets/biz-detail-floor.png" alt="" aria-hidden="true" /></div>
+
+  <div class="band">
+
+    <!-- Business header tabs -->
+    <nav class="bizhdr">
+      <a class="tab" href="#"><div class="ttl"><span class="num">[<em>1</em>]</span><span class="kotxt">이차전지</span></div><span class="en">Rechargeable Battery</span></a>
+      <a class="tab active" href="business-ess.html"><div class="ttl"><span class="num">[<em>2</em>]</span><span class="kotxt">에너지저장시스템</span></div><span class="en">ESS : Energy Storage Systems</span></a>
+      <a class="tab" href="#"><div class="ttl"><span class="num">[<em>3</em>]</span><span class="kotxt">화합물 GaN 반도체</span></div><span class="en">Compound GaN Semiconductors</span></a>
+      <a class="tab" href="#"><div class="ttl"><span class="num">[<em>4</em>]</span><span class="kotxt">산업 안전 진단 로봇 솔루션</span></div><span class="en">Industrial Safety Inspection Robot Solution</span></a>
+      <a class="tab" href="#"><div class="ttl"><span class="num">[<em>5</em>]</span><span class="kotxt">에너지 인프라 솔루션</span></div><span class="en">Energy Infrastructure Solutions</span></a>
+    </nav>
+
+    <!-- Stage -->
+    <div class="stage">
+      <div class="product"><img src="../assets/biz-ess-product.png" alt="A-PRO ESS · Energy Storage System 컨테이너" /></div>
+
+      <!-- Left glass description card -->
+      <div class="glass" id="glass">
+        <div class="gtop">
+          <svg class="x" id="glassClose" viewBox="0 0 24 24" fill="none" aria-label="닫기"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="glist">
+          <div class="feat"><span class="dash"></span><p>에너지의 효율적 활용을 돕는 ESS는 고객의 환경에 맞춘 최적의 규격과 다양한 배터리 셀 설계를 지원하는 맞춤형 에너지 저장 솔루션입니다.</p></div>
+          <div class="feat"><span class="dash"></span><p>A-PRO의 ESS는 국제 안전 규격을 철저히 준수한 뛰어난 내구성과 고에너지 성능을 바탕으로, 언제 어디서나 안심하고 사용할 수 있는 탁월한 신뢰성을 보장합니다.</p></div>
+          <div class="feat"><span class="dash"></span><p>고도화된 BMS와 BCP·BPU 시스템을 통해 내부 온도와 전압을 정밀하게 제어하고, 실시간 모니터링 및 데이터 분석이 가능하여 운영 효율을 극대화합니다.</p></div>
+        </div>
+        <div class="gfoot"><span class="cur">01</span><span class="tot">/06</span></div>
+      </div>
+
+      <!-- Right category lists -->
+      <div class="cats">
+        <div class="cat">
+          <div class="chd">배터리 에너지 저장 시스템</div>
+          <div class="cprod active"><span class="dash"></span><span class="nm">배터리 에너지 저장 시스템</span></div>
+        </div>
+        <div class="cat">
+          <div class="chd">무인 이동체 전원 시스템</div>
+          <div class="cprod"><span class="dash"></span><span class="nm">무인 이동체 전원 시스템</span></div>
+          <div class="cprod"><span class="dash"></span><span class="nm">우주 발사체</span></div>
+          <div class="cprod"><span class="dash"></span><span class="nm">무인수상정</span></div>
+          <div class="cprod"><span class="dash"></span><span class="nm">무인지상차량</span></div>
+        </div>
+        <div class="cat">
+          <div class="chd">무정전 전원 장치</div>
+          <div class="cprod"><span class="dash"></span><span class="nm">무정전 전원 장치</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mnote">데스크톱(1280px 이상) 기준으로 디자인된 시안입니다.</div>
+
+<script>
+  // Close the glass description card
+  var glass = document.getElementById('glass');
+  var glassClose = document.getElementById('glassClose');
+  if(glassClose){ glassClose.addEventListener('click', function(){ glass.classList.add('hidden'); }); }
+</script>
+
+</body>
+</html>

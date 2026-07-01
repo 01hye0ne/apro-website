@@ -1,0 +1,8 @@
+# 백업 (업로드 제외 — 대용량 원본 영상 등)
+_backup/
+
+# OS / 편집기 부산물
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/

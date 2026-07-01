@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 안심하고 믿을 수 있는 미래를 만드는 기업</title>
+<meta name="description" content="에이프로(APRO). 이차전지·에너지저장시스템·화합물 GaN 반도체·산업 안전 진단 로봇·에너지 인프라 솔루션을 제공하는 Global Top 5 Total Energy-Solution Provider." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  @font-face{
+    font-family:"SUIT Variable";
+    src:url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2-variations");
+    font-weight:100 900;font-display:swap;
+  }
+  :root{
+    --g900:#1b2733;
+    --g950:#0e161e;
+    --secondary-bg:#f4f6f8;
+    --brand:#2c5790;
+    --brand-2:#4077b7;
+    --point-300:#9ab9df;
+    --point-200:#c9d9ee;
+    --point-900:#223858;
+    --point-950:#17243a;
+    --border-g:#e4e8ed;
+    --teritary:#96a3b3;
+    --on-white-90:rgba(255,255,255,.9);
+    --on-white-85:rgba(255,255,255,.85);
+    --glass:rgba(255,255,255,.1);
+    --white-300:rgba(255,255,255,.2);
+    --maxw:1440px;
+    --pad:24px;
+    --suit:"SUIT Variable","Pretendard",sans-serif;
+    --pre:"Pretendard",sans-serif;
+    --rc:"Roboto Condensed",sans-serif;
+    --hv:"Helvetica Neue",Arial,sans-serif;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--pre);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:none}
+  p{margin:0}
+  button{font-family:inherit}
+  ::selection{background:var(--point-200);color:var(--point-950)}
+
+  /* ---- approach B: full-bleed backgrounds, content centered (max 1440) ---- */
+  #stage{width:100%;position:relative}
+  .section{position:relative;width:100%;overflow:hidden;height:100vh;min-height:560px;display:flex;align-items:center;justify-content:center}
+  /* per-section fixed design canvas (1440x900), contain-scaled so it never crops (--zoom = min(vh/900,vw/1440)).
+     Scroll-scrubbed reveal: --rev (0..1) drives fade + rise + slight zoom as the section scrolls into view. */
+  .fit{position:relative;width:1440px;height:900px;flex:none;opacity:var(--rev,1);
+    transform:translateY(calc((1 - var(--rev,1)) * 90px)) scale(calc(var(--zoom,1) * (0.95 + 0.05 * var(--rev,1))));transform-origin:center center}
+  .news .fit{display:flex;align-items:center;justify-content:center}
+  /* centered content band */
+  .band{position:absolute;inset:0;max-width:var(--maxw);margin-inline:auto}
+
+  /* ===================== GNB (fixed top, blends over any background) ===================== */
+  /* full-bleed bar: spans edge-to-edge & pinned to the very top; inner content keeps the max-width layout.
+     transparent over the (dark) banner -> solid white once scrolled past it (.scrolled toggled by JS) */
+  .gnb{
+    position:fixed;top:0;left:0;right:0;width:100%;height:64px;z-index:100;
+    display:flex;justify-content:center;
+    background:transparent;box-shadow:0 6px 24px -10px rgba(23,36,58,0);
+    transition:background .3s var(--ease),box-shadow .3s var(--ease);
+    animation:gnbIn .9s var(--ease) both;
+  }
+  .gnb-inner{width:100%;max-width:var(--maxw);height:100%;display:flex;align-items:center;gap:36px;padding:0 24px}
+  .gnb .logo{flex-shrink:0}
+  .gnb .logo img{height:16px;width:78px;transition:filter .3s var(--ease)}
+  .gnb .menus{flex:1;display:flex;gap:36px;align-items:center;justify-content:center}
+  .gnb .menus a{font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
+  .gnb .menus a:hover{opacity:1}
+  .gnb .ham{width:24px;height:24px;display:flex;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0}
+  .gnb .ham span{display:block;width:18px;height:1.5px;background:#fff;transition:background .3s var(--ease)}
+  /* scrolled past the banner: white bar with dark content */
+  .gnb.scrolled{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
+  .gnb.scrolled .logo img{filter:brightness(0)}     /* white logo -> black on the white bar */
+  .gnb.scrolled .menus a{color:var(--g900)}
+  .gnb.scrolled .ham span{background:var(--g900)}
+  @keyframes gnbIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===================== BANNER ===================== */
+  .banner{background:var(--g900)}
+  /* background video (plays clean, no overlay/parallax effects) */
+  .banner-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
+  /* color-tint wash layers disabled */
+  .banner-bg{display:none}
+  .banner-inner{position:absolute;inset:0;z-index:2;max-width:var(--maxw);margin-inline:auto;padding:80px 24px 24px;display:flex;gap:12px;align-items:flex-end}
+  .b-left{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+  /* label + tabs cross-fade when switching business */
+  .b-left .label,.b-left .b-tabs{transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .b-left.swapping .label,.b-left.swapping .b-tabs{opacity:0;transform:translateY(8px)}
+  .b-left .label .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
+  .b-left .label .en{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:#fff}
+  .b-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .b-tab{width:404px;max-width:100%;height:32px;display:flex;align-items:center;gap:4px;padding-right:4px}
+  .b-tab .num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:var(--suit);font-weight:600;font-size:17px;letter-spacing:-.34px}
+  .b-tab .num em{font-family:var(--rc);font-style:normal;font-weight:400;font-size:14px;padding:0 1px}
+  .b-tab .nm{flex:1;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
+  .b-tab .ext{width:20px;height:20px;flex-shrink:0}
+  .b-tab .ext path{stroke:currentColor}
+  .b-tab.white{background:#fff;color:var(--g900)}        /* 비(非)자회사 */
+  .b-tab.blue{background:var(--brand);color:#fff}        /* 자회사 */
+  .b-right{width:403px;flex-shrink:0;height:751px;display:flex;flex-direction:column;gap:4px}
+  .b-card{flex:1;display:flex;align-items:center;gap:12px;padding:16px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 16px -8px rgba(11,11,10,.4);cursor:pointer;position:relative;transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+  .b-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand-2);transform:scaleY(0);transform-origin:center;transition:transform .35s var(--ease)}
+  .b-card .t{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:#fff;transition:transform .3s var(--ease),color .3s var(--ease)}
+  .b-card.active .t,.b-card:hover .t{transform:translateX(4px)}
+  .b-card .sub{background:#2885ff;color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
+  .b-card .arrow{width:24px;height:24px;flex-shrink:0;margin-left:auto;color:var(--g900);opacity:0;transform:translateX(-6px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+  .b-card .arrow path{stroke:currentColor}
+  /* selected + hover: switch to the white "business" component (Figma node 6:224).
+     placed after base rules + scoped with .banner so it wins over the glass bg */
+  .banner .b-card.active,.banner .b-card:hover{background:var(--secondary-bg);box-shadow:0 0 8px rgba(11,11,10,.1);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .banner .b-card.active .t,.banner .b-card:hover .t{color:var(--g900)}
+  .banner .b-card.active .arrow,.banner .b-card:hover .arrow{opacity:1;transform:translateX(0)}
+  /* entrance motion (subtle) */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .banner .b-left{animation:fadeUp .9s var(--ease) .1s both}
+  .banner .b-card{animation:fadeUp .8s var(--ease) both}
+  .banner .b-card:nth-child(1){animation-delay:.20s}
+  .banner .b-card:nth-child(2){animation-delay:.30s}
+  .banner .b-card:nth-child(3){animation-delay:.40s}
+  .banner .b-card:nth-child(4){animation-delay:.50s}
+  .banner .b-card:nth-child(5){animation-delay:.60s}
+  @media (prefers-reduced-motion:reduce){
+    .gnb,.banner .b-left,.banner .b-card{animation:none}
+    .banner-bg,.b-left .label,.b-left .b-tabs,.b-card,.b-card::before,.b-card .t,.b-card .arrow{transition:none}
+  }
+
+  /* ===================== ISOMETRIC (who we are) ===================== */
+  .iso{background:var(--secondary-bg)}
+  /* combined bg+keyword image: fixed size by height, horizontally centered (Figma "center" constraint).
+     the triangle sits right-of-center inside the image, so centering keeps it slightly right at any width */
+  .iso-graphic{position:absolute;top:0;left:50%;transform:translateX(calc(-50% + 10px)) translateY(calc(var(--p,0) * -60px)) scale(1.12);transform-origin:center center;height:100%;pointer-events:none}
+  .iso-graphic img{height:100%;width:auto;display:block}
+  .iso-text{position:absolute;left:24px;top:254px;width:500px;display:flex;flex-direction:column;gap:44px;z-index:2}
+  .iso-text .eye{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--g900);opacity:.96}
+  .iso-head{display:flex;flex-direction:column;gap:16px}
+  .iso-head .h{font-family:var(--suit);font-weight:800;font-size:36px;line-height:1.2;letter-spacing:-.72px;color:var(--g900);white-space:nowrap}
+  .iso-head .s{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:#445464}
+  /* ambient glow pulse on the keyword graphic (graphic parallaxes via --p above) */
+  .iso-graphic img{animation:isoGlow 5s ease-in-out infinite}
+  @keyframes isoGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.05)}}
+  @media (prefers-reduced-motion:reduce){ .iso-graphic img{animation:none} }
+
+  /* ===================== BUSINESS (responsive rebuild, node 130:3850) ===================== */
+  /* business.png = dark stage FRAME with a TRANSPARENT center hole. It's a full-bleed cover layer;
+     the scene image behind it is positioned into the hole by JS (layoutBizScene, computed from the
+     cover geometry) so it stays aligned AND full-bleed at ANY viewport ratio — no crop, no side bars. */
+  /* card-panel overlap: business rises over "who we are" with a rounded top + soft top shadow */
+  .biz2{background:#eef2f6;height:106vh;position:relative;z-index:2;margin-top:-72px;
+    border-radius:40px 40px 0 0;box-shadow:0 -22px 60px -24px rgba(23,36,58,.3)}
+  .biz2-inner{position:relative;width:100%;height:100%;overflow:hidden;opacity:var(--rev,1);transform:translateY(calc((1 - var(--rev,1)) * 90px));transform-origin:center}
+  .biz2-bg{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+  .biz2-head{position:absolute;top:104px;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 24px}
+  .biz2-head .ttl{font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900)}
+  /* category nav (below BUSINESS) */
+  .biz2-cats{display:flex;align-items:center;gap:11px}
+  .biz2-cats .arrow{width:24px;height:24px;display:grid;place-content:center;cursor:pointer;color:var(--g900)}
+  .biz2-cats .arrow svg{width:8px;height:13px}
+  .biz2-cats .list{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+  .biz2-cats .cat{display:inline-flex;align-items:center;height:20px;padding:0 4px;cursor:pointer;color:rgba(27,39,51,.7);font-family:var(--suit);transition:color .2s,background .2s}
+  .biz2-cats .cat .br{font-weight:600;font-size:17px;letter-spacing:-.34px}
+  .biz2-cats .cat .nm{font-weight:600;font-size:16px;letter-spacing:-.32px;white-space:nowrap}
+  .biz2-cats .cat.active{background:#1b6bf5;color:#fff}      /* active = filled blue pill */
+  .biz2-cats .cat.active .nm{font-weight:800}
+  .biz2-cats .cat:hover{color:var(--g900)}
+  /* scene sits BEHIND the frame; shows through the transparent hole. Its position/size are set by JS
+     (layoutBizScene) from business.png's hole rect (frac L .279 R .753 T .258 B .704) at the current
+     cover geometry, so it tracks the hole responsively. bigwords baked into images; placeholders use CSS. */
+  .biz2-scenewrap{position:absolute;z-index:1;transition:opacity .4s var(--ease)}
+  .biz2-scenewrap.swapping{opacity:0}
+  .biz2-scenewrap.noimg{background:linear-gradient(135deg,#13212f,#0b1420)}
+  .biz2 .scene{width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}
+  .biz2-words{position:absolute;inset:0;pointer-events:none}
+  .biz2-words .w{position:absolute;font-family:var(--rc);font-weight:400;font-size:64px;line-height:1;letter-spacing:-1.28px;white-space:nowrap}
+  .biz2-words .w1{left:32px;top:26px;color:rgba(255,255,255,.28)}
+  .biz2-words .w2{right:32px;bottom:22px;color:rgba(255,255,255,.92)}
+  /* saturated blue gradient glow that shimmers along the bottom edge of the window only */
+  .biz2-glow{position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;mix-blend-mode:screen;opacity:1;
+    background:linear-gradient(100deg,#2f7fff,#8ec4ff,#57e0ff,#2f7fff);background-size:220% 100%;
+    -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.7) 38%,transparent 100%);
+    mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.7) 38%,transparent 100%);
+    animation:bizGlow 7s ease-in-out infinite}
+  @keyframes bizGlow{0%{background-position:0% 50%;opacity:.82}50%{background-position:100% 50%;opacity:1}100%{background-position:0% 50%;opacity:.82}}
+  @media (prefers-reduced-motion:reduce){
+    .biz2-glow{animation:none;opacity:.9}
+  }
+  /* products row */
+  .biz2-bottom{position:absolute;bottom:0;left:50%;transform:translateX(-50%);z-index:3;width:100%;max-width:var(--maxw);padding:24px;display:flex;gap:12px;align-items:stretch}
+  .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;padding-bottom:0;
+    background:linear-gradient(to bottom,rgba(255,255,255,0) 55%,rgba(255,255,255,.45))}
+  .biz2-major .biz2-title{flex:1;display:flex;align-items:flex-end;padding:0 12px 4px;font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
+  .biz2-major .biz2-bar{height:2px;width:100%;background:rgba(27,39,51,.2);position:relative}
+  .biz2-major .biz2-bar i{position:absolute;left:0;top:0;height:2px;width:181px;background:#59acff}
+  .biz2-minor{flex:1;min-width:0;display:flex;gap:13px;align-items:stretch}
+  .biz2 .pcard{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid rgba(27,39,51,.35);overflow:hidden}
+  .biz2 .pcard-head{display:flex;align-items:stretch;height:36px}
+  .biz2 .pcard-head .titlewrap{flex:1;min-width:0;display:flex;align-items:stretch}
+  .biz2 .pcard-head .tag{flex:1;min-width:0;background:#000;display:flex;align-items:center;gap:8px;padding:0 8px}   /* black title bar */
+  .biz2 .pcard-head .tag .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .biz2 .pcard-head .tag .chip{flex-shrink:0;background:#2885ff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:#fff}
+  .biz2 .pcard-head .tag .op{width:20px;height:20px;flex-shrink:0;color:#fff}
+  .biz2 .pcard-head .chamfer{width:29px;flex-shrink:0;background:#000;clip-path:polygon(0 0,100% 100%,0 100%)}  /* black chamfer to match the bar */
+  .biz2 .pcard-head .blank{width:28px;flex-shrink:0}
+  .biz2 .pcard-body{height:144px;background:rgba(255,255,255,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column}
+  .biz2 .pi{height:36px;flex-shrink:0;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid rgba(27,39,51,.15);font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--g900)}
+  .biz2 .pi .dot{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
+  .biz2 .pi .dot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--g900)}
+
+  /* ===================== NEWS ===================== */
+  .news{background:var(--secondary-bg)}
+  .news-inner{width:100%;max-width:var(--maxw);margin-inline:auto;padding:0 24px;display:flex;flex-direction:column;gap:44px}
+  .news-texts{display:flex;gap:24px;align-items:flex-end}
+  .news-texts .tt{flex:1;display:flex;flex-direction:column;gap:24px}
+  .news-texts .eye{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
+  .news-texts .h{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
+  .news-texts .pager{display:flex;gap:8px}
+  .news-texts .pager button{width:24px;height:24px;background:#fff;border:none;cursor:pointer;display:grid;place-content:center;padding:0;transition:background .2s}
+  .news-texts .pager button:hover{background:var(--point-200)}
+  .news-texts .pager svg{width:9px;height:14px}
+  .news-track{overflow:hidden}
+  .news-row{display:flex;gap:12px;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+  /* news card (node 5:979): white default → dark hover with light text */
+  .ncard{flex:0 0 356px;height:359px;background:#fff;display:flex;flex-direction:column;gap:25px;padding:24px 16px 16px;cursor:pointer;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease)}
+  .ncard:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(34,56,88,.14);background:var(--point-950)}
+  .ncard .tag{align-self:flex-start;background:#445464;color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px}
+  .ncard .cont{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between}
+  .ncard .cont .txt{display:flex;flex-direction:column;gap:14px}
+  .ncard .cont .txt .t{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .35s var(--ease)}
+  .ncard .cont .txt .d{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--g900);display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;transition:color .35s var(--ease)}
+  .ncard .cont .date{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--teritary);transition:color .35s var(--ease)}
+  .ncard:hover .cont .txt .t,.ncard:hover .cont .txt .d{color:#fff}
+  .ncard:hover .cont .date{color:var(--on-white-85)}
+  .news-bar{height:2px;width:100%;background:var(--border-g);position:relative}
+  .news-bar i{position:absolute;left:0;top:0;height:2px;width:181px;background:var(--brand);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+
+  /* ===================== GLOBAL NETWORK ===================== */
+  /* ===================== GLOBAL NETWORK (node 83:1259) ===================== */
+  .gnet{background:radial-gradient(120% 75% at 42% 118%,rgba(41,120,242,.75),rgba(24,60,140,0) 62%),
+               linear-gradient(180deg,#142757 0%,#16306f 42%,#183c88 70%,#1a4aa8 100%)}
+  .gnet-stage{position:relative;width:1280px;height:900px;flex:none;opacity:var(--rev,1);transform:translateY(calc((1 - var(--rev,1)) * 90px)) scale(calc(var(--zoom,1) * (0.95 + 0.05 * var(--rev,1))));transform-origin:center center}
+  .gnet-map{transform:translateY(calc(var(--p,0) * -35px))}
+  .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
+  .gnet-map img{width:100%;height:100%;display:block}
+  .gnet-gn{position:absolute;left:24px;top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .gnet-desc{position:absolute;left:24px;top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
+  .gnet-stat{flex:1;text-align:center}
+  .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .gnet-stat .lab{margin-top:9px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  /* location markers + hover tooltip (node 173:2145) */
+  .gnet-mk{position:absolute;width:20px;height:20px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:6px;cursor:pointer}
+  .gnet-mk .dot{width:6px;height:6px;background:#ff8f47;border:1px solid #fff;box-shadow:0 6px 4px 2px rgba(0,0,0,.25);flex-shrink:0}
+  .gnet-mk .tip{position:absolute;bottom:18px;left:50%;transform:translate(-50%,6px);white-space:nowrap;padding:8px 16px;
+    font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900);
+    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 0 16px rgba(11,11,10,.12);opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
+  .gnet-mk:hover{z-index:5}
+  .gnet-mk:hover .tip{opacity:1;transform:translate(-50%,0)}
+  @media (prefers-reduced-motion:reduce){ .gnet-mk .tip{transition:none} }
+
+  /* ===================== FOOTER ===================== */
+  .footer{background:var(--point-900);padding:80px 24px;display:flex;flex-direction:column;align-items:center}
+  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column;gap:12px}
+  .footer .top{display:flex;gap:12px;border-bottom:1px solid var(--white-300);padding-bottom:40px}
+  .footer .slogan{width:506px;flex-shrink:0;display:flex;flex-direction:column;gap:40px}
+  .footer .slogan .logo{width:97px;height:20px}
+  .footer .slogan .txt{font-family:var(--suit);font-weight:700;font-size:38px;line-height:1.5;letter-spacing:-.76px;color:#fff}
+  .footer .infos{flex:1;display:flex;flex-direction:column;gap:4px}
+  .footer .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .footer .infos .line span{font-family:var(--pre);font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);white-space:nowrap}
+  .footer .infos .line .sep{width:1px;height:14px;background:var(--white-300)}
+  .footer .copy{font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85)}
+
+  .mnote{display:none}
+  @media(max-width:640px){
+    .mnote{display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- ===================== BANNER ===================== -->
+  <section class="section banner">
+    <video class="banner-video" src="../assets/배너.mp4" autoplay muted loop playsinline preload="auto"></video>
+    <div class="banner-bg" id="bgA"></div>
+    <div class="banner-bg" id="bgB"></div>
+    <nav class="gnb" id="gnb">
+      <div class="gnb-inner">
+      <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
+      <div class="menus">
+        <a href="#">회사소개</a>
+        <a href="business.html">사업영역</a>
+        <a href="#">투자정보</a>
+        <a href="#">지속가능경영</a>
+        <a href="#">커뮤니티</a>
+        <a href="#">Contact Us</a>
+      </div>
+      <div class="ham"><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+
+    <div class="fit">
+    <div class="banner-inner">
+      <div class="b-left">
+        <div class="label">
+          <p class="kor" id="bKor">이차전지</p>
+          <p class="en" id="bEn">Rechargeable Battery</p>
+        </div>
+        <div class="b-tabs" id="bTabs"></div>
+      </div>
+
+      <div class="b-right" id="bCards">
+        <div class="b-card" data-i="0"><span class="t">이차전지</span><span class="sub">자회사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="1"><span class="t">에너지저장시스템</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="2"><span class="t">화합물 GaN 반도체</span><span class="sub">자회사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="3"><span class="t">산업 안전 진단 로봇 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="4"><span class="t">에너지 인프라 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===================== ISOMETRIC (who we are) ===================== -->
+  <section class="section iso">
+    <!-- combined bg + keyword image (center constraint); triangle sits right-of-center -->
+    <div class="iso-graphic"><img src="../assets/bg&amp;keyword-light.png" alt="who we are — Aggressive · Advanced · Agile" /></div>
+    <!-- text in the scaled design canvas -->
+    <div class="fit">
+      <div class="iso-text">
+        <p class="eye">who we are</p>
+        <div class="iso-head">
+          <div class="h">Global Top 5<br/>Total Energy-Solution Provider</div>
+          <p class="s">앞서가는 기업, 끊임없이 나아가는 에너지</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BUSINESS (node 6:491) ===================== -->
+  <section class="section biz2">
+    <div class="biz2-inner">
+    <img class="biz2-bg" src="../assets/business-light.png" alt="" aria-hidden="true" />
+    <div class="biz2-head">
+      <p class="ttl">BUSINESS</p>
+      <div class="biz2-cats">
+        <span class="arrow" id="bizPrev" role="button" tabindex="0" aria-label="이전"><svg viewBox="0 0 8 13" fill="none"><path d="M7 1 1 6.5 7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="list" id="bizCats">
+          <span class="cat active" data-i="0"><span class="br">[</span><span class="nm">이차전지</span><span class="br">]</span></span>
+          <span class="cat" data-i="1"><span class="br">[</span><span class="nm">에너지저장시스템</span><span class="br">]</span></span>
+          <span class="cat" data-i="2"><span class="br">[</span><span class="nm">화합물 GaN 반도체</span><span class="br">]</span></span>
+          <span class="cat" data-i="3"><span class="br">[</span><span class="nm">산업 안전 진단 로봇 솔루션</span><span class="br">]</span></span>
+          <span class="cat" data-i="4"><span class="br">[</span><span class="nm">에너지 인프라 솔루션</span><span class="br">]</span></span>
+        </div>
+        <span class="arrow" id="bizNext" role="button" tabindex="0" aria-label="다음"><svg viewBox="0 0 8 13" fill="none"><path d="M1 1 7 6.5 1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+
+    <div class="biz2-scenewrap" id="bizScene">
+      <img class="scene" id="bizSceneImg" src="../assets/Rechargable%20Battery.png" alt="사업영역 이미지" />
+      <div class="biz2-words" id="bizWords" style="display:none"><span class="w w1"></span><span class="w w2"></span></div>
+      <div class="biz2-glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="biz2-bottom">
+      <div class="biz2-major">
+        <p class="biz2-title" id="bizTitle">이차전지</p>
+        <div class="biz2-bar"><i></i></div>
+      </div>
+
+      <div class="biz2-minor" id="bizMinor">
+        <div class="pcard">
+          <div class="pcard-head">
+            <div class="titlewrap">
+              <div class="tag">
+                <span class="nm">설비</span>
+                <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="chamfer" aria-hidden="true"></span>
+            </div>
+            <span class="blank"></span>
+          </div>
+          <div class="pcard-body">
+            <div class="pi"><span class="dot"></span>파우치형</div>
+            <div class="pi"><span class="dot"></span>원통형</div>
+            <div class="pi"><span class="dot"></span>각형</div>
+            <div class="pi"><span class="dot"></span>계측 장비</div>
+          </div>
+        </div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div class="titlewrap">
+              <div class="tag">
+                <span class="chip">자회사</span>
+                <span class="nm">소재 | 머티리얼즈</span>
+                <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="chamfer" aria-hidden="true"></span>
+            </div>
+            <span class="blank"></span>
+          </div>
+          <div class="pcard-body">
+            <div class="pi"><span class="dot"></span>FW CNT&amp;SW CNT</div>
+            <div class="pi"><span class="dot"></span>LiFSI 전해염</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===================== NEWS ===================== -->
+  <section class="section news">
+    <div class="fit">
+    <div class="news-inner">
+      <div class="news-texts">
+        <div class="tt">
+          <p class="eye">Notice &amp; News</p>
+          <p class="h">에이프로의 새로운 소식을 전해드립니다</p>
+        </div>
+        <div class="pager">
+          <button id="newsPrev" aria-label="이전"><svg viewBox="0 0 9 14" fill="none"><path d="M8 1 2 7l6 6" stroke="#1b2733" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button id="newsNext" aria-label="다음"><svg viewBox="0 0 9 14" fill="none"><path d="M1 1 7 7l-6 6" stroke="#1b2733" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <div class="news-track">
+        <div class="news-row" id="newsRow">
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">합병종료보고 공고</p>
+                <p class="d">합병에 관한 사항 보고 공고 당사는 아래와 같이 주식회사 에이프로파트너스, 주식회사 에코볼트를 흡수합병하였는 바, 이에 이사회 결의에 의해 합병에 관한 사항 보고를 주주총회에 보고하는 것에 갈음하여 아래 내용과 같이 공고합니다.</p>
+              </div>
+              <p class="date">2025.03.14</p>
+            </div>
+          </article>
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">제25기 정기주주총회 소집공고</p>
+                <p class="d">상법 제365조 및 당사 정관 규정에 의거 제25기 정기주주총회를 아래와 같이 소집하오니 주주 여러분의 많은 참석을 바랍니다. 일시·장소 및 부의안건은 공고문을 참고하시기 바랍니다.</p>
+              </div>
+              <p class="date">2025.02.20</p>
+            </div>
+          </article>
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">주주명부 폐쇄 및 기준일 공고</p>
+                <p class="d">상법 제354조 및 당사 정관에 의거 권리주주 확정을 위하여 주주명부를 폐쇄하고 기준일을 설정하오니 주주 여러분께 안내드립니다. 자세한 사항은 공고문을 확인해 주시기 바랍니다.</p>
+              </div>
+              <p class="date">2025.01.31</p>
+            </div>
+          </article>
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">신주 발행 공고</p>
+                <p class="d">당사는 이사회 결의에 따라 아래와 같이 신주를 발행하기로 결정하였기에 상법 제418조 및 정관 규정에 의거 이를 공고합니다. 발행조건 및 배정에 관한 세부사항은 공고문에 기재되어 있습니다.</p>
+              </div>
+              <p class="date">2024.12.09</p>
+            </div>
+          </article>
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">주식회사 에이프로 제26기 정기주총회</p>
+                <p class="d">주식회사 에이프로 제26기 정기주주총회 소집통지서. 주주님의 건승과 댁내의 평안을 기원합니다. 당사는 상법 제365조와 회사 정관 제21조의 규정에 의거 제26기 정기주주총회를 다음과 같이 개최하오니 참석하여 주시기 바랍니다.</p>
+              </div>
+              <p class="date">2024.11.15</p>
+            </div>
+          </article>
+          <article class="ncard">
+            <span class="tag">공지사항</span>
+            <div class="cont">
+              <div class="txt">
+                <p class="t">제26기 결산배당 기준일 공고</p>
+                <p class="d">제26기 결산배당 기준일 공고문. ㈜에이프로는 상법 제354조 및 당사 정관 제54조에 의거하여 아래와 같이 결산배당 기준일을 공고합니다. 1. 공고 사유: 제26기 결산배당 권리주주 확정 2. 기준일: 2026년 04월 01일</p>
+              </div>
+              <p class="date">2024.10.02</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="news-bar"><i id="newsBar"></i></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===================== GLOBAL NETWORK ===================== -->
+  <section class="section gnet">
+    <div class="gnet-stage">
+      <div class="gnet-map"><img src="../assets/gnet-map.png" alt="" aria-hidden="true" /></div>
+
+      <h2 class="gnet-gn">Global<br/>Network</h2>
+
+      <p class="gnet-desc">A-PRO의 본사와 R&amp;D센터는 경기도에 있으며, 다양한 제품 포트폴리오를 개발하고 있습니다.<br/>최고의 엔지니어들이 새롭고 혁신적인 기술 개발을 위해 끊임 없이 노력하고 있습니다.<br/>제품은 여러 국가에서 현지 생산되고 있으며, 본사의 제품과 서비스는 글로벌<br/>해외 영업 네트워크를 통해 판매되고 있습니다.</p>
+
+      <div class="gnet-stats">
+        <div class="gnet-stat"><p class="num">00</p><p class="lab">생산</p></div>
+        <div class="gnet-stat"><p class="num">15</p><p class="lab">판매</p></div>
+      </div>
+
+      <!-- location markers (positions from Figma; country labels are best-guess pending the real list) -->
+      <span class="gnet-mk" data-id="173:2217" style="left:485px;top:389px"><span class="tip">United States of America</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2213" style="left:490px;top:476px"><span class="tip">Nicaragua</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2209" style="left:489px;top:504px"><span class="tip">Panama</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2205" style="left:518px;top:541px"><span class="tip">Peru</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2185" style="left:742px;top:381px"><span class="tip">Germany</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2181" style="left:754px;top:399px"><span class="tip">Czech</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2176" style="left:768px;top:416px"><span class="tip">Austria</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2189" style="left:776px;top:364px"><span class="tip">Poland</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2201" style="left:783px;top:426px"><span class="tip">Hungary</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2193" style="left:785px;top:391px"><span class="tip">Slovakia</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2197" style="left:797px;top:408px"><span class="tip">Romania</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2162" style="left:974px;top:487px"><span class="tip">Vietnam</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2156" style="left:988px;top:433px"><span class="tip">China</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2166" style="left:1034px;top:424px"><span class="tip">Korea</span><span class="dot"></span></span>
+      <span class="gnet-mk" data-id="173:2171" style="left:1088px;top:408px"><span class="tip">Japan</span><span class="dot"></span></span>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="top">
+        <div class="slogan">
+          <img class="logo" src="../assets/logo-white-footer.png" alt="A-PRO" />
+          <p class="txt">안심하고 믿을 수 있는<br/>미래를 만드는 기업</p>
+        </div>
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>R&amp;D 센터 : 경기도 시흥시 정왕동 2825-5</span>
+          </div>
+          <div class="line">
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </footer>
+
+</div><!-- /stage -->
+
+<div class="mnote">데스크톱(1280px 이상) 기준으로 디자인된 시안입니다.</div>
+
+<script>
+  // ---- fill each section to the viewport: contain-scale the 900px canvas (min so it never crops) ----
+  (function(){
+    function setZoom(){
+      var z=Math.min(window.innerHeight/900, window.innerWidth/1440);
+      document.documentElement.style.setProperty('--zoom', z.toString());
+    }
+    setZoom();
+    window.addEventListener('resize', setZoom);
+    window.addEventListener('orientationchange', setZoom);
+  })();
+
+  // ---- GNB: transparent over the (dark) banner, solid white once scrolled past it ----
+  (function(){
+    var gnb=document.getElementById('gnb'), banner=document.querySelector('.banner');
+    if(!gnb) return;
+    var ticking=false;
+    function apply(){
+      ticking=false;
+      var threshold=banner?banner.offsetHeight-80:120;
+      gnb.classList.toggle('scrolled',(window.scrollY||window.pageYOffset||0)>threshold);
+    }
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(apply); } }
+    apply();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+  })();
+
+  // ---- business: place the scene image into business.png's transparent hole (responsive, full-bleed) ----
+  (function(){
+    var section=document.querySelector('.biz2'), wrap=document.getElementById('bizScene'),
+        head=document.querySelector('.biz2-head');
+    if(!section||!wrap) return;
+    var IW=5268, IH=2000, L=0.2794, R=0.7532, T=0.2580, B=0.7040, OV=4;  // business.png size + hole fractions
+    function layout(){
+      var vw=section.clientWidth, vh=section.clientHeight;
+      if(!vw||!vh) return;
+      var scale=Math.max(vw/IW, vh/IH);                 // object-fit: cover
+      var dw=IW*scale, dh=IH*scale, ox=(vw-dw)/2, oy=(vh-dh)/2;  // object-position: center
+      var sceneTop=oy+T*dh-OV;
+      wrap.style.left=(ox+L*dw-OV)+'px';
+      wrap.style.top=sceneTop+'px';
+      wrap.style.width=((R-L)*dw+2*OV)+'px';
+      wrap.style.height=((B-T)*dh+2*OV)+'px';
+      // sit the menu ~24px above the center image (never colliding with the GNB)
+      if(head){ head.style.top=Math.max(80, sceneTop-24-head.offsetHeight)+'px'; }
+    }
+    layout();
+    window.addEventListener('resize',layout);
+    window.addEventListener('load',layout);
+  })();
+
+  // ---- banner: business switcher (hover / select) ----
+  (function(){
+    var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var data=[
+      {kor:'이차전지', en:'Rechargeable Battery',
+       subs:[{n:'설비'},{n:'소재 | 머티리얼즈',sub:true}],
+       bg:'radial-gradient(95% 85% at 78% 112%, rgba(44,87,144,.55), rgba(27,39,51,0) 58%), var(--g900)'},
+      {kor:'에너지저장시스템', en:'ESS : Energy Storage Systems',
+       subs:[{n:'배터리 에너지 저장 시스템'},{n:'무인 이동체 전원 시스템'},{n:'무정전 전원 장치'}],
+       bg:'radial-gradient(95% 85% at 68% 108%, rgba(33,92,108,.5), rgba(27,39,51,0) 58%), var(--g900)'},
+      {kor:'화합물 GaN 반도체', en:'Compound GaN Semiconductors',
+       subs:[{n:'Epi-Water'},{n:'GaN Device'},{n:'에이프로 세미콘',sub:true}],
+       bg:'radial-gradient(95% 85% at 82% 104%, rgba(78,66,150,.5), rgba(27,39,51,0) 58%), var(--g900)'},
+      {kor:'산업 안전 진단 로봇 솔루션', en:'Industrial Safety Inspection Robot Solution',
+       subs:[{n:'산업 안전 진단 플랫폼'},{n:'산업 안전 진단 페이로드'}],
+       bg:'radial-gradient(95% 85% at 72% 110%, rgba(150,112,58,.42), rgba(27,39,51,0) 58%), var(--g900)'},
+      {kor:'에너지 인프라 솔루션', en:'Energy Infrastructure Solutions',
+       subs:[{n:'전기자동차 충전 솔루션'},{n:'배터리 전주기 진단 솔루션'}],
+       bg:'radial-gradient(95% 85% at 64% 106%, rgba(38,118,126,.48), rgba(27,39,51,0) 58%), var(--g900)'}
+    ];
+    var bKor=document.getElementById('bKor'),bEn=document.getElementById('bEn'),bTabs=document.getElementById('bTabs');
+    var left=document.querySelector('.banner .b-left');
+    var cards=Array.prototype.slice.call(document.querySelectorAll('.banner .b-card'));
+    var bgs=[document.getElementById('bgA'),document.getElementById('bgB')];
+    var bgCur=0, selected=0, current=-1, swapT=null;
+    var EXT='<svg class="ext" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    function tabsHTML(b){
+      return b.subs.map(function(s,i){
+        return '<div class="b-tab '+(s.sub?'blue':'white')+'"><span class="num">[<em>'+(i+1)+'</em>]</span><span class="nm">'+s.n+'</span>'+EXT+'</div>';
+      }).join('');
+    }
+    function setBg(grad){
+      var nx=bgs[bgCur^1];
+      nx.style.background=grad;
+      nx.classList.add('show');
+      bgs[bgCur].classList.remove('show');
+      bgCur^=1;
+    }
+    function paint(b){ bKor.textContent=b.kor; bEn.textContent=b.en; bTabs.innerHTML=tabsHTML(b); }
+    function show(i,instant){
+      if(i===current && !instant) return;
+      current=i;
+      var b=data[i];
+      cards.forEach(function(c,ci){c.classList.toggle('active',ci===i);});
+      setBg(b.bg);
+      if(swapT){clearTimeout(swapT);swapT=null;}
+      if(instant||reduce){ paint(b); left.classList.remove('swapping'); return; }
+      left.classList.add('swapping');
+      swapT=setTimeout(function(){ paint(b); left.classList.remove('swapping'); },200);
+    }
+    cards.forEach(function(c){
+      var i=parseInt(c.getAttribute('data-i'),10);
+      c.addEventListener('mouseenter',function(){show(i);});
+      c.addEventListener('click',function(){ location.href='business.html?area='+i; });  // go to the business-area sub-page
+    });
+    document.getElementById('bCards').addEventListener('mouseleave',function(){show(selected);});
+    show(0,true);
+  })();
+
+  // ---- scroll-scrubbed parallax + reveal: per section set --rev (0..1 reveal) and --p (-1..1 parallax) ----
+  (function(){
+    var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var secs=Array.prototype.slice.call(document.querySelectorAll('.section'));
+    if(reduce || !secs.length) return;   // reduced-motion: leave --rev/--p at defaults (1 / 0) -> static & visible
+    var ticking=false;
+    function update(){
+      ticking=false;
+      var vh=window.innerHeight||900;
+      for(var i=0;i<secs.length;i++){
+        var s=secs[i], r=s.getBoundingClientRect();
+        var rev=(1-(r.top/vh))/0.7;        // completes just before the section is fully scrolled in
+        rev=rev<0?0:(rev>1?1:rev);
+        var p=((r.top+r.height/2)-vh/2)/vh; // 0 centered, + below, - above
+        p=p<-1.5?-1.5:(p>1.5?1.5:p);
+        s.style.setProperty('--rev',rev.toFixed(3));
+        s.style.setProperty('--p',p.toFixed(3));
+      }
+    }
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+    window.addEventListener('orientationchange',onScroll);
+    update();
+  })();
+
+  // ---- news carousel ----
+  (function(){
+    var row=document.getElementById('newsRow');
+    var bar=document.getElementById('newsBar');
+    var prev=document.getElementById('newsPrev');
+    var next=document.getElementById('newsNext');
+    var step=356+12, total=6, perView=3, idx=0, maxIdx=total-perView;
+    function render(){
+      row.style.transform='translateX('+(-idx*step)+'px)';
+      var p=maxIdx?idx/maxIdx:0;
+      var barTrack=(row.parentElement.clientWidth-181);
+      bar.style.transform='translateX('+(barTrack*p)+'px)';
+    }
+    next.addEventListener('click',function(){idx=Math.min(maxIdx,idx+1);render();});
+    prev.addEventListener('click',function(){idx=Math.max(0,idx-1);render();});
+    window.addEventListener('resize',render);
+    render();
+  })();
+
+  // ---- business: category carousel (switch scene image + title + product cards) ----
+  (function(){
+    var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var data=[
+      {kor:'이차전지', img:'../assets/Rechargable%20Battery.png',
+       cards:[
+         {t:'설비', items:['파우치형','원통형','각형','계측 장비']},
+         {t:'소재 | 머티리얼즈', sub:true, items:['FW CNT&SW CNT','LiFSI 전해염']}
+       ]},
+      {kor:'에너지저장시스템', img:'../assets/BESS.png',
+       cards:[
+         {t:'배터리 에너지 저장 시스템', items:['모듈','팩','컨테이너']},
+         {t:'무인 이동체 전원 시스템', items:['우주 발사체','무인수상정','무인 지상 차량']},
+         {t:'무정전 전원 장치', items:['무정전 전원 장치']}
+       ]},
+      {kor:'화합물 GaN 반도체', img:null, w1:'Compound GaN', w2:'Semiconductors',
+       cards:[
+         {t:'Epi-Wafer', items:['Epi-Wafer']},
+         {t:'GaN Device', items:['GaN Device']},
+         {t:'에이프로 세미콘', sub:true, items:['에이프로 세미콘']}
+       ]},
+      {kor:'산업 안전 진단 로봇 솔루션', img:null, w1:'Industrial Safety', w2:'Inspection Robot Solution',
+       cards:[
+         {t:'산업 안전 진단 플랫폼', items:['산업 안전 진단 플랫폼']},
+         {t:'산업 안전 진단 페이로드', items:['ECOTRON 제어기 국내 총판']}
+       ]},
+      {kor:'에너지 인프라 솔루션', img:null, w1:'Energy Infrastructure', w2:'Solutions',
+       cards:[
+         {t:'전기자동차 충전 솔루션', items:['전기자동차 충전 솔루션']},
+         {t:'배터리 전주기 진단 솔루션', items:['배터리 전주기 진단 솔루션']}
+       ]}
+    ];
+    var wrap=document.getElementById('bizScene'),img=document.getElementById('bizSceneImg'),
+        words=document.getElementById('bizWords'),w1=words.children[0],w2=words.children[1],
+        title=document.getElementById('bizTitle'),minor=document.getElementById('bizMinor'),
+        cats=Array.prototype.slice.call(document.querySelectorAll('#bizCats .cat'));
+    var n=data.length,cur=0,swapT=null,autoT=null,AUTO=4000;
+    function schedule(){ clearTimeout(autoT); autoT=setTimeout(function(){ show(cur+1); },AUTO); }
+    var OP='<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+    function cardHTML(c){
+      var chip=c.sub?'<span class="chip">자회사</span>':'';
+      var items=c.items.map(function(t){return '<div class="pi"><span class="dot"></span>'+esc(t)+'</div>';}).join('');
+      return '<div class="pcard"><div class="pcard-head"><div class="titlewrap"><div class="tag">'+chip+
+             '<span class="nm">'+esc(c.t)+'</span>'+OP+'</div><span class="chamfer"></span></div>'+
+             '<span class="blank"></span></div><div class="pcard-body">'+items+'</div></div>';
+    }
+    function paint(d){
+      if(d.img){ wrap.classList.remove('noimg'); img.src=d.img; img.style.display='block';
+                 words.style.display='none'; }
+      else { img.removeAttribute('src'); img.style.display='none';
+             wrap.classList.add('noimg'); w1.textContent=d.w1||''; w2.textContent=d.w2||''; words.style.display='block'; }
+      title.textContent=d.kor;
+      minor.innerHTML=d.cards.map(cardHTML).join('');
+    }
+    function show(i){
+      i=(i%n+n)%n;
+      cur=i;
+      var d=data[i];
+      cats.forEach(function(c,ci){c.classList.toggle('active',ci===i);});
+      schedule();               // (re)start the 4s auto-advance from this switch
+      if(swapT){clearTimeout(swapT);swapT=null;}
+      if(reduce){ paint(d); return; }
+      wrap.classList.add('swapping');
+      swapT=setTimeout(function(){ paint(d); wrap.classList.remove('swapping'); },220);
+    }
+    cats.forEach(function(c){ c.style.cursor='pointer';
+      c.addEventListener('click',function(){show(parseInt(c.getAttribute('data-i'),10));}); });
+    document.getElementById('bizPrev').addEventListener('click',function(){show(cur-1);});
+    document.getElementById('bizNext').addEventListener('click',function(){show(cur+1);});
+    // pause auto-advance while the visitor is reading (hovering the section)
+    var section=document.querySelector('.biz2');
+    section.addEventListener('mouseenter',function(){clearTimeout(autoT);});
+    section.addEventListener('mouseleave',function(){schedule();});
+    paint(data[0]);   // render initial cards (image already in markup)
+    schedule();       // kick off auto-advance
+  })();
+</script>
+</body>
+</html>
