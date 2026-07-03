@@ -71,41 +71,54 @@
   .gnb-inner{width:100%;max-width:var(--maxw);height:100%;display:flex;align-items:center;gap:36px;padding:0 24px}
   .gnb .logo{flex-shrink:0}
   .gnb .logo img{height:16px;width:78px;transition:filter .3s var(--ease)}
-  .gnb .menus{flex:1;display:flex;gap:36px;align-items:center;justify-content:center}
-  .gnb .menus a{font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
+  .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
+  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;padding-left:16px;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
   .gnb .menus a:hover{opacity:1}
-  .gnb .ham{width:24px;height:24px;display:flex;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0}
-  .gnb .ham span{display:block;width:18px;height:1.5px;background:#fff;transition:background .3s var(--ease)}
+  /* language switcher (replaces hamburger) */
+  .gnb .lang{width:64px;display:flex;justify-content:flex-end;flex-shrink:0}
+  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px;transition:color .3s var(--ease)}
+  .gnb .lang .lang-btn svg{width:22px;height:22px;display:block}
+  .gnb .lang .lang-btn .arw{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .25s var(--ease)}
+  .gnb-group.lang-open .lang .lang-btn .arw{transform:rotate(-135deg);margin-top:2px}
   /* scrolled past the banner: white bar with dark content */
   .gnb.scrolled{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
   .gnb.scrolled .logo img{filter:brightness(0)}     /* white logo -> black on the white bar */
   .gnb.scrolled .menus a{color:var(--g900)}
-  .gnb.scrolled .ham span{background:var(--g900)}
+  .gnb.scrolled .lang .lang-btn{color:var(--g900)}
   @keyframes gnbIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ---- GNB mega dropdown (hover) — mirrors footer menu tree ---- */
-  .gnb-group{position:relative;z-index:100}
+  /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
+  .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
+    --gutter:calc((100% - min(var(--maxw), 100%)) / 2)}
   /* on hover: turn the bar white with dark content (same as .scrolled) so links stay readable over the white panel */
   .gnb-group:hover .gnb,.gnb-group:focus-within .gnb{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
   .gnb-group:hover .gnb .logo img,.gnb-group:focus-within .gnb .logo img{filter:brightness(0)}
   .gnb-group:hover .gnb .menus a,.gnb-group:focus-within .gnb .menus a{color:var(--g900)}
-  .gnb-group:hover .gnb .ham span,.gnb-group:focus-within .gnb .ham span{background:var(--g900)}
+  .gnb-group:hover .gnb .lang .lang-btn,.gnb-group:focus-within .gnb .lang .lang-btn{color:var(--g900)}
   .gnb-mega{position:fixed;top:64px;left:0;width:100%;z-index:99;background:#fff;
     border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(23,36,58,.12);
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group:hover .gnb-mega,.gnb-group:focus-within .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .gnb-mega .inner{width:100%;max-width:var(--maxw);margin-inline:auto;
-    display:flex;gap:36px;align-items:flex-start;padding:36px 24px 44px}
+    display:flex;gap:36px;align-items:flex-start;padding:24px 24px 44px}
   .gnb-mega .m-logo{width:78px;flex-shrink:0}
-  .gnb-mega .m-cols{flex:1;display:flex;gap:36px;justify-content:center}
-  .gnb-mega .m-ham{width:24px;flex-shrink:0}
-  .gnb-mega .m-col{display:flex;flex-direction:column;gap:18px;min-width:0}
-  .gnb-mega .m-head{font-family:var(--suit);font-weight:800;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:var(--g900);white-space:nowrap}
-  .gnb-mega .m-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
-  .gnb-mega .m-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.4;letter-spacing:-.28px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
+  .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
+  .gnb-mega .m-globe{width:64px;flex-shrink:0}
+  .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:14px;padding:14px 16px 26px;border-radius:2px;transition:background .2s}
+  .gnb-mega .m-col.on,.gnb-mega .m-col:hover{background:var(--secondary-bg)}
+  .gnb-mega .m-col a{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
   .gnb-mega .m-col a:hover{color:var(--brand)}
-  @media(max-width:900px){.gnb-mega{display:none}}
+  /* language dropdown */
+  .lang-menu{position:fixed;top:64px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;
+    background:#fff;border:1px solid var(--border-g);border-radius:4px;box-shadow:0 12px 28px rgba(23,36,58,.16);padding:6px;
+    opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;
+    transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
+  .gnb-group.lang-open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .lang-menu a{display:block;padding:9px 14px;border-radius:3px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:#5a6675;text-decoration:none;transition:background .18s,color .18s}
+  .lang-menu a:hover{background:var(--secondary-bg);color:var(--g900)}
+  .lang-menu a.on{color:var(--brand);font-weight:700}
+  @media(max-width:900px){.gnb-mega{display:none}.gnb .menus{display:none}}
 
   /* ===================== BANNER ===================== */
   .banner{background:var(--g900)}
@@ -352,53 +365,52 @@
       <div class="gnb-inner">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
       <div class="menus">
-        <a href="#">회사소개</a>
-        <a href="business.html">사업영역</a>
-        <a href="#">투자정보</a>
-        <a href="#">지속가능경영</a>
-        <a href="#">커뮤니티</a>
-        <a href="#">Contact Us</a>
+        <a href="business.html" data-i="0">사업영역</a>
+        <a href="#" data-i="1">회사소개</a>
+        <a href="#" data-i="2">투자정보</a>
+        <a href="#" data-i="3">지속가능경영</a>
+        <a href="#" data-i="4">커뮤니티</a>
       </div>
-      <div class="ham"><span></span><span></span><span></span></div>
+      <div class="lang">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg>
+          <i class="arw"></i>
+        </button>
+      </div>
       </div>
     </nav>
-    <!-- GNB 호버 시 나타나는 메가 메뉴 (푸터 메뉴트리와 동일) -->
+    <!-- GNB 호버 시 나타나는 메가 메뉴 (각 메뉴 아래 정렬) -->
     <div class="gnb-mega" role="region" aria-label="전체 메뉴">
       <div class="inner">
         <span class="m-logo" aria-hidden="true"></span>
         <div class="m-cols">
-          <div class="m-col">
-            <p class="m-head">회사소개</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="0">
+            <a href="business.html">이차전지</a>
+            <a href="business.html">에너지 저장 시스템</a>
+            <a href="business.html">화합물 GaN 반도체</a>
+            <a href="business.html">산업 안전 진단 로봇 솔루션</a>
+            <a href="business.html">에너지 인프라 솔루션</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">사업영역</p>
-            <ul>
-              <li><a href="business.html">이차전지</a></li>
-              <li><a href="business.html">에너지 저장 시스템</a></li>
-              <li><a href="business.html">화합물 GaN 반도체</a></li>
-              <li><a href="business.html">산업 안전 진단 로봇 솔루션</a></li>
-              <li><a href="business.html">에너지 인프라 솔루션</a></li>
-            </ul>
+          <div class="m-col" data-i="1">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">투자정보</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="2">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">지속가능경영</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="3">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">커뮤니티</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
-          </div>
-          <div class="m-col">
-            <p class="m-head">Contact Us</p>
+          <div class="m-col" data-i="4">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
         </div>
-        <span class="m-ham" aria-hidden="true"></span>
+        <span class="m-globe" aria-hidden="true"></span>
       </div>
+    </div>
+    <!-- 언어 드롭다운 -->
+    <div class="lang-menu" id="langMenu" role="menu" aria-label="언어 선택">
+      <a href="#" class="on" role="menuitem">KOR</a>
+      <a href="#" role="menuitem">ENG</a>
     </div>
     </div>
 
@@ -974,6 +986,35 @@
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
     });
+  })();
+
+  /* ===== GNB language switcher + mega column highlight ===== */
+  (function(){
+    var group = document.querySelector('.gnb-group');
+    if(!group) return;
+    var langBtn = document.getElementById('langBtn');
+    if(langBtn){
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var open = group.classList.toggle('lang-open');
+        langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(e){
+        if(!group.contains(e.target)){ group.classList.remove('lang-open'); langBtn.setAttribute('aria-expanded','false'); }
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape'){ group.classList.remove('lang-open'); langBtn.setAttribute('aria-expanded','false'); }
+      });
+    }
+    // highlight the column under the hovered nav item (or the hovered column)
+    var cols = group.querySelectorAll('.gnb-mega .m-col');
+    function setOn(i){ cols.forEach(function(c){ c.classList.toggle('on', c.getAttribute('data-i') === i); }); }
+    function clearOn(){ cols.forEach(function(c){ c.classList.remove('on'); }); }
+    group.querySelectorAll('.gnb .menus a[data-i]').forEach(function(a){
+      a.addEventListener('mouseenter', function(){ setOn(a.getAttribute('data-i')); });
+    });
+    cols.forEach(function(c){ c.addEventListener('mouseenter', function(){ setOn(c.getAttribute('data-i')); }); });
+    group.addEventListener('mouseleave', clearOn);
   })();
 </script>
 </body>

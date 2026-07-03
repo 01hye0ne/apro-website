@@ -46,34 +46,47 @@
     mix-blend-mode:exclusion;animation:gnbIn .9s var(--ease) both}
   .gnb .logo{padding:12px 24px;flex-shrink:0}
   .gnb .logo img{height:16px;width:78px}
-  .gnb .menus{flex:1;display:flex;gap:36px;align-items:center;justify-content:center}
-  .gnb .menus a{font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:opacity .2s}
+  .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
+  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;padding-left:16px;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:opacity .2s}
   .gnb .menus a:hover{opacity:1}
-  .gnb .ham{width:24px;height:24px;display:flex;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0}
-  .gnb .ham span{display:block;width:18px;height:1.5px;background:#fff}
+  /* language switcher (replaces hamburger) */
+  .gnb .lang{width:64px;display:flex;justify-content:flex-end;flex-shrink:0}
+  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px}
+  .gnb .lang .lang-btn svg{width:22px;height:22px;display:block}
+  .gnb .lang .lang-btn .arw{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .25s var(--ease)}
+  .gnb-group.lang-open .lang .lang-btn .arw{transform:rotate(-135deg);margin-top:2px}
   @keyframes gnbIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
 
-  /* ---- GNB mega dropdown (hover) — mirrors footer menu tree ---- */
-  .gnb-group{position:relative;z-index:100}
+  /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
+  .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
+    --gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
   .gnb-mega{position:fixed;top:0;left:0;width:100%;z-index:99;background:#fff;
     border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(14,22,30,.12);
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group:hover .gnb-mega,.gnb-group:focus-within .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .gnb-mega .inner{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto;
-    display:flex;gap:36px;align-items:flex-start;padding:84px 24px 44px 0}
-  .gnb-mega .m-logo{width:78px;padding:0 24px;flex-shrink:0}
-  .gnb-mega .m-cols{flex:1;display:flex;gap:36px;justify-content:center}
-  .gnb-mega .m-ham{width:24px;flex-shrink:0}
-  .gnb-mega .m-col{display:flex;flex-direction:column;gap:18px;min-width:0}
-  .gnb-mega .m-head{font-family:var(--suit);font-weight:800;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:var(--g900);white-space:nowrap}
-  .gnb-mega .m-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
-  .gnb-mega .m-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.4;letter-spacing:-.28px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
+    display:flex;gap:36px;align-items:flex-start;padding:72px 24px 44px 0}
+  .gnb-mega .m-logo{width:126px;flex-shrink:0}
+  .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
+  .gnb-mega .m-globe{width:64px;flex-shrink:0}
+  .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:14px;padding:14px 16px 26px;border-radius:2px;transition:background .2s}
+  .gnb-mega .m-col.on,.gnb-mega .m-col:hover{background:var(--secondary-bg)}
+  .gnb-mega .m-col a{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
   .gnb-mega .m-col a:hover{color:var(--brand)}
-  @media(max-width:900px){.gnb-mega{display:none}}
+  /* language dropdown — sibling of nav so the exclusion-blend GNB doesn't invert it */
+  .lang-menu{position:fixed;top:60px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;
+    background:#fff;border:1px solid var(--border-g);border-radius:4px;box-shadow:0 12px 28px rgba(14,22,30,.16);padding:6px;
+    opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;
+    transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
+  .gnb-group.lang-open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .lang-menu a{display:block;padding:9px 14px;border-radius:3px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:#5a6675;text-decoration:none;transition:background .18s,color .18s}
+  .lang-menu a:hover{background:var(--secondary-bg);color:var(--g900)}
+  .lang-menu a.on{color:var(--brand);font-weight:700}
+  @media(max-width:900px){.gnb-mega{display:none}.gnb .menus{display:none}}
 
   /* ===================== BANNER ===================== */
-  .v2banner{height:900px;background:#e4e8ed}
+  .v2banner{height:100vh;min-height:640px;background:#e4e8ed}
   /* background video (plays clean, no overlay effect) */
   .v2banner .v2b-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px}
@@ -87,16 +100,8 @@
   .v2banner .arrows{display:flex;gap:8px}
   .v2banner .arrows .ic{width:24px;height:24px;background:#fff;display:grid;place-content:center;font-size:13px;color:var(--g900);cursor:pointer}
   .v2banner .bnav{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .v2banner .bnav .b{font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:rgba(255,255,255,.55);padding:8px 0;cursor:pointer;transition:color .2s}
+  .v2banner .bnav .b{font-family:var(--suit);font-weight:600;font-size:19px;letter-spacing:-.32px;color:rgba(255,255,255,.55);padding:8px 0;cursor:pointer;transition:color .2s}
   .v2banner .bnav .b.active,.v2banner .bnav .b:hover{color:#fff}
-  .v2banner .subsid{width:403px;flex-shrink:0;display:flex;flex-direction:column;gap:8px}
-  .v2banner .subsid .ttl{font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
-  .v2banner .subsid .row{display:flex;gap:8px}
-  .v2banner .subsid .item{flex:1;min-width:0;height:28px;background:#fff;display:flex;align-items:center;gap:4px;padding-right:4px;cursor:pointer}
-  .v2banner .subsid .num{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--suit);font-weight:600;font-size:17px;letter-spacing:-.34px;color:var(--g900)}
-  .v2banner .subsid .num em{font-family:var(--rc);font-style:normal;font-size:14px;padding:0 1px}
-  .v2banner .subsid .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .v2banner .subsid .op{width:20px;height:20px;flex-shrink:0;color:var(--g900)}
 
   /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
@@ -189,9 +194,14 @@
   .v2biz .biz-nav .nv.on{opacity:1;color:var(--g900);cursor:default}
   .v2biz .biz-nav .nv:hover{opacity:1}
 
-  .v2biz .biz-hero{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;text-align:center;transition:opacity .3s var(--ease)}
+  .v2biz .biz-hero{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;text-align:center}
+  .v2biz .biz-hero .hmask{overflow:hidden;padding:0 4px;margin:0 -4px}   /* clip window for the rise-up (side pad so italic/edge glyphs aren't cut) */
   .v2biz .biz-hero .t1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
   .v2biz .biz-hero .t2{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464}
+  /* masked rise-up on business change: current lines exit upward out of the mask, new lines rise in from below */
+  .v2biz .biz-hero .t1,.v2biz .biz-hero .t2{transition:transform .8s var(--ease-io)}
+  .v2biz .biz-hero.out .t1,.v2biz .biz-hero.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
+  .v2biz .biz-hero.enter .t1,.v2biz .biz-hero.enter .t2{transform:translateY(120%);transition:none}
 
   /* absolute (out of flow), pinned to the row's top-right; top:0 + 8px padding aligns its first item to the nav's top */
   .v2biz .biz-lists{position:absolute;top:0;right:0;width:299px;display:flex;flex-direction:column;gap:0;padding:8px 0;transition:opacity .3s var(--ease)}
@@ -214,9 +224,9 @@
   .v2biz .biz-lists .li:hover .tags{max-height:260px;opacity:1;margin-top:12px}
   .v2biz .biz-lists .tag-chip{background:#445464;color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
 
-  .v2biz .biz-hero.fade,.v2biz .biz-lists.fade{opacity:0}
+  .v2biz .biz-lists.fade{opacity:0}
   @media (prefers-reduced-motion: reduce){
-    .v2biz .biz-hero,.v2biz .biz-lists,.v2biz .num .reel .col{transition:none}
+    .v2biz .biz-hero .t1,.v2biz .biz-hero .t2,.v2biz .biz-lists,.v2biz .num .reel .col{transition:none}
   }
 
   /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
@@ -340,48 +350,48 @@
     <nav class="gnb">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
       <div class="menus">
-        <a href="#">회사소개</a><a href="business.html">사업영역</a><a href="#">투자정보</a>
-        <a href="#">지속가능경영</a><a href="#">커뮤니티</a><a href="#">Contact Us</a>
+        <a href="business.html" data-i="0">사업영역</a><a href="#" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a>
+        <a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
       </div>
-      <div class="ham"><span></span><span></span><span></span></div>
+      <div class="lang">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg>
+          <i class="arw"></i>
+        </button>
+      </div>
     </nav>
-    <!-- GNB 호버 시 나타나는 메가 메뉴 (푸터 메뉴트리와 동일) -->
+    <!-- GNB 호버 시 나타나는 메가 메뉴 (각 메뉴 아래 정렬) -->
     <div class="gnb-mega" role="region" aria-label="전체 메뉴">
       <div class="inner">
         <span class="m-logo" aria-hidden="true"></span>
         <div class="m-cols">
-          <div class="m-col">
-            <p class="m-head">회사소개</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="0">
+            <a href="business.html">이차전지</a>
+            <a href="business.html">에너지 저장 시스템</a>
+            <a href="business.html">화합물 GaN 반도체</a>
+            <a href="business.html">산업 안전 진단 로봇 솔루션</a>
+            <a href="business.html">에너지 인프라 솔루션</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">사업영역</p>
-            <ul>
-              <li><a href="business.html">이차전지</a></li>
-              <li><a href="business.html">에너지 저장 시스템</a></li>
-              <li><a href="business.html">화합물 GaN 반도체</a></li>
-              <li><a href="business.html">산업 안전 진단 로봇 솔루션</a></li>
-              <li><a href="business.html">에너지 인프라 솔루션</a></li>
-            </ul>
+          <div class="m-col" data-i="1">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">투자정보</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="2">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">지속가능경영</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          <div class="m-col" data-i="3">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
-          <div class="m-col">
-            <p class="m-head">커뮤니티</p>
-            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
-          </div>
-          <div class="m-col">
-            <p class="m-head">Contact Us</p>
+          <div class="m-col" data-i="4">
+            <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
           </div>
         </div>
-        <span class="m-ham" aria-hidden="true"></span>
+        <span class="m-globe" aria-hidden="true"></span>
       </div>
+    </div>
+    <!-- 언어 드롭다운 (exclusion 블렌드 영향을 피하려고 nav 형제로 배치) -->
+    <div class="lang-menu" id="langMenu" role="menu" aria-label="언어 선택">
+      <a href="#" class="on" role="menuitem">KOR</a>
+      <a href="#" role="menuitem">ENG</a>
     </div>
     </div>
 
@@ -403,21 +413,6 @@
               <span class="b">화합물 GaN 반도체</span>
               <span class="b">산업 안전 진단 로봇 솔루션</span>
               <span class="b">에너지 인프라 솔루션</span>
-            </div>
-          </div>
-          <div class="subsid">
-            <p class="ttl">자회사</p>
-            <div class="row">
-              <div class="item">
-                <span class="num">[<em>1</em>]</span>
-                <span class="nm">소재 | 머티리얼즈</span>
-                <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="item">
-                <span class="num">[<em>2</em>]</span>
-                <span class="nm">에이프로 세미콘</span>
-                <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
             </div>
           </div>
         </div>
@@ -827,7 +822,8 @@
     }
 
     function fillText(b){
-      heroEl.innerHTML = '<p class="t1">'+esc(b.kor)+'</p><p class="t2">'+esc(b.eng)+'</p>';
+      heroEl.innerHTML = '<div class="hmask"><p class="t1">'+esc(b.kor)+'</p></div>'
+                       + '<div class="hmask"><p class="t2">'+esc(b.eng)+'</p></div>';
       listsEl.innerHTML = b.lists.map(listItem).join('');
     }
     function setActive(i){
@@ -836,14 +832,19 @@
       active = i;
       var b = BIZ[i];
       place(first);                               // rotate the ring
-      clearTimeout(faderTO);                       // text: instant on first, else quick crossfade
+      clearTimeout(faderTO);                       // hero text: masked rise-up; lists: quick fade
       if(first){ fillText(b); }
       else {
-        heroEl.classList.add('fade'); listsEl.classList.add('fade');
+        heroEl.classList.add('out');               // current hero text exits upward out of the mask
+        listsEl.classList.add('fade');
         faderTO = setTimeout(function(){
-          fillText(b);
-          heroEl.classList.remove('fade'); listsEl.classList.remove('fade');
-        }, 200);
+          fillText(b);                             // swap while hidden
+          listsEl.classList.remove('fade');
+          heroEl.classList.remove('out');          // new text: drop below the mask (no transition) …
+          heroEl.classList.add('enter');
+          void heroEl.offsetWidth;
+          heroEl.classList.remove('enter');        // … then rise up into view
+        }, 480);
       }
       var dh = reelCol.children[0].getBoundingClientRect().height || 16;   // counter reel + nav highlight
       reel.style.height = dh + 'px';
@@ -931,6 +932,35 @@
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
     });
+  })();
+
+  /* ===== GNB language switcher + mega column highlight ===== */
+  (function(){
+    var group = document.querySelector('.gnb-group');
+    if(!group) return;
+    var langBtn = document.getElementById('langBtn');
+    if(langBtn){
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var open = group.classList.toggle('lang-open');
+        langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(e){
+        if(!group.contains(e.target)){ group.classList.remove('lang-open'); langBtn.setAttribute('aria-expanded','false'); }
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape'){ group.classList.remove('lang-open'); langBtn.setAttribute('aria-expanded','false'); }
+      });
+    }
+    // highlight the column under the hovered nav item (or the hovered column)
+    var cols = group.querySelectorAll('.gnb-mega .m-col');
+    function setOn(i){ cols.forEach(function(c){ c.classList.toggle('on', c.getAttribute('data-i') === i); }); }
+    function clearOn(){ cols.forEach(function(c){ c.classList.remove('on'); }); }
+    group.querySelectorAll('.gnb .menus a[data-i]').forEach(function(a){
+      a.addEventListener('mouseenter', function(){ setOn(a.getAttribute('data-i')); });
+    });
+    cols.forEach(function(c){ c.addEventListener('mouseenter', function(){ setOn(c.getAttribute('data-i')); }); });
+    group.addEventListener('mouseleave', clearOn);
   })();
 </script>
 
