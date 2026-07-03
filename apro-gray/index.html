@@ -23,6 +23,7 @@
     --white-300:rgba(255,255,255,.2);--maxw:1440px;--pad:24px;
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+    --ease-io:cubic-bezier(.62,0,.38,1);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -128,70 +129,74 @@
   .who-sticky[data-phase="3"] .who-dots{color:#fff}
   .who-dots i.on{opacity:1;transform:scale(1.5)}
 
-  /* ===================== BUSINESS ===================== */
-  .v2biz{height:900px;background:#fff}
-  .v2biz .v2biz-band{padding:147px 24px 0;display:flex;flex-direction:column}
-  .v2biz .biz-step{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid #445464}
-  .v2biz .biz-step .left{display:flex;gap:17px;align-items:center}
-  .v2biz .biz-step .ttl{font-family:var(--suit);font-weight:800;font-size:20px;letter-spacing:-.4px;color:var(--g900)}
-  .v2biz .biz-step .num{display:flex;align-items:center;gap:1px;font-family:var(--rc);font-size:16px}
-  .v2biz .biz-step .num b{font-weight:400;color:var(--brand)}
+  /* ===================== BUSINESS (Figma node 279:49403 — nav + hero + lists over image collage) ===================== */
+  /* pinned: the section is tall; a sticky stage stays put while scroll steps through the 5 businesses, then unpins to News.
+     overflow:visible overrides .section{overflow:hidden} so the sticky pin isn't trapped */
+  .v2biz{height:520vh;background:#fff;position:relative;overflow:visible}
+  .biz-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+  .v2biz .biz-stage{position:relative;width:100%;height:900px;isolation:isolate}
+
+  /* background collage — full-width stage; card geometry is computed responsively in JS (24px gutters) */
+  .v2biz .biz-collage{position:absolute;left:0;top:0;width:100%;height:900px;pointer-events:none;z-index:1}
+  /* coverflow cards — one per business; they slide + resize between the 5 slots as the active business rotates.
+     ease-in-out (not ease-out) so the grow/shrink accelerates then settles — the middle of the motion stays visible */
+  .v2biz .bcard{position:absolute;background:#d9d9d9;overflow:hidden;
+    transition:left .9s var(--ease-io),top .9s var(--ease-io),width .9s var(--ease-io),height .9s var(--ease-io)}
+  .v2biz .bcard img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .9s var(--ease-io)}
+  .v2biz .bcard.center img{filter:grayscale(0)}   /* only the centre (active) card shows in full colour */
+  .v2biz .bcard.jin{animation:bcardIn .55s var(--ease)}   /* fade-in when a card wraps edge→edge */
+  @keyframes bcardIn{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
+
+  /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it */
+  .v2biz .biz-content{position:absolute;left:50%;top:116px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:24px}
+
+  .v2biz .biz-step{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border-g)}
+  .v2biz .biz-step .ttl{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
+  .v2biz .biz-step .num{display:flex;align-items:baseline;font-family:var(--rc);font-size:16px;letter-spacing:-.32px}
+  .v2biz .biz-step .num .reel{display:inline-block;height:16px;overflow:hidden}
+  .v2biz .biz-step .num .reel .col{display:block;transition:transform .5s var(--ease)}
+  .v2biz .biz-step .num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
   .v2biz .biz-step .num .tot{color:var(--teritary)}
-  .v2biz .biz-step .arrows{display:flex;gap:12px}
-  .v2biz .biz-step .ic{width:24px;height:24px;border:none;background:none;cursor:pointer;display:grid;place-content:center;font-size:16px;color:var(--g900)}
-  .v2biz .bizbox{position:relative;height:540px;margin-top:24px}
-  /* center-mode carousel: overflow viewport + sliding track of persistent cards that morph strip<->image */
-  .v2biz .imgs{position:absolute;bottom:0;left:0;right:0;height:540px;overflow:hidden}
-  .v2biz .track{position:relative;height:100%;display:flex;gap:12px;align-items:flex-end;transition:transform .6s var(--ease);will-change:transform}
-  .v2biz .bcard{position:relative;flex:0 0 auto;width:var(--sw,235px);height:44px;background:var(--secondary-bg);overflow:hidden;cursor:pointer;
-    transition:width .6s var(--ease),height .6s var(--ease),background .5s var(--ease)}
-  .v2biz .bcard:not(.expanded):hover{background:#e4e8ed}
-  .v2biz .bcard.expanded{width:404px;height:540px;background:var(--g950);border:1px solid var(--white-300);cursor:default}
-  .v2biz .bcard .strip-label{position:absolute;left:0;right:0;bottom:0;padding:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--g900);opacity:1;transition:opacity .3s var(--ease)}
-  .v2biz .bcard.expanded .strip-label{opacity:0}
-  .v2biz .bcard .full{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
-  .v2biz .bcard.expanded .full{opacity:1}
-  .v2biz .bcard .pimg{position:absolute;left:50%;transform:translateX(-50%);pointer-events:none}
-  .v2biz .bcard .pimg.battery{top:34px;height:420px;width:auto}
-  .v2biz .bcard .pimg.ess{bottom:150px;width:384px;height:auto}
-  .v2biz .bcard .pimg.gan{top:150px;width:440px;height:auto}
-  .v2biz .bcard .pimg.robot{top:150px;width:640px;height:auto;transform:translateX(-60%)}
-  .v2biz .bcard .pimg.ev{top:34px;height:476px;width:auto}
-  .v2biz .bizbox.notrans .track,.v2biz .bizbox.notrans .bcard{transition:none!important}
-  .v2biz .pbar{position:absolute;left:0;right:0;bottom:0;padding:4px}
-  .v2biz .pbar .prow1{display:flex;align-items:center;gap:4px;padding:8px 0;border-bottom:1px solid var(--white-300);font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.35;color:var(--on-white-85)}
-  .v2biz .pbar .prow1 .dot{width:16px;height:16px;display:grid;place-content:center;flex-shrink:0}
-  .v2biz .pbar .prow1 .dot::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--on-white-85)}
-  .v2biz .pbar .prow2{display:flex;align-items:center;padding:0 12px}
-  .v2biz .pbar .prow2 .k{flex:1;min-width:0;padding:12px 20px 12px 0;border-right:1px solid var(--white-300);font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--on-white-90);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .v2biz .pbar .prow2 .v{flex:1;min-width:0;text-align:right;font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--on-white-85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .v2biz .biz-title{position:absolute;left:0;top:3px;width:364px;display:flex;flex-direction:column;gap:16px}
-  .v2biz .biz-title .t1{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
-  .v2biz .biz-title .t2{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px;color:#445464}
-  .v2biz .biz-lists{position:absolute;right:0;top:0;width:404px;display:flex;flex-direction:column}
-  .v2biz .biz-lists .li{display:block;background:#fff;padding:12px;cursor:pointer;text-decoration:none;color:inherit;transition:background .25s var(--ease)}
+  .v2biz .biz-step .arrows{flex:1;min-width:0;display:flex;gap:12px;justify-content:flex-end}
+  .v2biz .biz-step .ic{width:24px;height:24px;border:none;background:none;cursor:pointer;display:grid;place-content:center;font-size:18px;color:var(--g900);transition:opacity .2s}
+  .v2biz .biz-step .ic:hover{opacity:.45}
+
+  /* three columns: nav | hero | lists — all stretch to the (tallest) nav height */
+  .v2biz .biz-row{display:flex;gap:12px;align-items:stretch}
+  .v2biz .biz-nav{width:298px;flex-shrink:0;display:flex;flex-direction:column;gap:24px;padding:8px 0}
+  .v2biz .biz-nav .nv{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--teritary);opacity:.5;background:none;border:none;text-align:left;padding:0;cursor:pointer;transition:opacity .25s var(--ease),color .25s var(--ease)}
+  .v2biz .biz-nav .nv.on{opacity:1;color:var(--g900);cursor:default}
+  .v2biz .biz-nav .nv:hover{opacity:1}
+
+  .v2biz .biz-hero{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;text-align:center;transition:opacity .3s var(--ease)}
+  .v2biz .biz-hero .t1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
+  .v2biz .biz-hero .t2{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464}
+
+  /* top-aligned to the nav's top (matching 8px padding); items packed with no gap */
+  .v2biz .biz-lists{width:299px;flex-shrink:0;display:flex;flex-direction:column;gap:0;padding:8px 0;transition:opacity .3s var(--ease)}
+  .v2biz .biz-lists .li{position:relative;display:block;background:#fff;padding:12px;text-decoration:none;color:inherit;transition:background .25s var(--ease)}
   .v2biz .biz-lists .li .top{display:flex;align-items:center;gap:4px;min-height:20px}
   .v2biz .biz-lists .dash{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
   .v2biz .biz-lists .dash::before{content:"";width:8px;height:2px;background:#2e3c4b;transition:background .25s}
   .v2biz .biz-lists .mid{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
-  .v2biz .biz-lists .nm{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:#445464;transition:color .25s}
-  .v2biz .biz-lists .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px}
+  .v2biz .biz-lists .nm{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
+  .v2biz .biz-lists .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
   .v2biz .biz-lists .op{width:20px;height:20px;flex-shrink:0;color:#445464;transition:color .25s}
-  /* hover: item expands into dark panel revealing product/detail chips */
-  .v2biz .biz-lists .li .tags{display:flex;flex-wrap:wrap;gap:4px;padding-left:20px;max-height:0;margin-top:0;opacity:0;overflow:hidden;transition:max-height .35s var(--ease),opacity .25s,margin-top .35s var(--ease)}
+  /* hover (restored from v2.0): row → dark panel, text/dash/icon → white, product chips reveal below.
+     In-flow (not overlay) so the expanding item pushes the items below it down instead of covering them. */
+  .v2biz .biz-lists .li .tags{display:flex;flex-wrap:wrap;gap:4px;padding-left:20px;max-height:0;margin-top:0;opacity:0;overflow:hidden;
+    transition:max-height .35s var(--ease),opacity .25s,margin-top .35s var(--ease)}
   .v2biz .biz-lists .li:hover{background:#0e161e}
   .v2biz .biz-lists .li:hover .nm{color:#fff}
   .v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
   .v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
-  .v2biz .biz-lists .li:hover .tags{max-height:240px;opacity:1;margin-top:12px}
-  .v2biz .biz-lists .tag-chip{background:var(--sec,#445464);color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
+  .v2biz .biz-lists .li:hover .tags{max-height:260px;opacity:1;margin-top:12px}
+  .v2biz .biz-lists .tag-chip{background:#445464;color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
 
-  /* side title/lists crossfade during the slide */
-  .v2biz .biz-title,.v2biz .biz-lists{transition:opacity .3s var(--ease)}
-  .v2biz .biz-title.fade,.v2biz .biz-lists.fade{opacity:0}
+  .v2biz .biz-hero.fade,.v2biz .biz-lists.fade{opacity:0}
   @media (prefers-reduced-motion: reduce){
-    .v2biz .track,.v2biz .bcard,.v2biz .biz-title,.v2biz .biz-lists{transition:none}
+    .v2biz .biz-hero,.v2biz .biz-lists,.v2biz .num .reel .col{transition:none}
   }
 
   /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
@@ -242,17 +247,47 @@
   @media (prefers-reduced-motion:reduce){ .v2gnet .gnet-mk .tip{transition:none} }
 
   /* ===================== FOOTER ===================== */
-  .footer{background:var(--g950);padding:80px 24px;display:flex;flex-direction:column;align-items:center}
-  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column;gap:12px}
-  .footer .top{display:flex;gap:12px;border-bottom:1px solid var(--white-300);padding-bottom:40px}
-  .footer .slogan{width:506px;flex-shrink:0;display:flex;flex-direction:column;gap:40px}
-  .footer .slogan .logo{width:97px;height:20px}
-  .footer .slogan .txt{font-family:var(--suit);font-weight:700;font-size:38px;line-height:1.5;letter-spacing:-.76px;color:#fff}
-  .footer .infos{flex:1;display:flex;flex-direction:column;gap:4px}
-  .footer .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .footer .infos .line span{font-family:var(--pre);font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);white-space:nowrap}
-  .footer .infos .line .sep{width:1px;height:14px;background:var(--white-300)}
-  .footer .copy{font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85)}
+  .footer{background:var(--g950);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
+  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
+  /* --- sitemap (menu tree) --- */
+  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:48px;border-bottom:1px solid var(--white-300)}
+  .footer .f-col{display:flex;flex-direction:column;gap:20px}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
+  .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
+  .footer .f-col a:hover{opacity:1}
+  /* --- utility bar (family site + info links) --- */
+  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:28px 0;border-bottom:1px solid var(--white-300)}
+  .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a:hover{opacity:1}
+  .footer .f-links a.strong{font-weight:700;color:#fff;opacity:1}
+  .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
+  .footer .f-family{position:relative;flex-shrink:0}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
+  .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
+  .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
+  .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:4px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
+  .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;transition:background .2s,color .2s}
+  .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
+  /* --- bottom (logo + legal + copyright) --- */
+  .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
+  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:18px}
+  .footer .f-bottom .logo{width:97px;height:20px}
+  .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
+  .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
+  .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  @media(max-width:960px){
+    .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
+    .footer .f-util{flex-direction:column;align-items:flex-start}
+    .footer .f-family{width:100%}
+    .footer .f-bottom{flex-direction:column;align-items:flex-start;gap:20px}
+  }
+  @media(max-width:560px){.footer .f-nav{grid-template-columns:1fr}}
 
   .mnote{display:none}
   @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
@@ -361,21 +396,33 @@
     </div>
   </section>
 
-  <!-- ===================== BUSINESS ===================== -->
-  <section class="section v2biz">
-    <div class="band v2biz-band reveal-stagger">
-      <div class="biz-step">
-        <div class="left">
-          <span class="ttl">Business</span>
-          <span class="num"><b>01</b><span class="tot">/05</span></span>
-        </div>
-        <div class="arrows">
-          <button class="ic" aria-label="이전">‹</button>
-          <button class="ic" aria-label="다음">›</button>
+  <!-- ===================== BUSINESS (pinned scroll: steps through 5 businesses) ===================== -->
+  <section class="section v2biz" id="bizSection">
+    <div class="biz-sticky">
+      <div class="biz-stage">
+        <!-- background coverflow (one card per business, positioned by JS) -->
+        <div class="biz-collage"><!-- cards injected by JS --></div>
+
+        <div class="biz-content">
+          <div class="biz-step">
+            <span class="ttl">Business</span>
+            <span class="num">
+              <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
+              <span class="tot">/05</span>
+            </span>
+            <div class="arrows">
+              <button class="ic" data-dir="-1" aria-label="이전">‹</button>
+              <button class="ic" data-dir="1" aria-label="다음">›</button>
+            </div>
+          </div>
+
+          <div class="biz-row">
+            <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
+            <div class="biz-hero"><!-- active business title (JS) --></div>
+            <div class="biz-lists"><!-- active business sub-items (JS) --></div>
+          </div>
         </div>
       </div>
-
-      <div class="bizbox"><!-- populated by JS (business carousel) --></div>
     </div>
   </section>
 
@@ -446,28 +493,91 @@
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="container reveal-stagger">
-      <div class="top">
-        <div class="slogan">
-          <img class="logo" src="../assets/logo-white-footer.png" alt="A-PRO" />
-          <p class="txt">안심하고 믿을 수 있는<br/>미래를 만드는 기업</p>
+      <!-- 메뉴 트리 -->
+      <nav class="f-nav" aria-label="사이트맵">
+        <div class="f-col">
+          <p class="head">사업영역</p>
+          <ul>
+            <li><a href="#">이차전지</a></li>
+            <li><a href="#">에너지 저장 시스템</a></li>
+            <li><a href="#">화합물 GaN 반도체</a></li>
+            <li><a href="#">산업 안전 진단 로봇 솔루션</a></li>
+            <li><a href="#">에너지 인프라 솔루션</a></li>
+          </ul>
         </div>
-        <div class="infos">
-          <div class="line">
-            <span>주)에이프로</span><i class="sep"></i>
-            <span>대표이사 : 임 종 현</span><i class="sep"></i>
-            <span>사업자등록번호 : 123-81-58293</span>
+        <div class="f-col">
+          <p class="head">회사소개</p>
+          <ul>
+            <li><a href="#">메뉴 1</a></li>
+            <li><a href="#">메뉴 2</a></li>
+            <li><a href="#">메뉴 3</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">투자정보</p>
+          <ul>
+            <li><a href="#">메뉴 1</a></li>
+            <li><a href="#">메뉴 2</a></li>
+            <li><a href="#">메뉴 3</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">지속가능경영</p>
+          <ul>
+            <li><a href="#">메뉴 1</a></li>
+            <li><a href="#">메뉴 2</a></li>
+            <li><a href="#">메뉴 3</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">커뮤니티</p>
+          <ul>
+            <li><a href="#">메뉴 1</a></li>
+            <li><a href="#">메뉴 2</a></li>
+            <li><a href="#">메뉴 3</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- 패밀리사이트 + 기타 정보 -->
+      <div class="f-util">
+        <div class="f-family" id="fFamily">
+          <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+            <span>FAMILY SITE</span><i class="arw"></i>
+          </button>
+          <div class="fmenu">
+            <a href="#" target="_blank" rel="noopener">소재 | 머티리얼즈</a>
+            <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
           </div>
-          <div class="line">
-            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
-            <span>R&amp;D 센터 : 경기도 시흥시 정왕동 2825-5</span>
-          </div>
-          <div class="line">
-            <span>Tel : 031-441-4001</span><i class="sep"></i>
-            <span>Fax : 031-477-4020</span>
-          </div>
+        </div>
+        <div class="f-links">
+          <a href="#">글로벌 네트워크</a><i class="sep"></i>
+          <a href="#">Contact us</a><i class="sep"></i>
+          <a href="#">사업장소재</a><i class="sep"></i>
+          <a href="#">이메일무단수집거부</a><i class="sep"></i>
+          <a href="#" class="strong">개인정보처리방침</a>
         </div>
       </div>
-      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+
+      <!-- 로고 + 사업자 정보 + copyright -->
+      <div class="f-bottom">
+        <div class="bl">
+          <img class="logo" src="../assets/logo-white-footer.png" alt="A-PRO" />
+          <div class="infos">
+            <div class="line">
+              <span>주)에이프로</span><i class="sep"></i>
+              <span>대표이사 : 임 종 현</span><i class="sep"></i>
+              <span>사업자등록번호 : 123-81-58293</span>
+            </div>
+            <div class="line">
+              <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+              <span>Tel : 031-441-4001</span><i class="sep"></i>
+              <span>Fax : 031-477-4020</span>
+            </div>
+          </div>
+        </div>
+        <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
@@ -551,136 +661,169 @@
     update();
   })();
 
-  // Business: 5-business carousel — per-business image, title, sub-menus (hover reveals detail chips)
+  // Business: pinned-scroll coverflow — the 5 businesses form a ring of cards; the active one sits centre.
+  // Scrolling down advances the active business, rotating the ring left (right-neighbour grows into centre,
+  // centre shrinks out to the left, the far-left card wraps around to the far right). Ends → News section.
   (function(){
     var BIZ = [
-      { kor:'이차전지', eng:'Rechargeable Battery', img:'../assets/v2-factory.png', cls:'battery',
-        product:{k:'충방전기', v:'Formation'},
-        lists:[
-          {nm:'설비', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
-          {nm:'소재 | 머티리얼즈', sub:true, tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']}
-        ] },
-      { kor:'에너지저장시스템', eng:'ESS : Energy Storage Systems', img:'../assets/biz-ess-product.png', cls:'ess', href:'business-ess.html',
-        product:{k:'배터리 에너지 저장 시스템', v:'BESS'},
-        lists:[
-          {nm:'배터리 에너지 저장 시스템', tags:['배터리 에너지 저장 시스템']},
-          {nm:'무인 이동체 전원 시스템', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
-          {nm:'무정전 전원 장치', tags:['무정전 전원 장치']}
-        ] },
-      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'../assets/biz-03-gan.png', cls:'gan',
-        product:{k:'Epi-Wafer', v:'Epi-Wafer'},
-        lists:[
-          {nm:'Epi-Wafer', tags:['Epi-Wafer']},
-          {nm:'GaN Device', tags:['GaN Device']},
-          {nm:'에이프로 세미콘', sub:true, tags:['에이프로 세미콘']}
-        ] },
-      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'../assets/biz-04-robot.png', cls:'robot',
-        product:{k:'산업 안전 진단 로봇 솔루션', v:'Industrial Safety Inspection Robot Solution'},
-        lists:[
-          {nm:'산업 안전 진단 플랫폼', tags:['산업 안전 진단 로봇 솔루션']},
-          {nm:'산업 안전 진단 페이로드', tags:['ECOTRON 제어기 국내 총판']}
-        ] },
-      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'../assets/biz-05-ev.png', cls:'ev',
-        product:{k:'전기자동차 충전 솔루션', v:'EV Charging Solution'},
-        lists:[
-          {nm:'전기자동차 충전 솔루션', tags:['전기자동차 충전 솔루션']},
-          {nm:'배터리 전주기 진단 솔루션', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']}
-        ] }
+      { kor:'이차전지', eng:'Rechargeable Battery', img:'공장이미지 1.png', href:'business.html',
+        lists:[ {nm:'설비', href:'business.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
+                {nm:'소재 | 머티리얼즈', sub:true, href:'business.html', tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']} ] },
+      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'공장 이미지 2.png', href:'business-ess.html',
+        lists:[ {nm:'배터리 에너지 저장 시스템', href:'business-ess.html', tags:['배터리 에너지 저장 시스템']},
+                {nm:'무인 이동체 전원 시스템', href:'business-ess.html', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
+                {nm:'무정전 전원 장치', href:'business-ess.html', tags:['무정전 전원 장치']} ] },
+      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'biz-03-gan.png', href:'business.html',
+        lists:[ {nm:'Epi-Wafer', href:'business.html', tags:['Epi-Wafer']},
+                {nm:'GaN Device', href:'business.html', tags:['GaN Device']},
+                {nm:'에이프로 세미콘', sub:true, href:'business.html', tags:['에이프로 세미콘']} ] },
+      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'4. 산업안전진단로봇솔루션.png', href:'business.html',
+        lists:[ {nm:'산업 안전 진단 플랫폼', href:'business.html', tags:['산업 안전 진단 로봇 솔루션']},
+                {nm:'산업 안전 진단 페이로드', href:'business.html', tags:['ECOTRON 제어기 국내 총판']} ] },
+      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'biz-05-ev.png', href:'business.html',
+        lists:[ {nm:'전기자동차 충전 솔루션', href:'business.html', tags:['전기자동차 충전 솔루션']},
+                {nm:'배터리 전주기 진단 솔루션', href:'business.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
     ];
-    var section = document.querySelector('.v2biz');
+    // Slots align to the content grid (same 1392 container as the content / "who we are"):
+    // the two left cards sit under the nav column, the two right cards under the lists column, the centre under the
+    // hero — so each flanking PAIR's width equals its side column, and all four flanking cards share one width.
+    var MAXCW = 1392, GUTTER = 24, GAP = 12, LISTW = 299;   // MAXCW = --maxw(1440) − 48 padding
+    var WF = (LISTW - GAP) / 2;                              // flanking card width (uniform: cards 1,2,4,5)
+    var HS = Math.round(WF * 4 / 3), HC = 465, BASE = 860;  // outer cards 3:4; centre large; bottoms at y=860
+    var HM = Math.round((HS + HC) / 2);                      // inner cards taller (mid-point) → cards form an "A" silhouette
+    var SLOT = [];
+    function computeSlots(){
+      var vw = collage.clientWidth || window.innerWidth;
+      var CW = Math.min(MAXCW, vw - GUTTER * 2);             // content width — same container as the Business bar
+      var ox = (vw - CW) / 2;
+      var cW = CW - 4 * WF - 4 * GAP;                        // centre card fills the remaining span
+      var x0 = 0, x1 = WF + GAP, x2 = 2 * (WF + GAP), x3 = x2 + cW + GAP, x4 = x3 + WF + GAP;
+      SLOT = [
+        { x: ox + x0, y: BASE - HS, w: WF, h: HS },          // 0 far-left  (outer, short)
+        { x: ox + x1, y: BASE - HM, w: WF, h: HM },          // 1 left      (inner, taller)
+        { x: ox + x2, y: BASE - HC, w: cW, h: HC },          // 2 centre    (apex)
+        { x: ox + x3, y: BASE - HM, w: WF, h: HM },          // 3 right     (inner, taller)
+        { x: ox + x4, y: BASE - HS, w: WF, h: HS }           // 4 far-right (outer, short)
+      ];
+    }
+    var section = document.getElementById('bizSection');
     if(!section){ return; }
     var N = BIZ.length;
-    var COPIES = 3;
-    var numEl = section.querySelector('.biz-step .num');
-    var bizbox = section.querySelector('.bizbox');
+    var collage = section.querySelector('.biz-collage');
+    var navEl = section.querySelector('.biz-nav');
+    var heroEl = section.querySelector('.biz-hero');
+    var listsEl = section.querySelector('.biz-lists');
+    var reel = section.querySelector('.biz-step .num .reel');
+    var reelCol = reel.querySelector('.col');
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function listItem(l, href){
-      var tag = l.sub ? '<span class="tag">자회사</span>' : '';
-      var chips = l.tags.map(function(t){ return '<span class="tag-chip">'+esc(t)+'</span>'; }).join('');
-      var inner = '<div class="top"><span class="dash"></span>'
-        + '<div class="mid"><span class="nm">'+esc(l.nm)+'</span>'+tag+'</div>'+OP+'</div>'
-        + '<div class="tags">'+chips+'</div>';
-      return href ? '<a class="li" href="'+href+'">'+inner+'</a>' : '<div class="li">'+inner+'</div>';
-    }
+    function enc(s){ return '../assets/' + encodeURIComponent(s); }
 
-    // static shell + track of persistent cards (3 copies of the 5 businesses → seamless wrap)
-    bizbox.innerHTML = '<div class="imgs"><div class="track"></div></div>'
-      + '<div class="biz-title"></div><div class="biz-lists"></div>';
-    var viewport = bizbox.querySelector('.imgs');
-    var track = bizbox.querySelector('.track');
-    var titleEl = bizbox.querySelector('.biz-title');
-    var listsEl = bizbox.querySelector('.biz-lists');
-    var cards = [];
-    for(var c=0; c<COPIES; c++){
-      for(var bi=0; bi<N; bi++){
-        var b = BIZ[bi];
-        var card = document.createElement('div');
-        card.className = 'bcard';
-        card.setAttribute('data-biz', bi);
-        card.innerHTML = '<div class="full"><img class="pimg '+b.cls+'" src="'+b.img+'" alt="'+esc(b.kor)+'" />'
-          + '<div class="pbar"><div class="prow1"><span class="dot"></span>Product</div>'
-          + '<div class="prow2"><span class="k">'+esc(b.product.k)+'</span><span class="v">'+esc(b.product.v)+'</span></div></div></div>'
-          + '<div class="strip-label">'+esc(b.kor)+'</div>';
-        (function(idx){ card.addEventListener('click', function(){ goTo(idx); }); })(cards.length);
-        track.appendChild(card);
-        cards.push(card);
-      }
-    }
-
-    var pos = N;   // index (within cards[]) of the expanded/active card — start in the middle copy
-    var animating = false;
-
-    var CARD_W = 404, GAP = 12, sw = 235;
-    function bizOf(p){ return ((p % N) + N) % N; }
-    function applyExpanded(){ for(var i=0;i<cards.length;i++){ cards[i].classList.toggle('expanded', i===pos); } }
-    // size the collapsed strips so exactly 5 cards (active + 2 each side) fill the frame with no 6th peeking
-    function sizeStrips(){
-      sw = (viewport.clientWidth - CARD_W - 4*GAP) / 4;
-      if(sw < 120){ sw = 120; }
-      track.style.setProperty('--sw', sw + 'px');
-    }
-    // analytic centering — every card before the active is collapsed, so its left = pos*(sw+gap);
-    // computed from pos (NOT measured), so it's correct even mid-morph when widths are still animating
-    function center(){
-      var tx = Math.round(viewport.clientWidth/2 - pos*(sw + GAP) - CARD_W/2);
-      track.style.transform = 'translateX('+tx+'px)';
-    }
-    function updateSide(){
-      var b = BIZ[bizOf(pos)];
-      titleEl.innerHTML = '<p class="t1">'+esc(b.kor)+'</p><p class="t2">'+esc(b.eng)+'</p>';
-      listsEl.innerHTML = b.lists.map(function(l){ return listItem(l, b.href); }).join('');
-      numEl.innerHTML = '<b>'+('0'+(bizOf(pos)+1)).slice(-2)+'</b><span class="tot">/05</span>';
-    }
-    function jump(){ // reposition instantly (no transition)
-      bizbox.classList.add('notrans');
-      sizeStrips(); applyExpanded(); center();
-      void track.offsetWidth;
-      bizbox.classList.remove('notrans');
-    }
-    function goTo(target){
-      if(animating || target === pos){ return; }
-      animating = true;
-      pos = target;
-      titleEl.classList.add('fade'); listsEl.classList.add('fade');
-      setTimeout(function(){ updateSide(); titleEl.classList.remove('fade'); listsEl.classList.remove('fade'); }, 170);
-      applyExpanded();   // cards morph strip<->image (width/height transition)
-      center();          // track slides so the active card re-centers
-      setTimeout(function(){
-        if(pos < N || pos >= 2*N){ pos = N + bizOf(pos); jump(); }  // silently recenter into middle copy
-        animating = false;
-      }, 640);
-    }
-
-    section.querySelectorAll('.biz-step .ic').forEach(function(btn, i){
-      btn.addEventListener('click', function(){ goTo(pos + (i===0?-1:1)); });
+    // one card per business (image is fixed to the business; only the slot changes)
+    var cards = BIZ.map(function(b){
+      var c = document.createElement('div');
+      c.className = 'bcard';
+      c.innerHTML = '<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />';
+      collage.appendChild(c);
+      return c;
     });
 
-    updateSide();
-    jump();
-    window.addEventListener('load', function(){ if(!animating){ jump(); } });
-    window.addEventListener('resize', function(){ if(!animating){ sizeStrips(); center(); } });
+    // left nav — one clickable tab per business
+    navEl.innerHTML = BIZ.map(function(b,i){
+      return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>';
+    }).join('');
+    var navBtns = navEl.querySelectorAll('.nv');
+
+    function listItem(l){
+      var tag = l.sub ? '<span class="tag">자회사</span>' : '';
+      var chips = (l.tags || []).map(function(t){ return '<span class="tag-chip">'+esc(t)+'</span>'; }).join('');
+      var inner = '<div class="top"><span class="dash"></span><div class="mid"><span class="nm">'+esc(l.nm)+'</span>'+tag+'</div>'+OP+'</div>'
+        + '<div class="tags">'+chips+'</div>';
+      return l.href ? '<a class="li" href="'+l.href+'">'+inner+'</a>' : '<div class="li">'+inner+'</div>';
+    }
+
+    var active = -1, faderTO = null;
+    function slotOf(b){ return (((b - active + 2) % N) + N) % N; }   // active → pos2 (centre)
+    function setGeom(card, s){ card.style.left=s.x+'px'; card.style.top=s.y+'px'; card.style.width=s.w+'px'; card.style.height=s.h+'px'; }
+
+    // move every card to its slot; a card crossing the whole ring (edge→edge) teleports + fades instead of sliding across
+    function place(first){
+      cards.forEach(function(card, b){
+        var pos = slotOf(b), old = card._pos, s = SLOT[pos];
+        var wrap = old != null && Math.abs(pos - old) >= 3;
+        if(first || wrap){
+          card.style.transition = 'none';
+          setGeom(card, s);
+          void card.offsetWidth;
+          card.style.transition = '';
+          if(wrap){ card.classList.remove('jin'); void card.offsetWidth; card.classList.add('jin'); }
+        } else {
+          setGeom(card, s);
+        }
+        card.classList.toggle('center', pos === 2);          // colour only at centre; grayscale elsewhere
+        card._pos = pos;
+      });
+    }
+
+    function fillText(b){
+      heroEl.innerHTML = '<p class="t1">'+esc(b.kor)+'</p><p class="t2">'+esc(b.eng)+'</p>';
+      listsEl.innerHTML = b.lists.map(listItem).join('');
+    }
+    function setActive(i){
+      if(i === active){ return; }
+      var first = active < 0;
+      active = i;
+      var b = BIZ[i];
+      place(first);                               // rotate the ring
+      clearTimeout(faderTO);                       // text: instant on first, else quick crossfade
+      if(first){ fillText(b); }
+      else {
+        heroEl.classList.add('fade'); listsEl.classList.add('fade');
+        faderTO = setTimeout(function(){
+          fillText(b);
+          heroEl.classList.remove('fade'); listsEl.classList.remove('fade');
+        }, 200);
+      }
+      var dh = reelCol.children[0].getBoundingClientRect().height || 16;   // counter reel + nav highlight
+      reel.style.height = dh + 'px';
+      reelCol.style.transform = 'translateY(-' + (i * dh) + 'px)';
+      navBtns.forEach(function(btn,j){ btn.classList.toggle('on', j===i); });
+    }
+
+    // scroll → active index (page stays pinned via sticky; progress 0..1 maps across the 5 businesses)
+    var ticking = false;
+    function readScroll(){
+      ticking = false;
+      var total = section.offsetHeight - window.innerHeight;
+      var scrolled = -section.getBoundingClientRect().top;
+      var p = total > 0 ? scrolled / total : 0;
+      p = Math.max(0, Math.min(1, p));
+      var idx = Math.min(N - 1, Math.floor(p * N + 0.0001));
+      setActive(idx);
+    }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(readScroll); } }
+    function onResize(){ computeSlots(); if(active >= 0){ place(true); } onScroll(); }   // re-layout cards instantly on resize
+
+    // nav / arrow clicks → scroll the page to the middle of that business's band
+    function scrollToIdx(i){
+      i = ((i % N) + N) % N;
+      var total = section.offsetHeight - window.innerHeight;
+      var top = section.offsetTop + ((i + 0.5) / N) * total;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+    navBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); });
+    });
+    section.querySelectorAll('.biz-step .ic').forEach(function(btn){
+      btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); });
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    window.addEventListener('load', function(){ computeSlots(); if(active >= 0){ place(true); } readScroll(); });
+    computeSlots();
+    readScroll();
   })();
 
   // News: pinned section — the card masonry scrolls vertically with page scroll, then unpins to Global Network
@@ -710,6 +853,24 @@
     window.addEventListener('resize', onScroll);
     window.addEventListener('load', update);
     update();
+  })();
+
+  /* ===== FOOTER family-site dropdown ===== */
+  (function(){
+    var fam = document.getElementById('fFamily');
+    if(!fam) return;
+    var btn = fam.querySelector('.fbtn');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = fam.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(!fam.contains(e.target)){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
   })();
 </script>
 
