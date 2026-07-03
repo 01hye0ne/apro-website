@@ -153,15 +153,6 @@
   .who-sticky[data-phase="3"] .who-dots{color:#fff}
   .who-dots i.on{opacity:1;transform:scale(1.5)}
 
-  /* ===================== MORPH BRIDGE (who-we-are "A" → Business bars) ===================== */
-  /* pinned bridge inserted between who(dark) and business(white): a single SVG path morphs
-     caret(A) -> flat-top mountain -> the 5-bar Business silhouette while bg bridges dark->white.
-     overflow:visible so the sticky pin isn't trapped (same reason as .v2who / .v2biz). */
-  .morphbridge{height:260vh;position:relative;overflow:visible;background:#fff}
-  .mb-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;background:#04070c}
-  .mb-svg{width:min(94vw,1440px);max-height:84vh;display:block}
-  @media (prefers-reduced-motion: reduce){ .mb-sticky{background:#fff} }
-
   /* ===================== BUSINESS (Figma node 279:49403 — nav + hero + lists over image collage) ===================== */
   /* pinned: the section is tall; a sticky stage stays put while scroll steps through the 5 businesses, then unpins to News.
      overflow:visible overrides .section{overflow:hidden} so the sticky pin isn't trapped */
@@ -457,20 +448,6 @@
       <div class="who-eye"><p>who we are</p></div>
 
       <div class="who-dots"><i data-dot="0"></i><i data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i></div>
-    </div>
-  </section>
-
-  <!-- ============ MORPH BRIDGE: who-we-are "A" morphs into the Business bars ============ -->
-  <section class="section morphbridge" id="morphBridge" aria-hidden="true">
-    <div class="mb-sticky" id="mbSticky">
-      <svg class="mb-svg" id="mbSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid meet" fill="none">
-        <!-- intro caret (the real A-logo path), fades out as the morph shape takes over -->
-        <g id="mbLogoG" transform="translate(457.3 345) scale(4.17)">
-          <path id="mbLogo" d="M65.1243 36.3482C64.7598 35.2421 64.0166 34.682 62.9089 34.682C61.9834 34.682 61.058 35.2421 60.8757 36.3482L35.2017 114H11L40.3758 24.7271C42.0304 17.5303 51.2708 11.9998 62.9089 11.9998C74.547 11.9998 83.9557 17.5303 85.6243 24.7271L115 114H90.7983L65.1243 36.3482Z" fill="#E9EEF4"/>
-        </g>
-        <!-- morphing shape: flat-top mountain -> 5 Business bars (d set by JS) -->
-        <path id="mbShape" d="" fill="#0B0B0A" opacity="0"/>
-      </svg>
     </div>
   </section>
 
@@ -814,7 +791,7 @@
     var navBtns = navEl.querySelectorAll('.nv');
 
     function listItem(l){
-      var tag = l.sub ? '<span class="tag">자회사</span>' : '';
+      var tag = l.sub ? '<span class="tag">계열사</span>' : '';
       var chips = (l.tags || []).map(function(t){ return '<span class="tag-chip">'+esc(t)+'</span>'; }).join('');
       var inner = '<div class="top"><span class="dash"></span><div class="mid"><span class="nm">'+esc(l.nm)+'</span>'+tag+'</div>'+OP+'</div>'
         + '<div class="tags">'+chips+'</div>';
@@ -983,91 +960,6 @@
     navLinks.forEach(function(a){ a.addEventListener('mouseenter', function(){ setActive(a.getAttribute('data-i')); }); });
     cols.forEach(function(c){ c.addEventListener('mouseenter', function(){ setActive(c.getAttribute('data-i')); }); });
     group.addEventListener('mouseleave', clearActive);
-  })();
-
-  /* ===== MORPH BRIDGE: who-we-are "A" caret → flat-top mountain → 5 Business bars ===== */
-  (function(){
-    var section = document.getElementById('morphBridge');
-    var sticky  = document.getElementById('mbSticky');
-    var shape   = document.getElementById('mbShape');
-    var logoG   = document.getElementById('mbLogoG');
-    if(!section || !shape){ return; }
-
-    // --- geometry: SAME formula/coords as the Business coverflow slots (viewBox 1440x900) ---
-    var GAP=12, yB=860, ox=24;                    // ox = (1440 − 1392 content) / 2
-    var WF=143.5, HS=191, HM=328, HC=465;         // flanking width; short/mid/centre heights
-    var cW = 1392 - 4*WF - 4*GAP;                 // centre block width (= 770)
-    var xL=[ox, ox+(WF+GAP), ox+2*(WF+GAP)];
-    xL[3]=xL[2]+cW+GAP; xL[4]=xL[3]+(WF+GAP);
-    var w  =[WF,WF,cW,WF,WF];
-    var top=[yB-HS, yB-HM, yB-HC, yB-HM, yB-HS];  // bar-top y (centre highest → mountain)
-
-    // BARS state: 20 vertices, per bar → bottomL, topL, topR, bottomR (a 5-bar skyline)
-    var BARS=[];
-    for(var i=0;i<5;i++){
-      var l=xL[i], r=xL[i]+w[i], t=top[i];
-      BARS.push([l,yB],[l,t],[r,t],[r,yB]);
-    }
-    // MOUNTAIN state: project each vertex vertically onto a triangle outline
-    // (apex 720/300, base corners 24/860 & 1416/860) → flat-top mountain / trapezoid
-    var APEXY=300, Lx=24, Rx=1416, cx=720;
-    function slopeY(x){
-      return x<=cx ? yB + (APEXY-yB)*((x-Lx)/(cx-Lx))
-                   : APEXY + (yB-APEXY)*((x-cx)/(Rx-cx));
-    }
-    var MTN = BARS.map(function(p){ return [p[0], slopeY(p[0])]; });
-
-    function dOf(v){
-      var d='M'+v[0][0].toFixed(1)+' '+v[0][1].toFixed(1);
-      for(var i=1;i<v.length;i++){ d+='L'+v[i][0].toFixed(1)+' '+v[i][1].toFixed(1); }
-      return d+'Z';
-    }
-    function morphD(t){                            // t: 0 = mountain, 1 = bars
-      var v=[];
-      for(var i=0;i<BARS.length;i++){
-        v.push([ MTN[i][0] + (BARS[i][0]-MTN[i][0])*t,
-                 MTN[i][1] + (BARS[i][1]-MTN[i][1])*t ]);
-      }
-      return dOf(v);
-    }
-
-    function clamp01(x){ return x<0?0:x>1?1:x; }
-    function seg(p,a,b){ return clamp01((p-a)/(b-a)); }         // remap p∈[a,b] → [0,1]
-    function ease(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; } // easeInOutQuad
-    function mix(a,b,t){ return Math.round(a+(b-a)*t); }
-    var BG0=[4,7,12], BG1=[255,255,255];
-    function bg(t){ return 'rgb('+mix(BG0[0],BG1[0],t)+','+mix(BG0[1],BG1[1],t)+','+mix(BG0[2],BG1[2],t)+')'; }
-
-    // Timeline (non-overlapping so the light caret and dark shape never fight for contrast):
-    //   0.00–0.22  dark bg, light caret (A)             — carried over from who
-    //   0.22–0.34  bg wipes dark→white, caret gone
-    //   0.30–0.40  dark morph shape fades in (mountain)
-    //   0.40–0.88  mountain → bars
-    function render(p){
-      sticky.style.background = bg(ease(seg(p,0.22,0.34)));
-      logoG.style.opacity = (1 - seg(p,0.06,0.22)).toFixed(3);
-      shape.setAttribute('opacity', seg(p,0.30,0.40).toFixed(3));
-      shape.setAttribute('d', morphD(ease(seg(p,0.40,0.88))));
-    }
-
-    var ticking=false;
-    function update(){
-      ticking=false;
-      var total = section.offsetHeight - window.innerHeight;
-      var scrolled = -section.getBoundingClientRect().top;
-      render(clamp01(total>0 ? scrolled/total : 0));
-    }
-    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
-
-    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      sticky.style.background='#fff'; logoG.style.opacity=0;
-      shape.setAttribute('opacity',1); shape.setAttribute('d', morphD(1));
-      return;
-    }
-    shape.setAttribute('d', morphD(0));
-    window.addEventListener('scroll', onScroll, {passive:true});
-    window.addEventListener('resize', onScroll);
-    update();
   })();
 </script>
 

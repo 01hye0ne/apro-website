@@ -140,8 +140,8 @@
   .b-tab .nm{flex:1;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
   .b-tab .ext{width:20px;height:20px;flex-shrink:0}
   .b-tab .ext path{stroke:currentColor}
-  .b-tab.white{background:#fff;color:var(--g900)}        /* 비(非)자회사 */
-  .b-tab.blue{background:var(--brand);color:#fff}        /* 자회사 */
+  .b-tab.white{background:#fff;color:var(--g900)}        /* 비(非)계열사 */
+  .b-tab.blue{background:var(--brand);color:#fff}        /* 계열사 */
   .b-right{width:403px;flex-shrink:0;height:751px;display:flex;flex-direction:column;gap:4px}
   .b-card{flex:1;display:flex;align-items:center;gap:12px;padding:16px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 16px -8px rgba(11,11,10,.4);cursor:pointer;position:relative;transition:background .3s var(--ease),box-shadow .3s var(--ease)}
   .b-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand-2);transform:scaleY(0);transform-origin:center;transition:transform .35s var(--ease)}
@@ -185,70 +185,63 @@
   @keyframes isoGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.05)}}
   @media (prefers-reduced-motion:reduce){ .iso-graphic img{animation:none} }
 
-  /* ===================== BUSINESS (responsive rebuild, node 130:3850) ===================== */
-  /* business.png = dark stage FRAME with a TRANSPARENT center hole. It's a full-bleed cover layer;
-     the scene image behind it is positioned into the hole by JS (layoutBizScene, computed from the
-     cover geometry) so it stays aligned AND full-bleed at ANY viewport ratio — no crop, no side bars. */
+  /* ===================== BUSINESS (white redesign, node 279:49638) ===================== */
+  /* Clean white stage: an isolated product photo floats over a soft ground shadow, with two big
+     faint-gray words behind it (top-left / bottom-right). Flex column: head / stage / product bar. */
   /* card-panel overlap: business rises over "who we are" with a rounded top + soft top shadow */
-  .biz2{background:#eef2f6;height:106vh;position:relative;z-index:2;margin-top:-72px;
+  .biz2{background:#fff;height:106vh;position:relative;z-index:2;margin-top:-72px;
     border-radius:40px 40px 0 0;box-shadow:0 -22px 60px -24px rgba(23,36,58,.3)}
-  .biz2-inner{position:relative;width:100%;height:100%;overflow:hidden;opacity:var(--rev,1);transform:translateY(calc((1 - var(--rev,1)) * 90px));transform-origin:center}
-  .biz2-bg{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
-  .biz2-head{position:absolute;top:104px;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 24px}
+  .biz2-inner{position:relative;width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column;
+    opacity:var(--rev,1);transform:translateY(calc((1 - var(--rev,1)) * 90px));transform-origin:center}
+  .biz2-head{flex-shrink:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;padding:76px 24px 24px}
   .biz2-head .ttl{font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900)}
   /* category nav (below BUSINESS) */
   .biz2-cats{display:flex;align-items:center;gap:11px}
   .biz2-cats .arrow{width:24px;height:24px;display:grid;place-content:center;cursor:pointer;color:var(--g900)}
   .biz2-cats .arrow svg{width:8px;height:13px}
   .biz2-cats .list{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
-  .biz2-cats .cat{display:inline-flex;align-items:center;height:20px;padding:0 4px;cursor:pointer;color:rgba(27,39,51,.7);font-family:var(--suit);transition:color .2s,background .2s}
+  .biz2-cats .cat{display:inline-flex;align-items:center;height:20px;padding:0 4px;cursor:pointer;color:var(--teritary);font-family:var(--suit);transition:color .2s}
   .biz2-cats .cat .br{font-weight:600;font-size:17px;letter-spacing:-.34px}
   .biz2-cats .cat .nm{font-weight:600;font-size:16px;letter-spacing:-.32px;white-space:nowrap}
-  .biz2-cats .cat.active{background:#1b6bf5;color:#fff}      /* active = filled blue pill */
+  .biz2-cats .cat.active{color:#2885ff}                      /* active = clean-blue text (no pill) */
   .biz2-cats .cat.active .nm{font-weight:800}
-  .biz2-cats .cat:hover{color:var(--g900)}
-  /* scene sits BEHIND the frame; shows through the transparent hole. Its position/size are set by JS
-     (layoutBizScene) from business.png's hole rect (frac L .279 R .753 T .258 B .704) at the current
-     cover geometry, so it tracks the hole responsively. bigwords baked into images; placeholders use CSS. */
-  .biz2-scenewrap{position:absolute;z-index:1;transition:opacity .4s var(--ease)}
+  .biz2-cats .cat:hover{color:#2885ff}
+  /* stage fills the space between the headline and the product bar; product image is centered,
+     big faint-gray words sit behind it. Cross-fades on category switch via .swapping. */
+  .biz2-scenewrap{position:relative;flex:1;min-height:0;z-index:1;display:flex;align-items:center;justify-content:center;
+    padding:0 24px;transition:opacity .45s var(--ease);opacity:1}
   .biz2-scenewrap.swapping{opacity:0}
-  .biz2-scenewrap.noimg{background:linear-gradient(135deg,#13212f,#0b1420)}
-  .biz2 .scene{width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}
-  .biz2-words{position:absolute;inset:0;pointer-events:none}
-  .biz2-words .w{position:absolute;font-family:var(--rc);font-weight:400;font-size:64px;line-height:1;letter-spacing:-1.28px;white-space:nowrap}
-  .biz2-words .w1{left:32px;top:26px;color:rgba(255,255,255,.28)}
-  .biz2-words .w2{right:32px;bottom:22px;color:rgba(255,255,255,.92)}
-  /* saturated blue gradient glow that shimmers along the bottom edge of the window only */
-  .biz2-glow{position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;mix-blend-mode:screen;opacity:1;
-    background:linear-gradient(100deg,#2f7fff,#8ec4ff,#57e0ff,#2f7fff);background-size:220% 100%;
-    -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.7) 38%,transparent 100%);
-    mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.7) 38%,transparent 100%);
-    animation:bizGlow 7s ease-in-out infinite}
-  @keyframes bizGlow{0%{background-position:0% 50%;opacity:.82}50%{background-position:100% 50%;opacity:1}100%{background-position:0% 50%;opacity:.82}}
-  @media (prefers-reduced-motion:reduce){
-    .biz2-glow{animation:none;opacity:.9}
-  }
-  /* products row */
-  .biz2-bottom{position:absolute;bottom:0;left:50%;transform:translateX(-50%);z-index:3;width:100%;max-width:var(--maxw);padding:24px;display:flex;gap:12px;align-items:stretch}
-  .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;padding-bottom:0;
-    background:linear-gradient(to bottom,rgba(255,255,255,0) 55%,rgba(255,255,255,.45))}
-  .biz2-major .biz2-title{flex:1;display:flex;align-items:flex-end;padding:0 12px 4px;font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
-  .biz2-major .biz2-bar{height:2px;width:100%;background:rgba(27,39,51,.2);position:relative}
-  .biz2-major .biz2-bar i{position:absolute;left:0;top:0;height:2px;width:181px;background:#59acff}
+  .biz2-words{position:absolute;inset:0;pointer-events:none;z-index:1}
+  .biz2-words .w{position:absolute;font-family:var(--suit);font-weight:700;font-size:clamp(48px,8.6vw,128px);line-height:1;
+    letter-spacing:-2.56px;white-space:nowrap;color:var(--border-g)}
+  .biz2-words .w1{left:3%;top:14%}
+  .biz2-words .w2{right:4%;bottom:16%}
+  .biz2-figure{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;
+    width:min(640px,54vw);max-height:100%}
+  .biz2-figure .scene{position:relative;z-index:2;width:100%;height:auto;max-height:100%;object-fit:contain;display:block;pointer-events:none}
+  .biz2-figure .shadow{position:absolute;z-index:1;left:50%;bottom:2%;transform:translateX(-50%);width:96%;height:auto;opacity:.9;pointer-events:none}
+  .biz2-figure.noimg{width:0}                                /* words-only slides: hide the figure box */
+  .biz2-figure.noimg .scene,.biz2-figure.noimg .shadow{display:none}
+  /* product bar */
+  .biz2-bottom{flex-shrink:0;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:24px;display:flex;gap:12px;align-items:stretch}
+  .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;gap:16px}
+  .biz2-major .biz2-title{flex:1;display:flex;align-items:flex-end;padding:0 0 4px;font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
+  .biz2-major .biz2-bar{height:6px;width:100%;background:var(--border-g);position:relative;overflow:hidden}
+  .biz2-major .biz2-bar i{position:absolute;left:0;top:0;height:100%;width:181px;background:var(--brand)}
   .biz2-minor{flex:1;min-width:0;display:flex;gap:13px;align-items:stretch}
-  .biz2 .pcard{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid rgba(27,39,51,.35);overflow:hidden}
+  .biz2 .pcard{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid #fff;overflow:hidden}
   .biz2 .pcard-head{display:flex;align-items:stretch;height:36px}
   .biz2 .pcard-head .titlewrap{flex:1;min-width:0;display:flex;align-items:stretch}
-  .biz2 .pcard-head .tag{flex:1;min-width:0;background:#000;display:flex;align-items:center;gap:8px;padding:0 8px}   /* black title bar */
+  .biz2 .pcard-head .tag{flex:1;min-width:0;background:var(--brand);display:flex;align-items:center;gap:8px;padding:0 8px}   /* blue title bar */
   .biz2 .pcard-head .tag .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .biz2 .pcard-head .tag .chip{flex-shrink:0;background:#2885ff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:#fff}
+  .biz2 .pcard-head .tag .chip{flex-shrink:0;background:var(--brand-2);border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:#fff}
   .biz2 .pcard-head .tag .op{width:20px;height:20px;flex-shrink:0;color:#fff}
-  .biz2 .pcard-head .chamfer{width:29px;flex-shrink:0;background:#000;clip-path:polygon(0 0,100% 100%,0 100%)}  /* black chamfer to match the bar */
+  .biz2 .pcard-head .chamfer{width:29px;flex-shrink:0;background:var(--brand);clip-path:polygon(0 0,100% 100%,0 100%)}  /* blue chamfer to match the bar */
   .biz2 .pcard-head .blank{width:28px;flex-shrink:0}
-  .biz2 .pcard-body{height:144px;background:rgba(255,255,255,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column}
-  .biz2 .pi{height:36px;flex-shrink:0;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid rgba(27,39,51,.15);font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--g900)}
+  .biz2 .pcard-body{height:144px;background:rgba(44,87,144,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column}
+  .biz2 .pi{height:36px;flex-shrink:0;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid var(--white-300);font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
   .biz2 .pi .dot{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
-  .biz2 .pi .dot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--g900)}
+  .biz2 .pi .dot::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
 
   /* ===================== NEWS ===================== */
   .news{background:var(--secondary-bg)}
@@ -425,9 +418,9 @@
       </div>
 
       <div class="b-right" id="bCards">
-        <div class="b-card" data-i="0"><span class="t">이차전지</span><span class="sub">자회사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="0"><span class="t">이차전지</span><span class="sub">계열사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="1"><span class="t">에너지저장시스템</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="b-card" data-i="2"><span class="t">화합물 GaN 반도체</span><span class="sub">자회사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="2"><span class="t">화합물 GaN 반도체</span><span class="sub">계열사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="3"><span class="t">산업 안전 진단 로봇 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="4"><span class="t">에너지 인프라 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
@@ -451,10 +444,9 @@
     </div>
   </section>
 
-  <!-- ===================== BUSINESS (node 6:491) ===================== -->
+  <!-- ===================== BUSINESS (node 279:49638) ===================== -->
   <section class="section biz2">
     <div class="biz2-inner">
-    <img class="biz2-bg" src="../assets/business-light.png" alt="" aria-hidden="true" />
     <div class="biz2-head">
       <p class="ttl">BUSINESS</p>
       <div class="biz2-cats">
@@ -471,9 +463,11 @@
     </div>
 
     <div class="biz2-scenewrap" id="bizScene">
-      <img class="scene" id="bizSceneImg" src="../assets/Rechargable%20Battery.png" alt="사업영역 이미지" />
-      <div class="biz2-words" id="bizWords" style="display:none"><span class="w w1"></span><span class="w w2"></span></div>
-      <div class="biz2-glow" aria-hidden="true"></div>
+      <div class="biz2-words" id="bizWords"><span class="w w1"></span><span class="w w2"></span></div>
+      <div class="biz2-figure" id="bizFigure">
+        <img class="shadow" src="../assets/biz-shadow.png" alt="" aria-hidden="true" />
+        <img class="scene" id="bizSceneImg" src="../assets/biz-battery.png" alt="사업영역 이미지" />
+      </div>
     </div>
 
     <div class="biz2-bottom">
@@ -505,7 +499,7 @@
           <div class="pcard-head">
             <div class="titlewrap">
               <div class="tag">
-                <span class="chip">자회사</span>
+                <span class="chip">계열사</span>
                 <span class="nm">소재 | 머티리얼즈</span>
                 <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -764,30 +758,6 @@
     window.addEventListener('resize',onScroll);
   })();
 
-  // ---- business: place the scene image into business.png's transparent hole (responsive, full-bleed) ----
-  (function(){
-    var section=document.querySelector('.biz2'), wrap=document.getElementById('bizScene'),
-        head=document.querySelector('.biz2-head');
-    if(!section||!wrap) return;
-    var IW=5268, IH=2000, L=0.2794, R=0.7532, T=0.2580, B=0.7040, OV=4;  // business.png size + hole fractions
-    function layout(){
-      var vw=section.clientWidth, vh=section.clientHeight;
-      if(!vw||!vh) return;
-      var scale=Math.max(vw/IW, vh/IH);                 // object-fit: cover
-      var dw=IW*scale, dh=IH*scale, ox=(vw-dw)/2, oy=(vh-dh)/2;  // object-position: center
-      var sceneTop=oy+T*dh-OV;
-      wrap.style.left=(ox+L*dw-OV)+'px';
-      wrap.style.top=sceneTop+'px';
-      wrap.style.width=((R-L)*dw+2*OV)+'px';
-      wrap.style.height=((B-T)*dh+2*OV)+'px';
-      // sit the menu ~24px above the center image (never colliding with the GNB)
-      if(head){ head.style.top=Math.max(80, sceneTop-24-head.offsetHeight)+'px'; }
-    }
-    layout();
-    window.addEventListener('resize',layout);
-    window.addEventListener('load',layout);
-  })();
-
   // ---- banner: business switcher (hover / select) ----
   (function(){
     var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -896,12 +866,12 @@
   (function(){
     var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var data=[
-      {kor:'이차전지', img:'../assets/Rechargable%20Battery.png',
+      {kor:'이차전지', img:'../assets/biz-battery.png', w1:'Rechargeable', w2:'Battery',
        cards:[
          {t:'설비', items:['파우치형','원통형','각형','계측 장비']},
          {t:'소재 | 머티리얼즈', sub:true, items:['FW CNT&SW CNT','LiFSI 전해염']}
        ]},
-      {kor:'에너지저장시스템', img:'../assets/BESS.png',
+      {kor:'에너지저장시스템', img:null, w1:'Battery Energy', w2:'Storage System',
        cards:[
          {t:'배터리 에너지 저장 시스템', items:['모듈','팩','컨테이너']},
          {t:'무인 이동체 전원 시스템', items:['우주 발사체','무인수상정','무인 지상 차량']},
@@ -924,7 +894,8 @@
          {t:'배터리 전주기 진단 솔루션', items:['배터리 전주기 진단 솔루션']}
        ]}
     ];
-    var wrap=document.getElementById('bizScene'),img=document.getElementById('bizSceneImg'),
+    var wrap=document.getElementById('bizScene'),figure=document.getElementById('bizFigure'),
+        img=document.getElementById('bizSceneImg'),
         words=document.getElementById('bizWords'),w1=words.children[0],w2=words.children[1],
         title=document.getElementById('bizTitle'),minor=document.getElementById('bizMinor'),
         cats=Array.prototype.slice.call(document.querySelectorAll('#bizCats .cat'));
@@ -933,17 +904,17 @@
     var OP='<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
     function cardHTML(c){
-      var chip=c.sub?'<span class="chip">자회사</span>':'';
+      var chip=c.sub?'<span class="chip">계열사</span>':'';
       var items=c.items.map(function(t){return '<div class="pi"><span class="dot"></span>'+esc(t)+'</div>';}).join('');
       return '<div class="pcard"><div class="pcard-head"><div class="titlewrap"><div class="tag">'+chip+
              '<span class="nm">'+esc(c.t)+'</span>'+OP+'</div><span class="chamfer"></span></div>'+
              '<span class="blank"></span></div><div class="pcard-body">'+items+'</div></div>';
     }
     function paint(d){
-      if(d.img){ wrap.classList.remove('noimg'); img.src=d.img; img.style.display='block';
-                 words.style.display='none'; }
-      else { img.removeAttribute('src'); img.style.display='none';
-             wrap.classList.add('noimg'); w1.textContent=d.w1||''; w2.textContent=d.w2||''; words.style.display='block'; }
+      // big faint-gray words show on every slide; product photo (with shadow) only when the slide has one
+      w1.textContent=d.w1||''; w2.textContent=d.w2||'';
+      if(d.img){ figure.classList.remove('noimg'); img.src=d.img; }
+      else { figure.classList.add('noimg'); img.removeAttribute('src'); }
       title.textContent=d.kor;
       minor.innerHTML=d.cards.map(cardHTML).join('');
     }
