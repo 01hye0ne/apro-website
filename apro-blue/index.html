@@ -72,7 +72,7 @@
   .gnb .logo{flex-shrink:0}
   .gnb .logo img{height:16px;width:78px;transition:filter .3s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:36px;align-items:center;justify-content:center}
-  .gnb .menus a{font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
+  .gnb .menus a{font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
   .gnb .menus a:hover{opacity:1}
   .gnb .ham{width:24px;height:24px;display:flex;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0}
   .gnb .ham span{display:block;width:18px;height:1.5px;background:#fff;transition:background .3s var(--ease)}
@@ -82,6 +82,30 @@
   .gnb.scrolled .menus a{color:var(--g900)}
   .gnb.scrolled .ham span{background:var(--g900)}
   @keyframes gnbIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- GNB mega dropdown (hover) — mirrors footer menu tree ---- */
+  .gnb-group{position:relative;z-index:100}
+  /* on hover: turn the bar white with dark content (same as .scrolled) so links stay readable over the white panel */
+  .gnb-group:hover .gnb,.gnb-group:focus-within .gnb{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
+  .gnb-group:hover .gnb .logo img,.gnb-group:focus-within .gnb .logo img{filter:brightness(0)}
+  .gnb-group:hover .gnb .menus a,.gnb-group:focus-within .gnb .menus a{color:var(--g900)}
+  .gnb-group:hover .gnb .ham span,.gnb-group:focus-within .gnb .ham span{background:var(--g900)}
+  .gnb-mega{position:fixed;top:64px;left:0;width:100%;z-index:99;background:#fff;
+    border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(23,36,58,.12);
+    opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
+  .gnb-group:hover .gnb-mega,.gnb-group:focus-within .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .gnb-mega .inner{width:100%;max-width:var(--maxw);margin-inline:auto;
+    display:flex;gap:36px;align-items:flex-start;padding:36px 24px 44px}
+  .gnb-mega .m-logo{width:78px;flex-shrink:0}
+  .gnb-mega .m-cols{flex:1;display:flex;gap:36px;justify-content:center}
+  .gnb-mega .m-ham{width:24px;flex-shrink:0}
+  .gnb-mega .m-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+  .gnb-mega .m-head{font-family:var(--suit);font-weight:800;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:var(--g900);white-space:nowrap}
+  .gnb-mega .m-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .gnb-mega .m-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.4;letter-spacing:-.28px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
+  .gnb-mega .m-col a:hover{color:var(--brand)}
+  @media(max-width:900px){.gnb-mega{display:none}}
 
   /* ===================== BANNER ===================== */
   .banner{background:var(--g900)}
@@ -323,6 +347,7 @@
     <video class="banner-video" src="../assets/배너.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="banner-bg" id="bgA"></div>
     <div class="banner-bg" id="bgB"></div>
+    <div class="gnb-group">
     <nav class="gnb" id="gnb">
       <div class="gnb-inner">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
@@ -337,6 +362,45 @@
       <div class="ham"><span></span><span></span><span></span></div>
       </div>
     </nav>
+    <!-- GNB 호버 시 나타나는 메가 메뉴 (푸터 메뉴트리와 동일) -->
+    <div class="gnb-mega" role="region" aria-label="전체 메뉴">
+      <div class="inner">
+        <span class="m-logo" aria-hidden="true"></span>
+        <div class="m-cols">
+          <div class="m-col">
+            <p class="m-head">회사소개</p>
+            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          </div>
+          <div class="m-col">
+            <p class="m-head">사업영역</p>
+            <ul>
+              <li><a href="business.html">이차전지</a></li>
+              <li><a href="business.html">에너지 저장 시스템</a></li>
+              <li><a href="business.html">화합물 GaN 반도체</a></li>
+              <li><a href="business.html">산업 안전 진단 로봇 솔루션</a></li>
+              <li><a href="business.html">에너지 인프라 솔루션</a></li>
+            </ul>
+          </div>
+          <div class="m-col">
+            <p class="m-head">투자정보</p>
+            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          </div>
+          <div class="m-col">
+            <p class="m-head">지속가능경영</p>
+            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          </div>
+          <div class="m-col">
+            <p class="m-head">커뮤니티</p>
+            <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+          </div>
+          <div class="m-col">
+            <p class="m-head">Contact Us</p>
+          </div>
+        </div>
+        <span class="m-ham" aria-hidden="true"></span>
+      </div>
+    </div>
+    </div>
 
     <div class="fit">
     <div class="banner-inner">
