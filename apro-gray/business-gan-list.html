@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 화합물 GaN 반도체 제품 (v2)</title>
+<meta name="description" content="에이프로(APRO) 화합물 GaN 반도체(Compound GaN Semiconductors)의 전체 제품 라인업을 한눈에." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  @font-face{
+    font-family:"SUIT Variable";
+    src:url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2-variations");
+    font-weight:100 900;font-display:swap;
+  }
+  :root{
+    --g900:#1b2733;--g950:#0e161e;--secondary-bg:#f4f6f8;
+    --brand:#2c5790;--brand-2:#4077b7;--point-300:#9ab9df;--point-200:#c9d9ee;
+    --point-950:#17243a;--border-g:#e4e8ed;--border-s:#cdd4dc;--teritary:#96a3b3;--icon-2:#5d6d7e;
+    --sec:#445464;--on-white-90:rgba(255,255,255,.9);
+    --white-300:rgba(255,255,255,.2);--maxw:1280px;
+    --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
+    --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:none}
+  p{margin:0}
+  a{text-decoration:none;color:inherit}
+  ::selection{background:var(--point-200);color:var(--point-950)}
+
+  .dash{flex-shrink:0;width:16px;height:16px;display:grid;place-content:center}
+  .dash::before{content:"";width:8px;height:2px;background:var(--icon-2)}
+
+  /* ===================== SUB-PAGE GNB ===================== */
+  /* light styling so the back button reads over the dark fixed panel */
+  .subgnb{position:fixed;top:20px;left:24px;z-index:100;height:40px;
+    display:flex;align-items:center;gap:12px;padding-right:12px;
+    animation:gnbIn .8s var(--ease) both}
+  .subgnb .back{width:28px;height:28px;flex-shrink:0;border:1px solid rgba(255,255,255,.45);
+    display:grid;place-content:center;color:#fff;transition:background .2s,color .2s,border-color .2s}
+  .subgnb .back:hover{background:#fff;color:var(--g950);border-color:#fff}
+  .subgnb .back svg{width:18px;height:18px}
+  .subgnb .lbl{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:rgba(255,255,255,.85);white-space:nowrap}
+  @keyframes gnbIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===================== LIST PAGE ===================== */
+  .listpage{position:relative;min-height:100vh;background:#fff}
+
+  /* ---- Fixed left business panel — the 사업영역 carousel panel reused ---- */
+  /* padding-top 116px matches the carousel panel so the number lines up across tiers */
+  .bizpanel{position:fixed;left:0;top:0;bottom:0;width:360px;z-index:2;
+    background:var(--g950);color:#fff;overflow:hidden;
+    display:flex;flex-direction:column;padding:116px 34px 40px;
+    animation:panelIn .85s var(--ease) both}
+  .bizpanel .pnum{flex-shrink:0}
+  .bizpanel .pnum .n{font-family:var(--rc);font-weight:700;font-size:30px;line-height:1;letter-spacing:1px;color:var(--brand-2)}
+  .bizpanel .p-title{margin-top:22px;flex-shrink:0;display:flex;flex-direction:column;gap:6px}
+  .bizpanel .p-title .ko{font-family:var(--suit);font-weight:800;font-size:26px;line-height:1.25;letter-spacing:-.52px;color:#fff;word-break:keep-all}
+  .bizpanel .p-title .en{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.3;letter-spacing:-.3px;color:rgba(255,255,255,.55)}
+  /* description pinned to the bottom of the panel */
+  .bizpanel .desc{margin-top:auto;padding-top:32px;font-family:var(--suit);font-weight:500;font-size:15px;line-height:1.75;letter-spacing:-.3px;color:rgba(255,255,255,.72);word-break:keep-all}
+
+  /* ---- Right content column (offset by the fixed panel) ---- */
+  /* no max-width: content fills panel→right edge with equal 56px side padding,
+     so the sub-category line's right margin always matches the left panel→title gap */
+  .content{margin-left:360px;padding:96px 56px 64px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+
+  /* ---- Category groups + product cards ---- */
+  .groups{display:flex;flex-direction:column;gap:30px}
+  .group{animation:softUp .7s var(--ease) both}
+  .group:nth-child(2){animation-delay:.06s}
+  .group:nth-child(3){animation-delay:.12s}
+  .glabel{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+  .glabel .gt{font-family:var(--suit);font-weight:800;font-size:17px;letter-spacing:-.34px;color:var(--g900)}
+  .glabel .gc{font-family:var(--suit);font-weight:600;font-size:13px;letter-spacing:-.26px;color:var(--teritary)}
+
+  /* clean vertical product cards (Figma card) — fixed size, no description, left-aligned */
+  .grid{display:flex;flex-wrap:wrap;gap:16px}
+  .pcard{display:flex;flex-direction:column;flex:0 0 240px;min-width:0;
+    background:#fff;border:1px solid var(--border-s);overflow:hidden;cursor:pointer;
+    transition:border-color .25s var(--ease)}
+  .pcard:hover{border-color:var(--g900)}
+  .pcard .thumb{width:100%;aspect-ratio:307/217;background:#fff;overflow:hidden;padding:14px}
+  .pcard .thumb img{width:100%;height:100%;object-fit:contain;transition:transform .45s var(--ease)}
+  .pcard:hover .thumb img{transform:scale(1.05)}
+  .pcard .cap{display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid var(--border-s);transition:border-color .25s}
+  .pcard:hover .cap{border-top-color:var(--g900)}
+  .pcard .cap .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.3;letter-spacing:-.3px;color:var(--g900);word-break:keep-all}
+  .pcard .cap .arw{flex-shrink:0;width:24px;height:24px;display:grid;place-content:center;color:var(--teritary);transition:color .25s,transform .25s}
+  .pcard:hover .cap .arw{color:var(--g900);transform:translateX(2px)}
+  .pcard .cap .arw svg{width:15px;height:15px}
+
+  @keyframes gnbIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes panelIn{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes softUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  .mnote{display:none}
+  @media(max-width:1120px){
+    .bizpanel{width:300px;padding:116px 26px 34px}
+    .bizpanel .p-title .ko{font-size:23px}
+    .content{margin-left:300px;padding:96px 40px 56px}
+  }
+  @media(max-width:900px){
+    /* panel collapses to a full-width header; content flows beneath */
+    .bizpanel{position:static;width:auto;min-height:auto;padding:88px 26px 30px}
+    .bizpanel .desc{padding-top:20px}
+    .content{margin-left:0;padding:36px 26px 56px}
+  }
+  @media(max-width:640px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+    .mnote{position:fixed;bottom:0;left:0;right:0;z-index:120;display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}
+  }
+
+  /* ---- cross-document view transitions (Figma Smart Animate–style morph) ---- */
+  @view-transition{navigation:auto}
+  .subgnb{view-transition-name:apro-subgnb}
+  .bizpanel .pnum .n{view-transition-name:apro-panel-num}
+  .bizpanel .p-title{view-transition-name:apro-panel-title}
+
+  /* ---- calm, gentle view-transition motion + leftward section slide ---- */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){
+    animation-duration:.75s;
+    animation-timing-function:cubic-bezier(.4,0,.2,1);
+  }
+  ::view-transition-old(root){ animation-name:apro-slide-out-left }
+  ::view-transition-new(root){ animation-name:apro-slide-in-right }
+  @keyframes apro-slide-out-left{ to{ transform:translateX(-5vw); opacity:0 } }
+  @keyframes apro-slide-in-right{ from{ transform:translateX(5vw); opacity:0 } }
+</style>
+</head>
+<body>
+
+<!-- ===================== SUB-PAGE GNB ===================== -->
+<nav class="subgnb">
+  <a class="back" href="business.html" aria-label="사업영역으로">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M12 4 6 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <a class="lbl" href="business.html">사업영역</a>
+</nav>
+
+<!-- ===================== PRODUCT LIST ===================== -->
+<section class="listpage">
+  <aside class="bizpanel">
+    <div class="pnum"><span class="n">03</span></div>
+    <div class="p-title"><p class="ko">화합물 GaN 반도체</p><p class="en">Compound GaN Semiconductors</p></div>
+    <p class="desc">GaN 에피 웨이퍼부터 전력·RF 디바이스, 파운드리까지 차세대 화합물 반도체의 고효율·고주파 성능을 구현합니다.</p>
+  </aside>
+  <div class="content">
+    <div class="groups">
+
+      <div class="group">
+        <div class="glabel"><span class="gt">Epi-Wafer</span><span class="gc">Epitaxial Wafer</span></div>
+        <div class="grid">
+          <a class="pcard" href="business-gan-1.html">
+            <div class="thumb"><img src="../assets/img-GaN.png" alt="Epi-Wafer" /></div>
+            <div class="cap"><span class="nm">Epi-Wafer</span><span class="arw"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </a>
+          <a class="pcard" href="business-gan-2.html">
+            <div class="thumb"><img src="../assets/img-GaN.png" alt="Epi-Wafer 양산설비" /></div>
+            <div class="cap"><span class="nm">Epi-Wafer 양산설비</span><span class="arw"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel"><span class="gt">GaN Device</span><span class="gc">GaN Device</span></div>
+        <div class="grid">
+          <a class="pcard" href="business-gan-3.html">
+            <div class="thumb"><img src="../assets/img-GaN.png" alt="GaN Device" /></div>
+            <div class="cap"><span class="nm">GaN Device</span><span class="arw"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel"><span class="gt">에이프로 세미콘</span><span class="gc">A-PRO Semicon</span></div>
+        <div class="grid">
+          <a class="pcard" href="business-gan-4.html">
+            <div class="thumb"><img src="../assets/img-GaN.png" alt="에이프로 세미콘" /></div>
+            <div class="cap"><span class="nm">에이프로 세미콘</span><span class="arw"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="mnote">데스크톱(1280px 이상) 기준으로 디자인된 시안입니다.</div>
+
+
+<script>
+  /* morph the clicked product card into the detail hero (image + title) */
+  document.querySelectorAll('.pcard').forEach(function(card){
+    card.addEventListener('click', function(){
+      var t = card.querySelector('.thumb'); if(t) t.style.viewTransitionName = 'apro-hero-img';
+      var n = card.querySelector('.nm');    if(n) n.style.viewTransitionName = 'apro-hero-title';
+    });
+  });
+</script>
+</body>
+</html>

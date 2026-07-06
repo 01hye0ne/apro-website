@@ -106,8 +106,8 @@
   /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
      the sticky's scroll container and break the pin. Clipping is handled by .who-sticky instead. */
-  .v2who{height:380vh;background:#fff;position:relative;overflow:visible}
-  .who-sticky{position:sticky;top:0;height:100vh;min-height:586px;overflow:hidden;background:#fff;transition:background .6s var(--ease)}
+  .v2who{height:820vh;background:#fff;position:relative;overflow:visible}   /* keyword → A-PRO morph → 5-business coverflow rotation, all in one pinned section */
+  .who-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;transition:background .6s var(--ease)}
   .who-sticky[data-phase="3"]{background:#04070c}
   /* Layered composition rebuilt at the exact Figma frame (1280x586), scaled to the viewport.
      Each phase = background (behind) -> text/wordmark (middle) -> cut-out foreground (front). */
@@ -132,17 +132,21 @@
      (same 1440 container as the nav), while its size/vertical position track the stage scale */
   .v2who .who-eye{position:absolute;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;
     width:min(calc(var(--maxw) - 48px),calc(100% - 48px));top:calc(50% - 104px * var(--who-s,1))}
-  .v2who .who-eye p{padding-left:0;font-family:var(--suit);font-weight:400;line-height:1.2;letter-spacing:-.44px;
-    color:var(--g900);font-size:calc(22px * var(--who-s,1));white-space:nowrap;transition:color .6s var(--ease)}
+  /* "who we are" matches the Business section label (SUIT 800 / 20px / -.4px), scaled to the stage */
+  .v2who .who-eye p{padding-left:0;font-family:var(--suit);font-weight:800;line-height:1.2;letter-spacing:-.4px;
+    color:var(--g900);font-size:calc(20px * var(--who-s,1));white-space:nowrap;transition:color .6s var(--ease)}
   .who-sticky[data-phase="3"] .who-eye p{color:#fff}
 
   /* text/wordmark layer (between bg and fg) */
   .v2who .s-txt{z-index:2}
-  .v2who .s-h{left:577px;top:189px;width:679px;font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px;color:var(--g900);transition:color .6s var(--ease)}
+  /* Global Top 5 headline: sized to match the new "who we are" (20px) and set in the brand blue */
+  .v2who .s-h{left:577px;top:189px;width:679px;font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--brand);transition:color .6s var(--ease)}
   .v2who .s-a{left:577px;top:271px;width:126px;height:126px;transition:opacity .5s var(--ease)}
   .v2who .s-kw{left:701px;top:358.5px;transform:translateY(-50%);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:var(--g900);white-space:nowrap;opacity:0;transition:opacity .45s var(--ease),color .6s var(--ease)}
   .v2who .s-kw.active{opacity:1}
-  .v2who .s-apro{left:588px;top:293px;width:484px;height:auto;opacity:0;transition:opacity .6s var(--ease)}
+  /* APRO wordmark: scaled/positioned so its "A" glyph exactly overlays the keyword "A" (s-a) —
+     s-a A box is 104px wide at top 283; Logo.svg A is 102.64u wide → width 484*104/102.64 = 490.41, top 283 */
+  .v2who .s-apro{left:588px;top:283px;width:490.41px;height:auto;opacity:0;transition:opacity .6s var(--ease)}
   .who-sticky[data-phase="3"] .s-h{color:#fff}
   .who-sticky[data-phase="3"] .s-a,.who-sticky[data-phase="3"] .s-kw{opacity:0}
   .who-sticky[data-phase="3"] .s-apro{opacity:1}
@@ -153,13 +157,15 @@
   .who-sticky[data-phase="3"] .who-dots{color:#fff}
   .who-dots i.on{opacity:1;transform:scale(1.5)}
 
-  /* ===================== BUSINESS (Figma node 279:49403 — nav + hero + lists over image collage) ===================== */
-  /* pinned: the section is tall; a sticky stage stays put while scroll steps through the 5 businesses, then unpins to News.
-     overflow:visible overrides .section{overflow:hidden} so the sticky pin isn't trapped */
-  .v2biz{height:520vh;background:#fff;position:relative;overflow:visible}
-  .biz-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
-  .v2biz .biz-stage{position:relative;width:100%;height:900px;isolation:isolate}
+  /* ===================== WHO + BUSINESS MERGED — one pinned section ===================== */
+  /* The Business coverflow lives INSIDE .who-sticky. .who-cards carries the .v2biz class so all the
+     Business card/UI styles below apply, and doubles as the biz-stage (centred 900px). The section runs:
+     keyword cycle → A-PRO "A" morph → the SAME cards become the coverflow and rotate. (No separate section.) */
+  .who-cards{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:900px;z-index:6;opacity:0}
+  .who-cards.on{opacity:1}
+  .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
 
+  /* Business coverflow styles (scoped to .v2biz — which is now the .who-cards wrapper) */
   /* background collage — full-width stage; card geometry is computed responsively in JS (24px gutters) */
   .v2biz .biz-collage{position:absolute;left:0;top:0;width:100%;height:900px;pointer-events:none;z-index:1}
   /* coverflow cards — one per business; they slide + resize between the 5 slots as the active business rotates.
@@ -173,7 +179,7 @@
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
 
   /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it */
-  .v2biz .biz-content{position:absolute;left:50%;top:116px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:24px}
+  .v2biz .biz-content{position:absolute;left:50%;top:116px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:24px;transition:opacity .5s var(--ease)}
 
   .v2biz .biz-step{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border-g)}
   .v2biz .biz-step .ttl{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
@@ -424,40 +430,27 @@
   <section class="section v2who" id="whoSection">
     <div class="who-sticky" id="whoSticky" data-phase="0">
       <div class="who-stage">
-        <!-- background layer (behind the text) -->
-        <img class="lyr-bg bg-0" data-kw="0" src="../assets/background-1.png" alt="" aria-hidden="true" />
-        <img class="lyr-bg bg-1" data-kw="1" src="../assets/background-2.png" alt="" aria-hidden="true" />
-        <img class="lyr-bg bg-2" data-kw="2" src="../assets/background-3.png" alt="" aria-hidden="true" />
-        <img class="lyr-bg bg-3" data-kw="3" src="../assets/background-4.png" alt="" aria-hidden="true" />
-
-        <!-- text / wordmark layer -->
+        <!-- text / wordmark layer (background/foreground photos removed) -->
         <div class="s-txt s-h">Global Top 5<br/>Total Energy-Solution Provider</div>
         <img class="s-txt s-a" src="../assets/a-logo.svg" alt="A" />
         <span class="s-txt s-kw" data-kw="0">dvanced</span>
         <span class="s-txt s-kw" data-kw="1">ggressive</span>
         <span class="s-txt s-kw" data-kw="2">gile</span>
         <img class="s-txt s-apro" src="../assets/Logo.svg" alt="A-PRO" />
-
-        <!-- foreground layer (cut-out subject, in front of the text) -->
-        <img class="lyr-fg fg-0" data-kw="0" src="../assets/front 1.png" alt="" aria-hidden="true" />
-        <img class="lyr-fg fg-1" data-kw="1" src="../assets/front 2.png" alt="" aria-hidden="true" />
-        <img class="lyr-fg fg-2" data-kw="2" src="../assets/front 3.png" alt="" aria-hidden="true" />
       </div>
 
       <!-- "who we are" aligned to the GNB left line (1440 container), scaled to the stage -->
       <div class="who-eye"><p>who we are</p></div>
 
       <div class="who-dots"><i data-dot="0"></i><i data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i></div>
-    </div>
-  </section>
 
-  <!-- ===================== BUSINESS (pinned scroll: steps through 5 businesses) ===================== -->
-  <section class="section v2biz" id="bizSection">
-    <div class="biz-sticky">
-      <div class="biz-stage">
-        <!-- background coverflow (one card per business, positioned by JS) -->
+      <!-- Business coverflow (merged in): hidden during keywords, revealed by the A-PRO morph, then rotates.
+           .v2biz class carries all the Business card/UI styling; #whoCards doubles as the biz-stage. -->
+      <div class="who-cards v2biz" id="whoCards">
+        <svg class="who-caret" id="whoCaret" viewBox="0 0 126 126" fill="none">
+          <path d="M65.1243 36.3482C64.7598 35.2421 64.0166 34.682 62.9089 34.682C61.9834 34.682 61.058 35.2421 60.8757 36.3482L35.2017 114H11L40.3758 24.7271C42.0304 17.5303 51.2708 11.9998 62.9089 11.9998C74.547 11.9998 83.9557 17.5303 85.6243 24.7271L115 114H90.7983L65.1243 36.3482Z" fill="#fff"/>
+        </svg>
         <div class="biz-collage"><!-- cards injected by JS --></div>
-
         <div class="biz-content">
           <div class="biz-step">
             <span class="ttl">Business</span>
@@ -470,7 +463,6 @@
               <button class="ic" data-dir="1" aria-label="다음">›</button>
             </div>
           </div>
-
           <div class="biz-row">
             <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
             <div class="biz-hero"><!-- active business title (JS) --></div>
@@ -660,66 +652,32 @@
     els.forEach(function(el){ io.observe(el); });
   })();
 
-  // who-we-are: pinned scroll interaction — keyword/media cycles, then APRO logo takeover
+  // who-we-are + Business MERGED into ONE pinned section. Progress p over the section:
+  //   [0,KW)   keyword cycle → A-PRO logo (the real s-apro)
+  //   [KW,MO)  the A-PRO "A" morphs into the 5 cards (they rise from the baseline)
+  //   [MO,1]   the SAME cards become the Business coverflow and rotate through the 5 businesses
   (function(){
     var section = document.getElementById('whoSection');
-    var sticky = document.getElementById('whoSticky');
+    var sticky  = document.getElementById('whoSticky');
     if(!section || !sticky){ return; }
-    var phased = sticky.querySelectorAll('[data-kw]');
-    var dots = sticky.querySelectorAll('.who-dots i');
-    var stage = sticky.querySelector('.who-stage');
-    var moon = sticky.querySelector('.fg-2');   // agile globe — grows to meet the APRO planet
-    var PHASES = 4;
-    var current = -1;
-    var ticking = false;
+    var kws     = sticky.querySelectorAll('.s-kw');
+    var dots    = sticky.querySelectorAll('.who-dots i');
+    var dotsWrap= sticky.querySelector('.who-dots');
+    var stage   = sticky.querySelector('.who-stage');
+    var eye     = sticky.querySelector('.who-eye');
+    var cardsWrap = document.getElementById('whoCards');
+    var caret   = document.getElementById('whoCaret');
+    var caretPath = caret.querySelector('path');
+    var content = sticky.querySelector('.biz-content');
+    var collage = sticky.querySelector('.biz-collage');
+    var navEl   = sticky.querySelector('.biz-nav');
+    var heroEl  = sticky.querySelector('.biz-hero');
+    var listsEl = sticky.querySelector('.biz-lists');
+    var reel    = sticky.querySelector('.biz-step .num .reel');
+    var reelCol = reel.querySelector('.col');
+    var PHASES = 4, KW = 0.32, MO = 0.45;    // keyword end, morph end (fractions of the section's scroll)
 
-    function setPhase(p){
-      if(p === current){ return; }
-      current = p;
-      sticky.setAttribute('data-phase', p);
-      phased.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
-      dots.forEach(function(d){ d.classList.toggle('on', parseInt(d.dataset.dot,10) === p); });
-    }
-
-    // scale the 1280x586 design frame to fit the viewport (contain) so nothing is cropped
-    function fit(){
-      if(!stage){ return; }
-      sticky.style.setProperty('--who-s', Math.min(window.innerWidth / 1280, window.innerHeight / 586));
-    }
-
-    // Agile -> APRO: grow the agile globe about its centre so it lands exactly on the APRO
-    // planet (measured: scale 2.56, translate 275/823 about origin 873/850). At the phase
-    // boundary the two spheres coincide, so the cross-fade to background-4 is seamless.
-    var MOON = { s: 2.56, tx: 275, ty: 823, ox: 873, oy: 850, z0: 0.62, z1: 0.75 };
-    function moonZoom(p){
-      if(!moon){ return; }
-      var z = (p - MOON.z0) / (MOON.z1 - MOON.z0);
-      z = Math.max(0, Math.min(1, z));
-      moon.style.transformOrigin = MOON.ox + 'px ' + MOON.oy + 'px';
-      moon.style.transform = 'translate(' + (MOON.tx * z) + 'px,' + (MOON.ty * z) + 'px) scale(' + (1 + z * (MOON.s - 1)) + ')';
-    }
-
-    function update(){
-      ticking = false;
-      var total = section.offsetHeight - window.innerHeight; // distance the section stays pinned
-      var scrolled = -section.getBoundingClientRect().top;
-      var progress = total > 0 ? scrolled / total : 0;
-      progress = Math.max(0, Math.min(0.9999, progress));
-      setPhase(Math.floor(progress * PHASES));
-      moonZoom(progress);
-    }
-    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function(){ fit(); onScroll(); });
-    fit();
-    update();
-  })();
-
-  // Business: pinned-scroll coverflow — the 5 businesses form a ring of cards; the active one sits centre.
-  // Scrolling down advances the active business, rotating the ring left (right-neighbour grows into centre,
-  // centre shrinks out to the left, the far-left card wraps around to the far right). Ends → News section.
-  (function(){
+    // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
       { kor:'이차전지', eng:'Rechargeable Battery', img:'공장이미지 1.png', href:'business.html',
         lists:[ {nm:'설비', href:'business.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
@@ -739,57 +697,22 @@
         lists:[ {nm:'전기자동차 충전 솔루션', href:'business.html', tags:['전기자동차 충전 솔루션']},
                 {nm:'배터리 전주기 진단 솔루션', href:'business.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
     ];
-    // Slots align to the content grid (same 1392 container as the content / "who we are"):
-    // the two left cards sit under the nav column, the two right cards under the lists column, the centre under the
-    // hero — so each flanking PAIR's width equals its side column, and all four flanking cards share one width.
-    var MAXCW = 1392, GUTTER = 24, GAP = 12, LISTW = 299;   // MAXCW = --maxw(1440) − 48 padding
-    var WF = (LISTW - GAP) / 2;                              // flanking card width (uniform: cards 1,2,4,5)
-    var HS = Math.round(WF * 4 / 3), HC = 465, BASE = 860;  // outer cards 3:4; centre large; bottoms at y=860
-    var HM = Math.round((HS + HC) / 2);                      // inner cards taller (mid-point) → cards form an "A" silhouette
-    var SLOT = [];
+    var N = BIZ.length;
+    var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
+    var WF=(LISTW-GAP)/2, HS=Math.round(WF*4/3), HC=465, BASE=860, HM=Math.round((HS+HC)/2);
+    var SLOT=[];
     function computeSlots(){
       var vw = collage.clientWidth || window.innerWidth;
-      var CW = Math.min(MAXCW, vw - GUTTER * 2);             // content width — same container as the Business bar
-      var ox = (vw - CW) / 2;
-      var cW = CW - 4 * WF - 4 * GAP;                        // centre card fills the remaining span
-      var x0 = 0, x1 = WF + GAP, x2 = 2 * (WF + GAP), x3 = x2 + cW + GAP, x4 = x3 + WF + GAP;
-      SLOT = [
-        { x: ox + x0, y: BASE - HS, w: WF, h: HS },          // 0 far-left  (outer, short)
-        { x: ox + x1, y: BASE - HM, w: WF, h: HM },          // 1 left      (inner, taller)
-        { x: ox + x2, y: BASE - HC, w: cW, h: HC },          // 2 centre    (apex)
-        { x: ox + x3, y: BASE - HM, w: WF, h: HM },          // 3 right     (inner, taller)
-        { x: ox + x4, y: BASE - HS, w: WF, h: HS }           // 4 far-right (outer, short)
-      ];
+      var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
+      var x0=0,x1=WF+GAP,x2=2*(WF+GAP),x3=x2+cW+GAP,x4=x3+WF+GAP;
+      SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
     }
-    var section = document.getElementById('bizSection');
-    if(!section){ return; }
-    var N = BIZ.length;
-    var collage = section.querySelector('.biz-collage');
-    var navEl = section.querySelector('.biz-nav');
-    var heroEl = section.querySelector('.biz-hero');
-    var listsEl = section.querySelector('.biz-lists');
-    var reel = section.querySelector('.biz-step .num .reel');
-    var reelCol = reel.querySelector('.col');
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-
     function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function enc(s){ return '../assets/' + encodeURIComponent(s); }
-
-    // one card per business (image is fixed to the business; only the slot changes)
-    var cards = BIZ.map(function(b){
-      var c = document.createElement('div');
-      c.className = 'bcard';
-      c.innerHTML = '<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />';
-      collage.appendChild(c);
-      return c;
-    });
-
-    // left nav — one clickable tab per business
-    navEl.innerHTML = BIZ.map(function(b,i){
-      return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>';
-    }).join('');
+    var cards = BIZ.map(function(b){ var c=document.createElement('div'); c.className='bcard'; c.innerHTML='<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />'; collage.appendChild(c); return c; });
+    navEl.innerHTML = BIZ.map(function(b,i){ return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>'; }).join('');
     var navBtns = navEl.querySelectorAll('.nv');
-
     function listItem(l){
       var tag = l.sub ? '<span class="tag">계열사</span>' : '';
       var chips = (l.tags || []).map(function(t){ return '<span class="tag-chip">'+esc(t)+'</span>'; }).join('');
@@ -797,94 +720,132 @@
         + '<div class="tags">'+chips+'</div>';
       return l.href ? '<a class="li" href="'+l.href+'">'+inner+'</a>' : '<div class="li">'+inner+'</div>';
     }
-
-    var active = -1, faderTO = null;
-    function slotOf(b){ return (((b - active + 2) % N) + N) % N; }   // active → pos2 (centre)
-    function setGeom(card, s){ card.style.left=s.x+'px'; card.style.top=s.y+'px'; card.style.width=s.w+'px'; card.style.height=s.h+'px'; }
-
-    // move every card to its slot; a card crossing the whole ring (edge→edge) teleports + fades instead of sliding across
+    var active=-1, faderTO=null;
+    function slotOf(b){ return (((b-active+2)%N)+N)%N; }
+    function setGeom(card,s){ card.style.left=s.x+'px'; card.style.top=s.y+'px'; card.style.width=s.w+'px'; card.style.height=s.h+'px'; }
     function place(first){
       cards.forEach(function(card, b){
         var pos = slotOf(b), old = card._pos, s = SLOT[pos];
         var wrap = old != null && Math.abs(pos - old) >= 3;
         if(first || wrap){
-          card.style.transition = 'none';
-          setGeom(card, s);
-          void card.offsetWidth;
-          card.style.transition = '';
+          card.style.transition = 'none'; setGeom(card, s); void card.offsetWidth; card.style.transition = '';
           if(wrap){ card.classList.remove('jin'); void card.offsetWidth; card.classList.add('jin'); }
-        } else {
-          setGeom(card, s);
-        }
-        card.classList.toggle('center', pos === 2);          // colour only at centre; grayscale elsewhere
-        card._pos = pos;
+        } else { setGeom(card, s); }
+        card.classList.toggle('center', pos === 2); card._pos = pos;
       });
     }
-
     function fillText(b){
-      heroEl.innerHTML = '<div class="hmask"><p class="t1">'+esc(b.kor)+'</p></div>'
-                       + '<div class="hmask"><p class="t2">'+esc(b.eng)+'</p></div>';
+      heroEl.innerHTML = '<div class="hmask"><p class="t1">'+esc(b.kor)+'</p></div>' + '<div class="hmask"><p class="t2">'+esc(b.eng)+'</p></div>';
       listsEl.innerHTML = b.lists.map(listItem).join('');
     }
     function setActive(i){
       if(i === active){ return; }
-      var first = active < 0;
-      active = i;
-      var b = BIZ[i];
-      place(first);                               // rotate the ring
-      clearTimeout(faderTO);                       // hero text: masked rise-up; lists: quick fade
+      var first = active < 0; active = i; var b = BIZ[i];
+      place(first);
+      clearTimeout(faderTO);
       if(first){ fillText(b); }
       else {
-        heroEl.classList.add('out');               // current hero text exits upward out of the mask
-        listsEl.classList.add('fade');
+        heroEl.classList.add('out'); listsEl.classList.add('fade');
         faderTO = setTimeout(function(){
-          fillText(b);                             // swap while hidden
-          listsEl.classList.remove('fade');
-          heroEl.classList.remove('out');          // new text: drop below the mask (no transition) …
-          heroEl.classList.add('enter');
-          void heroEl.offsetWidth;
-          heroEl.classList.remove('enter');        // … then rise up into view
+          fillText(b); listsEl.classList.remove('fade');
+          heroEl.classList.remove('out'); heroEl.classList.add('enter'); void heroEl.offsetWidth; heroEl.classList.remove('enter');
         }, 480);
       }
-      var dh = reelCol.children[0].getBoundingClientRect().height || 16;   // counter reel + nav highlight
-      reel.style.height = dh + 'px';
-      reelCol.style.transform = 'translateY(-' + (i * dh) + 'px)';
+      var dh = reelCol.children[0].getBoundingClientRect().height || 16;
+      reel.style.height = dh + 'px'; reelCol.style.transform = 'translateY(-' + (i * dh) + 'px)';
       navBtns.forEach(function(btn,j){ btn.classList.toggle('on', j===i); });
     }
 
-    // scroll → active index (page stays pinned via sticky; progress 0..1 maps across the 5 businesses)
-    var ticking = false;
-    function readScroll(){
-      ticking = false;
+    // ---------- keyword phases ----------
+    var current = -1;
+    function setPhase(p){
+      if(p === current){ return; } current = p;
+      sticky.setAttribute('data-phase', p);
+      kws.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
+      dots.forEach(function(d){ d.classList.toggle('on', parseInt(d.dataset.dot,10) === p); });
+    }
+    function fit(){ sticky.style.setProperty('--who-s', Math.min(window.innerWidth/1280, window.innerHeight/586)); }
+
+    // ---------- morph helpers (the "A" that overlays s-apro, then descends into the centre card) ----------
+    function clamp01(x){ return x<0?0:x>1?1:x; }
+    function seg(p,a,b){ return clamp01((p-a)/(b-a)); }
+    function ease(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+    function mix(a,b,t){ return Math.round(a+(b-a)*t); }
+    var BG0=[4,7,12], BG1=[255,255,255];
+    function bgCol(t){ return 'rgb('+mix(BG0[0],BG1[0],t)+','+mix(BG0[1],BG1[1],t)+','+mix(BG0[2],BG1[2],t)+')'; }
+    var AWc=[233,238,244], ADc=[11,11,10];
+    function aCol(t){ return 'rgb('+mix(AWc[0],ADc[0],t)+','+mix(AWc[1],ADc[1],t)+','+mix(AWc[2],ADc[2],t)+')'; }
+    var M={};
+    function caretLayout(){   // the A-PRO "A" on-screen box (in stage coords): the carousel starts compressed to THIS, then widens
+      var vw=window.innerWidth, vh=window.innerHeight;
+      var s=Math.min(vw/1280, vh/586), stageTop=(vh-900)/2, acx=vw/2, acy=vh/2+41*s, aw=104*s, ah=102*s;
+      M={ bx:acx-aw/2, by:(acy-stageTop)-ah/2, bw:aw, bh:ah };
+    }
+    // expand the REAL cards from the compressed A-box out to the active=0 coverflow slots (dark → photo);
+    // the carousel then reuses them as-is. cop = card fade-in (so they appear as the A-PRO logo clears).
+    function expandCards(g, reveal, cop){
+      for(var b=0;b<N;b++){
+        var pos=(((b+2)%N)+N)%N, s=SLOT[pos], card=cards[b];
+        card.style.transition='none';
+        card.style.opacity=cop;
+        card.style.left=(M.bx + (s.x-M.bx)*g)+'px';
+        card.style.top=(M.by + (s.y-M.by)*g)+'px';
+        card.style.width=(M.bw + (s.w-M.bw)*g)+'px';
+        card.style.height=(M.bh + (s.h-M.bh)*g)+'px';
+        card.style.background=(reveal>=1)?'':'#0b0b0a';
+        card.firstChild.style.opacity=reveal;
+        card.classList.toggle('center', pos===2); card._pos=pos;
+      }
+    }
+
+    // ---------- mode machine (kw → morph → biz) ----------
+    var mode='';
+    function setMode(m){
+      if(m===mode){ return; } mode=m;
+      cardsWrap.classList.toggle('on', m!=='kw');               // card layer hidden during keywords
+      cardsWrap.style.pointerEvents = (m==='biz') ? 'auto' : 'none';
+      caret.style.display = 'none';                              // the A-PRO "A" no longer detaches/moves
+      if(m==='kw'){
+        sticky.style.background=''; stage.style.opacity=''; eye.style.opacity=''; dotsWrap.style.opacity='';
+        content.style.opacity='0';
+      } else if(m==='biz'){
+        sticky.setAttribute('data-phase','biz'); sticky.style.background='#fff';
+        stage.style.opacity='0'; eye.style.opacity='0'; dotsWrap.style.opacity='0';
+        cards.forEach(function(c){ c.style.background=''; c.style.opacity=''; c.firstChild.style.opacity=''; });
+        content.style.opacity=''; active=-1;                    // let the carousel take clean control
+      }
+    }
+    function morph(mp){
+      sticky.style.background = bgCol(ease(seg(mp,0.05,0.30)));                 // dark → white
+      var lf=(1-seg(mp,0.05,0.24)).toFixed(3);                                  // A-PRO logo fades IN PLACE (never moves)
+      stage.style.opacity=lf; eye.style.opacity=lf; dotsWrap.style.opacity=lf;
+      var g=ease(clamp01((mp-0.24)/0.62));                                      // the carousel widens from the A-box to full size
+      var reveal=clamp01((g-0.15)/0.60);                                       // dark → photo as it widens
+      expandCards(g, reveal, clamp01((mp-0.22)/0.10));                         // cards fade in as the logo clears, then expand
+      content.style.opacity='0';
+    }
+
+    var ticking=false;
+    function update(){
+      ticking=false;
       var total = section.offsetHeight - window.innerHeight;
       var scrolled = -section.getBoundingClientRect().top;
-      var p = total > 0 ? scrolled / total : 0;
-      p = Math.max(0, Math.min(1, p));
-      var idx = Math.min(N - 1, Math.floor(p * N + 0.0001));
-      setActive(idx);
+      var p = total>0 ? scrolled/total : 0; p=Math.max(0, Math.min(0.9999, p));
+      if(p < KW){ setMode('kw'); setPhase(Math.floor((p/KW)*PHASES)); }
+      else if(p < MO){ setMode('morph'); setPhase(3); morph((p-KW)/(MO-KW)); }
+      else { setMode('biz'); setActive(Math.min(N-1, Math.floor(((p-MO)/(1-MO))*N + 0.0001))); }
     }
-    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(readScroll); } }
-    function onResize(){ computeSlots(); if(active >= 0){ place(true); } onScroll(); }   // re-layout cards instantly on resize
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+    function onResize(){ fit(); computeSlots(); caretLayout(); if(mode==='biz' && active>=0){ place(true); } update(); }
 
-    // nav / arrow clicks → scroll the page to the middle of that business's band
-    function scrollToIdx(i){
-      i = ((i % N) + N) % N;
-      var total = section.offsetHeight - window.innerHeight;
-      var top = section.offsetTop + ((i + 0.5) / N) * total;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    }
-    navBtns.forEach(function(btn){
-      btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); });
-    });
-    section.querySelectorAll('.biz-step .ic').forEach(function(btn){
-      btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); });
-    });
+    function scrollToIdx(i){ i=((i%N)+N)%N; var total=section.offsetHeight-window.innerHeight; var top=section.offsetTop + (MO + ((i+0.5)/N)*(1-MO))*total; window.scrollTo({ top: top, behavior: 'smooth' }); }
+    navBtns.forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); }); });
+    sticky.querySelectorAll('.biz-step .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    window.addEventListener('load', function(){ computeSlots(); if(active >= 0){ place(true); } readScroll(); });
-    computeSlots();
-    readScroll();
+    window.addEventListener('load', function(){ fit(); computeSlots(); caretLayout(); update(); });
+    fit(); computeSlots(); caretLayout(); update();
   })();
 
   // News: pinned section — the card masonry scrolls vertically with page scroll, then unpins to Global Network

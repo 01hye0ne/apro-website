@@ -26,86 +26,88 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:var(--pre);background:#dfe3e8;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{display:block;max-width:none}
   p{margin:0}
   a{text-decoration:none;color:inherit}
   ::selection{background:var(--point-200);color:var(--point-950)}
 
   /* ===================== SUB-PAGE GNB ===================== */
+  /* mix-blend-mode:difference keeps the GNB readable over both the white and dark panels */
   .subgnb{position:fixed;top:20px;left:24px;z-index:100;height:40px;
-    display:flex;align-items:center;gap:12px;padding-right:12px;
-    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    display:flex;align-items:center;gap:12px;padding-right:12px;color:#fff;mix-blend-mode:difference;
     animation:gnbIn .8s var(--ease) both}
-  .subgnb .back{width:28px;height:28px;flex-shrink:0;border:1px solid var(--sec);
-    display:grid;place-content:center;color:var(--g900);transition:background .2s,color .2s}
-  .subgnb .back:hover{background:var(--g900);color:#fff}
+  .subgnb .back{width:28px;height:28px;flex-shrink:0;border:1px solid currentColor;
+    display:grid;place-content:center;color:inherit}
   .subgnb .back svg{width:18px;height:18px}
-  .subgnb .lbl{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--g900);white-space:nowrap}
+  .subgnb .lbl{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:inherit;white-space:nowrap}
   @keyframes gnbIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
   /* ===================== BUSINESS CAROUSEL ===================== */
-  .bizpage{position:relative;height:100vh;min-height:800px;overflow:hidden;background:#dfe3e8}
-  .bizpage .bg{position:absolute;inset:0}
-  .bizpage .bg .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;
-    opacity:0;transition:opacity .6s var(--ease)}
-  .bizpage .bg .bgimg.active{opacity:1}
-  .bizpage .bg::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.1)}
-
-  /* full-width so panels cover the viewport edge-to-edge (no capped side gutters);
-     open panel = half the screen (grow 4), the four closed panels share the other half (grow 1 each → 4/8 = 50%) */
+  .bizpage{position:relative;height:100vh;min-height:800px;overflow:hidden;background:#fff}
   .carousel{position:relative;height:100%;width:100%;display:flex}
 
-  .panel{position:relative;flex:0 1 0;flex-grow:1;min-width:0;height:100%;overflow:hidden;
-    border-right:1px solid var(--on-white-90);
-    backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
-    background:rgba(255,255,255,.1);box-shadow:0 0 16px -8px rgba(11,11,10,.1);
-    cursor:pointer;transition:flex-grow .6s var(--ease),background .5s var(--ease)}
+  /* every panel keeps an equal width; white by default, dark on hover. clicking → detail page */
+  /* padding-top 116px aligns the number/title to the home Business section label (.biz-content top:116px) */
+  .panel{position:relative;flex:1 1 0;min-width:0;height:100%;overflow:hidden;
+    display:flex;flex-direction:column;padding:116px 27px 27px;
+    border-right:1px solid var(--border-g);
+    background:#fff;color:var(--g900);cursor:pointer;
+    transition:background .45s var(--ease),color .45s var(--ease),border-color .45s var(--ease)}
   .panel:last-child{border-right:none}
-  .panel.open{flex-grow:4;cursor:default;background:rgba(255,255,255,0);
-    backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);box-shadow:none}
+  .panel:hover{background:var(--g950);color:#fff;border-color:rgba(255,255,255,.12)}
 
-  /* ---- OPEN state content ---- */
-  .open-c{position:absolute;inset:0;padding:24px;
-    display:flex;flex-direction:column;justify-content:space-between;gap:24px;
-    opacity:0;pointer-events:none;transition:opacity .5s var(--ease) .05s}
-  .panel.open .open-c{opacity:1;pointer-events:auto}
+  /* ---- object image: enlarged and bleeding off the right edge (~half cropped) ---- */
+  .obj-wrap{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .obj{position:absolute;top:50%;right:0;width:146%;height:auto;max-width:none;
+    transform:translate(46%,-50%);transition:transform .55s var(--ease),width .55s var(--ease)}
+  .panel:hover .obj{transform:translate(43%,-50%);width:150%}
 
-  .open-c .headlines{flex:1;min-height:0;max-width:646px;display:flex;flex-direction:column;gap:24px;padding-top:120px}
-  .open-c .pagen{display:flex;gap:17px;align-items:center}
-  .open-c .pagen .biz{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
-  .open-c .pagen .num{font-family:var(--rc);font-size:16px;line-height:1;letter-spacing:-.32px;display:flex;align-items:center}
-  .open-c .pagen .num .cur{color:var(--brand)}
-  .open-c .pagen .num .tot{color:var(--teritary)}
-  .open-c .title{display:flex;flex-direction:column;gap:20px}
-  .open-c .title .en{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
-  .open-c .title .ko{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px;color:var(--sec)}
+  /* ---- number (top) ---- */
+  .pnum{position:relative;z-index:2;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .pnum .n{font-family:var(--rc);font-weight:700;font-size:30px;line-height:1;letter-spacing:1px;color:inherit}
 
-  /* sub-menu list = half the width of the open business section */
-  .open-c .lists{width:50%;display:flex;flex-direction:column;gap:4px;flex-shrink:0}
-  .open-c .li{background:#fff;height:44px;display:flex;align-items:center;gap:4px;padding:12px;cursor:pointer;transition:background .2s}
-  .open-c .li:hover{background:var(--secondary-bg)}
-  .open-c .li .row{flex:1;min-width:0;display:flex;align-items:center;gap:4px}
-  .open-c .li .dash{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
-  .open-c .li .dash::before{content:"";width:8px;height:2px;background:#2e3c4b}
-  .open-c .li .mid{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
-  .open-c .li .nm{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--sec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .open-c .li .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px}
-  .open-c .li .op{width:20px;height:20px;flex-shrink:0;color:var(--sec)}
+  /* ---- title + (hover) sub-menu, placed right under the number ---- */
+  .p-foot{position:relative;z-index:2;margin-top:22px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .p-title{display:flex;flex-direction:column;gap:6px}
+  .p-title .ko{font-family:var(--suit);font-weight:800;font-size:22px;line-height:1.25;letter-spacing:-.44px;color:inherit;word-break:keep-all}
+  .p-title .en{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.3;letter-spacing:-.28px;opacity:.55}
+  .panel:hover .p-title{text-shadow:0 2px 18px rgba(0,0,0,.45)}
 
-  /* ---- CLOSED state content ---- */
-  .closed-c{position:absolute;left:0;right:0;bottom:0;padding:40px 10px;
-    opacity:1;transition:opacity .4s var(--ease)}
-  .panel.open .closed-c{opacity:0;pointer-events:none}
-  .closed-c .bar{border-top:1px solid var(--on-white-90);padding-top:24px;display:flex;justify-content:center}
-  .closed-c .bar p{width:121px;text-align:center;font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--sec)}
+  /* ---- sub-menu: pinned to the bottom, hidden by default, revealed on hover ---- */
+  /* fills to the panel's 27px side padding, matching the 27px bottom padding (uniform frame) */
+  .p-lists{position:relative;z-index:2;margin-top:auto;display:flex;flex-direction:column;gap:4px;
+    opacity:0;transform:translateY(10px);max-height:0;overflow:hidden;
+    transition:opacity .4s var(--ease) .05s,transform .4s var(--ease) .05s,max-height .5s var(--ease)}
+  .panel:hover .p-lists{opacity:1;transform:none;max-height:220px}
+  .li{background:rgba(255,255,255,.08);height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;
+    border:1px solid rgba(255,255,255,.14)}
+  .li .dot{width:4px;height:4px;border-radius:50%;background:var(--brand-2);flex-shrink:0;margin-right:4px}
+  .li .nm{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .li .tag{margin-left:auto;flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:1px 8px;font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px}
 
   .mnote{display:none}
   @media(max-width:900px){
-    .open-c .title .en{font-size:36px}
-    .open-c .li .nm{font-size:18px}
+    .pnum .n{font-size:24px}
+    .p-title .ko{font-size:16px}
   }
   @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:50;display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
+
+  /* ---- cross-document view transitions (Figma Smart Animate–style morph) ---- */
+  @view-transition{navigation:auto}
+  .subgnb{view-transition-name:apro-subgnb}
+
+  /* ---- calm, gentle view-transition motion + leftward section slide ---- */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){
+    animation-duration:.75s;
+    animation-timing-function:cubic-bezier(.4,0,.2,1);
+  }
+  ::view-transition-old(root){ animation-name:apro-slide-out-left }
+  ::view-transition-new(root){ animation-name:apro-slide-in-right }
+  @keyframes apro-slide-out-left{ to{ transform:translateX(-5vw); opacity:0 } }
+  @keyframes apro-slide-in-right{ from{ transform:translateX(5vw); opacity:0 } }
 </style>
 </head>
 <body>
@@ -120,168 +122,89 @@
 
 <!-- ===================== BUSINESS CAROUSEL ===================== -->
 <section class="bizpage">
-  <div class="bg">
-    <img class="bgimg active" data-bg="battery" src="../assets/%5BCarousel%5D%20Business-이차전지.png" alt="이차전지 생산 클린룸 · Formation 설비" />
-    <img class="bgimg" data-bg="ess" src="../assets/%5BCarousel%5D%20Business-ESS.png" alt="" />
-    <img class="bgimg" data-bg="empty" src="../assets/%5BCarousel%5D%20Business-빈배경.png" alt="" />
-  </div>
-
   <div class="carousel">
 
     <!-- 01 · 이차전지 -->
-    <article class="panel open" data-idx="01">
-      <div class="open-c">
-        <div class="headlines">
-          <div class="pagen">
-            <span class="biz">Business</span>
-            <span class="num"><span class="cur">01</span><span class="tot">/05</span></span>
-          </div>
-          <div class="title">
-            <p class="en">Rechargeable Battery</p>
-            <p class="ko">이차전지</p>
-          </div>
-        </div>
-        <div class="lists">
-          <a class="li" href="#">
-            <div class="row">
-              <span class="dash"></span>
-              <div class="mid"><span class="nm">설비</span></div>
-              <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </a>
-          <a class="li" href="#">
-            <div class="row">
-              <span class="dash"></span>
-              <div class="mid"><span class="nm">소재 | 머티리얼즈</span><span class="tag">계열사</span></div>
-              <svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </a>
-        </div>
+    <a class="panel" data-idx="01" href="business-bat-list.html">
+      <div class="pnum"><span class="n">01</span></div>
+      <div class="obj-wrap"><img class="obj" src="../assets/img-이차전지.png" alt="이차전지 생산 설비" /></div>
+      <div class="p-foot">
+        <div class="p-title"><p class="ko">이차전지</p><p class="en">Rechargeable Battery</p></div>
       </div>
-      <div class="closed-c"><div class="bar"><p>Rechargeable Battery</p></div></div>
-    </article>
+      <div class="p-lists">
+        <span class="li"><span class="dot"></span><span class="nm">설비</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">소재 | 머티리얼즈</span><span class="tag">계열사</span></span>
+      </div>
+    </a>
 
-    <!-- 02 · 에너지저장시스템 -->
-    <article class="panel" data-idx="02">
-      <div class="open-c">
-        <div class="headlines">
-          <div class="pagen">
-            <span class="biz">Business</span>
-            <span class="num"><span class="cur">02</span><span class="tot">/05</span></span>
-          </div>
-          <div class="title">
-            <p class="en">ESS : Energy Storage Systems</p>
-            <p class="ko">에너지저장시스템</p>
-          </div>
-        </div>
-        <div class="lists">
-          <a class="li" href="business-ess.html"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">배터리 에너지 저장 시스템</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">무인 이동체 전원 시스템</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">무정전 전원 장치</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-        </div>
+    <!-- 02 · 에너지 저장 시스템 -->
+    <a class="panel" data-idx="02" href="business-ess-list.html">
+      <div class="pnum"><span class="n">02</span></div>
+      <div class="obj-wrap"><img class="obj" src="../assets/img-에너지저장.png" alt="에너지 저장 시스템" /></div>
+      <div class="p-foot">
+        <div class="p-title"><p class="ko">에너지 저장 시스템</p><p class="en">ESS : Energy Storage Systems</p></div>
       </div>
-      <div class="closed-c"><div class="bar"><p>ESS : Energy Storage Systems</p></div></div>
-    </article>
+      <div class="p-lists">
+        <span class="li"><span class="dot"></span><span class="nm">배터리 에너지 저장 시스템</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">무인 이동체 전원 시스템</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">무정전 전원 장치</span></span>
+      </div>
+    </a>
 
     <!-- 03 · 화합물 GaN 반도체 -->
-    <article class="panel" data-idx="03">
-      <div class="open-c">
-        <div class="headlines">
-          <div class="pagen">
-            <span class="biz">Business</span>
-            <span class="num"><span class="cur">03</span><span class="tot">/05</span></span>
-          </div>
-          <div class="title">
-            <p class="en">Compound GaN Semiconductors</p>
-            <p class="ko">화합물 GaN 반도체</p>
-          </div>
-        </div>
-        <div class="lists">
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">Epi-Wafer</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">GaN Device</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">에이프로 세미콘</span><span class="tag">계열사</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-        </div>
+    <a class="panel" data-idx="03" href="business-gan-list.html">
+      <div class="pnum"><span class="n">03</span></div>
+      <div class="obj-wrap"><img class="obj" src="../assets/img-GaN.png" alt="화합물 GaN 반도체 장비" /></div>
+      <div class="p-foot">
+        <div class="p-title"><p class="ko">화합물 GaN 반도체</p><p class="en">Compound GaN Semiconductors</p></div>
       </div>
-      <div class="closed-c"><div class="bar"><p>Compound GaN Semiconductors</p></div></div>
-    </article>
+      <div class="p-lists">
+        <span class="li"><span class="dot"></span><span class="nm">Epi-Wafer</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">GaN Device</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">에이프로 세미콘</span><span class="tag">계열사</span></span>
+      </div>
+    </a>
 
     <!-- 04 · 산업 안전 진단 로봇 솔루션 -->
-    <article class="panel" data-idx="04">
-      <div class="open-c">
-        <div class="headlines">
-          <div class="pagen">
-            <span class="biz">Business</span>
-            <span class="num"><span class="cur">04</span><span class="tot">/05</span></span>
-          </div>
-          <div class="title">
-            <p class="en">Industrial Safety Inspection Robot Solution</p>
-            <p class="ko">산업 안전 진단 로봇 솔루션</p>
-          </div>
-        </div>
-        <div class="lists">
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">산업 안전 진단 플랫폼</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">산업 안전 진단 페이로드</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-        </div>
+    <a class="panel" data-idx="04" href="business-robot-list.html">
+      <div class="pnum"><span class="n">04</span></div>
+      <div class="obj-wrap"><img class="obj" src="../assets/img-산업안전.png" alt="산업 안전 진단 로봇" /></div>
+      <div class="p-foot">
+        <div class="p-title"><p class="ko">산업 안전 진단 로봇 솔루션</p><p class="en">Industrial Safety Inspection Robot Solution</p></div>
       </div>
-      <div class="closed-c"><div class="bar"><p>Industrial Safety Inspection Robot Solution</p></div></div>
-    </article>
+      <div class="p-lists">
+        <span class="li"><span class="dot"></span><span class="nm">산업 안전 진단 플랫폼</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">산업 안전 진단 페이로드</span></span>
+      </div>
+    </a>
 
     <!-- 05 · 에너지 인프라 솔루션 -->
-    <article class="panel" data-idx="05">
-      <div class="open-c">
-        <div class="headlines">
-          <div class="pagen">
-            <span class="biz">Business</span>
-            <span class="num"><span class="cur">05</span><span class="tot">/05</span></span>
-          </div>
-          <div class="title">
-            <p class="en">Energy Infrastructure Solutions</p>
-            <p class="ko">에너지 인프라 솔루션</p>
-          </div>
-        </div>
-        <div class="lists">
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">전기자동차 충전 솔루션</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-          <a class="li" href="#"><div class="row"><span class="dash"></span><div class="mid"><span class="nm">배터리 전주기 진단 솔루션</span></div><svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
-        </div>
+    <a class="panel" data-idx="05" href="business-infra-list.html">
+      <div class="pnum"><span class="n">05</span></div>
+      <div class="obj-wrap"><img class="obj" src="../assets/img-에너지인프라.png" alt="에너지 인프라 솔루션" /></div>
+      <div class="p-foot">
+        <div class="p-title"><p class="ko">에너지 인프라 솔루션</p><p class="en">Energy Infrastructure Solutions</p></div>
       </div>
-      <div class="closed-c"><div class="bar"><p>Energy Infrastructure Solutions</p></div></div>
-    </article>
+      <div class="p-lists">
+        <span class="li"><span class="dot"></span><span class="nm">전기자동차 충전 솔루션</span></span>
+        <span class="li"><span class="dot"></span><span class="nm">배터리 전주기 진단 솔루션</span></span>
+      </div>
+    </a>
 
   </div>
 </section>
 
 <div class="mnote">데스크톱(1280px 이상) 기준으로 디자인된 시안입니다.</div>
 
+
 <script>
-  var panels = document.querySelectorAll('.panel');
-  var bgs = document.querySelectorAll('.bgimg');
-
-  // 01 이차전지 → battery, 02 에너지저장시스템 → ess, 그 외 → empty(빈배경)
-  function bgKeyFor(idx){
-    if(idx === '01'){ return 'battery'; }
-    if(idx === '02'){ return 'ess'; }
-    return 'empty';
-  }
-  function setBg(idx){
-    var key = bgKeyFor(idx);
-    bgs.forEach(function(im){ im.classList.toggle('active', im.getAttribute('data-bg') === key); });
-  }
-
-  panels.forEach(function(p){
-    p.addEventListener('click', function(e){
-      if(p.classList.contains('open')){ return; }
-      // don't hijack clicks on the (already-open) list links
-      var cur = document.querySelector('.panel.open');
-      if(cur){ cur.classList.remove('open'); }
-      p.classList.add('open');
-      setBg(p.getAttribute('data-idx'));
+  /* morph the clicked business panel (number + title) into the list page's left panel */
+  document.querySelectorAll('.panel').forEach(function(p){
+    p.addEventListener('click', function(){
+      var n = p.querySelector('.pnum .n'); if(n) n.style.viewTransitionName = 'apro-panel-num';
+      var t = p.querySelector('.p-title'); if(t) t.style.viewTransitionName = 'apro-panel-title';
     });
   });
-
-  // sync background with the panel that is open on load
-  var initial = document.querySelector('.panel.open');
-  if(initial){ setBg(initial.getAttribute('data-idx')); }
 </script>
-
 </body>
 </html>
