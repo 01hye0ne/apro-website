@@ -197,9 +197,16 @@
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
   /* bottom white blur — fades the carousel base into the page (only during the Business phase) */
   .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:100px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
-    background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.32) 60%,rgba(255,255,255,.7) 100%);
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 55%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 55%);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+    background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.16) 62%,rgba(255,255,255,.46) 100%);
+    backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%)}
+  /* deeper blur weighted to the lower half → blur strength grows toward the very bottom */
+  .who-sticky .biz-botfade::before{content:"";position:absolute;inset:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 52%,#000 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 52%,#000 100%)}
+  /* faint grain, concentrated near the base */
+  .who-sticky .biz-botfade::after{content:"";position:absolute;inset:0;opacity:.38;mix-blend-mode:soft-light;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 42%,#000 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 42%,#000 100%)}
   .who-sticky[data-phase="biz"] .biz-botfade{opacity:1}
 
   /* Business coverflow styles (scoped to .v2biz — which is now the .who-cards wrapper) */
@@ -269,17 +276,12 @@
   .v2biz .biz-lists .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 7px;font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px;white-space:nowrap}
   .v2biz .biz-lists .cnt{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--brand-2);color:rgba(255,255,255,.9);font-family:var(--rc);font-size:13px;line-height:1;display:none;place-content:center}
   .v2biz .biz-lists .op{width:18px;height:18px;flex-shrink:0;color:#445464;transition:color .25s}
-  /* default: first row active (dark); hovering the panel moves the highlight to the hovered row */
-  .v2biz .biz-lists .li.active,.v2biz .biz-lists .li:hover{background:var(--g950)}
-  .v2biz .biz-lists .li.active .nm,.v2biz .biz-lists .li:hover .nm{color:#fff}
-  .v2biz .biz-lists .li.active .dash::before,.v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
-  .v2biz .biz-lists .li.active .op,.v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
-  .v2biz .biz-lists .li.active .cnt,.v2biz .biz-lists .li:hover .cnt{display:grid}
-  .v2biz .biz-lists:hover .li.active:not(:hover){background:#fff}
-  .v2biz .biz-lists:hover .li.active:not(:hover) .nm{color:#445464}
-  .v2biz .biz-lists:hover .li.active:not(:hover) .dash::before{background:#2e3c4b}
-  .v2biz .biz-lists:hover .li.active:not(:hover) .op{color:#445464}
-  .v2biz .biz-lists:hover .li.active:not(:hover) .cnt{display:none}
+  /* every row sits in the default (light) state; only the hovered row darkens and reveals its badge */
+  .v2biz .biz-lists .li:hover{background:var(--g950)}
+  .v2biz .biz-lists .li:hover .nm{color:#fff}
+  .v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
+  .v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
+  .v2biz .biz-lists .li:hover .cnt{display:grid}
 
   .v2biz .biz-lists.fade{opacity:0}
   @media (prefers-reduced-motion: reduce){
@@ -825,7 +827,7 @@
       var tag = l.sub ? '<span class="tag">계열사</span>' : '';
       var n = (l.tags || []).length;
       var cnt = n ? '<span class="cnt">'+n+'</span>' : '';
-      var cls = 'li' + (idx === 0 ? ' active' : '');   // first row highlighted by default (per Figma)
+      var cls = 'li';   // every row starts in the default (light) state; hover highlights
       var inner = '<span class="dash"></span><span class="nm">'+esc(l.nm)+'</span>'+tag+cnt+OP;
       return l.href ? '<a class="'+cls+'" href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'">'+inner+'</div>';
     }
