@@ -196,7 +196,7 @@
   .who-cards.on{opacity:1}
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
   /* bottom white blur — fades the carousel base into the page (only during the Business phase) */
-  .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:100px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
+  .who-sticky .biz-botfade{position:absolute;left:0;bottom:60px;width:100%;height:100px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
     background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.16) 62%,rgba(255,255,255,.46) 100%);
     backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);
     -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%)}
@@ -822,8 +822,8 @@
     var SLOT=[];
     function computeSlots(){
       var vw = collage.clientWidth || window.innerWidth;
-      // baseline sits the carousel flush with the window bottom (max(vh,900)/2 + half of the 900 stage)
-      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 450);
+      // carousel baseline sits 60px above the window bottom (half of the 900 stage, minus a 60px lift)
+      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 390);
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
       if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
       var HC = Math.round(cW*9/16);   // centre image 16:9 (height follows its width)
