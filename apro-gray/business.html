@@ -62,15 +62,21 @@
   .obj{position:absolute;top:50%;right:0;width:146%;height:auto;max-width:none;
     transform:translate(46%,-50%);transition:transform .55s var(--ease),width .55s var(--ease)}
   .panel:hover .obj{transform:translate(43%,-50%);width:150%}
+  /* 04 산업안전: full-bleed image — shrink to match the visual ratio of 01·02·03 */
+  .panel[data-idx="04"] .obj{width:116%;transform:translate(28%,-50%)}
+  .panel[data-idx="04"]:hover .obj{width:120%;transform:translate(25%,-50%)}
+  /* 05 에너지 인프라: portrait full-bleed image — shrink to match 01·02·03 */
+  .panel[data-idx="05"] .obj{width:100%;transform:translate(28%,-50%)}
+  .panel[data-idx="05"]:hover .obj{width:104%;transform:translate(25%,-50%)}
 
   /* ---- number (top) ---- */
   .pnum{position:relative;z-index:2;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-  .pnum .n{font-family:var(--rc);font-weight:700;font-size:30px;line-height:1;letter-spacing:1px;color:inherit}
+  .pnum .n{font-family:var(--rc);font-weight:700;font-size:26px;line-height:1;letter-spacing:1px;color:inherit}
 
   /* ---- title + (hover) sub-menu, placed right under the number ---- */
   .p-foot{position:relative;z-index:2;margin-top:22px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center}
   .p-title{display:flex;flex-direction:column;gap:6px}
-  .p-title .ko{font-family:var(--suit);font-weight:800;font-size:22px;line-height:1.25;letter-spacing:-.44px;color:inherit;word-break:keep-all}
+  .p-title .ko{font-family:var(--suit);font-weight:800;font-size:27px;line-height:1.25;letter-spacing:-.44px;color:inherit;word-break:keep-all}
   .p-title .en{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.3;letter-spacing:-.28px;opacity:.55}
   .panel:hover .p-title{text-shadow:0 2px 18px rgba(0,0,0,.45)}
 

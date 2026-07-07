@@ -212,16 +212,28 @@
     padding:0 24px;transition:opacity .45s var(--ease);opacity:1}
   .biz2-scenewrap.swapping{opacity:0}
   .biz2-figure{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;
-    width:min(640px,54vw);max-height:100%}
-  .biz2-figure .scene{position:relative;z-index:2;width:100%;height:auto;max-height:100%;object-fit:contain;display:block;pointer-events:none}
-  .biz2-figure .shadow{position:absolute;z-index:1;left:50%;bottom:2%;transform:translateX(-50%);width:96%;height:auto;opacity:.9;pointer-events:none}
+    width:100%;height:100%;padding-bottom:2%}
+  .biz2-figure .scene{position:relative;z-index:2;width:auto;height:auto;max-width:min(760px,60vw);max-height:80%;object-fit:contain;display:block;pointer-events:none}
+  /* per-area size tuning: differing image proportions are normalized to even
+     visual weight — wide images sit lower/shorter, the tall charger taller+narrower */
+  .biz2-figure[data-fig="bat"]   .scene{max-height:74%}
+  .biz2-figure[data-fig="ess"]   .scene{max-height:80%}
+  .biz2-figure[data-fig="gan"]   .scene{max-height:70%}
+  .biz2-figure[data-fig="robot"] .scene{max-height:82%}
+  .biz2-figure[data-fig="infra"] .scene{max-height:94%;max-width:min(360px,32vw)}
   .biz2-figure.noimg{width:0}                                /* words-only slides: hide the figure box */
-  .biz2-figure.noimg .scene,.biz2-figure.noimg .shadow{display:none}
+  .biz2-figure.noimg .scene{display:none}
   /* product bar */
   .biz2-bottom{flex-shrink:0;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:24px;display:flex;gap:12px;align-items:stretch}
-  .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;gap:16px}
-  .biz2-major .biz2-title{flex:1;display:flex;align-items:flex-end;padding:0 0 4px;font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
-  .biz2-major .biz2-bar{height:6px;width:100%;background:var(--border-g);position:relative;overflow:hidden}
+  .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end}
+  /* title box height matches the product-card stack on the right (head 36 + body 144 = 180px),
+     so the Korean title's top lines up with the tops of the sub-list cards */
+  .biz2-major .biz2-titlebox{height:180px;display:flex;flex-direction:column;gap:8px}
+  .biz2-major .biz2-title{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
+  .biz2-major .biz2-en{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.35;letter-spacing:-.32px;color:var(--sec-text)}
+  /* margin-top:auto pushes the gauge bar to the bottom of the 180px box, so it lines up
+     with the bottom of the sub-list cards on the right */
+  .biz2-major .biz2-bar{height:6px;width:100%;background:var(--border-g);position:relative;overflow:hidden;margin-top:auto}
   .biz2-major .biz2-bar i{position:absolute;left:0;top:0;height:100%;width:100%;background:var(--brand);transform:scaleX(0);transform-origin:left center}
   @keyframes bizfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   .biz2-minor{flex:1;min-width:0;display:flex;gap:13px;align-items:stretch}
@@ -459,16 +471,18 @@
     </div>
 
     <div class="biz2-scenewrap" id="bizScene">
-      <div class="biz2-figure" id="bizFigure">
-        <img class="shadow" src="../assets/biz-shadow.png" alt="" aria-hidden="true" />
-        <img class="scene" id="bizSceneImg" src="../assets/biz-battery.png" alt="사업영역 이미지" />
+      <div class="biz2-figure" id="bizFigure" data-fig="bat">
+        <img class="scene" id="bizSceneImg" src="../assets/img-이차전지.png" alt="사업영역 이미지" />
       </div>
     </div>
 
     <div class="biz2-bottom">
       <div class="biz2-major">
-        <p class="biz2-title" id="bizTitle">이차전지</p>
-        <div class="biz2-bar"><i></i></div>
+        <div class="biz2-titlebox">
+          <p class="biz2-title" id="bizTitle">이차전지</p>
+          <p class="biz2-en" id="bizEn">Rechargeable Battery</p>
+          <div class="biz2-bar"><i></i></div>
+        </div>
       </div>
 
       <div class="biz2-minor" id="bizMinor">
@@ -861,29 +875,29 @@
   (function(){
     var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var data=[
-      {kor:'이차전지', img:'../assets/biz-battery.png', w1:'Rechargeable', w2:'Battery',
+      {kor:'이차전지', img:'../assets/img-이차전지.png', fig:'bat', w1:'Rechargeable', w2:'Battery',
        cards:[
          {t:'설비', items:['파우치형','원통형','각형','계측 장비']},
          {t:'소재 | 머티리얼즈', sub:true, items:['FW CNT&SW CNT','LiFSI 전해염']}
        ]},
-      {kor:'에너지저장시스템', img:null, w1:'Battery Energy', w2:'Storage System',
+      {kor:'에너지저장시스템', img:'../assets/img-에너지저장.png', fig:'ess', w1:'Battery Energy', w2:'Storage System',
        cards:[
          {t:'배터리 에너지 저장 시스템', items:['모듈','팩','컨테이너']},
          {t:'무인 이동체 전원 시스템', items:['우주 발사체','무인수상정','무인 지상 차량']},
          {t:'무정전 전원 장치', items:['무정전 전원 장치']}
        ]},
-      {kor:'화합물 GaN 반도체', img:null, w1:'Compound GaN', w2:'Semiconductors',
+      {kor:'화합물 GaN 반도체', img:'../assets/img-GaN.png', fig:'gan', w1:'Compound GaN', w2:'Semiconductors',
        cards:[
          {t:'Epi-Wafer', items:['Epi-Wafer']},
          {t:'GaN Device', items:['GaN Device']},
          {t:'에이프로 세미콘', sub:true, items:['에이프로 세미콘']}
        ]},
-      {kor:'산업 안전 진단 로봇 솔루션', img:null, w1:'Industrial Safety', w2:'Inspection Robot Solution',
+      {kor:'산업 안전 진단 로봇 솔루션', img:'../assets/img-산업안전.png', fig:'robot', w1:'Industrial Safety', w2:'Inspection Robot Solution',
        cards:[
          {t:'산업 안전 진단 플랫폼', items:['산업 안전 진단 플랫폼']},
          {t:'산업 안전 진단 페이로드', items:['ECOTRON 제어기 국내 총판']}
        ]},
-      {kor:'에너지 인프라 솔루션', img:null, w1:'Energy Infrastructure', w2:'Solutions',
+      {kor:'에너지 인프라 솔루션', img:'../assets/img-에너지인프라.png', fig:'infra', w1:'Energy Infrastructure', w2:'Solutions',
        cards:[
          {t:'전기자동차 충전 솔루션', items:['전기자동차 충전 솔루션']},
          {t:'배터리 전주기 진단 솔루션', items:['배터리 전주기 진단 솔루션']}
@@ -891,7 +905,7 @@
     ];
     var wrap=document.getElementById('bizScene'),figure=document.getElementById('bizFigure'),
         img=document.getElementById('bizSceneImg'),
-        title=document.getElementById('bizTitle'),minor=document.getElementById('bizMinor'),
+        title=document.getElementById('bizTitle'),enT=document.getElementById('bizEn'),minor=document.getElementById('bizMinor'),
         cats=Array.prototype.slice.call(document.querySelectorAll('#bizCats .cat'));
     var n=data.length,cur=0,swapT=null,autoT=null,AUTO=5000;
     var bar=document.querySelector('.biz2 .biz2-bar i');
@@ -914,9 +928,11 @@
              '<span class="blank"></span></div><div class="pcard-body">'+items+'</div></div>';
     }
     function paint(d){
+      figure.setAttribute('data-fig', d.fig||'');
       if(d.img){ figure.classList.remove('noimg'); img.src=d.img; }
       else { figure.classList.add('noimg'); img.removeAttribute('src'); }
       title.textContent=d.kor;
+      if(enT) enT.textContent=(d.w1?d.w1+' ':'')+(d.w2||'');   // small English title under the Korean one
       minor.innerHTML=d.cards.map(cardHTML).join('');
     }
     function show(i){

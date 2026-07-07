@@ -141,34 +141,159 @@
 
 <script>
   var AREAS=[
-    {kor:'이차전지', en:'Rechargeable Battery', groups:[
-      {name:'설비', products:[{n:'파우치형'},{n:'원통형'},{n:'각형'},{n:'계측 장비'}]},
-      {name:'소재 | 머티리얼즈', products:[{n:'FW CNT&SW CNT'},{n:'LiFSI 전해염'}]}
-    ]},
-    {kor:'에너지저장시스템', en:'ESS : Energy Storage Systems', groups:[
-      {name:'배터리 에너지 저장 시스템', products:[
-        {n:'배터리 에너지 저장 시스템', en:'BESS: Battery Energy Storage System', img:'../assets/sub-ess.png',
-         desc:[
-           '에너지의 효율적 활용을 돕는 ESS는 고객의 환경에 맞춘 최적의 규격과 다양한 배터리 셀 설계를 지원하는 맞춤형 에너지 저장 솔루션입니다.',
-           'A-PRO의 ESS는 국제 안전 규격을 철저히 준수한 뛰어난 내구성과 고에너지 성능을 바탕으로, 언제 어디서나 안심하고 사용할 수 있는 탁월한 신뢰성을 보장합니다.',
-           '고도화된 BMS와 BCP·BPU 시스템을 통해 내부 온도와 전압을 정밀하게 제어하고, 실시간 모니터링 및 데이터 분석이 가능하여 운영 효율을 극대화합니다.'
-         ]}
+    {kor:'이차전지', en:'Rechargeable Battery', img:'../assets/biz-battery.png', groups:[
+      {name:'설비', products:[
+        {n:'충방전기', en:'Formation', desc:[
+          '2차전지 활성화 공정에서 충전/방전을 위해 쓰이는 장비',
+          '배터리 Cell을 충방전하여 전기적 특성 부여',
+          '다채널 동시 충방전 공정 및 시험 장비'
+        ]},
+        {n:'DCIR', en:'DC Internal Resistance Tester', desc:[
+          '작업 모니터링, 작업 스케줄 관리, 동작 센서 상태 관리, Log Data 분석',
+          '짧은 시간 동안 전류를 인가하여 직류 저항 값 측정',
+          '충전, 방전, 저항 측정'
+        ]},
+        {n:'고온가압 충방전기', en:'High Temperature · Pressure · Jig Formation', desc:[
+          '당사에서 국내 최초로 양산화에 성공한 Jig Formation',
+          '1차 충전 시 Temperature + Pressure + Formation을 통합하여 효율을 높인 충방전기',
+          '완성된 파우치 Cell에 열과 압력을 가한 상태로 충전과 OCV 측정'
+        ]},
+        {n:'OCV', en:'Open Circuit Voltage Tester', desc:[
+          '개방회로전압(Open Circuit Voltage) 측정',
+          '미세 단락 여부 측정'
+        ]},
+        {n:'IR-OCV', en:'Internal Resistance & Open Circuit Voltage Tester', desc:[
+          '2차전지 및 Capacitor의 개방회로 전압과 내부저항을 측정하여 내부 특성 파악이 가능한 장비',
+          '배터리 양품/불량 판정을 위한 주요 등급 분류 설비'
+        ]},
+        {n:'Selector', en:'Selector', desc:[
+          '활성화 공정을 완료한 뒤 2차전지의 양품과 불량을 구분하여 분류된 장소로 이동시켜주는 물류 장비',
+          '충방전 및 OCV 측정 Data 기준으로 결정된 Cell 등급 판정 값을 상위 IT System으로부터 수신',
+          '불량 Cell 추출하여 재생 및 폐기 구분 후 Buffer 적재'
+        ]},
+        {n:'DEGAS', en:'DEGAS', desc:[
+          '2차전지 활성화 공정에서 충·방전을 반복하는 과정에서 화학 반응으로 발생한 Gas를 제거하는 장비'
+        ]},
+        {n:'DSF/EOL', en:'Double Side Folding · End Of Line', desc:[
+          '활성화 Tray의 Degassed Cell을 투입해 Side Sealing면을 Cutting·Folding',
+          'Cell의 특성(두께, 치수, W형상, 무게, OCV/IR)을 측정하고 Tray에 적재하는 설비'
+        ]},
+        {n:'Cycle Tester (Cell)', en:'Cycle Tester (Cell)', desc:[
+          '전지의 장기 특성 시험이 가능한 충/방전기로 배터리 특성 및 사이클 수명 등을 테스트하는 장비'
+        ]},
+        {n:'Cycle Tester (Module)', en:'Cycle Tester (Module)', desc:[
+          '배터리 모듈 및 팩의 장기 특성 시험이 가능한 고정밀 충/방전기',
+          '다양한 주행 시뮬레이션 및 수명 테스트를 수행하는 장비'
+        ]}
       ]},
-      {name:'무인 이동체 전원 시스템', products:[{n:'무인 이동체 전원 시스템'},{n:'우주 발사체'},{n:'무인수상정'},{n:'무인 지상 차량'}]},
-      {name:'무정전 전원 장치', products:[{n:'무정전 전원 장치'}]}
+      {name:'소재 | 머티리얼즈', products:[
+        {n:'소수벽 & 단일벽 탄소나노튜브', en:'FW CNT & SW CNT', desc:[
+          '에이프로머티리얼즈의 차세대 FW CNT & SW CNT 기술이 배터리의 한계를 바꿉니다.',
+          '고성능 단일벽·소수벽 탄소나노튜브의 완벽한 전도 네트워크는 배터리 수명을 늘리고 충전 시간을 획기적으로 단축합니다.',
+          '미래 에너지를 완성하는 가장 완벽한 선택, 에이프로머티리얼즈입니다.'
+        ]},
+        {n:'LiFSI 전해염', en:'LiFSI Electrolytic Salt', desc:[
+          '미래 에너지 시장을 선도하는 에이프로머티리얼즈의 핵심 소재, LiFSI 전해염입니다.',
+          '탁월한 이온 이동 속도로 저항을 낮추고 충전 시간을 획기적으로 단축합니다.',
+          '거친 환경에서도 변함없는 안정성을 발휘하며 배터리 성능을 완성하는 차세대 리튬염 기술입니다.'
+        ]}
+      ]}
     ]},
-    {kor:'화합물 GaN 반도체', en:'Compound GaN Semiconductors', groups:[
-      {name:'Epi-Wafer', products:[{n:'Epi-Wafer'}]},
-      {name:'GaN Device', products:[{n:'GaN Device'}]},
-      {name:'에이프로 세미콘', products:[{n:'에이프로 세미콘'}]}
+    {kor:'에너지저장시스템', en:'ESS : Energy Storage Systems', img:'../assets/sub-ess.png', groups:[
+      {name:'배터리 에너지 저장 시스템', products:[
+        {n:'배터리 에너지 저장 시스템', en:'BESS: Battery Energy Storage System', desc:[
+          '에너지의 효율적 활용을 돕는 ESS는 고객의 환경에 맞춘 최적의 규격과 다양한 배터리 셀 설계를 지원하는 맞춤형 에너지 저장 솔루션입니다.',
+          'A-PRO의 ESS는 국제 안전 규격을 철저히 준수한 뛰어난 내구성과 고에너지 성능을 바탕으로, 언제 어디서나 안심하고 사용할 수 있는 탁월한 신뢰성을 보장합니다.',
+          '고도화된 BMS와 BCP·BPU 시스템을 통해 내부 온도와 전압을 정밀하게 제어하고, 실시간 모니터링 및 데이터 분석이 가능하여 운영 효율을 극대화합니다.'
+        ]}
+      ]},
+      {name:'무인 이동체 전원 시스템', products:[
+        {n:'무인 이동체 전원 시스템', en:'Unmanned Vehicle Power System Solution', desc:[
+          '에이프로의 무인 이동체 전원 시스템은 구동 배터리부터 전력 변환·관리까지 UGV와 로봇 플랫폼의 전원 구조 전체를 포괄하는 맞춤형 솔루션입니다.',
+          '배터리 바이패스 기능으로 운용 중 배터리 이상 시에도 최소 전원을 유지해 안전한 복귀와 임무 신뢰성을 보장합니다.',
+          '상태 모니터링과 안전 제어 로직을 통합해 임무 지속성이 강화된 무인 이동체 플랫폼을 구현합니다.'
+        ]},
+        {n:'우주 발사체', en:'Space Launch Vehicle', desc:[
+          '우주발사체 기술은 에너지 밀도를 개선한 하이브리드 배터리 기술을 통해 소형 나노 발사체 배터리 팩을 탑재하여 선도적인 우주 솔루션을 제공합니다.',
+          '내진동·내충격 성능과 함께 저비용·저중량 기술 개발을 바탕으로 발사체 경량화 효율을 극대화했습니다.',
+          'A-PRO의 제어시스템 기술은 급격한 온도 변화에도 장기간 궤도 운용의 안정성을 확보했으며, 우주 환경에서도 전력 시스템의 높은 안전성을 보장합니다.'
+        ]},
+        {n:'무인수상정', en:'USV : Unmanned Surface Vehicle', desc:[
+          '무인수상정 기술은 리튬 및 LFP 기반의 초고출력·초경량 배터리 팩과 제어 모듈을 탑재하고, 위성 통신을 활용해 원격 조종 및 정밀한 영상 구현이 가능한 차세대 해양 솔루션입니다.',
+          '방수·내식성 기술을 적용해 해수를 완벽히 차단하고 부식을 방지하며, 진동·랜딩 등 외부 충격으로부터 시스템을 안전하게 보호하는 전용 설계가 반영되어 있습니다.',
+          '스마트 BMS를 통한 자동 복귀와 국제 규격의 사이버 보안 모듈까지 결합되어 독보적인 임무 안정성을 제공합니다.'
+        ]},
+        {n:'무인 지상 차량', en:'UGV : Unmanned Ground Vehicle', desc:[
+          '무인지상차량 기술은 리튬 및 LFP 기반의 초고출력·초경량 배터리 팩과 제어 모듈을 적용하고, 급속 충전으로 다운타임을 최소화하여 압도적인 주행 연속성을 확보한 무인 모빌리티 솔루션입니다.',
+          '고율 방전 및 열적 탄성 기술을 바탕으로 순간적인 고출력 요구에 완벽히 대응합니다.',
+          '극지방·고온 등 극한의 환경에서도 흔들림 없는 안정적인 운용이 가능합니다.'
+        ]}
+      ]},
+      {name:'무정전 전원 장치', products:[
+        {n:'무정전 전원 장치', en:'UPS: Uninterruptible Power Supply', desc:[
+          '안정적인 전력 공급을 보장하는 UPS는 BMS·BCP 기반의 초고출력 모듈과 개별 셀 단위 전압·온도 밸런싱 제어로 시스템 효율을 극대화한 핵심 전력 솔루션입니다.',
+          'A-PRO의 UPS는 배터리 화재에 대비해 내부 온도를 완벽히 제어하여 열 폭주와 전이를 원천 방지합니다.',
+          '배터리 수명을 획기적으로 개선하고 장기적인 안정성을 확보했습니다.'
+        ]}
+      ]}
     ]},
-    {kor:'산업 안전 진단 로봇 솔루션', en:'Industrial Safety Inspection Robot Solution', groups:[
-      {name:'산업 안전 진단 플랫폼', products:[{n:'산업 안전 진단 플랫폼'}]},
-      {name:'산업 안전 진단 페이로드', products:[{n:'ECOTRON 제어기 국내 총판'}]}
+    {kor:'화합물 GaN 반도체', en:'Compound GaN Semiconductors', img:'../assets/img-GaN.png', groups:[
+      {name:'Epi-Wafer', products:[
+        {n:'Epi-Wafer', en:'8-inch GaN-on-Si Epi-Wafer', desc:[
+          '고품질 질화갈륨 에피층 성장 기술을 통한 차세대 전력 소자용 소재 공급',
+          '8인치 대면적 웨이퍼 공정 최적화 및 균일도 확보',
+          '전력 변환 손실 최소화를 위한 특화된 결정 구조 설계'
+        ]},
+        {n:'Epi-Wafer 양산설비', en:'Epi-Wafer Mass Production', desc:[
+          'Epi-Wafer 양산 설비',
+          'MOCVD > Aixtron G10',
+          'MOCVD > Veeco Propel'
+        ]}
+      ]},
+      {name:'GaN Device', products:[
+        {n:'GaN Device', en:'8-inch GaN Device', desc:[
+          '고주파 스위칭 특성이 우수한 GaN 소자를 이용한 고효율 전력 변환 기술',
+          'EV 충전기, 신재생 에너지 인버터 등에 최적화된 저손실 소자 라인업',
+          '시스템 전체의 크기 및 무게 절감을 가능하게 하는 혁신적인 전력 반도체'
+        ]}
+      ]},
+      {name:'에이프로 세미콘', products:[
+        {n:'에이프로 세미콘', en:'A-PRO Semicon', desc:[
+          '차세대 전력 반도체 전문 기업 ‘에이프로 세미콘’의 혁신적인 기술과 제품을 만나보세요.'
+        ]}
+      ]}
     ]},
-    {kor:'에너지 인프라 솔루션', en:'Energy Infrastructure Solutions', groups:[
-      {name:'전기자동차 충전 솔루션', products:[{n:'전기자동차 충전 솔루션'}]},
-      {name:'배터리 전주기 진단 솔루션', products:[{n:'배터리 전주기 진단 솔루션'}]}
+    {kor:'산업 안전 진단 로봇 솔루션', en:'Industrial Safety Inspection Robot Solution', img:'../assets/biz-04-robot.png', groups:[
+      {name:'산업 안전 진단 플랫폼', products:[
+        {n:'산업 안전 진단 로봇 솔루션', en:'Industrial Safety Inspection Robot Solution', desc:[
+          '에이프로의 산업 안전 진단 로봇 솔루션 APRO는 이동형 로봇과 AI, 원격 관제를 결합해 위험 구역의 안전 점검을 무인·지능화합니다.',
+          '안전장비 착용 진단, 설비 이상·누출 점검, 열화상·음향 분석 등 6대 핵심 점검을 자율적으로 수행하고 통합 관제로 실시간 모니터링합니다.',
+          '작업자의 위험 노출을 줄이고 점검의 일관성을 높여 선제적이고 스마트한 산업 운영을 지원합니다.'
+        ]}
+      ]},
+      {name:'산업 안전 진단 페이로드', products:[
+        {n:'ECOTRON 제어기 국내 총판', en:'ECOTRON Korea Official Distributor', desc:[
+          '에이프로는 ECOTRON 차량·자율주행 제어기의 국내 총판으로서 VCU, ZCU, EVCC, 자율주행 제어기 등 검증된 제어 솔루션을 공급합니다.',
+          '모든 제품은 ASIL-D 등급 반도체와 ISO 26262 기능안전, MATLAB/Simulink 모델 기반 개발을 지원해 높은 안전성과 개발 효율성을 제공합니다.',
+          '국내 공급과 기술 지원을 통해 전기차·자율주행·무인 이동체·로봇 분야 고객의 제어기 도입을 지원합니다.'
+        ]}
+      ]}
+    ]},
+    {kor:'에너지 인프라 솔루션', en:'Energy Infrastructure Solutions', img:'../assets/biz-05-ev.png', groups:[
+      {name:'전기자동차 충전 솔루션', products:[
+        {n:'전기자동차 충전 솔루션', en:'EV Charging Solution', desc:[
+          '에이프로의 전기자동차 충전 솔루션 PICKLE은 주거용부터 공공·플릿까지 다양한 환경에 대응하는 신뢰성 높은 AC·DC 충전 인프라입니다.',
+          '하드웨어, 제어 소프트웨어, 통신, 안전 기능을 통합하고 원격 운영과 에너지 플랫폼 연계까지 지원합니다.',
+          '전력전자·배터리 시스템 역량을 바탕으로 안전하고 확장 가능한 전기 모빌리티 전환을 이끕니다.'
+        ]}
+      ]},
+      {name:'배터리 전주기 진단 솔루션', products:[
+        {n:'배터리 전주기 진단 솔루션', en:'Battery Lifecycle Diagnostic Solution', desc:[
+          '에이프로의 배터리 전주기 진단 솔루션은 운용부터 사용후배터리 평가까지 배터리의 전 생애주기를 모니터링·진단하는 통합 플랫폼입니다.',
+          'AI 기반 안전·성능 진단으로 이상 징후를 조기에 감지하고, 부분 방전 데이터만으로 성능을 예측해 평가 비용과 시간을 절감합니다.',
+          '충전 인프라와 AI 진단, 생애주기 데이터를 연결해 더 안전하고 지속가능한 배터리 관리를 지원합니다.'
+        ]}
+      ]}
     ]}
   ];
 
@@ -214,8 +339,9 @@
     var p=a.groups[selGi].products[selPi];
     prodName.textContent=p.n;
     if(p.en){ prodEn.textContent=p.en; prodEn.style.display='block'; } else { prodEn.style.display='none'; }
-    if(p.img){ prodImg.src=p.img; prodImg.alt=p.n; prodImg.style.display='block'; prodPh.style.display='none'; }
-    else { prodImg.style.display='none'; prodPh.style.display='flex'; prodPh.textContent=p.n+' — 상세 정보 준비 중'; }
+    var img=p.img||a.img;
+    if(img){ prodImg.src=img; prodImg.alt=p.n; prodImg.style.display='block'; prodPh.style.display='none'; }
+    else { prodImg.style.display='none'; prodPh.style.display='flex'; prodPh.textContent=p.n; }
     var ds=p.desc||['해당 제품의 상세 정보는 준비 중입니다.'];
     prodDesc.innerHTML=ds.map(function(d){return '<div class="li"><span class="dash"></span><p>'+esc(d)+'</p></div>';}).join('');
     prodNo.textContent=pad2(no); prodTot.textContent='/'+pad2(total);
