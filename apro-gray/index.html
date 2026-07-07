@@ -201,62 +201,73 @@
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
 
   /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it */
-  .v2biz .biz-content{position:absolute;left:50%;top:116px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:24px;transition:opacity .5s var(--ease)}
+  .v2biz .biz-content{position:absolute;left:50%;top:96px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:16px;transition:opacity .5s var(--ease)}
 
-  .v2biz .biz-step{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border-g)}
-  .v2biz .biz-step .ttl{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
-  .v2biz .biz-step .num{display:flex;align-items:baseline;font-family:var(--rc);font-size:16px;letter-spacing:-.32px}
-  .v2biz .biz-step .num .reel{display:inline-block;height:16px;overflow:hidden}
-  .v2biz .biz-step .num .reel .col{display:block;transition:transform .5s var(--ease)}
-  .v2biz .biz-step .num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
-  .v2biz .biz-step .num .tot{color:var(--teritary)}
-  .v2biz .biz-step .arrows{flex:1;min-width:0;display:flex;gap:12px;justify-content:flex-end}
-  .v2biz .biz-step .ic{width:24px;height:24px;border:none;background:none;cursor:pointer;display:grid;place-content:center;font-size:18px;color:var(--g900);transition:opacity .2s,transform .22s var(--ease)}
-  .v2biz .biz-step .ic:hover{opacity:.45}
-  .v2biz .biz-step .ic[data-dir="-1"]:hover{transform:translateX(-2px)}
-  .v2biz .biz-step .ic[data-dir="1"]:hover{transform:translateX(2px)}
+  /* Business label bar (full-width underline) */
+  .v2biz .biz-head{display:flex;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border-g)}
+  .v2biz .biz-head .ttl{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
 
-  /* nav + hero are flex columns (stretch to nav height); the lists column is taken OUT of flow (absolute)
-     so its hover expansion never changes the row height — the centred hero stays put. padding-right reserves its space. */
-  .v2biz .biz-row{position:relative;display:flex;gap:12px;align-items:stretch;padding-right:311px}
-  .v2biz .biz-nav{width:298px;flex-shrink:0;display:flex;flex-direction:column;gap:24px;padding:8px 0}
-  .v2biz .biz-nav .nv{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--teritary);opacity:.5;background:none;border:none;text-align:left;padding:0;cursor:pointer;transition:opacity .25s var(--ease),color .25s var(--ease)}
+  /* body holds the centred hero/list column with the nav + pager pinned top-right */
+  .v2biz .biz-body{position:relative;min-height:227px}
+
+  /* top-right: business nav (right-aligned) + up/down pager */
+  .v2biz .biz-side{position:absolute;top:8px;right:0;width:299px;display:flex;gap:12px;align-items:flex-start;justify-content:flex-end}
+  .v2biz .biz-nav{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+  .v2biz .biz-nav .nv{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--teritary);opacity:.5;background:none;border:none;text-align:right;padding:0;cursor:pointer;white-space:nowrap;transition:opacity .25s var(--ease),color .25s var(--ease)}
   .v2biz .biz-nav .nv.on{opacity:1;color:var(--g900);cursor:default}
   .v2biz .biz-nav .nv:hover{opacity:1}
+  .v2biz .biz-side .arrows{display:flex;gap:12px;flex-shrink:0}
+  .v2biz .biz-side .ic{width:24px;height:24px;border:1px solid var(--border-g);background:#fff;cursor:pointer;display:grid;place-content:center;color:var(--g900);transition:background .2s var(--ease),transform .22s var(--ease)}
+  .v2biz .biz-side .ic svg{width:24px;height:24px;display:block}
+  .v2biz .biz-side .ic:hover{background:var(--secondary-bg)}
+  .v2biz .biz-side .ic[data-dir="-1"]:hover{transform:translateY(-2px)}
+  .v2biz .biz-side .ic[data-dir="1"]:hover{transform:translateY(2px)}
 
-  .v2biz .biz-hero{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center;text-align:center}
-  .v2biz .biz-hero .hmask{overflow:hidden;padding:0 4px;margin:0 -4px}   /* clip window for the rise-up (side pad so italic/edge glyphs aren't cut) */
-  .v2biz .biz-hero .t1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
-  .v2biz .biz-hero .t2{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464}
+  /* centred column: step counter → title/subtitle → sub-item list */
+  .v2biz .biz-center{width:min(610px,100%);margin:0 auto;display:flex;flex-direction:column;gap:16px}
+  .v2biz .biz-hero{display:flex;flex-direction:column;align-items:center;gap:20px;padding:8px 0}
+  .v2biz .biz-num{display:flex;align-items:baseline;font-family:var(--rc);font-size:16px;letter-spacing:-.32px}
+  .v2biz .biz-num .reel{display:inline-block;height:16px;overflow:hidden}
+  .v2biz .biz-num .reel .col{display:block;transition:transform .5s var(--ease)}
+  .v2biz .biz-num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
+  .v2biz .biz-num .tot{color:var(--teritary)}
+
+  .v2biz .hero-main{display:flex;align-items:stretch;justify-content:center;gap:24px;width:100%}
+  .v2biz .hdot{display:flex;flex-direction:column;justify-content:space-between;width:4px;flex-shrink:0}
+  .v2biz .hdot i{width:4px;height:4px;background:var(--border-g)}
+  .v2biz .hero-texts{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+  .v2biz .hero-texts .hmask{overflow:hidden;padding:0 4px;margin:0 -4px}   /* clip window for the rise-up (side pad so edge glyphs aren't cut) */
+  .v2biz .hero-texts .t1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
+  .v2biz .hero-texts .t2{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464}
   /* masked rise-up on business change: current lines exit upward out of the mask, new lines rise in from below */
-  .v2biz .biz-hero .t1,.v2biz .biz-hero .t2{transition:transform .8s var(--ease-io)}
-  .v2biz .biz-hero.out .t1,.v2biz .biz-hero.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
-  .v2biz .biz-hero.enter .t1,.v2biz .biz-hero.enter .t2{transform:translateY(120%);transition:none}
+  .v2biz .hero-texts .t1,.v2biz .hero-texts .t2{transition:transform .8s var(--ease-io)}
+  .v2biz .hero-texts.out .t1,.v2biz .hero-texts.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
+  .v2biz .hero-texts.enter .t1,.v2biz .hero-texts.enter .t2{transform:translateY(120%);transition:none}
 
-  /* absolute (out of flow), pinned to the row's top-right; top:0 + 8px padding aligns its first item to the nav's top */
-  .v2biz .biz-lists{position:absolute;top:0;right:0;width:299px;display:flex;flex-direction:column;gap:0;padding:8px 0;transition:opacity .3s var(--ease)}
-  .v2biz .biz-lists .li{position:relative;display:block;background:#fff;padding:12px;text-decoration:none;color:inherit;transition:background .25s var(--ease)}
-  .v2biz .biz-lists .li .top{display:flex;align-items:center;gap:4px;min-height:20px}
+  /* centred sub-item list — bordered panel, active/hover row dark with a product-count badge */
+  .v2biz .biz-lists{position:relative;border:1px solid var(--border-g);background:var(--secondary-bg);padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:inset 2px 2px 2px rgba(11,11,10,.06);transition:opacity .3s var(--ease)}
+  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:44px;background:#fff;padding:12px;text-decoration:none;color:inherit;transition:background .25s var(--ease)}
   .v2biz .biz-lists .dash{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
   .v2biz .biz-lists .dash::before{content:"";width:8px;height:2px;background:#2e3c4b;transition:background .25s}
-  .v2biz .biz-lists .mid{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
-  .v2biz .biz-lists .nm{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
+  .v2biz .biz-lists .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
   .v2biz .biz-lists .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
+  .v2biz .biz-lists .cnt{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--brand-2);color:rgba(255,255,255,.9);font-family:var(--rc);font-size:14px;line-height:1;display:none;place-content:center}
   .v2biz .biz-lists .op{width:20px;height:20px;flex-shrink:0;color:#445464;transition:color .25s}
-  /* hover (restored from v2.0): row → dark panel, text/dash/icon → white, product chips reveal below.
-     In-flow (not overlay) so the expanding item pushes the items below it down instead of covering them. */
-  .v2biz .biz-lists .li .tags{display:flex;flex-wrap:wrap;gap:4px;padding-left:20px;max-height:0;margin-top:0;opacity:0;overflow:hidden;
-    transition:max-height .35s var(--ease),opacity .25s,margin-top .35s var(--ease)}
-  .v2biz .biz-lists .li:hover{background:#0e161e}
-  .v2biz .biz-lists .li:hover .nm{color:#fff}
-  .v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
-  .v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
-  .v2biz .biz-lists .li:hover .tags{max-height:260px;opacity:1;margin-top:12px}
-  .v2biz .biz-lists .tag-chip{background:#445464;color:#fff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;white-space:nowrap}
+  /* default: first row active (dark); hovering the panel moves the highlight to the hovered row */
+  .v2biz .biz-lists .li.active,.v2biz .biz-lists .li:hover{background:var(--g950)}
+  .v2biz .biz-lists .li.active .nm,.v2biz .biz-lists .li:hover .nm{color:#fff}
+  .v2biz .biz-lists .li.active .dash::before,.v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
+  .v2biz .biz-lists .li.active .op,.v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
+  .v2biz .biz-lists .li.active .cnt,.v2biz .biz-lists .li:hover .cnt{display:grid}
+  .v2biz .biz-lists:hover .li.active:not(:hover){background:#fff}
+  .v2biz .biz-lists:hover .li.active:not(:hover) .nm{color:#445464}
+  .v2biz .biz-lists:hover .li.active:not(:hover) .dash::before{background:#2e3c4b}
+  .v2biz .biz-lists:hover .li.active:not(:hover) .op{color:#445464}
+  .v2biz .biz-lists:hover .li.active:not(:hover) .cnt{display:none}
 
   .v2biz .biz-lists.fade{opacity:0}
   @media (prefers-reduced-motion: reduce){
-    .v2biz .biz-hero .t1,.v2biz .biz-hero .t2,.v2biz .biz-lists,.v2biz .num .reel .col{transition:none}
+    .v2biz .hero-texts .t1,.v2biz .hero-texts .t2,.v2biz .biz-lists,.v2biz .biz-num .reel .col{transition:none}
   }
 
   /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
@@ -489,21 +500,29 @@
         </svg>
         <div class="biz-collage"><!-- cards injected by JS --></div>
         <div class="biz-content">
-          <div class="biz-step">
-            <span class="ttl">Business</span>
-            <span class="num">
-              <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
-              <span class="tot">/05</span>
-            </span>
-            <div class="arrows">
-              <button class="ic" data-dir="-1" aria-label="이전">‹</button>
-              <button class="ic" data-dir="1" aria-label="다음">›</button>
+          <div class="biz-head"><span class="ttl">Business</span></div>
+          <div class="biz-body">
+            <div class="biz-side">
+              <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
+              <div class="arrows">
+                <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M7 14.5l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="ic" data-dir="1" aria-label="다음"><svg viewBox="0 0 24 24" fill="none"><path d="M7 9.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
             </div>
-          </div>
-          <div class="biz-row">
-            <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
-            <div class="biz-hero"><!-- active business title (JS) --></div>
-            <div class="biz-lists"><!-- active business sub-items (JS) --></div>
+            <div class="biz-center">
+              <div class="biz-hero">
+                <span class="biz-num">
+                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
+                  <span class="tot">/05</span>
+                </span>
+                <div class="hero-main">
+                  <span class="hdot"><i></i><i></i></span>
+                  <div class="hero-texts"><!-- active business title (JS) --></div>
+                  <span class="hdot"><i></i><i></i></span>
+                </div>
+              </div>
+              <div class="biz-lists"><!-- active business sub-items (JS) --></div>
+            </div>
           </div>
         </div>
       </div>
@@ -718,9 +737,9 @@
     var content = sticky.querySelector('.biz-content');
     var collage = sticky.querySelector('.biz-collage');
     var navEl   = sticky.querySelector('.biz-nav');
-    var heroEl  = sticky.querySelector('.biz-hero');
+    var heroEl  = sticky.querySelector('.hero-texts');
     var listsEl = sticky.querySelector('.biz-lists');
-    var reel    = sticky.querySelector('.biz-step .num .reel');
+    var reel    = sticky.querySelector('.biz-num .reel');
     var reelCol = reel.querySelector('.col');
     var PHASES = 4, KW = 0.32, MO = 0.45;    // keyword end, morph end (fractions of the section's scroll)
 
@@ -763,12 +782,13 @@
     var cards = BIZ.map(function(b){ var c=document.createElement('div'); c.className='bcard'; c.innerHTML='<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />'; collage.appendChild(c); return c; });
     navEl.innerHTML = BIZ.map(function(b,i){ return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>'; }).join('');
     var navBtns = navEl.querySelectorAll('.nv');
-    function listItem(l){
+    function listItem(l, idx){
       var tag = l.sub ? '<span class="tag">계열사</span>' : '';
-      var chips = (l.tags || []).map(function(t){ return '<span class="tag-chip">'+esc(t)+'</span>'; }).join('');
-      var inner = '<div class="top"><span class="dash"></span><div class="mid"><span class="nm">'+esc(l.nm)+'</span>'+tag+'</div>'+OP+'</div>'
-        + '<div class="tags">'+chips+'</div>';
-      return l.href ? '<a class="li" href="'+l.href+'">'+inner+'</a>' : '<div class="li">'+inner+'</div>';
+      var n = (l.tags || []).length;
+      var cnt = n ? '<span class="cnt">'+n+'</span>' : '';
+      var cls = 'li' + (idx === 0 ? ' active' : '');   // first row highlighted by default (per Figma)
+      var inner = '<span class="dash"></span><span class="nm">'+esc(l.nm)+'</span>'+tag+cnt+OP;
+      return l.href ? '<a class="'+cls+'" href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'">'+inner+'</div>';
     }
     var active=-1, faderTO=null;
     function slotOf(b){ return (((b-active+2)%N)+N)%N; }
@@ -890,7 +910,7 @@
 
     function scrollToIdx(i){ i=((i%N)+N)%N; var total=section.offsetHeight-window.innerHeight; var top=section.offsetTop + (MO + ((i+0.5)/N)*(1-MO))*total; window.scrollTo({ top: top, behavior: 'smooth' }); }
     navBtns.forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); }); });
-    sticky.querySelectorAll('.biz-step .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
+    sticky.querySelectorAll('.biz-side .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
