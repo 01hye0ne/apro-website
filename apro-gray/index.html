@@ -40,19 +40,30 @@
   .band{position:absolute;inset:0;max-width:var(--maxw);margin-inline:auto}
 
   /* ===================== GNB (fixed, exclusion) ===================== */
+  /* GNB text colour is theme-driven (see .nav-light below) instead of mix-blend-mode,
+     which washed out on mid-tone backgrounds. Default = white (over dark/video). */
   .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);
     width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;
-    display:flex;align-items:center;gap:36px;padding-right:24px;
-    mix-blend-mode:exclusion;animation:gnbIn .9s var(--ease) both}
-  .gnb .logo{padding:12px 24px;flex-shrink:0}
-  .gnb .logo img{height:16px;width:78px}
+    display:flex;align-items:center;gap:36px;
+    animation:gnbIn .9s var(--ease) both}
+  .gnb .logo{padding:12px 0;flex-shrink:0}   /* flush to the container line (matches Business label / footer) */
+  .gnb .logo img{height:16px;width:78px;transition:filter .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
-  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;padding-left:16px;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:opacity .2s}
+  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
   .gnb .menus a:hover{opacity:1}
   .gnb .menus a.active{font-weight:700;opacity:1}
+  /* light-background theme: dark text, dark (inverted) logo, no glow */
+  .gnb-group.nav-light .gnb .menus a,
+  .gnb-group:hover .gnb .menus a,.gnb-group:focus-within .gnb .menus a{color:var(--g900);text-shadow:none}
+  .gnb-group.nav-light .gnb .logo img,
+  .gnb-group:hover .gnb .logo img,.gnb-group:focus-within .gnb .logo img{filter:invert(1)}
+  .gnb-group.nav-light .gnb .lang .lang-btn,
+  .gnb-group:hover .gnb .lang .lang-btn,.gnb-group:focus-within .gnb .lang .lang-btn{color:var(--g900);text-shadow:none}
   /* language switcher (replaces hamburger) */
-  .gnb .lang{width:64px;display:flex;justify-content:flex-end;flex-shrink:0}
-  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px}
+  .gnb .lang{width:78px;display:flex;justify-content:flex-end;flex-shrink:0}   /* match logo width so the centre menu sits on the page centre */
+  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.28));transition:color .35s var(--ease),filter .35s var(--ease)}
+  .gnb-group.nav-light .gnb .lang .lang-btn,
+  .gnb-group:hover .gnb .lang .lang-btn,.gnb-group:focus-within .gnb .lang .lang-btn{filter:none}
   .gnb .lang .lang-btn svg{width:22px;height:22px;display:block}
   .gnb .lang .lang-btn .arw{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .25s var(--ease)}
   .gnb-group.lang-open .lang .lang-btn .arw{transform:rotate(-135deg);margin-top:2px}
@@ -67,12 +78,12 @@
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group:hover .gnb-mega,.gnb-group:focus-within .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .gnb-mega .inner{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto;
-    display:flex;gap:36px;align-items:flex-start;padding:72px 24px 32px 0}
-  .gnb-mega .m-logo{width:126px;flex-shrink:0}
+    display:flex;gap:36px;align-items:flex-start;padding:72px 0 32px 0}
+  .gnb-mega .m-logo{width:78px;flex-shrink:0}   /* keep in sync with .gnb .logo so mega columns stay under the nav items */
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
-  .gnb-mega .m-globe{width:64px;flex-shrink:0}
+  .gnb-mega .m-globe{width:78px;flex-shrink:0}   /* keep in sync with .gnb .lang */
   .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:17px;padding:0 16px}
-  .gnb-mega .m-col a{align-self:flex-start;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
+  .gnb-mega .m-col a{align-self:center;text-align:center;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
   .gnb-mega .m-col a:hover{color:var(--brand)}
   /* language dropdown — sibling of nav so the exclusion-blend GNB doesn't invert it */
   .lang-menu{position:fixed;top:60px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;
@@ -1003,6 +1014,40 @@
     navLinks.forEach(function(a){ a.addEventListener('mouseenter', function(){ setActive(a.getAttribute('data-i')); }); });
     cols.forEach(function(c){ c.addEventListener('mouseenter', function(){ setActive(c.getAttribute('data-i')); }); });
     group.addEventListener('mouseleave', clearActive);
+  })();
+
+  /* ===== GNB contrast: switch nav theme to match the section behind it ===== */
+  (function(){
+    var group  = document.querySelector('.gnb-group');
+    if(!group){ return; }
+    var whoSec = document.getElementById('whoSection');
+    var whoSt  = document.getElementById('whoSticky');
+    var news   = document.querySelector('.v2news');
+    var gnet   = document.querySelector('.v2gnet');
+    var footer = document.querySelector('.footer');
+    var Y = 38;   // the GNB's vertical band (top:20 + ~18)
+    function spans(el){ if(!el){ return false; } var r=el.getBoundingClientRect(); return r.top<=Y && r.bottom>Y; }
+    function lum(str){
+      var m = String(str).match(/[\d.]+/g); if(!m){ return 1; }
+      var r=+m[0]/255, g=+m[1]/255, b=+m[2]/255, a=(m[3]!=null)?+m[3]:1;
+      if(a < 0.3){ return 1; }   // transparent → treat as light (fall through handled by caller)
+      return 0.2126*r + 0.7152*g + 0.0722*b;
+    }
+    // true → light background → use dark nav text
+    function wantDark(){
+      if(spans(whoSec)){ return lum(getComputedStyle(whoSt).backgroundColor) > 0.55; }  // reads live bg (kw/morph/biz/phase3)
+      if(spans(news)){ return true; }        // #f4f6f8
+      if(spans(gnet)){ return false; }       // dark gradient
+      if(spans(footer)){ return false; }     // dark
+      return false;                          // banner (video) / default → white text
+    }
+    var on = null;
+    function apply(){ var d = wantDark(); if(d!==on){ on=d; group.classList.toggle('nav-light', d); } }
+    var ticking=false;
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ ticking=false; apply(); }); } }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    apply();
   })();
 </script>
 
