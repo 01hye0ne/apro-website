@@ -271,8 +271,8 @@
   .v2biz .hero-texts.out .t1,.v2biz .hero-texts.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
   .v2biz .hero-texts.enter .t1,.v2biz .hero-texts.enter .t2{transform:translateY(120%);transition:none}
 
-  /* centred sub-item list — frosted-glass panel overlaid on the top of the 16:9 image */
-  .v2biz .biz-lists{position:relative;border:1px solid rgba(255,255,255,.55);background:rgba(244,246,248,.42);
+  /* sub-item list — frosted-glass panel absolutely overlaid on the top of the 16:9 image (left/top/width set by JS) */
+  .v2biz .biz-lists{position:absolute;z-index:3;border:1px solid rgba(255,255,255,.55);background:rgba(244,246,248,.42);
     backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
     padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:0 14px 34px rgba(11,22,34,.16);transition:opacity .3s var(--ease)}
   /* each row rises + fades in, staggered by its index — replays whenever the list is rebuilt (carousel change) */
@@ -548,10 +548,11 @@
                   <span class="hdot"><i></i><i></i></span>
                 </div>
               </div>
-              <div class="biz-lists"><!-- active business sub-items (JS) --></div>
             </div>
           </div>
         </div>
+        <!-- sub-menu: absolutely overlaid on the centre image (positioned by JS) -->
+        <div class="biz-lists"><!-- active business sub-items (JS) --></div>
       </div>
       <div class="biz-botfade" aria-hidden="true"></div>
     </div>
@@ -834,19 +835,21 @@
     }
     var sideEl = sticky.querySelector('.biz-side');
     var bodyEl = sticky.querySelector('.biz-body');
-    // pull .biz-center (hero + sub-list) down so the sub-list top lands on the centre image top,
-    // then vertically centre the right-hand nav on the (now positioned) title
+    var headEl = sticky.querySelector('.biz-head');
+    // overlay the sub-list on the centre image top, then centre the title + nav
+    // in the band between the header bottom and the image top
     function positionOverlay(){
-      if(!centerEl || !listsEl || !collage || !SLOT[2]){ return; }
-      var cTop = collage.getBoundingClientRect().top;
-      centerEl.style.marginTop = '0px';
-      var subTop = listsEl.getBoundingClientRect().top - cTop;
-      centerEl.style.marginTop = Math.max(0, SLOT[2].y - subTop) + 'px';
-      if(heroBlock && sideEl && bodyEl && navEl){
-        var hr = heroBlock.getBoundingClientRect();
-        var heroCenter = (hr.top + hr.bottom)/2 - cTop;
+      if(!listsEl || !collage || !SLOT[2]){ return; }
+      var s = SLOT[2], cTop = collage.getBoundingClientRect().top;
+      listsEl.style.left = s.x + 'px';
+      listsEl.style.top = s.y + 'px';
+      listsEl.style.width = s.w + 'px';
+      if(centerEl && heroBlock && sideEl && bodyEl && navEl && headEl){
+        var headBottom = headEl.getBoundingClientRect().bottom - cTop;
+        var bandCenter = (headBottom + s.y) / 2;                       // middle of header↔image
         var bodyTop = bodyEl.getBoundingClientRect().top - cTop;
-        sideEl.style.top = Math.round(heroCenter - bodyTop - navEl.offsetHeight/2) + 'px';
+        centerEl.style.marginTop = Math.max(0, Math.round(bandCenter - bodyTop - heroBlock.offsetHeight/2)) + 'px';
+        sideEl.style.top = Math.round(bandCenter - bodyTop - navEl.offsetHeight/2) + 'px';
       }
     }
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
