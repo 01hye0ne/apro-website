@@ -135,7 +135,7 @@
      Each phase = background (behind) -> text/wordmark (middle) -> cut-out foreground (front). */
   .v2who .who-stage{position:absolute;top:50%;left:50%;width:1280px;height:586px;overflow:hidden;
     transform:translate(-50%,-50%) scale(var(--who-s,1));transform-origin:center;font-family:var(--suit)}
-  .v2who .who-stage img,.v2who .who-stage span,.v2who .who-stage div,.v2who .who-stage p{position:absolute}
+  .v2who .who-stage img,.v2who .who-stage svg,.v2who .who-stage span,.v2who .who-stage div,.v2who .who-stage p{position:absolute}
 
   /* background + foreground image layers — positioned at the Figma layer coords, cross-fade per phase */
   .v2who .lyr-bg,.v2who .lyr-fg{opacity:0;transition:opacity .8s var(--ease);pointer-events:none;max-width:none}
@@ -177,10 +177,23 @@
   }
   /* APRO wordmark: scaled/positioned so its "A" glyph exactly overlays the keyword "A" (s-a) —
      s-a A box is 104px wide at top 283; Logo.svg A is 102.64u wide → width 484*104/102.64 = 490.41, top 283 */
-  .v2who .s-apro{left:588px;top:283px;width:490.41px;height:auto;opacity:0;transition:opacity .6s var(--ease)}
+  .v2who .s-apro{left:588px;top:283px;width:490.41px;height:auto;overflow:visible;opacity:0;transition:opacity .35s var(--ease)}
+  /* the wordmark "draws itself in": the outline traces on, then the fill floods in */
+  .v2who .s-apro path{fill:#fff;stroke:#fff;stroke-width:.8;stroke-linejoin:round;
+    stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0}
   .who-sticky[data-phase="3"] .s-h{color:#fff}
   .who-sticky[data-phase="3"] .s-a,.who-sticky[data-phase="3"] .s-kw{opacity:0}
   .who-sticky[data-phase="3"] .s-apro{opacity:1}
+  .who-sticky[data-phase="3"] .s-apro path{animation:apro-draw .95s var(--ease-io) forwards}
+  @keyframes apro-draw{
+    0%{stroke-dashoffset:1;fill-opacity:0}
+    58%{stroke-dashoffset:0;fill-opacity:0}
+    100%{stroke-dashoffset:0;fill-opacity:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .v2who .s-apro path{stroke:none;stroke-dashoffset:0;fill-opacity:1}
+    .who-sticky[data-phase="3"] .s-apro path{animation:none}
+  }
 
   /* progress dots */
   .who-dots{position:absolute;right:24px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:10px}
@@ -196,12 +209,12 @@
   .who-cards.on{opacity:1}
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
   /* bottom white blur — fades the carousel base into the page (only during the Business phase) */
-  .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:200px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
+  .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:100px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
     background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.34) 38%,rgba(255,255,255,.82) 58%,#fff 70%,#fff 100%);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
     -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 52%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 52%)}
   /* deeper blur weighted to the lower half → blur strength grows toward the very bottom */
-  .who-sticky .biz-botfade::before{content:"";position:absolute;inset:0;backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);
+  .who-sticky .biz-botfade::before{content:"";position:absolute;inset:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
     -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 34%,#000 70%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 34%,#000 70%)}
   /* faint grain, concentrated in the mid transition */
   .who-sticky .biz-botfade::after{content:"";position:absolute;inset:0;opacity:.3;mix-blend-mode:soft-light;
@@ -507,7 +520,9 @@
         <span class="s-txt s-kw" data-kw="0">dvanced</span>
         <span class="s-txt s-kw" data-kw="1">ggressive</span>
         <span class="s-txt s-kw" data-kw="2">gile</span>
-        <img class="s-txt s-apro" src="../assets/Logo.svg" alt="A-PRO" />
+        <svg class="s-txt s-apro" viewBox="0 0 484 103" role="img" aria-label="A-PRO" xmlns="http://www.w3.org/2000/svg">
+          <path pathLength="1" d="M373.887 79.2944L332.137 60.8892H346.169C360.935 60.8892 372.96 48.8636 372.96 34.098V27.3586C372.96 12.4131 360.935 0.373638 346.169 0.373638H290.386V21.6987H342.516C347.622 21.6987 351.635 25.7119 351.635 30.6245C351.635 35.5372 347.622 39.5503 342.516 39.5503H314.631C301.139 39.5503 290.386 50.4827 290.386 63.9752V100.799H311.531V75.1013L373.694 102.446L373.874 79.2944H373.887ZM445.155 79.4743H417.077C408.691 79.4743 401.758 66.5353 401.758 50.4827C401.758 34.4301 408.691 21.6849 417.077 21.6849H445.155C453.721 21.6849 460.475 34.4439 460.475 50.4827C460.475 66.5215 453.735 79.4743 445.155 79.4743ZM449.542 0.3598H412.898C393.759 0.3598 378.44 22.958 378.44 50.4965C378.44 78.0351 393.759 100.813 412.898 100.813H449.542C468.501 100.813 484 78.215 484 50.4965C484 22.7781 468.501 0.3598 449.542 0.3598ZM51.23 22.4183C52.3232 22.4183 53.0566 22.9718 53.4164 24.0651L78.7547 100.813H102.64L73.6483 12.5792C72.0015 5.46619 62.7159 0 51.23 0C39.744 0 30.6245 5.46619 28.9916 12.5792L0 100.813H23.8852L49.2234 24.0651C49.4033 22.9718 50.3166 22.4183 51.23 22.4183ZM197.973 0.3598V21.6849H250.296C255.403 21.6849 259.416 25.698 259.416 30.6107C259.416 35.5233 255.403 39.5365 250.296 39.5365H222.592C208.919 39.5365 197.987 50.4689 197.987 63.9613V100.785H219.312V73.8005C219.312 66.6875 225.152 60.8615 232.071 60.8615H253.77C268.535 60.8615 280.561 48.8359 280.561 34.0703V27.331C280.561 12.3854 268.535 0.345961 253.77 0.345961H197.987L197.973 0.3598ZM179.928 59.2424H108.646V37.9174H179.928V59.2424Z"/>
+        </svg>
       </div>
 
       <!-- "who we are" aligned to the GNB left line (1440 container), scaled to the stage -->
