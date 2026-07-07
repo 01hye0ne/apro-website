@@ -827,9 +827,10 @@
       BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 455);
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
       if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
-      var HC = Math.round(cW*9/16);   // centre image 16:9 (height follows its width)
-      var HM = Math.round(HC*0.70);   // mid images (slots 1,3)
-      var HS = Math.round(HC*0.42);   // far images (slots 0,4)
+      var HRef = Math.round(cW*9/16);   // 16:9 reference — sets the side-card proportions
+      var HM = Math.round(HRef*0.70);   // mid images (slots 1,3)
+      var HS = Math.round(HRef*0.42);   // far images (slots 0,4)
+      var HC = HM + 148;                // centre = mid height + a 3-row sub-menu, so the sub-menu bottom meets the mid-card tops (no step)
       var x0=0,x1=WF+GAP,x2=2*(WF+GAP),x3=x2+cW+GAP,x4=x3+WF+GAP;
       SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
       positionOverlay();   // drop the title+list group so the frosted list overlays the image top
@@ -956,12 +957,12 @@
       caret.style.display = 'none';                              // the A-PRO "A" no longer detaches/moves
       if(m==='kw'){
         sticky.style.background=''; stage.style.opacity=''; eye.style.opacity=''; dotsWrap.style.opacity='';
-        content.style.opacity='0';
+        content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }   // sub-menu hidden with the content
       } else if(m==='biz'){
         sticky.setAttribute('data-phase','biz'); sticky.style.background='#fff';
         stage.style.opacity='0'; eye.style.opacity='0'; dotsWrap.style.opacity='0';
         cards.forEach(function(c){ c.style.background=''; c.style.opacity=''; c.firstChild.style.opacity=''; });
-        content.style.opacity=''; active=-1;                    // let the carousel take clean control
+        content.style.opacity=''; if(listsEl){ listsEl.style.opacity=''; } active=-1;   // let the carousel take clean control
       }
     }
     function morph(mp){
@@ -971,7 +972,7 @@
       var g=ease(clamp01((mp-0.24)/0.62));                                      // the carousel widens from the A-box to full size
       var reveal=clamp01((g-0.15)/0.60);                                       // dark → photo as it widens
       expandCards(g, reveal, clamp01((mp-0.22)/0.10));                         // cards fade in as the logo clears, then expand
-      content.style.opacity='0';
+      content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }     // sub-menu stays hidden until the carousel settles
     }
 
     var ticking=false;
