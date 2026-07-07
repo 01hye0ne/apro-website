@@ -196,17 +196,17 @@
   .who-cards.on{opacity:1}
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
   /* bottom white blur — fades the carousel base into the page (only during the Business phase) */
-  .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:100px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
-    background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.16) 62%,rgba(255,255,255,.46) 100%);
-    backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 66%)}
+  .who-sticky .biz-botfade{position:absolute;left:0;bottom:0;width:100%;height:190px;z-index:7;pointer-events:none;opacity:0;transition:opacity .6s var(--ease);
+    background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.24) 55%,rgba(255,255,255,.6) 100%);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 62%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 62%)}
   /* deeper blur weighted to the lower half → blur strength grows toward the very bottom */
-  .who-sticky .biz-botfade::before{content:"";position:absolute;inset:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 52%,#000 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 52%,#000 100%)}
-  /* faint grain, concentrated near the base */
-  .who-sticky .biz-botfade::after{content:"";position:absolute;inset:0;opacity:.38;mix-blend-mode:soft-light;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .who-sticky .biz-botfade::before{content:"";position:absolute;inset:0;backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);
     -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 42%,#000 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 42%,#000 100%)}
+  /* faint grain, concentrated near the base */
+  .who-sticky .biz-botfade::after{content:"";position:absolute;inset:0;opacity:.34;mix-blend-mode:soft-light;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 40%,#000 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 40%,#000 100%)}
   .who-sticky[data-phase="biz"] .biz-botfade{opacity:1}
 
   /* Business coverflow styles (scoped to .v2biz — which is now the .who-cards wrapper) */
