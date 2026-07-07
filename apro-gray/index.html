@@ -273,7 +273,9 @@
   .v2biz .biz-lists{position:relative;border:1px solid rgba(255,255,255,.55);background:rgba(244,246,248,.42);
     backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
     padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:0 14px 34px rgba(11,22,34,.16);transition:opacity .3s var(--ease)}
-  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:38px;background:rgba(255,255,255,.64);padding:9px 12px;text-decoration:none;color:inherit;transition:background .25s var(--ease)}
+  /* each row rises + fades in, staggered by its index — replays whenever the list is rebuilt (carousel change) */
+  @keyframes liIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:38px;background:rgba(255,255,255,.64);padding:9px 12px;text-decoration:none;color:inherit;transition:background .25s var(--ease);animation:liIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*.12s)}
   .v2biz .biz-lists .dash{width:14px;height:14px;flex-shrink:0;display:grid;place-content:center}
   .v2biz .biz-lists .dash::before{content:"";width:7px;height:2px;background:#2e3c4b;transition:background .25s}
   .v2biz .biz-lists .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:18px;line-height:1.4;letter-spacing:-.36px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
@@ -290,6 +292,7 @@
   .v2biz .biz-lists.fade{opacity:0}
   @media (prefers-reduced-motion: reduce){
     .v2biz .hero-texts .t1,.v2biz .hero-texts .t2,.v2biz .biz-lists,.v2biz .biz-num .reel .col{transition:none}
+    .v2biz .biz-lists .li{animation:none}
   }
 
   /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
@@ -839,8 +842,9 @@
       var n = (l.tags || []).length;
       var cnt = n ? '<span class="cnt">'+n+'</span>' : '';
       var cls = 'li';   // every row starts in the default (light) state; hover highlights
+      var st = ' style="--i:'+idx+'"';   // stagger index for the entrance animation
       var inner = '<span class="dash"></span><span class="nm">'+esc(l.nm)+'</span>'+tag+cnt+OP;
-      return l.href ? '<a class="'+cls+'" href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'">'+inner+'</div>';
+      return l.href ? '<a class="'+cls+'"'+st+' href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'"'+st+'>'+inner+'</div>';
     }
     var active=-1, faderTO=null;
     function slotOf(b){ return (((b-active+2)%N)+N)%N; }
