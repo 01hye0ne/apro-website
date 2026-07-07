@@ -98,7 +98,9 @@
   .v2banner .pag{display:flex;gap:16px;align-items:center}
   .v2banner .pag .lbl{font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
   .v2banner .arrows{display:flex;gap:8px}
-  .v2banner .arrows .ic{width:24px;height:24px;background:#fff;display:grid;place-content:center;font-size:13px;color:var(--g900);cursor:pointer}
+  .v2banner .arrows .ic{width:24px;height:24px;background:#fff;display:grid;place-content:center;font-size:13px;color:var(--g900);cursor:pointer;transition:transform .22s var(--ease),background .22s}
+  .v2banner .arrows .ic:first-child:hover{transform:translateX(-2px)}
+  .v2banner .arrows .ic:last-child:hover{transform:translateX(2px)}
   .v2banner .bnav{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
   .v2banner .bnav .b{font-family:var(--suit);font-weight:600;font-size:19px;letter-spacing:-.32px;color:rgba(255,255,255,.55);padding:8px 0;cursor:pointer;transition:color .2s}
   .v2banner .bnav .b.active,.v2banner .bnav .b:hover{color:#fff}
@@ -142,8 +144,17 @@
   /* Global Top 5 headline: sized to match the new "who we are" (20px) and set in the brand blue */
   .v2who .s-h{left:577px;top:189px;width:679px;font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--brand);transition:color .6s var(--ease)}
   .v2who .s-a{left:577px;top:271px;width:126px;height:126px;transition:opacity .5s var(--ease)}
-  .v2who .s-kw{left:701px;top:358.5px;transform:translateY(-50%);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:var(--g900);white-space:nowrap;opacity:0;transition:opacity .45s var(--ease),color .6s var(--ease)}
-  .v2who .s-kw.active{opacity:1}
+  .v2who .s-kw{left:701px;top:358.5px;transform:translateY(-50%);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:var(--g900);white-space:nowrap;transition:opacity .45s var(--ease),color .6s var(--ease)}
+  /* keyword change → each glyph rises out of its own clip-mask, staggered left→right (delicate, in sync with the "A") */
+  .v2who .s-kw .kw-ch{position:relative;display:inline-block;overflow:hidden;vertical-align:top}
+  .v2who .s-kw .kw-ch i{display:inline-block;font-style:normal;transform:translateY(115%);transition:transform .6s var(--ease-io)}
+  .v2who .s-kw.active .kw-ch i{transform:translateY(0);transition-delay:calc(var(--i,0)*.035s)}
+  @media (prefers-reduced-motion:reduce){
+    .v2who .s-kw{opacity:0;transition:opacity .3s var(--ease),color .6s var(--ease)}
+    .v2who .s-kw.active{opacity:1}
+    .v2who .s-kw .kw-ch{overflow:visible}
+    .v2who .s-kw .kw-ch i{transform:none;transition:none;transition-delay:0s}
+  }
   /* APRO wordmark: scaled/positioned so its "A" glyph exactly overlays the keyword "A" (s-a) —
      s-a A box is 104px wide at top 283; Logo.svg A is 102.64u wide → width 484*104/102.64 = 490.41, top 283 */
   .v2who .s-apro{left:588px;top:283px;width:490.41px;height:auto;opacity:0;transition:opacity .6s var(--ease)}
@@ -189,8 +200,10 @@
   .v2biz .biz-step .num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
   .v2biz .biz-step .num .tot{color:var(--teritary)}
   .v2biz .biz-step .arrows{flex:1;min-width:0;display:flex;gap:12px;justify-content:flex-end}
-  .v2biz .biz-step .ic{width:24px;height:24px;border:none;background:none;cursor:pointer;display:grid;place-content:center;font-size:18px;color:var(--g900);transition:opacity .2s}
+  .v2biz .biz-step .ic{width:24px;height:24px;border:none;background:none;cursor:pointer;display:grid;place-content:center;font-size:18px;color:var(--g900);transition:opacity .2s,transform .22s var(--ease)}
   .v2biz .biz-step .ic:hover{opacity:.45}
+  .v2biz .biz-step .ic[data-dir="-1"]:hover{transform:translateX(-2px)}
+  .v2biz .biz-step .ic[data-dir="1"]:hover{transform:translateX(2px)}
 
   /* nav + hero are flex columns (stretch to nav height); the lists column is taken OUT of flow (absolute)
      so its hover expansion never changes the row height — the centred hero stays put. padding-right reserves its space. */
@@ -254,7 +267,10 @@
   .v2news .ncard.c4{grid-column:2;grid-row:4}
   .v2news .ncard .img{height:375px;overflow:hidden}
   .v2news .ncard .img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+  .v2news .ncard{transition:transform .55s var(--ease)}
+  .v2news .ncard:hover{transform:translateY(-6px)}
   .v2news .ncard:hover .img img{transform:scale(1.05)}
+  @media (prefers-reduced-motion:reduce){ .v2news .ncard,.v2news .ncard .img img{transition:none} .v2news .ncard:hover{transform:none} }
   .v2news .ncard .txt{display:flex;flex-direction:column;gap:8px}
   .v2news .ncard .date{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:#445464}
   .v2news .ncard .title{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
@@ -280,6 +296,16 @@
     box-shadow:0 0 16px rgba(11,11,10,.12);opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
   .v2gnet .gnet-mk:hover{z-index:5}
   .v2gnet .gnet-mk:hover .tip{opacity:1;transform:translate(-50%,0)}
+  /* markers rise in one-by-one when the map enters view, then breathe with a soft ambient ping */
+  .v2gnet .gnet-mk .dot{position:relative}
+  .v2gnet .gnet-mk .dot::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;
+    border:1px solid #ff8f47;box-sizing:border-box;opacity:0;pointer-events:none}
+  @media (prefers-reduced-motion:no-preference){
+    .js-anim .v2gnet .gnet-mk{opacity:0;transform:translateY(6px) scale(.35);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+    .js-anim .v2gnet .gnet-live .gnet-mk{opacity:1;transform:none}
+    .v2gnet .gnet-live .gnet-mk .dot::after{animation:mkPulse 2.8s var(--ease) infinite;animation-delay:var(--pd,0s)}
+  }
+  @keyframes mkPulse{0%{opacity:.5;transform:scale(1)}70%{opacity:0;transform:scale(3.4)}100%{opacity:0;transform:scale(3.4)}}
   @media (prefers-reduced-motion:reduce){ .v2gnet .gnet-mk .tip{transition:none} }
 
   /* ===================== FOOTER ===================== */
@@ -661,6 +687,16 @@
     var sticky  = document.getElementById('whoSticky');
     if(!section || !sticky){ return; }
     var kws     = sticky.querySelectorAll('.s-kw');
+    // split each keyword into per-glyph masks so it rises in letter-by-letter on change
+    kws.forEach(function(el){
+      var txt = el.textContent, frag = document.createDocumentFragment();
+      for(var i=0;i<txt.length;i++){
+        var ch = document.createElement('span'); ch.className = 'kw-ch';
+        var gl = document.createElement('i'); gl.textContent = txt[i]; gl.style.setProperty('--i', i);
+        ch.appendChild(gl); frag.appendChild(ch);
+      }
+      el.textContent = ''; el.appendChild(frag);
+    });
     var dots    = sticky.querySelectorAll('.who-dots i');
     var dotsWrap= sticky.querySelector('.who-dots');
     var stage   = sticky.querySelector('.who-stage');
@@ -703,6 +739,9 @@
     var SLOT=[];
     function computeSlots(){
       var vw = collage.clientWidth || window.innerWidth;
+      // card baseline tracks the viewport so the coverflow sits ~40px above the window bottom
+      // (reduces to the original 860 when the stage is at its 900px minimum)
+      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 410);
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
       var x0=0,x1=WF+GAP,x2=2*(WF+GAP),x3=x2+cW+GAP,x4=x3+WF+GAP;
       SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
@@ -875,6 +914,49 @@
     window.addEventListener('resize', onScroll);
     window.addEventListener('load', update);
     update();
+  })();
+
+  /* ===== Global Network: stat count-up + staggered live markers ===== */
+  (function(){
+    var stage = document.querySelector('.v2gnet .gnet-stage');
+    if(!stage){ return; }
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var markers = stage.querySelectorAll('.gnet-mk');
+    markers.forEach(function(m,i){
+      m.style.transitionDelay = (0.35 + i*0.06).toFixed(2) + 's';   // ripple-in order
+      m.style.setProperty('--pd', (-(i%7)*0.4).toFixed(2) + 's');   // desync the ambient pulses
+    });
+    // prep the two big stat numbers → start at zero, remember target + digit count
+    var targets = [];
+    stage.querySelectorAll('.gnet-stat .num').forEach(function(el){
+      var t = el.textContent.trim();
+      targets.push({ el:el, val:parseInt(t,10)||0, len:t.length });
+      if(!reduce){ el.textContent = String(0).padStart(t.length,'0'); }
+    });
+    function pad(v,l){ v=String(v); while(v.length<l){ v='0'+v; } return v; }
+    function countUp(o){
+      var dur = 1400, start = null;
+      function step(ts){
+        if(start===null){ start = ts; }
+        var p = Math.min(1, (ts-start)/dur), e = 1 - Math.pow(1-p, 3);   // easeOutCubic
+        o.el.textContent = pad(Math.round(e*o.val), o.len);
+        if(p<1){ requestAnimationFrame(step); }
+      }
+      requestAnimationFrame(step);
+    }
+    var done = false;
+    function run(){
+      if(done){ return; } done = true;
+      stage.classList.add('gnet-live');
+      if(!reduce){ targets.forEach(countUp); }
+      else { targets.forEach(function(o){ o.el.textContent = pad(o.val, o.len); }); }
+    }
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ run(); io.disconnect(); } });
+      }, { threshold: 0.3 });
+      io.observe(stage);
+    } else { run(); }
   })();
 
   /* ===== FOOTER family-site dropdown ===== */
