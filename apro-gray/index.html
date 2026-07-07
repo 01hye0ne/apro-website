@@ -223,7 +223,7 @@
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
 
   /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it. */
-  .v2biz .biz-content{position:absolute;left:50%;top:108px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
+  .v2biz .biz-content{position:absolute;left:50%;top:153px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
 
   /* Business label bar (underline) — now also carries the counter + pager on the right */
   .v2biz .biz-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--border-g)}
@@ -822,8 +822,8 @@
     var SLOT=[];
     function computeSlots(){
       var vw = collage.clientWidth || window.innerWidth;
-      // carousel baseline sits 60px above the window bottom (half of the 900 stage, minus a 60px lift)
-      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 390);
+      // carousel baseline sits 15px above the window bottom (half of the 900 stage, minus a 15px lift)
+      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 435);
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
       if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
       var HC = Math.round(cW*9/16);   // centre image 16:9 (height follows its width)
