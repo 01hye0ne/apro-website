@@ -222,9 +222,8 @@
   @keyframes bcardIn{from{opacity:0}to{opacity:1}}
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
 
-  /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it.
-     pulled up (top:68) so the taller hero + list clear the bottom-stuck 16:9 image without overlap */
-  .v2biz .biz-content{position:absolute;left:50%;top:68px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
+  /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it. */
+  .v2biz .biz-content{position:absolute;left:50%;top:108px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
 
   /* Business label bar (underline) — now also carries the counter + pager on the right */
   .v2biz .biz-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--border-g)}
@@ -833,12 +832,22 @@
       SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
       positionOverlay();   // drop the title+list group so the frosted list overlays the image top
     }
-    // pull .biz-center (hero + sub-list) down so the sub-list top lands on the centre image top
+    var sideEl = sticky.querySelector('.biz-side');
+    var bodyEl = sticky.querySelector('.biz-body');
+    // pull .biz-center (hero + sub-list) down so the sub-list top lands on the centre image top,
+    // then vertically centre the right-hand nav on the (now positioned) title
     function positionOverlay(){
       if(!centerEl || !listsEl || !collage || !SLOT[2]){ return; }
+      var cTop = collage.getBoundingClientRect().top;
       centerEl.style.marginTop = '0px';
-      var subTop = listsEl.getBoundingClientRect().top - collage.getBoundingClientRect().top;
+      var subTop = listsEl.getBoundingClientRect().top - cTop;
       centerEl.style.marginTop = Math.max(0, SLOT[2].y - subTop) + 'px';
+      if(heroBlock && sideEl && bodyEl && navEl){
+        var hr = heroBlock.getBoundingClientRect();
+        var heroCenter = (hr.top + hr.bottom)/2 - cTop;
+        var bodyTop = bodyEl.getBoundingClientRect().top - cTop;
+        sideEl.style.top = Math.round(heroCenter - bodyTop - navEl.offsetHeight/2) + 'px';
+      }
     }
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
