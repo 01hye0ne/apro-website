@@ -226,25 +226,28 @@
      pulled up (top:68) so the taller hero + list clear the bottom-stuck 16:9 image without overlap */
   .v2biz .biz-content{position:absolute;left:50%;top:68px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
 
-  /* Business label bar (full-width underline) */
-  .v2biz .biz-head{display:flex;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border-g)}
-  .v2biz .biz-head .ttl{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
+  /* Business label bar (underline) — now also carries the counter + pager on the right */
+  .v2biz .biz-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--border-g)}
+  .v2biz .biz-head .ttl{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
+  /* right block on the Business line — same 299px width as the nav below, so the counter left-aligns with it */
+  .v2biz .biz-head-right{width:299px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
 
-  /* body holds the centred hero/list column with the nav + pager pinned top-right */
+  /* body holds the centred hero/list column with the nav pinned top-right */
   .v2biz .biz-body{position:relative;min-height:227px}
 
-  /* top-right: business nav (right-aligned) + up/down pager */
-  .v2biz .biz-side{position:absolute;top:8px;right:0;width:299px;display:flex;gap:12px;align-items:flex-start;justify-content:flex-end}
-  .v2biz .biz-nav{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+  /* top-right: business nav (left-aligned within its 299px frame) */
+  .v2biz .biz-side{position:absolute;top:8px;right:0;width:299px}
+  .v2biz .biz-nav{display:flex;flex-direction:column;gap:24px}
   .v2biz .biz-nav .nv{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--teritary);opacity:.5;background:none;border:none;text-align:left;padding:0;cursor:pointer;white-space:nowrap;transition:opacity .25s var(--ease),color .25s var(--ease)}
   .v2biz .biz-nav .nv.on{opacity:1;color:var(--g900);cursor:default}
   .v2biz .biz-nav .nv:hover{opacity:1}
-  .v2biz .biz-side .arrows{display:flex;gap:12px;flex-shrink:0}
-  .v2biz .biz-side .ic{width:24px;height:24px;border:1px solid var(--border-g);background:#fff;cursor:pointer;display:grid;place-content:center;color:var(--g900);transition:background .2s var(--ease),transform .22s var(--ease)}
-  .v2biz .biz-side .ic svg{width:24px;height:24px;display:block}
-  .v2biz .biz-side .ic:hover{background:var(--secondary-bg)}
-  .v2biz .biz-side .ic[data-dir="-1"]:hover{transform:translateY(-2px)}
-  .v2biz .biz-side .ic[data-dir="1"]:hover{transform:translateY(2px)}
+  /* up/down pager (now on the Business line) */
+  .v2biz .arrows{display:flex;gap:12px;flex-shrink:0}
+  .v2biz .arrows .ic{width:24px;height:24px;border:1px solid var(--border-g);background:#fff;cursor:pointer;display:grid;place-content:center;color:var(--g900);transition:background .2s var(--ease),transform .22s var(--ease)}
+  .v2biz .arrows .ic svg{width:24px;height:24px;display:block}
+  .v2biz .arrows .ic:hover{background:var(--secondary-bg)}
+  .v2biz .arrows .ic[data-dir="-1"]:hover{transform:translateY(-2px)}
+  .v2biz .arrows .ic[data-dir="1"]:hover{transform:translateY(2px)}
 
   /* centred column: step counter → title/subtitle → sub-item list.
      width is set by JS to match the centre card; the value here is just an initial fallback. */
@@ -269,13 +272,11 @@
   .v2biz .hero-texts.out .t1,.v2biz .hero-texts.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
   .v2biz .hero-texts.enter .t1,.v2biz .hero-texts.enter .t2{transform:translateY(120%);transition:none}
 
-  /* centred sub-item list — frosted-glass panel floating over the top of the (enlarged) centre image */
-  .v2biz .biz-lists{position:relative;border:1px solid rgba(255,255,255,.55);background:rgba(244,246,248,.42);
-    backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
-    padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:0 14px 34px rgba(11,22,34,.16);transition:opacity .3s var(--ease)}
+  /* centred sub-item list — bordered solid panel above the 16:9 image */
+  .v2biz .biz-lists{position:relative;border:1px solid var(--border-g);background:var(--secondary-bg);padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:inset 2px 2px 2px rgba(11,11,10,.06);transition:opacity .3s var(--ease)}
   /* each row rises + fades in, staggered by its index — replays whenever the list is rebuilt (carousel change) */
   @keyframes liIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:38px;background:rgba(255,255,255,.64);padding:9px 12px;text-decoration:none;color:inherit;transition:background .25s var(--ease);animation:liIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*.12s)}
+  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:38px;background:#fff;padding:9px 12px;text-decoration:none;color:inherit;transition:background .25s var(--ease);animation:liIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*.12s)}
   .v2biz .biz-lists .dash{width:14px;height:14px;flex-shrink:0;display:grid;place-content:center}
   .v2biz .biz-lists .dash::before{content:"";width:7px;height:2px;background:#2e3c4b;transition:background .25s}
   .v2biz .biz-lists .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:18px;line-height:1.4;letter-spacing:-.36px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
@@ -521,21 +522,25 @@
         </svg>
         <div class="biz-collage"><!-- cards injected by JS --></div>
         <div class="biz-content">
-          <div class="biz-head"><span class="ttl">Business</span></div>
-          <div class="biz-body">
-            <div class="biz-side">
-              <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
+          <div class="biz-head">
+            <span class="ttl">Business</span>
+            <div class="biz-head-right">
+              <span class="biz-num">
+                <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
+                <span class="tot">/05</span>
+              </span>
               <div class="arrows">
                 <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M7 14.5l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 <button class="ic" data-dir="1" aria-label="다음"><svg viewBox="0 0 24 24" fill="none"><path d="M7 9.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               </div>
             </div>
+          </div>
+          <div class="biz-body">
+            <div class="biz-side">
+              <div class="biz-nav"><!-- 5 business tabs (JS) --></div>
+            </div>
             <div class="biz-center">
               <div class="biz-hero">
-                <span class="biz-num">
-                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
-                  <span class="tot">/05</span>
-                </span>
                 <div class="hero-main">
                   <span class="hdot"><i></i><i></i></span>
                   <div class="hero-texts"><!-- active business title (JS) --></div>
@@ -821,13 +826,9 @@
       if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
       // match the title section (hero) height to the right-hand nav so they read as one band
       if(heroBlock && navEl){ heroBlock.style.minHeight = navEl.offsetHeight + 'px'; }
-      var HRef = Math.round(cW*9/16);   // 16:9 reference — sets the side-card proportions
-      var HM = Math.round(HRef*0.70);   // mid images (slots 1,3)
-      var HS = Math.round(HRef*0.42);   // far images (slots 0,4)
-      // centre image grows UP to the sub-menu's top so the frosted list overlays it
-      var subTop = HRef;
-      if(listsEl && collage){ subTop = Math.round(listsEl.getBoundingClientRect().top - collage.getBoundingClientRect().top); }
-      var HC = Math.max(HRef, BASE - subTop);   // centre card top aligns with the sub-menu top
+      var HC = Math.round(cW*9/16);   // centre image 16:9 (height follows its width)
+      var HM = Math.round(HC*0.70);   // mid images (slots 1,3)
+      var HS = Math.round(HC*0.42);   // far images (slots 0,4)
       var x0=0,x1=WF+GAP,x2=2*(WF+GAP),x3=x2+cW+GAP,x4=x3+WF+GAP;
       SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
     }
@@ -966,7 +967,7 @@
 
     function scrollToIdx(i){ i=((i%N)+N)%N; var total=section.offsetHeight-window.innerHeight; var top=section.offsetTop + (MO + ((i+0.5)/N)*(1-MO))*total; window.scrollTo({ top: top, behavior: 'smooth' }); }
     navBtns.forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); }); });
-    sticky.querySelectorAll('.biz-side .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
+    sticky.querySelectorAll('.biz-head .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
