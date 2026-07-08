@@ -205,7 +205,7 @@
   /* The Business coverflow lives INSIDE .who-sticky. .who-cards carries the .v2biz class so all the
      Business card/UI styles below apply, and doubles as the biz-stage (centred 900px). The section runs:
      keyword cycle → A-PRO "A" morph → the SAME cards become the coverflow and rotate. (No separate section.) */
-  .who-cards{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:900px;z-index:6;opacity:0}
+  .who-cards{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px;z-index:6;opacity:0}   /* -10px nudges the whole Business layer (cards + content + sub-menu) up */
   .who-cards.on{opacity:1}
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
 
@@ -262,14 +262,16 @@
      width is set by JS to match the centre card; the value here is just an initial fallback. */
   .v2biz .biz-center{width:min(770px,100%);margin:0 auto;display:flex;flex-direction:column;gap:12px}
   /* hero height is matched to the nav via JS (min-height) and its content centred vertically */
-  .v2biz .biz-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:8px 0}
+  .v2biz .biz-hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:8px 0}
   .v2biz .biz-num{display:flex;align-items:baseline;justify-content:center;font-family:var(--rc);font-size:16px;letter-spacing:-.32px}
   .v2biz .biz-num .reel{display:inline-block;height:16px;overflow:hidden}
   .v2biz .biz-num .reel .col{display:block;transition:transform .5s var(--ease)}
   .v2biz .biz-num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
   .v2biz .biz-num .tot{color:var(--teritary)}
 
-  .v2biz .hero-main{display:flex;align-items:center;justify-content:center;gap:24px;width:100%}
+  /* arrows are top-aligned then nudged to the centre of the largest title line (.t1), not the whole t1+t2 block */
+  .v2biz .hero-main{display:flex;align-items:flex-start;justify-content:center;gap:24px;width:100%}
+  .v2biz .hero-main .ic{margin-top:11.8px}   /* (t1 line-box 57.6px − ic 34px) / 2 */
   /* corner pixels — a frame spanning the full biz-body width (aligned to the header underline + nav)
      and the vertical band down to the image top; height is set by JS in positionOverlay */
   .v2biz .hframe{position:absolute;left:0;right:0;top:0;z-index:0;pointer-events:none}
@@ -351,8 +353,9 @@
   .v2gnet .gnet-stage{position:absolute;left:50%;top:0;transform:translateX(-50%);width:1280px;height:900px}
   .v2gnet .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
   .v2gnet .gnet-map img{width:100%;height:100%;display:block}
-  .v2gnet .gnet-gn{position:absolute;left:24px;top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
-  .v2gnet .gnet-desc{position:absolute;left:24px;top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  /* left = the GNB's left line (1392 container edge) mapped into the 1280 gnet-stage: (1280 − (maxw−48))/2 = −56px */
+  .v2gnet .gnet-gn{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .v2gnet .gnet-desc{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
   .v2gnet .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
   .v2gnet .gnet-stat{flex:1;text-align:center}
   .v2gnet .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
@@ -381,14 +384,14 @@
   .footer{background:var(--g950);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
   .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
   /* --- sitemap (menu tree) --- */
-  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:48px;border-bottom:1px solid var(--white-300)}
+  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
   .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
   .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
   .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
   .footer .f-col a:hover{opacity:1}
   /* --- utility bar (family site + info links) --- */
-  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:28px 0;border-bottom:1px solid var(--white-300)}
+  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
   .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
   .footer .f-links a:hover{opacity:1}
@@ -405,7 +408,7 @@
   .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
   /* --- bottom (logo + legal + copyright) --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
-  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:18px}
+  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
   .footer .f-bottom .logo{width:97px;height:20px}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -446,7 +449,7 @@
 
   <!-- ===================== BANNER ===================== -->
   <section class="section v2banner">
-    <video class="v2b-video" src="../assets/배너.mp4" autoplay muted loop playsinline preload="auto"></video>
+    <video class="v2b-video" src="../assets/banner-gray.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="gnb-group">
     <nav class="gnb">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
@@ -686,6 +689,13 @@
 
       <!-- 패밀리사이트 + 기타 정보 -->
       <div class="f-util">
+        <div class="f-links">
+          <a href="#">글로벌 네트워크</a><i class="sep"></i>
+          <a href="#">Contact us</a><i class="sep"></i>
+          <a href="#">사업장소재</a><i class="sep"></i>
+          <a href="#">이메일무단수집거부</a><i class="sep"></i>
+          <a href="#" class="strong">개인정보처리방침</a>
+        </div>
         <div class="f-family" id="fFamily">
           <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
             <span>FAMILY SITE</span><i class="arw"></i>
@@ -694,13 +704,6 @@
             <a href="#" target="_blank" rel="noopener">소재 | 머티리얼즈</a>
             <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
           </div>
-        </div>
-        <div class="f-links">
-          <a href="#">글로벌 네트워크</a><i class="sep"></i>
-          <a href="#">Contact us</a><i class="sep"></i>
-          <a href="#">사업장소재</a><i class="sep"></i>
-          <a href="#">이메일무단수집거부</a><i class="sep"></i>
-          <a href="#" class="strong">개인정보처리방침</a>
         </div>
       </div>
 
@@ -809,21 +812,21 @@
 
     // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
-      { kor:'이차전지', eng:'Rechargeable Battery', img:'공장이미지 1.png', href:'business.html',
+      { kor:'이차전지', eng:'Rechargeable Battery', img:'carousel-battery.png', href:'business.html',
         lists:[ {nm:'설비', href:'business.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
                 {nm:'소재 | 머티리얼즈', sub:true, href:'business.html', tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']} ] },
-      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'공장 이미지 2.png', href:'business-ess.html',
+      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'carousel-ess.png', href:'business-ess.html',
         lists:[ {nm:'배터리 에너지 저장 시스템', href:'business-ess.html', tags:['배터리 에너지 저장 시스템']},
                 {nm:'무인 이동체 전원 시스템', href:'business-ess.html', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
                 {nm:'무정전 전원 장치', href:'business-ess.html', tags:['무정전 전원 장치']} ] },
-      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'biz-03-gan.png', href:'business.html',
+      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'carousel-gan.png', href:'business.html',
         lists:[ {nm:'Epi-Wafer', href:'business.html', tags:['Epi-Wafer']},
                 {nm:'GaN Device', href:'business.html', tags:['GaN Device']},
                 {nm:'에이프로 세미콘', sub:true, href:'business.html', tags:['에이프로 세미콘']} ] },
-      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'4. 산업안전진단로봇솔루션.png', href:'business.html',
+      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'carousel-safety-robot.png', href:'business.html',
         lists:[ {nm:'산업 안전 진단 플랫폼', href:'business.html', tags:['산업 안전 진단 로봇 솔루션']},
                 {nm:'산업 안전 진단 페이로드', href:'business.html', tags:['ECOTRON 제어기 국내 총판']} ] },
-      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'energy infra.png', href:'business.html',
+      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'carousel-energy-infra.png', href:'business.html',
         lists:[ {nm:'전기자동차 충전 솔루션', href:'business.html', tags:['전기자동차 충전 솔루션']},
                 {nm:'배터리 전주기 진단 솔루션', href:'business.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
     ];
@@ -862,10 +865,16 @@
       listsEl.style.width = s.w + 'px';
       if(centerEl && heroBlock && bodyEl && headEl){
         var headBottom = headEl.getBoundingClientRect().bottom - cTop;
-        var bandCenter = (headBottom + s.y) / 2 - 20;                  // middle of header↔image, biased 20px up
+        var bandCenter = (headBottom + s.y) / 2 - 4;                   // middle of header↔image, biased 4px up
         var bodyTop = bodyEl.getBoundingClientRect().top - cTop;
         if(hframeEl){ hframeEl.style.height = Math.max(0, Math.round(s.y - bodyTop)) + 'px'; }   // span biz-body top → image top
-        centerEl.style.marginTop = Math.max(0, Math.round(bandCenter - bodyTop - heroBlock.offsetHeight/2)) + 'px';
+        // centre on the big title line (.t1 — where the arrows now sit), not the whole block's geometry,
+        // so the arrows+title row lands at the header↔image mid-height.
+        // use offsetTop (immune to the rise-up transform) — .biz-hero is position:relative so it's the offsetParent —
+        // otherwise measuring mid-rolling reads the translated position and the block drifts down.
+        var t1El = heroEl && heroEl.querySelector('.t1');
+        var innerCenter = t1El ? (t1El.offsetTop + t1El.offsetHeight/2) : heroBlock.offsetHeight/2;
+        centerEl.style.marginTop = Math.max(0, Math.round(bandCenter - bodyTop - innerCenter)) + 'px';
       }
     }
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
