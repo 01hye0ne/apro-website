@@ -333,8 +333,10 @@
   .gnet-map{transform:translateY(calc(var(--p,0) * -35px))}
   .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
   .gnet-map img{width:100%;height:100%;display:block}
-  .gnet-gn{position:absolute;left:24px;top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
-  .gnet-desc{position:absolute;left:24px;top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  /* left texts align to the GNB line: the 1280 stage is centered inside the 1440 canvas,
+     so its left edge sits 80px inward — offset by -56px (=24-80) to hit the 24px gutter line */
+  .gnet-gn{position:absolute;left:-56px;top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .gnet-desc{position:absolute;left:-56px;top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
   .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
   .gnet-stat{flex:1;text-align:center}
   .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
@@ -354,14 +356,14 @@
   .footer{background:var(--point-900);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
   .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
   /* --- sitemap (menu tree) --- */
-  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:48px;border-bottom:1px solid var(--white-300)}
+  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
   .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
   .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
   .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
   .footer .f-col a:hover{opacity:1}
   /* --- utility bar (family site + info links) --- */
-  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:28px 0;border-bottom:1px solid var(--white-300)}
+  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
   .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
   .footer .f-links a:hover{opacity:1}
@@ -378,7 +380,7 @@
   .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.08);color:#fff}
   /* --- bottom (logo + legal + copyright) --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
-  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:18px}
+  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
   .footer .f-bottom .logo{width:97px;height:20px}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -412,7 +414,7 @@
     <nav class="gnb" id="gnb">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
       <div class="menus">
-        <a href="business.html" data-i="0">사업영역</a><a href="#" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a>
+        <a href="business.html?area=0" data-i="0">사업영역</a><a href="#" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a>
         <a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
       </div>
       <div class="tools">
@@ -431,11 +433,11 @@
         <span class="m-logo" aria-hidden="true"></span>
         <div class="m-cols">
           <div class="m-col" data-i="0">
-            <a href="business.html">이차전지</a>
-            <a href="business.html">에너지 저장 시스템</a>
-            <a href="business.html">화합물 GaN 반도체</a>
-            <a href="business.html">산업 안전 진단 로봇 솔루션</a>
-            <a href="business.html">에너지 인프라 솔루션</a>
+            <a href="business.html?area=0">이차전지</a>
+            <a href="business.html?area=1">에너지 저장 시스템</a>
+            <a href="business.html?area=2">화합물 GaN 반도체</a>
+            <a href="business.html?area=3">산업 안전 진단 로봇 솔루션</a>
+            <a href="business.html?area=4">에너지 인프라 솔루션</a>
           </div>
           <div class="m-col" data-i="1">
             <a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a>
@@ -740,6 +742,13 @@
 
       <!-- 패밀리사이트 + 기타 정보 -->
       <div class="f-util">
+        <div class="f-links">
+          <a href="#">글로벌 네트워크</a><i class="sep"></i>
+          <a href="#">Contact us</a><i class="sep"></i>
+          <a href="#">사업장소재</a><i class="sep"></i>
+          <a href="#">이메일무단수집거부</a><i class="sep"></i>
+          <a href="#" class="strong">개인정보처리방침</a>
+        </div>
         <div class="f-family" id="fFamily">
           <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
             <span>FAMILY SITE</span><i class="arw"></i>
@@ -748,13 +757,6 @@
             <a href="#" target="_blank" rel="noopener">소재 | 머티리얼즈</a>
             <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
           </div>
-        </div>
-        <div class="f-links">
-          <a href="#">글로벌 네트워크</a><i class="sep"></i>
-          <a href="#">Contact us</a><i class="sep"></i>
-          <a href="#">사업장소재</a><i class="sep"></i>
-          <a href="#">이메일무단수집거부</a><i class="sep"></i>
-          <a href="#" class="strong">개인정보처리방침</a>
         </div>
       </div>
 
@@ -1085,11 +1087,11 @@
     <div class="ov-row">
       <div class="ov-cat">사업영역</div>
       <div class="ov-links">
-        <a href="business.html">이차전지</a>
-        <a href="business.html">에너지 저장 시스템</a>
-        <a href="business.html">화합물 GaN 반도체</a>
-        <a href="business.html">산업 안전 진단 로봇 솔루션</a>
-        <a href="business.html">에너지 인프라 솔루션</a>
+        <a href="business.html?area=0">이차전지</a>
+        <a href="business.html?area=1">에너지 저장 시스템</a>
+        <a href="business.html?area=2">화합물 GaN 반도체</a>
+        <a href="business.html?area=3">산업 안전 진단 로봇 솔루션</a>
+        <a href="business.html?area=4">에너지 인프라 솔루션</a>
       </div>
     </div>
     <div class="ov-row">

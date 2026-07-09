@@ -103,7 +103,7 @@
   /* background video (plays clean, no overlay effect) */
   .v2banner .v2b-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px}
-  .v2banner .headline{padding-top:360px}
+  .v2banner .headline{padding-top:340px}
   .v2banner .headline .en,.v2banner .headline .kor{will-change:transform,opacity}
   /* 텍스트 전환 마이크로 모션: 현재 문구는 위로 살짝 빠지고, 새 문구가 아래에서 떠오름 (보조문구는 살짝 뒤따라옴) */
   @keyframes bnOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
@@ -114,7 +114,7 @@
   .v2banner .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
   .v2banner .headline .en + .kor{margin-top:16px}   /* 보조문구: 강조문구 아래 간격 */
   .v2banner .en{font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff;white-space:pre-line}
-  .v2banner .info{margin-top:auto;display:flex;gap:20px;align-items:flex-end}
+  .v2banner .info{margin-top:auto;margin-bottom:20px;display:flex;gap:20px;align-items:flex-end}
   .v2banner .pag-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   .v2banner .pag{display:flex;gap:16px;align-items:center}
   .v2banner .pag .lbl{font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
@@ -128,10 +128,12 @@
   /* left→right gauge fill = current video segment progress */
   .v2banner .bnav .b::before{content:"";position:absolute;inset:0;z-index:0;background:rgba(255,255,255,.16);transform:scaleX(0);transform-origin:left center}
   .v2banner .bnav .b.active::before{animation:bnavFill var(--bnav-dur,5s) linear forwards}
+  /* the brand (00 에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
+  .v2banner .bnav .b.brand{--bnav-dur:12.5s}
   @keyframes bnavFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   .v2banner .bnav .bn,.v2banner .bnav .bt{position:relative;z-index:1}
   .v2banner .bnav .bn{font-family:'Roboto Condensed',var(--suit);font-weight:400;font-style:normal;font-size:16px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.55)}
-  .v2banner .bnav .bt{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.72);transition:color .22s var(--ease)}
+  .v2banner .bnav .bt{font-family:var(--suit);font-weight:600;font-size:18px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.72);transition:color .22s var(--ease)}
   .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:#fff}
   @media(max-width:900px){.v2banner .bnav{flex-wrap:wrap}.v2banner .bnav .b{flex:1 1 40%}}
 
@@ -575,6 +577,7 @@
         <div class="info">
           <div class="pag-info">
             <div class="bnav">
+              <span class="b brand"><em class="bn">00</em><span class="bt">에이프로</span></span>
               <span class="b"><em class="bn">01</em><span class="bt">이차전지</span></span>
               <span class="b"><em class="bn">02</em><span class="bt">에너지 저장 시스템</span></span>
               <span class="b"><em class="bn">03</em><span class="bt">화합물 GaN 반도체</span></span>
@@ -836,14 +839,19 @@
     ];
     var N = MSG.length;    // 8 segments → 0,5,…,35s
 
-    var cur = -1;
+    var cur = -1, curTab = -1;
     function show(idx){
-      // gauge/tab: update immediately so the fill stays tight to the footage
-      var bi = idx - BIZ0;                        // -1 during the brand messages
-      tabs.forEach(function(t){ t.classList.remove('active'); });
-      if(bi >= 0 && bi < tabs.length){
-        void tabs[bi].offsetWidth;               // reflow so the gauge fill restarts from 0
-        tabs[bi].classList.add('active');
+      // gauge/tab: tabs[0] is the brand (00 에이프로) tab, tabs[1..5] the five business tabs.
+      // Brand messages (idx < BIZ0) light tab 0; its gauge fills continuously across all three
+      // brand segments, so only re-trigger the fill when the active tab actually changes.
+      var ai = idx < BIZ0 ? 0 : (idx - BIZ0 + 1);
+      if(ai !== curTab){
+        curTab = ai;
+        tabs.forEach(function(t){ t.classList.remove('active'); });
+        if(ai >= 0 && ai < tabs.length){
+          void tabs[ai].offsetWidth;             // reflow so the gauge fill restarts from 0
+          tabs[ai].classList.add('active');
+        }
       }
       // headline: current copy lifts out, new copy rises in (cosmetic only — detection stays video-driven)
       head.classList.add('leaving');
@@ -865,10 +873,12 @@
     }
     requestAnimationFrame(loop);
 
-    // Click a business tab → seek to that segment (keyframe-aligned) and keep playing.
+    // Click a tab → seek and keep playing. Brand tab (i=0) restarts from 0s;
+    // business tabs (i=1..5) seek to their segment (keyframe-aligned).
     tabs.forEach(function(t, i){
       t.addEventListener('click', function(){
-        try { video.currentTime = Math.max(0, (BIZ0 + i) * SEG - LEAD); } catch(e){}  // tab0→12.5s … tab4→32.5s
+        var seek = i === 0 ? 0 : Math.max(0, (BIZ0 + (i - 1)) * SEG - LEAD);  // tab1→12.5s … tab5→32.5s
+        try { video.currentTime = seek; } catch(e){}
         var p = video.play(); if(p && p.catch){ p.catch(function(){}); }
       });
     });
