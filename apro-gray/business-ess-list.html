@@ -132,17 +132,77 @@
   ::view-transition-new(root){ animation-name:apro-slide-in-right }
   @keyframes apro-slide-out-left{ to{ transform:translateX(-5vw); opacity:0 } }
   @keyframes apro-slide-in-right{ from{ transform:translateX(5vw); opacity:0 } }
+
+  /* ===================== SUB GNB (logo + context button + hamburger) ===================== */
+  .subhd{position:fixed;top:0;left:0;width:100%;height:80px;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px) 0 34px;
+    pointer-events:none;animation:hdIn .8s var(--ease) both}
+  .subhd>*{pointer-events:auto}
+  @media(max-width:1120px){.subhd{padding-left:26px}}
+  .subhd .hd-logo img{height:18px;width:auto;display:block}
+  .subhd .hd-left{display:flex;align-items:center;gap:16px;color:#fff}
+  .subhd .hd-right{display:flex;align-items:center;gap:16px;color:#fff}
+  .subhd.is-list .hd-right{color:var(--g900)}      /* hamburger sits over the white body */
+  .subhd.is-biz{mix-blend-mode:difference}          /* adaptive over the changing panels */
+  .hd-back{display:inline-flex;align-items:center;gap:10px;color:inherit;transition:opacity .2s var(--ease)}
+  .hd-back:hover{opacity:.62}
+  .hd-back .box{width:28px;height:28px;flex-shrink:0;border:1px solid currentColor;display:grid;place-content:center}
+  .hd-back .box svg{width:18px;height:18px}
+  .hd-back .lbl{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1;letter-spacing:-.3px;white-space:nowrap}
+  @keyframes hdIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+  /* ===================== SHARED: hamburger + full-screen overlay ===================== */
+  .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
+    cursor:pointer;color:inherit;padding:0;flex-shrink:0}
+  .menu-toggle span{display:block;width:26px;height:1.8px;background:currentColor;border-radius:2px;transition:transform .3s var(--ease)}
+  .menu-toggle span+span{margin-top:7px}
+  .menu-toggle:hover span:first-child{transform:translateY(1px)}
+  .menu-toggle:hover span:last-child{transform:translateY(-1px)}
+  .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
+    background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
+    color:#fff;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .45s var(--ease),visibility .45s var(--ease)}
+  .navover.open{opacity:1;visibility:visible;pointer-events:auto}
+  .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
+  .ov-logo img{height:20px;width:auto;display:block}
+  .ov-tools{display:flex;align-items:center;gap:22px}
+  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang:hover{color:#fff}
+  .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
+  .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .ov-close span{position:absolute;top:50%;left:11px;right:11px;height:1.6px;background:#fff}
+  .ov-close span:first-child{transform:rotate(45deg)}
+  .ov-close span:last-child{transform:rotate(-45deg)}
+  .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ov-row:first-child{border-top:none}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a:hover{color:#fff}
+  .navover .ov-row{transform:translateY(18px);opacity:0}
+  .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+  .navover.open .ov-row:nth-child(1){transition-delay:.06s}
+  .navover.open .ov-row:nth-child(2){transition-delay:.11s}
+  .navover.open .ov-row:nth-child(3){transition-delay:.16s}
+  .navover.open .ov-row:nth-child(4){transition-delay:.21s}
+  .navover.open .ov-row:nth-child(5){transition-delay:.26s}
+  @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
 <!-- ===================== SUB-PAGE GNB ===================== -->
-<nav class="subgnb">
-  <a class="back" href="business.html" aria-label="사업영역으로">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M12 4 6 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </a>
-  <a class="lbl" href="business.html">사업영역</a>
-</nav>
+<!-- ===================== SUB GNB ===================== -->
+<!-- ===================== SUB GNB ===================== -->
+<header class="subhd is-list">
+  <div class="hd-left">
+    <a class="hd-back" href="business.html" aria-label="사업영역"><span class="box"><svg viewBox="0 0 20 20" fill="none"><path d="M12 4 6 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">사업영역</span></a>
+  </div>
+  <div class="hd-right">
+      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
 
 <!-- ===================== PRODUCT LIST ===================== -->
 <section class="listpage">
@@ -211,6 +271,77 @@
       var n = card.querySelector('.nm');    if(n) n.style.viewTransitionName = 'apro-hero-title';
     });
   });
+</script>
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-bat-list.html">이차전지</a>
+        <a href="business-ess-list.html">에너지 저장 시스템</a>
+        <a href="business-gan-list.html">화합물 GaN 반도체</a>
+        <a href="business-robot-list.html">산업 안전 진단 로봇 솔루션</a>
+        <a href="business-infra-list.html">에너지 인프라 솔루션</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사소개</div>
+      <div class="ov-links">
+        <a href="#">기업소개</a>
+        <a href="#">CEO 인사말</a>
+        <a href="#">연혁</a>
+        <a href="#">오시는 길</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links">
+        <a href="#">IR 자료</a>
+        <a href="#">공시정보</a>
+        <a href="#">재무정보</a>
+        <a href="#">주식정보</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links">
+        <a href="#">ESG 개요</a>
+        <a href="#">환경</a>
+        <a href="#">사회</a>
+        <a href="#">지배구조</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links">
+        <a href="#">뉴스</a>
+        <a href="#">보도자료</a>
+        <a href="#">채용</a>
+        <a href="#">문의하기</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<script>
+/* hamburger -> full-screen overlay menu (shared) */
+(function(){
+  var b=document.querySelector('.menu-toggle'),o=document.getElementById('navover');
+  if(!b||!o)return;
+  var c=o.querySelector('.ov-close');
+  function open(){o.classList.add('open');o.setAttribute('aria-hidden','false');b.setAttribute('aria-expanded','true');document.documentElement.style.overflow='hidden';}
+  function close(){o.classList.remove('open');o.setAttribute('aria-hidden','true');b.setAttribute('aria-expanded','false');document.documentElement.style.overflow='';}
+  b.addEventListener('click',open);
+  if(c)c.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&o.classList.contains('open'))close();});
+})();
 </script>
 </body>
 </html>
