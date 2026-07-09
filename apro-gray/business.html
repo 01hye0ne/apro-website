@@ -57,9 +57,18 @@
   .panel:last-child{border-right:none}
   .panel:hover{background:var(--g950);color:#fff;border-color:rgba(255,255,255,.12)}
 
+  /* ---- top fade: image blends into the panel bg behind the number/title ---- */
+  /* two stacked gradients (white / dark) crossfade on hover so the fade tracks the bg color change */
+  .panel::before,.panel::after{content:"";position:absolute;top:0;left:0;right:0;height:440px;z-index:1;
+    pointer-events:none;transition:opacity .45s var(--ease)}
+  .panel::before{background:linear-gradient(to bottom,#fff,rgba(255,255,255,0));opacity:1}
+  .panel::after{background:linear-gradient(to bottom,#0e161e,rgba(14,22,30,0));opacity:0}
+  .panel:hover::before{opacity:0}
+  .panel:hover::after{opacity:1}
+
   /* ---- object image: enlarged and bleeding off the right edge (~half cropped) ---- */
   .obj-wrap{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .obj{position:absolute;top:50%;right:0;width:146%;height:auto;max-width:none;
+  .obj{position:absolute;top:calc(50% + 20px);right:0;width:146%;height:auto;max-width:none;
     transform:translate(46%,-50%);transition:transform .55s var(--ease),width .55s var(--ease)}
   .panel:hover .obj{transform:translate(43%,-50%);width:150%}
   /* 04 산업안전: full-bleed image — shrink to match the visual ratio of 01·02·03 */
@@ -295,37 +304,33 @@
     <div class="ov-row">
       <div class="ov-cat">회사소개</div>
       <div class="ov-links">
-        <a href="#">기업소개</a>
-        <a href="#">CEO 인사말</a>
-        <a href="#">연혁</a>
-        <a href="#">오시는 길</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
       <div class="ov-links">
-        <a href="#">IR 자료</a>
-        <a href="#">공시정보</a>
-        <a href="#">재무정보</a>
-        <a href="#">주식정보</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">지속가능경영</div>
       <div class="ov-links">
-        <a href="#">ESG 개요</a>
-        <a href="#">환경</a>
-        <a href="#">사회</a>
-        <a href="#">지배구조</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">커뮤니티</div>
       <div class="ov-links">
-        <a href="#">뉴스</a>
-        <a href="#">보도자료</a>
-        <a href="#">채용</a>
-        <a href="#">문의하기</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
   </nav>

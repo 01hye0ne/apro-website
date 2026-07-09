@@ -58,59 +58,62 @@
   /* centered content band */
   .band{position:absolute;inset:0;max-width:var(--maxw);margin-inline:auto}
 
-  /* ===================== GNB (fixed top, blends over any background) ===================== */
-  /* full-bleed bar: spans edge-to-edge & pinned to the very top; inner content keeps the max-width layout.
-     transparent over the (dark) banner -> solid white once scrolled past it (.scrolled toggled by JS) */
-  .gnb{
-    position:fixed;top:0;left:0;right:0;width:100%;height:64px;z-index:100;
-    display:flex;justify-content:center;
-    background:transparent;box-shadow:0 6px 24px -10px rgba(23,36,58,0);
-    transition:background .3s var(--ease),box-shadow .3s var(--ease);
-    animation:gnbIn .9s var(--ease) both;
-  }
-  .gnb-inner{width:100%;max-width:var(--maxw);height:100%;display:flex;align-items:center;gap:36px;padding:0 24px}
-  .gnb .logo{flex-shrink:0}
-  .gnb .logo img{height:16px;width:78px;transition:filter .3s var(--ease)}
+  /* ===================== GNB (floating pill, blends over any background) ===================== */
+  /* transparent floating pill: white text over dark backgrounds, switching to dark text over
+     light sections (.nav-light) or while the mega panel is open (.mega-open). */
+  .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);
+    width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;
+    display:flex;align-items:center;gap:36px;
+    animation:gnbIn .9s var(--ease) both}
+  .gnb .logo{padding:12px 0;flex-shrink:0}
+  .gnb .logo img{height:16px;width:78px;transition:filter .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
-  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;padding-left:16px;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;transition:color .3s var(--ease),opacity .2s}
+  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
   .gnb .menus a:hover{opacity:1}
   .gnb .menus a.active{font-weight:700;opacity:1}
-  /* language switcher (replaces hamburger) */
-  .gnb .lang{width:64px;display:flex;justify-content:flex-end;flex-shrink:0}
-  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px;transition:color .3s var(--ease)}
+  /* mega open: underline the hovered top-category */
+  .gnb-group.mega-open .gnb .menus a.active{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:24px}
+  /* light-background theme: dark text, dark (inverted) logo, no glow */
+  .gnb-group.nav-light .gnb .menus a,
+  .gnb-group.mega-open .gnb .menus a{color:var(--g900);text-shadow:none}
+  .gnb-group.nav-light .gnb .logo img,
+  .gnb-group.mega-open .gnb .logo img{filter:invert(1)}
+  .gnb-group.nav-light .gnb .lang .lang-btn,
+  .gnb-group.mega-open .gnb .lang .lang-btn{color:var(--g900);text-shadow:none}
+  /* language switcher */
+  .gnb .lang{display:flex;justify-content:flex-end;flex-shrink:0}
+  .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.28));transition:color .35s var(--ease),filter .35s var(--ease)}
+  .gnb-group.nav-light .gnb .lang .lang-btn,
+  .gnb-group.mega-open .gnb .lang .lang-btn{filter:none}
   .gnb .lang .lang-btn svg{width:22px;height:22px;display:block}
   .gnb .lang .lang-btn .arw{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .25s var(--ease)}
   .gnb-group.lang-open .lang .lang-btn .arw{transform:rotate(-135deg);margin-top:2px}
-  /* scrolled past the banner: white bar with dark content */
-  .gnb.scrolled{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
-  .gnb.scrolled .logo img{filter:brightness(0)}     /* white logo -> black on the white bar */
-  .gnb.scrolled .menus a{color:var(--g900)}
-  .gnb.scrolled .lang .lang-btn{color:var(--g900)}
-  @keyframes gnbIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes gnbIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
+
+  /* ---- GNB right tools (lang + hamburger) ---- */
+  .gnb .tools{width:78px;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+  .gnb .menu-toggle{color:#fff;filter:drop-shadow(0 1px 4px rgba(0,0,0,.28));transition:color .35s var(--ease),filter .35s var(--ease)}
+  .gnb-group.nav-light .gnb .menu-toggle,
+  .gnb-group.mega-open .gnb .menu-toggle{color:var(--g900);filter:none}
 
   /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
-    --gutter:calc((100% - min(var(--maxw), 100%)) / 2)}
-  /* on hover: turn the bar white with dark content (same as .scrolled) so links stay readable over the white panel */
-  .gnb-group:hover .gnb,.gnb-group:focus-within .gnb{background:#fff;box-shadow:0 6px 24px -10px rgba(23,36,58,.28)}
-  .gnb-group:hover .gnb .logo img,.gnb-group:focus-within .gnb .logo img{filter:brightness(0)}
-  .gnb-group:hover .gnb .menus a,.gnb-group:focus-within .gnb .menus a{color:var(--g900)}
-  .gnb-group:hover .gnb .lang .lang-btn,.gnb-group:focus-within .gnb .lang .lang-btn{color:var(--g900)}
-  .gnb-mega{position:fixed;top:64px;left:0;width:100%;z-index:99;background:#fff;
+    --gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
+  .gnb-mega{position:fixed;top:0;left:0;width:100%;z-index:99;background:#fff;
     border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(23,36,58,.12);
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
-  .gnb-group:hover .gnb-mega,.gnb-group:focus-within .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-  .gnb-mega .inner{width:100%;max-width:var(--maxw);margin-inline:auto;
-    display:flex;gap:36px;align-items:flex-start;padding:24px 24px 32px}
+  .gnb-group.mega-open .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .gnb-mega .inner{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto;
+    display:flex;gap:36px;align-items:flex-start;padding:92px 0 32px 0}
   .gnb-mega .m-logo{width:78px;flex-shrink:0}
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
-  .gnb-mega .m-globe{width:64px;flex-shrink:0}
-  .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:17px;padding:0 16px}
-  .gnb-mega .m-col a{align-self:flex-start;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
+  .gnb-mega .m-globe{width:78px;flex-shrink:0}
+  .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:30px;padding:0 16px}
+  .gnb-mega .m-col a{align-self:center;text-align:center;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;text-decoration:none;white-space:nowrap;transition:color .18s}
   .gnb-mega .m-col a:hover{color:var(--brand)}
   /* language dropdown */
-  .lang-menu{position:fixed;top:64px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;
+  .lang-menu{position:fixed;top:60px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;
     background:#fff;border:1px solid var(--border-g);border-radius:4px;box-shadow:0 12px 28px rgba(23,36,58,.16);padding:6px;
     opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;
     transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
@@ -120,10 +123,48 @@
   .lang-menu a.on{color:var(--brand);font-weight:700}
   @media(max-width:900px){.gnb-mega{display:none}.gnb .menus{display:none}}
 
+  /* ===================== hamburger + full-screen overlay ===================== */
+  .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
+    cursor:pointer;color:inherit;padding:0;flex-shrink:0}
+  .menu-toggle span{display:block;width:26px;height:1.8px;background:currentColor;border-radius:2px;transition:transform .3s var(--ease)}
+  .menu-toggle span+span{margin-top:7px}
+  .menu-toggle:hover span:first-child{transform:translateY(1px)}
+  .menu-toggle:hover span:last-child{transform:translateY(-1px)}
+  .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
+    background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
+    color:#fff;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .45s var(--ease),visibility .45s var(--ease)}
+  .navover.open{opacity:1;visibility:visible;pointer-events:auto}
+  .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
+  .ov-logo img{height:20px;width:auto;display:block}
+  .ov-tools{display:flex;align-items:center;gap:22px}
+  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang:hover{color:#fff}
+  .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
+  .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .ov-close span{position:absolute;top:50%;left:11px;right:11px;height:1.6px;background:#fff}
+  .ov-close span:first-child{transform:rotate(45deg)}
+  .ov-close span:last-child{transform:rotate(-45deg)}
+  .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ov-row:first-child{border-top:none}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a:hover{color:#fff}
+  .navover .ov-row{transform:translateY(18px);opacity:0}
+  .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+  .navover.open .ov-row:nth-child(1){transition-delay:.06s}
+  .navover.open .ov-row:nth-child(2){transition-delay:.11s}
+  .navover.open .ov-row:nth-child(3){transition-delay:.16s}
+  .navover.open .ov-row:nth-child(4){transition-delay:.21s}
+  .navover.open .ov-row:nth-child(5){transition-delay:.26s}
+  @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
   /* ===================== BANNER ===================== */
   .banner{background:var(--g900)}
   /* background video (plays clean, no overlay/parallax effects) */
-  .banner-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
+  .banner-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
   /* color-tint wash layers disabled */
   .banner-bg{display:none}
   .banner-inner{position:absolute;inset:0;z-index:2;max-width:var(--maxw);margin-inline:auto;padding:80px 24px 24px;display:flex;gap:12px;align-items:flex-end}
@@ -131,6 +172,8 @@
   /* label + tabs cross-fade when switching business */
   .b-left .label,.b-left .b-tabs{transition:opacity .35s var(--ease),transform .35s var(--ease)}
   .b-left.swapping .label,.b-left.swapping .b-tabs{opacity:0;transform:translateY(8px)}
+  /* idle (no card hovered): hide the left-bottom label + tabs entirely */
+  .b-left.idle .label,.b-left.idle .b-tabs{opacity:0;transform:translateY(8px);pointer-events:none}
   .b-left .label .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
   .b-left .label .en{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:#fff}
   .b-tabs{display:flex;gap:8px;flex-wrap:wrap}
@@ -194,7 +237,9 @@
     border-radius:40px 40px 0 0;box-shadow:0 -22px 60px -24px rgba(23,36,58,.3)}
   .biz2-inner{position:relative;width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column;
     opacity:var(--rev,1);transform:translateY(calc((1 - var(--rev,1)) * 90px));transform-origin:center}
-  .biz2-head{flex-shrink:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;padding:128px 24px 24px}
+  .biz2-head{flex-shrink:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;padding:148px 24px 24px}
+  /* fullscreen / tall viewports: the section is very tall, so the header sits too high — push it down proportionally */
+  @media (min-height:900px){ .biz2-head{padding-top:calc(30vh - 80px)} }
   .biz2-head .ttl{font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900)}
   /* category nav (below BUSINESS) */
   .biz2-cats{display:flex;align-items:center;gap:11px}
@@ -214,41 +259,42 @@
   .biz2-scenewrap.swapping{opacity:0}
   .biz2-figure{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;
     width:100%;height:100%;padding-bottom:2%}
-  .biz2-figure .scene{position:relative;z-index:2;width:auto;height:auto;max-width:min(760px,60vw);max-height:80%;object-fit:contain;display:block;pointer-events:none}
+  .biz2-figure .scene{position:relative;z-index:2;width:auto;height:auto;max-width:min(1037px,77vw);max-height:108%;object-fit:contain;display:block;pointer-events:none;transform:translateY(40px)}
   /* per-area size tuning: differing image proportions are normalized to even
      visual weight — wide images sit lower/shorter, the tall charger taller+narrower */
-  .biz2-figure[data-fig="bat"]   .scene{max-height:74%}
-  .biz2-figure[data-fig="ess"]   .scene{max-height:80%}
-  .biz2-figure[data-fig="gan"]   .scene{max-height:70%}
-  .biz2-figure[data-fig="robot"] .scene{max-height:82%}
-  .biz2-figure[data-fig="infra"] .scene{max-height:94%;max-width:min(360px,32vw)}
+  .biz2-figure[data-fig="bat"]   .scene{max-height:99%}
+  .biz2-figure[data-fig="ess"]   .scene{max-height:113%}
+  .biz2-figure[data-fig="gan"]   .scene{max-height:95%}
+  .biz2-figure[data-fig="robot"] .scene{max-height:108%}
+  .biz2-figure[data-fig="infra"] .scene{max-height:97%;max-width:min(423px,38vw)}   /* tall charger: kept clear of the top menu (dark image would obscure it) */
   .biz2-figure.noimg{width:0}                                /* words-only slides: hide the figure box */
   .biz2-figure.noimg .scene{display:none}
   /* product bar */
   .biz2-bottom{flex-shrink:0;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:24px;display:flex;gap:12px;align-items:stretch}
   .biz2-major{width:403px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end}
-  /* title box height matches the product-card stack on the right (head 36 + body 144 = 180px),
-     so the Korean title's top lines up with the tops of the sub-list cards */
-  .biz2-major .biz2-titlebox{height:180px;display:flex;flex-direction:column;gap:8px}
-  .biz2-major .biz2-title{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
+  /* title box matches the product-card stack height (180px); the title+en+gauge group is
+     bottom-aligned so the gauge sits on the cards' bottom line — a long title just grows
+     upward from that fixed bottom instead of pushing the bottom line out of alignment */
+  .biz2-major .biz2-titlebox{height:180px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+  .biz2-major .biz2-title{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900);word-break:keep-all;text-wrap:balance}
   .biz2-major .biz2-en{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.35;letter-spacing:-.32px;color:var(--sec-text)}
-  /* margin-top:auto pushes the gauge bar to the bottom of the 180px box, so it lines up
-     with the bottom of the sub-list cards on the right */
-  .biz2-major .biz2-bar{height:6px;width:100%;background:var(--border-g);position:relative;overflow:hidden;margin-top:auto}
+  /* gauge bar sits just under the subtitle as part of the centered group */
+  .biz2-major .biz2-bar{height:6px;width:100%;background:var(--border-g);position:relative;overflow:hidden;margin-top:16px}
   .biz2-major .biz2-bar i{position:absolute;left:0;top:0;height:100%;width:100%;background:var(--brand);transform:scaleX(0);transform-origin:left center}
   @keyframes bizfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  .biz2-minor{flex:1;min-width:0;display:flex;gap:13px;align-items:stretch}
+  .biz2-minor{flex:1;min-width:0;display:flex;flex-wrap:nowrap;gap:13px;align-items:stretch}
   .biz2 .pcard{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid #fff;overflow:hidden}
   .biz2 .pcard-head{display:flex;align-items:stretch;height:36px}
   .biz2 .pcard-head .titlewrap{flex:1;min-width:0;display:flex;align-items:stretch}
   .biz2 .pcard-head .tag{flex:1;min-width:0;background:var(--brand);display:flex;align-items:center;gap:8px;padding:0 8px}   /* blue title bar */
   .biz2 .pcard-head .tag .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .biz2 .pcard-head .tag .chip{flex-shrink:0;background:var(--brand-2);border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:#fff}
+  .biz2 .pcard-head .tag .chip{flex-shrink:0;background:#2885ff;border-radius:2px;padding:0 8px;font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:#fff}
   .biz2 .pcard-head .tag .op{width:20px;height:20px;flex-shrink:0;color:#fff}
   .biz2 .pcard-head .chamfer{width:29px;flex-shrink:0;background:var(--brand);clip-path:polygon(0 0,100% 100%,0 100%)}  /* blue chamfer to match the bar */
   .biz2 .pcard-head .blank{width:28px;flex-shrink:0}
   .biz2 .pcard-body{height:144px;background:rgba(44,87,144,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column}
   .biz2 .pi{height:36px;flex-shrink:0;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid var(--white-300);font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
+  .biz2 .pi .lbl{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .biz2 .pi .dot{width:16px;height:16px;flex-shrink:0;display:grid;place-content:center}
   .biz2 .pi .dot::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
 
@@ -364,21 +410,19 @@
     <div class="banner-bg" id="bgB"></div>
     <div class="gnb-group">
     <nav class="gnb" id="gnb">
-      <div class="gnb-inner">
       <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
       <div class="menus">
-        <a href="business.html" data-i="0">사업영역</a>
-        <a href="#" data-i="1">회사소개</a>
-        <a href="#" data-i="2">투자정보</a>
-        <a href="#" data-i="3">지속가능경영</a>
-        <a href="#" data-i="4">커뮤니티</a>
+        <a href="business.html" data-i="0">사업영역</a><a href="#" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a>
+        <a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
       </div>
+      <div class="tools">
       <div class="lang">
         <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg>
           <i class="arw"></i>
         </button>
       </div>
+        <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
       </div>
     </nav>
     <!-- GNB 호버 시 나타나는 메가 메뉴 (각 메뉴 아래 정렬) -->
@@ -427,9 +471,9 @@
       </div>
 
       <div class="b-right" id="bCards">
-        <div class="b-card" data-i="0"><span class="t">이차전지</span><span class="sub">계열사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="0"><span class="t">이차전지</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="1"><span class="t">에너지저장시스템</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="b-card" data-i="2"><span class="t">화합물 GaN 반도체</span><span class="sub">계열사</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-card" data-i="2"><span class="t">화합물 GaN 반도체</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="3"><span class="t">산업 안전 진단 로봇 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="b-card" data-i="4"><span class="t">에너지 인프라 솔루션</span><svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
@@ -752,17 +796,30 @@
     window.addEventListener('orientationchange', setZoom);
   })();
 
-  // ---- GNB: transparent over the (dark) banner, solid white once scrolled past it ----
+  // ---- GNB contrast: dark text over light sections, white text over dark ones ----
   (function(){
-    var gnb=document.getElementById('gnb'), banner=document.querySelector('.banner');
-    if(!gnb) return;
-    var ticking=false;
-    function apply(){
-      ticking=false;
-      var threshold=banner?banner.offsetHeight-80:120;
-      gnb.classList.toggle('scrolled',(window.scrollY||window.pageYOffset||0)>threshold);
+    var group=document.querySelector('.gnb-group');
+    if(!group) return;
+    // light sections → dark nav text; dark sections → white nav text
+    var iso=document.querySelector('.iso'),
+        biz2=document.querySelector('.biz2'),
+        news=document.querySelector('.news'),
+        gnet=document.querySelector('.gnet'),
+        footer=document.querySelector('.footer');
+    var Y=38;   // the pill's vertical band (top:20 + ~18)
+    function spans(el){ if(!el) return false; var r=el.getBoundingClientRect(); return r.top<=Y && r.bottom>Y; }
+    function wantDark(){
+      if(spans(iso))  return true;    // #f4f6f8
+      if(spans(biz2)) return true;    // #fff
+      if(spans(news)) return true;    // #f4f6f8
+      if(spans(gnet)) return false;   // dark gradient
+      if(spans(footer)) return false; // dark
+      return false;                   // banner / default → white text
     }
-    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(apply); } }
+    var on=null;
+    function apply(){ var d=wantDark(); if(d!==on){ on=d; group.classList.toggle('nav-light',d); } }
+    var ticking=false;
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ ticking=false; apply(); }); } }
     apply();
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onScroll);
@@ -812,6 +869,7 @@
       current=i;
       var b=data[i];
       cards.forEach(function(c,ci){c.classList.toggle('active',ci===i);});
+      left.classList.remove('idle');
       setBg(b.bg);
       if(swapT){clearTimeout(swapT);swapT=null;}
       if(instant||reduce){ paint(b); left.classList.remove('swapping'); return; }
@@ -824,7 +882,7 @@
       c.addEventListener('click',function(){ location.href='business.html?area='+i; });  // go to the business-area sub-page
     });
     document.getElementById('bCards').addEventListener('mouseleave',function(){show(selected);});
-    show(0,true);
+    show(selected,true);   // default state = first business (이차전지) shown as if hovered
   })();
 
   // ---- scroll-scrubbed parallax + reveal: per section set --rev (0..1 reveal) and --p (-1..1 parallax) ----
@@ -923,7 +981,7 @@
     function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
     function cardHTML(c){
       var chip=c.sub?'<span class="chip">계열사</span>':'';
-      var items=c.items.map(function(t){return '<div class="pi"><span class="dot"></span>'+esc(t)+'</div>';}).join('');
+      var items=c.items.map(function(t){return '<div class="pi"><span class="dot"></span><span class="lbl">'+esc(t)+'</span></div>';}).join('');
       return '<div class="pcard"><div class="pcard-head"><div class="titlewrap"><div class="tag">'+chip+
              '<span class="nm">'+esc(c.t)+'</span>'+OP+'</div><span class="chamfer"></span></div>'+
              '<span class="blank"></span></div><div class="pcard-body">'+items+'</div></div>';
@@ -1000,6 +1058,86 @@
     cols.forEach(function(c){ c.addEventListener('mouseenter', function(){ setActive(c.getAttribute('data-i')); }); });
     group.addEventListener('mouseleave', clearActive);
   })();
+
+  /* mega-open controller: open only from the menu items, keep open across the whole group (no dead-zone) */
+  (function(){
+    var group=document.querySelector('.gnb-group'); if(!group) return;
+    var menus=group.querySelector('.gnb .menus'); if(!menus) return;
+    function open(){group.classList.add('mega-open');}
+    function close(){group.classList.remove('mega-open');}
+    menus.addEventListener('mouseenter',open);
+    menus.addEventListener('focusin',open);
+    group.addEventListener('mouseleave',close);
+    group.addEventListener('focusout',function(e){ if(!group.contains(e.relatedTarget)) close(); });
+  })();
+</script>
+
+<!-- ===================== OVERLAY MENU (hamburger) ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business.html">이차전지</a>
+        <a href="business.html">에너지 저장 시스템</a>
+        <a href="business.html">화합물 GaN 반도체</a>
+        <a href="business.html">산업 안전 진단 로봇 솔루션</a>
+        <a href="business.html">에너지 인프라 솔루션</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사소개</div>
+      <div class="ov-links">
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links">
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links">
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links">
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<script>
+/* hamburger -> full-screen overlay menu */
+(function(){
+  var b=document.querySelector('.menu-toggle'),o=document.getElementById('navover');
+  if(!b||!o)return;
+  var c=o.querySelector('.ov-close');
+  function open(){o.classList.add('open');o.setAttribute('aria-hidden','false');b.setAttribute('aria-expanded','true');document.documentElement.style.overflow='hidden';}
+  function close(){o.classList.remove('open');o.setAttribute('aria-hidden','true');b.setAttribute('aria-expanded','false');document.documentElement.style.overflow='';}
+  b.addEventListener('click',open);
+  if(c)c.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&o.classList.contains('open'))close();});
+})();
 </script>
 </body>
 </html>

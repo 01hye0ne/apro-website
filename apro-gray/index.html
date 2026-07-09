@@ -104,8 +104,16 @@
   .v2banner .v2b-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px}
   .v2banner .headline{padding-top:360px}
+  .v2banner .headline .en,.v2banner .headline .kor{will-change:transform,opacity}
+  /* 텍스트 전환 마이크로 모션: 현재 문구는 위로 살짝 빠지고, 새 문구가 아래에서 떠오름 (보조문구는 살짝 뒤따라옴) */
+  @keyframes bnOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
+  @keyframes bnRise{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
+  .v2banner .headline.leaving .en,.v2banner .headline.leaving .kor{animation:bnOut .25s cubic-bezier(.25,.46,.45,.94) both}
+  .v2banner .headline.entering .en{animation:bnRise .7s cubic-bezier(.25,.46,.45,.94) both}
+  .v2banner .headline.entering .kor{animation:bnRise .7s cubic-bezier(.25,.46,.45,.94) .06s both}
   .v2banner .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
-  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .v2banner .headline .en + .kor{margin-top:16px}   /* 보조문구: 강조문구 아래 간격 */
+  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff;white-space:pre-line}
   .v2banner .info{margin-top:auto;display:flex;gap:20px;align-items:flex-end}
   .v2banner .pag-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   .v2banner .pag{display:flex;gap:16px;align-items:center}
@@ -140,14 +148,15 @@
   .v2who .who-stage img,.v2who .who-stage svg,.v2who .who-stage span,.v2who .who-stage div,.v2who .who-stage p{position:absolute}
 
   /* background + foreground image layers — positioned at the Figma layer coords, cross-fade per phase */
-  .v2who .lyr-bg,.v2who .lyr-fg{opacity:0;transition:opacity .8s var(--ease);pointer-events:none;max-width:none}
-  .v2who .lyr-bg.active,.v2who .lyr-fg.active{opacity:1}
-  .v2who .lyr-bg{z-index:1}
-  .v2who .lyr-fg{z-index:3}
-  .v2who .bg-0{left:-100px;top:-39px;width:1628px;height:1085px}
-  .v2who .bg-1{left:-583px;top:-2079px;width:4096px;height:2731px}
-  .v2who .bg-2{left:-759px;top:-869px;width:2604px;height:1738px}
-  .v2who .bg-3{left:-996px;top:-302px;width:4504px;height:2534px}
+  /* foreground cut-outs live in a copy of the stage frame that's anchored to the viewport floor
+     (scaled from bottom-centre), so each subject keeps its original lower-right placement and sits
+     flush against the bottom — no manual cropping needed, the PNGs are already transparent cut-outs */
+  .v2who .who-fg{position:absolute;left:50%;bottom:0;width:1280px;height:586px;overflow:hidden;z-index:3;
+    transform:translateX(-50%) scale(var(--who-s,1));transform-origin:bottom center;pointer-events:none}
+  .v2who .who-fg img{position:absolute}
+  /* subtle cross-fade: each cut-out fades while drifting up a touch, and sinks back as it leaves */
+  .v2who .lyr-fg{opacity:0;transform:translateY(16px);transition:opacity 1s var(--ease-io),transform 1s var(--ease-io);max-width:none}
+  .v2who .lyr-fg.active{opacity:1;transform:none}
   .v2who .fg-0{left:403px;top:34px;width:898px;height:599px}
   .v2who .fg-1{left:499px;top:-48px;width:1145px;height:763px}
   .v2who .fg-2{left:93px;top:202px;width:1752px;height:985px}
@@ -526,28 +535,24 @@
             <a href="business-infra-list.html">에너지 인프라 솔루션</a>
           </div>
           <div class="m-col" data-i="1">
-            <a href="#">기업소개</a>
-            <a href="#">CEO 인사말</a>
-            <a href="#">연혁</a>
-            <a href="#">오시는 길</a>
+            <a href="#">메뉴 1</a>
+            <a href="#">메뉴 2</a>
+            <a href="#">메뉴 3</a>
           </div>
           <div class="m-col" data-i="2">
-            <a href="#">IR 자료</a>
-            <a href="#">공시정보</a>
-            <a href="#">재무정보</a>
-            <a href="#">주식정보</a>
+            <a href="#">메뉴 1</a>
+            <a href="#">메뉴 2</a>
+            <a href="#">메뉴 3</a>
           </div>
           <div class="m-col" data-i="3">
-            <a href="#">ESG 개요</a>
-            <a href="#">환경</a>
-            <a href="#">사회</a>
-            <a href="#">지배구조</a>
+            <a href="#">메뉴 1</a>
+            <a href="#">메뉴 2</a>
+            <a href="#">메뉴 3</a>
           </div>
           <div class="m-col" data-i="4">
-            <a href="#">뉴스</a>
-            <a href="#">보도자료</a>
-            <a href="#">채용</a>
-            <a href="#">문의하기</a>
+            <a href="#">메뉴 1</a>
+            <a href="#">메뉴 2</a>
+            <a href="#">메뉴 3</a>
           </div>
         </div>
         <span class="m-globe" aria-hidden="true"></span>
@@ -562,14 +567,15 @@
 
     <div class="band">
       <div class="v2b-inner reveal-stagger">
-        <div class="headline">
-          <p class="kor">Key Branding Message</p>
-          <p class="en">Key Branding Message</p>
+        <div class="headline" id="bnHead">
+          <p class="en">에이프로는
+함께 나아가는 기업입니다</p>
+          <p class="kor">당신이 향하는 세상으로 우리도 같이 나아갑니다</p>
         </div>
         <div class="info">
           <div class="pag-info">
             <div class="bnav">
-              <span class="b active"><em class="bn">01</em><span class="bt">이차전지</span></span>
+              <span class="b"><em class="bn">01</em><span class="bt">이차전지</span></span>
               <span class="b"><em class="bn">02</em><span class="bt">에너지 저장 시스템</span></span>
               <span class="b"><em class="bn">03</em><span class="bt">화합물 GaN 반도체</span></span>
               <span class="b"><em class="bn">04</em><span class="bt">산업 안전 진단 로봇 솔루션</span></span>
@@ -584,8 +590,14 @@
   <!-- ===================== WHO WE ARE (pinned scroll interaction) ===================== -->
   <section class="section v2who" id="whoSection">
     <div class="who-sticky" id="whoSticky" data-phase="0">
+      <!-- foreground cut-outs, framed to the viewport floor (original lower-right placement) — advanced / aggressive / agile -->
+      <div class="who-fg">
+        <img class="lyr-fg fg-0" data-kw="0" src="../assets/front-1.png" alt="" aria-hidden="true" />
+        <img class="lyr-fg fg-1" data-kw="1" src="../assets/front-2.png" alt="" aria-hidden="true" />
+        <img class="lyr-fg fg-2" data-kw="2" src="../assets/front-3.png" alt="" aria-hidden="true" />
+      </div>
       <div class="who-stage">
-        <!-- text / wordmark layer (background/foreground photos removed) -->
+        <!-- text / wordmark layer -->
         <div class="s-txt s-h">Global Top 5<br/>Total Energy-Solution Provider</div>
         <img class="s-txt s-a" src="../assets/a-logo.svg" alt="A" />
         <span class="s-txt s-kw" data-kw="0">dvanced</span>
@@ -707,11 +719,11 @@
         <div class="f-col">
           <p class="head">사업영역</p>
           <ul>
-            <li><a href="#">이차전지</a></li>
-            <li><a href="#">에너지 저장 시스템</a></li>
-            <li><a href="#">화합물 GaN 반도체</a></li>
-            <li><a href="#">산업 안전 진단 로봇 솔루션</a></li>
-            <li><a href="#">에너지 인프라 솔루션</a></li>
+            <li><a href="business-bat-list.html">이차전지</a></li>
+            <li><a href="business-ess-list.html">에너지 저장 시스템</a></li>
+            <li><a href="business-gan-list.html">화합물 GaN 반도체</a></li>
+            <li><a href="business-robot-list.html">산업 안전 진단 로봇 솔루션</a></li>
+            <li><a href="business-infra-list.html">에너지 인프라 솔루션</a></li>
           </ul>
         </div>
         <div class="f-col">
@@ -795,25 +807,70 @@
 <div class="mnote">데스크톱(1280px 이상) 기준으로 디자인된 시안입니다.</div>
 
 <script>
-  // Banner menu: cycle the active card every N seconds so its gauge fill (left→right)
-  // represents the current background-video segment's playback progress.
+  // Banner: the video (banner-gray.mp4) is the SINGLE source of truth for timing.
+  // Headline messages swap every 5s and the bnav gauge tracks the current segment,
+  // both read from video.currentTime via rAF — no setTimeout/setInterval, so nothing drifts.
+  // Placeholder copy for now; the 8 segments map to 0,5,10,…,35s of the footage.
   (function(){
-    var cards = document.querySelectorAll('.v2banner .bnav .b');
-    if(cards.length < 2){ return; }
-    var DUR = 5000;   // ms per video segment — keep in sync with CSS --bnav-dur
-    var i = 0, timer;
-    function activate(n){
-      cards.forEach(function(c){ c.classList.remove('active'); });
-      void cards[n].offsetWidth;               // reflow so the gauge fill restarts from 0
-      cards[n].classList.add('active');
+    var banner = document.querySelector('.v2banner');
+    if(!banner){ return; }
+    var video = banner.querySelector('.v2b-video');
+    var head  = document.getElementById('bnHead');
+    var korEl = head && head.querySelector('.kor');
+    var enEl  = head && head.querySelector('.en');
+    var tabs  = banner.querySelectorAll('.bnav .b');
+    if(!video || !head || tabs.length < 5){ return; }
+
+    var SEG = 5;           // seconds per message
+    var LEAD = 2.5;        // fire every message this many seconds EARLIER than its slot
+    var BIZ0 = 3;          // segment index where the 5 business tabs begin (15s)
+    var MSG = [   // t: 강조문구(큰 글씨) / s: 보조문구(작은 글씨)
+      { t:'에이프로는\n함께 나아가는 기업입니다',   s:'당신이 향하는 세상으로 우리도 같이 나아갑니다' },
+      { t:'에이프로는\n지구의 가치를 아는 기업입니다', s:'우리 모두의 환경과 자원을 위해 늘 고민합니다' },
+      { t:'에이프로는\n에너지 솔루션 기업입니다',    s:'지속가능한 차세대 에너지 선순환을 선도합니다' },
+      { t:'Safety & Advanced Tech',           s:'미래 에너지 인프라, 안전하고 확실하게 만들어 갑니다' },
+      { t:'Smart & Resilient Power Grid',     s:'가장 스마트하고 안정적인 전력망 시스템을 공급합니다' },
+      { t:'More Efficient & Reliable',        s:'믿을 수 있는 화합물 GaN 반도체, 우리가 선도합니다' },
+      { t:'비즈니스 4', s:'' },   // 미정
+      { t:'비즈니스 5', s:'' }    // 미정
+    ];
+    var N = MSG.length;    // 8 segments → 0,5,…,35s
+
+    var cur = -1;
+    function show(idx){
+      // gauge/tab: update immediately so the fill stays tight to the footage
+      var bi = idx - BIZ0;                        // -1 during the brand messages
+      tabs.forEach(function(t){ t.classList.remove('active'); });
+      if(bi >= 0 && bi < tabs.length){
+        void tabs[bi].offsetWidth;               // reflow so the gauge fill restarts from 0
+        tabs[bi].classList.add('active');
+      }
+      // headline: current copy lifts out, new copy rises in (cosmetic only — detection stays video-driven)
+      head.classList.add('leaving');
+      window.setTimeout(function(){
+        if(enEl){ enEl.textContent = MSG[idx].t; }     // 강조문구
+        if(korEl){ korEl.textContent = MSG[idx].s; }   // 보조문구
+        head.classList.remove('leaving');
+        head.classList.remove('entering'); void head.offsetWidth;   // restart the rise-in animation
+        head.classList.add('entering');
+      }, 250);
     }
-    function tick(){ i = (i + 1) % cards.length; activate(i); }
-    activate(0);
-    timer = setInterval(tick, DUR);
-    // pause the rotation while the tab is hidden so the gauge stays in sync
-    document.addEventListener('visibilitychange', function(){
-      clearInterval(timer);
-      if(!document.hidden){ activate(i); timer = setInterval(tick, DUR); }
+
+    function segAt(t){ return Math.min(Math.floor((t + LEAD) / SEG), N - 1); }
+
+    function loop(){
+      var idx = segAt(video.currentTime || 0);
+      if(idx !== cur){ cur = idx; show(idx); }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    // Click a business tab → seek to that segment (keyframe-aligned) and keep playing.
+    tabs.forEach(function(t, i){
+      t.addEventListener('click', function(){
+        try { video.currentTime = Math.max(0, (BIZ0 + i) * SEG - LEAD); } catch(e){}  // tab0→12.5s … tab4→32.5s
+        var p = video.play(); if(p && p.catch){ p.catch(function(){}); }
+      });
     });
   })();
 
@@ -845,6 +902,7 @@
     var sticky  = document.getElementById('whoSticky');
     if(!section || !sticky){ return; }
     var kws     = sticky.querySelectorAll('.s-kw');
+    var layers  = sticky.querySelectorAll('.lyr-fg');   // foreground cut-outs keyed to each keyword phase (0/1/2)
     // split each keyword into per-glyph masks so it rises in letter-by-letter on change
     kws.forEach(function(el){
       var txt = el.textContent, frag = document.createDocumentFragment();
@@ -873,23 +931,23 @@
 
     // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
-      { kor:'이차전지', eng:'Rechargeable Battery', img:'carousel-battery.png', href:'business.html',
-        lists:[ {nm:'설비', href:'business.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
-                {nm:'소재 | 머티리얼즈', sub:true, href:'business.html', tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']} ] },
-      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'carousel-ess.png', href:'business-ess.html',
-        lists:[ {nm:'배터리 에너지 저장 시스템', href:'business-ess.html', tags:['배터리 에너지 저장 시스템']},
-                {nm:'무인 이동체 전원 시스템', href:'business-ess.html', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
-                {nm:'무정전 전원 장치', href:'business-ess.html', tags:['무정전 전원 장치']} ] },
-      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'carousel-gan.png', href:'business.html',
-        lists:[ {nm:'Epi-Wafer', href:'business.html', tags:['Epi-Wafer']},
-                {nm:'GaN Device', href:'business.html', tags:['GaN Device']},
-                {nm:'에이프로 세미콘', sub:true, href:'business.html', tags:['에이프로 세미콘']} ] },
-      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'carousel-safety-robot.png', href:'business.html',
-        lists:[ {nm:'산업 안전 진단 플랫폼', href:'business.html', tags:['산업 안전 진단 로봇 솔루션']},
-                {nm:'산업 안전 진단 페이로드', href:'business.html', tags:['ECOTRON 제어기 국내 총판']} ] },
-      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'carousel-energy-infra.png', href:'business.html',
-        lists:[ {nm:'전기자동차 충전 솔루션', href:'business.html', tags:['전기자동차 충전 솔루션']},
-                {nm:'배터리 전주기 진단 솔루션', href:'business.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
+      { kor:'이차전지', eng:'Rechargeable Battery', img:'carousel-battery.png', href:'business-bat-list.html',
+        lists:[ {nm:'설비', href:'business-bat-list.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
+                {nm:'소재 | 머티리얼즈', sub:true, href:'business-bat-list.html', tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']} ] },
+      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'carousel-ess.png', href:'business-ess-list.html',
+        lists:[ {nm:'배터리 에너지 저장 시스템', href:'business-ess-list.html', tags:['배터리 에너지 저장 시스템']},
+                {nm:'무인 이동체 전원 시스템', href:'business-ess-list.html', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
+                {nm:'무정전 전원 장치', href:'business-ess-list.html', tags:['무정전 전원 장치']} ] },
+      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'carousel-gan.png', href:'business-gan-list.html',
+        lists:[ {nm:'Epi-Wafer', href:'business-gan-list.html', tags:['Epi-Wafer']},
+                {nm:'GaN Device', href:'business-gan-list.html', tags:['GaN Device']},
+                {nm:'에이프로 세미콘', sub:true, href:'business-gan-list.html', tags:['에이프로 세미콘']} ] },
+      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'carousel-safety-robot.png', href:'business-robot-list.html',
+        lists:[ {nm:'산업 안전 진단 플랫폼', href:'business-robot-list.html', tags:['산업 안전 진단 로봇 솔루션']},
+                {nm:'산업 안전 진단 페이로드', href:'business-robot-list.html', tags:['ECOTRON 제어기 국내 총판']} ] },
+      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'carousel-energy-infra.png', href:'business-infra-list.html',
+        lists:[ {nm:'전기자동차 충전 솔루션', href:'business-infra-list.html', tags:['전기자동차 충전 솔루션']},
+                {nm:'배터리 전주기 진단 솔루션', href:'business-infra-list.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
     ];
     var N = BIZ.length;
     var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
@@ -996,6 +1054,7 @@
       if(p === current){ return; } current = p;
       sticky.setAttribute('data-phase', p);
       kws.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
+      layers.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
       dots.forEach(function(d){ d.classList.toggle('on', parseInt(d.dataset.dot,10) === p); });
     }
     function fit(){ sticky.style.setProperty('--who-s', Math.min(window.innerWidth/1280, window.innerHeight/586)); }
@@ -1298,37 +1357,33 @@
     <div class="ov-row">
       <div class="ov-cat">회사소개</div>
       <div class="ov-links">
-        <a href="#">기업소개</a>
-        <a href="#">CEO 인사말</a>
-        <a href="#">연혁</a>
-        <a href="#">오시는 길</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
       <div class="ov-links">
-        <a href="#">IR 자료</a>
-        <a href="#">공시정보</a>
-        <a href="#">재무정보</a>
-        <a href="#">주식정보</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">지속가능경영</div>
       <div class="ov-links">
-        <a href="#">ESG 개요</a>
-        <a href="#">환경</a>
-        <a href="#">사회</a>
-        <a href="#">지배구조</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">커뮤니티</div>
       <div class="ov-links">
-        <a href="#">뉴스</a>
-        <a href="#">보도자료</a>
-        <a href="#">채용</a>
-        <a href="#">문의하기</a>
+        <a href="#">메뉴 1</a>
+        <a href="#">메뉴 2</a>
+        <a href="#">메뉴 3</a>
       </div>
     </div>
   </nav>
