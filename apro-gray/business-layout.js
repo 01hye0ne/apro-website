@@ -1,4 +1,56 @@
-/* APRO 사업영역 서브페이지 공용 스크립트 — GNB / 오버레이 / 세로 캐러셀 */
+/* APRO 사업영역 서브페이지 공용 스크립트 — 카드 진입 연출 / GNB / 오버레이 / 세로 캐러셀 */
+
+/* 카드 진입 스태거
+   카드가 화면 가운데 대역에 들어오면 구성 요소를 순서대로 내려앉힌다.
+   휠은 건드리지 않는다 — 카드 안에서 스크롤을 소비하면 굴려도 화면이 안 움직여
+   멈춘 것처럼 읽히고, 이 페이지는 이미 휠을 카드 이동·섹션 이동에 두 번 쓰고 있다.
+   한 번 나타난 카드는 되감지 않는다. 오갈 때마다 재생되면 산만하다.
+
+   초기 숨김(.rv)은 <head> 부트스트랩이 html[data-reveal]을 붙였을 때만 걸리므로
+   이 모듈이 못 돌면 내용이 영영 안 보인다 → 파일 맨 앞에 두어 뒤쪽 오류의 영향을 끊는다 */
+(function(){
+  var root=document.documentElement;
+  if(!root.hasAttribute('data-reveal'))return;
+  var cards=[].slice.call(document.querySelectorAll('.hcard'));
+  if(!cards.length){root.removeAttribute('data-reveal');return;}
+
+  /* 통째로 두면 덩어리째 튀어나와 밋밋한 묶음 — 안쪽 항목을 하나씩 떨군다.
+     특히 공정 순서 7단계는 위에서 아래로 이어져야 순서라는 의미가 같이 읽힌다 */
+  var SPLIT=[['hflow','.flbl,.fsteps li'],['hthumbs','.th'],
+             ['hgrid2','.cell'],['hcols2',':scope>*'],['gmap',':scope>*']];
+  var STEP=60, SUB=36;   /* 최상위 단위 간격 / 묶음 안쪽 간격 (ms) */
+
+  function mark(el,d){el.classList.add('rv');el.style.setProperty('--rd',d+'ms');}
+
+  cards.forEach(function(card){
+    var t=0;
+    [].slice.call(card.children).forEach(function(el){
+      var sel=null;
+      for(var i=0;i<SPLIT.length;i++){
+        if(el.classList.contains(SPLIT[i][0])){sel=SPLIT[i][1];break;}
+      }
+      var parts=sel?[].slice.call(el.querySelectorAll(sel)):[];
+      if(parts.length){
+        parts.forEach(function(p){mark(p,t);t+=SUB;});
+        t+=STEP-SUB;                       /* 묶음이 끝나면 원래 간격으로 되돌린다 */
+      }else{
+        mark(el,t);t+=STEP;
+      }
+    });
+  });
+
+  /* 화면 세로 가운데 70% 대역에 걸치면 시작.
+     트랙 아래로 살짝 보이는 다음 카드(80px)는 이 대역 밖이라 미리 재생되지 않는다 */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);              /* 한 번만 */
+    });
+  },{rootMargin:'-15% 0px -15% 0px'});
+  cards.forEach(function(c){io.observe(c);});
+})();
+
 /* GNB: lang dropdown + mega menu + light/dark contrast over hero */
 (function(){
   var g=document.querySelector('.gnb-group');if(!g)return;

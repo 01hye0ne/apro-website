@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reveal Demo — 일러스트에서 실사 드러내기</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: #0e0f11;
+    color: #e8e9eb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 44px 24px 80px;
+    gap: 24px;
+  }
+
+  h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .hint { font-size: 13px; color: #8a8f97; letter-spacing: -0.01em; text-align: center; line-height: 1.6; }
+
+  /* ---------- 컨트롤 ---------- */
+  .controls {
+    display: flex; flex-wrap: wrap;
+    gap: 10px 20px; align-items: center; justify-content: center;
+    background: #17191c; border: 1px solid #24272c;
+    border-radius: 12px; padding: 14px 20px;
+    width: min(980px, 100%);
+  }
+  .controls + .controls { margin-top: -12px; }
+  .ctl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #b6bbc2; }
+  .seg { display: flex; background: #0e0f11; border-radius: 8px; padding: 3px; gap: 3px; }
+  .seg button {
+    font: inherit; font-size: 13px; color: #8a8f97;
+    background: transparent; border: 0; border-radius: 6px;
+    padding: 6px 14px; cursor: pointer; transition: color .18s ease, background .18s ease;
+  }
+  .seg button.on { background: #2f3439; color: #fff; }
+  input[type=range] { width: 120px; accent-color: #6ea8ff; }
+  select {
+    font: inherit; font-size: 13px; color: #e8e9eb;
+    background: #0e0f11; border: 1px solid #2a2e34;
+    border-radius: 8px; padding: 6px 10px; cursor: pointer;
+  }
+  .val { font-variant-numeric: tabular-nums; color: #6ea8ff; min-width: 34px; }
+  label.chk { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .file {
+    font-size: 12px; color: #8a8f97; background: #0e0f11;
+    border: 1px dashed #2f343b; border-radius: 8px;
+    padding: 6px 12px; cursor: pointer; transition: border-color .18s ease, color .18s ease;
+  }
+  .file:hover { border-color: #4a525c; color: #d5d9de; }
+  .file input { display: none; }
+
+  /* ---------- 스테이지 ---------- */
+  .stage {
+    position: relative;
+    width: min(980px, 100%);
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    cursor: none;
+    isolation: isolate;
+  }
+
+  .stage img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    user-select: none; -webkit-user-drag: none;
+  }
+
+  /* ── 아래층 = 2D 일러스트 ── */
+  .base { }
+  /* 실제 일러스트 파일이 없을 때: 사진을 포스터라이즈해서 일러스트처럼 위장 */
+  .base.faux { filter: url(#illust); }
+
+  /* ── 위층 = 실사 사진. 커서 주변만 마스크로 뚫는다 ── */
+  .reveal {
+    --x: 50%; --y: 50%; --r: 0px; --soft: 0.55;
+    -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y),
+      #000 0%, #000 calc((1 - var(--soft)) * 100%), transparent 100%);
+    mask-image: radial-gradient(circle var(--r) at var(--x) var(--y),
+      #000 0%, #000 calc((1 - var(--soft)) * 100%), transparent 100%);
+  }
+
+  /* 누적(색칠) 모드용 캔버스 */
+  .paint {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; opacity: 0;
+    transition: opacity .2s ease;
+  }
+  .stage[data-mode="paint"] .reveal { opacity: 0; }
+  .stage[data-mode="paint"] .paint  { opacity: 1; }
+
+  /* 커서 링 — 두 그림의 형태가 어긋날 때 경계를 '의도된 것'처럼 보이게 함 */
+  .ring {
+    position: absolute; left: 0; top: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0; transition: opacity .25s ease;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.45), 0 0 22px 2px rgba(255,255,255,.18);
+  }
+  .stage.active .ring { opacity: 1; }
+  .stage[data-ring="off"] .ring { opacity: 0 !important; }
+
+  .actions { display: flex; gap: 10px; }
+  .btn {
+    font: inherit; font-size: 13px; color: #b6bbc2;
+    background: #17191c; border: 1px solid #24272c;
+    border-radius: 8px; padding: 8px 16px; cursor: pointer;
+    transition: border-color .18s ease, color .18s ease;
+  }
+  .btn:hover { border-color: #3a4048; color: #fff; }
+
+  .note {
+    width: min(980px, 100%);
+    font-size: 12.5px; line-height: 1.75; color: #7d838b;
+    border-left: 2px solid #2a2e34; padding-left: 14px;
+  }
+  .note b { color: #b6bbc2; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- 사진 → 가짜 일러스트 변환 필터 (실제 일러스트 파일이 준비되면 불필요) -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="illust" color-interpolation-filters="sRGB">
+    <feGaussianBlur stdDeviation="2.2"/>
+    <feColorMatrix type="saturate" values="1.55"/>
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0 .22 .42 .6 .78 1"/>
+      <feFuncG type="discrete" tableValues="0 .22 .42 .6 .78 1"/>
+      <feFuncB type="discrete" tableValues="0 .22 .42 .6 .78 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+<h1>2D 일러스트 → 커서로 실사 드러내기</h1>
+<p class="hint">
+  아래층 = 일러스트, 위층 = 실사 사진. 마스크로 커서 주변만 뚫습니다.<br>
+  지금 일러스트 레이어는 사진에 필터를 걸어 <b>흉내낸 것</b>입니다 — 실제 일러스트 파일을 올리면 진짜 결과를 볼 수 있습니다.
+</p>
+
+<div class="controls">
+  <div class="ctl">
+    <span>모드</span>
+    <div class="seg" id="modeSeg">
+      <button data-mode="spot" class="on">스포트라이트</button>
+      <button data-mode="paint">색칠(누적)</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span>브러시</span>
+    <input type="range" id="size" min="40" max="340" value="150">
+    <span class="val" id="sizeVal">150</span>
+  </div>
+  <div class="ctl">
+    <span>가장자리</span>
+    <input type="range" id="soft" min="0" max="100" value="55">
+    <span class="val" id="softVal">55</span>
+  </div>
+  <div class="ctl"><label class="chk"><input type="checkbox" id="fade"> 서서히 되돌아가기</label></div>
+  <div class="ctl"><label class="chk"><input type="checkbox" id="ringOn" checked> 경계 링</label></div>
+</div>
+
+<div class="controls">
+  <div class="ctl">
+    <span>샘플</span>
+    <select id="pick">
+      <option value="assets/img-energy-infra.png">에너지 인프라</option>
+      <option value="assets/img-safety-robot.png">안전 로봇</option>
+      <option value="assets/img-battery.png">배터리</option>
+      <option value="assets/img-GaN.png">GaN</option>
+      <option value="assets/front-3.png">front-3</option>
+    </select>
+  </div>
+  <label class="file">일러스트 이미지 올리기 (아래층)<input type="file" id="upIllust" accept="image/*"></label>
+  <label class="file">실사 사진 올리기 (위층)<input type="file" id="upPhoto" accept="image/*"></label>
+  <button class="btn" id="reset">샘플로 되돌리기</button>
+</div>
+
+<div class="stage" id="stage" data-mode="spot" data-ring="on">
+  <img class="base faux" id="imgBase" src="assets/img-energy-infra.png" alt="">
+  <img class="reveal" id="imgReveal" src="assets/img-energy-infra.png" alt="">
+  <canvas class="paint" id="paint"></canvas>
+  <div class="ring" id="ring"></div>
+</div>
+
+<div class="actions">
+  <button class="btn" id="clear">색칠 지우기</button>
+  <button class="btn" id="fill">전부 실사로</button>
+</div>
+
+<p class="note">
+  <b>핵심은 정합(alignment)입니다.</b> 두 이미지의 구도·각도·크기가 픽셀 단위로 맞아야 하나의 그림이 변신하는 것처럼 보입니다.
+  가장 확실한 방법은 <b>사진을 원본으로 두고 그 위에서 일러스트를 만드는 것</b>입니다 —
+  일러스트레이터가 사진을 밑그림으로 트레이싱하거나, img2img/ControlNet 계열로 사진의 윤곽을 유지한 채 스타일만 바꾸면 정합이 자동으로 보장됩니다.
+  반대로 각각 따로 만든 두 이미지를 나중에 맞추는 건 거의 불가능합니다.
+</p>
+
+<script>
+(() => {
+  const stage  = document.getElementById('stage');
+  const base   = document.getElementById('imgBase');
+  const reveal = document.getElementById('imgReveal');
+  const ring   = document.getElementById('ring');
+  const canvas = document.getElementById('paint');
+  const ctx    = canvas.getContext('2d');
+
+  // 브러시 궤적만 담는 오프스크린 마스크
+  const mask = document.createElement('canvas');
+  const mctx = mask.getContext('2d');
+
+  let mode = 'spot', radius = 150, soft = 0.55, fade = false;
+  let tx = 0, ty = 0, cx = 0, cy = 0, tr = 0, cr = 0;
+  let inside = false, hasPrev = false, px = 0, py = 0, dpr = 1;
+
+  /* ---------- 사이즈 ---------- */
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (canvas.width === w && canvas.height === h) return;
+
+    const keep = mask.width ? document.createElement('canvas') : null;
+    if (keep) {
+      keep.width = mask.width; keep.height = mask.height;
+      keep.getContext('2d').drawImage(mask, 0, 0);
+    }
+    canvas.width = w; canvas.height = h;
+    mask.width   = w; mask.height   = h;
+    if (keep) mctx.drawImage(keep, 0, 0, w, h);
+    hasPrev = false;
+  }
+  new ResizeObserver(resize).observe(stage);
+
+  /* ---------- 입력 ---------- */
+  function pos(e) {
+    const r = stage.getBoundingClientRect();
+    const p = e.touches ? e.touches[0] : e;
+    tx = p.clientX - r.left;
+    ty = p.clientY - r.top;
+  }
+  function enter(e) {
+    inside = true; pos(e);
+    cx = tx; cy = ty;      // 진입 지점에서 시작 (반대편에서 날아오지 않게)
+    hasPrev = false;
+    stage.classList.add('active');
+  }
+  function move(e) {
+    if (!inside) return enter(e);
+    pos(e);
+    if (e.touches) e.preventDefault();
+  }
+  function leave() { inside = false; hasPrev = false; stage.classList.remove('active'); }
+
+  stage.addEventListener('pointerenter', enter);
+  stage.addEventListener('pointermove',  move);
+  stage.addEventListener('pointerleave', leave);
+  stage.addEventListener('touchmove', move, { passive: false });
+
+  /* ---------- 색칠 모드: 마스크에 브러시 찍기 ---------- */
+  function stamp(x0, y0, x1, y1) {
+    const d = Math.hypot(x1 - x0, y1 - y0);
+    const step = Math.max(radius * 0.16, 2);
+    const n = Math.max(1, Math.ceil(d / step));
+    mctx.globalCompositeOperation = 'source-over';
+    for (let i = 1; i <= n; i++) {
+      const t = i / n;
+      const x = (x0 + (x1 - x0) * t) * dpr;
+      const y = (y0 + (y1 - y0) * t) * dpr;
+      const r = radius * dpr;
+      const g = mctx.createRadialGradient(x, y, r * (1 - soft), x, y, r);
+      g.addColorStop(0, 'rgba(0,0,0,1)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      mctx.fillStyle = g;
+      mctx.beginPath(); mctx.arc(x, y, r, 0, Math.PI * 2); mctx.fill();
+    }
+  }
+
+  // 실사 이미지를 object-fit:cover 규칙 그대로 캔버스에 그리기
+  function drawCover(img) {
+    const cw = canvas.width, ch = canvas.height;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    if (!iw || !ih) return;
+    const s = Math.max(cw / iw, ch / ih);
+    const dw = iw * s, dh = ih * s;
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+  }
+
+  /* ---------- 렌더 루프 ---------- */
+  function tick() {
+    cx += (tx - cx) * 0.18;          // 부드러운 추적
+    cy += (ty - cy) * 0.18;
+    tr = inside ? radius : 0;
+    cr += (tr - cr) * 0.14;          // 진입/이탈 시 반지름도 부드럽게
+
+    ring.style.width = ring.style.height = (cr * 2) + 'px';
+    ring.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+
+    if (mode === 'spot') {
+      reveal.style.setProperty('--x', cx + 'px');
+      reveal.style.setProperty('--y', cy + 'px');
+      reveal.style.setProperty('--r', cr + 'px');
+      reveal.style.setProperty('--soft', soft);
+    } else {
+      if (inside && cr > 1) {
+        if (hasPrev) stamp(px, py, cx, cy); else stamp(cx, cy, cx, cy);
+        px = cx; py = cy; hasPrev = true;
+      }
+      if (fade) {                     // 칠한 자리가 서서히 일러스트로 되돌아감
+        mctx.globalCompositeOperation = 'destination-out';
+        mctx.fillStyle = 'rgba(0,0,0,0.012)';
+        mctx.fillRect(0, 0, mask.width, mask.height);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawCover(reveal);
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(mask, 0, 0);      // 마스크가 있는 부분만 남긴다
+    }
+    requestAnimationFrame(tick);
+  }
+  resize();
+  requestAnimationFrame(tick);
+
+  /* ---------- 컨트롤 ---------- */
+  document.getElementById('modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    [...b.parentNode.children].forEach(x => x.classList.toggle('on', x === b));
+    mode = b.dataset.mode;
+    stage.dataset.mode = mode;
+  });
+
+  const sizeEl = document.getElementById('size'), softEl = document.getElementById('soft');
+  sizeEl.addEventListener('input', () => {
+    radius = +sizeEl.value;
+    document.getElementById('sizeVal').textContent = radius;
+  });
+  softEl.addEventListener('input', () => {
+    soft = +softEl.value / 100;
+    document.getElementById('softVal').textContent = softEl.value;
+  });
+  document.getElementById('fade').addEventListener('change', e => fade = e.target.checked);
+  document.getElementById('ringOn').addEventListener('change', e => {
+    stage.dataset.ring = e.target.checked ? 'on' : 'off';
+  });
+
+  function clearMask() { mctx.clearRect(0, 0, mask.width, mask.height); hasPrev = false; }
+  document.getElementById('clear').addEventListener('click', clearMask);
+  document.getElementById('fill').addEventListener('click', () => {
+    mctx.globalCompositeOperation = 'source-over';
+    mctx.fillStyle = '#000';
+    mctx.fillRect(0, 0, mask.width, mask.height);
+  });
+
+  const pick = document.getElementById('pick');
+  function loadSample() {
+    base.src = reveal.src = pick.value;
+    base.classList.add('faux');       // 샘플은 필터로 일러스트 흉내
+    clearMask();
+  }
+  pick.addEventListener('change', loadSample);
+  document.getElementById('reset').addEventListener('click', loadSample);
+
+  // 사용자 이미지 업로드 — 일러스트 파일이 들어오면 위장 필터를 끈다
+  function hookUpload(id, target, dropFaux) {
+    document.getElementById(id).addEventListener('change', e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      target.src = URL.createObjectURL(f);
+      if (dropFaux) base.classList.remove('faux');
+      clearMask();
+    });
+  }
+  hookUpload('upIllust', base,   true);
+  hookUpload('upPhoto',  reveal, false);
+})();
+</script>
+</body>
+</html>

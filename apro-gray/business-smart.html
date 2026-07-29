@@ -10,6 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
+<!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
+     큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
+<script>if('IntersectionObserver' in window)document.documentElement.setAttribute('data-reveal','')</script>
 </head>
 <body>
 
@@ -68,7 +71,7 @@
           <p>에이프로는 정밀 충·방전 기술과 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 통합 자동화 솔루션을 제공합니다.</p>
           <p>각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</p>
         </div>
-        <div class="hph">ACTIVATION LINE</div>
+        <div class="hph hph--img"><img src="../assets/activation-line.png" alt="이차전지 활성화 전공정 라인 구성도 — 충방전기 구역, 디개싱·전해액 설비, 물류 자동창고, 에이징 룸" loading="lazy" /></div>
 
         <!-- 우측 열: 활성화 공정 순서 (문장 → 7단계 세로 플로우) -->
         <div class="hflow">
@@ -85,33 +88,79 @@
         </div>
       </article>
 
-      <article class="hcard" data-tab="에이프로 활성화 설비">
+      <!-- 9가지 설비를 5×2 썸네일 그리드로. 이름·영문은 기존 목록 표기를 그대로 나눠 담았다 -->
+      <article class="hcard hcard--grid" data-tab="에이프로 활성화 설비">
         <h3>에이프로 활성화 설비</h3>
-        <ul>
-          <li>충방전기 (Formation)</li>
-          <li>DCIR (DC Internal Resistance Tester)</li>
-          <li>고온가압 충방전기 (High Temperature, Pressure, Formation)</li>
-          <li>Degas</li>
-          <li>Pre-formation</li>
-          <li>IR-OCV (Internal Resistance &amp; Open Circuit Voltage Tester)</li>
-          <li>OCV (Open Circuit Voltage Tester)</li>
-          <li>DSF/EOL (Double Side Folding / End Of Line)</li>
-          <li>Selector</li>
-        </ul>
         <div class="hthumbs">
           <div class="th"><span class="box"></span><span class="nm">충방전기</span><span class="en">Formation</span></div>
-          <div class="th"><span class="box"></span><span class="nm">고온가압 충방전기</span><span class="en">HTPF</span></div>
+          <div class="th"><span class="box"></span><span class="nm">DCIR</span><span class="en">DC Internal Resistance Tester</span></div>
+          <div class="th"><span class="box"></span><span class="nm">고온가압 충방전기</span><span class="en">High Temperature, Pressure, Formation</span></div>
           <div class="th"><span class="box"></span><span class="nm">디개싱</span><span class="en">Degas</span></div>
+          <div class="th"><span class="box"></span><span class="nm">Pre-formation</span><span class="en"></span></div>
+          <div class="th"><span class="box"></span><span class="nm">IR-OCV</span><span class="en">Internal Resistance &amp; Open Circuit Voltage Tester</span></div>
+          <div class="th"><span class="box"></span><span class="nm">OCV</span><span class="en">Open Circuit Voltage Tester</span></div>
+          <div class="th"><span class="box"></span><span class="nm">DSF/EOL</span><span class="en">Double Side Folding / End Of Line</span></div>
           <div class="th"><span class="box"></span><span class="nm">셀렉터</span><span class="en">Selector</span></div>
         </div>
       </article>
 
-      <article class="hcard" data-tab="법인 운용 및 해외 거점">
+      <article class="hcard hcard--map" data-tab="법인 운용 및 해외 거점">
         <h3>고객사 해외 생산기지 지원을 위한 법인 운용 및 해외 거점 확보</h3>
         <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
         <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
         <p>고객사의 생산기지 지원을 위해 미시간과 폴란드, 남경, 인도네시아에 현지 법인을 운용 중이며, 현지 Setup 및 Maintenance를 위한 엔지니어 50명이 상주하여 해외 거점을 확보하고 있습니다.</p>
-        <div class="hph">GLOBAL NETWORK</div>
+        <!-- world-map.svg는 정거원통도법(lon -180..180 / lat 83.6..-56)이라 점 좌표가 계산으로 나온다.
+             x% = (lon+180)/360*100,  y% = (83.6-lat)/139.6*100
+             북미 5곳이 20px 안에 몰려 라벨을 직접 못 붙인다 → 지시선으로 빼고 좌표를 따로 준다.
+             .gleads 폴리라인은 같은 0–100 좌표계라 점·라벨 위치와 숫자가 그대로 맞물린다 -->
+        <div class="gmap" role="img" aria-label="에이프로 해외 거점 — 캐나다 온타리오, 미시간(북미법인), 오하이오, 테네시, 조지아, 독일, 폴란드(유럽법인), 중국 남경(중국법인), 인도네시아 카라왕(인도네시아법인)">
+          <img src="../assets/world-map.svg" alt="" aria-hidden="true" />
+          <svg class="gleads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="27.95,28.62 32.07,18 36,18" />
+            <polyline points="26.93,29.56 23.22,20 20,20" />
+            <polyline points="26.95,31.26 27.44,30 36,30" />
+            <polyline points="25.89,33.98 29.00,42 36,42" />
+            <polyline points="26.56,35.71 22.57,46 20,46" />
+            <polyline points="51.93,23.40 47.13,11 43,11" />
+            <polyline points="54.73,23.27 60.65,8 62,8" />
+            <polyline points="83.00,36.92 86.91,47 88,47" />
+            <polyline points="79.81,64.41 74.15,79 72,79" />
+          </svg>
+
+          <span class="gdot" style="left:27.95%;top:28.62%"></span>
+          <span class="gdot gdot--corp" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:26.93%;top:29.56%;--pd:0s"></span>
+          <span class="gdot" style="left:26.95%;top:31.26%"></span>
+          <span class="gdot" style="left:25.89%;top:33.98%"></span>
+          <span class="gdot" data-pop="ga" tabindex="0" role="button" aria-describedby="gpop-ga" style="left:26.56%;top:35.71%"></span>
+          <span class="gdot" style="left:51.93%;top:23.40%"></span>
+          <span class="gdot gdot--corp" style="left:54.73%;top:23.27%;--pd:-.7s"></span>
+          <span class="gdot gdot--corp" style="left:83.00%;top:36.92%;--pd:-1.4s"></span>
+          <span class="gdot gdot--corp" style="left:79.81%;top:64.41%;--pd:-2.1s"></span>
+
+          <!-- 사진이 있는 미시간·조지아만 왼쪽으로 뻗어(.glab--r) 오른쪽 3개와 구분된다 -->
+          <span class="glab" style="left:36%;top:18%">캐나다 온타리오</span>
+          <span class="glab glab--r" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:20%;top:20%">미시간<em>(북미법인)</em></span>
+          <span class="glab" style="left:36%;top:30%">오하이오</span>
+          <span class="glab" style="left:36%;top:42%">테네시</span>
+          <span class="glab glab--r" data-pop="ga" tabindex="0" role="button" aria-describedby="gpop-ga" style="left:20%;top:46%">조지아</span>
+          <span class="glab glab--r" style="left:43%;top:11%">독일</span>
+          <span class="glab" style="left:62%;top:8%">폴란드<em>(유럽법인)</em></span>
+          <span class="glab" style="left:88%;top:47%">중국 남경<em>(중국법인)</em></span>
+          <span class="glab glab--r" style="left:72%;top:79%">인도네시아 카라왕<em>(인도네시아법인)</em></span>
+
+          <!-- 호버 사진 — 점/라벨 어느 쪽에 올려도 뜬다 (CSS :has 로 묶음).
+               원본 353×235(3:2)이라 .gpop img 도 3/2로 맞춰 잘리는 곳이 없다 -->
+          <figure class="gpop" id="gpop-mi" style="left:30%;top:27.1%">
+            <img src="../assets/site-michigan-lges.jpg" width="353" height="235" loading="lazy"
+                 alt="LG에너지솔루션 미시간 공장 전경" />
+            <figcaption>LG에너지솔루션 미시간 공장</figcaption>
+          </figure>
+          <figure class="gpop" id="gpop-ga" style="left:30%;top:51.2%">
+            <img src="../assets/site-georgia-hyundai.png" width="353" height="235" loading="lazy"
+                 alt="현대자동차 조지아 공장 전경" />
+            <figcaption>현대자동차 조지아 공장</figcaption>
+          </figure>
+        </div>
       </article>
 
     </div>
@@ -182,13 +231,28 @@
 
       <article class="hcard" data-tab="MES">
         <h3>MES (Manufacturing Execution System)</h3>
-        <ul>
-          <li><b>생산 추적:</b> 배터리 셀의 바코드를 스캔하여 활성화 공정의 시작부터 끝까지 전 제조 이력을 실시간으로 추적 및 관리합니다.</li>
-          <li><b>레시피 하향:</b> 배터리 모델별로 정해진 충방전 조건, 에이징 시간 등의 세부 공정 레시피를 각 설비(PLC)에 자동으로 전달합니다.</li>
-          <li><b>품질 판정:</b> 충방전 결과 데이터(용량, 저항 등)를 분석하여 해당 배터리 셀의 합격/불합격(Pass/Fail) 및 등급(Grading)을 판정합니다.</li>
-          <li><b>데이터 통합:</b> 전체 공정의 생산량, 설비 가동률, 불량률 등의 통계 데이터를 시각화하여 공장 전반의 생산 효율성을 최적화합니다.</li>
-        </ul>
-        <div class="hph">MES DASHBOARD</div>
+        <div class="hgrid2">
+          <div class="cell">
+            <span class="ico"></span>
+            <p class="t">생산 추적</p>
+            <p class="d">배터리 셀의 바코드를 스캔하여 활성화 공정의 시작부터 끝까지 전 제조 이력을 실시간으로 추적 및 관리합니다.</p>
+          </div>
+          <div class="cell">
+            <span class="ico"></span>
+            <p class="t">레시피 하향</p>
+            <p class="d">배터리 모델별로 정해진 충방전 조건, 에이징 시간 등의 세부 공정 레시피를 각 설비(PLC)에 자동으로 전달합니다.</p>
+          </div>
+          <div class="cell">
+            <span class="ico"></span>
+            <p class="t">품질 판정</p>
+            <p class="d">충방전 결과 데이터(용량, 저항 등)를 분석하여 해당 배터리 셀의 합격/불합격(Pass/Fail) 및 등급(Grading)을 판정합니다.</p>
+          </div>
+          <div class="cell">
+            <span class="ico"></span>
+            <p class="t">데이터 통합</p>
+            <p class="d">전체 공정의 생산량, 설비 가동률, 불량률 등의 통계 데이터를 시각화하여 공장 전반의 생산 효율성을 최적화합니다.</p>
+          </div>
+        </div>
       </article>
 
     </div>
