@@ -85,25 +85,30 @@
        우 track (col 4–12): 카드 가로 캐러셀
      ===================================================================== */
   .wrap{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin:0 auto}
+  /* --card-peek : 트랙 하단에 비워두는 높이(= 카드간 gap 16 + 다음 카드 미리보기 80).
+     카드 바닥은 섹션 바닥에서 이만큼 위에서 끝나므로, 좌측 레일 하단(카드 인덱스)도
+     같은 값만큼 띄워야 카드 바닥선과 눈높이가 맞는다. 하단 페이드 높이도 이 값을 쓴다 */
   .hsec{height:100vh;height:100dvh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
-    column-gap:var(--grid-gutter);align-items:stretch;padding:136px 0 24px}
+    column-gap:var(--grid-gutter);align-items:stretch;padding:136px 0 24px;--card-peek:96px}
     /* 하단 여백을 24px까지 줄여 트랙이 아래까지 내려옴 → 남는 공간이 빈 여백이 아니라 다음 카드로 채워짐 */
   .hsec+.hsec{border-top:1px solid var(--border-g)}   /* 섹션 구분선 */
   /* 잘린 다음 카드가 아래로 자연스럽게 사라지도록 — 트랙 하단 96px(= gap+미리보기)에 흰색 페이드.
      ::after도 그리드 아이템이므로 트랙과 같은 칸(col 4–12, row 1)에 겹쳐 놓는다 */
   .hsec::after{content:"";grid-column:4 / span 9;grid-row:1;align-self:end;
-    position:relative;z-index:3;height:96px;pointer-events:none;
+    position:relative;z-index:3;height:var(--card-peek);pointer-events:none;
     background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.72) 62%,#fff 100%)}
   .hsec:has(.htrack[data-one="true"])::after{display:none}   /* 카드 1장 섹션은 잘리는 부분이 없음 */
   /* grid-row를 명시해야 ::after 페이드와 같은 행에 겹친다 (생략하면 트랙이 2행으로 밀림) */
-  .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+  .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px;
+    padding-bottom:var(--card-peek)}   /* 카드 인덱스 밑줄을 우측 카드 바닥선에 맞춤 */
   .htrack{grid-column:4 / span 9;grid-row:1;min-width:0;position:relative;
     display:flex;flex-direction:column;gap:16px;overflow-x:hidden;overflow-y:auto;
     scroll-snap-type:none;   /* 스냅·smooth 모두 JS가 처리 — CSS 스냅을 켜두면 프레임마다 되잡아채 튄다 */
-    padding-bottom:96px;   /* = gap 16 + 미리보기 80. 이 여유가 있어야 마지막 카드가 트랙 상단까지 올라옴 */
+    padding-bottom:var(--card-peek);   /* 이 여유가 있어야 마지막 카드가 트랙 상단까지 올라옴 */
     scrollbar-width:none;-ms-overflow-style:none}   /* 스크롤바 숨김 — 이동은 하단 인덱스로 */
   .htrack::-webkit-scrollbar{display:none}
-  .htrack[data-one="true"]{padding-bottom:0}   /* 카드가 하나면 스크롤 자체가 없음 */
+  /* 카드가 하나면 스크롤도 미리보기도 없다 → 카드가 섹션 바닥까지 내려오므로 레일도 같이 내린다 */
+  .hsec:has(.htrack[data-one="true"]){--card-peek:0px}
 
   /* --- rail 상단: 사업명칭 + 진행 카운터 / 타이틀 --- */
   .hrail-top{display:flex;flex-direction:column;gap:16px}
@@ -128,14 +133,14 @@
   .httl{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.26;letter-spacing:-.6px;color:var(--g900);word-break:keep-all}
 
   /* --- rail 하단: 카드 인덱스 --- */
-  /* 카드 수(최대 4)가 몇이든 한 줄에 균등 분할. 라벨이 길면 자체적으로 줄바꿈된다 */
-  .hnav{display:flex;gap:12px;align-items:flex-end}
-  .hnav-i{flex:1 1 0;min-width:0;
-    background:none;border:none;border-bottom:1px solid var(--border-g);padding:0 0 9px;
-    text-align:left;cursor:pointer;transition:border-color .3s var(--ease)}
-  .hnav-i .t{font-family:var(--suit);font-weight:700;font-size:12.5px;line-height:1.35;letter-spacing:-.25px;color:var(--teritary);word-break:keep-all;transition:color .3s var(--ease)}
+  /* 카드 수(최대 4)를 한 열에 세로로 나열. 밑줄을 뺐으므로 현재 카드는 글자색으로만 구분한다 */
+  .hnav{display:grid;gap:14px}
+  .hnav-i{min-width:0;
+    background:none;border:none;padding:0;
+    text-align:left;cursor:pointer}
+  /* 크기·자간은 카드 본문(.hcard p)과 동일하게 17px / -.34px */
+  .hnav-i .t{font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.35;letter-spacing:-.34px;color:var(--teritary);word-break:keep-all;transition:color .3s var(--ease)}
   .hnav-i:hover .t{color:var(--sec)}
-  .hnav-i.is-on{border-bottom-color:var(--brand)}
   .hnav-i.is-on .t{color:var(--g900)}
   .hnav[data-one="true"]{display:none}   /* 카드가 하나뿐이면 인덱스 숨김 */
 
@@ -153,8 +158,8 @@
   /* 하위 항목이 여럿인 카드를 2단으로 — 세로로만 쌓으면 카드 높이를 넘긴다 */
   .hcols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 44px;align-items:start}
   @media(max-width:900px){.hcols2{grid-template-columns:1fr}}
-  .hcard h3{font-family:var(--suit);font-weight:800;font-size:19px;line-height:1.3;letter-spacing:-.38px;color:var(--g900)}
-  .hcard p{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.75;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
+  .hcard h3{font-family:var(--suit);font-weight:800;font-size:21px;line-height:1.3;letter-spacing:-.42px;color:var(--g900)}
+  .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:1.75;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   .hblock p+p{margin-top:8px}
 
   /* 카드 안 소제목 블록 */
@@ -163,8 +168,8 @@
 
   /* 리스트 */
   .hcard ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .hcard ul li{position:relative;padding-left:16px;font-family:var(--pre);font-size:15px;line-height:1.65;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
-  .hcard ul li::before{content:"";position:absolute;left:2px;top:9px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:1.65;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .hcard ul li::before{content:"";position:absolute;left:2px;top:10px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
   .hcard ul li b{font-weight:700;color:var(--g900)}
 
   /* 아이콘 그리드 (PLC) — 카드가 전체 폭이므로 4단 */
@@ -172,15 +177,15 @@
   @media(max-width:1180px){.hgrid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .hgrid2 .cell{display:flex;flex-direction:column;gap:12px}
   .hgrid2 .ico{width:56px;height:56px;border:1px dashed var(--border-g)}
-  .hgrid2 .t{font-family:var(--suit);font-weight:900;font-size:15px;line-height:1;letter-spacing:-.3px;color:var(--g900)}
-  .hgrid2 .d{font-family:var(--pre);font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--sec);word-break:keep-all}
+  .hgrid2 .t{font-family:var(--suit);font-weight:900;font-size:17px;line-height:1;letter-spacing:-.34px;color:var(--g900)}
+  .hgrid2 .d{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
 
   /* key-value 행 (파트너십 등) */
   .kv{padding:14px 0}
   .kv:first-child{padding-top:2px}
   .kv+.kv{border-top:1px solid var(--border-g)}
-  .kv .k{font-family:var(--suit);font-weight:700;font-size:14.5px;line-height:1.5;letter-spacing:-.29px;color:var(--g900);margin-bottom:6px}
-  .kv .v{font-family:var(--pre);font-size:14.5px;line-height:1.6;letter-spacing:-.29px;color:var(--sec)}
+  .kv .k{font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;color:var(--g900);margin-bottom:6px}
+  .kv .v{font-family:var(--pre);font-size:17px;line-height:1.6;letter-spacing:-.34px;color:var(--sec)}
 
   /* 이미지 자리 — 카드 하단에 붙음 */
   .hph{margin-top:auto;aspect-ratio:16/9;background:var(--secondary-bg);border:1px dashed var(--border-g);
@@ -191,18 +196,40 @@
   .hthumbs .th .nm{font-family:var(--suit);font-weight:700;font-size:12px;line-height:1.3;letter-spacing:-.24px;color:var(--g900);word-break:keep-all}
   .hthumbs .th .en{font-family:var(--rc);font-size:11px;letter-spacing:.04em;color:var(--teritary)}
 
+  /* ── 공정 순서 인포그래픽 카드 (.hcard--flow) ─────────────────────────
+     기본 카드는 비주얼(.hph)이 우측에 세로 중앙 고정이지만, 이 카드는
+     우측 열을 세로 플로우가 차지하고 비주얼은 좌측 글 아래로 내려간다.
+     위쪽 .hcard:has(.hph) / .hcard>.hph 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
+  .hcard--flow{--flow-w:30%}
+  .hcard.hcard--flow{padding-right:calc(var(--flow-w) + 48px)}
+  .hcard.hcard--flow>.hph{position:static;width:auto;transform:none;margin:auto 0 0;aspect-ratio:4/1}
+  .hflow{position:absolute;top:36px;right:40px;width:var(--flow-w)}
+  .hflow .flbl{display:block;margin-bottom:14px;font-family:var(--suit);font-weight:800;font-size:17px;letter-spacing:-.34px;color:var(--g900)}
+  .fsteps{list-style:none}
+  .fsteps li{display:flex;align-items:center;gap:14px;padding:10px 16px;border:1px solid var(--point-200)}
+  /* 단계 사이 ▼ 커넥터 — li 위쪽 여백 한가운데에 CSS 삼각형으로 그린다 */
+  .fsteps li+li{position:relative;margin-top:22px}
+  .fsteps li+li::before{content:"";position:absolute;left:50%;top:-17px;transform:translateX(-50%);
+    border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #c2cad4}
+  .fsteps li b{flex-shrink:0;padding-right:14px;border-right:1px solid var(--point-200);
+    font-family:var(--rc);font-weight:700;font-size:17px;letter-spacing:.02em;color:var(--brand)}
+  .fsteps li span{font-family:var(--suit);font-weight:700;font-size:16px;line-height:1.3;letter-spacing:-.32px;color:var(--g900);word-break:keep-all}
+
   /* 좁은 화면: 세로로 풀어줌 */
   @media(max-width:900px){
-    .hsec{height:auto;grid-template-columns:1fr;row-gap:24px;padding:72px 0}
+    /* 세로로 풀리면 미리보기 개념이 없다 → 트랙·레일 하단 여백을 한 번에 0으로 */
+    .hsec{height:auto;grid-template-columns:1fr;row-gap:24px;padding:72px 0;--card-peek:0px}
     .hsec::after{display:none}   /* 세로로 풀리면 잘림이 없으므로 페이드 불필요 */
     .hrail{grid-column:1;grid-row:1}
     .htrack{grid-column:1;grid-row:2}
     .hrail{flex-direction:column;gap:20px}
     .hnav{display:none}
-    .htrack{gap:14px;overflow:visible;scroll-snap-type:none;padding-bottom:0}
+    .htrack{gap:14px;overflow:visible;scroll-snap-type:none}
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
     .hcard>.hph,.hcard>.hthumbs{position:static;width:100%;transform:none;margin-top:auto}
+    .hcard.hcard--flow{padding-right:22px}
+    .hflow{position:static;width:100%}   /* 세로로 풀리면 플로우도 글 아래로 */
     .hgrid2{grid-template-columns:1fr}
   }
 
