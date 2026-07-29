@@ -140,7 +140,7 @@
   /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
      the sticky's scroll container and break the pin. Clipping is handled by .who-sticky instead. */
-  .v2who{height:820vh;background:#fff;position:relative;overflow:visible;z-index:1}   /* z-index:1 contains its high-z children so News (z:2) can slide over it; keyword → A-PRO morph → 5-business coverflow */
+  .v2who{height:600vh;background:#fff;position:relative;overflow:visible;z-index:1}   /* z-index:1 contains its high-z children so News (z:2) can slide over it; keyword → A-PRO morph → 5-business coverflow */
   .who-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;transition:background .6s var(--ease)}
   .who-sticky[data-phase="3"]{background:#04070c}
   /* Layered composition rebuilt at the exact Figma frame (1280x586), scaled to the viewport.
@@ -218,7 +218,7 @@
   /* The Business coverflow lives INSIDE .who-sticky. .who-cards carries the .v2biz class so all the
      Business card/UI styles below apply, and doubles as the biz-stage (centred 900px). The section runs:
      keyword cycle → A-PRO "A" morph → the SAME cards become the coverflow and rotate. (No separate section.) */
-  .who-cards{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px;z-index:6;opacity:0}   /* -10px nudges the whole Business layer (cards + content + sub-menu) up */
+  .who-cards{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px;z-index:6;opacity:0;transition:opacity .45s var(--ease)}   /* -10px nudges the whole Business layer up; opacity fades in once tiles appear */
   .who-cards.on{opacity:1}
   .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
 
@@ -229,7 +229,7 @@
      ease-in-out (not ease-out) so the grow/shrink accelerates then settles — the middle of the motion stays visible */
   .v2biz .bcard{position:absolute;background:#d9d9d9;overflow:hidden;--stepfade:66px;
     transition:left .9s var(--ease-io),top .9s var(--ease-io),width .9s var(--ease-io),height .9s var(--ease-io)}
-  .v2biz .bcard img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .9s var(--ease-io)}
+  .v2biz .bcard img{width:100%;height:100%;object-fit:cover;display:block}
   .v2biz .bcard.center img{filter:grayscale(0)}   /* only the centre (active) card shows in full colour */
   /* step-top dissolve — each card's top edge melts into white via the scanline stripe pattern,
      so the A-staircase steps read as dissolving stripes rather than hard edges. Height tunable via --stepfade.
@@ -245,6 +245,20 @@
   .v2biz .bcard.jin{animation:bcardIn .55s var(--ease)}   /* fade-in when a card wraps edge→edge */
   @keyframes bcardIn{from{opacity:0}to{opacity:1}}
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
+
+  /* ---- static 4-tile mode: hide the rotating coverflow chrome, show captioned clickable tiles ---- */
+  .v2biz .biz-nav,.v2biz .biz-body,.v2biz .biz-lists{display:none}
+  .v2biz .bcard{cursor:pointer;background:#d9d9d9}
+  .v2biz .bcard::after{display:none}   /* drop the coverflow step-dissolve stripe */
+  .v2biz .bcard .bcap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;gap:2px;
+    padding:22px 20px;color:#fff;
+    background:linear-gradient(to top,rgba(11,17,24,.88) 0%,rgba(11,17,24,.42) 52%,rgba(11,17,24,0) 100%)}
+  .v2biz .bcap .bcap-n{font-family:var(--rc);font-weight:700;font-size:15px;letter-spacing:1px;color:var(--point-300)}
+  .v2biz .bcap .bcap-ko{margin-top:6px;font-family:var(--suit);font-weight:800;font-size:21px;line-height:1.22;letter-spacing:-.42px;word-break:keep-all}
+  .v2biz .bcap .bcap-en{margin-top:3px;font-family:var(--suit);font-weight:600;font-size:12.5px;letter-spacing:-.2px;color:rgba(255,255,255,.6)}
+  .v2biz .bcard::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:rgba(11,17,24,0);transition:background .4s var(--ease)}
+  .who-sticky[data-phase="biz"] .v2biz .bcard:hover::before{background:rgba(11,17,24,.14)}
+  @media (prefers-reduced-motion: reduce){ .v2biz .bcard .bcap{transition:none} }
 
   /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it. */
   .v2biz .biz-content{position:absolute;left:50%;top:133px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
@@ -530,11 +544,10 @@
         <span class="m-logo" aria-hidden="true"></span>
         <div class="m-cols">
           <div class="m-col" data-i="0">
-            <a href="business-bat-list.html">이차전지</a>
-            <a href="business-ess-list.html">에너지 저장 시스템</a>
-            <a href="business-gan-list.html">화합물 GaN 반도체</a>
-            <a href="business-robot-list.html">산업 안전 진단 로봇 솔루션</a>
-            <a href="business-infra-list.html">에너지 인프라 솔루션</a>
+            <a href="business-smart.html">스마트 제조</a>
+            <a href="business-energy.html">에너지 인프라</a>
+            <a href="business-ai.html">인공지능 플랫폼</a>
+            <a href="business-semicon.html">화합물 전력 반도체</a>
           </div>
           <div class="m-col" data-i="1">
             <a href="#">메뉴 1</a>
@@ -578,11 +591,10 @@
           <div class="pag-info">
             <div class="bnav">
               <span class="b brand"><em class="bn">00</em><span class="bt">에이프로</span></span>
-              <span class="b"><em class="bn">01</em><span class="bt">이차전지</span></span>
-              <span class="b"><em class="bn">02</em><span class="bt">에너지 저장 시스템</span></span>
-              <span class="b"><em class="bn">03</em><span class="bt">화합물 GaN 반도체</span></span>
-              <span class="b"><em class="bn">04</em><span class="bt">산업 안전 진단 로봇 솔루션</span></span>
-              <span class="b"><em class="bn">05</em><span class="bt">에너지 인프라 솔루션</span></span>
+              <span class="b"><em class="bn">01</em><span class="bt">스마트 제조</span></span>
+              <span class="b"><em class="bn">02</em><span class="bt">에너지 인프라</span></span>
+              <span class="b"><em class="bn">03</em><span class="bt">인공지능 플랫폼</span></span>
+              <span class="b"><em class="bn">04</em><span class="bt">화합물 전력 반도체</span></span>
             </div>
           </div>
         </div>
@@ -634,8 +646,8 @@
             <div class="biz-center">
               <div class="biz-hero">
                 <span class="biz-num"><!-- step counter, centred above the title -->
-                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>05</i></span></span>
-                  <span class="tot">/05</span>
+                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i></span></span>
+                  <span class="tot">/04</span>
                 </span>
                 <div class="hero-main">
                   <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -722,11 +734,10 @@
         <div class="f-col">
           <p class="head">사업영역</p>
           <ul>
-            <li><a href="business-bat-list.html">이차전지</a></li>
-            <li><a href="business-ess-list.html">에너지 저장 시스템</a></li>
-            <li><a href="business-gan-list.html">화합물 GaN 반도체</a></li>
-            <li><a href="business-robot-list.html">산업 안전 진단 로봇 솔루션</a></li>
-            <li><a href="business-infra-list.html">에너지 인프라 솔루션</a></li>
+            <li><a href="business-smart.html">스마트 제조</a></li>
+            <li><a href="business-energy.html">에너지 인프라</a></li>
+            <li><a href="business-ai.html">인공지능 플랫폼</a></li>
+            <li><a href="business-semicon.html">화합물 전력 반도체</a></li>
           </ul>
         </div>
         <div class="f-col">
@@ -831,11 +842,10 @@
       { t:'에이프로는\n함께 나아가는 기업입니다',   s:'당신이 향하는 세상으로 우리도 같이 나아갑니다' },
       { t:'에이프로는\n지구의 가치를 아는 기업입니다', s:'우리 모두의 환경과 자원을 위해 늘 고민합니다' },
       { t:'에이프로는\n에너지 솔루션 기업입니다',    s:'지속가능한 차세대 에너지 선순환을 선도합니다' },
-      { t:'Safety & Advanced Tech',           s:'미래 에너지 인프라, 안전하고 확실하게 만들어 갑니다' },
-      { t:'Smart & Resilient Power Grid',     s:'가장 스마트하고 안정적인 전력망 시스템을 공급합니다' },
-      { t:'More Efficient & Reliable',        s:'믿을 수 있는 화합물 GaN 반도체, 우리가 선도합니다' },
-      { t:'Physical AI-based\nIndustrial Safety Innovation', s:'‘피지컬 AI’ 시대, 산업안전의 패러다임을 바꿔 나갑니다' },
-      { t:'Charging, Monitoring, Recycling',              s:'EV 배터리 생애주기 기반 통합 솔루션을 고도화하고 있습니다' }
+      { t:'Smart & Automated Manufacturing',  s:'이차전지 활성화 전 공정을 자체 기술로 완성합니다' },
+      { t:'Smart & Resilient Power Grid',     s:'BESS·UPS로 안정적인 에너지 인프라를 구축합니다' },
+      { t:'Physical AI-based\nIndustrial Safety Innovation', s:'AI로 산업 현장의 안전과 효율을 높여 나갑니다' },
+      { t:'More Efficient & Reliable Power',  s:'차세대 화합물 GaN 전력반도체를 선도합니다' }
     ];
     var N = MSG.length;    // 8 segments → 0,5,…,35s
 
@@ -937,27 +947,27 @@
     var listsEl = sticky.querySelector('.biz-lists');
     var reel    = sticky.querySelector('.biz-num .reel');
     var reelCol = reel.querySelector('.col');
-    var PHASES = 4, KW = 0.32, MO = 0.45, OUT = 0.84;    // keyword end, morph end, outro start (fractions of the section's scroll)
+    var PHASES = 4, KW = 0.437, MO = 0.615, OUT = 0.782;    // keyword end, morph end, outro start (fractions); biz kept short since tiles are static
 
     // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
-      { kor:'이차전지', eng:'Rechargeable Battery', img:'carousel-battery.png', href:'business-bat-list.html',
-        lists:[ {nm:'설비', href:'business-bat-list.html', tags:['충방전기','DCIR','고온·가압 충방전기','OCV','IR-OCV','Selector','DEGAS','DSF/EOL','Cycle Tester (Cell)','Cycle Tester (Module)']},
-                {nm:'소재 | 머티리얼즈', sub:true, href:'business-bat-list.html', tags:['LiFSI 전해염','소수벽 & 단일벽 탄소나노튜브']} ] },
-      { kor:'에너지 저장 시스템', eng:'ESS : Energy Storage Systems', img:'carousel-ess.png', href:'business-ess-list.html',
-        lists:[ {nm:'배터리 에너지 저장 시스템', href:'business-ess-list.html', tags:['배터리 에너지 저장 시스템']},
-                {nm:'무인 이동체 전원 시스템', href:'business-ess-list.html', tags:['무인 이동체 전원 시스템','우주 발사체','무인수상정','무인 지상 차량']},
-                {nm:'무정전 전원 장치', href:'business-ess-list.html', tags:['무정전 전원 장치']} ] },
-      { kor:'화합물 GaN 반도체', eng:'Compound GaN Semiconductors', img:'carousel-gan.png', href:'business-gan-list.html',
-        lists:[ {nm:'Epi-Wafer', href:'business-gan-list.html', tags:['Epi-Wafer']},
-                {nm:'GaN Device', href:'business-gan-list.html', tags:['GaN Device']},
-                {nm:'에이프로 세미콘', sub:true, href:'business-gan-list.html', tags:['에이프로 세미콘']} ] },
-      { kor:'산업 안전 진단 로봇 솔루션', eng:'Industrial Safety Inspection Robot Solution', img:'carousel-safety-robot.png', href:'business-robot-list.html',
-        lists:[ {nm:'산업 안전 진단 플랫폼', href:'business-robot-list.html', tags:['산업 안전 진단 로봇 솔루션']},
-                {nm:'산업 안전 진단 페이로드', href:'business-robot-list.html', tags:['ECOTRON 제어기 국내 총판']} ] },
-      { kor:'에너지 인프라 솔루션', eng:'Energy Infrastructure Solutions', img:'carousel-energy-infra.png', href:'business-infra-list.html',
-        lists:[ {nm:'전기자동차 충전 솔루션', href:'business-infra-list.html', tags:['전기자동차 충전 솔루션']},
-                {nm:'배터리 전주기 진단 솔루션', href:'business-infra-list.html', tags:['에너지 인프라 솔루션 - 배터리 전주기 진단 솔루션']} ] }
+      { kor:'스마트 제조', eng:'Smart Factory', img:'carousel-battery.png', href:'business-smart.html',
+        lists:[ {nm:'이차전지 활성화 전공정 설비', href:'business-smart.html', tags:['충방전기','DCIR','고온·가압 충방전기','Degas','Pre-formation','OCV','IR-OCV','DSF/EOL','Selector']},
+                {nm:'신뢰성 검사 장비', href:'business-smart.html', tags:['이차전지 Cycler (셀/모듈)']},
+                {nm:'자동화', href:'business-smart.html', tags:['PLC','MES']},
+                {nm:'이차전지 소재', sub:true, href:'business-smart.html', tags:['소수벽 & 단일벽 탄소나노튜브','LiFSI 전해염']} ] },
+      { kor:'에너지 인프라', eng:'Energy Infrastructure', img:'carousel-energy-infra.png', href:'business-energy.html',
+        lists:[ {nm:'그리드 에너지 저장 장치', href:'business-energy.html', tags:['배터리 에너지 저장 장치 (BESS)','무정전 UPS']},
+                {nm:'애플리케이션', href:'business-energy.html', tags:['우주 발사체','무인 이동체계 전원 시스템']} ] },
+      { kor:'인공지능 플랫폼', eng:'Intelligent AI Platform', img:'carousel-safety-robot.png', href:'business-ai.html',
+        lists:[ {nm:'로봇 플랫폼', href:'business-ai.html', tags:['산업 안전진단 AI']},
+                {nm:'배터리 진단 플랫폼', href:'business-ai.html', tags:['전기자동차 배터리 안전 진단','전기자동차 배터리 성능 진단']},
+                {nm:'전기자동차 충전 플랫폼', href:'business-ai.html', tags:['PICKLE Station']},
+                {nm:'전기자동차 제어 플랫폼', href:'business-ai.html', tags:['ECOTRON 제어기 국내 독점 수입']} ] },
+      { kor:'화합물 전력 반도체', eng:'GaN Power Semiconductors', img:'carousel-gan.png', href:'business-semicon.html',
+        lists:[ {nm:'GaN Epi-Wafer', href:'business-semicon.html', tags:['GaN Epi-Wafer']},
+                {nm:'GaN Power Device', href:'business-semicon.html', tags:['GaN Power Device']},
+                {nm:'에이프로 세미콘', sub:true, href:'business-semicon.html', tags:['A-PRO SEMICON']} ] }
     ];
     var N = BIZ.length;
     var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
@@ -966,18 +976,16 @@
     var heroBlock = sticky.querySelector('.biz-hero');
     var SLOT=[];
     function computeSlots(){
+      // static 4-tile layout: four equal tiles filling the container, below the "Business" label bar
       var vw = collage.clientWidth || window.innerWidth;
-      // carousel baseline sits ~flush with the window bottom (half of the 900 stage, +5px)
-      BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 455);
-      var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
-      if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
-      var HRef = Math.round(cW*9/16);   // 16:9 reference — sets the side-card proportions
-      var HM = Math.round(HRef*0.70);   // mid images (slots 1,3)
-      var HS = Math.round(HRef*0.42);   // far images (slots 0,4)
-      var HC = HM + 148;                // centre = mid height + a 3-row sub-menu, so the sub-menu bottom meets the mid-card tops (no step)
-      var x0=0,x1=WF+GAP,x2=2*(WF+GAP),x3=x2+cW+GAP,x4=x3+WF+GAP;
-      SLOT=[{x:ox+x0,y:BASE-HS,w:WF,h:HS},{x:ox+x1,y:BASE-HM,w:WF,h:HM},{x:ox+x2,y:BASE-HC,w:cW,h:HC},{x:ox+x3,y:BASE-HM,w:WF,h:HM},{x:ox+x4,y:BASE-HS,w:WF,h:HS}];
-      positionOverlay();   // drop the title+list group so the frosted list overlays the image top
+      var stageH = Math.min(collage.clientHeight || Math.max(window.innerHeight,900), 900);
+      var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2;
+      var TG=12, tw=(CW-TG*3)/4;         // 4 tiles + 3 gaps across the container
+      var top=210, th=stageH-top-16;     // from just under the label bar down to the baseline
+      if(centerEl){ centerEl.style.width = CW+'px'; }
+      SLOT=[];
+      for(var i=0;i<4;i++){ SLOT.push({x:ox+i*(tw+TG), y:top, w:tw, h:th}); }
+      positionOverlay();
     }
     var hframeEl = sticky.querySelector('.hframe');
     var bodyEl = sticky.querySelector('.biz-body');
@@ -1009,7 +1017,14 @@
     var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function enc(s){ return '../assets/' + encodeURIComponent(s); }
-    var cards = BIZ.map(function(b){ var c=document.createElement('div'); c.className='bcard'; c.innerHTML='<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />'; collage.appendChild(c); return c; });
+    var cards = BIZ.map(function(b,i){
+      var c=document.createElement('a'); c.className='bcard'; c.href=b.href;   // static tiles are clickable links to the detail pages
+      c.innerHTML='<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />'+
+        '<span class="bcap"><span class="bcap-n">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span class="bcap-ko">'+esc(b.kor)+'</span>'+
+        '<span class="bcap-en">'+esc(b.eng)+'</span></span>';
+      collage.appendChild(c); return c;
+    });
     navEl.innerHTML = BIZ.map(function(b,i){ return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>'; }).join('');
     var navBtns = navEl.querySelectorAll('.nv');
     function listItem(l, idx){
@@ -1022,17 +1037,14 @@
       return l.href ? '<a class="'+cls+'"'+st+' href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'"'+st+'>'+inner+'</div>';
     }
     var active=-1, faderTO=null;
-    function slotOf(b){ return (((b-active+2)%N)+N)%N; }
+    function slotOf(b){ return b; }   // static tiles: each card keeps its own fixed slot (no rotation)
     function setGeom(card,s){ card.style.left=s.x+'px'; card.style.top=s.y+'px'; card.style.width=s.w+'px'; card.style.height=s.h+'px'; }
     function place(first){
       cards.forEach(function(card, b){
-        var pos = slotOf(b), old = card._pos, s = SLOT[pos];
-        var wrap = old != null && Math.abs(pos - old) >= 3;
-        if(first || wrap){
-          card.style.transition = 'none'; setGeom(card, s); void card.offsetWidth; card.style.transition = '';
-          if(wrap){ card.classList.remove('jin'); void card.offsetWidth; card.classList.add('jin'); }
-        } else { setGeom(card, s); }
-        card.classList.toggle('center', pos === 2); card._pos = pos;
+        var s = SLOT[b]; if(!s){ return; }
+        if(first){ card.style.transition = 'none'; setGeom(card, s); void card.offsetWidth; card.style.transition = ''; }
+        else { setGeom(card, s); }
+        card.classList.toggle('center', b === active); card._pos = b;   // the scroll-active tile shows in colour
       });
     }
     function fillText(b){
@@ -1091,7 +1103,7 @@
     function expandCards(gS, gH, reveal, cop){
       var EQH = SLOT[2].h;                                 // equal height during the split = centre card's final height
       for(var b=0;b<N;b++){
-        var pos=(((b+2)%N)+N)%N, s=SLOT[pos], card=cards[b];
+        var pos=b, s=SLOT[pos], card=cards[b];
         var baseB = s.y + s.h;                             // shared bottom baseline (all cards sit on BASE)
         var Abott = M.by + M.bh;                           // A-box bottom edge
         var l = M.bx + (s.x-M.bx)*gS;                      // x spreads during the split
@@ -1106,7 +1118,7 @@
         card.style.height=h+'px';
         card.style.background=(reveal>=1)?'':'#0b0b0a';
         card.firstChild.style.opacity=reveal;
-        card.classList.toggle('center', pos===2); card._pos=pos;
+        card.classList.remove('center'); card._pos=pos;
       }
     }
 
@@ -1114,7 +1126,7 @@
     var mode='';
     function setMode(m){
       if(m===mode){ return; } mode=m;
-      cardsWrap.classList.toggle('on', m!=='kw');               // card layer hidden during keywords
+      cardsWrap.classList.toggle('on', m==='biz');              // tiles appear only once settled (no morph/scroll animation)
       cardsWrap.style.pointerEvents = (m==='biz') ? 'auto' : 'none';
       caret.style.display = 'none';                              // the A-PRO "A" no longer detaches/moves
       if(m==='kw'){
@@ -1128,37 +1140,18 @@
       }
     }
     function morph(mp){
+      // who-we-are → Business transition: the A-PRO logo simply fades out and the bg turns white.
+      // (No card-expand animation — the static tiles appear afterwards in biz mode.)
       sticky.style.background = bgCol(ease(seg(mp,0.05,0.30)));                 // dark → white
-      var lf=(1-seg(mp,0.05,0.24)).toFixed(3);                                  // A-PRO logo fades IN PLACE (never moves)
+      var lf=(1-seg(mp,0.05,0.55)).toFixed(3);                                  // A-PRO logo fades IN PLACE (never moves)
       stage.style.opacity=lf; eye.style.opacity=lf; dotsWrap.style.opacity=lf;
-      var raw=ease(clamp01((mp-0.24)/0.62));                                    // overall expand progress
-      var gS=clamp01(raw/0.58);                                                // stage 1: split into 5 equal-height boxes
-      var gH=clamp01((raw-0.58)/0.42);                                         // stage 2: adjust heights to the carousel staircase
-      var reveal=clamp01((gS-0.15)/0.60);                                      // dark → photo during the split
-      expandCards(gS, gH, reveal, clamp01((mp-0.22)/0.10));                    // cards fade in, split equal, then heights settle
-      content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }     // sub-menu stays hidden until the carousel settles
+      content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }     // Business content stays hidden until tiles appear
     }
 
     // ---------- outro: entering News, only the carousel HEIGHT lowers — the cards sink toward the
     // baseline while the text stays put; the sub-menu rides the shrinking centre card down and fades. ----------
     var OUTK=0.15, outroOn=false;   // OUTK = how far the cards collapse (0.15 → a slight ~15% dip; News rises over the rest)
-    function outro(o){
-      var t=ease(clamp01(o));
-      for(var b=0;b<N;b++){
-        var pos=slotOf(b), s=SLOT[pos]; if(!s){ continue; }
-        var h=s.h*(1-OUTK*t), baseB=s.y+s.h, card=cards[b];
-        card.style.transition='none';
-        card.style.height=h+'px';
-        card.style.top=(baseB-h)+'px';
-      }
-      var sc=SLOT[2];
-      if(sc && listsEl){                                   // sub-menu glued to the sinking centre-card top, fading out
-        var hc=sc.h*(1-OUTK*t);
-        listsEl.style.top=((sc.y+sc.h)-hc)+'px';
-        listsEl.style.opacity=(1-ease(seg(o,0.15,0.85))).toFixed(3);
-      }
-      outroOn=true;
-    }
+    function outro(o){ outroOn=true; }   // static tiles: no card movement — News simply slides up over them
     function clearOutro(){
       if(!outroOn){ return; }
       outroOn=false;
@@ -1175,8 +1168,8 @@
       var p = total>0 ? scrolled/total : 0; p=Math.max(0, Math.min(0.9999, p));
       if(p < KW){ clearOutro(); setMode('kw'); setPhase(Math.floor((p/KW)*PHASES)); }
       else if(p < MO){ clearOutro(); setMode('morph'); setPhase(3); morph((p-KW)/(MO-KW)); }
-      else if(p < OUT){ clearOutro(); setMode('biz'); setActive(Math.min(N-1, Math.floor(((p-MO)/(OUT-MO))*N + 0.0001))); }
-      else { setMode('biz'); setActive(N-1); outro((p-OUT)/(1-OUT)); }
+      else if(p < OUT){ clearOutro(); setMode('biz'); if(active<0){ setActive(0); } }   // tiles placed once, then static
+      else { setMode('biz'); if(active<0){ setActive(0); } outro((p-OUT)/(1-OUT)); }
     }
     function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
     function onResize(){ fit(); computeSlots(); caretLayout(); if(mode==='biz' && active>=0){ place(true); } update(); }
@@ -1357,11 +1350,10 @@
     <div class="ov-row">
       <div class="ov-cat">사업영역</div>
       <div class="ov-links">
-        <a href="business-bat-list.html">이차전지</a>
-        <a href="business-ess-list.html">에너지 저장 시스템</a>
-        <a href="business-gan-list.html">화합물 GaN 반도체</a>
-        <a href="business-robot-list.html">산업 안전 진단 로봇 솔루션</a>
-        <a href="business-infra-list.html">에너지 인프라 솔루션</a>
+        <a href="business-smart.html">스마트 제조</a>
+        <a href="business-energy.html">에너지 인프라</a>
+        <a href="business-ai.html">인공지능 플랫폼</a>
+        <a href="business-semicon.html">화합물 전력 반도체</a>
       </div>
     </div>
     <div class="ov-row">
