@@ -66,11 +66,36 @@
     m.addEventListener('mouseenter',function(){g.classList.add('mega-open');});
     g.addEventListener('mouseleave',function(){g.classList.remove('mega-open');nl.forEach(function(x){x.classList.remove('active');});});
   }
-  var hero=document.querySelector('.dhero'),on=null;
-  function ap(){var d=hero.getBoundingClientRect().bottom<=40;if(d!==on){on=d;g.classList.toggle('nav-light',d);}}
+  var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),on=null,hid=null;
+  /* 기준선 = --bar-rise + --bar-h (= 고정됐을 때 바의 밑변 y).
+     바의 실측 높이(offsetHeight)를 쓸 수 없다 — 고정되면 화면 상단까지 늘어나 값이 커지고,
+     되올릴 때 기준선이 같이 밀려 히스테리시스가 생긴다. CSS 변수를 그대로 읽는다 */
+  var barBase=104;
+  function measure(){
+    var cs=getComputedStyle(document.documentElement);
+    var h=parseFloat(cs.getPropertyValue('--bar-h')),r=parseFloat(cs.getPropertyValue('--bar-rise'));
+    if(h)barBase=h+(r||0);
+  }
+  function ap(){
+    var hb=hero.getBoundingClientRect().bottom;
+    var d=hb<=40;
+    if(d!==on){on=d;g.classList.toggle('nav-light',d);}
+    /* 소분류 탭 바는 히어로 밑단에 얹혀 있다가, 히어로 밑변이 바 밑변에 닿는 순간
+       화면 상단에 고정된다. 그 순간 탭 띠 위치가 그대로라 화면이 안 튄다.
+       같은 순간 GNB를 접어 어두운 띠 위에 GNB가 겹쳐 뜨지 않게 한다.
+       0.5px 여유는 소수점 스크롤 위치에서 붙었다 떨어졌다 하는 떨림을 막는다 */
+    if(!bn)return;
+    var h=hb<=barBase+0.5;
+    if(h===hid)return;
+    hid=h;
+    bn.classList.toggle('is-fixed',h);
+    g.classList.toggle('nav-hide',h);
+    if(h)g.classList.remove('mega-open','lang-open');   // 접히면서 열려 있던 메뉴도 닫는다
+  }
   var t=false;
   window.addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(function(){t=false;ap();});}},{passive:true});
-  window.addEventListener('resize',ap);ap();
+  window.addEventListener('resize',function(){measure();ap();});
+  measure();ap();
   document.addEventListener('keydown',function(e){if(e.key==='Escape')g.classList.remove('lang-open');});
 })();
 
@@ -86,25 +111,9 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&o.classList.contains('open'))close();});
 })();
 
-/* 소분류 위치 눈금 — 섹션 수를 세어 자동 생성. 소분류가 늘거나 줄어도 따라감 */
-(function(){
-  var secs=[].slice.call(document.querySelectorAll('.hsec'));
-  secs.forEach(function(s,i){
-    var c=s.querySelector('.heyebrow .cnt');
-    if(!c)return;
-    c.innerHTML='';
-    c.setAttribute('role','img');   // 눈금은 그림이므로 대체 텍스트로 의미를 전달
-    c.setAttribute('aria-label','소분류 '+secs.length+'개 중 '+(i+1)+'번째');
-    for(var k=0;k<secs.length;k++){
-      var t=document.createElement('i');
-      t.className='tick'+(k===i?' on':'');
-      c.appendChild(t);
-    }
-  });
-})();
-
 /* 세로 캐러셀
-   - 하단 인덱스 자동 생성 + 클릭 이동
+   - 하단 스크롤 게이지(스크롤바 역할: 표시 + 클릭·키보드 이동)
+   - 상단 소분류 탭: 클릭하면 섹션 이동, 스크롤하면 현재 섹션에 표시
    - 휠 1회 = 카드 1장. 섹션의 카드를 다 넘긴 뒤에야 페이지가 다음 섹션으로 이동
    - 휠 리스너는 window에 건다. 섹션에 걸면 컨테이너(최대 1392px) 바깥 좌우 여백에
      커서가 있을 때 이벤트가 잡히지 않아 페이지가 그냥 스크롤돼 버린다. */
@@ -123,40 +132,64 @@
   var paging=false,pageRaf=null,secArmed=true,secQuiet=null;
 
   document.querySelectorAll('.hsec').forEach(function(sec){
-    var track=sec.querySelector('.htrack'),nav=sec.querySelector('.hnav');
+    var track=sec.querySelector('.htrack'),g=sec.querySelector('.hgauge');
     if(!track)return;
     var cards=[].slice.call(track.querySelectorAll('.hcard'));
-    var st={sec:sec,track:track,cards:cards,idx:0,btns:[],pos:0,target:0,dir:1};
+    var st={sec:sec,track:track,cards:cards,idx:0,g:g,bar:g&&g.querySelector('.bar'),pos:0,target:0,dir:1};
 
     if(cards.length<2){
       track.dataset.one='true';
-      if(nav)nav.dataset.one='true';
-    }else if(nav){
-      cards.forEach(function(c,i){
-        var b=document.createElement('button');
-        b.type='button';
-        b.className='hnav-i'+(i?'':' is-on');
-        b.setAttribute('aria-label',c.dataset.tab||('카드 '+(i+1)));
-        b.innerHTML='<span class="t">'+(c.dataset.tab||'')+'</span>';
-        b.addEventListener('click',function(){goTo(st,i);});
-        nav.appendChild(b);
+      if(g)g.dataset.one='true';
+    }else if(g){
+      /* 게이지는 이 트랙의 스크롤바다 → role/키보드도 스크롤바 규약을 따른다.
+         인덱스 버튼을 없앤 대신 여기가 카드 이동의 유일한 직접 조작 지점이다 */
+      if(!track.id)track.id=(sec.id||'hsec')+'-track';
+      g.setAttribute('role','scrollbar');
+      g.setAttribute('aria-orientation','vertical');
+      g.setAttribute('aria-controls',track.id);
+      g.setAttribute('aria-label','카드 '+cards.length+'장 스크롤');
+      g.tabIndex=0;
+      g.addEventListener('click',function(e){
+        var r=g.getBoundingClientRect();
+        goTo(st,Math.round((e.clientX-r.left)/r.width*(cards.length-1)));
       });
-      st.btns=[].slice.call(nav.children);
+      g.addEventListener('keydown',function(e){
+        var k=e.key,n=null;
+        if(k==='ArrowDown'||k==='ArrowRight'||k==='PageDown')n=st.idx+1;
+        else if(k==='ArrowUp'||k==='ArrowLeft'||k==='PageUp')n=st.idx-1;
+        else if(k==='Home')n=0;
+        else if(k==='End')n=cards.length-1;
+        if(n===null)return;
+        e.preventDefault();goTo(st,n);
+      });
     }
 
-    /* 트랙을 직접(터치·드래그) 스크롤한 경우 현재 카드 추적 */
+    /* 트랙을 직접(터치·드래그) 스크롤한 경우 현재 카드 추적.
+       JS가 움직일 때도 매 프레임 여기로 들어오므로 게이지는 먼저 갱신한다 */
     track.addEventListener('scroll',function(){
+      paint(st);
       if(raf)return;   // JS가 움직이는 중에는 건너뜀
       st.pos=st.target=track.scrollTop;
       var best=0,bd=Infinity;
       cards.forEach(function(c,i){var d=Math.abs(c.offsetTop-track.scrollTop);if(d<bd){bd=d;best=i;}});
-      if(best!==st.idx){st.idx=best;paint(st);}
+      st.idx=best;
     },{passive:true});
 
     states.push(st);
   });
 
-  function paint(st){st.btns.forEach(function(b,i){b.classList.toggle('is-on',i===st.idx);});}
+  /* 게이지 = 트랙의 실제 스크롤 비율. 막대 길이(scaleX)와 위치(translateX)로만 그려
+     레이아웃을 건드리지 않는다 → 매 프레임 갱신해도 부담이 없다 */
+  function paint(st){
+    if(!st.bar)return;
+    var h=st.track.scrollHeight,c=st.track.clientHeight;
+    if(h<=0)return;
+    var size=Math.min(1,c/h),off=Math.max(0,Math.min(1-size,st.track.scrollTop/h));
+    st.bar.style.setProperty('--gs',size);
+    st.bar.style.setProperty('--go',(off*100)+'%');
+    if(st.g&&st.g.hasAttribute('role'))
+      st.g.setAttribute('aria-valuenow',Math.round(st.idx/Math.max(1,st.cards.length-1)*100));
+  }
   function maxOf(st){return st.track.scrollHeight-st.track.clientHeight;}
 
   /* 목표값을 향해 매 프레임 남은 거리의 LERP만큼 이동.
@@ -272,4 +305,49 @@
     if(!secArmed)return;
     secArmed=false;pageTo(y);
   },{passive:false});
+
+  /* 게이지 초기값 — 카드 높이가 화면 높이에 따라 달라지므로 리사이즈 때 다시 그린다 */
+  function repaint(){states.forEach(paint);}
+  window.addEventListener('resize',repaint);
+  window.addEventListener('load',repaint);
+  repaint();
+
+  /* ── 상단 소분류 탭 ──────────────────────────────────────────────────
+     클릭은 섹션 간 이동과 같은 pageTo()를 태워 휠 이동과 느낌을 맞춘다(앵커 점프 금지).
+     현재 탭 표시는 휠 핸들러의 current()와 같은 기준 — 화면 세로 중앙을 점유한 섹션 */
+  (function(){
+    var tabs=[].slice.call(document.querySelectorAll('.bnav-tabs a[href^="#"]'));
+    if(!tabs.length)return;
+    var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+
+    tabs.forEach(function(a,i){
+      a.addEventListener('click',function(e){
+        if(!secs[i]||narrow.matches)return;      // 좁은 화면은 기본 앵커 이동에 맡긴다
+        e.preventDefault();
+        pageTo(window.scrollY+secs[i].getBoundingClientRect().top);
+      });
+    });
+
+    var on=-1;
+    function spy(){
+      var mid=window.innerHeight/2,k=-1;
+      for(var i=0;i<secs.length;i++){
+        if(!secs[i])continue;
+        var r=secs[i].getBoundingClientRect();
+        if(r.top<=mid&&r.bottom>=mid){k=i;break;}
+      }
+      if(k<0)k=(on<0?0:on);                      // 히어로 구간에서는 직전 표시를 유지
+      if(k===on)return;
+      on=k;
+      tabs.forEach(function(a,i){
+        if(i===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');
+      });
+    }
+    var tk=false;
+    window.addEventListener('scroll',function(){
+      if(tk)return;
+      tk=true;requestAnimationFrame(function(){tk=false;spy();});
+    },{passive:true});
+    spy();
+  })();
 })();

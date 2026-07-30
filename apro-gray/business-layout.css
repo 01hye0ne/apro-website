@@ -15,16 +15,27 @@
     --white-300:rgba(255,255,255,.2);--maxw:1440px;--grid-gutter:24px;
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
-    /* 사업명칭 ↔ 페이지네이션을 잇는 S커브 커넥터 (Figma 570:3893 Vector, 30×48).
-       내보낸 path 그대로. mask로 쓰므로 stroke 색은 의미 없고 CSS에서 칠한다. */
-    --eyebrow-curve:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='48' viewBox='0 0 30 48' fill='none'%3E%3Cpath d='M0 47.5C4.61338 47.5 8.41877 45.4787 9.07037 42.5412L20.9296 5.96799C21.6073 3.03049 25.3866 0.5 30 0.5' stroke='%23000'/%3E%3C/svg%3E");
+    /* 소분류 탭 바 높이 — 히어로 하단 패딩과 바의 음수 마진이 이 값 하나를 함께 쓴다 */
+    --bar-h:64px;
+    /* 고정될 때 바가 위로 더 자라는 높이. 이 값이 곧 탭 줄 위에 남는 어두운 여백이고,
+       동시에 "히어로 밑변이 여기 닿으면 고정" 기준선(= --bar-rise + --bar-h)이다.
+       CSS와 JS가 같은 값을 봐야 전환 순간이 어긋나지 않는다 */
+    --bar-rise:40px;
+    /* 소분류 탭 바 — 히어로 배경에서 흰 탭 패널로 넘어가는 S커브 (Figma 592:3954 Vector).
+       570:3893 의 stroke path(30×48)를 24×40 좌표로 옮기고 곡선 아래·오른쪽을 흰색으로
+       채운 도형이다. 그리드 거터(24px)에 딱 맞게 들어간다 */
+    --tab-curve:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23fff'/%3E%3C/svg%3E");
   }
+  /* 좁은 화면은 위로 자라지 않는다(--bar-rise:0) — 어두운 띠가 모바일 화면을 너무 먹는다 */
+  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px}}
   *{margin:0;padding:0;box-sizing:border-box}
   /* 페이지 스크롤은 JS가 직접 제어한다. scroll-behavior:smooth 를 켜두면
      window.scrollTo() 한 번 한 번이 브라우저 이징을 타서 프레임 애니메이션이 뭉개지고,
      scroll-snap-type 은 프레임마다 위치를 되잡아채 튄다. 둘 다 끈다. */
   html{scroll-behavior:auto}
-  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  /* overflow-x는 hidden이 아니라 clip — hidden은 body를 스크롤 컨테이너로 만들어
+     안쪽 sticky/fixed 요소의 기준을 흔든다. clip은 스크롤 컨테이너 없이 잘라내기만 한다 */
+  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:clip}
   img{display:block;max-width:none}
   p{margin:0}
   a{text-decoration:none;color:inherit}
@@ -34,7 +45,14 @@
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;--gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
   .gnb-group::before{content:"";position:fixed;top:0;left:0;width:100%;height:72px;background:#fff;border-bottom:1px solid var(--border-g);box-shadow:0 2px 16px rgba(27,39,51,.05);z-index:98;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
   .gnb-group.nav-light::before{opacity:1}
-  .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;display:flex;align-items:center;gap:36px;animation:gnbIn .9s var(--ease) both}
+  /* 등장 애니메이션의 채우기가 both 면 끝 상태(opacity/transform)를 계속 붙들어
+     아래 .nav-hide 규칙이 먹지 않는다 → backwards 로 두고 끝난 뒤엔 CSS 값이 살아나게 한다 */
+  .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;display:flex;align-items:center;gap:36px;
+    animation:gnbIn .9s var(--ease) backwards;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  /* 소분류 탭 바가 상단에 붙는 순간 GNB는 위로 접힌다 (JS가 .nav-hide 토글).
+     ::before(흰 플레이트)는 .nav-light 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
+  .gnb-group.nav-hide .gnb{opacity:0;transform:translate(-50%,-14px);pointer-events:none}
+  .gnb-group.nav-hide::before{opacity:0}
   .gnb .logo{padding:12px 0;flex-shrink:0}
   .gnb .logo img{height:16px;width:78px;transition:filter .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
@@ -74,22 +92,89 @@
   @media(max-width:900px){.gnb-mega{display:none}.gnb .menus{display:none}}
 
   /* ===================== HERO (배너 — 그대로 유지) ===================== */
-  .dhero{position:relative;min-height:480px;display:grid;place-items:center;background:var(--g950);color:#fff;overflow:hidden;padding:80px 24px 0}
+  /* 하단 패딩 = 탭 바 높이. 바가 음수 마진으로 히어로 밑단에 얹히므로 h1 이 그 위에서 중앙에 온다 */
+  .dhero{position:relative;min-height:480px;display:grid;place-items:center;background:var(--g950);color:#fff;overflow:hidden;padding:80px 24px var(--bar-h)}
   .dhero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% -10%,rgba(64,119,183,.20),transparent 62%)}
   .dhero .in{position:relative;z-index:1;text-align:center}
   .dhero h1{font-family:var(--suit);font-weight:800;font-size:18px;line-height:1.3;letter-spacing:-.36px}
 
+  /* ===================== 소분류 탭 바 (Figma 592:3950) =====================
+     두 가지 상태로 산다.
+
+     ① 히어로 위 (기본) : 음수 마진으로 히어로 밑단에 얹힌다. 바 자체에는 배경색이 없어
+        원본의 회색 자리가 곧 히어로 배경이다 — 히어로 이미지가 그대로 비친다.
+        그 위로 흰 탭 패널(카드 트랙과 같은 4번째 열 ~ 화면 우측 끝, 아래 40px)과
+        그 왼쪽 거터를 채우는 S커브가 늘 흰색으로 얹혀, 아래 카드 영역과 이어지는
+        폴더 탭이 된다. 탭 글자는 전부 이 흰 패널 위에 있어 색이 바뀌지 않는다.
+        히어로 배경 위에 직접 놓이는 건 좌측 사업명칭 하나뿐이다.
+     ② 화면 상단 고정 : 히어로 밑변이 바 밑변(--bar-rise + --bar-h)에 닿는 순간 JS가 .is-fixed 를
+        붙인다. 이때 바는 히어로 배경색을 그대로 들고 올라가고(흰색으로 갈아치우지 않는다)
+        화면 최상단까지(top:0, 높이 --bar-rise + --bar-h) 늘어난다. 늘어난 만큼이 방금 위로 빠져나간
+        히어로의 마지막 조각과 정확히 겹치므로 — 전환 순간 화면이 한 픽셀도 바뀌지 않는다.
+        탭 띠는 계속 아래 40px(align-self:end)이라 탭 줄 위치도 그대로다.
+        같은 순간 GNB는 접힌다(.nav-hide) — 어두운 띠 위에 GNB가 겹쳐 뜨지 않게.
+        배경 전환에 transition을 걸지 않는 이유: 그 순간이 이미 연속이라 페이드를 주면
+        오히려 반투명한 구간에 뒤 카드가 비쳐 보인다.
+
+     음수 마진이라 바는 흐름 높이를 0으로 차지한다 → fixed 로 빠져도 아래 콘텐츠가 안 밀린다.
+     글자 크기는 GNB 메뉴(16px)에 맞췄다. GNB가 접힌 뒤에는 이 줄이 화면 상단의
+     유일한 내비게이션이므로 원본 14px보다 한 단 키워야 위계가 맞는다.
+     --bx4 : 12칼럼 그리드에서 4번째 열이 시작하는 x (좌여백 + 3열 + 3거터) */
+  .bnav-wrap{position:relative;z-index:90;height:var(--bar-h);margin-top:calc(-1 * var(--bar-h));
+    --bw:min(calc(var(--maxw) - 48px),calc(100% - 48px));
+    --bcol:calc((var(--bw) - 11 * var(--grid-gutter)) / 12);
+    --bx4:calc((100% - var(--bw)) / 2 + 3 * var(--bcol) + 3 * var(--grid-gutter))}
+  .bnav-wrap::after{content:"";position:absolute;left:var(--bx4);right:0;bottom:0;height:40px;background:#fff}
+  .bnav-wrap::before{content:"";position:absolute;bottom:0;height:40px;
+    left:calc(var(--bx4) - var(--grid-gutter));width:var(--grid-gutter);
+    background:var(--tab-curve) center/100% 100% no-repeat}
+  /* 히어로 배경과 같은 색·같은 자리를 이어받는다. 히어로에 배경 이미지가 들어가면
+     여기 background도 그 이미지의 밑단으로 맞춰야 이음선이 안 보인다 */
+  .bnav-wrap.is-fixed{position:fixed;top:0;left:0;width:100%;height:calc(var(--bar-rise) + var(--bar-h));
+    margin-top:0;background:var(--g950)}
+  /* z-index:1 — 글자가 위 흰 패널(::after)보다 위에 놓이도록 */
+  .bnav{position:relative;z-index:1;width:var(--bw);height:100%;margin:0 auto;
+    display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--grid-gutter)}
+  .bnav-ttl,.bnav-tabs{grid-row:1;align-self:end;height:40px;min-width:0;display:flex;align-items:center}
+  /* 두 상태 모두 히어로 배경 위에 놓이므로 색이 바뀌지 않는다 */
+  .bnav-ttl{grid-column:1 / span 3;font-family:var(--suit);font-weight:800;font-size:18px;
+    letter-spacing:-.36px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28)}
+  /* 탭 글자는 카드 트랙과 같은 4번째 열에서 시작한다 — 아래 카드 왼쪽 끝과 한 선.
+     라벨이 길어 좁은 화면에서 넘칠 수 있으므로 간격을 줄이고 가로 스크롤을 허용한다 */
+  .bnav-tabs{grid-column:4 / span 9;gap:clamp(20px,3.4vw,44px);
+    overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .bnav-tabs::-webkit-scrollbar{display:none}
+  /* 흰 패널 위에 놓이므로 두 상태에서 색이 같다 */
+  .bnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.15;
+    letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
+    transition:color .3s var(--ease),text-shadow .3s var(--ease)}
+  .bnav-tabs a:hover{color:var(--sec)}
+  .bnav-tabs a[aria-current]{font-weight:700;color:var(--g900)}
+  /* 좁은 화면: 흰 패널·커브를 접고 사업명칭도 접어 가로 스크롤 탭 줄만 남긴다.
+     패널이 없어지면 탭이 히어로 배경 위에 바로 놓이므로 두 상태 모두 밝은 글자.
+     고정 높이는 :root 의 --bar-rise:0 이 알아서 바 높이만 남긴다 */
+  @media(max-width:900px){
+    .bnav-wrap::before,.bnav-wrap::after{display:none}
+    .bnav{display:flex;align-items:center}
+    .bnav-ttl{display:none}
+    .bnav-tabs{height:100%;flex:1;gap:20px}
+    .bnav-tabs a{color:rgba(255,255,255,.62);text-shadow:0 1px 4px rgba(0,0,0,.28)}
+    .bnav-tabs a[aria-current]{color:#fff}
+  }
+
   /* =====================================================================
      가로형 섹션 — 화면 1개 높이
-       좌 rail (col 1–3) : 상단 번호+타이틀 / 하단 카드 인덱스
+       좌 rail (col 1–3) : 상단 소분류 타이틀 / 하단 카드 스크롤 게이지
        우 track (col 4–12): 카드 가로 캐러셀
      ===================================================================== */
   .wrap{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin:0 auto}
   /* --card-peek : 트랙 하단에 비워두는 높이(= 카드간 gap 16 + 다음 카드 미리보기 80).
-     카드 바닥은 섹션 바닥에서 이만큼 위에서 끝나므로, 좌측 레일 하단(카드 인덱스)도
+     카드 바닥은 섹션 바닥에서 이만큼 위에서 끝나므로, 좌측 레일 하단(스크롤 게이지)도
      같은 값만큼 띄워야 카드 바닥선과 눈높이가 맞는다. 하단 페이드 높이도 이 값을 쓴다 */
+  /* padding-top 180px = 고정된 탭 바 높이(--bar-rise 40 + --bar-h 64 = 104) + 숨 76.
+     섹션이 화면 상단에 물릴 때 탭 줄 밑과 타이틀 첫 줄 사이가 이 숨만큼 벌어진다 */
   .hsec{height:100vh;height:100dvh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
-    column-gap:var(--grid-gutter);align-items:stretch;padding:136px 0 24px;--card-peek:96px}
+    column-gap:var(--grid-gutter);align-items:stretch;padding:180px 0 24px;--card-peek:96px}
     /* 하단 여백을 24px까지 줄여 트랙이 아래까지 내려옴 → 남는 공간이 빈 여백이 아니라 다음 카드로 채워짐 */
   .hsec+.hsec{border-top:1px solid var(--border-g)}   /* 섹션 구분선 */
   /* 잘린 다음 카드가 아래로 자연스럽게 사라지도록 — 트랙 하단 96px(= gap+미리보기)에 흰색 페이드.
@@ -100,55 +185,39 @@
   .hsec:has(.htrack[data-one="true"])::after{display:none}   /* 카드 1장 섹션은 잘리는 부분이 없음 */
   /* grid-row를 명시해야 ::after 페이드와 같은 행에 겹친다 (생략하면 트랙이 2행으로 밀림) */
   .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px;
-    padding-bottom:var(--card-peek)}   /* 카드 인덱스 밑줄을 우측 카드 바닥선에 맞춤 */
+    padding-bottom:var(--card-peek)}   /* 스크롤 게이지를 우측 카드 바닥선에 맞춤 */
   .htrack{grid-column:4 / span 9;grid-row:1;min-width:0;position:relative;
     display:flex;flex-direction:column;gap:16px;overflow-x:hidden;overflow-y:auto;
     scroll-snap-type:none;   /* 스냅·smooth 모두 JS가 처리 — CSS 스냅을 켜두면 프레임마다 되잡아채 튄다 */
     padding-bottom:var(--card-peek);   /* 이 여유가 있어야 마지막 카드가 트랙 상단까지 올라옴 */
-    scrollbar-width:none;-ms-overflow-style:none}   /* 스크롤바 숨김 — 이동은 하단 인덱스로 */
+    scrollbar-width:none;-ms-overflow-style:none}   /* 브라우저 스크롤바 숨김 — 좌측 게이지가 그 역할 */
   .htrack::-webkit-scrollbar{display:none}
   /* 카드가 하나면 스크롤도 미리보기도 없다 → 카드가 섹션 바닥까지 내려오므로 레일도 같이 내린다 */
   .hsec:has(.htrack[data-one="true"]){--card-peek:0px}
 
-  /* --- rail 상단: 사업명칭 + 진행 카운터 / 타이틀 --- */
-  .hrail-top{display:flex;flex-direction:column;gap:16px}
-  /* Figma 570:3898 — 좌(사업명칭)는 밑줄, 우(페이지네이션)는 윗줄,
-     그 사이를 30×48 S커브가 이어 한 단 올라간다. 세 요소 모두 높이 48px(12+24+12)로 맞물린다. */
-  /* --eb-h : 세 조각 공통 높이. 커넥터 폭은 원본 비율(30/48 = .625)로 따라간다.
-     Figma는 20px 글자 기준 48px이었지만 글자를 기존 크기로 되돌려 32px로 축소 */
-  .heyebrow{display:flex;align-items:center;--eb-h:32px}
-  .heyebrow .cat,.heyebrow .cnt{display:flex;align-items:center;height:var(--eb-h);min-width:0;white-space:nowrap}
-  /* 선 3종(밑줄·윗줄·커넥터)은 카드 테두리와 같은 --border-g. 파랑은 현재 번호에만 */
-  .heyebrow .cat{flex:1;border-bottom:1px solid var(--border-g);
-    font-family:var(--suit);font-weight:700;font-size:13.5px;letter-spacing:-.27px;color:var(--sec)}
-  /* 소분류 위치 — 숫자 대신 눈금. "몇 개 중 몇 번째"로만 읽혀서
-     하단 카드 인덱스의 개수와 혼동될 여지가 없다 */
-  .heyebrow .cnt{justify-content:center;gap:6px;padding:0 4px;border-top:1px solid var(--border-g)}
-  .heyebrow .cnt .tick{width:8px;height:8px;flex-shrink:0;border:1px solid var(--border-g);
-    transition:background .3s var(--ease),border-color .3s var(--ease)}
-  .heyebrow .cnt .tick.on{background:var(--brand);border-color:var(--brand)}
-  .heyebrow .hrule{flex-shrink:0;height:var(--eb-h);width:calc(var(--eb-h) * .625);background-color:var(--border-g);
-    -webkit-mask:var(--eyebrow-curve) center/100% 100% no-repeat;
-            mask:var(--eyebrow-curve) center/100% 100% no-repeat}
-  .httl{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.26;letter-spacing:-.6px;color:var(--g900);word-break:keep-all}
+  /* --- rail 상단: 소분류 타이틀 --- */
+  /* 사업명칭·소분류 위치는 상단 탭 바로 옮겨졌다 → 레일 위쪽은 타이틀 한 덩어리 */
+  .httl{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.36;letter-spacing:-.6px;color:var(--g900);word-break:keep-all}
 
-  /* --- rail 하단: 카드 인덱스 --- */
-  /* 카드 수(최대 4)를 한 열에 세로로 나열. 밑줄을 뺐으므로 현재 카드는 글자색으로만 구분한다 */
-  .hnav{display:grid;gap:14px}
-  .hnav-i{min-width:0;
-    background:none;border:none;padding:0;
-    text-align:left;cursor:pointer}
-  /* 크기·자간은 카드 본문(.hcard p)과 동일하게 17px / -.34px */
-  .hnav-i .t{font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.35;letter-spacing:-.34px;color:var(--teritary);word-break:keep-all;transition:color .3s var(--ease)}
-  .hnav-i:hover .t{color:var(--sec)}
-  .hnav-i.is-on .t{color:var(--g900)}
-  .hnav[data-one="true"]{display:none}   /* 카드가 하나뿐이면 인덱스 숨김 */
+  /* --- rail 하단: 카드 스크롤 게이지 --- */
+  /* 우측 트랙의 진짜 스크롤 비율을 그대로 옮긴 가로 게이지. 막대 길이 = 보이는 비율,
+     위치 = 스크롤 위치라서 "카드가 몇 장 더 남았는지"가 스크롤바처럼 읽힌다.
+     밑변이 카드 바닥선과 맞도록 .hrail 의 padding-bottom(=--card-peek)을 그대로 쓴다 */
+  .hgauge{position:relative;height:4px;background:var(--border-g);cursor:pointer}
+  .hgauge .bar{position:absolute;inset:0;background:var(--brand);
+    transform-origin:left center;transform:translateX(var(--go,0%)) scaleX(var(--gs,1))}
+  .hgauge:focus-visible{outline:2px solid var(--brand-2);outline-offset:4px}
+  .hgauge[data-one="true"]{display:none}   /* 카드가 하나뿐이면 스크롤이 없다 */
 
   /* --- 카드: 가로 전체 폭 / 세로는 트랙 콘텐츠박스 높이(= 트랙 높이 − 96px).
          화면에는 카드 1장 + 다음 카드 80px이 함께 보인다 --- */
+  /* 내용이 카드 높이를 넘치면 카드 안에서 스크롤되지만 스크롤바는 감춘다 —
+     트랙과 같은 처리. 카드 테두리 안에 회색 막대가 서면 레이아웃이 어수선해진다 */
   .hcard{flex:0 0 100%;scroll-snap-align:start;min-width:0;position:relative;
     display:flex;flex-direction:column;gap:16px;
-    background:#fff;border:1px solid var(--border-g);padding:36px 40px;overflow-y:auto}
+    background:#fff;border:1px solid var(--border-g);padding:36px 40px;overflow-y:auto;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .hcard::-webkit-scrollbar{display:none}
   /* 비주얼이 있는 카드는 글이 좌측 폭 안에서만 흐르고, 비주얼은 우측에 세로 중앙 고정 */
   .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:calc(42% + 48px)}
   .hcard>.hph,.hcard>.hthumbs{position:absolute;top:50%;right:40px;width:42%;margin:0;transform:translateY(-50%)}
@@ -350,7 +419,7 @@
     .hrail{grid-column:1;grid-row:1}
     .htrack{grid-column:1;grid-row:2}
     .hrail{flex-direction:column;gap:20px}
-    .hnav{display:none}
+    .hgauge{display:none}   /* 세로로 풀리면 트랙 스크롤이 없다 */
     .htrack{gap:14px;overflow:visible;scroll-snap-type:none}
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
