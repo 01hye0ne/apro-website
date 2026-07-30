@@ -187,38 +187,44 @@
   var states=[],raf=null,active=null,settleT=null;
   var paging=false,pageRaf=null,secArmed=true,secQuiet=null;
 
+  /* 좌측 레일 카드 인덱스 — 카드의 data-tab 을 그대로 목록으로 펼친다.
+     예전 하단 스크롤 게이지가 겸했던 "몇 장 중 어디쯤인가"와 "카드 이동"을 함께 받는다.
+     HTML 에 손으로 적지 않는 이유 — 카드가 늘거나 제목이 바뀌면 목록이 어긋나고,
+     A/A-1 여덟 페이지가 같은 목록을 두 번 관리하게 된다.
+     data-tab 이 없는 카드는 h3 글자로 대신한다 */
+  function buildIndex(sec,rail,track,cards,st){
+    if(!track.id)track.id=(sec.id||'hsec')+'-track';
+    var ol=document.createElement('ol');
+    ol.className='hidx';
+    /* 소분류 타이틀은 <br> 로 줄을 나눠 놓았다 — textContent 는 그 자리를 그냥 이어붙여
+       "이차전지 활성화전공정 설비" 가 되므로, 줄바꿈을 공백으로 주는 innerText 를 쓴다 */
+    var ttl=sec.querySelector('.httl');
+    var name=ttl?(ttl.innerText||ttl.textContent).replace(/\s+/g,' ').trim()+' ':'';
+    ol.setAttribute('aria-label',name+'카드 '+cards.length+'장');
+    var btns=cards.map(function(c,i){
+      var h3=c.querySelector('h3');
+      var li=document.createElement('li');
+      var b=document.createElement('button');
+      b.type='button';
+      b.textContent=c.dataset.tab||(h3?h3.textContent:'카드 '+(i+1));
+      b.setAttribute('aria-controls',track.id);
+      b.addEventListener('click',function(){goTo(st,i);});
+      li.appendChild(b);ol.appendChild(li);
+      return b;
+    });
+    rail.appendChild(ol);
+    return btns;
+  }
+
   document.querySelectorAll('.hsec').forEach(function(sec){
-    var track=sec.querySelector('.htrack'),g=sec.querySelector('.hgauge');
+    var track=sec.querySelector('.htrack'),rail=sec.querySelector('.hrail');
     if(!track)return;
     var cards=[].slice.call(track.querySelectorAll('.hcard'));
-    var st={sec:sec,track:track,cards:cards,idx:0,g:g,bar:g&&g.querySelector('.bar'),pos:0,target:0,dir:1};
+    var st={sec:sec,track:track,cards:cards,idx:0,btns:[],cur:-1,pos:0,target:0,dir:1};
 
-    if(cards.length<2){
-      track.dataset.one='true';
-      if(g)g.dataset.one='true';
-    }else if(g){
-      /* 게이지는 이 트랙의 스크롤바다 → role/키보드도 스크롤바 규약을 따른다.
-         인덱스 버튼을 없앤 대신 여기가 카드 이동의 유일한 직접 조작 지점이다 */
-      if(!track.id)track.id=(sec.id||'hsec')+'-track';
-      g.setAttribute('role','scrollbar');
-      g.setAttribute('aria-orientation','vertical');
-      g.setAttribute('aria-controls',track.id);
-      g.setAttribute('aria-label','카드 '+cards.length+'장 스크롤');
-      g.tabIndex=0;
-      g.addEventListener('click',function(e){
-        var r=g.getBoundingClientRect();
-        goTo(st,Math.round((e.clientX-r.left)/r.width*(cards.length-1)));
-      });
-      g.addEventListener('keydown',function(e){
-        var k=e.key,n=null;
-        if(k==='ArrowDown'||k==='ArrowRight'||k==='PageDown')n=st.idx+1;
-        else if(k==='ArrowUp'||k==='ArrowLeft'||k==='PageUp')n=st.idx-1;
-        else if(k==='Home')n=0;
-        else if(k==='End')n=cards.length-1;
-        if(n===null)return;
-        e.preventDefault();goTo(st,n);
-      });
-    }
+    /* 카드가 하나면 넘길 것도, 목록이 될 것도 없다 */
+    if(cards.length<2)track.dataset.one='true';
+    else if(rail)st.btns=buildIndex(sec,rail,track,cards,st);
 
     /* 트랙을 직접(터치·드래그) 스크롤한 경우 현재 카드 추적.
        JS가 움직일 때도 매 프레임 여기로 들어오므로 게이지는 먼저 갱신한다 */
@@ -234,17 +240,24 @@
     states.push(st);
   });
 
-  /* 게이지 = 트랙의 실제 스크롤 비율. 막대 길이(scaleX)와 위치(translateX)로만 그려
-     레이아웃을 건드리지 않는다 → 매 프레임 갱신해도 부담이 없다 */
+  /* 인덱스의 현재 항목 = 트랙 스크롤 위치에 가장 가까운 카드.
+     st.idx(휠·클릭이 확정한 목표)를 그대로 쓰지 않는 이유가 둘 있다 —
+     움직이는 중에도 눈에 보이는 카드를 따라가야 하고, 터치로 트랙을 직접 스크롤하면
+     아래 scroll 핸들러가 raf 중에는 st.idx 를 갱신하지 않는다.
+     값이 그대로면 DOM 을 건드리지 않는다 → 매 프레임 불려도 부담이 없다 */
   function paint(st){
-    if(!st.bar)return;
-    var h=st.track.scrollHeight,c=st.track.clientHeight;
-    if(h<=0)return;
-    var size=Math.min(1,c/h),off=Math.max(0,Math.min(1-size,st.track.scrollTop/h));
-    st.bar.style.setProperty('--gs',size);
-    st.bar.style.setProperty('--go',(off*100)+'%');
-    if(st.g&&st.g.hasAttribute('role'))
-      st.g.setAttribute('aria-valuenow',Math.round(st.idx/Math.max(1,st.cards.length-1)*100));
+    if(!st.btns.length)return;
+    var top=st.track.scrollTop,best=0,bd=Infinity;
+    st.cards.forEach(function(c,i){
+      var d=Math.abs(c.offsetTop-top);
+      if(d<bd){bd=d;best=i;}
+    });
+    if(best===st.cur)return;
+    st.cur=best;
+    st.btns.forEach(function(b,i){
+      if(i===best)b.setAttribute('aria-current','true');
+      else b.removeAttribute('aria-current');
+    });
   }
   function maxOf(st){return st.track.scrollHeight-st.track.clientHeight;}
 

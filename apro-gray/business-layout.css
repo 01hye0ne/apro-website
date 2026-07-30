@@ -1,6 +1,8 @@
 /* APRO 사업영역 서브페이지 공용 레이아웃
-   business-smart / energy / ai / semicon 4개 페이지가 함께 사용한다.
-   원본 목업: business-smart-mockup-horizontal.html */
+   business-{smart,energy,ai,semicon}.html(A)과 그 -a1.html(A-1), 여덟 페이지가 함께 쓴다.
+   두 버전의 차이는 히어로 하나뿐이고 그 분기도 이 파일이 만든다 (.dhero / .v-a1 규칙).
+   레이아웃 결정 과정에 쓴 목업 4종(가로형·좌측·우측 통합안)은 이 파일로 정리된 뒤
+   삭제했다 — 내용이 필요하면 커밋 이력에서 business-smart-mockup*.html 을 찾으면 된다 */
 
   @font-face{
     font-family:"SUIT Variable";
@@ -15,6 +17,15 @@
     --white-300:rgba(255,255,255,.2);--maxw:1440px;--grid-gutter:24px;
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+    /* 카드 본문 행간 — 줄글(.hcard p)·불릿(.hcard ul li)·아이콘 설명(.hgrid2 .d)·
+       key-value 값(.kv .v)이 모두 이 값 하나를 쓴다. 카드마다 본문 형식이 달라도
+       (줄글 / 불릿 / 격자) 글 덩어리가 같은 리듬으로 쌓여야 나란히 놓인 카드의
+       레이아웃이 같아 보인다. 예전에는 1.75 / 1.6 이 섞여 있었다.
+       1.375 = 줄 사이 여백을 반으로 줄인 값 — 17px 본문에서 1.75 는 line-box 29.75px,
+       즉 글자 높이 위아래로 12.75px 이 여백이다. 그 절반(6.375)만 남기면
+       17 + 6.375 = 23.375px → 23.375 / 17 = 1.375. 배수를 반으로(0.875) 잡으면
+       line-box 가 글자보다 작아져 줄이 서로 겹친다 */
+    --body-lh:1.375;
     /* 소분류 탭 바 높이 — 히어로 하단 패딩과 바의 음수 마진이 이 값 하나를 함께 쓴다 */
     --bar-h:64px;
     /* 고정된 바의 자리 — 위 여백(--bar-rise)은 탭 줄 위에 남는 어두운 띠,
@@ -100,7 +111,32 @@
   .dhero{position:relative;min-height:480px;display:grid;place-items:center;background:var(--g950);color:#fff;overflow:hidden;padding:80px 24px var(--bar-h)}
   .dhero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% -10%,rgba(64,119,183,.20),transparent 62%)}
   .dhero .in{position:relative;z-index:1;text-align:center}
-  .dhero h1{font-family:var(--suit);font-weight:800;font-size:18px;line-height:1.3;letter-spacing:-.36px}
+  /* ── A / A-1 의 유일한 차이 : 히어로 ─────────────────────────────────────
+     세부 페이지 8개는 히어로 말고는 다른 데가 없다. 그래서 사업명칭(h1)과 설명글
+     (.dhero-lead)을 HTML 에 둘 다 담아두고 여기서 하나만 보이게 한다 —
+       A            : 사업명칭 h1
+       A-1 (.v-a1)  : 설명글 2줄, h1 은 화면에서만 숨김(문서 구조에는 남긴다)
+     덕분에 8개 페이지의 히어로 마크업이 완전히 같아지고, 문안을 고칠 자리도
+     business-*.html 한 곳뿐이다 (business-*-a1.html 은 _gen-a1.py 가 복제한다).
+
+     480px 높이 배너에 18px 타이틀은 위계가 서지 않았다 → 34px.
+     아래 .bnav-ttl(20px)과 크기를 맞추지 않는다 — 둘은 같은 자리를 잇는 게 아니라
+     (h1 은 배너 중앙, 탭 바 이름은 좌측 끝) 각자 제 위치에서 제 위계를 갖는다 */
+  .dhero h1{font-family:var(--suit);font-weight:800;font-size:34px;line-height:1.24;letter-spacing:-.68px}
+  /* 줄바꿈은 문안에 넣은 <br> 이 잡고, max-width 는 그 두 줄이 접히지 않는 폭이다
+     (가장 긴 줄이 약 630px). 좁은 화면에서는 vw 가 줄어들며 자연히 여러 줄로 풀린다.
+
+     여기서 % 를 쓰면 안 된다 — .dhero 가 place-items:center 라 부모(.in)가 shrink-to-fit 이고,
+     그러면 백분율 max-width 가 부모 폭을, 부모 폭이 자식 폭을 서로 참조해 브라우저가
+     내재 크기 계산에서 이 값을 무시한다. 실제로 92% 로 뒀을 때 폭이 438px 로 쪼그라들어
+     두 줄이 네 줄로 접혔다. vw 는 부모와 무관하므로 그 고리가 끊긴다 */
+  .dhero-lead{display:none;max-width:min(760px,88vw);margin-inline:auto;
+    font-family:var(--pre);font-weight:400;font-size:21px;line-height:1.62;
+    letter-spacing:-.42px;color:var(--on-white-90);word-break:keep-all}
+  .v-a1 .dhero-lead{display:block}
+  /* 화면에서만 뺀다 — display:none 으로 지우면 페이지에 h1 이 없어진다 */
+  .v-a1 .dhero h1{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+    overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
   /* ===================== 소분류 탭 바 (Figma 592:3950) =====================
      두 가지 상태로 산다.
@@ -153,12 +189,16 @@
      히어로 위에 있을 땐 배너 중앙 h1 과 같은 사업명칭이 두 번 보이므로 숨겼다가,
      고정되면서 h1 이 화면 밖으로 빠져나갈 때 이 줄이 살짝 올라오며 자리를 이어받는다.
      좌표가 그대로인 전환에서 유일하게 움직이는 요소 — 그래서 폭을 6px로 아껴 잡았다 */
-  .bnav-ttl{grid-column:1 / span 3;font-family:var(--suit);font-weight:800;font-size:18px;
-    letter-spacing:-.36px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28);
+  .bnav-ttl{grid-column:1 / span 3;font-family:var(--suit);font-weight:800;font-size:20px;
+    letter-spacing:-.4px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28);
     opacity:0;translate:0 6px;
     transition:opacity .4s var(--ease),translate .4s var(--ease)}
   .bnav-wrap.is-fixed .bnav-ttl{opacity:1;translate:none}
   @media(prefers-reduced-motion:reduce){.bnav-ttl{translate:none;transition:none}}
+  /* A-1 : 히어로에서 사업명칭을 빼고 설명글을 넣었으므로, 이 줄이 페이지에서 사업명을
+     보여주는 유일한 자리다 → 히어로 구간에서도 계속 보인다. (A 는 배너 중앙 h1 과
+     중복되므로 고정될 때만 나타난다) */
+  .v-a1 .bnav-ttl{opacity:1;translate:none;transition:none}
   /* 탭 글자는 카드 트랙과 같은 4번째 열에서 시작한다 — 아래 카드 왼쪽 끝과 한 선.
      라벨이 길어 좁은 화면에서 넘칠 수 있으므로 간격을 줄이고 가로 스크롤을 허용한다 */
   .bnav-tabs{grid-column:4 / span 9;gap:clamp(20px,3.4vw,44px);
@@ -205,30 +245,46 @@
     background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.72) 62%,#fff 100%)}
   .hsec:has(.htrack[data-one="true"])::after{display:none}   /* 카드 1장 섹션은 잘리는 부분이 없음 */
   /* grid-row를 명시해야 ::after 페이드와 같은 행에 겹친다 (생략하면 트랙이 2행으로 밀림) */
-  .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px;
-    padding-bottom:var(--card-peek)}   /* 스크롤 게이지를 우측 카드 바닥선에 맞춤 */
+  /* 타이틀과 인덱스가 위에서부터 이어 붙는다 — 예전엔 하단에 스크롤 게이지가 있어
+     space-between 으로 위아래로 벌렸지만, 인덱스가 그 자리를 받으면서 타이틀 바로
+     아래에 붙어야 "이 소분류에 무엇이 담겼는가"로 읽힌다 */
+  .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;
+    justify-content:flex-start;gap:26px}
   .htrack{grid-column:4 / span 9;grid-row:1;min-width:0;position:relative;
     display:flex;flex-direction:column;gap:16px;overflow-x:hidden;overflow-y:auto;
     scroll-snap-type:none;   /* 스냅·smooth 모두 JS가 처리 — CSS 스냅을 켜두면 프레임마다 되잡아채 튄다 */
     padding-bottom:var(--card-peek);   /* 이 여유가 있어야 마지막 카드가 트랙 상단까지 올라옴 */
-    scrollbar-width:none;-ms-overflow-style:none}   /* 브라우저 스크롤바 숨김 — 좌측 게이지가 그 역할 */
+    scrollbar-width:none;-ms-overflow-style:none}   /* 브라우저 스크롤바 숨김 — 좌측 인덱스가 그 역할 */
   .htrack::-webkit-scrollbar{display:none}
   /* 카드가 하나면 스크롤도 미리보기도 없다 → 카드가 섹션 바닥까지 내려오므로 레일도 같이 내린다 */
   .hsec:has(.htrack[data-one="true"]){--card-peek:0px}
 
   /* --- rail 상단: 소분류 타이틀 --- */
   /* 사업명칭·소분류 위치는 상단 탭 바로 옮겨졌다 → 레일 위쪽은 타이틀 한 덩어리 */
-  .httl{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.36;letter-spacing:-.6px;color:var(--g900);word-break:keep-all}
+  .httl{font-family:var(--suit);font-weight:800;font-size:clamp(28px,3vw,44px);line-height:1.32;letter-spacing:-.7px;color:var(--g900);word-break:keep-all}
 
-  /* --- rail 하단: 카드 스크롤 게이지 --- */
-  /* 우측 트랙의 진짜 스크롤 비율을 그대로 옮긴 가로 게이지. 막대 길이 = 보이는 비율,
-     위치 = 스크롤 위치라서 "카드가 몇 장 더 남았는지"가 스크롤바처럼 읽힌다.
-     밑변이 카드 바닥선과 맞도록 .hrail 의 padding-bottom(=--card-peek)을 그대로 쓴다 */
-  .hgauge{position:relative;height:4px;background:var(--border-g);cursor:pointer}
-  .hgauge .bar{position:absolute;inset:0;background:var(--brand);
-    transform-origin:left center;transform:translateX(var(--go,0%)) scaleX(var(--gs,1))}
-  .hgauge:focus-visible{outline:2px solid var(--brand-2);outline-offset:4px}
-  .hgauge[data-one="true"]{display:none}   /* 카드가 하나뿐이면 스크롤이 없다 */
+  /* --- rail: 소분류 카드 인덱스 ─────────────────────────────────────────
+     이 소분류에 무엇이 담겼는지를 카드 제목으로 펼친 목록. 예전 하단 스크롤 게이지가
+     겸했던 두 가지 일 — "몇 장 중 어디쯤인가"와 "카드 이동" — 을 그대로 받는다.
+     게이지는 비율만 보여줘 남은 카드의 '내용'은 알 수 없었는데, 여기서는 제목이 보인다.
+
+     항목은 JS가 카드의 data-tab 으로 만든다(HTML에 손으로 적지 않는다) — 카드가 늘거나
+     제목이 바뀌어도 어긋나지 않고, A/A-1 여덟 페이지가 같은 코드를 함께 쓴다.
+
+     현재 카드는 aria-current="true" 로 표시하고, 굵기(500→700)와 색(teritary→g900)
+     두 가지로만 구분한다. 세로선·막대 없이 글자만으로 위치를 알리는 방식이라
+     목록이 소분류 타이틀과 같은 왼쪽 선에 맞춰 선다 — 들여쓰기도 두지 않는다 */
+  /* 카드가 하나뿐인 소분류(신뢰성 검사 장비·PICKLE·GaN 등)는 JS 가 목록을 아예 만들지
+     않는다 — 한 줄짜리 목록은 위치도 이동도 알려주지 못한다 */
+  .hidx{list-style:none;display:flex;flex-direction:column}
+  .hidx button{display:block;width:100%;padding:9px 0;
+    border:0;background:none;cursor:pointer;
+    font-family:var(--suit);font-weight:500;font-size:15px;line-height:1.4;
+    letter-spacing:-.3px;color:var(--teritary);text-align:left;word-break:keep-all;
+    transition:color .22s var(--ease)}
+  .hidx button:hover{color:var(--sec)}
+  .hidx button:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
+  .hidx button[aria-current]{font-weight:700;color:var(--g900)}
 
   /* --- 카드: 가로 전체 폭 / 세로는 트랙 콘텐츠박스 높이(= 트랙 높이 − 96px).
          화면에는 카드 1장 + 다음 카드 80px이 함께 보인다 --- */
@@ -249,8 +305,10 @@
   /* 하위 항목이 여럿인 카드를 2단으로 — 세로로만 쌓으면 카드 높이를 넘긴다 */
   .hcols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 44px;align-items:start}
   @media(max-width:900px){.hcols2{grid-template-columns:1fr}}
-  .hcard h3{font-family:var(--suit);font-weight:800;font-size:21px;line-height:1.3;letter-spacing:-.42px;color:var(--g900)}
-  .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:1.75;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  /* 본문 17px 대비 24px — 1.41배. 21px(1.24배)은 굵기만 다른 같은 크기처럼 읽혀
+     카드 안에서 제목이 제목으로 서지 않았다. 본문은 그대로 두고 제목만 올린다 */
+  .hcard h3{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.28;letter-spacing:-.48px;color:var(--g900);word-break:keep-all}
+  .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   .hblock p+p{margin-top:8px}
   /* 여러 단락이 이어지는 도입 줄글 — 단락 사이는 카드 gap(16)의 절반으로 좁혀
      한 덩어리로 읽히게 한다. 바깥 gap 은 그대로라 h3·비주얼과의 숨은 유지된다 */
@@ -264,10 +322,11 @@
   /* 행간·자간·크기는 위 .hcard p 와 같은 값이다 — 같은 카드 안에서 줄글과 불릿이
      섞이거나(SolarEdge·해외 거점처럼) 나란한 두 카드가 서로 다른 본문 형식을 쓸 때,
      행간이 다르면 두 카드의 글 덩어리 높이가 어긋나 레이아웃이 달라 보인다.
-     불릿 점의 top 은 첫 줄 line-box(17×1.75≈30px) 가운데에 맞춘 값 */
+     불릿 점의 top 은 첫 줄 line-box(17×1.375≈23px) 안에서 글자 광학 중심에 맞춘 값 —
+     기하학적 중앙(11.7)보다 2px 위. 행간을 바꾸면 이 값도 같이 옮겨야 한다 */
   .hcard ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:1.75;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hcard ul li::before{content:"";position:absolute;left:2px;top:11px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .hcard ul li::before{content:"";position:absolute;left:2px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
   .hcard ul li b{font-weight:700;color:var(--g900)}
 
   /* ── 픽토그램 + 키워드 (.pict) ────────────────────────────────────────
@@ -298,14 +357,14 @@
   .hgrid2 .cell{display:flex;flex-direction:column;gap:14px}
   .hgrid2 .ico{flex:none;width:112px;height:112px;border:1px dashed var(--border-g)}
   .hgrid2 .t{font-family:var(--suit);font-weight:900;font-size:17px;line-height:1;letter-spacing:-.34px;color:var(--g900)}
-  .hgrid2 .d{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+  .hgrid2 .d{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
 
   /* key-value 행 (파트너십 등) */
   .kv{padding:14px 0}
   .kv:first-child{padding-top:2px}
   .kv+.kv{border-top:1px solid var(--border-g)}
   .kv .k{font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;color:var(--g900);margin-bottom:6px}
-  .kv .v{font-family:var(--pre);font-size:17px;line-height:1.6;letter-spacing:-.34px;color:var(--sec)}
+  .kv .v{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec)}
 
   /* 이미지 자리 — 카드 하단에 붙음 */
   .hph{margin-top:auto;aspect-ratio:16/9;background:var(--secondary-bg);border:1px dashed var(--border-g);
@@ -327,15 +386,22 @@
        (섹션 패딩 204+24, 트랙 미리보기 96, 카드 테두리 2 + 패딩 72)
      여기서 지도 위에 놓이는 것들의 높이(--map-above)를 빼면 지도에 줄 수 있는 높이가
      나오고, ×1000/387.78 이 그 높이에 맞는 폭이다.
-     기본값 198px = h3(27) + 도입 줄글 3단락(135) + 카드 gap 2개(32) — 해외 거점 카드 기준.
-     같은 구조라도 위에 놓이는 글의 줄 수가 다르면(SolarEdge 카드는 불릿 4개 5줄)
-     이 값이 달라지므로 해당 .gmap 에 인라인으로 다시 적어준다.
+
+     224px = 지도 카드 두 장(해외 거점 / SolarEdge)의 "지도 위 높이" 실측 최댓값이다.
+     글 줄 수는 폭에 따라 달라지므로 넓은 레이아웃 전 구간(901~1700px)을 훑어 잡았다 —
+     해외 거점 215.5 / SolarEdge 223.5 로, 둘 다 900px 브레이크포인트 바로 위(901~925px,
+     본문이 가장 좁아 줄이 가장 많이 접히는 지점)에서 최댓값이 나온다. 그보다 좁아지면
+     세로 배치로 풀려 아래 .gmap{width:100%} 가 받으므로 이 값과 무관해진다.
+     한 값을 두 카드가 함께 쓴다 — 카드별로 따로 잡으면 같은 구조인데 지도 크기가
+     갈려(784 vs 686) 나란히 놓았을 때 레이아웃이 달라 보인다. 두 카드의 최댓값 차이가
+     8px뿐이라 큰 쪽으로 묶어도 손해가 거의 없다.
+     본문 문안이나 --body-lh 를 고치면 이 값도 다시 재야 한다 (한 줄 = 23.4px).
      세로 850px 안팎(노트북)에서 지도 밑단·인도네시아 라벨·조지아 팝업이 카드 밖으로
-     밀려 잘렸던 것을 이 한 줄이 막는다. 화면이 넉넉하면(≈985px↑) 100% 그대로다.
+     밀려 잘렸던 것을 이 한 줄이 막는다. 화면이 넉넉하면 100% 그대로다.
      420px 하한 — 그보다 작아지면 라벨이 서로 붙어 지도가 읽히지 않는다 */
   .gmap{position:relative;margin:auto auto 0;aspect-ratio:1000/387.78;
     width:100%;   /* dvh 를 모르는 브라우저용 폴백 — 아래 줄이 무효가 되면 이 값이 남는다 */
-    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,198px)) * 2.5788)))}
+    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,224px)) * 2.5788)))}
   .gmap>img{width:100%;height:100%}
   /* 지시선 — HTML 마커와 같은 0–100 좌표계.
      preserveAspectRatio:none 이라 x·y 배율이 다른데, non-scaling-stroke 가
@@ -544,7 +610,9 @@
     .hrail{grid-column:1;grid-row:1}
     .htrack{grid-column:1;grid-row:2}
     .hrail{flex-direction:column;gap:20px}
-    .hgauge{display:none}   /* 세로로 풀리면 트랙 스크롤이 없다 */
+    /* 세로로 풀리면 카드가 전부 아래에 이어 붙는다 → 인덱스가 가리킬 '현재 카드'도,
+       뛰어넘을 거리도 없다. 목록 바로 아래에 실물 카드가 다 보이므로 접는다 */
+    .hidx{display:none}
     .htrack{gap:14px;overflow:visible;scroll-snap-type:none}
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
