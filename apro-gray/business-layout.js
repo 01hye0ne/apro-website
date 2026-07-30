@@ -15,8 +15,8 @@
   if(!cards.length){root.removeAttribute('data-reveal');return;}
 
   /* 통째로 두면 덩어리째 튀어나와 밋밋한 묶음 — 안쪽 항목을 하나씩 떨군다.
-     특히 공정 순서 7단계는 위에서 아래로 이어져야 순서라는 의미가 같이 읽힌다 */
-  var SPLIT=[['hflow','.flbl,.fsteps li'],['hthumbs','.th'],
+     특히 공정 순서 7단계는 왼쪽부터 차례로 떨어져야 순서라는 의미가 같이 읽힌다 */
+  var SPLIT=[['fsteps','li'],['hthumbs','.th'],['hlead',':scope>*'],
              ['hgrid2','.cell'],['hcols2',':scope>*'],['gmap',':scope>*']];
   var STEP=60, SUB=36;   /* 최상위 단위 간격 / 묶음 안쪽 간격 (ms) */
 
@@ -72,7 +72,8 @@
       paintNav();   // 메가가 닫혔으니 접힘 여부를 다시 판정
     });
   }
-  var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),on=null,hid=null;
+  var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),
+      ft=document.querySelector('.footer'),on=null,hid=null;
   var narrowMq=window.matchMedia('(max-width:900px)');
   /* 기준선 = --bar-top + --bar-rise + --bar-h (= 고정됐을 때 바의 밑변 y).
      바의 실측 높이(offsetHeight)를 쓸 수 없다 — 고정되면 위로 늘어나 값이 커지고,
@@ -115,6 +116,17 @@
     if(d!==on){on=d;g.classList.toggle('nav-light',d);}
     if(!bn)return;
     bn.classList.toggle('is-fixed',h);
+    /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
+       소분류 탭은 볼 일이 없다. 푸터(553px)가 화면보다 낮아 밑변이 화면 위로 못 올라오므로
+       "푸터 top 이 바 밑변에 닿으면"만으로는 큰 화면에서 아예 발동하지 않는다.
+       그래도 화면이 낮아 실제로 겹치는 경우가 있으니 그 조건도 OR 로 남겼다.
+       매 스크롤 프레임에서 다시 판정해야 하므로 아래 상태 변화 조기 반환보다 먼저 둔다 */
+    var away=false;
+    if(h&&ft){
+      var fr=ft.getBoundingClientRect(),shown=window.innerHeight-fr.top;
+      away=shown>=fr.height/2||fr.top<=barBase+0.5;
+    }
+    bn.classList.toggle('is-away',away);
     var want=h&&!nar;
     if(want===hid)return;
     hid=want;
@@ -126,6 +138,21 @@
   window.addEventListener('resize',function(){measure();ap();});
   measure();ap();
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){g.classList.remove('lang-open');paintNav();}});
+})();
+
+/* 푸터 패밀리사이트 드롭다운 (apro-gray/index.html 과 같은 동작) */
+(function(){
+  var fam=document.getElementById('fFamily');
+  if(!fam)return;
+  var btn=fam.querySelector('.fbtn');
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=fam.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+  });
+  function close(){fam.classList.remove('open');btn.setAttribute('aria-expanded','false');}
+  document.addEventListener('click',function(e){if(!fam.contains(e.target))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 
 /* hamburger -> overlay */
@@ -293,22 +320,42 @@
     var dir=e.deltaY>0?1:-1;
     var st=current(),i=states.indexOf(st);
 
-    if(!st){                                     // 히어로 영역 — 아래로 굴리면 첫 섹션으로
-      if(dir>0&&states.length){
+    /* 섹션 밖 — 위쪽(히어로)인지 아래쪽(푸터)인지 갈라야 한다.
+       예전에는 둘 다 "히어로"로 보고 아래로 굴리면 첫 섹션으로 보냈는데,
+       푸터가 생긴 뒤로는 푸터에서 아래로 굴렸을 때 맨 위로 튀어 올라가 버린다 */
+    if(!st){
+      var first=states[0],last=states[states.length-1];
+      if(!first)return;
+      if(first.sec.getBoundingClientRect().top>window.innerHeight/2){
+        if(dir>0){                               // 히어로 → 첫 섹션 (위로는 기본 스크롤)
+          e.preventDefault();
+          if(!secArmed)return;
+          secArmed=false;pageTo(topOf(first));
+        }
+        return;
+      }
+      if(dir<0){                                 // 푸터 → 마지막 섹션 (아래로는 기본 스크롤)
         e.preventDefault();
         if(!secArmed)return;
-        secArmed=false;pageTo(topOf(states[0]));
+        secArmed=false;pageTo(topOf(last));
       }
-      return;                                    // 위로는 기본 스크롤(맨 위)
+      return;
     }
 
     var top=st.sec.getBoundingClientRect().top;
-    if(Math.abs(top)>24){                        // 섹션이 어긋나 있으면 먼저 정렬시킨다
+    /* 마지막 섹션에서 카드를 다 넘긴 뒤 아래로 빠져나가는 중(= 푸터로 가는 길)인가?
+       섹션 높이가 화면 한 칸이라 밑변이 화면 중앙을 지나기 전까지는 current() 가 계속
+       이 섹션을 가리킨다. 그 구간을 아래 정렬 규칙이 되잡으면 굴려도 굴려도 푸터로
+       못 내려간다 — 기본 스크롤로 내려간 만큼을 매번 top:0 으로 끌어올리기 때문. */
+    var leaving=i===states.length-1&&dir>0&&top<=0&&
+                (st.cards.length<2||st.track.scrollTop>=maxOf(st)-0.5);
+    if(!leaving&&Math.abs(top)>24){               // 섹션이 어긋나 있으면 먼저 정렬시킨다
       e.preventDefault();
       if(!secArmed)return;
       secArmed=false;pageTo(window.scrollY+top);
       return;
     }
+    if(leaving)return;                           // 푸터까지는 기본 스크롤에 맡긴다
 
     if(!raf||active!==st){st.pos=st.target=st.track.scrollTop;}   // 유휴 상태면 실제 위치와 동기화
     var max=maxOf(st);

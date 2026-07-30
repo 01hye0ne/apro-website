@@ -135,7 +135,16 @@
   /* 히어로 배경과 같은 색·같은 자리를 이어받는다. 히어로에 배경 이미지가 들어가면
      여기 background도 그 이미지의 밑단으로 맞춰야 이음선이 안 보인다 */
   .bnav-wrap.is-fixed{position:fixed;top:var(--bar-top);left:0;width:100%;
-    height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;background:var(--g950)}
+    height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;background:var(--g950);
+    transition:transform .34s var(--ease),opacity .34s var(--ease)}
+  /* 푸터가 바 밑변까지 올라오면 위로 접어 넣는다 (JS가 .is-away 토글).
+     푸터도 같은 --g950 이라 어두운 부분은 이어져 보이지만 흰 탭 패널만 띠로 남아 어색하다.
+     --bar-top 을 같이 빼야 GNB 아래에 붙는 좁은 화면에서도 화면 밖까지 나간다.
+     transition 은 .is-fixed 에 걸려 있지만 고정 전환 때는 transform·opacity 가
+     바뀌지 않으므로 그 순간에는 애니메이션이 일어나지 않는다 */
+  .bnav-wrap.is-fixed.is-away{transform:translateY(calc(-100% - var(--bar-top)));
+    opacity:0;pointer-events:none}
+  @media(prefers-reduced-motion:reduce){.bnav-wrap.is-fixed{transition:none}}
   /* z-index:1 — 글자가 위 흰 패널(::after)보다 위에 놓이도록 */
   .bnav{position:relative;z-index:1;width:var(--bw);height:100%;margin:0 auto;
     display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--grid-gutter)}
@@ -234,24 +243,54 @@
   .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:calc(42% + 48px)}
   .hcard>.hph,.hcard>.hthumbs{position:absolute;top:50%;right:40px;width:42%;margin:0;transform:translateY(-50%)}
   /* 비주얼이 없는 카드는 padding-right로 글 폭이 잡히지 않으므로 가독 폭을 직접 제한한다.
-     (카드 전체 폭 ≈ 1044px → 한 줄 65자가 넘어가 읽기 어려움) */
-  .hcard>*:not(.hph):not(.hthumbs):not(.hgrid2):not(.hcols2):not(.gmap){max-width:820px}
+     (카드 전체 폭 ≈ 1044px → 한 줄 65자가 넘어가 읽기 어려움)
+     가로로 펼치는 격자류(.fsteps 포함)는 폭이 좁아지면 칸이 뭉개지므로 제외한다 */
+  .hcard>*:not(.hph):not(.hthumbs):not(.hgrid2):not(.hcols2):not(.gmap):not(.fsteps){max-width:820px}
   /* 하위 항목이 여럿인 카드를 2단으로 — 세로로만 쌓으면 카드 높이를 넘긴다 */
   .hcols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 44px;align-items:start}
   @media(max-width:900px){.hcols2{grid-template-columns:1fr}}
   .hcard h3{font-family:var(--suit);font-weight:800;font-size:21px;line-height:1.3;letter-spacing:-.42px;color:var(--g900)}
   .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:1.75;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   .hblock p+p{margin-top:8px}
+  /* 여러 단락이 이어지는 도입 줄글 — 단락 사이는 카드 gap(16)의 절반으로 좁혀
+     한 덩어리로 읽히게 한다. 바깥 gap 은 그대로라 h3·비주얼과의 숨은 유지된다 */
+  .hlead{display:flex;flex-direction:column;gap:8px}
 
   /* 카드 안 소제목 블록 */
   .hblock{padding-top:16px;border-top:1px solid var(--border-g)}
   .hblock .lbl{display:block;margin-bottom:8px;font-family:var(--suit);font-weight:700;font-size:12px;letter-spacing:.06em;color:var(--brand)}
 
   /* 리스트 */
+  /* 행간·자간·크기는 위 .hcard p 와 같은 값이다 — 같은 카드 안에서 줄글과 불릿이
+     섞이거나(SolarEdge·해외 거점처럼) 나란한 두 카드가 서로 다른 본문 형식을 쓸 때,
+     행간이 다르면 두 카드의 글 덩어리 높이가 어긋나 레이아웃이 달라 보인다.
+     불릿 점의 top 은 첫 줄 line-box(17×1.75≈30px) 가운데에 맞춘 값 */
   .hcard ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:1.65;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hcard ul li::before{content:"";position:absolute;left:2px;top:10px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:1.75;letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .hcard ul li::before{content:"";position:absolute;left:2px;top:11px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
   .hcard ul li b{font-weight:700;color:var(--g900)}
+
+  /* ── 픽토그램 + 키워드 (.pict) ────────────────────────────────────────
+     문장으로 늘어놓으면 읽는 눈이 미끄러지는 나열형 내용을 한 줄 네 덩어리로 접는다.
+     아이콘은 인라인 SVG — 색을 currentColor 로 받아 .ic 의 --brand 하나로 맞춘다.
+     영문 보조 라벨은 설비 썸네일(.hthumbs .th .en)과 같은 서체·크기를 쓴다 */
+  /* 선택자에 .hcard ul 을 끼운 이유 — 위 리스트 규칙(.hcard ul / .hcard ul li)이
+     특정도가 더 높아서 .pict 만으로는 세로 flex 와 불릿 점에 그대로 덮인다 */
+  .hcard ul.pict{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 20px}
+  .hcard ul.pict li{display:flex;flex-direction:column;gap:10px;min-width:0;padding-left:0}
+  .hcard ul.pict li::before{display:none}
+  .pict .ic{width:32px;height:32px;flex:none;color:var(--brand)}
+  .pict .ic svg{display:block;width:100%;height:100%}
+  .pict .k{font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.35;
+    letter-spacing:-.3px;color:var(--g900);word-break:keep-all}
+  .pict .en{font-family:var(--rc);font-size:11px;letter-spacing:.04em;color:var(--teritary)}
+  /* 픽토그램을 담은 블록은 카드 바닥에 붙인다 — 남는 세로 공간이 본문과 픽토그램 사이에
+     모여 두 덩어리가 분리되고, .hblock 의 윗줄이 그 경계선 역할을 한다.
+     (.hph 가 쓰는 margin-top:auto 와 같은 방식. 이 카드의 비주얼은 절대배치라
+      플로우 아이템은 글과 이 블록뿐이다) */
+  .hcard>.hblock:has(.pict){margin-top:auto}
+  /* 카드가 좁아지면 4열은 한 칸이 100px 밑으로 떨어진다 → 2×2 로 접는다 */
+  @media(max-width:1180px){.hcard ul.pict{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
   /* 아이콘 그리드 (PLC) — 2열 2행 */
   /* 남는 세로 공간을 위아래로 나눠 그리드를 카드 가운데에 둔다(넘칠 땐 auto가 0으로 접힘) */
@@ -282,7 +321,21 @@
      생성 스크립트는 assets/_unused/world-map-gen.py. 선·면 색은 SVG 안 <style>의
      .land 한 줄에서 바꾼다 (외부 SVG라 이 파일의 CSS로는 덮이지 않는다).
      지도는 위 .hcard>* 가독 폭(820px)에서 제외해 카드 안쪽 폭을 꽉 채운다 (약 958px) */
-  .gmap{position:relative;width:100%;margin-top:auto;aspect-ratio:1000/387.78}
+  /* 카드 높이가 모자랄 때 지도를 "폭"으로 줄인다 — aspect-ratio 가 높이를 따라 줄여
+     마커 %좌표가 그대로 맞물린다. 높이만 깎으면 지도가 눌리고 좌표가 어긋난다.
+     카드 안쪽 높이 = 100dvh − 398px
+       (섹션 패딩 204+24, 트랙 미리보기 96, 카드 테두리 2 + 패딩 72)
+     여기서 지도 위에 놓이는 것들의 높이(--map-above)를 빼면 지도에 줄 수 있는 높이가
+     나오고, ×1000/387.78 이 그 높이에 맞는 폭이다.
+     기본값 198px = h3(27) + 도입 줄글 3단락(135) + 카드 gap 2개(32) — 해외 거점 카드 기준.
+     같은 구조라도 위에 놓이는 글의 줄 수가 다르면(SolarEdge 카드는 불릿 4개 5줄)
+     이 값이 달라지므로 해당 .gmap 에 인라인으로 다시 적어준다.
+     세로 850px 안팎(노트북)에서 지도 밑단·인도네시아 라벨·조지아 팝업이 카드 밖으로
+     밀려 잘렸던 것을 이 한 줄이 막는다. 화면이 넉넉하면(≈985px↑) 100% 그대로다.
+     420px 하한 — 그보다 작아지면 라벨이 서로 붙어 지도가 읽히지 않는다 */
+  .gmap{position:relative;margin:auto auto 0;aspect-ratio:1000/387.78;
+    width:100%;   /* dvh 를 모르는 브라우저용 폴백 — 아래 줄이 무효가 되면 이 값이 남는다 */
+    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,198px)) * 2.5788)))}
   .gmap>img{width:100%;height:100%}
   /* 지시선 — HTML 마커와 같은 0–100 좌표계.
      preserveAspectRatio:none 이라 x·y 배율이 다른데, non-scaling-stroke 가
@@ -346,14 +399,20 @@
      left 는 팝업의 오른쪽 끝(30%)이고 translate(-100%)로 왼쪽으로 펼친다.
      top 은 중앙이 아니라 팝업의 윗변 — 라벨 아래 여백부터 시작한다.
      폭 22%(211px)는 조지아 팝업(아래쪽 라벨)이 지도 밖으로 안 나가는 상한이다.
+     min-width 168px — 지도가 줄어들어도 캡션이 두 줄로 접히지 않는 최소 폭.
+     세로 상한(max-height)은 팝업마다 달라 HTML 인라인에 좌표와 함께 적어두었다.
      pointer-events:none 이라 팝업이 점·라벨을 덮어도 호버가 끊기지 않는다 */
-  .gpop{position:absolute;z-index:3;width:22%;padding:6px;background:#fff;
+  .gpop{position:absolute;z-index:3;width:22%;min-width:168px;padding:6px;background:#fff;
     border:1px solid var(--border-g);box-shadow:0 12px 32px rgba(14,22,30,.18);
     opacity:0;visibility:hidden;pointer-events:none;
+    display:flex;flex-direction:column;   /* 상한에 닿으면 사진만 줄어들도록 */
     transform:translate(-100%,6px);
     transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
-  /* 원본 사진이 353×235(3:2) — 같은 비율이라 object-fit:cover 로도 잘리는 곳이 없다 */
-  .gpop img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+  /* 원본 사진이 353×235(3:2) — 같은 비율이라 object-fit:cover 로도 잘리는 곳이 없다.
+     min-height:0 은 flex 항목 기본값(min-height:auto)을 풀어 사진이 줄어들 수 있게 한다.
+     줄어들면 cover 가 위아래를 잘라내므로 캡션이 밀리거나 팝업이 넘치지 않는다 */
+  .gpop img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
+    flex:1 1 auto;min-height:0}
   .gpop figcaption{padding:8px 2px 2px;font-family:var(--suit);font-weight:700;
     font-size:12px;letter-spacing:-.24px;color:var(--g900)}
   .gmap:has([data-pop="mi"]:hover) #gpop-mi,
@@ -369,6 +428,8 @@
   .hcard.hcard--grid{padding-right:40px}
   .hcard.hcard--grid>.hthumbs{position:static;width:auto;transform:none;margin:8px 0 0;
     grid-template-columns:repeat(5,minmax(0,1fr));gap:26px 20px;align-items:start}
+  /* 이미지 영역만 0.75배로 줄인다 (.th이 center 정렬이라 칸 안에서 가운데 유지) */
+  .hcard--grid .th .box{width:75%}
   /* 칸이 좁아진 대신 본문 17px과 나란히 놓이므로 캡션을 한 단계 키운다 */
   .hcard--grid .th .nm{font-size:15px;letter-spacing:-.3px}
   .hcard--grid .th .en{font-size:12px;line-height:1.35;word-break:keep-all}
@@ -376,32 +437,84 @@
   @media(max-width:1180px){.hcard.hcard--grid>.hthumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media(max-width:900px){.hcard.hcard--grid>.hthumbs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-  /* ── 공정 순서 인포그래픽 카드 (.hcard--flow) ─────────────────────────
-     기본 카드는 비주얼(.hph)이 우측에 세로 중앙 고정이지만, 이 카드는
-     우측 열을 세로 플로우가 차지하고 비주얼은 좌측 글 아래로 내려간다.
-     위쪽 .hcard:has(.hph) / .hcard>.hph 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
-  .hcard--flow{--flow-w:30%}
-  .hcard.hcard--flow{padding-right:calc(var(--flow-w) + 48px)}
-  .hcard.hcard--flow>.hph{position:static;width:auto;transform:none;margin:auto 0 0;aspect-ratio:4/1}
-  .hflow{position:absolute;top:36px;right:40px;width:var(--flow-w)}
-  .hflow .flbl{display:block;margin-bottom:14px;font-family:var(--suit);font-weight:800;font-size:17px;letter-spacing:-.34px;color:var(--g900)}
-  .fsteps{list-style:none}
-  .fsteps li{display:flex;align-items:center;gap:14px;padding:10px 16px;border:1px solid var(--point-200)}
-  /* 단계 사이 ▼ 커넥터 — li 위쪽 여백 한가운데에 CSS 삼각형으로 그린다 */
-  .fsteps li+li{position:relative;margin-top:22px}
-  .fsteps li+li::before{content:"";position:absolute;left:50%;top:-17px;transform:translateX(-50%);
-    border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #c2cad4}
-  .fsteps li b{flex-shrink:0;padding-right:14px;border-right:1px solid var(--point-200);
-    font-family:var(--rc);font-weight:700;font-size:17px;letter-spacing:.02em;color:var(--brand)}
-  .fsteps li span{font-family:var(--suit);font-weight:700;font-size:16px;line-height:1.3;letter-spacing:-.32px;color:var(--g900);word-break:keep-all}
+  /* ── 라인 구성도 풀블리드 카드 (.hcard--bleed) ─────────────────────────
+     기본 카드는 비주얼(.hph)이 우측 42% 열에 세로 중앙 고정이지만, 이 카드는
+     비주얼이 카드 바닥에 좌우 끝까지 붙는다. 초광각(3096×651 ≈ 4.75:1) 렌더라
+     우측 열에 넣으면 띠처럼 얇아지고, cover로 채우면 순서대로 놓인 색 구역
+     (충방전기→디개싱·전해액→물류창고→에이징룸)이 잘려 "라인 구성"이라는 뜻이
+     사라진다 → 원래 비율 그대로 폭을 다 쓰게 한다.
+     음수 마진은 카드 좌우 패딩(40px)과 정확히 같은 값이라 테두리 안쪽에 딱 맞는다.
+     한 쪽 축이라도 visible이 아니면 다른 축의 visible이 auto로 계산되므로
+     (.hcard는 overflow-y:auto) 여기서 조금이라도 넘치면 가로 스크롤이 생긴다.
+     위쪽 .hcard:has(.hph) / .hcard>.hph 규칙과 특정도가 같거나 낮으므로 그 뒤에 온다.
+
+     min-height:0 은 세로가 짧은 화면(1366×800 등)에서 카드 높이가 모자랄 때의 안전장치다.
+     이게 없으면 비율로 잡힌 높이가 그대로 버텨 카드를 넘치고, 바닥에 붙은 비주얼이라
+     하필 밑단부터 잘린다. 0으로 열어두면 flex가 남는 만큼만 줄여주고 object-fit:contain
+     이 이미지를 통째로 축소한다 → 풀블리드는 풀리지만 잘리는 곳은 없다 */
+  .hcard.hcard--bleed{padding-right:40px}
+  .hcard.hcard--bleed>.hph{position:static;transform:none;min-height:0;
+    width:calc(100% + 80px);margin:auto -40px -36px}
+
+  /* ── 활성화 공정 순서 — 가로 7단계 플로우 ──────────────────────────────
+     카드 폭을 한 줄로 다 쓰기 때문에 "왼→오"가 그대로 순서로 읽힌다.
+     칸이 좁아지면 4열 → 2열로 접히는데, 그때 각 줄 첫 칸의 ▶ 커넥터는 지운다
+     (줄이 바뀌는 자리에 화살표가 남으면 순서가 거꾸로 읽힌다) */
+  .fsteps{list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:18px 26px;
+    margin:auto 0}   /* 단계 줄만 있는 카드에서 남는 높이를 위아래가 반씩 나눠 갖는다 */
+  .fsteps li{display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+    padding:18px 16px 20px;border:1px solid var(--point-200)}
+  /* 단계 사이 ▶ 커넥터 — 칸 사이 26px 여백 한가운데에 CSS 삼각형으로 그린다 */
+  .fsteps li+li{position:relative}
+  .fsteps li+li::before{content:"";position:absolute;left:-17px;top:50%;transform:translateY(-50%);
+    border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid #c2cad4}
+  .fsteps li b{font-family:var(--rc);font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--brand)}
+  .fsteps li span{font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.35;letter-spacing:-.3px;color:var(--g900);word-break:keep-all}
+  @media(max-width:1240px){
+    .fsteps{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .fsteps li:nth-child(4n+1)::before{display:none}
+  }
 
   /* ── 실제 이미지가 들어간 비주얼 자리 ────────────────────────────────
      점선 플레이스홀더 대신 배경이 비어 있는 렌더를 그대로 얹는다.
      박스 비율은 이미지 원본(3096×651)과 같게 잡아 여백 없이 딱 맞는다.
-     .hcard.hcard--flow>.hph 와 특정도가 같으므로 반드시 그 뒤에 온다 */
+     위 .hph{aspect-ratio:16/9} 와 특정도가 같으므로 반드시 그 뒤에 온다
+     (.hcard--bleed 는 비율을 따로 선언하지 않고 이 값을 그대로 쓴다) */
   .hph--img{aspect-ratio:3096/651;background:none;border:0;display:block}
-  .hcard.hcard--flow>.hph--img{aspect-ratio:3096/651}
   .hph--img img{display:block;width:100%;height:100%;object-fit:contain}
+
+  /* ── 본문 + 우측 비주얼 카드 (.hcard--split) ──────────────────────────
+     [좌: 본문 & 픽토그램 / 우: 이미지] 구조를 쓰는 카드들의 공통 프레임이다.
+     스마트 제조·에너지 인프라·인공지능 세 페이지에 흩어져 있어도 이 클래스를 붙인
+     카드는 본문 폭·이미지 폭·이미지가 놓이는 자리가 전부 같다 — 페이지를 넘겨도
+     카드 골격이 흔들리지 않아야 하므로 수치는 여기 한 군데서만 정한다.
+
+     본문 : 이미지 = 7 : 3 (--ph-w 26%). 1440 화면에서 본문 678px(한 줄 약 39자)이라
+     3~4단락 줄글이 읽히는 폭이고, 아래 픽토그램 4칸도 각 154px로 한 줄에 선다.
+     기본 카드(42%)를 그대로 쓰면 본문이 512px(30자)로 좁아지고 픽토그램 칸이 뭉개진다.
+     반대로 이미지를 더 키우면 세로로 긴 렌더(이차전지 Cycler 564×941)가 슬롯 높이에
+     먼저 걸려 축소되고, 열 좌우에 빈 자리가 남는다 — 26%가 그 이미지가 슬롯을 꽉
+     채우는 폭이다. 세로 중앙 정렬은 .hcard>.hph 의 translateY 가 그대로 처리한다.
+
+     높이를 카드 안쪽에 맞추고 폭을 따라오게 하는 방향은 쓰지 않았다 — 이미지 폭이
+     카드 '높이'로 정해지는데 본문이 비워둘 자리는 카드 '폭'의 백분율이라 둘이 어긋나고,
+     그 차이만큼 빈 자리가 생긴다. 대신 카드가 낮을 때만 max-height 가 받아 넘침을 막는다.
+     위쪽 .hcard:has(.hph) / .hcard>.hph 규칙과 특정도가 같거나 낮으므로 그 뒤에 온다 */
+  .hcard--split{--ph-w:26%}
+  .hcard.hcard--split{padding-right:calc(var(--ph-w) + 48px)}
+  .hcard.hcard--split>.hph{width:var(--ph-w);aspect-ratio:auto;max-height:calc(100% - 72px)}
+  /* 실제 이미지가 든 슬롯 — 높이는 원본 비율대로 따라온다.
+     align-items:stretch 로 두는 게 핵심 — 카드가 낮아 max-height 가 걸리면 그 값이
+     슬롯의 실제 높이가 되고, stretch 가 그 높이를 이미지에 그대로 물려준다.
+     이미지에 max-height:100% 를 주는 방법은 안 통한다: 부모 높이가 auto 라서
+     백분율이 해석되지 않고 그대로 넘쳐 나간다. object-fit:contain 이 비율을 지킨다 */
+  .hcard.hcard--split>.hph--img{height:auto;display:flex;align-items:stretch}
+  .hcard--split>.hph--img img{width:100%;height:auto;object-fit:contain}
+  /* 아직 이미지가 없는 자리(플레이스홀더)는 슬롯을 세로로 꽉 채운다 — 위아래 36px 은
+     카드 패딩과 같은 숨. 실제 이미지가 들어올 자리·크기를 그대로 보여주기 위한 것이고,
+     이게 없으면 aspect-ratio 를 auto 로 풀어놓은 탓에 점선 상자가 글자 한 줄 높이로
+     납작해진다. 카드 높이가 확정(트랙 높이의 100%)이라 백분율이 해석된다 */
+  .hcard.hcard--split>.hph:not(.hph--img){height:calc(100% - 72px)}
 
   /* ── 카드 진입 스태거 ─────────────────────────────────────────────────
      카드가 화면 가운데 대역에 들어오면 구성 요소가 순서대로 내려앉는다.
@@ -436,10 +549,69 @@
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
     .hcard>.hph,.hcard>.hthumbs{position:static;width:100%;transform:none;margin-top:auto}
-    .hcard.hcard--flow{padding-right:22px}
-    .hflow{position:static;width:100%}   /* 세로로 풀리면 플로우도 글 아래로 */
+    /* 풀블리드 비주얼의 음수 마진도 좁은 화면 패딩(24 22)에 맞춰 다시 잡는다.
+       .hcard.hcard--bleed>.hph 가 위 .hcard>.hph 보다 특정도가 높아 여기서 되돌린다 */
+    .hcard.hcard--bleed>.hph{width:calc(100% + 44px);margin:auto -22px -24px}
+    /* 우측 비주얼도 글 아래로. 위 .hcard--split 규칙이 특정도가 더 높아 여기서 되돌린다 */
+    .hcard.hcard--split>.hph{width:100%;height:auto;max-height:none}
+    .hcard--split>.hph--img img{width:auto;max-width:100%}
+    /* 플레이스홀더는 부모 높이가 auto 가 되어 calc(100% - 72px) 이 풀리므로
+       (백분율이 해석되지 않아 글자 한 줄로 납작해진다) 원래 비율로 되돌린다 */
+    .hcard.hcard--split>.hph:not(.hph--img){aspect-ratio:16/9}
+    /* 카드 높이가 내용만큼 늘어나므로 지도를 화면 높이에 맞춰 줄일 이유가 없다 */
+    .gmap{width:100%}
+    .fsteps{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .fsteps li:nth-child(2n+1)::before{display:none}
     .hgrid2{grid-template-columns:1fr}
   }
+
+  /* ===================== FOOTER =====================
+     apro-gray/index.html 의 푸터와 같은 마크업·수치를 그대로 쓴다. 홈에서 사업영역
+     세부 페이지로 넘어와도 하단이 달라 보이지 않아야 하므로 값을 고치지 않았다 */
+  .footer{background:var(--g950);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
+  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
+  /* --- 사이트맵 --- */
+  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
+  .footer .f-col{display:flex;flex-direction:column;gap:20px}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
+  .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);opacity:.75;transition:opacity .2s}
+  .footer .f-col a:hover{opacity:1}
+  /* 지금 보고 있는 페이지 — GNB 메가메뉴와 같은 표시 방식 */
+  .footer .f-col a[aria-current]{opacity:1;font-weight:700;color:#fff}
+  /* --- 유틸리티 바 (정보 링크 + 패밀리사이트) --- */
+  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
+  .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a:hover{opacity:1}
+  .footer .f-links a.strong{font-weight:700;color:#fff;opacity:1}
+  .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
+  .footer .f-family{position:relative;flex-shrink:0}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
+  .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
+  .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
+  /* 푸터가 페이지 맨 아래라 메뉴는 버튼 위로 펼친다 */
+  .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:4px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
+  .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85);transition:background .2s,color .2s}
+  .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
+  /* --- 로고 + 사업자 정보 + copyright --- */
+  .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
+  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
+  .footer .f-bottom .logo{width:97px;height:20px}
+  .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
+  .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
+  .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  @media(max-width:960px){
+    .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
+    .footer .f-util{flex-direction:column;align-items:flex-start}
+    .footer .f-family{width:100%}
+    .footer .f-bottom{flex-direction:column;align-items:flex-start;gap:20px}
+  }
+  @media(max-width:560px){.footer .f-nav{grid-template-columns:1fr}}
 
   /* ===================== OVERLAY MENU ===================== */
   .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
