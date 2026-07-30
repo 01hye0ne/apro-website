@@ -17,17 +17,21 @@
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
     /* 소분류 탭 바 높이 — 히어로 하단 패딩과 바의 음수 마진이 이 값 하나를 함께 쓴다 */
     --bar-h:64px;
-    /* 고정될 때 바가 위로 더 자라는 높이. 이 값이 곧 탭 줄 위에 남는 어두운 여백이고,
-       동시에 "히어로 밑변이 여기 닿으면 고정" 기준선(= --bar-rise + --bar-h)이다.
+    /* 고정된 바의 자리 — 위 여백(--bar-rise)은 탭 줄 위에 남는 어두운 띠,
+       --bar-top 은 바 상단이 놓이는 y. 셋을 더한 값(--bar-top + --bar-rise + --bar-h)이
+       곧 바의 밑변이고 "히어로 밑변이 여기 닿으면 고정" 기준선이다.
        CSS와 JS가 같은 값을 봐야 전환 순간이 어긋나지 않는다 */
-    --bar-rise:40px;
+    /* --bar-rise 64px : 탭 줄 위에 남는 어두운 띠. 상단 호버로 꺼낸 GNB(20~60px)와
+       탭 줄 사이에 40px 정도 여유가 생기는 값이다 */
+    --bar-rise:64px;--bar-top:0px;
     /* 소분류 탭 바 — 히어로 배경에서 흰 탭 패널로 넘어가는 S커브 (Figma 592:3954 Vector).
        570:3893 의 stroke path(30×48)를 24×40 좌표로 옮기고 곡선 아래·오른쪽을 흰색으로
        채운 도형이다. 그리드 거터(24px)에 딱 맞게 들어간다 */
     --tab-curve:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23fff'/%3E%3C/svg%3E");
   }
-  /* 좁은 화면은 위로 자라지 않는다(--bar-rise:0) — 어두운 띠가 모바일 화면을 너무 먹는다 */
-  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px}}
+  /* 좁은 화면은 위로 자라지 않고(--bar-rise:0) GNB 아래(72px)에 붙는다.
+     터치 기기는 상단 호버로 GNB를 불러낼 수 없으므로 GNB를 접지 않고 그대로 두기 때문 */
+  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px;--bar-top:72px}}
   *{margin:0;padding:0;box-sizing:border-box}
   /* 페이지 스크롤은 JS가 직접 제어한다. scroll-behavior:smooth 를 켜두면
      window.scrollTo() 한 번 한 번이 브라우저 이징을 타서 프레임 애니메이션이 뭉개지고,
@@ -130,15 +134,22 @@
     background:var(--tab-curve) center/100% 100% no-repeat}
   /* 히어로 배경과 같은 색·같은 자리를 이어받는다. 히어로에 배경 이미지가 들어가면
      여기 background도 그 이미지의 밑단으로 맞춰야 이음선이 안 보인다 */
-  .bnav-wrap.is-fixed{position:fixed;top:0;left:0;width:100%;height:calc(var(--bar-rise) + var(--bar-h));
-    margin-top:0;background:var(--g950)}
+  .bnav-wrap.is-fixed{position:fixed;top:var(--bar-top);left:0;width:100%;
+    height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;background:var(--g950)}
   /* z-index:1 — 글자가 위 흰 패널(::after)보다 위에 놓이도록 */
   .bnav{position:relative;z-index:1;width:var(--bw);height:100%;margin:0 auto;
     display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--grid-gutter)}
   .bnav-ttl,.bnav-tabs{grid-row:1;align-self:end;height:40px;min-width:0;display:flex;align-items:center}
-  /* 두 상태 모두 히어로 배경 위에 놓이므로 색이 바뀌지 않는다 */
+  /* 두 상태 모두 히어로 배경 위에 놓이므로 색이 바뀌지 않는다.
+     히어로 위에 있을 땐 배너 중앙 h1 과 같은 사업명칭이 두 번 보이므로 숨겼다가,
+     고정되면서 h1 이 화면 밖으로 빠져나갈 때 이 줄이 살짝 올라오며 자리를 이어받는다.
+     좌표가 그대로인 전환에서 유일하게 움직이는 요소 — 그래서 폭을 6px로 아껴 잡았다 */
   .bnav-ttl{grid-column:1 / span 3;font-family:var(--suit);font-weight:800;font-size:18px;
-    letter-spacing:-.36px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28)}
+    letter-spacing:-.36px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28);
+    opacity:0;translate:0 6px;
+    transition:opacity .4s var(--ease),translate .4s var(--ease)}
+  .bnav-wrap.is-fixed .bnav-ttl{opacity:1;translate:none}
+  @media(prefers-reduced-motion:reduce){.bnav-ttl{translate:none;transition:none}}
   /* 탭 글자는 카드 트랙과 같은 4번째 열에서 시작한다 — 아래 카드 왼쪽 끝과 한 선.
      라벨이 길어 좁은 화면에서 넘칠 수 있으므로 간격을 줄이고 가로 스크롤을 허용한다 */
   .bnav-tabs{grid-column:4 / span 9;gap:clamp(20px,3.4vw,44px);
@@ -171,10 +182,11 @@
   /* --card-peek : 트랙 하단에 비워두는 높이(= 카드간 gap 16 + 다음 카드 미리보기 80).
      카드 바닥은 섹션 바닥에서 이만큼 위에서 끝나므로, 좌측 레일 하단(스크롤 게이지)도
      같은 값만큼 띄워야 카드 바닥선과 눈높이가 맞는다. 하단 페이드 높이도 이 값을 쓴다 */
-  /* padding-top 180px = 고정된 탭 바 높이(--bar-rise 40 + --bar-h 64 = 104) + 숨 76.
-     섹션이 화면 상단에 물릴 때 탭 줄 밑과 타이틀 첫 줄 사이가 이 숨만큼 벌어진다 */
+  /* padding-top 204px = 고정된 탭 바 밑변(--bar-rise 64 + --bar-h 64 = 128) + 숨 76.
+     섹션이 화면 상단에 물릴 때 탭 줄 밑과 타이틀 첫 줄 사이가 이 숨만큼 벌어진다.
+     탭 바를 24px 내렸으므로 본문도 같이 24px 내려 숨을 그대로 유지한다 */
   .hsec{height:100vh;height:100dvh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
-    column-gap:var(--grid-gutter);align-items:stretch;padding:180px 0 24px;--card-peek:96px}
+    column-gap:var(--grid-gutter);align-items:stretch;padding:204px 0 24px;--card-peek:96px}
     /* 하단 여백을 24px까지 줄여 트랙이 아래까지 내려옴 → 남는 공간이 빈 여백이 아니라 다음 카드로 채워짐 */
   .hsec+.hsec{border-top:1px solid var(--border-g)}   /* 섹션 구분선 */
   /* 잘린 다음 카드가 아래로 자연스럽게 사라지도록 — 트랙 하단 96px(= gap+미리보기)에 흰색 페이드.

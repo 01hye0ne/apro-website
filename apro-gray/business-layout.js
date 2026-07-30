@@ -57,46 +57,75 @@
   var lb=document.getElementById('langBtn');
   if(lb){
     lb.addEventListener('click',function(e){e.stopPropagation();g.classList.toggle('lang-open');});
-    document.addEventListener('click',function(e){if(!g.contains(e.target))g.classList.remove('lang-open');});
+    document.addEventListener('click',function(e){
+      if(g.contains(e.target))return;
+      g.classList.remove('lang-open');paintNav();   // 메뉴가 닫혔으니 접힘 여부를 다시 판정
+    });
   }
   var nl=g.querySelectorAll('.gnb .menus a[data-i]');
   nl.forEach(function(a){a.addEventListener('mouseenter',function(){nl.forEach(function(x){x.classList.toggle('active',x===a);});});});
   var m=g.querySelector('.gnb .menus');
   if(m){
     m.addEventListener('mouseenter',function(){g.classList.add('mega-open');});
-    g.addEventListener('mouseleave',function(){g.classList.remove('mega-open');nl.forEach(function(x){x.classList.remove('active');});});
+    g.addEventListener('mouseleave',function(){
+      g.classList.remove('mega-open');nl.forEach(function(x){x.classList.remove('active');});
+      paintNav();   // 메가가 닫혔으니 접힘 여부를 다시 판정
+    });
   }
   var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),on=null,hid=null;
-  /* 기준선 = --bar-rise + --bar-h (= 고정됐을 때 바의 밑변 y).
-     바의 실측 높이(offsetHeight)를 쓸 수 없다 — 고정되면 화면 상단까지 늘어나 값이 커지고,
+  var narrowMq=window.matchMedia('(max-width:900px)');
+  /* 기준선 = --bar-top + --bar-rise + --bar-h (= 고정됐을 때 바의 밑변 y).
+     바의 실측 높이(offsetHeight)를 쓸 수 없다 — 고정되면 위로 늘어나 값이 커지고,
      되올릴 때 기준선이 같이 밀려 히스테리시스가 생긴다. CSS 변수를 그대로 읽는다 */
   var barBase=104;
   function measure(){
     var cs=getComputedStyle(document.documentElement);
-    var h=parseFloat(cs.getPropertyValue('--bar-h')),r=parseFloat(cs.getPropertyValue('--bar-rise'));
-    if(h)barBase=h+(r||0);
+    var h=parseFloat(cs.getPropertyValue('--bar-h')),
+        r=parseFloat(cs.getPropertyValue('--bar-rise')),
+        t=parseFloat(cs.getPropertyValue('--bar-top'));
+    if(h)barBase=h+(r||0)+(t||0);
   }
+
+  /* GNB 접기/꺼내기
+     넓은 화면에서 탭 바가 고정되면 GNB 자리를 어두운 바가 채우므로 GNB를 접는다.
+     대신 화면 맨 위 HOT px 안에 커서가 들어오면 다시 꺼낸다 — 접힌 뒤에도 로고·전체메뉴로
+     돌아갈 길을 남겨야 하기 때문. 메가·언어 메뉴가 열려 있으면 커서가 띠를 벗어나도
+     접지 않는다(메가 패널은 띠 아래까지 내려오므로 그때 접으면 메뉴가 사라진다).
+     좁은 화면은 호버가 없는 터치 기기가 대부분이라 애초에 접지 않고, 바가 GNB 아래로 붙는다 */
+  var HOT=72,hotIn=false;
+  function paintNav(){
+    var keep=hotIn||g.classList.contains('mega-open')||g.classList.contains('lang-open');
+    g.classList.toggle('nav-hide',!!hid&&!keep);
+  }
+  document.addEventListener('mousemove',function(e){
+    hotIn=e.clientY<=HOT;
+    if(hid)paintNav();
+  },{passive:true});
+
   function ap(){
     var hb=hero.getBoundingClientRect().bottom;
-    var d=hb<=40;
-    if(d!==on){on=d;g.classList.toggle('nav-light',d);}
     /* 소분류 탭 바는 히어로 밑단에 얹혀 있다가, 히어로 밑변이 바 밑변에 닿는 순간
-       화면 상단에 고정된다. 그 순간 탭 띠 위치가 그대로라 화면이 안 튄다.
-       같은 순간 GNB를 접어 어두운 띠 위에 GNB가 겹쳐 뜨지 않게 한다.
+       고정된다. 그 순간 탭 띠 위치가 그대로라 화면이 안 튄다.
        0.5px 여유는 소수점 스크롤 위치에서 붙었다 떨어졌다 하는 떨림을 막는다 */
+    var h=!!bn&&hb<=barBase+0.5;
+    /* GNB 흰 플레이트는 GNB 뒤가 흰 본문일 때만 — 넓은 화면에서 바가 고정되면
+       GNB 자리가 어두운 바라서 플레이트를 깔면 안 된다 */
+    var nar=narrowMq.matches;
+    var d=hb<=40&&!(h&&!nar);
+    if(d!==on){on=d;g.classList.toggle('nav-light',d);}
     if(!bn)return;
-    var h=hb<=barBase+0.5;
-    if(h===hid)return;
-    hid=h;
     bn.classList.toggle('is-fixed',h);
-    g.classList.toggle('nav-hide',h);
-    if(h)g.classList.remove('mega-open','lang-open');   // 접히면서 열려 있던 메뉴도 닫는다
+    var want=h&&!nar;
+    if(want===hid)return;
+    hid=want;
+    if(want)g.classList.remove('mega-open','lang-open');   // 접히면서 열려 있던 메뉴도 닫는다
+    paintNav();
   }
   var t=false;
   window.addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(function(){t=false;ap();});}},{passive:true});
   window.addEventListener('resize',function(){measure();ap();});
   measure();ap();
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')g.classList.remove('lang-open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){g.classList.remove('lang-open');paintNav();}});
 })();
 
 /* hamburger -> overlay */
