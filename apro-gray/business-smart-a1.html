@@ -206,12 +206,13 @@
     </div>
     <div class="htrack">
 
-      <!-- [좌: 본문 & 픽토그램 / 우: 이미지] 공통 프레임 → .hcard--split (본문:이미지 = 7:3) -->
-      <!-- 시안(.hcard--deck) — [상단: 본문 + 이미지 / 하단: 카드 폭 전면 픽토그램 판].
-           본문을 .hdeck-top 으로 한 번 감싸야 카드가 2열 격자가 된다 (좌: 본문 / 우: 이미지,
-           그 아래 판이 두 열을 가로지른다). 감싸지 않으면 h3·문단이 각자 격자 칸을 차지해
-           이미지 옆에 세로로 쌓이지 않는다. 나머지 카드는 종전 .hcard--split 그대로다 -->
-      <article class="hcard hcard--split hcard--deck" data-tab="이차전지 Cycler">
+      <!-- 시안(.hcard--aside) — [상단: 좌 본문 | 우 픽토그램 판 / 하단: 카드 폭 전면 이미지].
+           다른 페이지가 쓰는 .hcard--deck([좌: 본문 / 픽토그램] [우: 이미지])을 90° 돌린
+           배치로, 스마트 제조 페이지에서만 쓴다. 픽토그램 칸도 같이 눕는다 —
+           [아이콘 | 키워드] 가로 한 줄이 되고 넷이 세로로 쌓인다 (business-layout.css).
+           본문을 .hdeck-top 으로 한 번 감싸야 카드가 격자가 된다 — 감싸지 않으면
+           h3·문단이 각자 칸을 차지해 픽토그램 판 옆에 세로로 쌓이지 않는다 -->
+      <article class="hcard hcard--aside" data-tab="이차전지 Cycler">
         <div class="hdeck-top">
           <h3>이차전지 Cycler (셀/모듈)</h3>
           <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
@@ -333,7 +334,7 @@
     </div>
     <div class="htrack">
 
-      <article class="hcard hcard--split hcard--deck" data-tab="탄소나노튜브">
+      <article class="hcard hcard--aside" data-tab="탄소나노튜브">
         <div class="hdeck-top">
           <h3>소수벽 &amp; 단일벽 탄소나노튜브</h3>
           <p>고성능 단일벽(SW) 및 소수벽(FW) 탄소나노튜브의 견고한 전도성 네트워크가 활물질 간의 전자 이동을 극대화합니다.</p>
@@ -380,7 +381,7 @@
              alt="탄소나노튜브 나노입자 주사전자현미경(SEM) 사진 — 입자 지름 20.4~40.3nm 실측 표기" /></div>
       </article>
 
-      <article class="hcard hcard--split hcard--deck" data-tab="LiFSI 전해염">
+      <article class="hcard hcard--aside" data-tab="LiFSI 전해염">
         <div class="hdeck-top">
           <h3>LiFSI 전해염</h3>
           <p>기존 LiPF6 대비 탁월한 이온 이동 속도를 구현하여 배터리 내부의 이온 전도도를 크게 향상시킵니다. 고온 및 고전압의 거친 구동 환경에서도 전해액의 열분해를 막고 변함없는 화학적 안정성을 발휘합니다.</p>
