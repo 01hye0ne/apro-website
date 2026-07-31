@@ -17,15 +17,24 @@
     --white-300:rgba(255,255,255,.2);--maxw:1440px;--grid-gutter:24px;
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
-    /* 카드 본문 행간 — 줄글(.hcard p)·불릿(.hcard ul li)·아이콘 설명(.hgrid2 .d)·
-       key-value 값(.kv .v)이 모두 이 값 하나를 쓴다. 카드마다 본문 형식이 달라도
+    /* 카드 본문 행간 160% — 줄글(.hcard p)·불릿(.hcard ul li)·아이콘 설명(.hgrid2 .d)·
+       key-value(.kv .k / .kv .v)가 모두 이 값 하나를 쓴다. 카드마다 본문 형식이 달라도
        (줄글 / 불릿 / 격자) 글 덩어리가 같은 리듬으로 쌓여야 나란히 놓인 카드의
-       레이아웃이 같아 보인다. 예전에는 1.75 / 1.6 이 섞여 있었다.
-       1.375 = 줄 사이 여백을 반으로 줄인 값 — 17px 본문에서 1.75 는 line-box 29.75px,
-       즉 글자 높이 위아래로 12.75px 이 여백이다. 그 절반(6.375)만 남기면
-       17 + 6.375 = 23.375px → 23.375 / 17 = 1.375. 배수를 반으로(0.875) 잡으면
-       line-box 가 글자보다 작아져 줄이 서로 겹친다 */
-    --body-lh:1.375;
+       레이아웃이 같아 보인다. 예전에는 1.75 / 1.6 / 1.375 가 섞여 있었다.
+       17px 본문에서 line-box 는 17 × 1.6 = 27.2px 다. 국문 본문의 표준 구간
+       (1.6~1.75)의 시작점 — 한글은 네모틀이라 어센더·디센더가 만드는 줄 간 여백이
+       없어서 같은 값이면 영문보다 빽빽해 보인다. 그래서 영문 통례(1.5~1.6)보다
+       한 단 위에서 잡는다 */
+    --body-lh:1.6;
+    /* 카드 세로 스택 간격 — 제목·본문·소제목 블록·비주얼 사이의 숨 */
+    --stack-gap:16px;
+    /* 본문 덩어리 안의 숨 — 줄글의 단락 사이와 목록의 항목 사이가 이 값 하나를 쓴다.
+       행간(--body-lh)은 줄과 줄만 벌리므로, 단락을 가르는 건 결국 이 값이다.
+       0 으로 붙여 보니 행간이 넉넉해도 세 단락이 한 덩어리 벽이 되어 답답했다.
+       8px + 행간의 반각(27.2−17의 절반 = 5.1px) = 실질 13px 이 단락 사이에 남는다.
+       줄글과 목록이 같은 값을 쓰는 이유 — 둘 다 앞에 같은 불릿 점을 달고 있어서,
+       값이 갈리면 목록으로 적힌 카드와 줄글로 적힌 카드의 밀도가 달라 보인다 */
+    --para-gap:8px;
     /* 소분류 탭 바 높이 — 히어로 하단 패딩과 바의 음수 마진이 이 값 하나를 함께 쓴다 */
     --bar-h:64px;
     /* 고정된 바의 자리 — 위 여백(--bar-rise)은 탭 줄 위에 남는 어두운 띠,
@@ -293,7 +302,37 @@
 
   /* --- rail 상단: 소분류 타이틀 --- */
   /* 사업명칭·소분류 위치는 상단 탭 바로 옮겨졌다 → 레일 위쪽은 타이틀 한 덩어리 */
-  .httl{font-family:var(--suit);font-weight:800;font-size:clamp(28px,3vw,44px);line-height:1.32;letter-spacing:-.7px;color:var(--g900);word-break:keep-all}
+  /* ── 상하 1px 선 ─────────────────────────────────────────────────────
+     좌측 열에도 카드와 같은 가로 모서리를 만들어 준다.
+
+     레일과 트랙은 같은 그리드 행이라 두 열의 박스 상단은 이미 정확히 같은 y 다.
+     그런데 카드는 테두리로 제 상단을 그리는 반면 좌측에는 글자 하나뿐이라,
+     눈이 맞춰볼 것이 글자밖에 없었다. 그 글자의 잉크 상단은 카드 제목(h3)의
+     잉크 상단보다 32.4px 위에 뜬다 — 44px 타이틀은 line-box 안에서 잉크가 9px
+     내려와 앉고, 카드 제목은 테두리 1 + 안쪽 여백 36 을 지나 시작하기 때문이다.
+     두 열이 한 단 어긋나 보이던 것이 이 32px 이다.
+
+     윗선을 두면 그 선이 카드 상단 테두리와 같은 y 에 서서 맞출 모서리가 생기고,
+     padding-top 32px 이 위 32.4px 을 그대로 메워 타이틀 글자까지 카드 제목과
+     한 줄에 선다 — 모서리와 글자가 동시에 맞는다. (타이틀은 clamp 로 28~44px 을
+     오가므로 44px 미만에서는 3px 안쪽으로 어긋나지만 눈에 잡히는 차이가 아니다)
+
+     위아래 여백은 32px 로 같다. line-box 가 글자 위와 아래에 남기는 여백이 각각
+     9px 로 대칭이라(44px / 1.32 = 58.08 짜리 줄에서 잉크는 9px 내려와 시작하고
+     9px 남기고 끝난다) padding 이 같으면 선에서 글자까지의 거리도 41px 로 같아진다.
+
+     margin-right 로 거터(24px)를 덮어 선을 카드 왼쪽 테두리까지 끌고 간다.
+     레일(col 1–3)과 트랙(col 4–12) 사이가 비어 있으면 같은 y 에 있어도 좌측 선과
+     카드 상단 테두리가 끊긴 두 줄로 보인다 — 맞닿아야 한 줄로 읽힌다.
+     선 색도 카드 테두리와 같은 --border-g 를 쓰는 이유가 같다.
+
+     같은 값의 padding-right 를 함께 두는 이유 — 음수 마진은 테두리 상자만이 아니라
+     글이 흐르는 폭까지 24px 늘린다. 그대로 두면 타이틀이 거터를 침범해 카드에
+     바싹 붙고, 줄바꿈 지점도 3칸 기준에서 밀린다(영문 타이틀은 실제로 갈렸다).
+     안쪽 여백으로 되돌려 놓으면 선만 늘어나고 글 폭은 레일 3칸 그대로다 */
+  .httl{padding:32px var(--grid-gutter) 32px 0;margin-right:calc(-1 * var(--grid-gutter));
+    border-top:1px solid var(--border-g);border-bottom:1px solid var(--border-g);
+    font-family:var(--suit);font-weight:800;font-size:clamp(28px,3vw,44px);line-height:1.32;letter-spacing:-.7px;color:var(--g900);word-break:keep-all}
 
   /* --- rail: 소분류 카드 인덱스 ─────────────────────────────────────────
      이 소분류에 무엇이 담겼는지를 카드 제목으로 펼친 목록. 예전 하단 스크롤 게이지가
@@ -323,7 +362,7 @@
   /* 내용이 카드 높이를 넘치면 카드 안에서 스크롤되지만 스크롤바는 감춘다 —
      트랙과 같은 처리. 카드 테두리 안에 회색 막대가 서면 레이아웃이 어수선해진다 */
   .hcard{flex:0 0 100%;scroll-snap-align:start;min-width:0;position:relative;
-    display:flex;flex-direction:column;gap:16px;
+    display:flex;flex-direction:column;gap:var(--stack-gap);
     background:#fff;border:1px solid var(--border-g);padding:36px 40px;overflow-y:auto;
     scrollbar-width:none;-ms-overflow-style:none}
   .hcard::-webkit-scrollbar{display:none}
@@ -341,10 +380,20 @@
      카드 안에서 제목이 제목으로 서지 않았다. 본문은 그대로 두고 제목만 올린다 */
   .hcard h3{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.28;letter-spacing:-.48px;color:var(--g900);word-break:keep-all}
   .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hblock p+p{margin-top:8px}
-  /* 여러 단락이 이어지는 도입 줄글 — 단락 사이는 카드 gap(16)의 절반으로 좁혀
-     한 덩어리로 읽히게 한다. 바깥 gap 은 그대로라 h3·비주얼과의 숨은 유지된다 */
-  .hlead{display:flex;flex-direction:column;gap:8px}
+
+  /* ── 본문 단락 간격 ──────────────────────────────────────────────────
+     이웃한 단락 사이는 --para-gap(8px). 제목·소제목 블록·비주얼과의 숨
+     (--stack-gap 16px)보다 좁아야 여러 단락이 한 덩어리로 묶여 읽힌다.
+     세로 스택의 gap 은 그대로 두고, 단락끼리 맞닿은 칸에서만 차액만큼(−8px)
+     끌어당겨 그 칸만 좁힌다 — 스택 gap 을 직접 내리면 h3·비주얼과의 숨까지
+     같이 좁아진다. 단락이 아닌 것(픽토그램 판·아이콘 격자)은 손대지 않는다 */
+  .hcard>p+p,
+  .hcard--deck>.hdeck-top>p+p{margin-top:calc(var(--para-gap) - var(--stack-gap))}
+  /* .hblock 은 평범한 블록이라 전역 p{margin:0} 위에 직접 얹는다 */
+  .hblock>p+p{margin-top:var(--para-gap)}
+  /* 여러 단락이 이어지는 도입 줄글 묶음.
+     바깥 gap 은 그대로라 h3·비주얼과의 숨은 유지된다 */
+  .hlead{display:flex;flex-direction:column;gap:var(--para-gap)}
 
   /* 카드 안 소제목 블록 */
   .hblock{padding-top:16px;border-top:1px solid var(--border-g)}
@@ -354,12 +403,33 @@
   /* 행간·자간·크기는 위 .hcard p 와 같은 값이다 — 같은 카드 안에서 줄글과 불릿이
      섞이거나(SolarEdge·해외 거점처럼) 나란한 두 카드가 서로 다른 본문 형식을 쓸 때,
      행간이 다르면 두 카드의 글 덩어리 높이가 어긋나 레이아웃이 달라 보인다.
-     불릿 점의 top 은 첫 줄 line-box(17×1.375≈23px) 안에서 글자 광학 중심에 맞춘 값 —
-     기하학적 중앙(11.7)보다 2px 위. 행간을 바꾸면 이 값도 같이 옮겨야 한다 */
-  .hcard ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .hcard ul li{position:relative;padding-left:17px;font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hcard ul li::before{content:"";position:absolute;left:2px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+     항목 사이도 줄글의 단락 사이와 같은 --para-gap 이다 — 둘 다 앞에 같은 점을 달고
+     있어서 값이 갈리면 목록 카드와 줄글 카드의 밀도가 달라 보인다.
+     두 줄로 접히는 항목이 많아(해외 협력·ESS 현황) 0 으로 붙이면 어디까지가 한 항목인지
+     불릿 점만으로는 읽히지 않는다 */
+  .hcard ul{list-style:none;display:flex;flex-direction:column;gap:var(--para-gap)}
+  .hcard ul li{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   .hcard ul li b{font-weight:700;color:var(--g900)}
+
+  /* ── 본문 불릿 점 ────────────────────────────────────────────────────
+     불릿 목록의 항목과 줄글의 단락이 똑같은 점을 단다 — 카드마다 본문이 목록으로
+     적혔거나(활성화 전공정 설비) 줄글로 적혔거나(산업 안전진단 AI) 할 뿐 둘 다 같은
+     "본문 한 덩어리"인데, 점이 한쪽에만 있으면 나란히 놓인 카드가 서로 다른 종류의
+     글로 보인다. 단락 사이 간격이 0 이라 점이 곧 단락의 시작을 알리는 표지이기도 하다.
+
+     점을 달지 않는 것: 픽토그램 판(.pict)·아이콘 격자(.hgrid2)·key-value(.kv).
+     셋 다 제목과 설명이 짝을 이루는 항목이라 이미 자기 구조로 갈라져 있고,
+     점을 더하면 한 덩어리 안에 표지가 둘이 된다.
+
+     점의 top 은 첫 줄 line-box(17×1.6=27.2px) 안에서 글자 광학 중심에 맞춘 값 —
+     기하학적 중앙(13.6)보다 1.7px 위, 거기서 점 반지름(2)을 뺀 자리다.
+     행간을 바꾸면 이 값도 같이 옮겨야 한다 (여백 증가분의 절반만큼 내려간다) */
+  .hcard ul li,
+  .hcard>p, .hlead>p, .hdeck-top>p, .hblock>p{position:relative;padding-left:17px}
+  .hcard ul li::before,
+  .hcard>p::before, .hlead>p::before, .hdeck-top>p::before, .hblock>p::before{
+    content:"";position:absolute;left:2px;top:10px;
+    width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
 
   /* ── 픽토그램 사양 판 (.pict) — Figma 637:2036 ────────────────────────
      문장으로 늘어놓으면 읽는 눈이 미끄러지는 나열형 내용을 한 줄 네 덩어리로 접는다.
@@ -470,7 +540,8 @@
   .kv{padding:14px 0}
   .kv:first-child{padding-top:2px}
   .kv+.kv{border-top:1px solid var(--border-g)}
-  .kv .k{font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;color:var(--g900);margin-bottom:6px}
+  /* .k 와 .v 도 이웃한 두 단락이다 → 같은 --para-gap 으로 갈린다 */
+  .kv .k{font-family:var(--suit);font-weight:700;font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--g900);margin-bottom:var(--para-gap)}
   .kv .v{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec)}
 
   /* 이미지 자리 — 카드 하단에 붙음 */
@@ -494,21 +565,22 @@
      여기서 지도 위에 놓이는 것들의 높이(--map-above)를 빼면 지도에 줄 수 있는 높이가
      나오고, ×1000/387.78 이 그 높이에 맞는 폭이다.
 
-     224px = 지도 카드 두 장(해외 거점 / SolarEdge)의 "지도 위 높이" 실측 최댓값이다.
+     273px = 지도 카드 두 장(해외 거점 / SolarEdge)의 "지도 위 높이" 실측 최댓값이다.
      글 줄 수는 폭에 따라 달라지므로 넓은 레이아웃 전 구간(901~1700px)을 훑어 잡았다 —
-     해외 거점 215.5 / SolarEdge 223.5 로, 둘 다 900px 브레이크포인트 바로 위(901~925px,
+     해외 거점 272.6 / SolarEdge 249.8 로, 둘 다 900px 브레이크포인트 바로 위(901~925px,
      본문이 가장 좁아 줄이 가장 많이 접히는 지점)에서 최댓값이 나온다. 그보다 좁아지면
      세로 배치로 풀려 아래 .gmap{width:100%} 가 받으므로 이 값과 무관해진다.
      한 값을 두 카드가 함께 쓴다 — 카드별로 따로 잡으면 같은 구조인데 지도 크기가
-     갈려(784 vs 686) 나란히 놓았을 때 레이아웃이 달라 보인다. 두 카드의 최댓값 차이가
-     8px뿐이라 큰 쪽으로 묶어도 손해가 거의 없다.
-     본문 문안이나 --body-lh 를 고치면 이 값도 다시 재야 한다 (한 줄 = 23.4px).
+     갈려 나란히 놓았을 때 레이아웃이 달라 보인다. 두 카드의 최댓값 차이가
+     23px뿐이라 큰 쪽으로 묶어도 손해가 거의 없다.
+     본문 문안이나 --body-lh · --para-gap 을 고치면 이 값도 다시 재야 한다
+     (한 줄 = 27.2px, 단락 하나 = 8px).
      세로 850px 안팎(노트북)에서 지도 밑단·인도네시아 라벨·조지아 팝업이 카드 밖으로
      밀려 잘렸던 것을 이 한 줄이 막는다. 화면이 넉넉하면 100% 그대로다.
      420px 하한 — 그보다 작아지면 라벨이 서로 붙어 지도가 읽히지 않는다 */
   .gmap{position:relative;margin:auto auto 0;aspect-ratio:1000/387.78;
     width:100%;   /* dvh 를 모르는 브라우저용 폴백 — 아래 줄이 무효가 되면 이 값이 남는다 */
-    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,224px)) * 2.5788)))}
+    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,273px)) * 2.5788)))}
   .gmap>img{width:100%;height:100%}
   /* 지시선 — HTML 마커와 같은 0–100 좌표계.
      preserveAspectRatio:none 이라 x·y 배율이 다른데, non-scaling-stroke 가
@@ -628,6 +700,16 @@
   .hcard.hcard--bleed{padding-right:40px}
   .hcard.hcard--bleed>.hph{position:static;transform:none;min-height:0;
     width:calc(100% + 80px);margin:auto -40px -36px}
+  .hcard.hcard--bleed>.hph--img{aspect-ratio:3096/651}   /* 원본 비율 그대로 */
+
+  /* ── 기본 카드(변형 없음)에 그림이 들어왔을 때 ────────────────────────
+     플레이스홀더는 우측 42% 열에 16:9 상자로 세로 중앙에 떠 있지만, 그림은
+     .hcard--deck 과 같이 여백 없이 카드 테두리까지 채운다 — 카드마다 그림이
+     번지기도 하고 안 번지기도 하면 페이지를 넘길 때 골격이 흔들려 보인다.
+     top/bottom 0 으로 높이를 잡으므로 비율·translateY 중앙정렬은 걷어낸다.
+     본문은 위 .hcard:has(.hph) 의 padding-right(42% + 48px)가 이미 비워 두었고,
+     그림이 오른쪽 끝으로 48px 나가면서 글과의 숨이 48px 로 남는다 */
+  .hcard>.hph--img{top:0;right:0;bottom:0;height:auto;aspect-ratio:auto;transform:none}
 
   /* ── 활성화 공정 순서 — 가로 7단계 플로우 ──────────────────────────────
      카드 폭을 한 줄로 다 쓰기 때문에 "왼→오"가 그대로 순서로 읽힌다.
@@ -635,6 +717,11 @@
      (줄이 바뀌는 자리에 화살표가 남으면 순서가 거꾸로 읽힌다) */
   .fsteps{list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:18px 26px;
     margin:auto 0}   /* 단계 줄만 있는 카드에서 남는 높이를 위아래가 반씩 나눠 갖는다 */
+  /* 비주얼이 함께 있는 카드에서는 그 auto 마진을 거둔다 — 바닥에 붙는 .hph 도
+     margin-top:auto 로 남는 높이를 가져가려 하므로, 둘을 같이 두면 자유 공간이
+     양쪽으로 쪼개져 단계 줄이 본문에서 떠오르고 비주얼도 바닥에서 들린다.
+     남는 높이는 비주얼 하나만 갖고, 단계 줄은 본문 바로 아래에 붙어 있어야 한다 */
+  .hcard:has(.hph)>.fsteps{margin:0}
   .fsteps li{display:flex;flex-direction:column;align-items:flex-start;gap:10px;
     padding:18px 16px 20px;border:1px solid var(--point-200)}
   /* 단계 사이 ▶ 커넥터 — 칸 사이 26px 여백 한가운데에 CSS 삼각형으로 그린다 */
@@ -650,11 +737,26 @@
 
   /* ── 실제 이미지가 들어간 비주얼 자리 ────────────────────────────────
      점선 플레이스홀더 대신 배경이 비어 있는 렌더를 그대로 얹는다.
-     박스 비율은 이미지 원본(3096×651)과 같게 잡아 여백 없이 딱 맞는다.
-     위 .hph{aspect-ratio:16/9} 와 특정도가 같으므로 반드시 그 뒤에 온다
-     (.hcard--bleed 는 비율을 따로 선언하지 않고 이 값을 그대로 쓴다) */
-  .hph--img{aspect-ratio:3096/651;background:none;border:0;display:block}
-  .hph--img img{display:block;width:100%;height:100%;object-fit:contain}
+     비율은 플레이스홀더(.hph{aspect-ratio:16/9})를 그대로 물려받는다 — 그림이 들어와도
+     자리 크기가 달라지지 않아야 카드 골격이 흔들리지 않는다. 아래 변형들이 각자
+     비율을 덮어쓴다(.hcard--bleed 는 원본 3096×651, split/deck 은 칸 높이를 따라감).
+     위 .hph 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
+  .hph--img{background:none;border:0;display:block}
+  /* 사진은 슬롯을 꽉 채운다(cover) — 넘치는 쪽은 잘라낸다. 슬롯은 세로로 긴 칸인데
+     사진은 대개 가로라 contain 으로 두면 그림이 칸 한가운데 작게 뜨고 위아래가 비었다.
+     --img-pos : 잘려나갈 때 어느 지점을 남길지. 히어로의 --hero-pos 와 같은 방식으로
+     HTML 에서 사진마다 지정한다 — 가로 사진을 세로 칸에 넣으면 폭의 30% 안팎만 남으므로
+     "무엇이 찍힌 사진인지" 알아볼 수 있는 지점이 사진마다 다르다. 기본은 한가운데 */
+  .hph--img img{display:block;width:100%;height:100%;
+    object-fit:cover;object-position:var(--img-pos,50% 50%)}
+
+  /* 배경이 뚫린 PNG(오려낸 제품컷·구성도)는 자를 수 없다 — 잘라내면 물건이 반토막 나고,
+     흰 카드 위에 그냥 얹으면 뚫린 자리가 카드 바탕과 붙어 그림이 허공에 뜬다.
+     → 그림은 통째로 담고(contain) 남는 자리는 픽토그램 판과 같은 회색으로 채운다.
+     이 클래스를 붙일 대상은 "실제로 투명 픽셀이 있는 PNG" 다 — 확장자가 아니라 알파값
+     기준이다 (탄소나노튜브 SEM 은 PNG 지만 투명 픽셀이 0% 라 사진과 똑같이 다룬다) */
+  .hph--img.hph--plate{background:var(--secondary-bg)}
+  .hph--img.hph--plate img{object-fit:contain}
 
   /* ── 본문 + 우측 비주얼 카드 (.hcard--split) ──────────────────────────
      [좌: 본문 & 픽토그램 / 우: 이미지] 구조를 쓰는 카드들의 공통 프레임이다.
@@ -680,9 +782,10 @@
      align-items:stretch 로 두는 게 핵심 — 카드가 낮아 max-height 가 걸리면 그 값이
      슬롯의 실제 높이가 되고, stretch 가 그 높이를 이미지에 그대로 물려준다.
      이미지에 max-height:100% 를 주는 방법은 안 통한다: 부모 높이가 auto 라서
-     백분율이 해석되지 않고 그대로 넘쳐 나간다. object-fit:contain 이 비율을 지킨다 */
+     백분율이 해석되지 않고 그대로 넘쳐 나간다. object-fit 이 그 안에서 비율을 지킨다 */
   .hcard.hcard--split>.hph--img{height:auto;display:flex;align-items:stretch}
-  .hcard--split>.hph--img img{width:100%;height:auto;object-fit:contain}
+  .hcard--split>.hph--img img{width:100%;height:auto;object-fit:cover}
+  .hcard--split>.hph--img.hph--plate img{object-fit:contain}
   /* 아직 이미지가 없는 자리(플레이스홀더)는 슬롯을 세로로 꽉 채운다 — 위아래 36px 은
      카드 패딩과 같은 숨. 실제 이미지가 들어올 자리·크기를 그대로 보여주기 위한 것이고,
      이게 없으면 aspect-ratio 를 auto 로 풀어놓은 탓에 점선 상자가 글자 한 줄 높이로
@@ -713,11 +816,11 @@
   .hcard.hcard--deck{display:grid;
     grid-template-columns:minmax(0,1fr) calc(var(--ph-w) + 40px);
     grid-template-rows:minmax(0,1fr) auto;
-    column-gap:40px;row-gap:16px;
+    column-gap:40px;row-gap:var(--stack-gap);
     padding-right:40px}
-  /* 본문 묶음 — 원래 카드가 자식들에게 주던 세로 간격(16px)을 그대로 물려받는다 */
+  /* 본문 묶음 — 원래 카드가 자식들에게 주던 세로 간격을 그대로 물려받는다 */
   .hcard--deck>.hdeck-top{grid-column:1;grid-row:1;
-    align-self:start;display:flex;flex-direction:column;gap:16px}
+    align-self:start;display:flex;flex-direction:column;gap:var(--stack-gap)}
   /* 위 .hcard>*:not(.hph)… 의 가독 폭 제한(820px)을 되돌린다. 판이 카드 왼쪽 테두리까지
      번져야 하는데 820px 에서 잘리면 닿지 못한다. 본문은 1열 폭(약 633px)이 이미 820px
      보다 좁아 제한이 걸릴 일이 없다. :not 사슬을 그대로 반복한 건 특정도 때문 */
@@ -735,7 +838,13 @@
     max-height:none;transform:none;
     margin:-36px 0;padding:36px 0 36px 40px;
     border-left:1px solid var(--border-g)}
-  .hcard.hcard--deck>.hph--img{display:flex}
+  /* 실제 이미지가 든 칸은 여백 없이 카드 테두리까지 번진다 — 위·아래는 카드 패딩(36)을,
+     오른쪽은 카드 우측 패딩(40)을 걷어내고, 왼쪽 안쪽 여백(40)은 0 으로 지워 그림이
+     세로선에 바로 닿는다. 위 .hph 규칙과 특정도가 같으므로 반드시 그 뒤에 온다.
+     플레이스홀더(점선 상자)는 그대로다 — 그건 "여기에 그림이 들어온다"는 표시라
+     카드 안쪽 여백을 지키고 서 있어야 자리 크기가 읽힌다 */
+  .hcard.hcard--deck>.hph--img{display:flex;
+    margin:-36px -40px -36px 0;padding:0}
   /* 이미지가 아직 없는 자리(점선 상자) — 칸이 세로선과 안쪽 여백을 맡으므로 상자는
      칸 자신이 아니라 가상요소가 그린다. 칸에 직접 그리면 점선이 세로선 자리까지 삼키고
      카드 위아래 끝까지 늘어난다. 글자("CNT" 등)는 칸의 place-content:center 가
@@ -749,7 +858,8 @@
   .hcard.hcard--deck>.hph:not(.hph--img)::before{content:"";position:absolute;z-index:-1;
     inset:36px 0 36px 40px;background:var(--secondary-bg);border:1px dashed var(--border-g)}
   .hcard--deck>.hph--img img{position:static;inset:auto;display:block;
-    width:100%;height:auto;min-height:0;object-fit:contain}
+    width:100%;height:auto;min-height:0;object-fit:cover}
+  .hcard--deck>.hph--img.hph--plate img{object-fit:contain}
   /* 판 — 라벨(.lbl)까지 회색 안으로 들어온다. 그래서 배경·테두리·여백을 .pict 가 아니라
      이 블록이 들고, .pict 는 격자만 남는다. 위쪽 테두리 한 줄이 곧 판의 윗선이고,
      라벨 위에 따로 있던 줄은 이 줄에 흡수됐다(선 두 개가 겹쳐 보이던 자리다).
@@ -771,6 +881,56 @@
      선택자에 ul 을 끼운 건 위 .hcard ul.pict 보다 특정도가 낮으면 덮이기 때문 */
   .hcard.hcard--deck ul.pict{margin:0;padding:0;background:none;border:0}
 
+  /* ── 여러 장짜리 비주얼 (.hph--slides) ────────────────────────────────
+     한 카드에 그림이 둘 이상일 때. 같은 자리에 겹쳐 놓고 2초마다 다음 장으로
+     교차 페이드하며, 몇 장인지·지금 몇 번째인지는 그림 안 하단의 막대가 알린다.
+     막대는 JS 가 그림 수만큼 만든다 (좌측 인덱스를 data-tab 으로 만드는 것과 같은 방식) —
+     장수가 바뀌어도 마크업을 손댈 필요가 없다.
+
+     첫 장만 흐름에 두고 나머지를 그 위에 절대배치하는 게 핵심이다. 전부 절대배치하면
+     좁은 화면(세로로 풀린 배치)에서 칸 높이를 잡아 줄 것이 없어 통째로 납작해진다.
+     첫 장은 꺼져 있어도 자리를 그대로 차지하므로 칸 높이가 유지된다.
+
+     이 블록이 .hcard--deck / .hcard--split 규칙보다 뒤에 와야 한다 — 특정도가 같아
+     앞에 두면 그쪽의 position:static · height:auto 에 덮인다 */
+  /* 겹쳐 둔 뒷장이 기댈 기준. 기본 카드의 칸은 이미 absolute 라 그 자체가 기준이 되므로
+     건드리지 않는다 — 여기에 position:relative 를 걸면 그 절대배치가 풀려 칸이
+     흐름 속으로 떨어지고 높이가 그림 한 줄로 주저앉는다.
+     static 으로 놓이는 변형(deck·bleed)에서만 기준을 세운다 */
+  .hph--img.hph--slides{isolation:isolate}
+  .hcard.hcard--deck>.hph--slides,
+  .hcard.hcard--bleed>.hph--slides{position:relative}
+  .hph--img.hph--slides img{transition:opacity .6s var(--ease)}
+  .hph--img.hph--slides img+img{position:absolute;inset:0;width:100%;height:100%}
+  .hph--img.hph--slides img:not(.is-on){opacity:0}
+  @media(prefers-reduced-motion:reduce){
+    .hph--img.hph--slides img{transition:none}
+  }
+
+  /* 사진 위에서는 흰 막대가 배경에 묻힐 수 있다 → 아래쪽만 아주 옅게 눌러 준다.
+     회색 판(.hph--plate) 위에는 이 그늘을 쓰지 않는다 — 판은 이미 밝고 균일해서
+     막대를 네이비로 두면 그대로 읽히고, 그늘을 얹으면 판 밑단이 때 탄 것처럼 보인다 */
+  .hph--slides:not(.hph--plate)::after{content:"";position:absolute;z-index:1;
+    left:0;right:0;bottom:0;height:88px;pointer-events:none;
+    background:linear-gradient(rgba(14,22,30,0),rgba(14,22,30,.34))}
+
+  /* 막대 — 칸 하나가 그림 한 장. 폭을 똑같이 나눠 가지므로 길이가 곧 장수다 */
+  .hslide-bar{position:absolute;z-index:2;left:16px;right:16px;bottom:14px;
+    display:flex;gap:5px}
+  .hslide-bar i{flex:1;height:3px;border-radius:2px;
+    background:rgba(255,255,255,.42);transition:background .45s var(--ease)}
+  .hslide-bar i.is-on{background:#fff}
+  .hph--plate .hslide-bar i{background:rgba(27,39,51,.16)}
+  .hph--plate .hslide-bar i.is-on{background:var(--brand)}
+
+  /* 로고 판 — 파트너사 로고는 비율이 제각각이다(가로로 긴 것부터 정사각까지).
+     칸에 통째로 담기만 하면 가로로 긴 로고는 폭에 꽉 차고 정사각 로고는 높이에
+     먼저 걸려, 넘어갈 때마다 크기가 널을 뛴다. 안쪽 여백을 크게 두어 담기는 상자를
+     한 번 더 줄이면 어느 비율이든 비슷한 덩치로 앉는다.
+     %여백은 가로폭 기준이라 상하좌우가 한 비율로 같이 움직인다.
+     아래쪽만 더 두는 건 하단 막대 자리를 비켜 주기 위해서다 */
+  .hph--logos img{padding:13% 16% 19%}
+
   /* ── 카드 진입 스태거 ─────────────────────────────────────────────────
      카드가 화면 가운데 대역에 들어오면 구성 요소가 순서대로 내려앉는다.
      휠을 따로 소비하지 않는다 — 스크롤은 지금처럼 카드·섹션 이동에만 쓰이므로
@@ -791,6 +951,75 @@
     [data-reveal] .rv{opacity:1;translate:none;transition:none}
   }
 
+  /* ══════════════════════════════════════════════════════════════════════
+     시안 : 본문을 탭 바에 붙이기 (.wrap.tray / .bnav-wrap--tray)
+     ══════════════════════════════════════════════════════════════════════
+     세부 페이지 4종(스마트 제조·에너지 인프라·인공지능·반도체)과 그 A-1 짝이 모두
+     이 훅을 달고 있다. 클래스로 남겨 둔 이유는 되돌리기 위해서다 — 확정되면 규칙을
+     기본값(.hsec / .httl / .bnav-wrap)에 접어 넣고 훅 두 개를 지우면 된다.
+     하는 일은 네 가지다.
+
+     ① 본문을 고정된 탭 바 밑변 바로 아래(8px)까지 끌어올린다
+     ② 탭 바 우측 블록이 시작하는 세로선을 카드 왼쪽 선과 하나로 맞춘다
+     ③ 본문 상단 가로선을 화면 좌우 끝까지 늘린다
+     ④ 좌측 타이틀 아랫선을 빼고, 그 선이 있던 자리까지 인덱스를 올린다
+
+     ① 의 --gap-nav 는 바 밑변과 본문 첫 줄 사이에 남기는 숨이다. 기본값은 76px
+     (.hsec 의 padding-top 204 = 바 밑변 128 + 76)로, 바와 본문이 따로 노는 원인이었다.
+     0 까지 붙이면 카드 위 테두리가 바 밑변에 딱 맞물려 "바에 밑줄이 하나 생긴 것"
+     처럼 보이므로, 두 선이 겹치지 않을 만큼만 띄운다. 줄인 만큼 카드가 길어진다.
+
+     ② 가 어긋나 있던 이유 — 원본에서 S커브(::before)는 4번째 열 바로 왼쪽 거터에
+     놓인다. 커브는 어두운 좌측에서 흰 탭 패널로 넘어가는 24px 짜리 램프라,
+     "우측 블록이 여기서 시작한다"고 눈이 잡는 자리는 흰 패널의 왼쪽 끝(--bx4)이
+     아니라 그 커브가 시작하는 --bx4 − 24px 이다. 카드 왼쪽 테두리는 --bx4 에 있으니
+     정확히 거터 한 칸만큼 어긋나 보인다.
+
+     그래서 커브를 지우지 않고 우측 블록을 통째로 거터 한 칸 오른쪽으로 민다 —
+     커브가 --bx4 에서 시작하고, 흰 패널과 탭 첫 글자는 그 램프가 끝나는
+     --bx4 + 24px 에서 시작한다. 결과적으로 커브의 시작선 = 카드 왼쪽 테두리가 되어
+     바에서 카드까지 세로선 하나가 끊기지 않는다.
+     탭 글자가 패널 왼쪽 끝에 바로 붙는 관계는 원본과 같다(둘 다 같은 x 에서 시작).
+
+     ③ 은 기존 두 테두리(좌측 타이틀 윗선 + 카드 위 테두리)로는 만들 수 없다. 둘 다
+     그리드 안에 갇혀 있어 좌우 24px 여백에서 끊긴다. 그래서 같은 y 에 100vw 짜리
+     선을 하나 더 깔았다 — 원래 선들과 색·y 가 같아 겹치는 구간에서는 한 줄로 보이고,
+     여백 구간만 새로 채워진다. .hsec 이 그리드 컨테이너라 그냥 ::before 를 두면
+     그리드 항목이 되어 칸을 하나 차지하므로 절대배치로 흐름에서 빼낸다.
+
+     ④ 아랫선은 인덱스를 한 칸(.hrail 의 gap 26px) 아래로 밀어 놓는 일만 하고 있었다.
+     선을 빼고 그 간격을 0 으로 두면 인덱스가 정확히 그 선이 있던 자리에 올라선다.
+     좁은 화면은 인덱스를 감추므로(.hidx display:none) 거기서는 아랫선이 타이틀
+     한 덩어리를 닫아 주는 역할이 남는다 → 이 블록 밖에서는 그대로 둔다.
+
+     한때 이 자리에 회색 판(트레이)을 깔았다가 걷어냈다. 판을 없앤 뒤로는 카드가
+     다시 트랙 칸을 꽉 채우므로 카드 테두리·라디우스·하단 페이드가 전부 기본값
+     그대로면 된다.
+
+     좁은 화면은 제외한다(min-width:901px) — 거기서는 탭 바가 흰 패널과 커브를 이미
+     접고(max-width:900px 블록) 레일도 트랙 위로 올라간다. 이 블록이 그 블록보다
+     특정도가 높아, 미디어 쿼리로 막지 않으면 좁은 화면 규칙을 덮어쓴다 */
+  @media(min-width:901px){
+    .tray{--gap-nav:8px}
+    .tray .hsec{position:relative;
+      padding-top:calc(var(--bar-rise) + var(--bar-h) + var(--gap-nav))}
+    /* 본문 상단 가로선 — 화면 좌우 끝까지. left:50% + translateX(-50%) 로 그리드
+       중앙을 기준 삼아 좌우로 똑같이 번지게 한다(.wrap 이 가운데 정렬이라 결과가
+       곧 화면 폭이다). body 가 overflow-x:clip 이라 100vw 가 스크롤바를 넘겨도
+       가로 스크롤이 생기지 않는다 */
+    .tray .hsec::before{content:"";position:absolute;
+      top:calc(var(--bar-rise) + var(--bar-h) + var(--gap-nav));
+      left:50%;width:100vw;transform:translateX(-50%);
+      height:1px;background:var(--border-g)}
+    .tray .httl{border-bottom:0}
+    .tray .hrail{gap:0}
+    .bnav-wrap--tray::before{left:var(--bx4)}
+    .bnav-wrap--tray::after{left:calc(var(--bx4) + var(--grid-gutter))}
+    /* margin 으로 미는 이유 — .bnav-tabs 는 overflow-x:auto 라 padding 을 주면
+       좁은 폭에서 탭 줄이 스크롤될 때 그 여백까지 같이 밀려 사라진다 */
+    .bnav-wrap--tray .bnav-tabs{margin-left:var(--grid-gutter)}
+  }
+
   /* 좁은 화면: 세로로 풀어줌 */
   @media(max-width:900px){
     /* 세로로 풀리면 미리보기 개념이 없다 → 트랙·레일 하단 여백을 한 번에 0으로 */
@@ -799,6 +1028,9 @@
     .hrail{grid-column:1;grid-row:1}
     .htrack{grid-column:1;grid-row:2}
     .hrail{flex-direction:column;gap:20px}
+    /* 세로로 풀리면 레일 오른쪽에 카드가 없다 → 거터를 덮던 음수 마진은 화면 밖으로
+       삐져나갈 뿐이라 되돌린다 (넓은 화면 전용, 위 .httl 주석 참고) */
+    .httl{margin-right:0}
     /* 세로로 풀리면 카드가 전부 아래에 이어 붙는다 → 인덱스가 가리킬 '현재 카드'도,
        뛰어넘을 거리도 없다. 목록 바로 아래에 실물 카드가 다 보이므로 접는다 */
     .hidx{display:none}
@@ -806,6 +1038,8 @@
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
     .hcard>.hph,.hcard>.hthumbs{position:static;width:100%;transform:none;margin-top:auto}
+    /* 기본 카드의 칸이 static 으로 풀렸으므로 겹쳐 둔 뒷장의 기준을 여기서 세운다 */
+    .hcard>.hph--slides{position:relative}
     /* 풀블리드 비주얼의 음수 마진도 좁은 화면 패딩(24 22)에 맞춰 다시 잡는다.
        .hcard.hcard--bleed>.hph 가 위 .hcard>.hph 보다 특정도가 높아 여기서 되돌린다 */
     .hcard.hcard--bleed>.hph{width:calc(100% + 44px);margin:auto -22px -24px}
@@ -825,7 +1059,16 @@
        두 열을 가르던 세로선은 열이 하나뿐이라 지운다 */
     .hcard.hcard--deck>.hdeck-top{grid-row:1}
     .hcard.hcard--deck>.hph{grid-column:1;grid-row:2;margin:0;height:auto;padding:0;border-left:0}
+    /* 세로로 풀려도 그림은 여백 없이 카드 좌우 테두리까지 — 바로 아래 픽토그램 판이
+       쓰는 -22px 와 같은 값이라 둘의 좌우 끝이 맞는다. 위 .hph 규칙 뒤에 와야 덮는다.
+       width 를 함께 늘리는 게 핵심 — 위 .hcard--split>.hph 가 width:100% 를 걸어두어
+       음수 마진만으로는 폭이 그대로라 왼쪽으로 밀리기만 하고 오른쪽에 44px 이 남는다
+       (.hcard--bleed>.hph 가 쓰는 calc(100% + 44px) 와 같은 값·같은 이유다) */
+    .hcard.hcard--deck>.hph--img{width:calc(100% + 44px);margin:0 -22px;padding:0}
     .hcard--deck>.hph--img img{width:auto;max-width:100%;height:auto}
+    /* 겹쳐 둔 뒷장은 좁은 화면에서도 첫 장 위에 그대로 포개져야 한다 —
+       위 규칙의 width:auto 를 그대로 받으면 절대배치된 채 원본 크기로 삐져나간다 */
+    .hph--img.hph--slides img+img{width:100%;height:100%}
     /* 안쪽 여백이 없어졌으므로 점선 상자는 칸 전체가 된다 (비율은 아래 .hcard--split 규칙) */
     .hcard.hcard--deck>.hph:not(.hph--img)::before{inset:0}
     .hcard.hcard--deck>.hblock:has(.pict){grid-row:3;margin:0 -22px -24px;
@@ -841,15 +1084,26 @@
      본문(.wrap)이 끝나고 푸터가 시작되기 전, 다른 사업영역으로 건너가는 자리.
      픽토그램들이 바닥선을 맞춰 서서 하나의 스카이라인이 되고 그대로 푸터 윗변에 붙는다.
 
-     지금 보고 있는 영역은 맨 왼쪽에 세로선으로 갈라 세운다 — '여기까지 온 곳 | 갈 수
-     있는 곳'. 농도만 낮추면 '왜 이것만 흐리지'로 읽히는데, 선이 그 이유를 대신 말해 준다.
-     링크도 태그 상자도 없이 국·영문 이름만 두어 누를 것처럼 보이지 않게 하되 마을에서
-     빼지는 않는다(넷이 다 서 있어야 4대 사업영역이라는 전체 그림이 남는다).
-     나머지 셋은 현재 다음 순서부터 돌아가며 선다 — 에너지 인프라 페이지라면
-     인공지능 → 화합물 → 스마트 제조.
+     칸 순서는 어느 페이지에서나 스마트 제조 → 에너지 인프라 → 인공지능 플랫폼 →
+     화합물 전력 반도체로 고정이다. 자리가 곧 사업영역 순서라 페이지를 옮겨 다녀도
+     마을의 지형이 바뀌지 않는다 — 한 번 외운 위치로 다시 손이 간다.
 
-     태그는 가운데가 아니라 픽토그램 왼쪽 끝에 맞춘다. 태그와 그림을 한 칸(.bhlot)에
-     같이 넣어 두면 저절로 맞고, 왼쪽 기준선이 생겨 목록으로 읽힌다. */
+     지금 보고 있는 영역은 제자리에 선 채 좌우 세로선으로 갈라 세운다 — 마을에서 여기만
+     도려낸 괄호다. 농도만 낮추면 '왜 이것만 흐리지'로 읽히는데, 선이 그 이유를 대신
+     말해 준다. 링크도 태그 상자도 없이 국·영문 이름만 두어 누를 것처럼 보이지 않게 하되
+     마을에서 빼지는 않는다(넷이 다 서 있어야 4대 사업영역이라는 전체 그림이 남는다).
+     나머지 셋은 자리 순서 그대로 왼쪽부터 차례로 불이 들어온다.
+
+     태그와 이름은 칸 가운데에 맞춘다. 한동안 왼쪽 끝에 맞춰 두었는데 — 기준선이 생겨
+     목록으로 읽히니까 — 이 레이아웃에서는 대가가 더 컸다. 칸 폭이 라벨이 아니라
+     픽토그램 캔버스 비율로 정해지므로, 왼쪽에 맞추면 눈에 보이는 여백은
+     '칸 피치 − 앞 태그 폭'이 되어 라벨 글자 수(스마트 제조 5자 ↔ 화합물 전력 반도체
+     9자, 폭 차 60px+)가 그대로 여백 편차로 나온다. 왼쪽 기준선은 정확한데 흰 공간의
+     리듬이 깨지는 것이고, 눈은 보이지 않는 기준선이 아니라 흰 공간을 읽는다.
+     현재 영역 이름이 25px 헤딩이라 폭 편차가 가장 큰 것도 여기에 얹힌다.
+     가운데로 맞추면 여백이 '피치 − 폭a/2 − 폭b/2'가 되어 편차가 절반으로 줄고,
+     좌우 세로선에서 이름까지의 거리도 같아져 괄호가 대칭이 된다(왼쪽 정렬일 때는
+     왼쪽 20px 대 오른쪽 150~200px 로 열 배 가까이 벌어졌다). */
   /* 윗변 구분선은 화면 끝에서 끝까지 통으로 긋는다 — 본문이 여기서 끝났다는 표시라
      본문 폭에 맞춰 자르면 본문의 일부처럼 읽힌다 */
   /* --draw: 픽토그램 선이 다 그려지는 데 걸리는 시간. 불 켜지는 루프가 이만큼 기다렸다
@@ -871,7 +1125,7 @@
   /* --ar 은 SVG 캔버스 비율. src 가 붙기 전에도 자리를 잡아 두어 그림이 들어올 때
      레이아웃이 밀리지 않는다 (그림은 화면에 들어올 때 붙는다 — business-layout.js) */
   .bhlot img{display:block;width:100%;height:auto;aspect-ratio:var(--ar)}
-  /* 평소 색은 맨 왼쪽(지금 보고 있는 영역)과 똑같이 둔다 — 넷이 값 하나(.22)를 함께
+  /* 평소 색은 지금 보고 있는 영역과 똑같이 둔다 — 넷이 값 하나(.22)를 함께
      쓰므로 어긋날 일이 없다. 원본 #445464 를 흰 바탕에 22% 로 얹은 ≈#D6D9DD 다.
      마을 전체가 한 톤으로 조용히 있다가 불만 옮겨 다니는 그림이 된다.
        평소   opacity .22 + saturate(1) → ≈#D6D9DD
@@ -882,36 +1136,41 @@
   /* hover 반응은 색으로만 준다 — 그림이 뜨면 바닥선이 어긋나 마을 스카이라인이 깨진다 */
   .bhlot:not(.is-here) img{transition:opacity .3s var(--ease),filter .3s var(--ease)}
 
-  /* --- 현재 영역 (맨 왼쪽) --- */
-  .bhnow{display:flex;flex-direction:column;gap:6px}
+  /* --- 현재 영역 (자기 순서 자리에 그대로 선다) --- */
+  /* 태그와 같은 기준(칸 가운데)으로 세운다 — text-align 은 화합물 전력 반도체처럼
+     좁은 화면에서 두 줄로 접히는 이름을 위해 함께 건다 */
+  .bhnow{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
   .bhnow .ko{font-family:var(--suit);font-weight:800;font-size:clamp(20px,1.7vw,25px);
     line-height:1.26;letter-spacing:-.5px;color:var(--g900);word-break:keep-all}
   .bhnow .en{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.3;
     letter-spacing:-.3px;color:var(--teritary)}
-  /* 갈라 세우는 세로선 — 섹션 맨 위에서 푸터 윗변까지 통으로 내린다.
-     칸 사이 여백 한가운데를 지나가도록 절반만큼 오른쪽으로 밀어 둔다 */
+  /* 갈라 세우는 좌우 세로선 — 섹션 맨 위에서 푸터 윗변까지 통으로 내린다.
+     칸 사이 여백 한가운데를 지나가도록 양쪽으로 여백 절반만큼 밀어 둔다.
+     맨 앞·맨 뒤 자리(스마트 제조 / 화합물 전력 반도체)면 한쪽 선이 마을 폭 바깥
+     페이지 여백에 서는데 그대로 둔다 — 괄호는 양쪽이 다 있어야 괄호고, 한쪽을
+     빼면 '여기가 현재'가 아니라 선을 그리다 만 것으로 읽힌다.
+     (여백은 최소 24px, 선은 최대 20px 바깥이라 화면 밖으로 나가지 않는다) */
+  .bhlot.is-here::before,
   .bhlot.is-here::after{content:"";position:absolute;top:calc(var(--pad) * -1);bottom:0;
-    right:calc(var(--gap) / -2);width:1px;background:var(--border-g)}
+    width:1px;background:var(--border-g)}
+  .bhlot.is-here::before{left:calc(var(--gap) / -2)}
+  .bhlot.is-here::after{right:calc(var(--gap) / -2)}
 
-  /* --- 태그 줄 --- */
-  .bhtop{display:flex;align-items:center;gap:12px}
+  /* --- 태그 줄 ---
+     .bhtop 은 태그 하나만 담지만 정렬을 거는 자리로 남겨 둔다 — 여기 justify-content
+     하나로 넷이 한 번에 따라온다 (왼쪽 정렬로 되돌리려면 flex-start, 위 주석 참고) */
+  .bhtop{display:flex;align-items:center;justify-content:center}
   .bhtag{flex-shrink:0;height:38px;display:inline-flex;align-items:center;padding:0 14px;
     border:1px solid var(--brand);color:var(--brand);
     font-family:var(--suit);font-weight:700;font-size:15px;line-height:1;letter-spacing:-.3px;white-space:nowrap;
     transition:background .25s var(--ease),color .25s var(--ease)}
-  /* 점선 화살표 — 남는 폭을 먹고 칸 사이 여백까지 넘어가 다음 태그 12px 앞에서 멈춘다 */
-  .bharw{flex:1;min-width:16px;height:1px;position:relative;
-    margin-right:calc(var(--gap) * -1 + 12px);border-top:1px dashed var(--point-300)}
-  .bharw::after{content:"";position:absolute;right:0;top:50%;width:6px;height:6px;
-    border-right:1px solid var(--point-300);border-top:1px solid var(--point-300);
-    transform:translateY(-50%) rotate(45deg)}
 
   /* --- 태그에 불이 하나씩 들어오는 루프 --- */
   /* 한 바퀴 8.4s(칸당 2.8s), 그중 켜져 있는 구간은 ~15%. 대부분 꺼져 있어야 깜빡임이
      아니라 흘러가는 불빛으로 읽힌다. 페이지 맨 아래 막다른 곳이라 '갈 데가 있다'는
      신호는 필요하지만, 마우스가 마을에 들어오면 끊는다 — 이미 보고 있는데 불이 계속
      돌아다니면 어느 걸 고르는 중인지 헷갈린다.
-     속도는 여기 8.4s 와 아래 두 delay(1/3·2/3 지점)를 같은 비율로 함께 고쳐야 한다 */
+     속도는 여기 8.4s 와 아래 --i 한 칸 간격(2.8s)을 같은 비율로 함께 고쳐야 한다 */
   /* 태그와 픽토그램이 같은 박자로 켜진다 — 구간(5~20~27%)과 주기·딜레이를 똑같이
      맞춰야 둘이 한 몸으로 읽힌다. 한쪽만 고치면 어긋난다 */
   @keyframes bhlit{
@@ -927,12 +1186,15 @@
   /* paused 로 걸어 두고 JS 가 그림을 붙이면서 .is-lit 을 달 때 풀어 준다 — 페이지가
      열리자마자 돌기 시작하면, 스크롤해 내려왔을 때 루프가 이미 아무 지점에나 가 있다.
      paused 는 delay 까지 같이 멈추므로 푸는 순간부터 --draw 가 세어진다 */
-  .bhlot:not(.is-here) .bhtag{animation:bhlit 8.4s var(--ease) var(--draw) infinite paused}
-  .bhlot:not(.is-here) img{animation:bhlitimg 8.4s var(--ease) var(--draw) infinite paused}
-  .bhop-town .bhlot:nth-child(3) .bhtag,
-  .bhop-town .bhlot:nth-child(3) img{animation-delay:calc(var(--draw) + 2.8s)}
-  .bhop-town .bhlot:nth-child(4) .bhtag,
-  .bhop-town .bhlot:nth-child(4) img{animation-delay:calc(var(--draw) + 5.6s)}
+  /* 차례(--i)는 nth-child 로 셀 수 없다 — 현재 영역이 페이지마다 다른 자리에 서므로
+     '몇 번째 칸인가'가 아니라 '앞에 선 다른 영역이 몇 개인가'를 세야 한다.
+     ~ 는 자기 앞 형제만 보므로 조건을 겹칠수록 뒤쪽 칸에만 걸리고, 겹친 만큼 특정도도
+     올라가 뒤 규칙이 이긴다 → 현재 영역을 건너뛰고 왼쪽부터 0 · 1 · 2 */
+  .bhop-town .bhlot:not(.is-here){--i:0}
+  .bhop-town .bhlot:not(.is-here) ~ .bhlot:not(.is-here){--i:1}
+  .bhop-town .bhlot:not(.is-here) ~ .bhlot:not(.is-here) ~ .bhlot:not(.is-here){--i:2}
+  .bhlot:not(.is-here) .bhtag{animation:bhlit 8.4s var(--ease) calc(var(--draw) + var(--i) * 2.8s) infinite paused}
+  .bhlot:not(.is-here) img{animation:bhlitimg 8.4s var(--ease) calc(var(--draw) + var(--i) * 2.8s) infinite paused}
   .bhop-town.is-lit .bhtag,.bhop-town.is-lit img{animation-play-state:running}
   /* 마우스가 들어오면 루프를 끊고, 얹은 칸만 켠다 (transition 이 이어받아 부드럽게) */
   .bhop-town:hover .bhtag,.bhop-town:hover img{animation:none}
@@ -944,14 +1206,13 @@
     .bhop-town .bhlot .bhtag,.bhop-town .bhlot img{animation:none}
   }
 
-  /* 좁아지면 화살표를 버린다. 마을은 한 줄을 지킨다 — 스카이라인이 끊기면 마을로 안 읽힌다 */
+  /* 좁아져도 마을은 한 줄을 지킨다 — 스카이라인이 끊기면 마을로 안 읽힌다 */
   @media(max-width:900px){
     .bhop{--pad:72px}
     .bhlot{gap:28px}
     .bhtag{height:32px;padding:0 10px;font-size:13px}
     .bhnow .ko{font-size:18px}
     .bhnow .en{font-size:13px}
-    .bharw{display:none}
   }
 
   /* ===================== FOOTER =====================

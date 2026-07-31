@@ -467,3 +467,75 @@
   },{rootMargin:'0px 0px -12% 0px'});      /* 마을이 화면에 제대로 들어왔을 때 */
   io.observe(town);
 })();
+
+/* 여러 장짜리 비주얼 — 2초마다 다음 장으로
+   그림이 둘 이상인 자리(.hph--slides)는 같은 칸에 겹쳐 두고 순서대로 넘긴다.
+   몇 장인지·지금 몇 번째인지 알리는 하단 막대도 여기서 만든다 — 그림 수만큼 칸을
+   찍어내므로 HTML 에 장수를 적어둘 필요가 없다(좌측 카드 인덱스와 같은 방식).
+
+   화면 밖에서는 돌리지 않는다. 이 페이지는 카드가 세로 캐러셀로 쌓여 있어 한 번에
+   한 장만 보이는데, 안 보이는 카드까지 계속 넘기면 돌아왔을 때 엉뚱한 장이 떠 있고
+   타이머만 열 몇 개가 함께 돈다. 들어올 때 첫 장부터 다시 시작한다.
+
+   움직임을 줄이는 설정(prefers-reduced-motion)이면 첫 장만 두고 넘기지 않는다.
+   막대는 그대로 둔다 — "여러 장이 있다"는 정보 자체는 남아야 한다 */
+(function(){
+  var DELAY=2000;
+  var slides=[].slice.call(document.querySelectorAll('.hph--slides'));
+  if(!slides.length)return;
+  var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var sets=slides.map(function(box){
+    var imgs=[].slice.call(box.querySelectorAll('img'));
+    if(imgs.length<2)return null;
+    /* 첫 장은 지연 로딩을 풀어 둔다 — 카드가 보이는 순간 이미 떠 있어야 하고,
+       뒷장들은 lazy 그대로 두면 넘어가는 순간 빈 칸이 스쳐 지나간다 → 함께 깨운다 */
+    imgs.forEach(function(im){im.loading='eager';});
+    imgs[0].classList.add('is-on');
+
+    var bar=document.createElement('span');
+    bar.className='hslide-bar';
+    bar.setAttribute('aria-hidden','true');   /* 장식 — 그림 설명은 각 img 의 alt 가 한다 */
+    var pips=imgs.map(function(_,i){
+      var pip=document.createElement('i');
+      if(!i)pip.className='is-on';
+      bar.appendChild(pip);return pip;
+    });
+    box.appendChild(bar);
+    return {box:box,imgs:imgs,pips:pips,i:0,timer:0};
+  }).filter(Boolean);
+  if(!sets.length)return;
+
+  function show(st,n){
+    st.imgs[st.i].classList.remove('is-on');st.pips[st.i].classList.remove('is-on');
+    st.i=n;
+    st.imgs[n].classList.add('is-on');st.pips[n].classList.add('is-on');
+  }
+  function start(st){
+    if(still||st.timer)return;
+    st.timer=setInterval(function(){show(st,(st.i+1)%st.imgs.length);},DELAY);
+  }
+  function stop(st,rewind){
+    if(st.timer){clearInterval(st.timer);st.timer=0;}
+    if(rewind&&st.i)show(st,0);
+  }
+
+  if(!('IntersectionObserver' in window)){sets.forEach(start);return;}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var st=sets.filter(function(s){return s.box===e.target;})[0];
+      if(!st)return;
+      if(e.isIntersecting)start(st);else stop(st,true);
+    });
+  },{threshold:.35});     /* 칸이 3분의 1 넘게 보이면 = 이 카드를 보고 있는 것 */
+  sets.forEach(function(st){io.observe(st.box);});
+
+  /* 탭을 덮어 두면 브라우저가 타이머를 몰아 처리한다 → 돌아왔을 때 여러 장이
+     한꺼번에 스쳐 지나간다. 숨을 때 세우고 돌아올 때 다시 건다 */
+  document.addEventListener('visibilitychange',function(){
+    sets.forEach(function(st){
+      if(document.hidden)stop(st,false);
+      else if(st.box.getBoundingClientRect().top<innerHeight&&st.box.getBoundingClientRect().bottom>0)start(st);
+    });
+  });
+})();

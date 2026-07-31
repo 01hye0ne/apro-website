@@ -634,8 +634,8 @@
             <div class="biz-center">
               <div class="biz-hero">
                 <span class="biz-num"><!-- step counter, centred above the title -->
-                  <!-- 00 = 인트로, 01~04 = 사업. 분모는 사업 수(04) — 상단 배너 인덱스와 같은 규칙 -->
-                  <span class="reel"><span class="col"><i>00</i><i>01</i><i>02</i><i>03</i><i>04</i></span></span>
+                  <!-- 01~04 = 사업, 00 = 인트로(맨 뒤). 분모는 사업 수(04) — 상단 배너 인덱스와 같은 규칙 -->
+                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i><i>00</i></span></span>
                   <span class="tot">/04</span>
                 </span>
                 <div class="hero-main">
@@ -942,14 +942,9 @@
 
     // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
-      // 00 인트로 — 사업영역이 4개로 줄어 비게 된 첫 자리. 코버플로우는 [먼쪽][중간][중앙][중간][먼쪽]
-      // 5슬롯 대칭이라 카드를 4장으로 줄이면 좌우 대칭이 깨진다 → 슬롯 5개를 그대로 두고
-      // 이 칸을 사옥 사진 한 장으로 채웠다. 카드 안에는 아무것도 얹지 않는다 —
-      // 사업명은 카드 위 히어로(에이프로 / Global Top5…)가 이미 말한다.
-      // 번호 체계는 상단 배너 인덱스(00 에이프로 | 01~04)와 같다 — 인트로가 00.
-      // intro:true 가 하는 일: 헤더 탭을 만들지 않고, 소분류가 없어 프로스티드 패널을 접는다
-      { intro:true, kor:'에이프로', eng:'Global Top5, Total Energy Solution Provider',
-        img:'hq-building.jpg', href:'', lists:[] },
+      // 사업 4개(01~04)가 먼저 돌고, 에이프로 인트로 카드가 마지막 자리에 온다.
+      // 코버플로우는 [먼쪽][중간][중앙][중간][먼쪽] 5슬롯 대칭이라 카드를 4장으로 줄이면
+      // 좌우 대칭이 깨진다 → 슬롯 5개를 그대로 두고 남는 칸을 사옥 사진 한 장으로 채웠다.
       { kor:'스마트 제조', eng:'Smart Factory', img:'carousel-battery.jpg', href:'business-smart-a1.html',
         lists:[ {nm:'이차전지 활성화 전공정 설비', href:'business-smart-a1.html', tags:['충방전기','DCIR','고온·가압 충방전기','Degas','Pre-formation','OCV','IR-OCV','DSF/EOL','Selector']},
                 {nm:'신뢰성 검사 장비', href:'business-smart-a1.html', tags:['이차전지 Cycler (셀/모듈)']},
@@ -966,10 +961,16 @@
       { kor:'화합물 전력 반도체', eng:'GaN Power Semiconductors', img:'carousel-gan.jpg', href:'business-semicon-a1.html',
         lists:[ {nm:'GaN Epi-Wafer', href:'business-semicon-a1.html', tags:['GaN Epi-Wafer']},
                 {nm:'GaN Power Device', href:'business-semicon-a1.html', tags:['GaN Power Device']},
-                {nm:'에이프로 세미콘', sub:true, href:'business-semicon-a1.html', tags:['A-PRO SEMICON']} ] }
+                {nm:'에이프로 세미콘', sub:true, href:'business-semicon-a1.html', tags:['A-PRO SEMICON']} ] },
+      // 마지막 = 에이프로 인트로. 카드 안에는 아무것도 얹지 않는다 — 사업명은 카드 위
+      // 히어로(에이프로 / Global Top5…)가 이미 말한다. 번호는 상단 배너와 같은 체계로 00 을 쓴다
+      // (릴 순서도 01·02·03·04·00 으로 맞춰 두었다).
+      // intro:true 가 하는 일: 헤더 탭을 만들지 않고, 소분류가 없어 프로스티드 패널을 접는다
+      { intro:true, kor:'에이프로', eng:'Global Top5, Total Energy Solution Provider',
+        img:'hq-building.jpg', href:'', lists:[] }
     ];
     // 인트로도 중앙에 오는 스텝이므로 슬롯 수 = 카드 수 = 스텝 수 = 5 (v2 와 같은 구조).
-    // 0 = 인트로, 1..4 = 사업 — 카운터 릴(00·01~04)과 인덱스가 그대로 맞는다
+    // 0..3 = 사업(01~04), 4 = 인트로(00) — 카운터 릴이 이 순서를 그대로 따라간다
     var N = BIZ.length;
     var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
     var WF=(LISTW-GAP)/2, BASE=860;
@@ -1101,14 +1102,14 @@
       var s=Math.min(vw/1280, vh/586), stageTop=(vh-900)/2, acx=vw/2, acy=vh/2+41*s, aw=104*s, ah=102*s;
       M={ bx:acx-aw/2, by:(acy-stageTop)-ah/2, bw:aw, bh:ah };
     }
-    // expand the actual cards from the compressed A-box out to the active=0 (00 인트로) coverflow slots (dark → photo);
+    // expand the actual cards from the compressed A-box out to the active=0 (01 스마트 제조) coverflow slots (dark → photo);
     // the carousel then reuses them as-is. cop = card fade-in (so they appear as the A-PRO logo clears).
     // Two-stage morph: (1) gS — the A-box splits into 5 boxes of EQUAL height while spreading out
     // in x/width; (2) gH — each box's height is then adjusted to the final carousel staircase (the "A").
     function expandCards(gS, gH, reveal, cop){
       var EQH = SLOT[2].h;                                 // equal height during the split = centre card's final height
       for(var b=0;b<N;b++){
-        // 모핑이 끝난 배치가 곧 첫 스텝(active=0, 인트로)의 배치 → slotOf 와 같은 식
+        // 모핑이 끝난 배치가 곧 첫 스텝(active=0, 스마트 제조)의 배치 → slotOf 와 같은 식
         var pos=(((b+2)%N)+N)%N, s=SLOT[pos], card=cards[b];
         var baseB = s.y + s.h;                             // shared bottom baseline (all cards sit on BASE)
         var Abott = M.by + M.bh;                           // A-box bottom edge
