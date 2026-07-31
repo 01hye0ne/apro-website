@@ -40,6 +40,11 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="dhero">
+  <!-- 배경 사진 = 사업영역 허브(business.html)의 '화합물 전력 반도체' 패널이 hover 때 여는 사진.
+       --hero-pos 는 이 가로 띠에서의 크롭 지점 — 웨이퍼를 든 두 인물이 중앙에 오도록.
+       중앙으로 잡으면 장비 상단의 타사 로고(Veeco/Propel HVM)가 GNB 메뉴와 겹쳐
+       읽히므로, 그 줄이 화면 위로 빠져나가는 높이까지 올려 잡았다 -->
+  <span class="dhero-bg" style="--hero-pos:50% 66%"><img src="../assets/carousel-gan.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
     <!-- 히어로가 A / A-1 의 유일한 차이다 → 두 문안을 다 담아두고 CSS 가 하나만 보인다.
          A: 사업명칭 h1 / A-1(.v-a1): 설명글 2줄 + h1 은 화면에서만 숨김.
@@ -142,6 +147,32 @@
   </section>
 
 </div>
+
+<!-- ===================== 다른 사업영역 — 마을 =====================
+     본문이 끝나고 푸터 직전. 픽토그램들이 바닥선을 맞춰 서서 마을이 되고 그대로
+     푸터 윗변에 붙는다. 맨 왼쪽이 지금 보고 있는 영역이고 세로선으로 갈라 세운다 —
+     '여기까지 온 곳 | 갈 수 있는 곳'. 나머지 셋은 현재 다음 순서부터 돌아가며 선다.
+     그림이 src 가 아니라 data-src 인 이유는 business-layout.js '마을 진입' 참고 -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <span class="bhlot is-here" data-a="semicon" style="--ar:251/180">
+      <span class="bhnow"><span class="ko">화합물 전력 반도체</span><span class="en">GaN Power Semiconductors</span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="smart" href="business-smart-a1.html" style="--ar:251/177">
+      <span class="bhtop"><span class="bhtag">스마트 제조</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="energy" href="business-energy-a1.html" style="--ar:251/179">
+      <span class="bhtop"><span class="bhtag">에너지 인프라</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="ai" href="business-ai-a1.html" style="--ar:267/176">
+      <span class="bhtop"><span class="bhtag">인공지능 플랫폼</span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">

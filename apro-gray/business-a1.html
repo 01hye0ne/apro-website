@@ -58,7 +58,10 @@
   .panel:hover{background:var(--g950);color:#fff;border-color:rgba(255,255,255,.12)}
 
   /* ---- 평상시 = 벡터 그래픽 / hover = 원본 사진 ----
-     평상시: 흰 패널 + 벡터 그래픽만. (벡터 미제작 → .pvec 안이 비어 있으면 자리표시가 뜬다)
+     평상시: 흰 패널 + 벡터 그래픽만. 네 패널 모두 픽토그램이 들어갔다.
+             (.pvec 안이 비면 자리표시 VECTOR ··· 가 대신 뜬다 — 파일이 빠졌을 때의 안전망)
+             픽토그램은 로드되면서 선이 그려진다 — 애니메이션은 SVG 파일 안에 들어 있다.
+             <img> 로는 이 페이지의 CSS 가 SVG 내부에 닿지 못하기 때문. assets/_gen-vec-anim.py
      hover : 벡터가 위로 사라지며 홈 Business 섹션과 같은 원본 사진이 컬러로 드러나고,
              그 위에 어두운 그라디언트가 덮여 흰 타이틀·하단 서브메뉴가 읽힌다. */
 
@@ -85,10 +88,25 @@
     display:grid;place-items:center;pointer-events:none;
     transition:opacity .4s var(--ease),transform .55s var(--ease)}
   .panel:hover .pvec{opacity:0;transform:translateY(-12px)}
-  .pvec img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
-  /* 벡터 미제작 상태의 자리표시 — .pvec 안에 <img>를 넣으면 자동으로 사라진다 */
+  /* 크기는 반드시 width 로 정한다 — SVG 가 width="251" 을 갖고 있어서 width:auto 면 패널이
+     아무리 넓어도 251px 에 멈춘다. max-width 는 상한일 뿐 모자란 걸 늘려 주지 않는다.
+     85% = 이 자리에서 그래픽이 제 크기로 보이는 비율(1920px 화면 기준 362px).
+     세로가 모자라면 max-height 가 받아 비율 그대로 줄인다.
+     자리표시(::before)와는 한 쌍이니 한쪽 크기를 바꾸면 아래도 같이 맞춘다 */
+  .pvec img{width:85%;max-width:560px;max-height:100%;height:auto;object-fit:contain}
+  /* 인공지능 플랫폼만 캔버스가 267 units (나머지는 251) — 그림이 바닥선보다 왼쪽으로
+     16 units 더 나가 있어서 그렇다. 네 픽토그램이 공유하는 기준은 250 units 짜리
+     바닥선이므로, 그 길이가 맞도록 이 패널만 폭을 키운다: 85% × 267/251 ≈ 90.4%.
+     그냥 85% 로 두면 이 패널 바닥선만 6% 짧게 그려져 혼자 작아 보인다 */
+  .panel[data-idx="03"] .pvec img{width:90.4%}
+  /* 그리기 위치만 40px 내린다. padding 이 아니라 transform 이라 가운데 정렬과
+     max-height 계산은 그대로여서, 내린 만큼 그래픽이 작아지지 않는다 */
+  .pvec img,.pvec::before{transform:translateY(40px)}
+  /* 벡터 미제작 상태의 자리표시 — .pvec 안에 <img>를 넣으면 자동으로 사라진다.
+     제작된 두 픽토그램이 251×177 한 프레임을 쓰므로 자리표시도 같은 비율로 두면
+     나중에 들어올 그래픽이 차지할 자리를 그대로 보여 준다(정사각형이면 눈높이가 어긋난다) */
   .pvec::before{content:"VECTOR\A" attr(data-vec);white-space:pre-line;
-    box-sizing:border-box;width:min(100%,180px);aspect-ratio:1/1;border:1px dashed var(--border-g);
+    box-sizing:border-box;width:85%;max-width:560px;max-height:100%;aspect-ratio:251/177;border:1px dashed var(--border-g);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:0 12px;text-align:center;line-height:2;
     font-family:var(--rc);font-size:11px;letter-spacing:.08em;color:var(--teritary)}
@@ -99,7 +117,7 @@
   .p-title{display:flex;flex-direction:column;gap:6px}
   /* 세부 페이지 섹션 타이틀(.httl)과 동일한 타이포 */
   .p-title .ko{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.26;letter-spacing:-.6px;color:inherit;word-break:keep-all}
-  .p-title .en{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.3;letter-spacing:-.28px;opacity:.55}
+  .p-title .en{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.3;letter-spacing:-.32px;opacity:.55}
 
   /* ---- sub-menu: pinned to the bottom, hidden by default, revealed on hover ---- */
   /* fills to the panel's 27px side padding, matching the 27px bottom padding (uniform frame).
@@ -114,8 +132,28 @@
   .li .nm{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .li .tag{margin-left:auto;flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:1px 8px;font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px}
 
+  /* ---- 1440px 미만 = 4열 → 2×2 ----
+     4열을 그대로 좁히면 패널이 300px 밑으로 내려가 타이틀이 세 줄로 접히고 그래픽이 뭉개진다.
+     2×2 는 패널 폭이 두 배가 되는 대신 높이가 절반이라 제약이 가로에서 세로로 넘어간다 →
+     타이틀을 중앙까지 내리던 --ptop 과 벡터 아래 여백을 함께 줄여 그래픽 자리를 되찾는다.
+     (서브메뉴는 absolute 라 이 여백을 쓰지 않고, 열릴 때 벡터는 어차피 사라진다)
+
+     여기서 그래픽은 폭이 아니라 높이가 정한다 — 85% 폭이 남은 높이보다 커서 max-height 에
+     걸린다. 자리표시도 같은 규칙(높이 꽉, 폭은 비율대로)으로 바꿔야 눈높이가 맞는다. */
+  @media(max-width:1439px){
+    .carousel{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr)}
+    .panel{height:auto;min-height:0;--ptop:clamp(40px,5vh,80px);
+      border-bottom:1px solid var(--border-g)}   /* 색은 .panel:hover 가 다시 정한다 */
+    .panel:nth-child(2){border-right:none}       /* 오른쪽 열 */
+    .panel:nth-child(n+3){border-bottom:none}    /* 아랫줄 */
+    .pvec{margin-top:18px;padding-bottom:28px}
+    .pvec::before{width:auto;height:100%;max-width:85%}
+    /* 여기선 그래픽이 이미 높이를 꽉 채워서 40px 을 그대로 내리면 바닥에 닿는다 */
+    .pvec img,.pvec::before{transform:translateY(14px)}
+  }
+
   .mnote{display:none}
-  @media(max-width:900px){
+  @media(max-width:640px){
     .p-title .ko{font-size:16px}
   }
   @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:50;display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
@@ -218,7 +256,7 @@
         <div class="p-title"><p class="ko">스마트 제조</p><p class="en">Smart Factory</p></div>
       </div>
       <span class="pvec" data-vec="SMART FACTORY">
-        <!-- 벡터 제작 후 교체: <img src="../assets/vec-smart.svg" alt="" aria-hidden="true" /> -->
+        <img src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
       </span>
       <div class="p-lists">
         <span class="li"><span class="dot"></span><span class="nm">이차전지 활성화 전공정 설비</span></span>
@@ -235,7 +273,7 @@
         <div class="p-title"><p class="ko">에너지 인프라</p><p class="en">Energy Infrastructure</p></div>
       </div>
       <span class="pvec" data-vec="ENERGY INFRASTRUCTURE">
-        <!-- 벡터 제작 후 교체: <img src="../assets/vec-energy.svg" alt="" aria-hidden="true" /> -->
+        <img src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
       </span>
       <div class="p-lists">
         <span class="li"><span class="dot"></span><span class="nm">그리드 에너지 저장 장치</span></span>
@@ -250,7 +288,7 @@
         <div class="p-title"><p class="ko">인공지능 플랫폼</p><p class="en">Intelligent AI Platform</p></div>
       </div>
       <span class="pvec" data-vec="INTELLIGENT AI PLATFORM">
-        <!-- 벡터 제작 후 교체: <img src="../assets/vec-ai.svg" alt="" aria-hidden="true" /> -->
+        <img src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
       </span>
       <div class="p-lists">
         <span class="li"><span class="dot"></span><span class="nm">로봇 플랫폼</span></span>
@@ -267,7 +305,7 @@
         <div class="p-title"><p class="ko">화합물 전력 반도체</p><p class="en">GaN Power Semiconductors</p></div>
       </div>
       <span class="pvec" data-vec="GAN POWER SEMICONDUCTORS">
-        <!-- 벡터 제작 후 교체: <img src="../assets/vec-semicon.svg" alt="" aria-hidden="true" /> -->
+        <img src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
       </span>
       <div class="p-lists">
         <span class="li"><span class="dot"></span><span class="nm">GaN Epi-Wafer</span></span>

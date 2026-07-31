@@ -1,0 +1,60 @@
+<svg width="251" height="174" viewBox="0 0 251 174" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style id="vec-draw">
+    @keyframes vecdraw{from{stroke-dashoffset:calc(var(--L) * 1px)}to{stroke-dashoffset:0}}
+    @keyframes vecfade{from{opacity:0}to{opacity:1}}
+    [data-draw="1"]{animation-name:vecdraw;animation-timing-function:cubic-bezier(.22,1,.36,1);animation-fill-mode:both}
+    [data-fade="1"]{animation-name:vecfade;animation-timing-function:ease-out;animation-fill-mode:both}
+    @media (prefers-reduced-motion:reduce){
+      [data-draw="1"],[data-fade="1"]{animation:none}
+    }
+  </style>
+<rect x="97.5" y="53.5" width="47" height="47" stroke="#445464" data-draw="1" stroke-dasharray="188.0" style="--L:188.0;animation-duration:1.18s;animation-delay:0.61s"/>
+<rect x="100.5" y="56.5" width="41" height="41" stroke="#445464" data-draw="1" stroke-dasharray="164.0" style="--L:164.0;animation-duration:1.02s;animation-delay:0.63s"/>
+<rect x="48.5" y="4.5" width="145" height="145" stroke="#445464" data-draw="1" stroke-dasharray="580.0" style="--L:580.0;animation-duration:1.25s;animation-delay:0.65s"/>
+<rect x="44.5" y="0.5" width="153" height="153" stroke="#445464" data-draw="1" stroke-dasharray="612.0" style="--L:612.0;animation-duration:1.25s;animation-delay:0.68s"/>
+<rect x="78.5" y="34.5" width="11" height="11" stroke="#445464" data-draw="1" stroke-dasharray="44.0" style="--L:44.0;animation-duration:0.45s;animation-delay:1.16s"/>
+<rect x="152.5" y="34.5" width="11" height="11" stroke="#445464" data-draw="1" stroke-dasharray="44.0" style="--L:44.0;animation-duration:0.45s;animation-delay:1.18s"/>
+<rect x="152.5" y="108.5" width="11" height="11" stroke="#445464" data-draw="1" stroke-dasharray="44.0" style="--L:44.0;animation-duration:0.45s;animation-delay:0.19s"/>
+<rect x="78.5" y="108.5" width="11" height="11" stroke="#445464" data-draw="1" stroke-dasharray="44.0" style="--L:44.0;animation-duration:0.45s;animation-delay:0.22s"/>
+<line x1="100.5" y1="50" x2="100.5" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.96s"/>
+<line x1="105.625" y1="50" x2="105.625" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.98s"/>
+<line x1="110.75" y1="50" x2="110.75" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.00s"/>
+<line x1="115.875" y1="50" x2="115.875" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.03s"/>
+<line x1="121" y1="50" x2="121" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.05s"/>
+<line x1="126.125" y1="50" x2="126.125" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.07s"/>
+<line x1="131.25" y1="50" x2="131.25" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.09s"/>
+<line x1="136.375" y1="50" x2="136.375" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.11s"/>
+<line x1="141.5" y1="50" x2="141.5" y2="54" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:1.13s"/>
+<line x1="94" y1="97.5" x2="98" y2="97.5" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.43s"/>
+<line x1="94" y1="92.375" x2="98" y2="92.375" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.48s"/>
+<line x1="94" y1="87.25" x2="98" y2="87.25" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.52s"/>
+<line x1="94" y1="82.125" x2="98" y2="82.125" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.57s"/>
+<line x1="94" y1="77" x2="98" y2="77" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.70s"/>
+<line x1="94" y1="71.875" x2="98" y2="71.875" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.78s"/>
+<line x1="94" y1="66.75" x2="98" y2="66.75" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.83s"/>
+<line x1="94" y1="61.625" x2="98" y2="61.625" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.87s"/>
+<line x1="94" y1="56.5" x2="98" y2="56.5" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.92s"/>
+<line x1="144" y1="97.5" x2="148" y2="97.5" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.46s"/>
+<line x1="144" y1="92.375" x2="148" y2="92.375" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.50s"/>
+<line x1="144" y1="87.25" x2="148" y2="87.25" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.54s"/>
+<line x1="144" y1="82.125" x2="148" y2="82.125" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.59s"/>
+<line x1="144" y1="77" x2="148" y2="77" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.72s"/>
+<line x1="144" y1="71.875" x2="148" y2="71.875" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.81s"/>
+<line x1="144" y1="66.75" x2="148" y2="66.75" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.85s"/>
+<line x1="144" y1="61.625" x2="148" y2="61.625" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.89s"/>
+<line x1="144" y1="56.5" x2="148" y2="56.5" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.94s"/>
+<line x1="100.5" y1="100" x2="100.5" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.24s"/>
+<line x1="105.625" y1="100" x2="105.625" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.26s"/>
+<line x1="110.75" y1="100" x2="110.75" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.28s"/>
+<line x1="115.875" y1="100" x2="115.875" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.30s"/>
+<line x1="121" y1="100" x2="121" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.33s"/>
+<line x1="126.125" y1="100" x2="126.125" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.35s"/>
+<line x1="131.25" y1="100" x2="131.25" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.37s"/>
+<line x1="136.375" y1="100" x2="136.375" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.39s"/>
+<line x1="141.5" y1="100" x2="141.5" y2="104" stroke="#445464" data-draw="1" stroke-dasharray="4.0" style="--L:4.0;animation-duration:0.45s;animation-delay:0.41s"/>
+<path d="M121 4L121 53" stroke="#445464" data-draw="1" stroke-dasharray="49.0" style="--L:49.0;animation-duration:0.45s;animation-delay:1.20s"/>
+<path d="M121 101L121 150" stroke="#445464" data-draw="1" stroke-dasharray="49.0" style="--L:49.0;animation-duration:0.45s;animation-delay:0.17s"/>
+<path d="M194 77L145 77" stroke="#445464" data-draw="1" stroke-dasharray="49.0" style="--L:49.0;animation-duration:0.45s;animation-delay:0.74s"/>
+<path d="M97 77L48 77" stroke="#445464" data-draw="1" stroke-dasharray="49.0" style="--L:49.0;animation-duration:0.45s;animation-delay:0.76s"/>
+<rect x="0.5" y="165.5" width="250" height="8" stroke="#445464" data-draw="1" stroke-dasharray="516.0" style="--L:516.0;animation-duration:1.25s;animation-delay:0.15s"/>
+</svg>

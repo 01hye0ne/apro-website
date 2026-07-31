@@ -40,6 +40,9 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="dhero">
+  <!-- 배경 사진 = 사업영역 허브(business.html)의 '에너지 인프라' 패널이 hover 때 여는 사진.
+       --hero-pos 는 이 가로 띠에서의 크롭 지점 — 통로 소실점이 중앙에 오도록 -->
+  <span class="dhero-bg" style="--hero-pos:50% 52%"><img src="../assets/carousel-ess.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
     <!-- 히어로가 A / A-1 의 유일한 차이다 → 두 문안을 다 담아두고 CSS 가 하나만 보인다.
          A: 사업명칭 h1 / A-1(.v-a1): 설명글 2줄 + h1 은 화면에서만 숨김.
@@ -72,10 +75,12 @@
     <div class="htrack">
 
       <!-- [좌: 본문 & 픽토그램 / 우: 이미지] 공통 프레임 → .hcard--split (본문:이미지 = 7:3) -->
-      <article class="hcard hcard--split" data-tab="배터리 에너지 저장 장치">
-        <h3>배터리 에너지 저장 장치 (BESS)</h3>
-        <p>에너지의 효율적 활용을 돕는 ESS는 고객의 환경에 맞춘 최적의 규격과 다양한 배터리 셀 설계를 지원하는 맞춤형 에너지 저장 솔루션입니다.</p>
-        <p>에이프로의 ESS는 국제 안전 규격을 철저히 준수한 뛰어난 내구성과 고에너지 성능을 바탕으로, 언제 어디서나 안심하고 사용할 수 있는 탁월한 신뢰성을 보장합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="배터리 에너지 저장 장치">
+        <div class="hdeck-top">
+          <h3>배터리 에너지 저장 장치 (BESS)</h3>
+          <p>에너지의 효율적 활용을 돕는 ESS는 고객의 환경에 맞춘 최적의 규격과 다양한 배터리 셀 설계를 지원하는 맞춤형 에너지 저장 솔루션입니다.</p>
+          <p>에이프로의 ESS는 국제 안전 규격을 철저히 준수한 뛰어난 내구성과 고에너지 성능을 바탕으로, 언제 어디서나 안심하고 사용할 수 있는 탁월한 신뢰성을 보장합니다.</p>
+        </div>
         <!-- 원문 셋째 단락의 나열형 내용(정밀 제어 → 모니터링 → 분석 → 효율)을 그대로 네 덩어리로 접었다.
              이 그룹 카드는 [h3 + 줄글 2단락 + 픽토그램] 한 형태로 맞춘다 — 단락이 셋이 되면
              1366×768 같은 낮은 화면에서 카드 높이를 넘겨 픽토그램 밑단이 잘린다 -->
@@ -119,10 +124,12 @@
         <div class="hph">BESS</div>
       </article>
 
-      <article class="hcard hcard--split" data-tab="무정전 UPS">
-        <h3>무정전 UPS</h3>
-        <p>안정적인 전력 공급을 보장하는 UPS는 BMS 및 BCP 기반의 초고출력 모듈과 개별 셀 단위의 전압·온도 밸런싱 제어로 시스템의 효율성을 극대화한 핵심 전력 솔루션입니다.</p>
-        <p>에이프로의 UPS는 배터리 화재에 대비해 내부 온도를 정밀하게 제어하여 열 폭주와 전이를 사전에 방지함으로써, 배터리 수명을 크게 개선하고 장기적인 안정성을 확보했습니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="무정전 UPS">
+        <div class="hdeck-top">
+          <h3>무정전 UPS</h3>
+          <p>안정적인 전력 공급을 보장하는 UPS는 BMS 및 BCP 기반의 초고출력 모듈과 개별 셀 단위의 전압·온도 밸런싱 제어로 시스템의 효율성을 극대화한 핵심 전력 솔루션입니다.</p>
+          <p>에이프로의 UPS는 배터리 화재에 대비해 내부 온도를 정밀하게 제어하여 열 폭주와 전이를 사전에 방지함으로써, 배터리 수명을 크게 개선하고 장기적인 안정성을 확보했습니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">안전 · 열 관리</span>
           <ul class="pict">
@@ -280,12 +287,14 @@
     </div>
     <div class="htrack">
 
-      <article class="hcard hcard--split" data-tab="우주 발사체">
-        <h3>우주 발사체</h3>
-        <p>에이프로는 고에너지밀도 하이브리드 배터리 기술을 기반으로 소형·나노 발사체에 최적화된 경량 배터리 팩과 전원 시스템을 제공합니다.</p>
-        <!-- 원문 둘째 단락의 나열형 내용(구조 설계 → 열관리 → 저중량 → 운용 경제성)을 그대로
-             네 덩어리로 접었다. 단락이 셋이 되면 낮은 화면에서 픽토그램 밑단이 잘린다 -->
-        <p>이를 통해 발사체 임무 수행의 신뢰성을 높이고, 위성 및 우주 모빌리티 분야로 확장 가능한 고안전성 우주 전원 솔루션을 제공합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="우주 발사체">
+        <div class="hdeck-top">
+          <h3>우주 발사체</h3>
+          <p>에이프로는 고에너지밀도 하이브리드 배터리 기술을 기반으로 소형·나노 발사체에 최적화된 경량 배터리 팩과 전원 시스템을 제공합니다.</p>
+          <!-- 원문 둘째 단락의 나열형 내용(구조 설계 → 열관리 → 저중량 → 운용 경제성)을 그대로
+               네 덩어리로 접었다. 단락이 셋이 되면 낮은 화면에서 픽토그램 밑단이 잘린다 -->
+          <p>이를 통해 발사체 임무 수행의 신뢰성을 높이고, 위성 및 우주 모빌리티 분야로 확장 가능한 고안전성 우주 전원 솔루션을 제공합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">발사 환경 대응</span>
           <ul class="pict">
@@ -326,13 +335,15 @@
         <div class="hph">LAUNCH VEHICLE</div>
       </article>
 
-      <article class="hcard hcard--split" data-tab="무인 이동체계 전원 시스템">
-        <h3>무인 이동체계 전원 시스템</h3>
-        <p>에이프로의 무인 이동체 전원 시스템은 구동 배터리부터 저전압 전력변환, 전력 분배 및 관리까지 UGV와 로봇 플랫폼의 전원 아키텍처 전반을 포괄하는 맞춤형 통합 솔루션입니다.</p>
-        <!-- 원문 둘째 단락(다섯 줄짜리 나열형)을 네 덩어리로 접었다. 순서가 곧 이상 대응 흐름이다 —
-             불량 셀 구간을 끊고 → 최소 전력으로 버티고 → 상태를 계속 지켜보며 → 보호 제어가 받는다.
-             접지 않고 픽토그램만 더하면 이 카드만 세로 900px 화면에서 카드 높이를 넘긴다 -->
-        <p>이를 통해 군수·산업용 UGV와 다양한 로봇 플랫폼에 최적화된 고신뢰성 전원 시스템을 제공합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="무인 이동체계 전원 시스템">
+        <div class="hdeck-top">
+          <h3>무인 이동체계 전원 시스템</h3>
+          <p>에이프로의 무인 이동체 전원 시스템은 구동 배터리부터 저전압 전력변환, 전력 분배 및 관리까지 UGV와 로봇 플랫폼의 전원 아키텍처 전반을 포괄하는 맞춤형 통합 솔루션입니다.</p>
+          <!-- 원문 둘째 단락(다섯 줄짜리 나열형)을 네 덩어리로 접었다. 순서가 곧 이상 대응 흐름이다 —
+               불량 셀 구간을 끊고 → 최소 전력으로 버티고 → 상태를 계속 지켜보며 → 보호 제어가 받는다.
+               접지 않고 픽토그램만 더하면 이 카드만 세로 900px 화면에서 카드 높이를 넘긴다 -->
+          <p>이를 통해 군수·산업용 UGV와 다양한 로봇 플랫폼에 최적화된 고신뢰성 전원 시스템을 제공합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">이상 대응 · 안전 복귀</span>
           <ul class="pict">
@@ -377,6 +388,32 @@
   </section>
 
 </div>
+
+<!-- ===================== 다른 사업영역 — 마을 =====================
+     본문이 끝나고 푸터 직전. 픽토그램들이 바닥선을 맞춰 서서 마을이 되고 그대로
+     푸터 윗변에 붙는다. 맨 왼쪽이 지금 보고 있는 영역이고 세로선으로 갈라 세운다 —
+     '여기까지 온 곳 | 갈 수 있는 곳'. 나머지 셋은 현재 다음 순서부터 돌아가며 선다.
+     그림이 src 가 아니라 data-src 인 이유는 business-layout.js '마을 진입' 참고 -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <span class="bhlot is-here" data-a="energy" style="--ar:251/179">
+      <span class="bhnow"><span class="ko">에너지 인프라</span><span class="en">Energy Infrastructure</span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="ai" href="business-ai-a1.html" style="--ar:267/176">
+      <span class="bhtop"><span class="bhtag">인공지능 플랫폼</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="semicon" href="business-semicon-a1.html" style="--ar:251/180">
+      <span class="bhtop"><span class="bhtag">화합물 전력 반도체</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="smart" href="business-smart-a1.html" style="--ar:251/177">
+      <span class="bhtop"><span class="bhtag">스마트 제조</span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">

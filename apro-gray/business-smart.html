@@ -40,6 +40,9 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="dhero">
+  <!-- 배경 사진 = 사업영역 허브(business.html)의 '스마트 제조' 패널이 hover 때 여는 사진.
+       --hero-pos 는 이 가로 띠에서의 크롭 지점 (허브 패널은 세로로 길어 값이 다르다) -->
+  <span class="dhero-bg" style="--hero-pos:50% 46%"><img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
     <!-- 히어로가 A / A-1 의 유일한 차이다 → 두 문안을 다 담아두고 CSS 가 하나만 보인다.
          A: 사업명칭 h1 / A-1(.v-a1): 설명글 2줄 + h1 은 화면에서만 숨김.
@@ -200,10 +203,16 @@
     <div class="htrack">
 
       <!-- [좌: 본문 & 픽토그램 / 우: 이미지] 공통 프레임 → .hcard--split (본문:이미지 = 7:3) -->
-      <article class="hcard hcard--split" data-tab="이차전지 Cycler">
-        <h3>이차전지 Cycler (셀/모듈)</h3>
-        <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
-        <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+      <!-- 시안(.hcard--deck) — [상단: 본문 + 이미지 / 하단: 카드 폭 전면 픽토그램 판].
+           본문을 .hdeck-top 으로 한 번 감싸야 카드가 2열 격자가 된다 (좌: 본문 / 우: 이미지,
+           그 아래 판이 두 열을 가로지른다). 감싸지 않으면 h3·문단이 각자 격자 칸을 차지해
+           이미지 옆에 세로로 쌓이지 않는다. 나머지 카드는 종전 .hcard--split 그대로다 -->
+      <article class="hcard hcard--split hcard--deck" data-tab="이차전지 Cycler">
+        <div class="hdeck-top">
+          <h3>이차전지 Cycler (셀/모듈)</h3>
+          <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
+          <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+        </div>
         <!-- 원문 두 문장을 네 덩어리로 접었다. 순서가 곧 에너지 흐름이다 —
              양방향으로 충·방전하고 → 방전 에너지를 회수해 → 전력망으로 되돌리고 → 그 결과 부하가 줄어든다 -->
         <div class="hblock">
@@ -319,10 +328,12 @@
     </div>
     <div class="htrack">
 
-      <article class="hcard hcard--split" data-tab="탄소나노튜브">
-        <h3>소수벽 &amp; 단일벽 탄소나노튜브</h3>
-        <p>고성능 단일벽(SW) 및 소수벽(FW) 탄소나노튜브의 견고한 전도성 네트워크가 활물질 간의 전자 이동을 극대화합니다.</p>
-        <p>배터리 내부 저항을 효과적으로 낮추어 전체 수명을 연장하고 충전 시간을 크게 단축합니다. 실리콘 음극재 도입 시 발생하는 고질적인 부피 팽창과 입자 붕괴 현상을 구조적으로 단단하게 억제합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="탄소나노튜브">
+        <div class="hdeck-top">
+          <h3>소수벽 &amp; 단일벽 탄소나노튜브</h3>
+          <p>고성능 단일벽(SW) 및 소수벽(FW) 탄소나노튜브의 견고한 전도성 네트워크가 활물질 간의 전자 이동을 극대화합니다.</p>
+          <p>배터리 내부 저항을 효과적으로 낮추어 전체 수명을 연장하고 충전 시간을 크게 단축합니다. 실리콘 음극재 도입 시 발생하는 고질적인 부피 팽창과 입자 붕괴 현상을 구조적으로 단단하게 억제합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">적용 효과</span>
           <ul class="pict">
@@ -363,13 +374,15 @@
         <div class="hph">CNT</div>
       </article>
 
-      <article class="hcard hcard--split" data-tab="LiFSI 전해염">
-        <h3>LiFSI 전해염</h3>
-        <p>기존 LiPF6 대비 탁월한 이온 이동 속도를 구현하여 배터리 내부의 이온 전도도를 크게 향상시킵니다. 고온 및 고전압의 거친 구동 환경에서도 전해액의 열분해를 막고 변함없는 화학적 안정성을 발휘합니다.</p>
-        <!-- 원문 둘째 단락(SEI 피막 → 계면 저항 → 고속 충전)은 아래 픽토그램 3·4번으로 접었다.
-             이 그룹 카드는 [h3 + 줄글 2단락 + 픽토그램] 한 형태로 맞춘다 — 단락이 셋이 되면
-             1366×768 같은 낮은 화면에서 카드 높이를 넘겨 픽토그램 밑단이 잘린다 -->
-        <p>에이프로머티리얼즈의 핵심 소재 기술력으로 완성된 전해염이 고성능 배터리의 안전성과 효율을 동시에 보장합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="LiFSI 전해염">
+        <div class="hdeck-top">
+          <h3>LiFSI 전해염</h3>
+          <p>기존 LiPF6 대비 탁월한 이온 이동 속도를 구현하여 배터리 내부의 이온 전도도를 크게 향상시킵니다. 고온 및 고전압의 거친 구동 환경에서도 전해액의 열분해를 막고 변함없는 화학적 안정성을 발휘합니다.</p>
+          <!-- 원문 둘째 단락(SEI 피막 → 계면 저항 → 고속 충전)은 아래 픽토그램 3·4번으로 접었다.
+               이 그룹 카드는 [h3 + 줄글 2단락 + 픽토그램] 한 형태로 맞춘다 — 단락이 셋이 되면
+               1366×768 같은 낮은 화면에서 카드 높이를 넘겨 픽토그램 밑단이 잘린다 -->
+          <p>에이프로머티리얼즈의 핵심 소재 기술력으로 완성된 전해염이 고성능 배터리의 안전성과 효율을 동시에 보장합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">핵심 특성</span>
           <ul class="pict">
@@ -414,6 +427,32 @@
   </section>
 
 </div>
+
+<!-- ===================== 다른 사업영역 — 마을 =====================
+     본문이 끝나고 푸터 직전. 픽토그램들이 바닥선을 맞춰 서서 마을이 되고 그대로
+     푸터 윗변에 붙는다. 맨 왼쪽이 지금 보고 있는 영역이고 세로선으로 갈라 세운다 —
+     '여기까지 온 곳 | 갈 수 있는 곳'. 나머지 셋은 현재 다음 순서부터 돌아가며 선다.
+     그림이 src 가 아니라 data-src 인 이유는 business-layout.js '마을 진입' 참고 -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <span class="bhlot is-here" data-a="smart" style="--ar:251/177">
+      <span class="bhnow"><span class="ko">스마트 제조</span><span class="en">Smart Factory</span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="energy" href="business-energy.html" style="--ar:251/179">
+      <span class="bhtop"><span class="bhtag">에너지 인프라</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="ai" href="business-ai.html" style="--ar:267/176">
+      <span class="bhtop"><span class="bhtag">인공지능 플랫폼</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="semicon" href="business-semicon.html" style="--ar:251/180">
+      <span class="bhtop"><span class="bhtag">화합물 전력 반도체</span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">

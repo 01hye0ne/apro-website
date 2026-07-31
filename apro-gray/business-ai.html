@@ -40,6 +40,11 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="dhero">
+  <!-- 배경 사진 = 사업영역 허브(business.html)의 '인공지능 플랫폼' 패널이 hover 때 여는 사진.
+       --hero-pos 는 이 가로 띠에서의 크롭 지점 — 로봇이 화면 위쪽 밝은 구간에 오도록 올려 잡았다.
+       원본은 벽면 로고 아래에 로봇이 서 있는 세로 구도라 둘을 함께 담으면 로봇이
+       아래 어두운 띠로 내려가 버린다 → 로고를 위로 흘려보내고 로봇을 남긴다 -->
+  <span class="dhero-bg" style="--hero-pos:50% 78%"><img src="../assets/carousel-safety-robot.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
     <!-- 히어로가 A / A-1 의 유일한 차이다 → 두 문안을 다 담아두고 CSS 가 하나만 보인다.
          A: 사업명칭 h1 / A-1(.v-a1): 설명글 2줄 + h1 은 화면에서만 숨김.
@@ -103,12 +108,14 @@
     <div class="htrack">
 
       <!-- [좌: 본문 & 픽토그램 / 우: 이미지] 공통 프레임 → .hcard--split (본문:이미지 = 7:3) -->
-      <article class="hcard hcard--split" data-tab="배터리 안전 진단">
-        <h3>전기자동차 배터리 안전 진단</h3>
-        <p>전기자동차 충전 중 배터리 데이터를 실시간으로 수집하고, 개별 셀 전압과 모듈 온도 정보를 AI 기반으로 분석하여 배터리의 이상 징후와 안전 상태를 진단하는 솔루션입니다.</p>
-        <!-- 원문 둘째 단락(여섯 줄짜리 나열형)을 네 덩어리로 접었다 — 조기 식별 / 전압 감시 /
-             온도 감시 / SOH 평가. 접지 않고 픽토그램만 더하면 세로 900px 화면에서도 카드를 넘긴다 -->
-        <p>이를 통해 배터리 사고 위험을 사전에 감지하고, 안전한 충전 환경 조성과 배터리 유지관리 효율 향상을 지원합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="배터리 안전 진단">
+        <div class="hdeck-top">
+          <h3>전기자동차 배터리 안전 진단</h3>
+          <p>전기자동차 충전 중 배터리 데이터를 실시간으로 수집하고, 개별 셀 전압과 모듈 온도 정보를 AI 기반으로 분석하여 배터리의 이상 징후와 안전 상태를 진단하는 솔루션입니다.</p>
+          <!-- 원문 둘째 단락(여섯 줄짜리 나열형)을 네 덩어리로 접었다 — 조기 식별 / 전압 감시 /
+               온도 감시 / SOH 평가. 접지 않고 픽토그램만 더하면 세로 900px 화면에서도 카드를 넘긴다 -->
+          <p>이를 통해 배터리 사고 위험을 사전에 감지하고, 안전한 충전 환경 조성과 배터리 유지관리 효율 향상을 지원합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">실시간 안전 감시</span>
           <ul class="pict">
@@ -147,10 +154,12 @@
         <div class="hph">SAFETY DIAGNOSIS</div>
       </article>
 
-      <article class="hcard hcard--split" data-tab="배터리 성능 진단">
-        <h3>전기자동차 배터리 성능 진단</h3>
-        <p>전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.</p>
-        <p>배터리의 부분 방전 데이터를 기존 배터리 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="배터리 성능 진단">
+        <div class="hdeck-top">
+          <h3>전기자동차 배터리 성능 진단</h3>
+          <p>전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.</p>
+          <p>배터리의 부분 방전 데이터를 기존 배터리 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.</p>
+        </div>
         <!-- 원래 이 자리에 셋째 단락(검사 시간 단축 → 편차 분석 → 재사용 적합성)과 줄글 두 단락짜리
              '자원순환' 블록이 더 있었다. 픽토그램 블록까지 더하면 이 카드만 소제목 블록이 둘이 되어
              다른 카드와 골격이 달라지고 높이도 넘친다 → 둘 다 아래 네 덩어리로 접었다 -->
@@ -202,13 +211,15 @@
     <div class="htrack">
 
       <!-- [좌: 본문 & 픽토그램 / 우: 이미지] 공통 프레임 → .hcard--split (본문:이미지 = 7:3) -->
-      <article class="hcard hcard--split" data-tab="PICKLE Station">
-        <h3>PICKLE Station</h3>
-        <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
-        <!-- 원문 둘째 단락 첫 문장이 "하드웨어 / 전력변환·제어 / 통신 / 인증·안전관리" 네 항목을
-             그대로 나열하고 있어 아래 픽토그램으로 접었다. 뒷문장(원격 운영·EMS 연계)은 남겼다 -->
-        <p>원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.</p>
-        <p>에이프로가 축적해 온 전력전자와 배터리 시스템 기술을 기반으로 안전하고 지속 가능한 전기 모빌리티 충전 생태계를 구축합니다.</p>
+      <article class="hcard hcard--split hcard--deck" data-tab="PICKLE Station">
+        <div class="hdeck-top">
+          <h3>PICKLE Station</h3>
+          <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
+          <!-- 원문 둘째 단락 첫 문장이 "하드웨어 / 전력변환·제어 / 통신 / 인증·안전관리" 네 항목을
+               그대로 나열하고 있어 아래 픽토그램으로 접었다. 뒷문장(원격 운영·EMS 연계)은 남겼다 -->
+          <p>원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.</p>
+          <p>에이프로가 축적해 온 전력전자와 배터리 시스템 기술을 기반으로 안전하고 지속 가능한 전기 모빌리티 충전 생태계를 구축합니다.</p>
+        </div>
         <div class="hblock">
           <span class="lbl">통합 구성</span>
           <ul class="pict">
@@ -274,6 +285,32 @@
   </section>
 
 </div>
+
+<!-- ===================== 다른 사업영역 — 마을 =====================
+     본문이 끝나고 푸터 직전. 픽토그램들이 바닥선을 맞춰 서서 마을이 되고 그대로
+     푸터 윗변에 붙는다. 맨 왼쪽이 지금 보고 있는 영역이고 세로선으로 갈라 세운다 —
+     '여기까지 온 곳 | 갈 수 있는 곳'. 나머지 셋은 현재 다음 순서부터 돌아가며 선다.
+     그림이 src 가 아니라 data-src 인 이유는 business-layout.js '마을 진입' 참고 -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <span class="bhlot is-here" data-a="ai" style="--ar:267/176">
+      <span class="bhnow"><span class="ko">인공지능 플랫폼</span><span class="en">Intelligent AI Platform</span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="semicon" href="business-semicon.html" style="--ar:251/180">
+      <span class="bhtop"><span class="bhtag">화합물 전력 반도체</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="smart" href="business-smart.html" style="--ar:251/177">
+      <span class="bhtop"><span class="bhtag">스마트 제조</span><span class="bharw" aria-hidden="true"></span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="energy" href="business-energy.html" style="--ar:251/179">
+      <span class="bhtop"><span class="bhtag">에너지 인프라</span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">

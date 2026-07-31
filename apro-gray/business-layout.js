@@ -16,8 +16,11 @@
 
   /* 통째로 두면 덩어리째 튀어나와 밋밋한 묶음 — 안쪽 항목을 하나씩 떨군다.
      특히 공정 순서 7단계는 왼쪽부터 차례로 떨어져야 순서라는 의미가 같이 읽힌다 */
+  /* hdeck-top 은 .hcard--deck 이 본문을 한 번 감싼 묶음이다 — 감싼 채로 두면 제목과
+     문단이 한 덩어리로 같이 뜨므로, 안쪽을 풀어 종전처럼 한 줄씩 떨어지게 한다 */
   var SPLIT=[['fsteps','li'],['hthumbs','.th'],['hlead',':scope>*'],
-             ['hgrid2','.cell'],['hcols2',':scope>*'],['gmap',':scope>*']];
+             ['hgrid2','.cell'],['hcols2',':scope>*'],['gmap',':scope>*'],
+             ['hdeck-top',':scope>*']];
   var STEP=60, SUB=36;   /* 최상위 단위 간격 / 묶음 안쪽 간격 (ms) */
 
   function mark(el,d){el.classList.add('rv');el.style.setProperty('--rd',d+'ms');}
@@ -439,4 +442,28 @@
     },{passive:true});
     spy();
   })();
+})();
+
+/* 마을 진입 — 푸터 앞 '다른 사업영역' 픽토그램은 화면에 들어올 때 붙인다.
+   선 그려지는 애니메이션이 SVG 파일 안에 들어 있는데, <img> 는 불러오는 순간
+   딱 한 번 재생한다. 페이지 맨 아래에 있는 그림을 미리 불러 두면 스크롤해
+   내려왔을 때 이미 다 끝나 있다 → src 를 이 시점에 붙여 그 자리에서 그려지게 한다.
+   (그래서 마크업에는 src 가 아니라 data-src 로 들어 있다) */
+(function(){
+  var imgs=[].slice.call(document.querySelectorAll('.bhlot img[data-src]'));
+  if(!imgs.length)return;
+  var town=document.querySelector('.bhop-town');
+  function load(){
+    imgs.forEach(function(im){im.src=im.getAttribute('data-src');im.removeAttribute('data-src');});
+    /* 태그 불 켜지는 루프도 여기서 함께 출발시킨다 — CSS 가 paused 로 잡아 두고 있다가
+       이 클래스로 풀리고, --draw(선이 다 그려지는 시간)만큼 기다렸다 첫 불이 켜진다.
+       둘을 같은 시점에 묶어야 그리기가 끝나자마자 불이 이어받는다 */
+    if(town)town.classList.add('is-lit');
+  }
+  if(!town||!('IntersectionObserver' in window)){load();return;}  /* 못 쓰면 그냥 띄운다 */
+  var io=new IntersectionObserver(function(es){
+    if(!es[0].isIntersecting)return;
+    load();io.disconnect();                /* 한 번만 */
+  },{rootMargin:'0px 0px -12% 0px'});      /* 마을이 화면에 제대로 들어왔을 때 */
+  io.observe(town);
 })();
