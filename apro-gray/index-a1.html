@@ -24,6 +24,9 @@
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
     --ease-io:cubic-bezier(.62,0,.38,1);
+    /* GNB 는 12열(1열~12열, 84px 고정 마진) 그대로, 본문 섹션들만 한 칸 더 좁은
+       2열~11열로 보이게 할 때 쓰는 추가 인셋 — index.html 과 동일 (그쪽 주석 참고) */
+    --sec-inset:calc((100vw - 144px) / 12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -37,13 +40,15 @@
 
   #stage{width:100%;position:relative}
   .section{position:relative;width:100%;overflow:hidden}
-  .band{position:absolute;inset:0;max-width:var(--maxw);margin-inline:auto}
+  /* 좌우 마진을 사업영역 세부페이지(84px 고정)와 맞춘다 — index.html 과 같은 이유로
+     .v2b-inner 의 padding:24px 를 감안해 band 자체는 60px 만 남긴다(합 84px) */
+  .band{position:absolute;inset:0;width:calc(100% - 120px - 2 * var(--sec-inset));margin-inline:auto}
 
   /* ===================== GNB (fixed, exclusion) ===================== */
   /* GNB text colour is theme-driven (see .nav-light below) instead of mix-blend-mode,
      which washed out on mid-tone backgrounds. Default = white (over dark/video). */
   .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);
-    width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;
+    width:calc(100% - 168px);height:40px;z-index:100;
     display:flex;align-items:center;gap:36px;
     animation:gnbIn .9s var(--ease) both}
   .gnb .logo{padding:12px 0;flex-shrink:0}   /* flush to the container line (matches Business label / footer) */
@@ -73,13 +78,13 @@
 
   /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
-    --gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
+    --gutter:84px}
   .gnb-mega{position:fixed;top:0;left:0;width:100%;z-index:99;background:#fff;
     border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(14,22,30,.12);
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group.mega-open .gnb-mega,.gnb-group.mega-open .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-  .gnb-mega .inner{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto;
+  .gnb-mega .inner{width:calc(100% - 168px);margin-inline:auto;
     display:flex;gap:36px;align-items:flex-start;padding:92px 0 32px 0}
   .gnb-mega .m-logo{width:78px;flex-shrink:0}   /* keep in sync with .gnb .logo so mega columns stay under the nav items */
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
@@ -166,7 +171,7 @@
   /* "who we are" — pulled out of the scaled stage so it aligns to the GNB left line
      (same 1440 container as the nav), while its size/vertical position track the stage scale */
   .v2who .who-eye{position:absolute;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;
-    width:min(calc(var(--maxw) - 48px),calc(100% - 48px));top:calc(50% - 104px * var(--who-s,1))}
+    width:calc(100% - 168px - 2 * var(--sec-inset));top:calc(50% - 104px * var(--who-s,1))}
   /* "who we are" matches the Business section label (SUIT 800 / 20px / -.4px), scaled to the stage */
   .v2who .who-eye p{padding-left:0;font-family:var(--suit);font-weight:800;line-height:1.2;letter-spacing:-.4px;
     color:var(--g900);font-size:calc(20px * var(--who-s,1));white-space:nowrap;transition:color .6s var(--ease)}
@@ -247,7 +252,7 @@
   @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
 
   /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it. */
-  .v2biz .biz-content{position:absolute;left:50%;top:133px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
+  .v2biz .biz-content{position:absolute;left:50%;top:133px;transform:translateX(-50%);width:calc(100% - 168px - 2 * var(--sec-inset));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
 
   /* Business label bar (underline) — 3-col grid so "Business" pins left while the nav centres on the page */
   .v2biz .biz-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:24px;padding-bottom:10px;border-bottom:1px solid var(--border-g)}
@@ -337,14 +342,15 @@
   .news-sticky{position:sticky;top:0;height:100vh;min-height:820px;overflow:hidden;background:var(--secondary-bg)}
   .v2news .v2news-band{position:absolute;inset:0;max-width:1280px;margin-inline:auto;display:flex;gap:12px;padding:0 24px}
   /* left: fixed heading */
-  /* heading left line aligned to the Business 2nd image (slot 1) left edge = container gutter + (WF+GAP)=155.5px */
-  .v2news .news-text{position:absolute;top:0;left:calc((100% - min(1392px, 100% - 48px)) / 2 + 155.5px);padding-top:200px;display:flex;flex-direction:column;gap:16px}
+  /* 헤딩 좌측선 — 다른 섹션들과 같은 2열(84px + --sec-inset)에 맞춘다.
+     예전엔 Business 2번째 타일 좌측 끝(+155.5px)에 맞췄었는데, 요청으로 뺐다 */
+  .v2news .news-text{position:absolute;top:0;left:calc(84px + var(--sec-inset));padding-top:200px;display:flex;flex-direction:column;gap:16px}
   .v2news .news-text .h{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
   .v2news .news-text .sub{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:#445464}
   /* right: card grid (2 cols × 4 rows, diagonal stagger) that scrolls vertically during the pin */
   /* card group: left line pinned to the window centre, right line aligned to the Business right card
      (= right edge of the centred min(1392px,100%-48px) container). Positioned against .news-sticky (full width). */
-  .v2news .news-viewport{position:absolute;top:0;left:50%;right:calc((100% - min(1392px, 100% - 48px)) / 2);height:100%;overflow:hidden}
+  .v2news .news-viewport{position:absolute;top:0;left:50%;right:calc(84px + var(--sec-inset));height:100%;overflow:hidden}
   .v2news .news-cards{position:absolute;top:0;left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,294px);column-gap:40px;padding-top:200px;will-change:transform}
   .v2news .ncard{display:flex;flex-direction:column;gap:28px;cursor:pointer;align-self:start}
   .v2news .ncard.c1{grid-column:1;grid-row:1}
@@ -368,9 +374,10 @@
   .v2gnet .gnet-stage{position:absolute;left:50%;top:0;transform:translateX(-50%);width:1280px;height:900px}
   .v2gnet .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
   .v2gnet .gnet-map img{width:100%;height:100%;display:block}
-  /* left = the GNB's left line (1392 container edge) mapped into the 1280 gnet-stage: (1280 − (maxw−48))/2 = −56px */
-  .v2gnet .gnet-gn{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
-  .v2gnet .gnet-desc{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  /* left = GNB의 좌측선(뷰포트 기준 84px 고정)을 gnet-stage(뷰포트 중앙 고정폭 1280px)
+     좌표계로 환산 — index.html 과 같은 이유로 뷰포트 상대 계산식을 쓴다 */
+  .v2gnet .gnet-gn{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .v2gnet .gnet-desc{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
   .v2gnet .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
   .v2gnet .gnet-stat{flex:1;text-align:center}
   .v2gnet .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
@@ -397,7 +404,7 @@
 
   /* ===================== FOOTER ===================== */
   .footer{background:var(--g950);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
-  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
+  .footer .container{width:calc(100% - 120px);display:flex;flex-direction:column}
   /* --- sitemap (menu tree) --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
@@ -972,7 +979,10 @@
     // 인트로도 중앙에 오는 스텝이므로 슬롯 수 = 카드 수 = 스텝 수 = 5 (v2 와 같은 구조).
     // 0..3 = 사업(01~04), 4 = 인트로(00) — 카운터 릴이 이 순서를 그대로 따라간다
     var N = BIZ.length;
-    var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
+    // MAXCW(예전 1392px 캡) 제거. GUTTER 는 상수가 아니다 — 타일도 CSS --sec-inset
+    // 만큼 GNB(84px)보다 한 칸 더 좁게(2열~11열) 보이도록 computeSlots 안에서
+    // 뷰포트 폭(vw)마다 다시 계산한다(index.html 과 동일한 이유)
+    var MAXCW=Infinity, GAP=12, LISTW=299;
     var WF=(LISTW-GAP)/2, BASE=860;
     var centerEl = sticky.querySelector('.biz-center');
     var heroBlock = sticky.querySelector('.biz-hero');
@@ -981,6 +991,7 @@
       var vw = collage.clientWidth || window.innerWidth;
       // carousel baseline sits ~flush with the window bottom (half of the 900 stage, +5px)
       BASE = Math.round(Math.max(window.innerHeight, 900)/2 + 455);
+      var GUTTER = 84 + (vw - 144) / 12;   // CSS --sec-inset:calc((100vw - 144px)/12) 와 동일한 식
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2, cW=CW-4*WF-4*GAP;
       if(centerEl){ centerEl.style.width = cW+'px'; }   // centre title/list column matches the centre card
       var HRef = Math.round(cW*9/16);   // 16:9 reference — sets the side-card proportions

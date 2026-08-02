@@ -24,6 +24,16 @@
     --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
     --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
     --ease-io:cubic-bezier(.62,0,.38,1);
+    /* GNB 는 사업영역 세부페이지의 12열 그리드 전체(1열~12열, 84px 고정 마진)를
+       그대로 쓰지만, 본문 섹션들은 그보다 한 칸 더 좁은 2열~11열로 보이게 하고
+       싶을 때 쓰는 추가 인셋. 세부페이지 그리드 공식(--bcol = (--bw - 11*거터)/12,
+       --bw = 100% - 168px, 거터 24px)에서 "1열 + 거터 1개"만큼만 뽑아낸 값 —
+       (bcol+거터) = (bw+거터)/12 로 정리되어 계산이 더 짧다.
+       GNB(.gnb, .gnb-mega .inner)에는 적용하지 않는다 — 그건 여전히 12열 전체 폭 */
+    /* 100% 대신 100vw 를 쓴다 — GNET 처럼 컨테이닝 블록이 뷰포트가 아니라 고정폭
+       (1280px) 박스인 곳에서 쓰이면 100% 가 그 박스 기준으로 잘못 풀린다.
+       vw 는 컨테이닝 블록과 무관하게 항상 실제 뷰포트 폭을 가리켜 어디서 써도 같다 */
+    --sec-inset:calc((100vw - 144px) / 12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -37,13 +47,19 @@
 
   #stage{width:100%;position:relative}
   .section{position:relative;width:100%;overflow:hidden}
-  .band{position:absolute;inset:0;max-width:var(--maxw);margin-inline:auto}
+  /* 좌우 마진을 사업영역 세부페이지(84px 고정, business-smart.html 등의 .bnav-wrap
+     --bw:calc(100% - 168px))와 맞춘다 — 기존엔 max-width:1440px 로 캡을 씌우고 남는
+     폭을 auto 마진이 나눠 갖는 방식(1440px 이하에서는 24px, 그 이상에서는 뷰포트가
+     넓어질수록 마진도 한없이 커짐)이었는데, 세부페이지는 캡 없이 항상 84px 로 고정.
+     .v2b-inner 가 안쪽에 padding:24px 를 이미 더하고 있어(GNB·헤드라인 정렬을 맞추던
+     값), band 자체는 84-24=60px 만 남겨 합이 84px 가 되게 한다 */
+  .band{position:absolute;inset:0;width:calc(100% - 120px - 2 * var(--sec-inset));margin-inline:auto}
 
   /* ===================== GNB (fixed, exclusion) ===================== */
   /* GNB text colour is theme-driven (see .nav-light below) instead of mix-blend-mode,
      which washed out on mid-tone backgrounds. Default = white (over dark/video). */
   .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);
-    width:min(calc(var(--maxw) - 48px),calc(100% - 48px));height:40px;z-index:100;
+    width:calc(100% - 168px);height:40px;z-index:100;
     display:flex;align-items:center;gap:36px;
     animation:gnbIn .9s var(--ease) both}
   .gnb .logo{padding:12px 0;flex-shrink:0}   /* flush to the container line (matches Business label / footer) */
@@ -73,13 +89,13 @@
 
   /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
-    --gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
+    --gutter:84px}
   .gnb-mega{position:fixed;top:0;left:0;width:100%;z-index:99;background:#fff;
     border-bottom:1px solid var(--border-g);box-shadow:0 24px 48px rgba(14,22,30,.12);
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group.mega-open .gnb-mega,.gnb-group.mega-open .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-  .gnb-mega .inner{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto;
+  .gnb-mega .inner{width:calc(100% - 168px);margin-inline:auto;
     display:flex;gap:36px;align-items:flex-start;padding:92px 0 32px 0}
   .gnb-mega .m-logo{width:78px;flex-shrink:0}   /* keep in sync with .gnb .logo so mega columns stay under the nav items */
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
@@ -166,7 +182,7 @@
   /* "who we are" — pulled out of the scaled stage so it aligns to the GNB left line
      (same 1440 container as the nav), while its size/vertical position track the stage scale */
   .v2who .who-eye{position:absolute;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;
-    width:min(calc(var(--maxw) - 48px),calc(100% - 48px));top:calc(50% - 104px * var(--who-s,1))}
+    width:calc(100% - 168px - 2 * var(--sec-inset));top:calc(50% - 104px * var(--who-s,1))}
   /* "who we are" matches the Business section label (SUIT 800 / 20px / -.4px), scaled to the stage */
   .v2who .who-eye p{padding-left:0;font-family:var(--suit);font-weight:800;line-height:1.2;letter-spacing:-.4px;
     color:var(--g900);font-size:calc(20px * var(--who-s,1));white-space:nowrap;transition:color .6s var(--ease)}
@@ -331,7 +347,7 @@
      top 을 133 → 176 으로 내렸다: 라벨 밑변(top+24)이 타일 윗변 바로 위에 오게 해서 라벨이
      타일 4장에 붙어 읽히도록. 타일 윗변은 이 밑변에서 계산되므로(computeSlots 의 GAPH)
      여기만 고치면 간격이 따라온다 — 타일 자리는 그대로다 */
-  .v2biz .biz-content{position:absolute;left:50%;top:176px;transform:translateX(-50%);width:min(calc(var(--maxw) - 48px),calc(100% - 48px));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
+  .v2biz .biz-content{position:absolute;left:50%;top:176px;transform:translateX(-50%);width:calc(100% - 168px - 2 * var(--sec-inset));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
 
   /* Business 라벨 바 — 중앙 "사업영역" 타이틀을 걷어내고 좌측 섹션 라벨로 돌렸다.
      타이포는 "who we are"·푸터와 같은 섹션 라벨 규격(SUIT 800 / 20px / -.4px).
@@ -422,14 +438,15 @@
   .news-sticky{position:sticky;top:0;height:100vh;min-height:820px;overflow:hidden;background:var(--secondary-bg)}
   .v2news .v2news-band{position:absolute;inset:0;max-width:1280px;margin-inline:auto;display:flex;gap:12px;padding:0 24px}
   /* left: fixed heading */
-  /* heading left line aligned to the Business 2nd image (slot 1) left edge = container gutter + (WF+GAP)=155.5px */
-  .v2news .news-text{position:absolute;top:0;left:calc((100% - min(1392px, 100% - 48px)) / 2 + 155.5px);padding-top:200px;display:flex;flex-direction:column;gap:16px}
+  /* 헤딩 좌측선 — 다른 섹션들과 같은 2열(84px + --sec-inset)에 맞춘다.
+     예전엔 Business 2번째 타일 좌측 끝(+155.5px)에 맞췄었는데, 요청으로 뺐다 */
+  .v2news .news-text{position:absolute;top:0;left:calc(84px + var(--sec-inset));padding-top:200px;display:flex;flex-direction:column;gap:16px}
   .v2news .news-text .h{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
   .v2news .news-text .sub{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:#445464}
   /* right: card grid (2 cols × 4 rows, diagonal stagger) that scrolls vertically during the pin */
   /* card group: left line pinned to the window centre, right line aligned to the Business right card
      (= right edge of the centred min(1392px,100%-48px) container). Positioned against .news-sticky (full width). */
-  .v2news .news-viewport{position:absolute;top:0;left:50%;right:calc((100% - min(1392px, 100% - 48px)) / 2);height:100%;overflow:hidden}
+  .v2news .news-viewport{position:absolute;top:0;left:50%;right:calc(84px + var(--sec-inset));height:100%;overflow:hidden}
   .v2news .news-cards{position:absolute;top:0;left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,294px);column-gap:40px;padding-top:200px;will-change:transform}
   .v2news .ncard{display:flex;flex-direction:column;gap:28px;cursor:pointer;align-self:start}
   .v2news .ncard.c1{grid-column:1;grid-row:1}
@@ -453,9 +470,14 @@
   .v2gnet .gnet-stage{position:absolute;left:50%;top:0;transform:translateX(-50%);width:1280px;height:900px}
   .v2gnet .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
   .v2gnet .gnet-map img{width:100%;height:100%;display:block}
-  /* left = the GNB's left line (1392 container edge) mapped into the 1280 gnet-stage: (1280 − (maxw−48))/2 = −56px */
-  .v2gnet .gnet-gn{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
-  .v2gnet .gnet-desc{position:absolute;left:calc((1280px - (var(--maxw) - 48px)) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  /* left = GNB의 좌측선(뷰포트 기준 84px 고정)을, 뷰포트 중앙에 고정폭(1280px)으로
+     떠 있는 gnet-stage 자신의 좌표계로 환산한 값 — gnet-stage 는 (스케일 없이) 항상
+     가운데 정렬이라 스테이지 좌측 끝은 뷰포트 기준 (100vw-1280px)/2 에 있다. 거기서
+     "뷰포트 좌측에서 84px" 지점까지의 거리를 재면 84px - (100vw-1280px)/2 —
+     예전엔 --maxw 캡이 걸리는 한 뷰포트 폭에 무관한 상수(-56px)였지만, 새 마진은
+     캡 없이 항상 84px 이라 뷰포트마다 실제 값이 달라져 상수로 못 박을 수 없다 */
+  .v2gnet .gnet-gn{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .v2gnet .gnet-desc{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
   .v2gnet .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
   .v2gnet .gnet-stat{flex:1;text-align:center}
   .v2gnet .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
@@ -482,7 +504,9 @@
 
   /* ===================== FOOTER ===================== */
   .footer{background:var(--g950);padding:80px 24px 48px;display:flex;flex-direction:column;align-items:center}
-  .footer .container{width:100%;max-width:calc(var(--maxw) - 48px);display:flex;flex-direction:column}
+  /* .footer 자신이 이미 좌우 padding:24px 를 갖고 있어(위 .footer{padding:80px 24px 48px}),
+     .band 와 같은 이유로 여기서는 84-24=60px 만 남긴다(합쳐서 84px) */
+  .footer .container{width:calc(100% - 120px);display:flex;flex-direction:column}
   /* --- sitemap (menu tree) --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
@@ -1046,7 +1070,13 @@
                 {nm:'에이프로 세미콘', sub:true, href:'business-semicon.html', tags:['A-PRO SEMICON']} ] }
     ];
     var N = BIZ.length;
-    var MAXCW=1392, GUTTER=24, GAP=12, LISTW=299;
+    // MAXCW(예전 1392px 캡) 제거 — 세부페이지처럼 GUTTER(마진)를 84px 로 고정하고
+    // 폭은 뷰포트를 따라 계속 늘어나게 한다. Infinity 를 주면 아래 Math.min(MAXCW, ...)
+    // 가 항상 두 번째 값(뷰포트 - 마진*2)을 골라, 캡이 있던 자리를 건드리지 않고
+    // "캡 없음"만 표현할 수 있다. GUTTER 는 더 이상 상수가 아니다 — 타일도 CSS
+    // --sec-inset 만큼 GNB(84px)보다 한 칸 더 좁게(2열~11열) 보이도록, computeSlots
+    // 안에서 뷰포트 폭(vw)마다 다시 계산한다(아래 참고, CSS --sec-inset 과 같은 식) */
+    var MAXCW=Infinity, GAP=12, LISTW=299;
     var WF=(LISTW-GAP)/2, BASE=860;
     var centerEl = sticky.querySelector('.biz-center');
     var heroBlock = sticky.querySelector('.biz-hero');
@@ -1055,6 +1085,7 @@
       // static 4-tile layout: four equal tiles filling the container, below the "Business" label bar
       var vw = collage.clientWidth || window.innerWidth;
       var stageH = Math.min(collage.clientHeight || Math.max(window.innerHeight,900), 900);
+      var GUTTER = 84 + (vw - 144) / 12;   // CSS --sec-inset:calc((100% - 144px)/12) 와 동일한 식
       var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2;
       var TG=12, tw=(CW-TG*3)/4;         // 4 tiles + 3 gaps across the container
       // 타일 윗변 = "Business" 라벨 밑변 + GAPH. 두 곳에 숫자를 박아 두면 라벨을 옮길 때마다
