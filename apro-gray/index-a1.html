@@ -51,8 +51,14 @@
     width:calc(100% - 168px);height:40px;z-index:100;
     display:flex;align-items:center;gap:36px;
     animation:gnbIn .9s var(--ease) both}
-  .gnb .logo{padding:12px 0;flex-shrink:0}   /* flush to the container line (matches Business label / footer) */
-  .gnb .logo img{height:16px;width:78px;transition:filter .35s var(--ease)}
+  /* 밝은 바닥에서는 브랜드 블루로 — 파란판(logo-apro-blue.svg)을 ::after 에 깔고
+     두 겹을 반대로 흐리게 한다. 자세한 이유는 business-layout.css 의 같은 자리 참고.
+     inset:12px 0 은 .gnb .logo 의 padding 과 짝이다 */
+  .gnb .logo{padding:12px 0;flex-shrink:0;position:relative}   /* flush to the container line (matches Business label / footer) */
+  .gnb .logo::after{content:"";position:absolute;inset:12px 0;pointer-events:none;
+    background:url(../assets/logo-apro-blue.svg) no-repeat center/contain;
+    opacity:0;transition:opacity .35s var(--ease)}
+  .gnb .logo img{width:78px;height:auto;transition:opacity .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
   .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;text-decoration:none;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
   .gnb .menus a:hover{opacity:1}
@@ -63,7 +69,9 @@
   .gnb-group.nav-light .gnb .menus a,
   .gnb-group.mega-open .gnb .menus a,.gnb-group.mega-open .gnb .menus a{color:var(--g900);text-shadow:none}
   .gnb-group.nav-light .gnb .logo img,
-  .gnb-group.mega-open .gnb .logo img,.gnb-group.mega-open .gnb .logo img{filter:invert(1)}
+  .gnb-group.mega-open .gnb .logo img{opacity:0}
+  .gnb-group.nav-light .gnb .logo::after,
+  .gnb-group.mega-open .gnb .logo::after{opacity:1}
   .gnb-group.nav-light .gnb .lang .lang-btn,
   .gnb-group.mega-open .gnb .lang .lang-btn,.gnb-group.mega-open .gnb .lang .lang-btn{color:var(--g900);text-shadow:none}
   /* language switcher (replaces hamburger) */
@@ -431,7 +439,7 @@
   /* --- bottom (logo + legal + copyright) --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
   .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
-  .footer .f-bottom .logo{width:97px;height:20px}
+  .footer .f-bottom .logo{width:97px;height:auto}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
@@ -518,7 +526,7 @@
     <video class="v2b-video" src="../assets/banner-gray.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="gnb-group">
     <nav class="gnb">
-      <span class="logo"><img src="../assets/logo-white.png" alt="A-PRO" /></span>
+      <span class="logo"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></span>
       <div class="menus">
         <a href="business-a1.html" data-i="0">사업영역</a><a href="company-a1.html" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a>
         <a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
@@ -793,7 +801,7 @@
       <!-- 로고 + 사업자 정보 + copyright -->
       <div class="f-bottom">
         <div class="bl">
-          <img class="logo" src="../assets/logo-white-footer.png" alt="A-PRO" />
+          <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
           <div class="infos">
             <div class="line">
               <span>주)에이프로</span><i class="sep"></i>
@@ -1377,7 +1385,7 @@
 <!-- ===================== OVERLAY MENU ===================== -->
 <div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
   <div class="navover-hd">
-    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
+    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
     <div class="ov-tools">
       <a class="ov-lang" href="#">ENG</a>
       <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>

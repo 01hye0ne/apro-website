@@ -77,15 +77,35 @@
      ::before(흰 플레이트)는 .nav-light 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
   .gnb-group.nav-hide .gnb{opacity:0;transform:translate(-50%,-14px);pointer-events:none}
   .gnb-group.nav-hide::before{opacity:0}
-  .gnb .logo{padding:12px 0;flex-shrink:0}
-  .gnb .logo img{height:16px;width:78px;transition:filter .35s var(--ease)}
+  /* 워드마크는 assets/logo-apro-white.svg 한 벌로 사이트 전체를 덮는다(GNB · 전체메뉴 ·
+     홈 히어로 · 푸터). 예전 logo-white.png / logo-white-footer.png 는 내용이 같은
+     161×33 PNG 두 장이었다 — assets/_unused/ 에 남겨 두었다.
+     ▶ 폭만 못박고 높이는 auto — 두 변을 다 적으면 SVG 가 눌린다. PNG 는 4.879:1
+     이었는데 이 SVG 는 4.588:1 이라 예전 값(78×16)을 그대로 쓰면 세로로 6% 찌그러진다.
+     .gnb 는 height:40px 고정에 align-items:center 라 로고가 1px 높아져도 바가 밀리지 않는다.
+
+     ▶ 밝은 바닥(nav-light · mega-open)에서는 브랜드 블루로 바뀐다.
+     예전에는 흰 로고에 filter:invert(1)을 걸어 검정으로 뒤집었는데, invert 로는
+     #2C5790 같은 특정 색이 나오지 않는다. 그래서 파란판(logo-apro-blue.svg)을
+     ::after 에 깔고 두 겹을 반대로 흐리게 한다 — 글자 모양이 완전히 같은 두 장이라
+     한쪽이 사라진 자리에 다른 쪽이 그대로 들어선다.
+     파란판을 배경이 아니라 ::after 로 두는 이유 — 배경이면 흰 로고 밑에 늘 깔려
+     있어서 글자 가장자리 안티에일리어싱 틈으로 파란 테가 비친다. ::after 는 밝은
+     바닥이 아닐 때 opacity:0 이라 아예 없는 것과 같다.
+     inset:12px 0 은 위 .gnb .logo 의 padding 과 짝이다(둘 중 하나만 고치면 어긋난다) */
+  .gnb .logo{padding:12px 0;flex-shrink:0;position:relative}
+  .gnb .logo::after{content:"";position:absolute;inset:12px 0;pointer-events:none;
+    background:url(../assets/logo-apro-blue.svg) no-repeat center/contain;
+    opacity:0;transition:opacity .35s var(--ease)}
+  .gnb .logo img{width:78px;height:auto;transition:opacity .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
   .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
   .gnb .menus a:hover{opacity:1}
   .gnb .menus a.active{font-weight:700;opacity:1}
   .gnb-group.mega-open .gnb .menus a.active{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:24px}
   .gnb-group.nav-light .gnb .menus a,.gnb-group.mega-open .gnb .menus a{color:var(--g900);text-shadow:none}
-  .gnb-group.nav-light .gnb .logo img,.gnb-group.mega-open .gnb .logo img{filter:invert(1)}
+  .gnb-group.nav-light .gnb .logo img,.gnb-group.mega-open .gnb .logo img{opacity:0}
+  .gnb-group.nav-light .gnb .logo::after,.gnb-group.mega-open .gnb .logo::after{opacity:1}
   .gnb .lang{width:78px;display:flex;justify-content:flex-end;flex-shrink:0}
   .gnb .lang .lang-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#fff;cursor:pointer;padding:2px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.28));transition:color .35s var(--ease),filter .35s var(--ease)}
   .gnb-group.nav-light .gnb .lang .lang-btn,.gnb-group.mega-open .gnb .lang .lang-btn{color:var(--g900);text-shadow:none;filter:none}
@@ -1417,7 +1437,7 @@
   /* --- 로고 + 사업자 정보 + copyright --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
   .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
-  .footer .f-bottom .logo{width:97px;height:20px}
+  .footer .f-bottom .logo{width:97px;height:auto}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
