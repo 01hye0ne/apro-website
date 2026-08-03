@@ -559,30 +559,35 @@
      생성 스크립트는 assets/_unused/world-map-gen.py. 선·면 색은 SVG 안 <style>의
      .land 한 줄에서 바꾼다 (외부 SVG라 이 파일의 CSS로는 덮이지 않는다).
      지도는 위 .hcard>* 가독 폭(820px)에서 제외해 카드 안쪽 폭을 꽉 채운다 (약 958px) */
-  /* 카드 높이가 모자랄 때 지도를 "폭"으로 줄인다 — aspect-ratio 가 높이를 따라 줄여
-     마커 %좌표가 그대로 맞물린다. 높이만 깎으면 지도가 눌리고 좌표가 어긋난다.
-     카드 안쪽 높이 = 100dvh − 398px
-       (섹션 패딩 204+24, 트랙 미리보기 96, 카드 테두리 2 + 패딩 72)
-     여기서 지도 위에 놓이는 것들의 높이(--map-above)를 빼면 지도에 줄 수 있는 높이가
-     나오고, ×1000/387.78 이 그 높이에 맞는 폭이다.
+  /* ⚠ .gmap 에는 padding 을 주지 말 것 (여백이 필요하면 바깥 .hright 에 준다).
+     이 상자는 세 겹이 정확히 포개져야 돌아간다 —
+       ① aspect-ratio 1000/387.78 로 잡은 상자
+       ② 그 안을 100%×100% 로 채우는 world-map.svg
+       ③ 상자 기준 %좌표로 얹히는 마커·라벨·지시선(.gdot / .glab / .gleads)
+     box-sizing 이 border-box 라 aspect-ratio 는 '테두리 상자'에 걸린다. 여기에
+     padding:32px 을 주면 안쪽 콘텐츠 상자는 (W−64)×(H−64) 가 되어 더 이상
+     1000:387.78 이 아니고, 그 어긋난 칸을 .hcard>.hright img{object-fit:cover} 가
+     꽉 채우려고 지도 그림의 위아래를 깎아낸다. 마커는 ①(패딩 상자) 기준이고
+     그림은 ②(콘텐츠 상자) 기준이라 좌표까지 같이 밀린다.
 
-     273px = 지도 카드 두 장(해외 거점 / SolarEdge)의 "지도 위 높이" 실측 최댓값이다.
-     글 줄 수는 폭에 따라 달라지므로 넓은 레이아웃 전 구간(901~1700px)을 훑어 잡았다 —
-     해외 거점 272.6 / SolarEdge 249.8 로, 둘 다 900px 브레이크포인트 바로 위(901~925px,
-     본문이 가장 좁아 줄이 가장 많이 접히는 지점)에서 최댓값이 나온다. 그보다 좁아지면
-     세로 배치로 풀려 아래 .gmap{width:100%} 가 받으므로 이 값과 무관해진다.
-     한 값을 두 카드가 함께 쓴다 — 카드별로 따로 잡으면 같은 구조인데 지도 크기가
-     갈려 나란히 놓았을 때 레이아웃이 달라 보인다. 두 카드의 최댓값 차이가
-     23px뿐이라 큰 쪽으로 묶어도 손해가 거의 없다.
-     본문 문안이나 --body-lh · --para-gap 을 고치면 이 값도 다시 재야 한다
-     (한 줄 = 27.2px, 단락 하나 = 8px).
-     세로 850px 안팎(노트북)에서 지도 밑단·인도네시아 라벨·조지아 팝업이 카드 밖으로
-     밀려 잘렸던 것을 이 한 줄이 막는다. 화면이 넉넉하면 100% 그대로다.
-     420px 하한 — 그보다 작아지면 라벨이 서로 붙어 지도가 읽히지 않는다 */
-  .gmap{position:relative;margin:auto auto 0;aspect-ratio:1000/387.78;
-    width:100%;   /* dvh 를 모르는 브라우저용 폴백 — 아래 줄이 무효가 되면 이 값이 남는다 */
-    width:min(100%,max(420px,calc((100dvh - 398px - var(--map-above,273px)) * 2.5788)))}
-  .gmap>img{width:100%;height:100%}
+     크기 — 넓은 레이아웃에서는 칸에 남는 높이를 그대로 다 쓴다.
+     .hright 가 flex 컨테이너(align-items:center)이므로 align-self:stretch 면 높이가
+     칸 높이로 정해지고, aspect-ratio 가 거기 맞는 폭을 계산한다. 예전에는 폭을
+     100dvh 에서 "지도 위 내용 높이"를 손으로 재 빼는 식으로 잡았는데, 그 실측값
+     하나로 두 카드 × 모든 폭을 덮어야 해서 가장 빡빡한 경우에 맞추면 나머지가 전부
+     작아졌다(그래서 이 지도가 칸의 40%만 쓰고 있었다). 칸이 자기 높이를 알고 있으니
+     굳이 뷰포트에서 역산할 이유가 없다.
+     좁은 화면(≤900px)은 카드가 세로로 풀려 칸 높이가 내용에 따라 정해지므로 stretch
+     기준이 사라진다 → 거기서는 아래 기본값 width:100% 가 그대로 남는다 */
+  .gmap{position:relative;margin:auto auto 0;aspect-ratio:1000/387.78;width:100%}
+  @media(min-width:901px){
+    .hright .gmap{align-self:stretch;width:auto;height:auto;max-width:100%;margin:0}
+  }
+  /* fill — 상자와 그림의 비율이 같으므로 cover/contain/fill 이 같은 결과지만, 어긋났을
+     때의 실패 방향이 다르다. cover 는 잘라내(마커와 그림이 서로 밀린다) 어디가 틀렸는지
+     안 보이고, fill 은 눌린 티가 나면서도 %좌표와 그림이 끝까지 함께 움직인다.
+     위 .hcard>.hright img{object-fit:cover} 보다 특정도가 낮으므로 !important 로 덮는다 */
+  .gmap>img{width:100%;height:100%;object-fit:fill!important}
   /* 지시선 — HTML 마커와 같은 0–100 좌표계.
      preserveAspectRatio:none 이라 x·y 배율이 다른데, non-scaling-stroke 가
      그 왜곡을 받지 않고 선 굵기를 1px로 고정한다.

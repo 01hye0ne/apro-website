@@ -498,7 +498,10 @@
   .hgal span{display:block;aspect-ratio:1/1;background:#fff;border:1px dashed var(--border-g)}
   .hright .hgrid2{width:100%;padding:40px;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
   .hright .hgrid2 .ico{width:100%;aspect-ratio:1/1;background:#fff}
-  .hright .gmap{width:100%;margin:0;padding:28px}
+  /* 폭·여백 모두 건드리지 않는다 — business-layout.css 가 칸 높이에 맞춰 크기를 잡고,
+     여백은 .gmap 이 아니라 바깥 .hright 이 든다(패딩을 상자에 주면 종횡비가 어긋나
+     지도 그림 위아래가 잘린다. 그쪽 ⚠ 주석 참고) */
+  .hright .gmap{margin:0}
 
   /* ── 카드 4종 개별 레이아웃 — [좌:본문/우:비주얼] 2열 대신 [상:본문/하:비주얼]
      2행으로 바꾼다. data-tab 값으로 이 카드만 콕 집어 오버라이드한다(마크업
@@ -571,7 +574,7 @@
        계산해 잘림·마커 어긋남이 둘 다 없어진다. .hright 는 이미
        align-items/justify-content:center 라 남는 위아래 공간은 자동으로
        가운데 정렬된다 */
-    .hcard[data-tab*="법인 운용"] .gmap{padding:32px}
+    .hcard[data-tab*="법인 운용"]>.hright{padding:32px}
   }
 
   /* 에이프로 활성화 설비 — 9종 장비를 5열×2행 아이콘+국문+영문 그리드로.

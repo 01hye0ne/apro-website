@@ -146,16 +146,11 @@
     transition:opacity .6s var(--ease)}
   .hcard>.hright.hph--slides img.is-on{opacity:1}
 
-  /* 지도(.gmap) 폭 — 스마트 제조 '법인 운용' 카드와 같은 처리다(그 페이지 .hright .gmap).
-     business-layout.css 는 세로가 짧은 화면에서 지도가 카드 밖으로 밀리지 않도록
-     '폭'을 줄이는 식을 걸어 둔다
-       width:min(100%, max(420px, (100dvh − 398px − 273px) × 2.5788))
-     그런데 노트북 세로(≈800px)에서는 이 값이 하한 420px 까지 내려간다. 스마트 제조는
-     이 한 줄로 그 식을 덮어 늘 100% 로 쓰고 있었고, 그래서 같은 world-map.svg 를 같은
-     골격으로 얹은 두 카드가 화면에서 두 배 넘게 차이가 났다 → 큰 쪽(100%)으로 맞춘다.
-     세로가 모자랄 때는 지도를 줄이는 대신 카드 안 스크롤(.hcard overflow-y:auto)이
-     남는 부분을 받는다. 패딩은 아래 SolarEdge 전용 규칙(32px)이 계속 맡는다 */
-  .hright .gmap{width:100%;margin:0}
+  /* 지도(.gmap) — 스마트 제조 '법인 운용' 카드와 같은 처리다(그 페이지 .hright .gmap).
+     크기는 business-layout.css 가 칸 높이에 맞춰 잡고, 여백은 상자가 아니라 바깥
+     .hright 이 든다(아래 SolarEdge 전용 규칙의 padding:32px). 상자에 패딩을 주면
+     종횡비가 어긋나 지도 그림 위아래가 잘린다 — 그쪽 ⚠ 주석 참고 */
+  .hright .gmap{margin:0}
 
   /* 아이콘+키워드 박스(.pict) — 4칸을 2열×2행 그리드로 */
   @media(min-width:901px){
@@ -227,8 +222,7 @@
     .hcard[data-tab="SolarEdge (KOKAM)"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
       padding:40px 48px 24px;overflow:visible}
     .hcard[data-tab="SolarEdge (KOKAM)"]>.hright{flex:1 1 auto;width:100%;border-left:0;
-      border-top:1px solid var(--border-g)}
-    .hcard[data-tab="SolarEdge (KOKAM)"] .gmap{padding:32px}
+      border-top:1px solid var(--border-g);padding:32px}
   }
 
   /* 에너지 저장 장치 사업 카드 — 비주얼이 없어 .hleft/.hright 2열로 나눌 이유가 없다.
