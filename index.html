@@ -50,23 +50,20 @@
     .card .desc { font-size: 13px; color: #8b93a7; }
     .swatch { width: 44px; height: 44px; border-radius: 50%; margin-bottom: 6px; }
     .swatch.gray { background: linear-gradient(135deg, #6b7280, #374151); }
-    .swatch.blue { background: linear-gradient(135deg, #3b6ef0, #1b3a8f); }
     footer { color: #4b5266; font-size: 12px; margin-top: 8px; }
   </style>
 </head>
 <body>
   <img class="logo" src="assets/logo-white.png" alt="A-PRO" />
-  <p class="tagline">보실 버전을 선택하세요</p>
+  <!-- 블루 버전은 blue-v2.2 태그를 마지막으로 내렸다 (git checkout blue-v2.2 -- apro-blue/).
+       그래서 여기 남은 카드는 그레이 하나뿐이고, "선택하세요" 대신 그냥 들어가는 문이다.
+       A / A-1 두 시안으로 다시 갈리는 자리는 이 카드가 아니라 각 페이지다 -->
+  <p class="tagline">사이트 들어가기</p>
   <div class="choices">
     <a class="card" href="apro-gray/index.html">
       <span class="swatch gray"></span>
       <span class="name">Gray</span>
       <span class="desc">그레이 버전</span>
-    </a>
-    <a class="card" href="apro-blue/index.html">
-      <span class="swatch blue"></span>
-      <span class="name">Blue</span>
-      <span class="desc">블루 버전</span>
     </a>
   </div>
   <footer>© A-PRO</footer>
