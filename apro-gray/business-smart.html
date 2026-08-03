@@ -357,6 +357,12 @@
      (36→30px) 가장 긴 제목도 그 폭 안에서 실제로 한 줄에 들어오게 한다 */
   .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
     line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
+  /* 이 카드 제목만 두 줄을 허용한다 — 위 nowrap 은 "이차전지 활성화 전공정 설비"급
+     (13자) 제목을 한 줄로 붙잡아 두려는 규칙인데, 이 제목은 25자라 좁은 데스크톱
+     구간(901~1200px, 제목이 clamp 하한 22px)에서 열 폭을 넘는다. .hleft 가
+     overflow-x:hidden 이라 넘친 만큼은 스크롤도 없이 그냥 잘려 나간다.
+     word-break:keep-all 로 어절 중간에서 끊기는 것만 막고 줄바꿈은 허용한다 */
+  .hcard[data-tab*="법인 운용"] .hleft h3{white-space:normal;word-break:keep-all}
   .hleft>.pict{margin-top:auto}   /* 픽토그램은 "필요에 따라" 본문 아래, 열 바닥에 붙인다 */
   /* 아이콘+키워드 박스 — 기본(business-layout.css)은 4칸을 가로로 한 줄에 늘어놓고
      칸마다 흰 카드+그림자+모서리 점 장식을 넣는 방식인데, 카드 폭이 이제 열 하나
@@ -500,29 +506,34 @@
      "이차전지 활성화 전공정 설비"는 원래 좌|우였는데 상|하 요청으로 추가됐다 —
      .hright 안(구성도+순서, 위에서 이미 세로로 쌓아둔 부분)은 그대로 두고
      .hcard/.hleft/.hright 3단 배치만 이 목록에 얹는다 */
+  /* 아래 카드 선택자를 완전일치(=)가 아니라 부분·접두 일치(*= / ^=)로 둔 이유 —
+     data-tab 은 좌측 레일 인덱스에 그대로 찍히는 "글"이라(business-layout.js
+     buildIndex) 문구가 다듬어질 때마다 값이 바뀐다. 완전일치로 걸어 두면 인덱스
+     문구를 한 글자 고칠 때마다 이 파일의 선택자 열몇 줄이 같이 조용히 풀린다.
+     특정도는 연산자와 무관하게 같으므로 규칙 순서는 종전 그대로다 */
   @media(min-width:901px){
-    .hcard[data-tab="법인 운용 및 해외 거점"],
+    .hcard[data-tab*="법인 운용"],
     .hcard[data-tab="에이프로 활성화 설비"],
-    .hcard[data-tab="PLC"],
-    .hcard[data-tab="MES"],
+    .hcard[data-tab^="PLC"],
+    .hcard[data-tab^="MES"],
     .hcard[data-tab="이차전지 활성화 전공정 설비"]{flex-direction:column}
 
-    .hcard[data-tab="법인 운용 및 해외 거점"]>.hleft,
+    .hcard[data-tab*="법인 운용"]>.hleft,
     .hcard[data-tab="에이프로 활성화 설비"]>.hleft,
-    .hcard[data-tab="PLC"]>.hleft,
-    .hcard[data-tab="MES"]>.hleft,
+    .hcard[data-tab^="PLC"]>.hleft,
+    .hcard[data-tab^="MES"]>.hleft,
     .hcard[data-tab="이차전지 활성화 전공정 설비"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
       padding:40px 48px 24px;overflow:visible}
 
-    .hcard[data-tab="법인 운용 및 해외 거점"]>.hright,
+    .hcard[data-tab*="법인 운용"]>.hright,
     .hcard[data-tab="에이프로 활성화 설비"]>.hright,
-    .hcard[data-tab="PLC"]>.hright,
-    .hcard[data-tab="MES"]>.hright,
+    .hcard[data-tab^="PLC"]>.hright,
+    .hcard[data-tab^="MES"]>.hright,
     .hcard[data-tab="이차전지 활성화 전공정 설비"]>.hright{flex:1 1 auto;width:100%;border-left:0}
 
     /* 법인 운용·활성화 카드만 상단(본문)-하단(비주얼) 사이 구분선을 남긴다 —
        둘 다 비주얼이 통짜 이미지(지도/구성도)라 그 경계가 곧 콘텐츠 전환점이다 */
-    .hcard[data-tab="법인 운용 및 해외 거점"]>.hright,
+    .hcard[data-tab*="법인 운용"]>.hright,
     .hcard[data-tab="이차전지 활성화 전공정 설비"]>.hright{border-top:1px solid var(--border-g)}
 
     /* 에이프로 활성화 설비·PLC·MES 그리드 박스 — 본문 카드가 다른 곳에서 쓰는
@@ -536,16 +547,16 @@
        background:var(--secondary-bg))이 그리드 칸 사이 간격과 둘레 여백에
        그대로 비쳐서 옅은 회색으로 보였다 */
     .hcard[data-tab="에이프로 활성화 설비"]>.hright,
-    .hcard[data-tab="PLC"]>.hright,
-    .hcard[data-tab="MES"]>.hright{padding:0 48px 48px;background:none}
+    .hcard[data-tab^="PLC"]>.hright,
+    .hcard[data-tab^="MES"]>.hright{padding:0 48px 48px;background:none}
 
     /* 세 카드 모두 그리드 높이가 auto(정사각형 칸 크기에 따라 결정)라 .hright
        의 align-items:center 로 위아래 가운데 정렬되어 있었는데, 그러면 박스
        밑변이 하단 패딩과 안 맞닿아 보인다 — flex-end 로 바꿔 박스가 바닥
        여백에 바로 이어지게 내린다 */
     .hcard[data-tab="에이프로 활성화 설비"]>.hright,
-    .hcard[data-tab="PLC"]>.hright,
-    .hcard[data-tab="MES"]>.hright{align-items:flex-end}
+    .hcard[data-tab^="PLC"]>.hright,
+    .hcard[data-tab^="MES"]>.hright{align-items:flex-end}
 
     /* 법인 운용 카드 — 지도 위쪽이 가위로 자른 듯 잘렸던 원인: .gmap 은 원래
        "폭만으로" 크기를 정하고 높이는 aspect-ratio(1000/387.78)가 스스로
@@ -560,10 +571,14 @@
        계산해 잘림·마커 어긋남이 둘 다 없어진다. .hright 는 이미
        align-items/justify-content:center 라 남는 위아래 공간은 자동으로
        가운데 정렬된다 */
-    .hcard[data-tab="법인 운용 및 해외 거점"] .gmap{padding:32px}
+    .hcard[data-tab*="법인 운용"] .gmap{padding:32px}
   }
 
   /* 에이프로 활성화 설비 — 9종 장비를 5열×2행 아이콘+국문+영문 그리드로.
+     아홉 칸 모두 [아이콘 + 키워드(.k) + 서브키워드(.en)] 3단을 지킨다. Degas·
+     Pre-formation·Selector 처럼 국문 표기가 따로 없는 장비는 .en 을 비우지 않고
+     같은 이름을 한 번 더 쓴다 — 칸이 내용 기준 세로 가운데 정렬이라 한 칸만
+     두 줄이 되면 그 칸의 아이콘이 옆 칸들보다 내려앉아 줄이 어긋나 보인다.
      기존 .pict(다른 카드에서 영문 숨김·2열 전용으로 이미 오버라이드됨)와
      충돌하지 않도록 새 클래스(.kwgrid)로 완전히 따로 짠다.
      처음엔 칸 사이를 공유 테두리(table 처럼 맞닿는 선)로 나눴는데, 상하 구분선을
@@ -615,6 +630,24 @@
   .kwitem .k,
   .descitem .k{font-family:var(--suit);font-weight:700;font-size:15px;
     line-height:1.35;letter-spacing:-.3px;color:var(--g900);word-break:keep-all}
+
+  /* 카드 제목 옆 소속 뱃지 — LiFSI 전해염은 계열사인 에이프로 머티리얼즈가 만드는
+     소재라 제목 옆에 만든 곳을 붙인다. h3 '안'에 두는 게 핵심이다 — 밖으로 빼면
+     제목과 뱃지가 별개 블록이 되어 제목이 두 줄로 접힐 때 뱃지만 아래로 떨어진다.
+     vertical-align:middle 은 뱃지 상자의 세로 중심을 제목 baseline + x-height/2 에
+     맞춘다 — 24px 제목의 캡 높이(약 17px)와 뱃지 높이(12 + 패딩 8 + 테두리 2 = 22px)가
+     그 지점에서 위아래로 고르게 걸쳐 글자줄에 얹힌 것처럼 읽힌다.
+     white-space:nowrap — 회사명에 띄어쓰기가 들어 있고(푸터 패밀리 사이트 표기와
+     같은 "에이프로 머티리얼즈"), h3 의 word-break:keep-all 은 어절 중간만 막을 뿐
+     띄어쓰기에서의 줄바꿈은 막지 않는다. 없으면 좁은 폭에서 "에이프로 /
+     머티리얼즈"로 갈라져 뱃지 하나가 두 줄에 걸친다 */
+  /* 모서리는 각지게 둔다 — 이 페이지의 판·칸(.hcard / .kwitem / .hcols2)이 전부
+     0 반경이라, 알약 모양은 제목 옆에서 혼자 다른 문법으로 읽혔다 */
+  .hbadge{display:inline-flex;align-items:center;vertical-align:middle;
+    margin-left:10px;padding:4px 10px;border-radius:0;
+    background:var(--secondary-bg);border:1px solid var(--point-200);
+    font-family:var(--suit);font-weight:700;font-size:12px;line-height:1;
+    letter-spacing:-.24px;color:var(--brand);white-space:nowrap}
 
   @media(max-width:900px){
     .hcard{flex-direction:column}
@@ -801,7 +834,7 @@
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="19" r="2"/><circle cx="14" cy="12.5" r="2.6"/><circle cx="20" cy="6.5" r="1.7"/>
               </svg></span>
-              <span class="k">디개싱</span>
+              <span class="k">Degas</span>
               <span class="en">Degas</span>
             </div>
             <div class="kwitem">
@@ -816,36 +849,36 @@
                 <circle cx="14" cy="15.5" r="9"/><path d="M14 15.5l4.5-5.5"/><path d="M8 15.5h1.2M18.8 15.5H20M14 9v1.2"/>
               </svg></span>
               <span class="k">IR-OCV</span>
-              <span class="en">Resistance &amp; OCV</span>
+              <span class="en">Internal Resistance &amp; Open Circuit Voltage Tester</span>
             </div>
             <div class="kwitem">
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="4" y="10" width="16" height="9" rx="2"/><rect x="20" y="12.5" width="3" height="4"/><path d="M8 14.7l2.3 2.3L15.5 12"/>
               </svg></span>
               <span class="k">OCV</span>
-              <span class="en">Open Circuit Voltage</span>
+              <span class="en">Open Circuit Voltage Tester</span>
             </div>
             <div class="kwitem">
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 8l6 6-6 6"/><path d="M24 8l-6 6 6 6"/><path d="M14 5v18"/>
               </svg></span>
               <span class="k">DSF/EOL</span>
-              <span class="en">Folding / End of Line</span>
+              <span class="en">Double Side Folding / End of Line</span>
             </div>
             <div class="kwitem">
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="7" cy="14" r="2.3"/><circle cx="20" cy="7" r="2.3"/><circle cx="20" cy="21" r="2.3"/><path d="M9 14h3l6-5.5M12 14l6 5.5h2"/>
               </svg></span>
-              <span class="k">셀렉터</span>
+              <span class="k">Selector</span>
               <span class="en">Selector</span>
             </div>
           </div>
         </div>
       </article>
 
-      <article class="hcard" data-tab="법인 운용 및 해외 거점">
+      <article class="hcard" data-tab="고객사 해외 생산기지 지원을 위한 법인 운용 및 해외 거점 확보">
         <div class="hleft">
-          <h3>법인 운용 및 해외 거점</h3>
+          <h3>고객사 해외 생산기지 지원을 위한 법인 운용 및 해외 거점 확보</h3>
           <div class="hlead">
             <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
             <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
@@ -969,7 +1002,7 @@
     <div class="hrail"></div>
     <div class="htrack">
 
-      <article class="hcard" data-tab="PLC">
+      <article class="hcard" data-tab="PLC(Programmable Logic Controller)">
         <div class="hleft">
           <h3>PLC</h3>
         </div>
@@ -1007,7 +1040,7 @@
         </div>
       </article>
 
-      <article class="hcard" data-tab="MES">
+      <article class="hcard" data-tab="MES(Manufacturing Execution System)">
         <div class="hleft">
           <h3>MES</h3>
         </div>
@@ -1074,7 +1107,7 @@
                 <path d="M23.5 12A10 10 0 0 0 6 7.5"/><path d="M4 4v5h5"/>
                 <path d="M4.5 16A10 10 0 0 0 22 20.5"/><path d="M24 24v-5h-5"/>
               </svg></span>
-              <span class="k">수명 연장</span>
+              <span class="k">전체 수명 연장</span>
               <span class="en">Cycle Life</span>
             </li>
             <li>
@@ -1090,7 +1123,7 @@
                 <path d="M3 14h8"/><path d="M8 10.5L11.5 14 8 17.5"/>
                 <path d="M25 14h-8"/><path d="M20 10.5L16.5 14 20 17.5"/>
               </svg></span>
-              <span class="k">부피 팽창 억제</span>
+              <span class="k">부피 팽창 / 입자 붕괴 현상 억제</span>
               <span class="en">Volume Control</span>
             </li>
           </ul>
@@ -1104,10 +1137,10 @@
 
       <article class="hcard" data-tab="LiFSI 전해염">
         <div class="hleft">
-          <h3>LiFSI 전해염</h3>
+          <h3>LiFSI 전해염 <span class="hbadge">에이프로 머티리얼즈</span></h3>
           <div class="hlead">
             <p>기존 LiPF6 대비 탁월한 이온 이동 속도를 구현하여 배터리 내부의 이온 전도도를 크게 향상시킵니다. 고온 및 고전압의 거친 구동 환경에서도 전해액의 열분해를 막고 변함없는 화학적 안정성을 발휘합니다.</p>
-            <p>에이프로머티리얼즈의 핵심 소재 기술력으로 완성된 전해염이 고성능 배터리의 안전성과 효율을 동시에 보장합니다.</p>
+            <p>에이프로 머티리얼즈의 핵심 소재 기술력으로 완성된 전해염이 고성능 배터리의 안전성과 효율을 동시에 보장합니다.</p>
           </div>
           <ul class="pict">
             <li>
@@ -1123,21 +1156,21 @@
                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
                 <path d="M3 3l18 18"/>
               </svg></span>
-              <span class="k">열분해 억제</span>
+              <span class="k">전해액 열분해 억제</span>
               <span class="en">Thermal Stability</span>
             </li>
             <li>
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 4l10 5-10 5-10-5 10-5z"/><path d="M4 15l10 5 10-5"/>
               </svg></span>
-              <span class="k">SEI 피막 형성</span>
+              <span class="k">SEI 피막 형성 &amp; 계면 저항 저감</span>
               <span class="en">Stable SEI</span>
             </li>
             <li>
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15.5 3L6.5 15.5H13l-.5 9.5L21.5 12.5H15L15.5 3z"/>
               </svg></span>
-              <span class="k">고속 충전 성능</span>
+              <span class="k">고속 충전 성능 극대화</span>
               <span class="en">Fast Charge</span>
             </li>
           </ul>
@@ -1219,7 +1252,7 @@
           <span>FAMILY SITE</span><i class="arw"></i>
         </button>
         <div class="fmenu">
-          <a href="#" target="_blank" rel="noopener">소재 | 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
           <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
         </div>
       </div>

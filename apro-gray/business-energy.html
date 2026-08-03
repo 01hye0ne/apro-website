@@ -146,6 +146,17 @@
     transition:opacity .6s var(--ease)}
   .hcard>.hright.hph--slides img.is-on{opacity:1}
 
+  /* 지도(.gmap) 폭 — 스마트 제조 '법인 운용' 카드와 같은 처리다(그 페이지 .hright .gmap).
+     business-layout.css 는 세로가 짧은 화면에서 지도가 카드 밖으로 밀리지 않도록
+     '폭'을 줄이는 식을 걸어 둔다
+       width:min(100%, max(420px, (100dvh − 398px − 273px) × 2.5788))
+     그런데 노트북 세로(≈800px)에서는 이 값이 하한 420px 까지 내려간다. 스마트 제조는
+     이 한 줄로 그 식을 덮어 늘 100% 로 쓰고 있었고, 그래서 같은 world-map.svg 를 같은
+     골격으로 얹은 두 카드가 화면에서 두 배 넘게 차이가 났다 → 큰 쪽(100%)으로 맞춘다.
+     세로가 모자랄 때는 지도를 줄이는 대신 카드 안 스크롤(.hcard overflow-y:auto)이
+     남는 부분을 받는다. 패딩은 아래 SolarEdge 전용 규칙(32px)이 계속 맡는다 */
+  .hright .gmap{width:100%;margin:0}
+
   /* 아이콘+키워드 박스(.pict) — 4칸을 2열×2행 그리드로 */
   @media(min-width:901px){
     .hcard:has(.pict) .hleft{overflow:visible}
@@ -225,6 +236,46 @@
      스마트 제조 페이지의 hcard--imgpict 카드가 쓰는 것과 같은 요령 */
   .hcard[data-tab="에너지 저장 장치 사업"]{flex-direction:column;gap:var(--stack-gap);
     padding:36px 40px;overflow-y:auto;overflow-x:hidden}
+
+  /* 오른쪽 열 — 세 곳을 세로로 쌓는다 */
+  .hstack{display:flex;flex-direction:column;min-width:0}
+
+  /* ── 구분선 ────────────────────────────────────────────────────────────
+     칸 사이 여백(gap) 대신 선으로 나눈다. 선이 경계를 맡으므로 gap 은 0 으로
+     내리고, 그만큼을 각 칸의 padding 으로 옮긴다 — gap 을 남기면 선과 여백이
+     경계를 두 번 그어 칸이 둥둥 뜬다.
+
+     선은 카드 테두리까지 닿아야 표처럼 읽힌다. 그런데 칸은 카드 안쪽 여백
+     (padding:36px 40px) 안에 들어앉아 있어 그대로는 선이 여백 앞에서 끊긴다 →
+     .hcols2 를 좌우 -40px, 아래 -36px 만큼 번지게 해 카드 테두리에 붙이고,
+     빼앗긴 여백은 칸 자신의 padding(28px 40px)이 다시 만든다.
+
+     flex:1 1 auto + align-items:stretch — 카드 높이는 트랙이 정하므로 내용이
+     짧아도 카드 아래쪽이 남는다. 세로선이 내용 끝에서 멎으면 표가 중간에 잘린
+     것처럼 보이므로, 격자가 남는 높이를 다 차지하고 두 열도 그 높이로 늘어나게
+     한다 (business-layout.css 의 .hcols2{align-items:start} 를 덮는다) */
+  .hcard[data-tab="에너지 저장 장치 사업"] .hcols2{flex:1 1 auto;gap:0;
+    align-items:stretch;margin:0 -40px -36px;
+    border-top:1px solid var(--border-g)}
+  .hcard[data-tab="에너지 저장 장치 사업"] .hcols2>.hblock,
+  .hcard[data-tab="에너지 저장 장치 사업"] .hstack>.hblock{padding:28px 40px}
+  /* 두 열을 가르는 세로선 — 오른쪽 열이 자기 왼쪽 테두리로 그린다 */
+  .hcard[data-tab="에너지 저장 장치 사업"] .hstack{border-left:1px solid var(--border-g)}
+  /* 오른쪽 열 세 칸 사이 가로선 — 맨 위 칸은 이미 .hcols2 의 윗선을 이고 있다 */
+  .hcard[data-tab="에너지 저장 장치 사업"] .hstack>.hblock+.hblock{
+    border-top:1px solid var(--border-g)}
+
+  /* 협력사 로고 자리 — 원본 로고는 가로세로 비가 제각각이라(ABB 2.5:1 … 한국중부발전
+     4:1) 높이만 맞추면 옆으로 긴 로고가 눈에 두 배로 크게 들어온다. 140×40 상자 안에
+     contain 으로 앉혀 긴 쪽이 먼저 상자에 닿게 하면 어느 로고든 차지하는 면적이
+     비슷해진다. 상자에 배경·테두리는 두지 않는다 — 넷 중 셋이 흰 배경 래스터라
+     카드 흰 바탕과 그대로 이어지는데, 판을 깔면 그 셋만 네모가 도드라진다.
+     로고를 넣고도 회사명(.lbl)을 지우지 않은 이유 — 로고는 이미지라 글자 검색·
+     스크린리더에 안 잡히고, 넷 중 둘(한국중부발전·GOTION)은 본문이 한 줄뿐이라
+     이름이 빠지면 어느 회사 이야기인지 로고 판독에만 기대게 된다 */
+  .plogo{display:block;height:40px;margin-bottom:14px}
+  .plogo img{width:auto;height:100%;max-width:140px;
+    object-fit:contain;object-position:left center}
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -307,14 +358,14 @@
                 <path d="M5 4v20"/><path d="M14 4v20"/><path d="M23 4v20"/>
                 <path d="M1.5 9.5h7"/><path d="M10.5 17h7"/><path d="M19.5 12h7"/>
               </svg></span>
-              <span class="k">온도 · 전압 정밀 제어</span>
+              <span class="k">고도화된 BMS &amp; BCP · BPU 시스템</span>
               <span class="en">Precision Control</span>
             </li>
             <li>
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3.5 20a10.5 10.5 0 1 1 21 0"/><path d="M14 20l5.5-6.5"/>
               </svg></span>
-              <span class="k">실시간 모니터링</span>
+              <span class="k">온도 · 전압 정밀 제어</span>
               <span class="en">Real-time Monitoring</span>
             </li>
             <li>
@@ -323,7 +374,7 @@
                 <path d="M4.5 7v14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5V7"/>
                 <path d="M4.5 14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5"/>
               </svg></span>
-              <span class="k">데이터 분석</span>
+              <span class="k">실시간 모니터링 및 데이터 분석</span>
               <span class="en">Data Analytics</span>
             </li>
             <li>
@@ -378,7 +429,7 @@
                 <path d="M6 9l-3.5 6.5h7L6 9z"/><path d="M22 9l-3.5 6.5h7L22 9z"/>
                 <path d="M10 23.5h8"/>
               </svg></span>
-              <span class="k">셀 단위 밸런싱</span>
+              <span class="k">셀 단위 온도 · 전압 밸런싱 제어</span>
               <span class="en">Cell Balancing</span>
             </li>
             <li>
@@ -475,8 +526,12 @@
       <!-- 비주얼(사진)이 없는 카드 — 위 <style> 오버라이드로 이 카드만 세로 1열 그대로 둔다 -->
       <article class="hcard" data-tab="에너지 저장 장치 사업">
         <h3>에너지 저장 장치 사업</h3>
+        <!-- 좌: ABB 한 곳 / 우: 나머지 세 곳을 세로로. ABB 가 나머지 셋을 합친 것보다
+             내용이 길어(불릿 7줄 대 4줄) 네 칸을 2×2 로 흘리면 왼쪽 열만 길게 늘어지고
+             오른쪽 아래가 비었다. 오른쪽 칸은 .hstack 하나로 묶어 세로로 쌓는다 -->
         <div class="hcols2">
           <div class="hblock">
+            <span class="plogo"><img src="../assets/logo-abb.png" alt="ABB" loading="lazy" /></span>
             <span class="lbl">ABB</span>
             <ul>
               <li>Vendor 등록 완료</li>
@@ -488,20 +543,25 @@
               <li>Battery Module/Rack UL9540A 시험 Pass</li>
             </ul>
           </div>
-          <div class="hblock">
-            <span class="lbl">한국중부발전</span>
-            <p>제주향 1.5MWh ESS 공급 우선협상대상자 선정</p>
-          </div>
-          <div class="hblock">
-            <span class="lbl">GOTION</span>
-            <p>제주향 1.5MWh ESS 공급 우선협상대상자 선정</p>
-          </div>
-          <div class="hblock">
-            <span class="lbl">INNOSPACE</span>
-            <ul>
-              <li>한빛나노 우주발사체용 Battery Pack 공급 계약 완료</li>
-              <li>UN38.3 인증 완료</li>
-            </ul>
+          <div class="hstack">
+            <div class="hblock">
+              <span class="plogo"><img src="../assets/logo-komipo.png" alt="한국중부발전" loading="lazy" /></span>
+              <span class="lbl">한국중부발전</span>
+              <p>제주향 1.5MWh ESS 공급 우선협상대상자 선정</p>
+            </div>
+            <div class="hblock">
+              <span class="plogo"><img src="../assets/logo-gotion.png" alt="GOTION" loading="lazy" /></span>
+              <span class="lbl">GOTION</span>
+              <p>제주향 1.5MWh ESS 공급 우선협상대상자 선정</p>
+            </div>
+            <div class="hblock">
+              <span class="plogo"><img src="../assets/logo-innospace.png" alt="INNOSPACE" loading="lazy" /></span>
+              <span class="lbl">INNOSPACE</span>
+              <ul>
+                <li>한빛나노 우주발사체용 Battery Pack 공급 계약 완료</li>
+                <li>UN38.3 인증 완료</li>
+              </ul>
+            </div>
           </div>
         </div>
       </article>
@@ -527,7 +587,7 @@
               <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2.5 14h3l2-6 3 12 3-9 2.5 5 2-3h6.5"/>
               </svg></span>
-              <span class="k">내진동 · 내충격 구조</span>
+              <span class="k">내진동 · 내충격 구조 설계</span>
               <span class="en">Shock Resistant</span>
             </li>
             <li>
@@ -543,7 +603,7 @@
                 <path d="M23.6 14.3a7 7 0 0 0-9.9-9.9L5.8 12.3v9.9h9.9z"/>
                 <path d="M18.7 9.3L4.5 23.5"/><path d="M20.4 17.5H10.5"/>
               </svg></span>
-              <span class="k">경량 배터리 팩</span>
+              <span class="k">저중량 · 저비용화 배터리팩</span>
               <span class="en">Lightweight</span>
             </li>
             <li>
@@ -552,7 +612,7 @@
                 <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/>
                 <circle cx="7.5" cy="7.5" r="1.2"/>
               </svg></span>
-              <span class="k">운용 경제성</span>
+              <span class="k">발사체 탑재 효율 · 운용 경제성 향상</span>
               <span class="en">Cost Efficiency</span>
             </li>
           </ul>
@@ -577,7 +637,7 @@
                 <path d="M2.5 19h6"/><path d="M19.5 19h6"/><path d="M8.5 19l9-10"/>
                 <circle cx="8.5" cy="19" r="1.6"/><circle cx="19.5" cy="19" r="1.6"/>
               </svg></span>
-              <span class="k">셀 구간 바이패스</span>
+              <span class="k">바이패스 기술(배터리 이상 셀 분리)</span>
               <span class="en">Bypass</span>
             </li>
             <li>
@@ -691,7 +751,7 @@
           <span>FAMILY SITE</span><i class="arw"></i>
         </button>
         <div class="fmenu">
-          <a href="#" target="_blank" rel="noopener">소재 | 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
           <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
         </div>
       </div>
