@@ -251,6 +251,42 @@
     transition:color .3s var(--ease),text-shadow .3s var(--ease)}
   .bnav-tabs a:hover{color:var(--sec)}
   .bnav-tabs a[aria-current]{font-weight:700;color:var(--g900)}
+
+  /* ── 소분류 네모 페이지네이션 ─────────────────────────────────────────
+     탭 오른쪽, 본문 카드 오른쪽 끝과 같은 선에 소분류 수만큼 네모를 놓는다.
+     네모는 JS 가 탭 수만큼 만든다(business-layout.js 의 소분류 탭 블록) —
+     소분류가 페이지마다 2~4개로 달라서 마크업에 손으로 적지 않는다.
+
+     자리 — .bnav 가 position:relative 라 left:0 이 곧 그리드 1열 시작점이다.
+     폭을 11열 끝까지로 잡고 오른쪽 정렬하면 마지막 네모가 카드 오른쪽 끝 선에 선다.
+     --bx11 은 페이지가 자기 그리드 값으로 덮는다(세부 페이지 4종은 1429px =
+     11 × 119 + 10 × 12, 뷰포트로는 1513px 로 .wrap 오른쪽 끝과 같은 값).
+     폴백은 이 파일 기본 그리드(--bcol/--grid-gutter) 기준이라 덮지 않아도 맞는다.
+     상자가 탭 위를 덮으므로 pointer-events 는 sticky 일 때 네모에만 되살린다.
+
+     translateY(4px) — sticky 에서 탭 글자에 걸리는 값과 같다(그 규칙은 페이지 쪽
+     .bnav-wrap.is-fixed .bnav-tabs a 에 있다). 없으면 네모만 글자보다 4px 떠 보인다 */
+  .bnav-pager{position:absolute;z-index:2;left:0;bottom:12px;height:40px;
+    width:var(--bx11,calc(11 * var(--bcol) + 10 * var(--grid-gutter)));
+    display:flex;align-items:center;justify-content:flex-end;gap:6px;
+    transform:translateY(4px);
+    opacity:0;pointer-events:none;transition:opacity .34s var(--ease)}
+  .bnav-wrap.is-fixed .bnav-pager{opacity:1}
+  .bnav-wrap.is-fixed .bnav-pager button{pointer-events:auto}
+  @media(prefers-reduced-motion:reduce){.bnav-pager{transition:none}}
+  /* 네모가 서는 자리는 흰 패널(.bnav-wrap::after) 위다 — 바는 왼쪽 대분류 자리까지만
+     검정이고 --bx4 오른쪽은 흰색이라, 색을 어두운 쪽으로 잡아야 보인다.
+     값은 밝은 판 위에 놓이는 다중 이미지 막대(.hph--plate .hslide-bar)와 같은 것을 쓴다.
+     활성 --brand 는 sticky 일 때 활성 탭 글자색과도 같은 색이다.
+     비활성도 '같은 모양을 옅게' — 채움 대 빈 테두리로 가르면 대비가 세서 비활성이
+     '아직 안 간 곳'이 아니라 '다른 종류'로 읽힌다.
+     8px 은 탭 글자(16px)의 절반 — 라벨 옆에서 부호로 읽히고 글자와 겨루지 않는다 */
+  .bnav-pager button{width:8px;height:8px;padding:0;border:0;border-radius:0;
+    background:rgba(27,39,51,.18);cursor:pointer;
+    transition:background .22s var(--ease)}
+  .bnav-pager button:hover{background:rgba(27,39,51,.4)}
+  .bnav-pager button[aria-current]{background:var(--brand)}
+  .bnav-pager button:focus-visible{outline:2px solid var(--brand-2);outline-offset:3px}
   /* 좁은 화면: 흰 패널·커브를 접고 사업명칭도 접어 가로 스크롤 탭 줄만 남긴다.
      패널이 없어지면 탭이 히어로 배경 위에 바로 놓이므로 두 상태 모두 밝은 글자.
      고정 높이는 :root 의 --bar-rise:0 이 알아서 바 높이만 남긴다 */
@@ -259,6 +295,9 @@
     .bnav{display:flex;align-items:center}
     .bnav-ttl{display:none}
     .bnav-tabs{height:100%;flex:1;gap:20px}
+    /* 네모도 접는다 — 여기서는 바가 가로 스크롤 탭 줄 하나로 눌리고 --bx11(11열 끝)
+       기준도 사라진다. 탭 줄이 곧 전부라 위치 표시가 따로 필요하지도 않다 */
+    .bnav-pager{display:none}
     .bnav-tabs a{color:rgba(255,255,255,.62);text-shadow:0 1px 4px rgba(0,0,0,.28)}
     .bnav-tabs a[aria-current]{color:#fff}
   }

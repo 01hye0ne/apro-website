@@ -101,7 +101,11 @@
      정말로 3열 시작점(bnav 자신의 왼쪽 끝 기준 262px)에 오게 만든다. 커브 자체의
      폭(24px, var(--grid-gutter))은 원본 그대로 두고 그 오른쪽 끝만 3열 시작점에
      맞추는 것이라 커브 모양은 안 바뀐다 */
-  .bnav-wrap{--bw:calc(100% - 168px);--bx4:346px}
+  .bnav-wrap{--bw:calc(100% - 168px);--bx4:346px;
+    /* 11열 오른쪽 끝 = 11 × 119 + 10 × 12. .bnav 왼쪽 끝(뷰포트 84px) 기준값이라
+       뷰포트로는 1513px — 위 .wrap 오른쪽 끝(346 + 1167)과 같은 선이다.
+       소분류 네모 페이지네이션(.bnav-pager)이 이 선에 오른쪽을 맞춘다 */
+    --bx11:1429px}
   .bnav{grid-template-columns:repeat(12,119px);column-gap:12px}
   /* line-height:1.15 — .bnav-tabs a 에는 기본으로 있는 값인데 .bnav-ttl(<p>)에는
      없어서 브라우저 기본 line-height(폰트 자체 메트릭)를 썼다. 같은 밴드 안에서
@@ -723,7 +727,7 @@
   <nav class="gnb">
     <a class="logo" href="index.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
     <div class="menus">
-      <a href="business.html" data-i="0">사업영역</a><a href="#" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a><a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
+      <a href="business.html" data-i="0">사업영역</a><a href="company.html" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a><a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
     </div>
     <div class="tools">
       <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
@@ -732,7 +736,7 @@
   </nav>
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart.html" aria-current="page">스마트 제조</a><a href="business-energy.html">에너지 인프라</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    <div class="m-col" data-i="1"><a href="company.html">에이프로 소개</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
     <div class="m-col" data-i="2"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
     <div class="m-col" data-i="3"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
     <div class="m-col" data-i="4"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
@@ -1226,7 +1230,7 @@
       </div>
       <div class="f-col">
         <p class="head">회사소개</p>
-        <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+        <ul><li><a href="company.html">에이프로 소개</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
@@ -1303,7 +1307,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">회사소개</div>
-      <div class="ov-links"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+      <div class="ov-links"><a href="company.html">에이프로 소개</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>

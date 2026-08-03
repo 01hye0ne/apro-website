@@ -420,6 +420,28 @@
       });
     });
 
+    /* 탭 오른쪽 네모 페이지네이션 — 소분류 수만큼 만들어 바에 붙인다.
+       소분류가 페이지마다 2~4개라 마크업이 아니라 여기서 만든다 (카드 안 다중
+       이미지 막대를 그림 수만큼 만드는 것과 같은 방식). 자리·색은 CSS 의 .bnav-pager.
+       클릭은 탭의 click() 을 그대로 태운다 → 섹션 이동이 휠·탭과 완전히 같아진다.
+       현재 표시는 아래 spy() 가 탭과 한자리에서 함께 갱신하므로 판정 기준이 갈릴 일이 없다 */
+    var pbtns=[];
+    (function(){
+      var bar=document.querySelector('.bnav');
+      if(!bar||tabs.length<2)return;             // 소분류가 하나면 셀 것이 없다
+      var pager=document.createElement('div');
+      pager.className='bnav-pager';
+      pbtns=tabs.map(function(a){
+        var b=document.createElement('button');
+        b.type='button';
+        b.setAttribute('aria-label',(a.textContent||'').trim());
+        b.addEventListener('click',function(){a.click();});
+        pager.appendChild(b);
+        return b;
+      });
+      bar.appendChild(pager);
+    })();
+
     var on=-1;
     function spy(){
       var mid=window.innerHeight/2,k=-1;
@@ -433,6 +455,8 @@
       on=k;
       tabs.forEach(function(a,i){
         if(i===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');
+        if(!pbtns[i])return;
+        if(i===k)pbtns[i].setAttribute('aria-current','true');else pbtns[i].removeAttribute('aria-current');
       });
     }
     var tk=false;
