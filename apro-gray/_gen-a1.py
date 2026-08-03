@@ -30,7 +30,7 @@ HERE = Path(__file__).parent
 # 홈(index)은 A/A-1 을 따로 만들고 있어 여기 함께 들어 있다 —
 # 홈 파일 이름이 바뀌면 이 목록만 고치면 된다.
 PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
-         'business', 'index']
+         'business', 'company', 'index']
 
 # 실제로 A-1 을 생성할 페이지 (홈은 직접 관리하므로 제외)
 #
@@ -39,9 +39,14 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # 한 벌만 두면 A-1 에서 GNB 를 누른 순간 세부 A 로 새어 버린다.
 # 이 페이지는 <style> 을 자체적으로 갖고 있어 세부 페이지와 CSS 를 공유하지 않는다 →
 # 스타일을 고칠 때도 business.html 을 고치고 이 스크립트를 돌리면 된다.
+#
+# company.html(회사소개)도 같은 이유로 들어와 있다 — 모든 페이지의 GNB "회사소개"와
+# 메가메뉴·전체메뉴의 "에이프로 소개"가 여기로 모이고, 이 페이지도 세부 페이지 4개와
+# 홈을 되짚어 링크한다. 한 벌만 두면 A-1 에서 회사소개를 한 번 누르는 순간 그 뒤로는
+# 전부 A 갈래가 된다. 디자인은 A/A-1 이 같고 링크만 갈라진다는 점도 business.html 과 같다.
 SOURCES = ['business-smart.html', 'business-energy.html',
            'business-ai.html', 'business-semicon.html',
-           'business.html']
+           'business.html', 'company.html']
 
 
 def build(src_text):

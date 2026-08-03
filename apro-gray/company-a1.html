@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 회사소개 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 회사소개 — 미래에너지를 만드는 에이프로, Vision 2030 Global Top5 Total Energy-Solution Provider." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<!-- ============================================================
+     회사소개 — 구성(뼈대)만 잡아둔 초안. 디자인은 아직 정해지지 않았다.
+
+     지금 여기서 확정된 것은 "스크롤 순서"뿐이다:
+       히어로 → 회사소개 → 기업현황 → Vision 2030 → 브랜드 → AAA 전략 → 맺음말
+     (브랜드 소개 → 경쟁력 → 신뢰성 → 미래 비전 → 철학 순으로 읽히게 한 배열)
+
+     그래서 이 파일은 새 디자인 언어를 만들지 않는다 — GNB·히어로·푸터·오버레이는
+     business-layout.css/js 가 가진 것을 그대로 빌려 쓰고, 여기 <style> 에는
+     이 페이지에만 있는 섹션 골격(칸 나누기·크기 위계)만 둔다. 나중에 시안이
+     나오면 손댈 자리가 이 <style> 하나로 모이도록.
+
+     [임시] 표시가 붙은 문안·이미지·아이콘 자리는 원문이 오면 갈아 끼울 자리다.
+     확정된 사실(숫자·비전 문구·브랜드 키워드)만 실제 값으로 넣어 두었다.
+
+     A-1 짝은 만들지 않았다 — A/A-1 의 차이는 사업영역 세부 페이지의 히어로 문안
+     하나뿐이고, 이 페이지는 아직 그 분기의 대상이 아니다 (_gen-a1.py 의 목록에도
+     넣지 않았다. A-1 페이지에서 회사소개를 누르면 이 한 벌로 들어온다) -->
+<style>
+  /* ===================== 공통 뼈대 ===================== */
+  /* 폭·거터는 GNB(.gnb)와 같은 식을 쓴다 — 본문 좌측선이 로고 좌측선과 맞아야
+     스크롤하는 내내 페이지가 한 틀 안에 있는 것으로 읽힌다 */
+  .cwrap{width:min(calc(var(--maxw) - 48px),calc(100% - 48px));margin-inline:auto}
+  .csec{position:relative;padding:clamp(88px,9vw,148px) 0}
+  .csec--tint{background:var(--secondary-bg)}
+  .csec--dark{background:var(--g950);color:#fff}
+
+  /* 좌측 타이틀 / 우측 본문. 타이틀은 sticky 라 본문이 흐르는 동안 왼쪽에 남는다 —
+     섹션이 길어져도 "지금 어느 장을 읽는 중인지"가 화면에서 사라지지 않는다 */
+  /* 타이틀 칸은 두 줄짜리 영문이 접히지 않는 최소 폭까지만 — 남는 폭은 본문(줄글·
+     격자)에 준다. 3열 카드가 들어오는 섹션에서 이 차이가 한 줄 글자 수를 좌우한다 */
+  .ccols{display:grid;grid-template-columns:minmax(200px,290px) 1fr;
+    gap:clamp(32px,4vw,64px);align-items:start}
+  .chead{position:sticky;top:132px}
+  .chead .en{font-family:var(--suit);font-weight:800;font-size:clamp(28px,3vw,46px);
+    line-height:1.08;letter-spacing:-.02em}
+  .chead .ko{margin-top:14px;font-family:var(--pre);font-weight:500;font-size:16px;
+    letter-spacing:-.32px;color:var(--teritary)}
+  .csec--dark .chead .ko{color:var(--point-300)}
+  /* 줄글 덩어리 — 행간·단락 간격은 사업영역 카드와 같은 토큰을 쓴다.
+     62ch 는 한 줄이 길어져 시선이 되돌아오기 힘들어지는 지점 앞에서 끊는 폭 */
+  .ctext{display:flex;flex-direction:column;gap:calc(var(--para-gap) * 2);max-width:62ch}
+  .ctext p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
+    letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .csec--dark .ctext p{color:var(--on-white-85)}
+
+  /* ===================== 01 · HERO ===================== */
+  /* .dhero 를 그대로 쓰되(배경 사진·어둠·GNB 대비 처리가 이미 들어 있다) 소분류 탭
+     바가 없는 페이지라 밑단 패딩(--bar-h)만 되돌리고 한 화면 높이로 세운다 */
+  .chero{min-height:100vh;min-height:100svh;padding:140px 24px 120px}
+  /* 사진 한가운데(사옥 벽면의 로고 사인 자리)를 한 겹 더 눌러 타이틀이 사진 위에서
+     또렷하게 뜬다. .dhero::after 의 그라디언트는 위아래를 눌러 GNB·밑단을 잡는 역할이라
+     화면 중앙에는 힘이 닿지 않는다. 사진이 바뀌면 이 층은 빼도 된다 */
+  .chero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(56% 40% at 50% 50%,rgba(14,22,30,.58),transparent 72%)}
+  .chero .in{max-width:min(1120px,90vw)}
+  .chero .eyebrow{font-family:var(--rc);font-weight:700;font-size:clamp(11px,1vw,14px);
+    line-height:1.5;letter-spacing:.2em;color:var(--point-300)}
+  /* 공유 CSS 의 34px 은 480px 배너용 크기다 — 여기선 한 화면을 쓰므로 다시 잡는다 */
+  .chero h1{margin-top:clamp(20px,2.4vw,32px);font-size:clamp(32px,5.2vw,70px);
+    line-height:1.18;letter-spacing:-.03em}
+  .chero h1 .en{display:block;margin-top:.12em;font-family:var(--rc);font-weight:700;
+    font-size:.62em;letter-spacing:.02em;color:var(--point-300)}
+  .chero .sub{margin-top:clamp(24px,2.6vw,36px);font-family:var(--pre);font-weight:400;
+    font-size:clamp(16px,1.5vw,21px);line-height:1.62;letter-spacing:-.42px;
+    color:var(--on-white-90);word-break:keep-all}
+  /* 아래에 더 있다는 신호. 선 하나가 천천히 내려갔다 사라진다 */
+  .cscroll{position:absolute;z-index:1;left:50%;bottom:36px;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    font-family:var(--rc);font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,.62)}
+  .cscroll i{width:1px;height:44px;background:rgba(255,255,255,.28);overflow:hidden}
+  .cscroll i::after{content:"";display:block;width:100%;height:14px;background:#fff;
+    animation:cdrop 2.2s var(--ease) infinite}
+  @keyframes cdrop{0%{transform:translateY(-14px)}60%,100%{transform:translateY(44px)}}
+  @media(prefers-reduced-motion:reduce){.cscroll i::after{animation:none}}
+
+  /* ===================== 03 · 기업 현황 ===================== */
+  /* 1px 간격 + 배경색으로 칸 사이 선을 만든다 — 카드마다 테두리를 두르면 맞닿은
+     자리에서 선이 두 겹이 된다 */
+  .cstats{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);
+    gap:1px;background:var(--border-g);border:1px solid var(--border-g)}
+  .cstat{background:#fff;padding:clamp(24px,2.4vw,36px);
+    display:flex;flex-direction:column;gap:12px;min-height:186px}
+  .cstat .k{font-family:var(--pre);font-weight:500;font-size:15px;letter-spacing:-.3px;color:var(--teritary)}
+  .cstat .v{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,42px);
+    line-height:1.1;letter-spacing:-.03em;color:var(--g900)}
+  /* 단위(억·명·년)는 숫자에 딸린 글자라 숫자보다 한 단 작고 가볍게 */
+  .cstat .v .u{font-size:.52em;font-weight:600;margin-left:3px;color:var(--sec)}
+  .cstat .n{margin-top:auto;font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--teritary)}
+
+  /* ===================== 04 · VISION 2030 ===================== */
+  .cvis-h{font-family:var(--suit);font-weight:800;font-size:clamp(30px,4.2vw,60px);
+    line-height:1.2;letter-spacing:-.03em;word-break:keep-all}
+  .cvis-h em{font-style:normal;color:var(--point-300)}
+  .cvision .ctext{margin-top:clamp(28px,3vw,44px)}
+  /* 연도 표기를 배경에 크게 깔아 이 섹션이 "미래 이야기"라는 걸 글보다 먼저 알린다 */
+  .cvision .year{position:absolute;right:0;bottom:-.18em;z-index:0;pointer-events:none;
+    font-family:var(--rc);font-weight:700;font-size:clamp(140px,22vw,340px);line-height:.8;
+    letter-spacing:-.02em;color:rgba(255,255,255,.045)}
+  .cvision .cwrap{position:relative;z-index:1}
+
+  /* ===================== 05 · BRAND IDENTITY ===================== */
+  .cbi{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,28px)}
+  .cbi li{display:flex;flex-direction:column;gap:18px;padding-top:22px;
+    border-top:2px solid var(--g900)}
+  .cbi .ch{font-family:var(--suit);font-weight:800;font-size:clamp(56px,7vw,116px);
+    line-height:.86;letter-spacing:-.04em;color:var(--brand)}
+  .cbi .kw{display:flex;flex-direction:column;gap:14px}
+  .cbi .kw>div{display:flex;flex-direction:column;gap:4px}
+  .cbi .kw b{font-family:var(--suit);font-weight:700;font-size:clamp(17px,1.5vw,22px);
+    line-height:1.3;letter-spacing:-.4px;color:var(--g900)}
+  .cbi .kw span{font-family:var(--pre);font-size:14px;line-height:1.55;
+    letter-spacing:-.28px;color:var(--teritary);word-break:keep-all}
+
+  /* ===================== 06 · AAA STRATEGY ===================== */
+  /* 세 전략은 우열이 없다 → 폭도 높이도 같게. 카드 높이는 가장 긴 글이 정한다 */
+  .caaa{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
+  .caaa li{display:flex;flex-direction:column;gap:20px;background:#fff;
+    border:1px solid var(--border-g);padding:clamp(26px,2.4vw,36px)}
+  .caaa .no{font-family:var(--rc);font-weight:700;font-size:13px;letter-spacing:.16em;color:var(--brand-2)}
+  /* 아이콘 자리표시 — 사업영역 페이지의 벡터 자리표시와 같은 규칙(점선 상자 + 이름).
+     <img> 를 넣으면 CSS 를 고치지 않아도 그림이 이 자리를 대신한다 */
+  .caaa .ic{width:64px;height:64px;flex:none;border:1px dashed var(--border-g);
+    display:grid;place-items:center;padding:0 6px;text-align:center;
+    font-family:var(--rc);font-size:10px;line-height:1.4;letter-spacing:.08em;color:var(--teritary)}
+  .caaa .ic img{width:100%;height:100%;object-fit:contain}
+  .caaa .ic:has(img){border:0}
+  .caaa h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
+    line-height:1.25;letter-spacing:-.6px;color:var(--g900)}
+  .caaa h3 .ko{display:block;margin-top:6px;font-size:.6em;font-weight:600;color:var(--brand)}
+  .caaa p{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
+    letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+
+  /* ===================== 07 · CLOSING ===================== */
+  .cclose{position:relative;overflow:hidden;background:var(--g950);color:#fff;
+    padding:clamp(104px,11vw,180px) 0}
+  .cclose .bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .cclose .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 46%}
+  .cclose .bg::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,rgba(14,22,30,.86),rgba(14,22,30,.72) 45%,rgba(14,22,30,.92))}
+  .cclose .in{position:relative;z-index:1;max-width:min(880px,88vw);margin-inline:auto;
+    text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(24px,3vw,40px)}
+  .cclose .en{font-family:var(--rc);font-weight:700;font-size:13px;letter-spacing:.2em;color:var(--point-300)}
+  .cclose h2{font-family:var(--suit);font-weight:800;font-size:clamp(26px,3.4vw,46px);
+    line-height:1.3;letter-spacing:-.03em;word-break:keep-all}
+  .cclose p{font-family:var(--pre);font-size:clamp(15px,1.4vw,18px);line-height:1.75;
+    letter-spacing:-.34px;color:var(--on-white-85);word-break:keep-all}
+  /* a-logo.svg 는 검은 심볼이라 이 어두운 바닥에서는 그대로 두면 보이지 않는다 →
+     흰색으로 뒤집는다 (밝기 0 으로 눌러 완전한 검정으로 만든 뒤 반전) */
+  .cclose .mark{width:64px;height:64px;opacity:.9;filter:brightness(0) invert(1)}
+
+  /* ===================== 진입 연출 ===================== */
+  /* 공유 CSS 의 .rv 는 .hcard 안에서만 풀리므로(이 페이지엔 카드가 없다) 따로 둔다.
+     초기 숨김은 html[data-crv] 안에서만 — 스크립트가 못 돌면 그냥 다 보인다 */
+  [data-crv] .crv{opacity:0;translate:0 14px}
+  [data-crv] .crv.is-in{opacity:1;translate:none;
+    transition:opacity .7s var(--ease) var(--crd,0ms),translate .7s var(--ease) var(--crd,0ms)}
+  @media(prefers-reduced-motion:reduce){
+    [data-crv] .crv,[data-crv] .crv.is-in{opacity:1;translate:none;transition:none}
+  }
+
+  /* ===================== 좁은 화면 ===================== */
+  @media(max-width:1180px){
+    .cstats{grid-template-columns:repeat(2,1fr)}
+    .cbi{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:900px){
+    /* 타이틀이 위로 올라오면 붙들 자리가 없다 → sticky 해제 */
+    .ccols{grid-template-columns:1fr;gap:28px}
+    .chead{position:static}
+    .caaa{grid-template-columns:1fr}
+    .cclose .bg img{object-position:50% 50%}
+  }
+  @media(max-width:560px){
+    .cstats{grid-template-columns:1fr}
+    .cbi{grid-template-columns:1fr}
+  }
+
+  /* ===================== 맨 위로 가기 (세부 페이지와 동일) ===================== */
+  .totop{position:fixed;right:32px;bottom:32px;z-index:150;width:52px;height:52px;
+    border-radius:50%;background:var(--g950);border:none;cursor:pointer;
+    display:grid;place-content:center;color:#fff;
+    box-shadow:0 12px 32px rgba(14,22,30,.22);
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .3s var(--ease),transform .3s var(--ease),
+      visibility 0s linear .3s,background .2s var(--ease)}
+  .totop.is-visible{opacity:1;visibility:visible;transform:none;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),background .2s var(--ease)}
+  .totop:hover{background:var(--brand)}
+  .totop svg{width:22px;height:22px}
+  @media(max-width:900px){
+    .totop{right:20px;bottom:20px;width:44px;height:44px}
+    .totop svg{width:18px;height:18px}
+  }
+</style>
+<!-- 진입 연출 스위치. 본 스크립트는 body 끝에서 도므로 여기서 미리 켜야 큰 화면에서
+     내용이 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
+<script>if('IntersectionObserver' in window)document.documentElement.setAttribute('data-crv','')</script>
+</head>
+<body class="v-a1">
+
+<!-- ===================== GNB (사업영역 세부 페이지와 동일) ===================== -->
+<div class="gnb-group">
+  <nav class="gnb">
+    <a class="logo" href="index-a1.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
+    <div class="menus">
+      <a href="business-a1.html" data-i="0">사업영역</a><a href="company-a1.html" data-i="1">회사소개</a><a href="#" data-i="2">투자정보</a><a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
+    </div>
+    <div class="tools">
+      <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
+      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
+    <div class="m-col" data-i="0"><a href="business-smart-a1.html">스마트 제조</a><a href="business-energy-a1.html">에너지 인프라</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
+    <div class="m-col" data-i="1"><a href="company-a1.html" aria-current="page">에이프로 소개</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    <div class="m-col" data-i="2"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    <div class="m-col" data-i="3"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    <div class="m-col" data-i="4"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+  </div><span class="m-globe"></span></div></div>
+  <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
+</div>
+
+<!-- ===================== 01 · HERO ===================== -->
+<!-- [임시] 배경은 본사 사옥 사진으로 채워 두었다. 전력변환·배터리·에너지를 담은
+     영상(assets/banner-gray.mp4 같은)으로 갈아 끼울 자리이며, 그때는 <img> 를
+     <video autoplay muted loop playsinline> 로 바꾸면 위 CSS 는 그대로 쓴다 -->
+<section class="dhero chero">
+  <!-- --hero-pos: 사옥 벽면의 A-PRO 사인이 타이틀 뒤로 겹치지 않도록 아래로 밀어 잡은 크롭 -->
+  <span class="dhero-bg" style="--hero-pos:50% 34%"><img src="../assets/hq-building.jpg" alt="" aria-hidden="true" /></span>
+  <div class="in">
+    <p class="eyebrow">THE BEST ELECTRICAL ENGINEERING SOLUTION PROVIDER</p>
+    <h1>미래에너지를 만드는 에이프로<span class="en">A-PRO</span></h1>
+    <p class="sub">공정 장비의 통합 설계 능력을 바탕으로 지속 성장 기반 구축</p>
+  </div>
+  <span class="cscroll" aria-hidden="true">SCROLL<i></i></span>
+</section>
+
+<!-- ===================== 02 · ABOUT A-PRO ===================== -->
+<section class="csec cabout">
+  <div class="cwrap ccols">
+    <div class="chead crv">
+      <p class="en">ABOUT<br />A-PRO</p>
+      <p class="ko">회사소개</p>
+    </div>
+    <!-- [임시] 세 문단 모두 자리만 잡아둔 글이다. 확정 문안이 오면 이 세 <p> 를 갈아 끼운다 -->
+    <div class="ctext crv">
+      <p>에이프로는 2000년 창립 이래 이차전지 활성화 전공정 설비를 중심으로 전력변환 기술을 쌓아온 전기·전자 엔지니어링 기업입니다. 전원 공급 장치 설계에서 출발해 장비 한 대가 아니라 공정 전체를 설계하는 회사로 성장했습니다.</p>
+      <p>충·방전 전력변환 기술과 자동화·계측 기술을 한 팀에서 통합 설계하기 때문에, 고객의 생산 라인 조건에 맞춰 설비를 새로 짜는 일이 가능합니다. 이 통합 설계 능력이 스마트 제조·에너지 인프라·인공지능 플랫폼·화합물 전력 반도체로 사업을 넓혀 온 기반입니다.</p>
+      <p>국내를 넘어 미국·유럽·중국 등 글로벌 배터리 제조사의 생산 거점에 설비를 공급하며 수출 비중 80% 이상을 유지하고 있습니다. 현장에서 확인된 기술로 다음 사업을 여는 것이 에이프로의 성장 방식입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 · COMPANY OVERVIEW ===================== -->
+<!-- 숫자는 크게, 항목명은 작게 — 읽는 사람이 "무엇"보다 "얼마"를 먼저 보게 한다 -->
+<section class="csec csec--tint coverview">
+  <div class="cwrap ccols">
+    <div class="chead crv">
+      <p class="en">COMPANY<br />OVERVIEW</p>
+      <p class="ko">기업 현황</p>
+    </div>
+    <div class="cbody">
+      <ul class="cstats">
+        <li class="cstat crv"><p class="k">코스닥 상장</p><p class="v">2020<span class="u">.07.16</span></p></li>
+        <li class="cstat crv"><p class="k">업력</p><p class="v">26<span class="u">년</span></p><p class="n">2000.06.27 설립</p></li>
+        <li class="cstat crv"><p class="k">대표이사</p><p class="v">임종현</p></li>
+        <li class="cstat crv"><p class="k">임직원</p><p class="v">270<span class="u">명</span></p></li>
+        <li class="cstat crv"><p class="k">자본금</p><p class="v">72.3<span class="u">억 원</span></p></li>
+        <li class="cstat crv"><p class="k">매출액</p><p class="v">1,416.2<span class="u">억 원</span></p><p class="n">2025년</p></li>
+        <li class="cstat crv"><p class="k">3년 평균 매출액</p><p class="v">1,944.3<span class="u">억 원</span></p></li>
+        <li class="cstat crv"><p class="k">수출 비중</p><p class="v">80<span class="u">% 이상</span></p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 · VISION 2030 ===================== -->
+<!-- 앞뒤 흰 섹션 사이에 어두운 띠를 넣어 "여기서부터 미래 이야기"라는 전환을 만든다 -->
+<section class="csec csec--dark cvision">
+  <span class="year" aria-hidden="true">2030</span>
+  <div class="cwrap ccols">
+    <div class="chead crv">
+      <p class="en">VISION<br />2030</p>
+      <p class="ko">비전</p>
+    </div>
+    <div class="cbody">
+      <p class="cvis-h crv">Global Top5,<br /><em>Total Energy-Solution Provider</em></p>
+      <!-- [임시] Vision 2030 설명 — 확정 문안이 오면 교체 -->
+      <div class="ctext crv">
+        <p>에이프로는 이차전지 제조 설비 공급 기업을 넘어, 에너지를 만들고 저장하고 쓰는 전 과정을 아우르는 종합 에너지 솔루션 기업을 목표로 합니다.</p>
+        <p>충·방전 전력변환 기술을 축으로 에너지 저장 장치(ESS), 전기자동차 충전·제어 플랫폼, 화합물 전력 반도체까지 사업을 연결해 2030년 글로벌 Top 5 수준의 기술 경쟁력을 갖추고자 합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 · BRAND IDENTITY ===================== -->
+<!-- A-PRO 를 한 단어가 아니라 네 글자로 펼쳐 읽는 자리 -->
+<section class="csec cbrand">
+  <div class="cwrap ccols">
+    <div class="chead crv">
+      <p class="en">BRAND<br />IDENTITY</p>
+      <p class="ko">A-PRO 의 의미</p>
+    </div>
+    <div class="cbody">
+      <!-- [임시] 각 키워드 아래 한 줄 뜻풀이는 자리만 잡아둔 글이다 -->
+      <ul class="cbi">
+        <li class="crv">
+          <span class="ch">A</span>
+          <div class="kw">
+            <div><b>Advanced</b><span>앞선 기술로 표준을 만든다</span></div>
+            <div><b>Aggressive</b><span>새로운 시장에 먼저 들어간다</span></div>
+            <div><b>Agile</b><span>고객의 속도에 맞춰 움직인다</span></div>
+          </div>
+        </li>
+        <li class="crv">
+          <span class="ch">P</span>
+          <div class="kw">
+            <div><b>Pioneer</b><span>아무도 가지 않은 길을 먼저 연다</span></div>
+          </div>
+        </li>
+        <li class="crv">
+          <span class="ch">R</span>
+          <div class="kw">
+            <div><b>Remarkability</b><span>기억에 남는 결과로 증명한다</span></div>
+          </div>
+        </li>
+        <li class="crv">
+          <span class="ch">O</span>
+          <div class="kw">
+            <div><b>Organism</b><span>스스로 자라는 유기적인 조직</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 06 · AAA STRATEGY ===================== -->
+<!-- 앞 섹션의 A 세 키워드를 그대로 이어받아 전략으로 펼친다 -->
+<section class="csec csec--tint cstrategy">
+  <div class="cwrap ccols">
+    <div class="chead crv">
+      <p class="en">AAA<br />STRATEGY</p>
+      <p class="ko">기업 전략</p>
+    </div>
+    <div class="cbody">
+      <!-- [임시] 세 설명 문단 모두 확정 문안이 오면 교체. .ic 는 아이콘 자리 -->
+      <ul class="caaa">
+        <li class="crv">
+          <p class="no">STRATEGY 01</p>
+          <span class="ic">ICON<br />ADVANCED</span>
+          <h3>Advanced<span class="ko">기술</span></h3>
+          <p>전력변환·계측·자동화를 한 팀에서 통합 설계하는 능력으로 공정 전체의 성능을 끌어올립니다. 축적한 기술을 다음 사업의 출발점으로 삼아 앞선 기준을 만듭니다.</p>
+        </li>
+        <li class="crv">
+          <p class="no">STRATEGY 02</p>
+          <span class="ic">ICON<br />AGGRESSIVE</span>
+          <h3>Aggressive<span class="ko">도전</span></h3>
+          <p>검증된 시장에 머무르지 않고 에너지 인프라, 인공지능 플랫폼, 화합물 전력 반도체처럼 새로 열리는 영역에 먼저 들어가 자리를 만듭니다.</p>
+        </li>
+        <li class="crv">
+          <p class="no">STRATEGY 03</p>
+          <span class="ic">ICON<br />AGILE</span>
+          <h3>Agile<span class="ko">속도</span></h3>
+          <p>고객의 생산 일정과 조건은 매번 다릅니다. 설계부터 양산까지의 과정을 짧게 잡아 요구가 바뀌는 속도에 맞춰 대응합니다.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 07 · CLOSING MESSAGE ===================== -->
+<section class="cclose">
+  <span class="bg" aria-hidden="true"><img src="../assets/carousel-battery.jpg" alt="" /></span>
+  <div class="cwrap">
+    <div class="in">
+      <p class="en crv">A-PRO CULTURE</p>
+      <!-- [임시] 첫 문장만 확정, 나머지는 자리를 잡아둔 글이다 -->
+      <h2 class="crv">구성원이 자부심을 갖고 성장할 수 있는<br />‘일하기 좋은 일터’</h2>
+      <p class="crv">에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 고객과 사회가 함께 신뢰할 수 있는 기업이 되고자 합니다. 사람이 성장해야 기술이 자라고, 기술이 자라야 미래 에너지가 만들어진다고 믿습니다.</p>
+      <img class="mark crv" src="../assets/a-logo.svg" alt="A-PRO" />
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul>
+          <li><a href="business-smart-a1.html">스마트 제조</a></li>
+          <li><a href="business-energy-a1.html">에너지 인프라</a></li>
+          <li><a href="business-ai-a1.html">인공지능 플랫폼</a></li>
+          <li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사소개</p>
+        <ul><li><a href="company-a1.html" aria-current="page">에이프로 소개</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="#">메뉴 1</a></li><li><a href="#">메뉴 2</a></li><li><a href="#">메뉴 3</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="#">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-white-footer.png" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-white.png" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-smart-a1.html">스마트 제조</a>
+        <a href="business-energy-a1.html">에너지 인프라</a>
+        <a href="business-ai-a1.html">인공지능 플랫폼</a>
+        <a href="business-semicon-a1.html">화합물 전력 반도체</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사소개</div>
+      <div class="ov-links"><a href="company-a1.html" aria-current="page">에이프로 소개</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="#">메뉴 1</a><a href="#">메뉴 2</a><a href="#">메뉴 3</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<!-- GNB·오버레이·푸터 드롭다운은 공용 스크립트가 맡는다.
+     (카드 캐러셀·소분류 탭 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="business-layout.js"></script>
+<script>
+/* 섹션 진입 연출 — 화면에 들어온 요소만 한 번씩 올라온다.
+   같은 줄에 여러 칸이 들어오는 격자(기업 현황·브랜드·전략)는 칸마다 조금씩 늦춰
+   한 덩어리로 튀어나오지 않게 한다. 되감지 않는다 — 오갈 때마다 재생되면 산만하다 */
+(function(){
+  var root=document.documentElement;
+  if(!root.hasAttribute('data-crv'))return;
+  var els=[].slice.call(document.querySelectorAll('.crv'));
+  if(!els.length){root.removeAttribute('data-crv');return;}
+
+  /* 같은 격자 안의 순번 = 지연 단위. 격자 밖 요소는 0 이라 지연이 없다 */
+  var STEP=70;
+  ['.cstats','.cbi','.caaa','.cclose .in'].forEach(function(sel){
+    var box=document.querySelector(sel);
+    if(!box)return;
+    [].slice.call(box.querySelectorAll('.crv')).forEach(function(el,i){
+      el.style.setProperty('--crd',(i*STEP)+'ms');
+    });
+  });
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    });
+  },{rootMargin:'0px 0px -12% 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+
+/* 맨 위로 가기 (사업영역 세부 페이지와 동일) */
+(function(){
+  var btn = document.getElementById('totop');
+  if (!btn) return;
+  var onScroll = function(){
+    btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
