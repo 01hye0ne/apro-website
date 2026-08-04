@@ -180,7 +180,15 @@
     /* 바 높이 65px, 히어로 밑단에서 60px 올라앉는다 → 내려온 거리는 65 + 60 */
     .cnav-wrap{height:65px;margin-top:calc(-1 * (65px + 60px));--cnav-drop:125px}
     .cnav-wrap::after{height:65px;--cw:calc(65px * 24 / 40)}
-    .cnav-wrap.is-fixed{height:calc(var(--cnav-rise) + 65px)}
+    /* 고정된 뒤의 치수는 사업영역 바(.bnav)에서 그대로 가져온다 — 바 64 + 위 여백
+       (--cnav-rise, 최대 64) = 128 로 그쪽과 같고, 탭 줄 40px · 글자 16px 도 같다.
+       히어로 밑단에 얹혀 있을 때는 폴더 탭이라 크게 두는 게 맞지만, 화면 위에 붙은
+       뒤에는 폴더가 아니라 내비게이션 줄이고 그건 두 페이지가 같아야 한다.
+       탭 줄이 바 밑변에 딱 붙으므로(margin 0) 아래 여백이 없어진 만큼 세로 구분선도 짧아진다 */
+    .cnav-wrap.is-fixed{height:calc(var(--cnav-rise) + 64px)}
+    .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:0}
+    .cnav-wrap.is-fixed .cnav-tabs a{align-self:center;font-size:16px;transform:none}
+    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-12px}
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 자리(.cnav 의 패딩 안쪽을 그대로 채운다).
        칸을 3등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다.
        바가 --cnav-rise 만큼 위로 자라도 탭 줄은 밑변에 붙어 있다(align-items:flex-end) */
@@ -190,14 +198,12 @@
     /* align-self:start — 칸 높이(50px)만큼 늘어난 상자를 글자 높이로 줄인다. 글자는
        원래도 상자 위쪽에 놓여 있어 자리가 그대로고, 밑줄만 글자 바로 밑에 붙는다 */
     .cnav-tabs a{align-self:start;font-size:20px;transform:translateY(12px)}
-    /* GNB 를 꺼낼 때 바가 그 아래로 내려가 자리를 내준다 — 이 바는 높이가 65px 뿐이라
-       GNB(y 20~60)와 같은 자리를 쓴다. 사업영역 바는 128px 라 위쪽 절반이 비어 있어
-       GNB 가 그 위에 그냥 얹힌다. 높이가 다르니 비키는 방식도 다를 수밖에 없다 */
-       :not(.is-away) — 푸터에서 접어 올린 바는 GNB 를 꺼낼 때도 그대로 둔다.
-       이 규칙이 미디어 블록 안이라 소스 순서로는 접어 올리는 규칙보다 뒤다 → 안 적으면
-       푸터에서 위로 커서를 올릴 때 바가 도로 내려온다.
-       비켜 주는 거리는 GNB 밑변(72px)에서 이미 비어 있는 윗자리(--cnav-rise)를 뺀 만큼이다
-       — 여백이 충분히 크면(높은 화면) 거의 움직이지 않고 GNB 가 그 위에 그냥 얹힌다 */
+    /* GNB 를 꺼낼 때 바가 그만큼 아래로 비켜 자리를 내준다.
+       거리는 GNB 밑변(72px)에서 이미 비어 있는 윗자리(--cnav-rise)를 뺀 만큼이다 —
+       여백이 충분한 높은 화면에서는 0 이라, GNB 가 그 빈자리에 그냥 얹힌다(사업영역과 같다).
+       :not(.is-away) — 푸터에서 접어 올린 바는 GNB 를 꺼낼 때도 그대로 둔다. 이 규칙이
+       미디어 블록 안이라 소스 순서로는 접어 올리는 규칙보다 뒤다 → 안 적으면 푸터에서
+       커서를 위로 올릴 때 바가 도로 내려온다 */
     .nav-peek .cnav-wrap.is-fixed:not(.is-away){--cnav-shift:max(0px,calc(72px - var(--cnav-rise)))}
     /* 칸 경계 구분선 — 3등분이라 33.3/66.7%.
        bottom:-27px 만큼 흰 패널 아래로 더 내려 그어 본문과 이어지는 탭처럼 보인다 */
@@ -211,7 +217,7 @@
        끝이라는 게 이미 보이지만, 고정되면 그 커브를 걷고 바가 화면 끝까지 흰색이라
        칸의 바깥 경계가 사라진다 → 첫 칸·마지막 칸이 화면 끝까지 뻗은 것처럼 읽히고,
        글자가 칸 가운데에 있는데도 치우쳐 보인다 */
-    .cnav-wrap.is-fixed .cnav-tabs::before{content:"";position:absolute;top:0;bottom:-27px;
+    .cnav-wrap.is-fixed .cnav-tabs::before{content:"";position:absolute;top:0;bottom:-12px;
       left:0;right:0;pointer-events:none;
       border-left:1px solid var(--border-g);border-right:1px solid var(--border-g)}
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
@@ -303,7 +309,7 @@
      정렬까지 하는데, 그 일은 여기서 무대(.cabt-stage)가 한다 (Vision·AAA 도 같다) */
   .cabout{position:relative;background:#fff;--step-h:60vh}
   .cabt-track{position:relative;height:calc(100vh + 3 * var(--step-h))}
-  .cabt-stage{--pad-t:calc(78px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cabt-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
   /* --crd 는 같은 단계 안의 순번(문단·칸)이다 — 문서 끝 스크립트가 매긴다 */
@@ -374,7 +380,7 @@
      이 장은 .csec 를 쓰지 않는다 — 풀스크린 규칙(⑧)이 섹션 자체를 한 화면으로 묶어
      트랙이 설 자리를 없애기 때문이다. 바탕색만 .csec--dark 에서 가져온다 */
   .cvis-track{position:relative;height:calc(100vh + 5 * var(--step-h))}
-  .cvis-stage{--pad-t:calc(78px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cvis-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -554,7 +560,7 @@
     --markoff:rgba(255,255,255,.3);--fill:#fff;--fillink:var(--brand);
     --barempty:rgba(255,255,255,.3)}
   .caaa-track{position:relative;height:calc(100vh + 7 * var(--step-h))}
-  .caaa-stage{--pad-t:calc(78px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .caaa-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -716,7 +722,7 @@
      잡고, 내용은 그 안에서 세로 중앙에 놓인다. 여기 있는 것은 그 한 장에 담기게 하는
      밀도 조절뿐이다. 화면이 낮으면(700px 미만) 붙드는 모드 자체가 꺼지고 내용 높이대로
      흐르므로 이 블록도 같이 꺼진다.
-     위 여백 78px = 고정된 탭 바 65 + 그 아래 흰 띠 12 + 경계선 1
+     위 여백 77px = 고정된 탭 바 64 + 그 아래 흰 띠 12 + 경계선 1
      (+ 바가 탭 줄 위에 비워 두는 자리 --cnav-rise. 그 값이 화면 높이를 따라 줄어드는
       것도 이 때문이다 — 여기 여백이 그만큼 커지면 내용이 설 자리가 줄어든다)
 
