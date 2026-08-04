@@ -641,34 +641,31 @@
   /* =====================================================================
      ⑧ 01~03 풀스크린 — 한 섹션이 화면 한 장을 차지한다
      ===================================================================== */
-  /* 각 섹션이 화면 높이만큼을 차지하고 내용은 그 안에서 세로 중앙에 놓인다.
-     스크롤에 붙는(sticky) 동작은 뺐다 — 세 섹션은 그냥 차례로 흘러간다.
-
-     화면이 낮으면(700px 미만) 이 모드를 끄고 내용 높이대로 흐르게 둔다. 켜지는
-     구간에서는 아래 규칙들이 밀도를 한 단 줄여 한 화면에 담는다.
+  /* 세 장(⑤~⑦)이 저마다 무대(.cabt-stage / .cvis-stage / .caaa-stage)로 화면 한 장을
+     잡고, 내용은 그 안에서 세로 중앙에 놓인다. 여기 있는 것은 그 한 장에 담기게 하는
+     밀도 조절뿐이다. 화면이 낮으면(700px 미만) 붙드는 모드 자체가 꺼지고 내용 높이대로
+     흐르므로 이 블록도 같이 꺼진다.
      위 여백 78px = 고정된 탭 바 65 + 그 아래 흰 띠 12 + 경계선 1
+
+     ─ 높이를 따라 이어서 줄인다 (2026-08-04) ─
+     예전에는 880px 를 경계로 한 번에 한 단 떨어뜨렸다. 그런데 노트북의 화면 높이가
+     브라우저 띠를 빼면 대개 그 바로 아래(700~880)라, 같은 페이지가 데스크톱에서는
+     제 크기 · 노트북에서는 한 단 작은 두 얼굴로 보였다 — 숫자는 40 → 30 으로 한 번에
+     4분의 1이 깎였다. 이제 vw 와 vh 중 작은 쪽을 따라가 높이가 줄면 조금씩 같이 준다.
+     기준은 가장 높은 장(Vision)이 무대 안에 들어가는 선이다.
 
      이 블록이 ⑤~⑦ 뒤에 있는 이유 — 미디어 쿼리는 우선순위를 올려 주지 않아서,
      같은 선택자를 덮으려면 소스 순서로 뒤에 와야 한다 */
   @media(min-width:901px) and (min-height:700px){
-    .csec{min-height:100vh;min-height:100dvh;scroll-margin-top:0;
-      display:flex;align-items:center;
-      padding:calc(78px + clamp(16px,2.5vh,32px)) 0 clamp(16px,3vh,32px)}
-    /* 밀도 — 한 화면에 담기도록 한 단 줄인다.
-       가장 긴 섹션(AAA)이 들어가는 선에 맞춘다 */
-    .ccols>.cstats{margin-top:clamp(32px,5vh,72px)}
-    .cstat{min-height:140px;padding:22px 24px;gap:10px}
-    .cstat .v{font-size:clamp(24px,2.2vw,36px)}
-  }
-  /* 더 낮은 화면 — 한 단 더 줄인다 */
-  @media(min-width:901px) and (min-height:700px) and (max-height:880px){
-    .ccols>.cstats{margin-top:clamp(24px,4vh,48px)}
-    .ctext p{font-size:16px}
-    .cstat{min-height:118px;padding:18px 20px;gap:8px}
-    .cstat .v{font-size:clamp(22px,1.9vw,30px)}
-    /* Vision·AAA 는 크기를 대부분 vh 로 잡아 두어(칸 높이·여백) 여기서 손댈 것이
-       큰 문장 하나뿐이다 */
-    .cvis-grid .c--h p{font-size:clamp(22px,2.6vw,40px)}
+    .ccols>.cstats{margin-top:clamp(24px,5vh,72px)}
+    .cstat{min-height:clamp(118px,15.5vh,140px);gap:clamp(8px,1.1vh,10px);
+      padding:clamp(18px,2.4vh,22px) 24px}
+    .cstat .v{font-size:clamp(22px,min(2.4vw,4.2vh),36px)}
+    /* 줄글만 줄인다 — 헤드라인(.cabt-lead p)까지 걸리면 본문과 같은 크기가 되어
+       강약이 사라진다. 자식 결합자가 없던 예전 규칙(.ctext p)이 그랬다 */
+    .ctext>p{font-size:clamp(16px,1.9vh,17px)}
+    /* Vision·AAA 는 크기를 대부분 vh 로 잡아 두어(칸 높이·여백) 손댈 것이 큰 문장뿐이다 */
+    .cvis-grid .c--h p{font-size:clamp(22px,min(3.1vw,5.5vh),52px)}
   }
 
   /* =====================================================================
