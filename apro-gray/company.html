@@ -191,8 +191,9 @@
     .cnav-wrap.is-fixed::after{height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40)}
     .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:12px}
     .cnav-wrap.is-fixed .cnav-tabs a{align-self:center;font-size:16px;transform:none}
-    /* 세로 구분선은 패널 밑변까지 — 탭 줄 밑 여백(12px)만큼 더 내려온다 */
-    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-12px}
+    /* 세로 구분선은 아래 가로선까지 내려온다 — 탭 줄 밑 여백 12 + 흰 띠 12.
+       히어로 상태(15 + 12 = 27)와 같은 셈이다 */
+    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-24px}
     /* 아래 가로 구분선은 .cnav-rule 이 그린다 — 아래쪽 규칙에 두 상태를 모아 두었다 */
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 자리(.cnav 의 패딩 안쪽을 그대로 채운다).
        칸을 3등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다.
@@ -230,11 +231,12 @@
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
     .cnav-rule{display:block;position:absolute;left:0;right:0;bottom:-12px;
       height:1px;background:var(--border-g)}
-    /* 고정되면 바 밑변에 딱 붙인다 — 사업영역 세부 페이지에서 고정된 바 바로 밑에 보이는
-       그 선과 같은 자리·같은 색이다(거기서는 본문 카드의 윗선이 그 자리에 온다).
-       히어로 위에서 쓰던 12px 흰 띠는 여기서 필요 없다 — 그 띠는 히어로 밑단의 흰 자리를
-       잇는 것이고, 고정된 바 밑은 본문이다 */
-    .cnav-wrap.is-fixed .cnav-rule{top:100%;bottom:auto}
+    /* 고정되면 바 밑변에서 12px 떨어져 그어진다 — 사업영역 세부 페이지의 .bnav-rule 과
+       같은 구조·같은 거리다(재 보니 그쪽 선은 바 밑변 128 에서 12px 내려온 140 에 있다).
+       그 12px 틈을 1px 선이 아니라 흰 사각형으로 채우고 선은 그 밑변 테두리로 긋는 이유 —
+       바가 fixed 라 틈이 투명하면 그 사이로 본문이 스쳐 지나가는 게 보인다 */
+    .cnav-wrap.is-fixed .cnav-rule{top:100%;bottom:auto;height:12px;
+      background:#fff;border-bottom:1px solid var(--border-g)}
   }
   /* 좁은 화면: 흰 패널·S커브를 접고 히어로 배경 위 가로 스크롤 탭 줄만 남긴다.
      고정되면 위 .is-fixed 규칙이 흰 바로 바꾸고 글자색도 되돌린다 */
@@ -317,7 +319,7 @@
      정렬까지 하는데, 그 일은 여기서 무대(.cabt-stage)가 한다 (Vision·AAA 도 같다) */
   .cabout{position:relative;background:#fff;--step-h:60vh}
   .cabt-track{position:relative;height:calc(100vh + 3 * var(--step-h))}
-  .cabt-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cabt-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
   /* --crd 는 같은 단계 안의 순번(문단·칸)이다 — 문서 끝 스크립트가 매긴다 */
@@ -388,7 +390,7 @@
      이 장은 .csec 를 쓰지 않는다 — 풀스크린 규칙(⑧)이 섹션 자체를 한 화면으로 묶어
      트랙이 설 자리를 없애기 때문이다. 바탕색만 .csec--dark 에서 가져온다 */
   .cvis-track{position:relative;height:calc(100vh + 5 * var(--step-h))}
-  .cvis-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cvis-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -568,7 +570,7 @@
     --markoff:rgba(255,255,255,.3);--fill:#fff;--fillink:var(--brand);
     --barempty:rgba(255,255,255,.3)}
   .caaa-track{position:relative;height:calc(100vh + 7 * var(--step-h))}
-  .caaa-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .caaa-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -730,7 +732,7 @@
      잡고, 내용은 그 안에서 세로 중앙에 놓인다. 여기 있는 것은 그 한 장에 담기게 하는
      밀도 조절뿐이다. 화면이 낮으면(700px 미만) 붙드는 모드 자체가 꺼지고 내용 높이대로
      흐르므로 이 블록도 같이 꺼진다.
-     위 여백 64px = 고정된 탭 바의 높이 (그 아래 흰 띠·경계선은 고정 상태에서 걷는다)
+     위 여백 77px = 고정된 탭 바 64 + 그 아래 흰 띠 12 + 경계선 1
      (+ 바가 탭 줄 위에 비워 두는 자리 --cnav-rise. 그 값이 화면 높이를 따라 줄어드는
       것도 이 때문이다 — 여기 여백이 그만큼 커지면 내용이 설 자리가 줄어든다)
 
