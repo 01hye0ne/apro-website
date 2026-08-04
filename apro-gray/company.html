@@ -121,14 +121,15 @@
       linear-gradient(#fff,#fff) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
 
   /* ── ② 상단 고정 ── 자리를 화면 맨 위로 옮기고 그동안 GNB 는 접힌다.
-     생김새에서 바뀌는 건 바닥뿐 — 흰 탭 패널과 좌우 커브를 걷고 바 전체를 흰색으로 채운다.
-     탭 자리·구분선·아래 선은 히어로 상태 그대로여서, 전환이 "흰 바닥이 넓어지는 것"으로 읽힌다 */
-  /* --cnav-shift : 고정된 바가 제자리에서 위아래로 비키는 거리. 두 경우에 쓴다 —
+     생김새는 히어로 위에 있을 때 그대로다 — 커브로 닫힌 흰 탭 패널이 어두운 바탕에
+     얹힌 모습. 그 바탕색(--g950)은 히어로 밑단의 색이라, 붙는 순간 배경이 히어로에서
+     그대로 이어진 것처럼 보인다 (사업영역 .bnav-wrap.is-fixed 도 같은 이유로 --g950 이다).
+     달라지는 것은 패널이 바 밑변으로 내려앉고 40px 로 얇아지는 것뿐이다.
+     --cnav-shift : 고정된 바가 제자리에서 위아래로 비키는 거리. 두 경우에 쓴다 —
      GNB 를 꺼낼 때(아래로) · 푸터에서 접어 올릴 때(위로). 아래 두 규칙이 값만 바꾼다 */
   .cnav-wrap.is-fixed{position:fixed;top:var(--cnav-top);left:0;width:100%;
-    height:calc(var(--cnav-rise) + var(--bar-h));margin-top:0;background:#fff;
+    height:calc(var(--cnav-rise) + var(--bar-h));margin-top:0;background:var(--g950);
     translate:0 var(--cnav-shift,0);transition:translate .34s var(--ease)}
-  .cnav-wrap.is-fixed::after{display:none}
   @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
   /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
@@ -186,9 +187,14 @@
        뒤에는 폴더가 아니라 내비게이션 줄이고 그건 두 페이지가 같아야 한다.
        탭 줄이 바 밑변에 딱 붙으므로(margin 0) 아래 여백이 없어진 만큼 세로 구분선도 짧아진다 */
     .cnav-wrap.is-fixed{height:calc(var(--cnav-rise) + 64px)}
+    /* 흰 탭 패널도 탭 줄과 같이 40px 로 얇아진다 — 커브 폭은 늘 패널 높이 × 24/40 이라
+       따라 줄어든다(24px). 패널이 바 밑변에 앉으므로 구분선도 패널 안에서 끝난다 */
+    .cnav-wrap.is-fixed::after{height:40px;--cw:calc(40px * 24 / 40)}
     .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:0}
     .cnav-wrap.is-fixed .cnav-tabs a{align-self:center;font-size:16px;transform:none}
-    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-12px}
+    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:0}
+    /* 아래 경계선은 걷는다 — 어두운 바의 밑변이 이미 본문과의 경계다 */
+    .cnav-wrap.is-fixed .cnav-rule{display:none}
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 자리(.cnav 의 패딩 안쪽을 그대로 채운다).
        칸을 3등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다.
        바가 --cnav-rise 만큼 위로 자라도 탭 줄은 밑변에 붙어 있다(align-items:flex-end) */
@@ -213,13 +219,9 @@
         transparent calc(33.333% - .5px),var(--border-g) calc(33.333% - .5px),var(--border-g) calc(33.333% + .5px),transparent calc(33.333% + .5px),
         transparent calc(66.667% - .5px),var(--border-g) calc(66.667% - .5px),var(--border-g) calc(66.667% + .5px),transparent calc(66.667% + .5px),
         transparent 100%)}
-    /* 양끝 선은 고정됐을 때만 긋는다. 히어로 위에서는 흰 패널이 좌우 S커브로 닫혀 거기가
-       끝이라는 게 이미 보이지만, 고정되면 그 커브를 걷고 바가 화면 끝까지 흰색이라
-       칸의 바깥 경계가 사라진다 → 첫 칸·마지막 칸이 화면 끝까지 뻗은 것처럼 읽히고,
-       글자가 칸 가운데에 있는데도 치우쳐 보인다 */
-    .cnav-wrap.is-fixed .cnav-tabs::before{content:"";position:absolute;top:0;bottom:-12px;
-      left:0;right:0;pointer-events:none;
-      border-left:1px solid var(--border-g);border-right:1px solid var(--border-g)}
+    /* 칸의 바깥 경계는 따로 긋지 않는다 — 두 상태 모두 흰 패널이 좌우 S커브로 닫혀
+       거기가 끝이라는 것을 이미 말한다 (고정 상태에서 바 전체가 흰색이던 동안에는
+       그 끝이 사라져 양끝 선을 그었었다) */
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
     .cnav-rule{display:block;position:absolute;left:0;right:0;bottom:-12px;
@@ -238,9 +240,11 @@
     .cnav-tabs{height:100%;flex:1}
     .cnav-tabs a{color:rgba(255,255,255,.62);text-shadow:0 1px 4px rgba(0,0,0,.28)}
     .cnav-tabs a[aria-current]{color:#fff}
-    /* 고정되면 바탕이 흰 바로 바뀐다 → 글자색도 되돌린다. 흰 글자는 히어로 사진 위에
-       있을 때만이다 (현재 탭은 위 .is-fixed 규칙이 특정도로 이미 이긴다) */
-    .cnav-wrap.is-fixed .cnav-tabs a{color:var(--sec);text-shadow:none}
+    /* 이 폭에서는 흰 탭 패널을 걷으므로 글자가 바 바탕 위에 바로 놓인다. 고정된 바탕은
+       히어로 밑단과 같은 --g950 이라 히어로 위에서 쓰던 흰 글자가 그대로 맞는다 —
+       현재 탭과 밑줄만 넓은 화면용(흰 패널 위) 색을 되돌린다 */
+    .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{color:#fff}
+    .cnav-wrap.is-fixed .cnav-tabs a::after{background:#fff}
     /* 터치 화면에는 커서가 없어 핫존이 성립하지 않는다 → GNB 를 접지 않고 그 아래에
        붙인다. 사업영역도 좁은 화면에서는 --bar-top:72px 로 같은 선택을 한다 */
     .cnav-wrap{--cnav-top:72px}
@@ -309,7 +313,7 @@
      정렬까지 하는데, 그 일은 여기서 무대(.cabt-stage)가 한다 (Vision·AAA 도 같다) */
   .cabout{position:relative;background:#fff;--step-h:60vh}
   .cabt-track{position:relative;height:calc(100vh + 3 * var(--step-h))}
-  .cabt-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cabt-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
   /* --crd 는 같은 단계 안의 순번(문단·칸)이다 — 문서 끝 스크립트가 매긴다 */
@@ -380,7 +384,7 @@
      이 장은 .csec 를 쓰지 않는다 — 풀스크린 규칙(⑧)이 섹션 자체를 한 화면으로 묶어
      트랙이 설 자리를 없애기 때문이다. 바탕색만 .csec--dark 에서 가져온다 */
   .cvis-track{position:relative;height:calc(100vh + 5 * var(--step-h))}
-  .cvis-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cvis-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -560,7 +564,7 @@
     --markoff:rgba(255,255,255,.3);--fill:#fff;--fillink:var(--brand);
     --barempty:rgba(255,255,255,.3)}
   .caaa-track{position:relative;height:calc(100vh + 7 * var(--step-h))}
-  .caaa-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .caaa-stage{--pad-t:calc(64px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -722,7 +726,7 @@
      잡고, 내용은 그 안에서 세로 중앙에 놓인다. 여기 있는 것은 그 한 장에 담기게 하는
      밀도 조절뿐이다. 화면이 낮으면(700px 미만) 붙드는 모드 자체가 꺼지고 내용 높이대로
      흐르므로 이 블록도 같이 꺼진다.
-     위 여백 77px = 고정된 탭 바 64 + 그 아래 흰 띠 12 + 경계선 1
+     위 여백 64px = 고정된 탭 바의 높이 (그 아래 흰 띠·경계선은 고정 상태에서 걷는다)
      (+ 바가 탭 줄 위에 비워 두는 자리 --cnav-rise. 그 값이 화면 높이를 따라 줄어드는
       것도 이 때문이다 — 여기 여백이 그만큼 커지면 내용이 설 자리가 줄어든다)
 

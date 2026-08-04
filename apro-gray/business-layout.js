@@ -130,9 +130,13 @@
        0.5px 여유는 소수점 스크롤 위치에서 붙었다 떨어졌다 하는 떨림을 막는다 */
     var h=!!bn&&hb<=barBase+0.5;
     /* GNB 흰 플레이트는 GNB 뒤가 흰 본문일 때만 — 넓은 화면에서 바가 고정되면
-       GNB 자리가 어두운 바라서 플레이트를 깔면 안 된다 */
+       GNB 자리가 어두운 바라서 플레이트를 깔면 안 된다.
+       회사소개(.cnav-*)도 고정되면 같은 자리에 같은 --g950 바가 선다. 그쪽은 제 스크립트가
+       body.cnav-stuck 으로 알리므로, 바 종류를 따지지 않고 '어두운 바가 GNB 자리를
+       덮었는가'만 본다 */
     var nar=narrowMq.matches;
-    var d=hb<=40&&!(h&&!nar);
+    var dark=h||document.body.classList.contains('cnav-stuck');
+    var d=hb<=40&&!(dark&&!nar);
     if(d!==on){on=d;g.classList.toggle('nav-light',d);}
     if(!bn)return;
     bn.classList.toggle('is-fixed',h);
