@@ -147,17 +147,22 @@
   .v2banner .arrows .ic:first-child:hover{transform:translateX(-2px)}
   .v2banner .arrows .ic:last-child:hover{transform:translateX(2px)}
   .v2banner .bnav{display:flex;gap:4px;align-items:stretch;width:100%}
-  .v2banner .bnav .b{flex:1 0 0;min-width:0;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:8px 12px;
+  /* 넘버링을 걷어 상자 안에 명칭 한 줄만 남았다. 상자 높이(58px)는 그때 값 그대로 —
+     게이지가 차오르는 판이라 줄이면 띠가 잔선처럼 얇아진다. 남은 한 줄은 가운데에 둔다 */
+  .v2banner .bnav .b{flex:1 0 0;min-width:0;min-height:58px;position:relative;overflow:hidden;
+    display:flex;align-items:center;padding:8px 12px;
     background:rgba(255,255,255,.05);box-shadow:0 0 16px -8px rgba(11,11,10,.1);cursor:pointer}
   /* left→right gauge fill = current video segment progress */
   .v2banner .bnav .b::before{content:"";position:absolute;inset:0;z-index:0;background:rgba(255,255,255,.16);transform:scaleX(0);transform-origin:left center}
   .v2banner .bnav .b.active::before{animation:bnavFill var(--bnav-dur,5s) linear forwards}
-  /* the brand (00 에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
+  /* the brand (에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
   .v2banner .bnav .b.brand{--bnav-dur:12.5s}
   @keyframes bnavFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  .v2banner .bnav .bn,.v2banner .bnav .bt{position:relative;z-index:1}
-  .v2banner .bnav .bn{font-family:'Roboto Condensed',var(--suit);font-weight:400;font-style:normal;font-size:16px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.55)}
-  .v2banner .bnav .bt{font-family:var(--suit);font-weight:600;font-size:18px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.72);transition:color .22s var(--ease)}
+  /* 크기는 A-1 과 같은 식(20px, 좁아지면 같이 줄어든다) — 두 갈래가 다른 것은 상자의
+     생김새지 글자 위계가 아니다. 굵기·색은 어두운 영상 위라 이쪽 값을 그대로 쓴다 */
+  .v2banner .bnav .bt{position:relative;z-index:1;
+    font-family:var(--suit);font-weight:600;font-size:clamp(12px,1.3vw,20px);line-height:1.15;
+    letter-spacing:-.32px;color:rgba(255,255,255,.72);transition:color .22s var(--ease)}
   .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:#fff}
   @media(max-width:900px){.v2banner .bnav{flex-wrap:wrap}.v2banner .bnav .b{flex:1 1 40%}}
 
@@ -707,11 +712,11 @@
         <div class="info">
           <div class="pag-info">
             <div class="bnav">
-              <span class="b brand"><em class="bn">00</em><span class="bt">에이프로</span></span>
-              <span class="b"><em class="bn">01</em><span class="bt">스마트 제조</span></span>
-              <span class="b"><em class="bn">02</em><span class="bt">에너지 인프라</span></span>
-              <span class="b"><em class="bn">03</em><span class="bt">인공지능 플랫폼</span></span>
-              <span class="b"><em class="bn">04</em><span class="bt">화합물 전력 반도체</span></span>
+              <span class="b brand"><span class="bt">에이프로</span></span>
+              <span class="b"><span class="bt">스마트 제조</span></span>
+              <span class="b"><span class="bt">에너지 인프라</span></span>
+              <span class="b"><span class="bt">인공지능 플랫폼</span></span>
+              <span class="b"><span class="bt">화합물 전력 반도체</span></span>
             </div>
           </div>
         </div>
