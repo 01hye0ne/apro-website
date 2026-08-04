@@ -83,42 +83,14 @@
      찾아 제 규칙(어두운 바·GNB 접기)대로 고정시킨다. 전환은 이 문서 끝 스크립트가 한다.
      ===================================================================== */
   /* 음수 마진으로 히어로 밑단에 얹힌다 → 흐름 높이는 0, 아래 본문이 밀리지 않는다.
-     --cnav-pad : 본문 상자의 좌우 들여쓰기. .cwrap 과 글자 하나 안 틀리게 같은 식이다
-     --bx4      : 흰 패널·탭 줄이 시작하는 x (화면 기준) = 본문 상자의 왼쪽 끝
+     --bx4      : 흰 패널이 시작하는 x (뷰포트 기준). 본문 상자의 왼쪽 끝과 같은 선
      --cnav-w   : 패널·탭 줄의 폭 (본문 상자와 같다)
      --cnav-drop: 히어로 밑변에서 바 윗변까지의 거리 (= 음수 마진의 크기)
      --cnav-top : 고정됐을 때 바가 서는 y (GNB 띠 아래)
-     뒤 두 값은 스크립트가 그대로 읽어 전환 시점을 잡는다 — CSS 와 JS 가 같은 값을 본다
-
-     ▶ --bx4 / --cnav-w 는 1728px 화면에서 잰 고정 픽셀(346 / 1167)이었다. 화면 폭이
-       달라지면 본문만 따라 움직이고 탭 줄은 제자리라 둘이 어긋났고(1416px 에서는 탭
-       줄 오른쪽 끝 1513 이 화면 밖으로 나가 가로 스크롤까지 생겼다), 그래서 탭 글자가
-       칸 가운데에 있는데도 가운데로 안 보였다. 백분율 식으로 고쳐 늘 같이 움직인다.
-       여기 100% 는 이 바의 폭 = 화면 폭이다 (.cwrap 의 백분율 패딩과 같은 기준) */
-  /* 고정됐을 때 탭 줄 위에 비워 두는 자리 — 사업영역 바의 --bar-rise 와 같은 역할이다
-     (그쪽은 64 + 64 로 위쪽 절반이 비어 있다). 붙들리는 장들이 이만큼 위 여백을 더
-     잡아야 하므로(--pad-t) 공짜가 아니다 → 화면이 낮으면 같이 줄인다. 낮은 화면에서
-     먼저 내줄 것은 내용이 아니라 여백이다. 790px 아래로는 0(가장 높은 장인 Vision 이
-     들어갈 자리가 없다), 거기서부터 화면이 높아지는 만큼 붙어 900px 근처에서
-     사업영역과 같은 64px 이 된다 */
-  :root{--cnav-rise:clamp(0px,calc((100vh - 790px) * .55),64px)}
+     뒤 두 값은 스크립트가 그대로 읽어 전환 시점을 잡는다 — CSS 와 JS 가 같은 값을 본다 */
   .cnav-wrap{position:relative;z-index:95;height:var(--bar-h);
     margin-top:calc(-1 * var(--bar-h));
-    --cnav-pad:calc((100% - 300px) / 12 + 12px);
-    --bx4:calc(84px + var(--cnav-pad));
-    --cnav-w:calc(100% - 168px - 2 * var(--cnav-pad));
-    --cnav-drop:var(--bar-h);--cnav-top:0px;
-    /* 선 색과 바 아래 띠 색 — 어두운 장 위에 섰을 때(.on-dark) 이 둘만 갈아 끼운다 */
-    --cnav-line:var(--border-g);--cnav-under:#fff;
-    /* 어두운 벌 커브 — SVG 안에 색이 박혀 있어(fill) 흰 벌과 따로 둔다.
-       %231b2733 = --g900. 바 바탕(--g950)보다 한 단 밝아야 폴더 탭 모양이 남는다 */
-    --tab-curve-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%231b2733'/%3E%3C/svg%3E");
-    --tab-curve-r-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%231b2733'/%3E%3C/svg%3E");
-    /* 브랜드 벌 — AAA 마지막 단계가 제 배경을 브랜드 블루로 뒤집을 때 쓴다.
-       %23223858 = --point-900. 어두운 벌과 달리 바탕(--brand)보다 한 단 어둡게 간다 —
-       그 화면은 이미 짙은 파랑에 흰 글자라, 패널까지 밝히면 본문과 다툰다 */
-    --tab-curve-bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23223858'/%3E%3C/svg%3E");
-    --tab-curve-r-bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23223858'/%3E%3C/svg%3E");
+    --bx4:346px;--cnav-w:1167px;--cnav-drop:var(--bar-h);--cnav-top:0px;
     /* 오른쪽 커브 = 공용 --tab-curve 를 좌우로 뒤집은 것 (경로를 x → 24-x 로 옮겨 적었다) */
     --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E")}
   /* 흰 탭 패널 — 가운데는 흰 사각형, 양끝은 커브. 세 겹을 한 배경으로 얹는다.
@@ -132,172 +104,79 @@
       linear-gradient(#fff,#fff) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
 
   /* ── ② 상단 고정 ── 자리를 화면 맨 위로 옮기고 그동안 GNB 는 접힌다.
-     생김새는 히어로 위에 있을 때 그대로다 — 커브로 닫힌 흰 탭 패널이 어두운 바탕에
-     얹힌 모습. 그 바탕색(--g950)은 히어로 밑단의 색이라, 붙는 순간 배경이 히어로에서
-     그대로 이어진 것처럼 보인다 (사업영역 .bnav-wrap.is-fixed 도 같은 이유로 --g950 이다).
-     달라지는 것은 패널이 바 밑변으로 내려앉고 40px 로 얇아지는 것뿐이다.
-     --cnav-shift : 고정된 바가 제자리에서 위아래로 비키는 거리. 두 경우에 쓴다 —
-     GNB 를 꺼낼 때(아래로) · 푸터에서 접어 올릴 때(위로). 아래 두 규칙이 값만 바꾼다 */
+     생김새에서 바뀌는 건 바닥뿐 — 흰 탭 패널과 좌우 커브를 걷고 바 전체를 흰색으로 채운다.
+     탭 자리·구분선·아래 선은 히어로 상태 그대로여서, 전환이 "흰 바닥이 넓어지는 것"으로 읽힌다 */
   .cnav-wrap.is-fixed{position:fixed;top:var(--cnav-top);left:0;width:100%;
-    height:calc(var(--cnav-rise) + var(--bar-h));margin-top:0;background:var(--g950);
-    translate:0 var(--cnav-shift,0);
-    transition:translate .34s var(--ease),background-color .4s var(--ease)}
+    height:var(--bar-h);margin-top:0;background:#fff;
+    transition:translate .34s var(--ease)}
+  .cnav-wrap.is-fixed::after{display:none}
   @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
-  /* 어두운 장(Vision) 위에 서면 흰 탭 패널이 화면에서 혼자 떠 보인다 → 같은 모양의
-     어두운 패널을 그 위에 겹쳐 두고 서서히 바꿔 넣는다. 흰 패널을 그대로 두고 덮는
-     이유는 색이 서서히 넘어가게 하려는 것이다 — 커브가 이미지라 배경을 갈아 끼우면
-     그 순간 딱 바뀐다. 무엇을 덮고 있는지는 문서 끝 스크립트가 .on-dark 로 알린다 */
-  /* 겹쳐 두는 패널의 색은 세 변수(--pc-l · --pc-r · --pc)가 정한다 — 상태마다 값만
-     갈아 끼우면 되고 배경 선언은 한 벌로 끝난다 (커브는 SVG 라 색이 박혀 있어 벌째로 바꾼다) */
-  .cnav-wrap.is-fixed{--pc-l:var(--tab-curve-dk);--pc-r:var(--tab-curve-r-dk);--pc:var(--g900)}
-  .cnav-wrap.is-fixed::before{content:"";position:absolute;z-index:1;bottom:0;
-    height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40);
-    left:calc(var(--bx4) - var(--cw));width:calc(var(--cnav-w) + 2 * var(--cw));
-    pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
-    background:
-      var(--pc-l) left bottom/var(--cw) 100% no-repeat,
-      var(--pc-r) right bottom/var(--cw) 100% no-repeat,
-      linear-gradient(var(--pc),var(--pc)) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
-  .cnav-wrap.is-fixed:is(.on-dark,.on-brand)::before{opacity:1}
-  /* 어두운 장(Vision) — 쉬는 색은 그대로 두고(어두운 바닥에서도 읽힌다) 현재 탭만 흰색으로
-     올린다. 브랜드 블루는 이 바닥에서 대비가 2:1 아래로 떨어져 못 쓴다 */
-  .cnav-wrap.is-fixed.on-dark{--cnav-line:rgba(255,255,255,.18);--cnav-under:var(--g950)}
-  .cnav-wrap.is-fixed.on-dark .cnav-tabs a:hover{color:var(--on-white-85)}
-  .cnav-wrap.is-fixed.on-dark .cnav-tabs a[aria-current]{color:#fff}
-  /* 브랜드로 뒤집힌 장(AAA 마지막 단계) — 바 자신도 그 색을 받아 장과 이어진다.
-     쉬는 색은 --teritary 로 두면 짙은 파랑 위에서 대비가 3:1 아래로 떨어져,
-     그 화면이 쓰는 어법(흰색의 농도 차이)을 그대로 따른다 */
-  .cnav-wrap.is-fixed.on-brand{background:var(--brand);
-    --pc-l:var(--tab-curve-bl);--pc-r:var(--tab-curve-r-bl);--pc:var(--point-900);
-    --cnav-line:rgba(255,255,255,.28);--cnav-under:var(--brand)}
-  .cnav-wrap.is-fixed.on-brand .cnav-tabs a{color:rgba(255,255,255,.6)}
-  .cnav-wrap.is-fixed.on-brand .cnav-tabs a:hover{color:var(--on-white-85)}
-  .cnav-wrap.is-fixed.on-brand .cnav-tabs a[aria-current]{color:#fff}
-  /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
+  /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 네 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
   .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
 
-  /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
-     목차 탭은 볼 일이 없다 (사업영역 .bnav-wrap.is-away 와 같은 판정·같은 동작) */
-  .cnav-wrap.is-fixed.is-away{--cnav-shift:calc(-100% - var(--cnav-top));
-    opacity:0;transition:translate .34s var(--ease),opacity .34s var(--ease)}
-
   /* 바가 화면 맨 위를 차지하는 동안 GNB 는 접는다 — 같은 자리에 둘이 겹칠 수 없다.
-     .gnb-group 째로 접는다: 로고·메뉴·언어 드롭다운·메가 패널이 한 벌로 빠진다
-     (공용 JS 가 쓰는 .nav-hide 는 건드리지 않는다 — 그쪽은 제 판단으로 다시 켜기 때문).
-     visibility 로 지우지 않는 이유 — 그러면 Tab 으로도 닿을 수 없어 전역 메뉴가 이
-     페이지에서 아예 사라진다. 투명도만 0 이면 초점은 들어갈 수 있고, 들어가는 순간
-     아래 .nav-peek 가 다시 꺼낸다 (사업영역 .nav-hide 와 같은 방식) */
-  body.cnav-stuck .gnb-group{opacity:0;pointer-events:none;
-    transition:opacity .3s var(--ease)}
-  /* 커서가 화면 맨 위 띠(72px)에 들어오거나 초점이 GNB 로 들어오면 다시 꺼낸다.
-     판정은 공용 JS 가 하고 html.nav-peek 로 알린다 — 사업영역이 쓰는 그 판정 그대로다 */
-  .nav-peek body.cnav-stuck .gnb-group{opacity:1;pointer-events:auto}
-  /* 좌우 패딩으로 본문 상자와 같은 자리를 잡는다 — 예전에는 12열 × 119px 짜리 고정
-     격자였다(이것도 1728px 화면에서 잰 값이다). 백분율은 부모(= 이 바, 화면 폭) 기준이라
-     .cwrap 과 같은 식을 그대로 쓸 수 있다. 탭 줄은 그 안을 채우면 끝이다 */
+     .gnb-group 째로 감춘다: 안에 든 로고·메뉴·언어 드롭다운·메가 패널이 한 벌로 빠진다
+     (공용 JS 가 쓰는 .nav-hide 는 건드리지 않는다 — 그쪽은 제 판단으로 다시 켜기 때문) */
+  body.cnav-stuck .gnb-group{opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .3s var(--ease),visibility .3s var(--ease)}
+  /* 커서가 화면 맨 위 띠(72px)에 들어오면 접힌 GNB 를 다시 꺼낸다 — 접힌 채로는 로고·
+     전체메뉴로 돌아갈 길이 아예 없다. 판정은 공용 JS(business-layout.js)가 하고
+     html.nav-peek 로 알린다. 사업영역 바가 쓰는 그 판정 그대로다.
+     이 바는 높이가 65px 뿐이라 GNB(y 20~60)와 자리가 겹친다 → 꺼내는 동안 바가 그 아래로
+     비켜선다 (사업영역 바는 128px 라 위쪽 절반이 비어 있어 GNB 가 그냥 얹힌다) */
+  .nav-peek body.cnav-stuck .gnb-group{opacity:1;visibility:visible;pointer-events:auto}
+  .nav-peek .cnav-wrap.is-fixed{translate:0 72px}
   .cnav{position:relative;z-index:1;width:calc(100% - 168px);height:100%;margin:0 auto;
-    padding-inline:var(--cnav-pad);display:flex;align-items:flex-end}
+    display:grid;grid-template-columns:repeat(12,119px);column-gap:12px}
   .cnav-rule{display:none}
-  .cnav-tabs{position:relative;flex:1;min-width:0;height:40px;
+  .cnav-tabs{grid-row:1;grid-column:1 / -1;align-self:end;height:40px;min-width:0;
     display:flex;align-items:center;gap:20px;
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .cnav-tabs::-webkit-scrollbar{display:none}
-  /* 색은 사업영역 '세부 페이지'가 쓰는 벌을 그대로 가져온다 (business-layout.css 의
-     기본값이 아니라 business-*.html 이 그 위에 덮어 쓴 값이다 — 처음엔 기본값을 보고
-     현재 탭을 --g900 으로 뒀었다).
-       고정   : 쉬는 색 --teritary · 얹으면 --sec · 현재 탭 --brand + 굵게
-       히어로 : 활성/비활성을 가르지 않고 셋 다 --g900 · 굵기 500, 얹으면 --brand
-                (그 자리에서는 아직 "어디에 있다"가 없다. 아래 ⑨ 넓은 화면 블록에서 건다) */
-  .cnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;
-    font-size:16px;line-height:1.15;letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
+  .cnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;font-size:16px;
+    line-height:1.15;letter-spacing:-.32px;color:var(--g900);white-space:nowrap;
     transition:color .3s var(--ease)}
-  .cnav-tabs a:hover{color:var(--sec)}
+  .cnav-tabs a:hover{color:var(--brand)}
 
   @media(min-width:901px){
     /* 바 높이 65px, 히어로 밑단에서 60px 올라앉는다 → 내려온 거리는 65 + 60 */
     .cnav-wrap{height:65px;margin-top:calc(-1 * (65px + 60px));--cnav-drop:125px}
     .cnav-wrap::after{height:65px;--cw:calc(65px * 24 / 40)}
-    /* 고정된 뒤의 치수는 사업영역 바(.bnav)에서 그대로 가져온다 — 바 64 + 위 여백
-       (--cnav-rise, 최대 64) = 128 로 그쪽과 같고, 탭 줄 40px · 글자 16px 도 같다.
-       히어로 밑단에 얹혀 있을 때는 폴더 탭이라 크게 두는 게 맞지만, 화면 위에 붙은
-       뒤에는 폴더가 아니라 내비게이션 줄이고 그건 두 페이지가 같아야 한다.
-       탭 줄이 바 밑변에 딱 붙으므로(margin 0) 아래 여백이 없어진 만큼 세로 구분선도 짧아진다 */
-    .cnav-wrap.is-fixed{height:calc(var(--cnav-rise) + 64px)}
-    /* 흰 탭 패널 — 사업영역 세부 페이지의 고정된 바를 그대로 잰 값이다:
-       바 0~128 · 어두운 띠 68 · 흰 패널 60(68~128) · 탭 줄 40(76~116, 밑에서 12px).
-       패널을 바 높이에서 그 어두운 띠(68)를 뺀 만큼으로 잡으면 높은 화면에서 60 이 된다.
-       화면이 낮아 바가 줄면 띠를 먼저 내주고, 탭 줄이 들어갈 최소치(40 + 12)에서 멈춘다.
-       커브 폭은 늘 패널 높이 × 24/40 이라 패널을 따라간다 */
-    .cnav-wrap.is-fixed{--panel-h:max(52px,calc(var(--cnav-rise) - 4px))}
-    .cnav-wrap.is-fixed::after{height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40)}
-    .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:12px}
-    .cnav-wrap.is-fixed .cnav-tabs a{align-self:center;font-size:16px;transform:none}
-    /* 세로 구분선은 아래 가로선까지 내려온다 — 탭 줄 밑 여백 12 + 흰 띠 12.
-       히어로 상태(15 + 12 = 27)와 같은 셈이다 */
-    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-24px}
-    /* 아래 가로 구분선은 .cnav-rule 이 그린다 — 아래쪽 규칙에 두 상태를 모아 두었다 */
-    /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 자리(.cnav 의 패딩 안쪽을 그대로 채운다).
-       칸을 3등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다.
-       바가 --cnav-rise 만큼 위로 자라도 탭 줄은 밑변에 붙어 있다(align-items:flex-end) */
-    .cnav-tabs{margin-bottom:15px;height:50px;
+    .cnav-wrap.is-fixed{height:65px}
+    /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 폭(1167px)·같은 시작점(.cnav 기준 262px).
+       칸을 4등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다 */
+    .cnav-tabs{position:absolute;left:262px;bottom:15px;width:var(--cnav-w);height:50px;
       display:grid;grid-template-columns:repeat(3,1fr);column-gap:0;
       justify-items:center;overflow:visible}
-    .cnav-tabs a{align-self:start;font-size:20px;transform:translateY(12px)}
-    /* 히어로 위에서는 셋을 같게 둔다 (사업영역 세부 페이지와 같다). 좁은 화면은 글자가
-       사진 위에 바로 놓여 흰색 계열을 쓰므로 이 규칙을 이 블록 안에만 둔다 */
-    .cnav-wrap:not(.is-fixed) .cnav-tabs a{color:var(--g900)}
-    .cnav-wrap:not(.is-fixed) .cnav-tabs a:hover{color:var(--brand)}
-    /* GNB 를 꺼내도 바는 제자리에 선다 — 위를 비워 둔 자리(--cnav-rise)에 GNB 가 그냥
-       얹힌다(사업영역과 같다). 예전에는 모자란 만큼 바를 아래로 밀었는데, 커서를 위로
-       가져갈 때마다 바가 흔들려 걷었다.
-       다만 위 자리가 없는 낮은 화면(--cnav-rise 가 0 에 가까운 855px 아래)에서는 GNB 와
-       탭 패널이 같은 자리를 쓴다 → 그동안만 패널을 물린다. 바는 그대로 서 있고 그 위에
-       얹히는 것만 바뀐다 */
-    @media(max-height:855px){
-      .nav-peek .cnav-wrap.is-fixed::after,
-      .nav-peek .cnav-wrap.is-fixed .cnav{opacity:0;transition:opacity .2s var(--ease)}
-    }
-    /* 칸 경계 구분선 — 3등분이라 33.3/66.7%.
+    .cnav-tabs a{font-size:20px;transform:translateY(12px)}
+    /* 칸 경계 구분선 — 3등분이라 33.3/66.7%. 양끝(0·100%)에는 긋지 않는다: 패널이 커브로
+       닫혀 거기가 끝이라는 게 이미 보인다 (세부 페이지는 패널이 화면 오른쪽 끝까지 이어져서
+       오른쪽 끝선을 하나 더 그어야 했다).
        bottom:-27px 만큼 흰 패널 아래로 더 내려 그어 본문과 이어지는 탭처럼 보인다 */
     .cnav-tabs::after{content:"";position:absolute;left:0;right:0;top:0;bottom:-27px;
       pointer-events:none;
       background-image:linear-gradient(to right,
-        transparent calc(33.333% - .5px),var(--cnav-line) calc(33.333% - .5px),var(--cnav-line) calc(33.333% + .5px),transparent calc(33.333% + .5px),
-        transparent calc(66.667% - .5px),var(--cnav-line) calc(66.667% - .5px),var(--cnav-line) calc(66.667% + .5px),transparent calc(66.667% + .5px),
+        transparent calc(33.333% - .5px),var(--border-g) calc(33.333% - .5px),var(--border-g) calc(33.333% + .5px),transparent calc(33.333% + .5px),
+        transparent calc(66.667% - .5px),var(--border-g) calc(66.667% - .5px),var(--border-g) calc(66.667% + .5px),transparent calc(66.667% + .5px),
         transparent 100%)}
-    /* 칸의 바깥 경계는 따로 긋지 않는다 — 두 상태 모두 흰 패널이 좌우 S커브로 닫혀
-       거기가 끝이라는 것을 이미 말한다 (고정 상태에서 바 전체가 흰색이던 동안에는
-       그 끝이 사라져 양끝 선을 그었었다) */
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
     .cnav-rule{display:block;position:absolute;left:0;right:0;bottom:-12px;
-      height:1px;background:var(--cnav-line);transition:background-color .4s var(--ease)}
-    /* 고정되면 바 밑변에서 12px 떨어져 그어진다 — 사업영역 세부 페이지의 .bnav-rule 과
-       같은 구조·같은 거리다(재 보니 그쪽 선은 바 밑변 128 에서 12px 내려온 140 에 있다).
-       그 12px 틈을 1px 선이 아니라 흰 사각형으로 채우고 선은 그 밑변 테두리로 긋는 이유 —
-       바가 fixed 라 틈이 투명하면 그 사이로 본문이 스쳐 지나가는 게 보인다 */
+      height:1px;background:var(--border-g)}
+    /* 고정되면 그 흰 띠가 없다 → 바 아래로 12px 흰 띠를 이어 붙이고 그 밑에 선을 긋는다.
+       탭 구분선이 바 아래로 12px 더 내려오므로 그 자리가 흰색이라야 히어로 때와 같아 보인다 */
     .cnav-wrap.is-fixed .cnav-rule{top:100%;bottom:auto;height:12px;
-      background:var(--cnav-under);border-bottom:1px solid var(--cnav-line);
-      transition:background-color .4s var(--ease),border-color .4s var(--ease)}
+      background:#fff;border-bottom:1px solid var(--border-g)}
   }
   /* 좁은 화면: 흰 패널·S커브를 접고 히어로 배경 위 가로 스크롤 탭 줄만 남긴다.
      고정되면 위 .is-fixed 규칙이 흰 바로 바꾸고 글자색도 되돌린다 */
   @media(max-width:900px){
     .cnav-wrap::after{display:none}
-    /* 이 폭에서는 12열 그리드를 쓰지 않는다 → 본문(.cwrap)과 같이 들여쓰기를 푼다 */
-    .cnav{display:flex;align-items:center;width:calc(100% - 48px);padding-inline:0}
+    .cnav{display:flex;align-items:center;width:calc(100% - 48px)}
     .cnav-tabs{height:100%;flex:1}
     .cnav-tabs a{color:rgba(255,255,255,.62);text-shadow:0 1px 4px rgba(0,0,0,.28)}
     .cnav-tabs a[aria-current]{color:#fff}
-    /* 이 폭에서는 흰 탭 패널을 걷으므로 글자가 바 바탕 위에 바로 놓인다. 고정된 바탕은
-       히어로 밑단과 같은 --g950 이라 히어로 위에서 쓰던 흰 글자가 그대로 맞는다 —
-       현재 탭만 넓은 화면용(흰 패널 위) 색을 되돌린다 */
-    .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{color:#fff}
-    /* 터치 화면에는 커서가 없어 핫존이 성립하지 않는다 → GNB 를 접지 않고 그 아래에
-       붙인다. 사업영역도 좁은 화면에서는 --bar-top:72px 로 같은 선택을 한다 */
-    .cnav-wrap{--cnav-top:72px}
-    body.cnav-stuck .gnb-group{opacity:1;pointer-events:auto}
   }
 
   /* =====================================================================
@@ -362,7 +241,7 @@
      정렬까지 하는데, 그 일은 여기서 무대(.cabt-stage)가 한다 (Vision·AAA 도 같다) */
   .cabout{position:relative;background:#fff;--step-h:60vh}
   .cabt-track{position:relative;height:calc(100vh + 3 * var(--step-h))}
-  .cabt-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cabt-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
   /* --crd 는 같은 단계 안의 순번(문단·칸)이다 — 문서 끝 스크립트가 매긴다 */
@@ -433,7 +312,7 @@
      이 장은 .csec 를 쓰지 않는다 — 풀스크린 규칙(⑧)이 섹션 자체를 한 화면으로 묶어
      트랙이 설 자리를 없애기 때문이다. 바탕색만 .csec--dark 에서 가져온다 */
   .cvis-track{position:relative;height:calc(100vh + 5 * var(--step-h))}
-  .cvis-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .cvis-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -613,7 +492,7 @@
     --markoff:rgba(255,255,255,.3);--fill:#fff;--fillink:var(--brand);
     --barempty:rgba(255,255,255,.3)}
   .caaa-track{position:relative;height:calc(100vh + 7 * var(--step-h))}
-  .caaa-stage{--pad-t:calc(77px + var(--cnav-rise) + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+  .caaa-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
     position:sticky;top:0;height:100vh;height:100dvh;
     display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
@@ -771,33 +650,34 @@
   /* =====================================================================
      ⑧ 01~03 풀스크린 — 한 섹션이 화면 한 장을 차지한다
      ===================================================================== */
-  /* 세 장(⑤~⑦)이 저마다 무대(.cabt-stage / .cvis-stage / .caaa-stage)로 화면 한 장을
-     잡고, 내용은 그 안에서 세로 중앙에 놓인다. 여기 있는 것은 그 한 장에 담기게 하는
-     밀도 조절뿐이다. 화면이 낮으면(700px 미만) 붙드는 모드 자체가 꺼지고 내용 높이대로
-     흐르므로 이 블록도 같이 꺼진다.
-     위 여백 77px = 고정된 탭 바 64 + 그 아래 흰 띠 12 + 경계선 1
-     (+ 바가 탭 줄 위에 비워 두는 자리 --cnav-rise. 그 값이 화면 높이를 따라 줄어드는
-      것도 이 때문이다 — 여기 여백이 그만큼 커지면 내용이 설 자리가 줄어든다)
+  /* 각 섹션이 화면 높이만큼을 차지하고 내용은 그 안에서 세로 중앙에 놓인다.
+     스크롤에 붙는(sticky) 동작은 뺐다 — 세 섹션은 그냥 차례로 흘러간다.
 
-     ─ 높이를 따라 이어서 줄인다 (2026-08-04) ─
-     예전에는 880px 를 경계로 한 번에 한 단 떨어뜨렸다. 그런데 노트북의 화면 높이가
-     브라우저 띠를 빼면 대개 그 바로 아래(700~880)라, 같은 페이지가 데스크톱에서는
-     제 크기 · 노트북에서는 한 단 작은 두 얼굴로 보였다 — 숫자는 40 → 30 으로 한 번에
-     4분의 1이 깎였다. 이제 vw 와 vh 중 작은 쪽을 따라가 높이가 줄면 조금씩 같이 준다.
-     기준은 가장 높은 장(Vision)이 무대 안에 들어가는 선이다.
+     화면이 낮으면(700px 미만) 이 모드를 끄고 내용 높이대로 흐르게 둔다. 켜지는
+     구간에서는 아래 규칙들이 밀도를 한 단 줄여 한 화면에 담는다.
+     위 여백 78px = 고정된 탭 바 65 + 그 아래 흰 띠 12 + 경계선 1
 
      이 블록이 ⑤~⑦ 뒤에 있는 이유 — 미디어 쿼리는 우선순위를 올려 주지 않아서,
      같은 선택자를 덮으려면 소스 순서로 뒤에 와야 한다 */
   @media(min-width:901px) and (min-height:700px){
-    .ccols>.cstats{margin-top:clamp(24px,5vh,72px)}
-    .cstat{min-height:clamp(118px,15.5vh,140px);gap:clamp(8px,1.1vh,10px);
-      padding:clamp(18px,2.4vh,22px) 24px}
-    .cstat .v{font-size:clamp(22px,min(2.4vw,4.2vh),36px)}
-    /* 줄글만 줄인다 — 헤드라인(.cabt-lead p)까지 걸리면 본문과 같은 크기가 되어
-       강약이 사라진다. 자식 결합자가 없던 예전 규칙(.ctext p)이 그랬다 */
-    .ctext>p{font-size:clamp(16px,1.9vh,17px)}
-    /* Vision·AAA 는 크기를 대부분 vh 로 잡아 두어(칸 높이·여백) 손댈 것이 큰 문장뿐이다 */
-    .cvis-grid .c--h p{font-size:clamp(22px,min(3.1vw,5.5vh),52px)}
+    .csec{min-height:100vh;min-height:100dvh;scroll-margin-top:0;
+      display:flex;align-items:center;
+      padding:calc(78px + clamp(16px,2.5vh,32px)) 0 clamp(16px,3vh,32px)}
+    /* 밀도 — 한 화면에 담기도록 한 단 줄인다.
+       가장 긴 섹션(AAA)이 들어가는 선에 맞춘다 */
+    .ccols>.cstats{margin-top:clamp(32px,5vh,72px)}
+    .cstat{min-height:140px;padding:22px 24px;gap:10px}
+    .cstat .v{font-size:clamp(24px,2.2vw,36px)}
+  }
+  /* 더 낮은 화면 — 한 단 더 줄인다 */
+  @media(min-width:901px) and (min-height:700px) and (max-height:880px){
+    .ccols>.cstats{margin-top:clamp(24px,4vh,48px)}
+    .ctext p{font-size:16px}
+    .cstat{min-height:118px;padding:18px 20px;gap:8px}
+    .cstat .v{font-size:clamp(22px,1.9vw,30px)}
+    /* Vision·AAA 는 크기를 대부분 vh 로 잡아 두어(칸 높이·여백) 여기서 손댈 것이
+       큰 문장 하나뿐이다 */
+    .cvis-grid .c--h p{font-size:clamp(22px,2.6vw,40px)}
   }
 
   /* =====================================================================
@@ -1219,20 +1099,16 @@
    "위에서 몇 px" 같은 기준보다 중앙 한 점으로 묻는 편이 흔들리지 않는다
    (business-layout.js 의 섹션 판정과 같은 기준) */
 (function(){
-  var wrap=document.querySelector('.cnav-wrap'),hero=document.querySelector('.dhero'),
-      ft=document.querySelector('.footer');
+  var wrap=document.querySelector('.cnav-wrap'),hero=document.querySelector('.dhero');
   if(!wrap||!hero)return;
   var tabs=[].slice.call(wrap.querySelectorAll('.cnav-tabs a[href^="#"]'));
   var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  var top=0,drop=0,barH=0,fixed=null,cur=-1;
+  var top=0,drop=0,fixed=null,cur=-1;
 
   function measure(){
     var cs=getComputedStyle(wrap);
     top=parseFloat(cs.getPropertyValue('--cnav-top'))||0;
     drop=parseFloat(cs.getPropertyValue('--cnav-drop'))||0;
-    /* 바 높이는 두 상태에서 같다(--bar-h) → 여기서 한 번만 잰다.
-       매 스크롤 프레임에서 offsetHeight 를 읽으면 그때마다 레이아웃을 다시 잡는다 */
-    barH=wrap.offsetHeight;
   }
   function paint(){
     var v=hero.getBoundingClientRect().bottom-drop<=top+0.5;
@@ -1241,36 +1117,6 @@
       wrap.classList.toggle('is-fixed',v);
       document.body.classList.toggle('cnav-stuck',v);
     }
-    /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
-       목차 탭은 볼 일이 없다. 푸터가 화면보다 낮아 밑변이 화면 위로 못 올라오는 큰
-       화면을 위해 "푸터 윗변이 바 밑변에 닿으면"도 OR 로 둔다 (사업영역과 같은 판정).
-       매 프레임 다시 봐야 하므로 아래 조기 반환보다 앞에 둔다 */
-    var away=false;
-    if(v&&ft){
-      var fr=ft.getBoundingClientRect(),shown=window.innerHeight-fr.top;
-      away=shown>=fr.height/2||fr.top<=top+barH+0.5;
-    }
-    wrap.classList.toggle('is-away',away);
-    /* 바가 덮고 있는 장이 어두우면(Vision) 흰 탭 패널도 어둡게 뒤집는다 — 그 장에서는
-       화면에 흰 것이 이 패널 하나뿐이라 혼자 떠 보인다.
-       보는 자리가 화면 한가운데(아래 현재 탭 판정)가 아니라 바 바로 밑인 이유 —
-       여기서 묻는 것은 "어느 장을 읽고 있나"가 아니라 "바 밑에 무엇이 깔렸나"다.
-       두 자리는 장이 바뀌는 동안 한참 어긋난다 */
-    var dk=false,br=false;
-    if(v){
-      var uy=top+wrap.offsetHeight+13;   /* 바 밑변 + 흰 띠 12 + 선 1 */
-      for(var k=0;k<secs.length;k++){
-        if(!secs[k])continue;
-        var q=secs[k].getBoundingClientRect();
-        if(q.top>uy||q.bottom<uy)continue;
-        dk=secs[k].classList.contains('csec--dark');
-        /* AAA 의 마지막 단계는 제 배경을 브랜드 블루로 뒤집는다 (⑦의 [data-step="6"] 규칙) */
-        br=secs[k].matches('.caaasec[data-step="6"]');
-        break;
-      }
-    }
-    wrap.classList.toggle('on-dark',dk);
-    wrap.classList.toggle('on-brand',br);
     var mid=window.innerHeight/2,best=-1;
     for(var i=0;i<secs.length;i++){
       if(!secs[i])continue;
@@ -1291,10 +1137,6 @@
     requestAnimationFrame(function(){t=false;paint();});
   },{passive:true});
   window.addEventListener('resize',function(){measure();paint();});
-  /* 단계가 바뀌면 다시 칠한다 — AAA 마지막 단계는 제 배경을 뒤집으므로 바 색도 따라가야
-     하는데, 단계를 옮기는 구동부가 이 스크립트보다 뒤에 있어 같은 프레임에서는 아직
-     예전 값이 보인다. 구동부가 띄우는 알림(cstep)을 받아 그 뒤에 한 번 더 칠한다 */
-  secs.forEach(function(s){if(s)s.addEventListener('cstep',paint);});
   measure();paint();
 })();
 
