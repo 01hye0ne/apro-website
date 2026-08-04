@@ -108,6 +108,12 @@
     --bx4:calc(84px + var(--cnav-pad));
     --cnav-w:calc(100% - 168px - 2 * var(--cnav-pad));
     --cnav-drop:var(--bar-h);--cnav-top:0px;
+    /* 선 색과 바 아래 띠 색 — 어두운 장 위에 섰을 때(.on-dark) 이 둘만 갈아 끼운다 */
+    --cnav-line:var(--border-g);--cnav-under:#fff;
+    /* 어두운 벌 커브 — SVG 안에 색이 박혀 있어(fill) 흰 벌과 따로 둔다.
+       %231b2733 = --g900. 바 바탕(--g950)보다 한 단 밝아야 폴더 탭 모양이 남는다 */
+    --tab-curve-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%231b2733'/%3E%3C/svg%3E");
+    --tab-curve-r-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%231b2733'/%3E%3C/svg%3E");
     /* 오른쪽 커브 = 공용 --tab-curve 를 좌우로 뒤집은 것 (경로를 x → 24-x 로 옮겨 적었다) */
     --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E")}
   /* 흰 탭 패널 — 가운데는 흰 사각형, 양끝은 커브. 세 겹을 한 배경으로 얹는다.
@@ -131,6 +137,24 @@
     height:calc(var(--cnav-rise) + var(--bar-h));margin-top:0;background:var(--g950);
     translate:0 var(--cnav-shift,0);transition:translate .34s var(--ease)}
   @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
+  /* 어두운 장(Vision) 위에 서면 흰 탭 패널이 화면에서 혼자 떠 보인다 → 같은 모양의
+     어두운 패널을 그 위에 겹쳐 두고 서서히 바꿔 넣는다. 흰 패널을 그대로 두고 덮는
+     이유는 색이 서서히 넘어가게 하려는 것이다 — 커브가 이미지라 배경을 갈아 끼우면
+     그 순간 딱 바뀐다. 무엇을 덮고 있는지는 문서 끝 스크립트가 .on-dark 로 알린다 */
+  .cnav-wrap.is-fixed::before{content:"";position:absolute;z-index:1;bottom:0;
+    height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40);
+    left:calc(var(--bx4) - var(--cw));width:calc(var(--cnav-w) + 2 * var(--cw));
+    pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
+    background:
+      var(--tab-curve-dk) left bottom/var(--cw) 100% no-repeat,
+      var(--tab-curve-r-dk) right bottom/var(--cw) 100% no-repeat,
+      linear-gradient(var(--g900),var(--g900)) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
+  .cnav-wrap.is-fixed.on-dark::before{opacity:1}
+  /* 어두운 패널 위의 글자·선 — 쉬는 색은 그대로 두고(어두운 바닥에서도 읽힌다) 현재 탭만
+     흰색으로 올린다. 브랜드 블루는 이 바닥에서 대비가 2:1 아래로 떨어져 못 쓴다 */
+  .cnav-wrap.is-fixed.on-dark{--cnav-line:rgba(255,255,255,.18);--cnav-under:var(--g950)}
+  .cnav-wrap.is-fixed.on-dark .cnav-tabs a:hover{color:var(--on-white-85)}
+  .cnav-wrap.is-fixed.on-dark .cnav-tabs a[aria-current]{color:#fff}
   /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
   .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
@@ -221,8 +245,8 @@
     .cnav-tabs::after{content:"";position:absolute;left:0;right:0;top:0;bottom:-27px;
       pointer-events:none;
       background-image:linear-gradient(to right,
-        transparent calc(33.333% - .5px),var(--border-g) calc(33.333% - .5px),var(--border-g) calc(33.333% + .5px),transparent calc(33.333% + .5px),
-        transparent calc(66.667% - .5px),var(--border-g) calc(66.667% - .5px),var(--border-g) calc(66.667% + .5px),transparent calc(66.667% + .5px),
+        transparent calc(33.333% - .5px),var(--cnav-line) calc(33.333% - .5px),var(--cnav-line) calc(33.333% + .5px),transparent calc(33.333% + .5px),
+        transparent calc(66.667% - .5px),var(--cnav-line) calc(66.667% - .5px),var(--cnav-line) calc(66.667% + .5px),transparent calc(66.667% + .5px),
         transparent 100%)}
     /* 칸의 바깥 경계는 따로 긋지 않는다 — 두 상태 모두 흰 패널이 좌우 S커브로 닫혀
        거기가 끝이라는 것을 이미 말한다 (고정 상태에서 바 전체가 흰색이던 동안에는
@@ -230,13 +254,14 @@
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
     .cnav-rule{display:block;position:absolute;left:0;right:0;bottom:-12px;
-      height:1px;background:var(--border-g)}
+      height:1px;background:var(--cnav-line);transition:background-color .4s var(--ease)}
     /* 고정되면 바 밑변에서 12px 떨어져 그어진다 — 사업영역 세부 페이지의 .bnav-rule 과
        같은 구조·같은 거리다(재 보니 그쪽 선은 바 밑변 128 에서 12px 내려온 140 에 있다).
        그 12px 틈을 1px 선이 아니라 흰 사각형으로 채우고 선은 그 밑변 테두리로 긋는 이유 —
        바가 fixed 라 틈이 투명하면 그 사이로 본문이 스쳐 지나가는 게 보인다 */
     .cnav-wrap.is-fixed .cnav-rule{top:100%;bottom:auto;height:12px;
-      background:#fff;border-bottom:1px solid var(--border-g)}
+      background:var(--cnav-under);border-bottom:1px solid var(--cnav-line);
+      transition:background-color .4s var(--ease),border-color .4s var(--ease)}
   }
   /* 좁은 화면: 흰 패널·S커브를 접고 히어로 배경 위 가로 스크롤 탭 줄만 남긴다.
      고정되면 위 .is-fixed 규칙이 흰 바로 바꾸고 글자색도 되돌린다 */
@@ -1208,6 +1233,21 @@
       away=shown>=fr.height/2||fr.top<=top+barH+0.5;
     }
     wrap.classList.toggle('is-away',away);
+    /* 바가 덮고 있는 장이 어두우면(Vision) 흰 탭 패널도 어둡게 뒤집는다 — 그 장에서는
+       화면에 흰 것이 이 패널 하나뿐이라 혼자 떠 보인다.
+       보는 자리가 화면 한가운데(아래 현재 탭 판정)가 아니라 바 바로 밑인 이유 —
+       여기서 묻는 것은 "어느 장을 읽고 있나"가 아니라 "바 밑에 무엇이 깔렸나"다.
+       두 자리는 장이 바뀌는 동안 한참 어긋난다 */
+    var dk=false;
+    if(v){
+      var uy=top+wrap.offsetHeight+13;   /* 바 밑변 + 흰 띠 12 + 선 1 */
+      for(var k=0;k<secs.length;k++){
+        if(!secs[k])continue;
+        var q=secs[k].getBoundingClientRect();
+        if(q.top<=uy&&q.bottom>=uy){dk=secs[k].classList.contains('csec--dark');break;}
+      }
+    }
+    wrap.classList.toggle('on-dark',dk);
     var mid=window.innerHeight/2,best=-1;
     for(var i=0;i<secs.length;i++){
       if(!secs[i])continue;
