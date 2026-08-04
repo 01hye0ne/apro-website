@@ -145,7 +145,7 @@
   @media(min-width:901px){
     /* 바 높이 65px, 히어로 밑단에서 60px 올라앉는다 → 내려온 거리는 65 + 60 */
     .cnav-wrap{height:65px;margin-top:calc(-1 * (65px + 60px));--cnav-drop:125px}
-    .cnav-wrap::after{height:65px;--cw:calc(65px * 24 / 40)}
+    .cnav-wrap::after{height:65px}
     .cnav-wrap.is-fixed{height:65px}
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 폭(1167px)·같은 시작점(.cnav 기준 262px).
        칸을 4등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다 */
@@ -670,8 +670,10 @@
     /* 띠의 윗선 — 아래 가로선(.cnav-rule)과 짝을 이뤄 탭이 앉은 띠를 위아래로 닫는다.
        패널이 배경색이 된 뒤로는 띠가 어디서 시작하는지 말해 줄 것이 이 선뿐이다.
        칸 구분선도 바 윗변(top:0)에서 시작하므로 셋이 한 격자로 맞물린다.
-       고정되면 바 자체가 흰 판이라 따로 그을 것이 없다 → 히어로 위에서만 */
-    .cnav-wrap:not(.is-fixed)::before{content:"";position:absolute;left:0;right:0;top:0;
+       고정되면 바 자체가 흰 판이라 따로 그을 것이 없다 → 히어로 위에서만.
+       z-index:1 — 이 폭에서 패널(::after)은 바 높이 전체(65px)라 같은 자리를 덮는다.
+       ::after 가 ::before 보다 나중에 그려지므로, 그냥 두면 선이 패널 폭만큼 끊긴다 */
+    .cnav-wrap:not(.is-fixed)::before{content:"";position:absolute;z-index:1;left:0;right:0;top:0;
       height:1px;background:var(--cnav-line)}
   }
   /* 더 낮은 화면 — 한 단 더 줄인다 */
