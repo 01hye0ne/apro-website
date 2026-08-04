@@ -133,7 +133,7 @@
   @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
   /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
-  .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--g900)}
+  .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
 
   /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
      목차 탭은 볼 일이 없다 (사업영역 .bnav-wrap.is-away 와 같은 판정·같은 동작) */
@@ -161,9 +161,12 @@
     display:flex;align-items:center;gap:20px;
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .cnav-tabs::-webkit-scrollbar{display:none}
-  /* 색은 사업영역 .bnav-tabs 와 같은 벌을 쓴다 — 쉬는 색 --teritary, 얹으면 --sec,
-     현재 탭 --g900 + 굵게. 그쪽처럼 두 상태(히어로 위 · 고정)에서 값이 같다: 어느 쪽이든
-     글자가 놓이는 바닥이 흰 탭 패널이라 색을 갈라 둘 이유가 없다 */
+  /* 색은 사업영역 '세부 페이지'가 쓰는 벌을 그대로 가져온다 (business-layout.css 의
+     기본값이 아니라 business-*.html 이 그 위에 덮어 쓴 값이다 — 처음엔 기본값을 보고
+     현재 탭을 --g900 으로 뒀었다).
+       고정   : 쉬는 색 --teritary · 얹으면 --sec · 현재 탭 --brand + 굵게
+       히어로 : 활성/비활성을 가르지 않고 셋 다 --g900 · 굵기 500, 얹으면 --brand
+                (그 자리에서는 아직 "어디에 있다"가 없다. 아래 ⑨ 넓은 화면 블록에서 건다) */
   .cnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;
     font-size:16px;line-height:1.15;letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
     transition:color .3s var(--ease)}
@@ -179,12 +182,17 @@
        뒤에는 폴더가 아니라 내비게이션 줄이고 그건 두 페이지가 같아야 한다.
        탭 줄이 바 밑변에 딱 붙으므로(margin 0) 아래 여백이 없어진 만큼 세로 구분선도 짧아진다 */
     .cnav-wrap.is-fixed{height:calc(var(--cnav-rise) + 64px)}
-    /* 흰 탭 패널도 탭 줄과 같이 40px 로 얇아진다 — 커브 폭은 늘 패널 높이 × 24/40 이라
-       따라 줄어든다(24px). 패널이 바 밑변에 앉으므로 구분선도 패널 안에서 끝난다 */
-    .cnav-wrap.is-fixed::after{height:40px;--cw:calc(40px * 24 / 40)}
-    .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:0}
+    /* 흰 탭 패널 — 사업영역 세부 페이지의 고정된 바를 그대로 잰 값이다:
+       바 0~128 · 어두운 띠 68 · 흰 패널 60(68~128) · 탭 줄 40(76~116, 밑에서 12px).
+       패널을 바 높이에서 그 어두운 띠(68)를 뺀 만큼으로 잡으면 높은 화면에서 60 이 된다.
+       화면이 낮아 바가 줄면 띠를 먼저 내주고, 탭 줄이 들어갈 최소치(40 + 12)에서 멈춘다.
+       커브 폭은 늘 패널 높이 × 24/40 이라 패널을 따라간다 */
+    .cnav-wrap.is-fixed{--panel-h:max(52px,calc(var(--cnav-rise) - 4px))}
+    .cnav-wrap.is-fixed::after{height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40)}
+    .cnav-wrap.is-fixed .cnav-tabs{height:40px;margin-bottom:12px}
     .cnav-wrap.is-fixed .cnav-tabs a{align-self:center;font-size:16px;transform:none}
-    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:0}
+    /* 세로 구분선은 패널 밑변까지 — 탭 줄 밑 여백(12px)만큼 더 내려온다 */
+    .cnav-wrap.is-fixed .cnav-tabs::after{bottom:-12px}
     /* 아래 가로 구분선은 .cnav-rule 이 그린다 — 아래쪽 규칙에 두 상태를 모아 두었다 */
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 자리(.cnav 의 패딩 안쪽을 그대로 채운다).
        칸을 3등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다.
@@ -192,9 +200,11 @@
     .cnav-tabs{margin-bottom:15px;height:50px;
       display:grid;grid-template-columns:repeat(3,1fr);column-gap:0;
       justify-items:center;overflow:visible}
-    /* align-self:start — 칸 높이(50px)만큼 늘어난 상자를 글자 높이로 줄인다. 글자는
-       원래도 상자 위쪽에 놓여 있어 자리가 그대로고, 밑줄만 글자 바로 밑에 붙는다 */
     .cnav-tabs a{align-self:start;font-size:20px;transform:translateY(12px)}
+    /* 히어로 위에서는 셋을 같게 둔다 (사업영역 세부 페이지와 같다). 좁은 화면은 글자가
+       사진 위에 바로 놓여 흰색 계열을 쓰므로 이 규칙을 이 블록 안에만 둔다 */
+    .cnav-wrap:not(.is-fixed) .cnav-tabs a{color:var(--g900)}
+    .cnav-wrap:not(.is-fixed) .cnav-tabs a:hover{color:var(--brand)}
     /* GNB 를 꺼내도 바는 제자리에 선다 — 위를 비워 둔 자리(--cnav-rise)에 GNB 가 그냥
        얹힌다(사업영역과 같다). 예전에는 모자란 만큼 바를 아래로 밀었는데, 커서를 위로
        가져갈 때마다 바가 흔들려 걷었다.
