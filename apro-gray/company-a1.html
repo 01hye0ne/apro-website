@@ -114,6 +114,11 @@
        %231b2733 = --g900. 바 바탕(--g950)보다 한 단 밝아야 폴더 탭 모양이 남는다 */
     --tab-curve-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%231b2733'/%3E%3C/svg%3E");
     --tab-curve-r-dk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%231b2733'/%3E%3C/svg%3E");
+    /* 브랜드 벌 — AAA 마지막 단계가 제 배경을 브랜드 블루로 뒤집을 때 쓴다.
+       %23223858 = --point-900. 어두운 벌과 달리 바탕(--brand)보다 한 단 어둡게 간다 —
+       그 화면은 이미 짙은 파랑에 흰 글자라, 패널까지 밝히면 본문과 다툰다 */
+    --tab-curve-bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23223858'/%3E%3C/svg%3E");
+    --tab-curve-r-bl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23223858'/%3E%3C/svg%3E");
     /* 오른쪽 커브 = 공용 --tab-curve 를 좌우로 뒤집은 것 (경로를 x → 24-x 로 옮겨 적었다) */
     --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E")}
   /* 흰 탭 패널 — 가운데는 흰 사각형, 양끝은 커브. 세 겹을 한 배경으로 얹는다.
@@ -135,26 +140,39 @@
      GNB 를 꺼낼 때(아래로) · 푸터에서 접어 올릴 때(위로). 아래 두 규칙이 값만 바꾼다 */
   .cnav-wrap.is-fixed{position:fixed;top:var(--cnav-top);left:0;width:100%;
     height:calc(var(--cnav-rise) + var(--bar-h));margin-top:0;background:var(--g950);
-    translate:0 var(--cnav-shift,0);transition:translate .34s var(--ease)}
+    translate:0 var(--cnav-shift,0);
+    transition:translate .34s var(--ease),background-color .4s var(--ease)}
   @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
   /* 어두운 장(Vision) 위에 서면 흰 탭 패널이 화면에서 혼자 떠 보인다 → 같은 모양의
      어두운 패널을 그 위에 겹쳐 두고 서서히 바꿔 넣는다. 흰 패널을 그대로 두고 덮는
      이유는 색이 서서히 넘어가게 하려는 것이다 — 커브가 이미지라 배경을 갈아 끼우면
      그 순간 딱 바뀐다. 무엇을 덮고 있는지는 문서 끝 스크립트가 .on-dark 로 알린다 */
+  /* 겹쳐 두는 패널의 색은 세 변수(--pc-l · --pc-r · --pc)가 정한다 — 상태마다 값만
+     갈아 끼우면 되고 배경 선언은 한 벌로 끝난다 (커브는 SVG 라 색이 박혀 있어 벌째로 바꾼다) */
+  .cnav-wrap.is-fixed{--pc-l:var(--tab-curve-dk);--pc-r:var(--tab-curve-r-dk);--pc:var(--g900)}
   .cnav-wrap.is-fixed::before{content:"";position:absolute;z-index:1;bottom:0;
     height:var(--panel-h);--cw:calc(var(--panel-h) * 24 / 40);
     left:calc(var(--bx4) - var(--cw));width:calc(var(--cnav-w) + 2 * var(--cw));
     pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
     background:
-      var(--tab-curve-dk) left bottom/var(--cw) 100% no-repeat,
-      var(--tab-curve-r-dk) right bottom/var(--cw) 100% no-repeat,
-      linear-gradient(var(--g900),var(--g900)) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
-  .cnav-wrap.is-fixed.on-dark::before{opacity:1}
-  /* 어두운 패널 위의 글자·선 — 쉬는 색은 그대로 두고(어두운 바닥에서도 읽힌다) 현재 탭만
-     흰색으로 올린다. 브랜드 블루는 이 바닥에서 대비가 2:1 아래로 떨어져 못 쓴다 */
+      var(--pc-l) left bottom/var(--cw) 100% no-repeat,
+      var(--pc-r) right bottom/var(--cw) 100% no-repeat,
+      linear-gradient(var(--pc),var(--pc)) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
+  .cnav-wrap.is-fixed:is(.on-dark,.on-brand)::before{opacity:1}
+  /* 어두운 장(Vision) — 쉬는 색은 그대로 두고(어두운 바닥에서도 읽힌다) 현재 탭만 흰색으로
+     올린다. 브랜드 블루는 이 바닥에서 대비가 2:1 아래로 떨어져 못 쓴다 */
   .cnav-wrap.is-fixed.on-dark{--cnav-line:rgba(255,255,255,.18);--cnav-under:var(--g950)}
   .cnav-wrap.is-fixed.on-dark .cnav-tabs a:hover{color:var(--on-white-85)}
   .cnav-wrap.is-fixed.on-dark .cnav-tabs a[aria-current]{color:#fff}
+  /* 브랜드로 뒤집힌 장(AAA 마지막 단계) — 바 자신도 그 색을 받아 장과 이어진다.
+     쉬는 색은 --teritary 로 두면 짙은 파랑 위에서 대비가 3:1 아래로 떨어져,
+     그 화면이 쓰는 어법(흰색의 농도 차이)을 그대로 따른다 */
+  .cnav-wrap.is-fixed.on-brand{background:var(--brand);
+    --pc-l:var(--tab-curve-bl);--pc-r:var(--tab-curve-r-bl);--pc:var(--point-900);
+    --cnav-line:rgba(255,255,255,.28);--cnav-under:var(--brand)}
+  .cnav-wrap.is-fixed.on-brand .cnav-tabs a{color:rgba(255,255,255,.6)}
+  .cnav-wrap.is-fixed.on-brand .cnav-tabs a:hover{color:var(--on-white-85)}
+  .cnav-wrap.is-fixed.on-brand .cnav-tabs a[aria-current]{color:#fff}
   /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
   .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
@@ -1238,16 +1256,21 @@
        보는 자리가 화면 한가운데(아래 현재 탭 판정)가 아니라 바 바로 밑인 이유 —
        여기서 묻는 것은 "어느 장을 읽고 있나"가 아니라 "바 밑에 무엇이 깔렸나"다.
        두 자리는 장이 바뀌는 동안 한참 어긋난다 */
-    var dk=false;
+    var dk=false,br=false;
     if(v){
       var uy=top+wrap.offsetHeight+13;   /* 바 밑변 + 흰 띠 12 + 선 1 */
       for(var k=0;k<secs.length;k++){
         if(!secs[k])continue;
         var q=secs[k].getBoundingClientRect();
-        if(q.top<=uy&&q.bottom>=uy){dk=secs[k].classList.contains('csec--dark');break;}
+        if(q.top>uy||q.bottom<uy)continue;
+        dk=secs[k].classList.contains('csec--dark');
+        /* AAA 의 마지막 단계는 제 배경을 브랜드 블루로 뒤집는다 (⑦의 [data-step="6"] 규칙) */
+        br=secs[k].matches('.caaasec[data-step="6"]');
+        break;
       }
     }
     wrap.classList.toggle('on-dark',dk);
+    wrap.classList.toggle('on-brand',br);
     var mid=window.innerHeight/2,best=-1;
     for(var i=0;i<secs.length;i++){
       if(!secs[i])continue;
@@ -1268,6 +1291,10 @@
     requestAnimationFrame(function(){t=false;paint();});
   },{passive:true});
   window.addEventListener('resize',function(){measure();paint();});
+  /* 단계가 바뀌면 다시 칠한다 — AAA 마지막 단계는 제 배경을 뒤집으므로 바 색도 따라가야
+     하는데, 단계를 옮기는 구동부가 이 스크립트보다 뒤에 있어 같은 프레임에서는 아직
+     예전 값이 보인다. 구동부가 띄우는 알림(cstep)을 받아 그 뒤에 한 번 더 칠한다 */
+  secs.forEach(function(s){if(s)s.addEventListener('cstep',paint);});
   measure();paint();
 })();
 
