@@ -208,10 +208,12 @@
   /* the brand (에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
   .v2banner .bnav .b.brand{--bnav-dur:12.5s}
   @keyframes bnavFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  /* 글자 크기·색은 세부 페이지 소분류 탭(16px/500, --teritary → 활성 --brand 700)을
-     그대로 가져왔다. 폭이 좁아지면 "화합물 전력 반도체"가 칸을 넘치므로 같이 줄인다 */
+  /* 색은 세부 페이지 소분류 탭(--teritary → 활성 --brand 700)에서 가져왔고, 크기는
+     히어로 밑변에서 제 몫을 하도록 거기(16px)보다 한 단 키워 20px 로 잡았다.
+     폭이 좁아지면 "화합물 전력 반도체"가 칸을 넘치므로 같이 줄인다 — 기울기·상한만
+     올리고 하한(12px)은 그대로 뒀다. 좁은 쪽은 예전에도 이미 칸에 꽉 차 있었다 */
   .v2banner .bnav .bt{position:relative;z-index:1;
-    font-family:var(--suit);font-weight:500;font-size:clamp(12px,1.02vw,16px);line-height:1.15;
+    font-family:var(--suit);font-weight:500;font-size:clamp(12px,1.3vw,20px);line-height:1.15;
     letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
     transition:color .22s var(--ease)}
   .v2banner .bnav .b:hover .bt{color:#445464}
