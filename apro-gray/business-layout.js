@@ -219,6 +219,24 @@
     return btns;
   }
 
+  /* 바 오른쪽 끝 소속 뱃지 — HTML 에서 .hrail 바로 밑에 적어 둔 .hbadge(예: 이차전지
+     소재의 "에이프로 머티리얼즈")를 목록 안 마지막 항목으로 옮긴다. 패밀리 사이트로
+     나가는 링크라 카드가 아니라 소분류에 걸리는 꼬리표이고, 그래서 카드 마크업이 아니라
+     레일에 적는다. 복제가 아니라 이동이다 — 같은 말이 DOM 에 두 번 있으면 읽기 도구가
+     두 번 읽는다.
+     ol 안으로 넣는 이유는 오른쪽 끝 정렬(margin-left:auto) 때문이다. 레일에 형제로
+     두면 바(=ol) 바깥이라 바 안쪽 끝에 설 수가 없다.
+     ol 이 없는 소분류(카드가 하나뿐이라 목록을 안 만든 경우)는 그냥 레일에 남는다 —
+     파란 바가 없는 자리이니 뱃지 기본 생김새(파란 채움) 그대로 읽힌다 */
+  function placeBadge(rail){
+    var badge=rail.querySelector(':scope > .hbadge'),ol=rail.querySelector('ol.hidx');
+    if(!badge||!ol)return;
+    var li=document.createElement('li');
+    li.className='hidx-badge';
+    li.appendChild(badge);
+    ol.appendChild(li);
+  }
+
   document.querySelectorAll('.hsec').forEach(function(sec){
     var track=sec.querySelector('.htrack'),rail=sec.querySelector('.hrail');
     if(!track)return;
@@ -228,6 +246,9 @@
     /* 카드가 하나면 넘길 것도, 목록이 될 것도 없다 */
     if(cards.length<2)track.dataset.one='true';
     else if(rail)st.btns=buildIndex(sec,rail,track,cards,st);
+    /* buildIndex 밖에서 부른다 — 카드가 하나뿐이라 목록을 HTML 에 손으로 적어 둔
+       소분류(예: 반도체 GaN 두 곳)도 같은 자리에 뱃지를 걸 수 있어야 한다 */
+    if(rail)placeBadge(rail);
 
     /* 트랙을 직접(터치·드래그) 스크롤한 경우 현재 카드 추적.
        JS가 움직일 때도 매 프레임 여기로 들어오므로 게이지는 먼저 갱신한다 */

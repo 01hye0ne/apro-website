@@ -416,6 +416,50 @@
   .hidx button:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
   .hidx button[aria-current]{font-weight:700;color:var(--g900)}
 
+  /* ── 소속 뱃지(.hbadge) — "이 소분류는 어느 계열사가 만드는가"
+     HTML 에서 .hrail 바로 밑에 적고, JS(business-layout.js placeBadge)가 인덱스 바
+     안 마지막 항목으로 옮긴다. 패밀리 사이트로 나가는 링크라 <a> 로 적는다.
+
+     생김새는 사업영역 목록 페이지의 "계열사" 태그(business.html .li .tag)를 그대로
+     가져왔다 — 같은 말을 사이트 안에서 두 가지 모양으로 하지 않는다. 값도 그 규칙에서
+     통째로 옮긴 것이라 한쪽을 고치면 다른 쪽도 같이 고쳐야 한다:
+       채움 --brand-2 / 흰 글자 / 반경 2px / 패딩 1px 8px / --pre 500 13px / 행간 1.6
+     테두리는 두지 않는다 — 채움색으로만 서는 태그라 윤곽이 두 겹이 되면 안 된다.
+     white-space:nowrap — 회사명에 띄어쓰기가 들어 있어(푸터 패밀리 사이트 표기와 같은
+     "에이프로 머티리얼즈") 좁은 폭에서 뱃지 하나가 두 줄에 걸치는 걸 막는다 */
+  .hbadge{display:inline-flex;align-items:center;flex-shrink:0;
+    padding:1px 8px;border-radius:2px;background:var(--brand-2);color:#fff;
+    font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;
+    letter-spacing:-.26px;white-space:nowrap;
+    transition:background .2s var(--ease),color .2s var(--ease)}
+  .hbadge:hover{background:var(--brand)}
+  .hbadge:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
+
+  @media(min-width:901px){
+    /* 넓은 화면 — 파란 인덱스 바(v3.1, 각 페이지 <style> 의 .hidx) 안에 선다.
+       auto 마진이 남는 가로 공간을 통째로 왼쪽에 몰아 준다 → 항목이 몇 개든 맨 오른쪽.
+       카드 이름끼리를 가르는 점(.hidx li::before)은 이 앞에 찍지 않는다 — 목록의 한
+       항목이 아니라 바 전체에 붙는 꼬리표라 같은 문법으로 읽히면 안 된다 */
+    .hidx li.hidx-badge{margin-left:auto;padding-left:20px}
+    .hidx li.hidx-badge::before{display:none}
+
+    /* 색만 반전 — "계열사" 태그는 어두운 패널 위를 전제로 파란 채움 + 흰 글자인데,
+       이 바는 그 파랑(--brand)이 이미 배경이라 그대로 쓰면 채움이 배경에 묻혀 글자만
+       떠 있게 된다. 그래서 채움을 흰색으로, 글자를 --brand 로 뒤집는다(--brand-2 는
+       흰 바탕에서 대비가 얕아 13px 500 이 흐려진다). 호버는 눌린 느낌으로 한 단계
+       내려앉는 --point-200. 모양·크기·자간은 건드리지 않는다 — 뒤집힌 같은 태그다 */
+    .hidx .hbadge{background:#fff;color:var(--brand)}
+    .hidx .hbadge:hover{background:var(--point-200);color:var(--brand)}
+    .hidx .hbadge:focus-visible{outline-color:#fff}
+
+    /* 위아래 1px 씩 겹쳐 세운다. 뱃지의 바깥 높이(13*1.6 + 패딩 2 = 22.8px)가 바의
+       글자줄(15px * 1.4 ≒ 21px)보다 커서, 그냥 두면 뱃지가 달린 소분류의 바만 2px
+       두꺼워지고 그만큼 아래 카드가 내려앉아 탭을 옮길 때 본문이 덜컥거린다.
+       음수 마진은 바 높이 계산에서만 빠질 뿐 그려지는 크기는 그대로다
+       (바의 세로 여백이 10px 이라 잘릴 일도 없다) */
+    .hidx li.hidx-badge .hbadge{margin-top:-1px;margin-bottom:-1px}
+  }
+
   /* ══ A / A-1 시안 차이 (본문 골격) ═══════════════════════════════════
      HTML 은 두 시안이 같다 — _gen-a1.py 가 바꾸는 건 body 클래스·타이틀·링크 셋뿐이고,
      보이는 차이는 전부 이 파일이 만든다. 히어로 차이(.dhero / .dhero-lead)는 위쪽에
@@ -1303,6 +1347,14 @@
     /* 세로로 풀리면 카드가 전부 아래에 이어 붙는다 → 인덱스가 가리킬 '현재 카드'도,
        뛰어넘을 거리도 없다. 목록 바로 아래에 실물 카드가 다 보이므로 접는다 */
     .hidx{display:none}
+    /* 다만 소속 뱃지는 살려 둔다 — 카드 목록이 아니라 "이 소분류는 어느 계열사가
+       만드는가"를 말하는 꼬리표이고 패밀리 사이트로 나가는 링크라, 접을 이유가 없다.
+       바의 파란 판·테두리·여백을 걷어 뱃지 하나만 카드 위에 얹는다.
+       (넓은 화면의 흰 반전은 --brand 배경 위에서만 성립하므로 여기선 원래 파란 채움
+       그대로다 — .hidx .hbadge 반전 규칙이 min-width:901px 안에 있는 이유) */
+    .hidx:has(.hidx-badge){display:flex;padding:0;background:none;border:0}
+    .hidx:has(.hidx-badge) li:not(.hidx-badge){display:none}
+    .hidx li.hidx-badge{margin-left:0;padding-left:0}
     .htrack{gap:14px;overflow:visible;scroll-snap-type:none}
     .hcard{flex:0 0 auto;padding:24px 22px}
     .hcard:has(.hph),.hcard:has(.hthumbs){padding-right:22px}
@@ -1543,6 +1595,21 @@
   .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
   .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
   .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  /* 넓은 화면 — 구분선은 본문선(좌우 84px)까지 길게 두고, 그 안의 글·로고·버튼만
+     12열 그리드의 2~11열(가운데 10열)로 좁힌다. .container 폭은 본문선 그대로 두고
+     세 덩어리에 좌우 패딩을 주는 방식이라 border-bottom 은 원래 폭을 유지한다
+     (선을 콘텐츠와 같이 좁히려면 이 패딩을 .container 로 옮기면 된다).
+     패딩 = 한 열 + 거터, 한 열 = (12열 폭 - 11*거터)/12. 여기서 100% 는 .container
+     폭(= 본문 12열 폭)이다. 이 블록이 위 기본 규칙들보다 뒤에 있어야 padding 단축
+     속성(.f-util 의 padding:32px 0)을 덮는다.
+     좁은 화면(≤900px)은 한 열을 비울 여유가 없어 기본값(24px 여백)을 그대로 쓴다 */
+  @media(min-width:901px){
+    .footer{padding-left:0;padding-right:0}
+    .footer .container{width:calc(100% - 168px);max-width:none;
+      --f-inset:calc((100% - 11 * var(--grid-gutter)) / 12 + var(--grid-gutter))}
+    .footer .f-nav,.footer .f-bottom{padding-inline:var(--f-inset)}
+    .footer .f-util{padding:32px var(--f-inset)}
+  }
   @media(max-width:960px){
     .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
     .footer .f-util{flex-direction:column;align-items:flex-start}

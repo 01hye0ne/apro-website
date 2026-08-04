@@ -297,8 +297,6 @@
 
   @media(min-width:901px){
     .bhop-town{width:calc(100% - 168px)}
-    .footer{padding-left:0;padding-right:0}
-    .footer .container{width:calc(100% - 168px);max-width:none}
   }
   .bhlot img{transform:scale(.8);transform-origin:50% 100%}
 
@@ -447,7 +445,11 @@
 
   <!-- 03 -->
   <section class="hsec" id="s3">
-    <div class="hrail"></div>
+    <!-- 인덱스 바는 JS가 채우고, 그 오른쪽 끝에 설 소속 뱃지만 여기 적어 둔다
+         (business-layout.js placeBadge 가 목록 안으로 옮긴다).
+         href 는 아직 자리만 — 에이프로 세미콘 사이트가 열리면 푸터 패밀리 사이트
+         목록과 같은 주소로 채운다 -->
+    <div class="hrail"><a class="hbadge" href="#" target="_blank" rel="noopener">에이프로 세미콘</a></div>
     <div class="htrack">
 
       <article class="hcard" data-tab="A-PRO SEMICON">
