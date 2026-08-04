@@ -13,9 +13,9 @@
 <!-- ============================================================
      회사소개 — 구성(뼈대)만 잡아둔 초안. 세부 디자인은 아직 정해지지 않았다.
 
-     스크롤 순서 (5장):
+     스크롤 순서 (4장):
        히어로 → About(회사소개 + 기업현황) → Vision 2030
-              → AAA Strategy(A-PRO 의 의미 + 세 가지 전략) → Culture
+              → AAA Strategy (+ Culture — 마무리 문구가 이 장의 마지막 단계로 들어갔다)
 
      ── 히어로 + 목차 탭 바 ────────────────────────────────────────────────
      사업영역 세부 페이지(business-*.html)의 히어로·탭 바를 가져와 이 페이지에 맞게 고쳤다.
@@ -28,9 +28,10 @@
      기준 그리드는 세부 페이지와 같다 — 좌우 84px, 12열 × 119px + 12px 거터,
      본문 상자는 3열에서 시작(뷰포트 346px)해 9열분(1167px). 1728px 화면 기준값이다.
 
-     ── 01~03 풀스크린 ────────────────────────────────────────────────────
-     About·Vision·AAA 는 각각 화면 한 장을 차지한다. 스크롤에 붙는(sticky) 동작은
-     넣었다가 걷어냈다 — 지금은 세 섹션이 그냥 차례로 흘러간다.
+     ── 각 장의 높이 ──────────────────────────────────────────────────────
+     About·Vision 은 화면 한 장씩 차지하고 그냥 흘러간다 (붙지 않는다).
+     AAA 는 스크롤로 단계가 넘어가는 장이라 그동안 화면에 붙어 있어야 한다 →
+     제 안에 트랙(높이 = 화면 + 단계수 × --step-h)을 두고 그 안에서 무대가 붙는다.
 
      ── 문안 ──────────────────────────────────────────────────────────────
      [임시] 표시가 붙은 문안·이미지·아이콘 자리는 원문이 오면 갈아 끼울 자리다.
@@ -59,20 +60,18 @@
     .dhero::before{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;
       height:60px;background:#fff}
   }
-  .dhero h1{font-size:60px;line-height:1.22;word-break:keep-all}
+  /* 히어로 문안은 영문 슬로건 한 줄뿐이다 — 그 줄이 곧 타이틀이라 크게 세운다.
+     세부 페이지의 h1(국문 사업명, SUIT)과 달리 여기는 대문자 영문이라 글꼴도 그쪽
+     (--rc)을 그대로 쓴다. 자간은 눈썹줄에서 쓰던 .2em 에서 한참 조인다 —
+     크기가 커질수록 같은 자간도 훨씬 벌어져 보인다 */
+  .dhero h1{font-family:var(--rc);font-weight:700;font-size:clamp(30px,3.8vw,60px);
+    line-height:1.14;letter-spacing:.06em}
   /* A-1(company-a1.html)은 링크만 갈라지고 히어로 문안은 A 와 같다. 그런데 공용 CSS 는
      세부 페이지 기준으로 A-1 히어로에서 h1 을 화면에서 지우고(.v-a1 .dhero h1) 대신
      설명글(.dhero-lead)을 보여 준다 — 그 대체 문안이 없는 이 페이지에서는 히어로
      타이틀만 사라진다. 그 규칙 하나만 되돌린다 */
   .v-a1 .dhero h1{position:static;width:auto;height:auto;margin:0;
     overflow:visible;clip-path:none;white-space:normal}
-  .dhero-en{margin-top:14px;font-family:var(--pre);font-weight:500;font-size:28px;
-    letter-spacing:.01em;color:var(--on-white-90);word-break:keep-all}
-  /* 세부 페이지 히어로에는 없는 줄 — 회사소개에만 있는 영문 슬로건이다.
-     타이틀 위에 얹히므로 자리만 차지하고 위계는 h1 아래로 확실히 내린다 */
-  .dhero-eyebrow{margin-bottom:20px;font-family:var(--rc);font-weight:700;
-    font-size:clamp(11px,1vw,14px);line-height:1.5;letter-spacing:.2em;color:var(--point-300)}
-
   /* =====================================================================
      ③ 목차 탭 바 — 두 가지 상태로 산다
        ① 히어로 위      : 히어로 밑단에 얹힌 폴더 탭. 좌·우 양끝이 S커브로 닫힌다
@@ -139,19 +138,18 @@
     /* 탭 줄 — 흰 패널 위, 본문 상자와 같은 폭(1167px)·같은 시작점(.cnav 기준 262px).
        칸을 4등분하고 가운데 정렬 → 아래 ::after 가 그 경계에 세로 구분선을 얹는다 */
     .cnav-tabs{position:absolute;left:262px;bottom:15px;width:var(--cnav-w);height:50px;
-      display:grid;grid-template-columns:repeat(4,1fr);column-gap:0;
+      display:grid;grid-template-columns:repeat(3,1fr);column-gap:0;
       justify-items:center;overflow:visible}
     .cnav-tabs a{font-size:20px;transform:translateY(12px)}
-    /* 칸 경계 구분선 — 25/50/75%. 양끝(0·100%)에는 긋지 않는다: 패널이 커브로 닫혀
-       거기가 끝이라는 게 이미 보인다 (세부 페이지는 패널이 화면 오른쪽 끝까지 이어져서
+    /* 칸 경계 구분선 — 3등분이라 33.3/66.7%. 양끝(0·100%)에는 긋지 않는다: 패널이 커브로
+       닫혀 거기가 끝이라는 게 이미 보인다 (세부 페이지는 패널이 화면 오른쪽 끝까지 이어져서
        오른쪽 끝선을 하나 더 그어야 했다).
        bottom:-27px 만큼 흰 패널 아래로 더 내려 그어 본문과 이어지는 탭처럼 보인다 */
     .cnav-tabs::after{content:"";position:absolute;left:0;right:0;top:0;bottom:-27px;
       pointer-events:none;
       background-image:linear-gradient(to right,
-        transparent calc(25% - .5px),var(--border-g) calc(25% - .5px),var(--border-g) calc(25% + .5px),transparent calc(25% + .5px),
-        transparent calc(50% - .5px),var(--border-g) calc(50% - .5px),var(--border-g) calc(50% + .5px),transparent calc(50% + .5px),
-        transparent calc(75% - .5px),var(--border-g) calc(75% - .5px),var(--border-g) calc(75% + .5px),transparent calc(75% + .5px),
+        transparent calc(33.333% - .5px),var(--border-g) calc(33.333% - .5px),var(--border-g) calc(33.333% + .5px),transparent calc(33.333% + .5px),
+        transparent calc(66.667% - .5px),var(--border-g) calc(66.667% - .5px),var(--border-g) calc(66.667% + .5px),transparent calc(66.667% + .5px),
         transparent 100%)}
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
@@ -184,35 +182,85 @@
   /* scroll-margin-top 은 탭에서 눌러 들어왔을 때 첫 줄이 고정된 탭 바 아래로 숨지 않게
      하는 값이다 (아래 풀스크린 모드에서는 여백을 섹션이 직접 갖고 있어 0 으로 되돌린다) */
   .csec{position:relative;background:#fff;padding:clamp(88px,9vw,148px) 0;scroll-margin-top:78px}
-  .csec--tint{background:var(--secondary-bg)}
   .csec--dark{background:var(--g950);color:#fff}
 
   /* 풀스크린 sticky 규칙은 섹션별 스타일(⑤~⑦)을 덮어야 해서 그 뒤 ⑧ 에 모아 두었다 */
 
-  /* 상자 안(2~11열, 열 칸)을 다시 나눈다. 칸을 fr 로 두어 상자가 좁아져도 열 자리가 유지된다.
-     About 은 위·아래 두 줄로 쓴다 — 윗줄 [2열 타이틀 | 5열 줄글], 아랫줄 [2~11열 숫자] */
-  .ccols{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));column-gap:12px;
-    align-items:start}
-  .ccols>.chead{grid-row:1;grid-column:1 / span 3}
-  .ccols>.ctext{grid-row:1;grid-column:4 / -1;max-width:none}
+  /* 스크롤로 단계를 넘기는 두 장(Vision·AAA)이 같은 한 걸음을 쓴다 — 한 단계에 화면 0.6장.
+     두 장의 속도가 갈리면 같은 페이지 안에서 스크롤 감각이 어긋난다 */
+  .cvision,.caaasec{--step-h:60vh}
+
+  /* 섹션 타이틀 — About·Vision 이 같은 한 줄을 쓴다 (정의도 한 곳) */
+  .ceyebrow{margin-bottom:clamp(16px,2.4vh,30px);font-family:var(--suit);font-weight:700;
+    font-size:clamp(15px,1.2vw,18px);letter-spacing:-.3px;color:inherit}
+
+  /* 상자 안(2~11열)을 아래 숫자 표와 같은 4칸으로 나눈다. 윗줄 줄글의 왼쪽 선이
+     표의 두 번째 칸(업력) 선과 맞으려면 위·아래가 같은 칸을 써야 한다 —
+     표는 칸 사이가 1px 선이라 여기도 거터 없이 4등분한다 (오차 0.25px).
+     About 은 위·아래 두 줄로 쓴다 — 윗줄 [타이틀 | 줄글], 아랫줄 [숫자 8칸] */
+  .ccols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+  .ccols>.ceyebrow{grid-row:1;grid-column:1;margin-bottom:0}
+  .ccols>.ctext{grid-row:1;grid-column:2 / -1;max-width:none}
   .ccols>.cstats{grid-row:2;grid-column:1 / -1;margin-top:clamp(40px,6vh,88px)}
-  .chead{position:sticky;top:132px}
   .chead .en{font-family:var(--suit);font-weight:800;font-size:clamp(26px,2.4vw,38px);
     line-height:1.08;letter-spacing:-.02em}
-  .chead .ko{margin-top:14px;font-family:var(--pre);font-weight:500;font-size:16px;
-    letter-spacing:-.32px;color:var(--teritary)}
-  .csec--dark .chead .ko{color:var(--point-300)}
-  /* 줄글 덩어리 — 행간·단락 간격은 사업영역 카드와 같은 토큰을 쓴다.
+  /* 줄글 덩어리 — 사업영역 세부 페이지의 본문(.hcard p)과 같은 값이다.
+     단락 사이도 거기와 같은 --para-gap 하나를 쓴다 (예전엔 그 두 배였다).
      62ch 는 한 줄이 길어져 시선이 되돌아오기 힘들어지는 지점 앞에서 끊는 폭
      (About 처럼 칸이 정해진 자리에서는 위 .ccols 규칙이 이 상한을 푼다) */
-  .ctext{display:flex;flex-direction:column;gap:calc(var(--para-gap) * 2);max-width:62ch}
-  .ctext p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
+  .ctext{display:flex;flex-direction:column;gap:var(--para-gap);max-width:62ch}
+  .ctext p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:var(--body-lh);
     letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   .csec--dark .ctext p{color:var(--on-white-85)}
 
   /* =====================================================================
      ⑤ About — 회사소개 줄글 + 기업 현황 숫자
      ===================================================================== */
+  /* Vision·AAA 처럼 화면을 붙들고 한 단계씩 놓는다 (2026-08-04).
+     다만 이 장은 앞에 큰 제목을 세우는 단계를 두지 않는다 — 바로 위 히어로가 이미
+     한 화면짜리 타이틀이라 같은 그림이 두 번 나온다. 대신 눈썹줄·헤드라인은
+     장이 화면에 들어올 때 뜨고(.crv — '화면 진입'), 줄글과 숫자 표만 단계로 켠다
+     ([data-at] — '스크롤 단계'). 두 방식을 섞는 이유가 그거다.
+     자리(격자)는 처음부터 다 잡혀 있고 투명도만 오간다 → 늦게 켜져도 앞 글이 안 밀린다.
+
+     단계(0~2)
+       0  눈썹줄 + 헤드라인 두 줄
+       1  줄글 세 문단 (한 줄씩)
+       2  기업 현황 표 (칸이 놓이는 순간 숫자가 0 에서 제 값까지 오른다)
+
+     .csec 를 떼고 배경·기준점만 직접 갖는다 — .csec 는 제가 100vh 를 잡고 가운데
+     정렬까지 하는데, 그 일은 여기서 무대(.cabt-stage)가 한다 (Vision·AAA 도 같다) */
+  .cabout{position:relative;background:#fff;--step-h:60vh}
+  .cabt-track{position:relative;height:calc(100vh + 3 * var(--step-h))}
+  .cabt-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+    position:sticky;top:0;height:100vh;height:100dvh;
+    display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
+  /* --crd 는 같은 단계 안의 순번(문단·칸)이다 — 문서 끝 스크립트가 매긴다 */
+  .cabout [data-at]{opacity:0;translate:0 16px;
+    transition:opacity .6s var(--ease) var(--crd,0ms),translate .6s var(--ease) var(--crd,0ms)}
+  .cabout:is([data-step="1"],[data-step="2"]) [data-at="1"],
+  .cabout[data-step="2"] [data-at="2"]{opacity:1;translate:none}
+  /* 표의 선(칸 사이 1px + 바깥 테두리)은 칸이 아니라 표 자신이 그린다 → 칸만 감추면
+     아직 안 켜진 자리에 빈 회색 판이 남는다. 선도 칸과 같이 켜고 끈다 */
+  .cabout .cstats{background:transparent;border-color:transparent;
+    transition:background-color .6s var(--ease),border-color .6s var(--ease)}
+  .cabout[data-step="2"] .cstats{background:var(--border-g);border-color:var(--border-g)}
+  /* 좁거나 낮은 화면에서는 붙들지 않는다 (Vision·AAA 와 같다) */
+  @media(max-width:900px),(max-height:699px){
+    .cabt-track{height:auto}
+    .cabt-stage{position:static;height:auto;padding:clamp(88px,9vw,148px) 0}
+  }
+
+  /* 히어로에서 내려온 두 문안 — 줄글의 머리다. 본문보다 크고 브랜드색이라
+     줄글 전체가 이 두 줄에 딸린 설명으로 읽힌다 (.ctext p 와 같은 특정도라 뒤에 둔다) */
+  .cabt-lead{display:flex;flex-direction:column;gap:10px;
+    margin-bottom:clamp(8px,1.4vh,16px)}
+  /* 굵기 900 — 이 페이지의 헤드라인이라 숫자·섹션 타이틀(800)보다 한 단 위에 둔다.
+     SUIT Variable 이 100~900 가변이라 쓸 수 있는 마지막 단이다.
+     굵어질수록 글자 사이가 붙어 보여 자간을 한 단 더 조인다 */
+  .cabt-lead p{font-family:var(--suit);font-weight:900;font-size:clamp(18px,1.5vw,22px);
+    line-height:1.4;letter-spacing:-.48px;color:var(--brand);word-break:keep-all}
+
   /* 1px 간격 + 배경색으로 칸 사이 선을 만든다 — 카드마다 테두리를 두르면 맞닿은
      자리에서 선이 두 겹이 된다 */
   .cstats{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);
@@ -220,29 +268,89 @@
   .cstat{background:#fff;padding:clamp(24px,2.4vw,32px);
     display:flex;flex-direction:column;gap:12px;min-height:176px}
   .cstat .k{font-family:var(--pre);font-weight:500;font-size:15px;letter-spacing:-.3px;color:var(--teritary)}
+  /* 고정폭 숫자 — 숫자가 0 에서 제 값까지 올라가는 동안(문서 끝 스크립트) 자릿수가
+     바뀔 때마다 글자 폭이 달라져 들썩이는 것을 막는다. 다 센 뒤에도 그대로 두는 편이
+     낫다 — 여덟 칸의 숫자들이 같은 폭으로 서서 표로 읽힌다 */
   .cstat .v{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.6vw,40px);
-    line-height:1.1;letter-spacing:-.03em;color:var(--g900)}
+    line-height:1.1;letter-spacing:-.03em;color:var(--g900);
+    font-variant-numeric:tabular-nums}
   /* 단위(억·명·년)는 숫자에 딸린 글자라 숫자보다 한 단 작고 가볍게 */
   .cstat .v .u{font-size:.52em;font-weight:600;margin-left:3px;color:var(--sec)}
   .cstat .n{margin-top:auto;font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--teritary)}
 
   /* =====================================================================
-     ⑥ Vision 2030 — 스케치 기준 뼈대 (2026-08-03)
+     ⑥ Vision 2030 — 스크롤로 한 장면씩 놓이는 장 (2026-08-04)
        위 : 2×2 표. 큰 문장 둘이 좌상 → 우하 대각선에, 설명글 둘이 그 반대 대각선에.
        아래: 세 갈래(ESS · 충전·제어 · 전력 반도체)를 괄호 하나가 묶는 그림.
-     디테일(색·타이포·이미지)은 아직 작업 전 — 여기서 정한 건 칸 나눔과 크기 위계뿐이다
-     ===================================================================== */
-  /* 선·이미지 자리표시 색은 변수로 뽑아 둔다 — 밝은 바닥과 어두운 바닥에서 값만 갈린다.
-     (지금은 어두운 바닥으로 쓰고 있다: 섹션에 .csec--dark 가 붙어 있다) */
-  .cvision{--vline:var(--g900);--vph:#e2e5e9}
-  .cvision.csec--dark{--vline:rgba(255,255,255,.26);--vph:rgba(255,255,255,.09)}
 
-  .cvis-eyebrow{margin-bottom:clamp(16px,2.4vh,30px);font-family:var(--suit);font-weight:700;
-    font-size:clamp(15px,1.2vw,18px);letter-spacing:-.3px;color:inherit}
+     단계(0~4)
+       0  들어옴 : 제목이 화면 한가운데에 크게 선다 (다른 건 아직 없다)
+       1  큰 제목은 사라지고, 같은 이름이 제자리(왼쪽 위)에서 아래에서 위로 올라온다
+            + 표의 선이 왼쪽에서부터 그어지고 큰 문장 둘이 드러난다
+            — 올라오는 것만 따로 한 단계로 두면 작은 제목이 구석에 혼자 남는 화면이
+              다시 생긴다. 그래서 올라오는 동작과 선 긋기를 같은 단계에 묶었다
+       2  줄글 1 (에이프로는 …)
+       3  줄글 2 (충·방전 …)
+       4  아래 세 갈래 (괄호 + 사진 3칸)
+     한 번 놓인 것은 물러나지 않는다. 구조는 AAA(⑦)와 같다 — 섹션의 data-step 하나가
+     상태를 들고, 아래 스크립트는 그 숫자만 옮긴다
+     ===================================================================== */
+  /* 선·이미지 자리표시 색 — 이 장은 어두운 바닥이다(.csec--dark).
+     밝은 바닥으로 돌릴 일이 생기면 이 두 값만 갈면 된다 */
+  .cvision.csec--dark{--vline:rgba(255,255,255,.26);--vph:rgba(255,255,255,.09)}
+  /* 스크롤로 단계를 넘기려면 그동안 화면에 붙어 있어야 한다 →
+     트랙(높이 = 화면 + 단계수 × --step-h)이 스크롤을 만들고 무대는 그 안에서 붙는다.
+     이 장은 .csec 를 쓰지 않는다 — 풀스크린 규칙(⑧)이 섹션 자체를 한 화면으로 묶어
+     트랙이 설 자리를 없애기 때문이다. 바탕색만 .csec--dark 에서 가져온다 */
+  .cvis-track{position:relative;height:calc(100vh + 5 * var(--step-h))}
+  .cvis-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+    position:sticky;top:0;height:100vh;height:100dvh;
+    display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
+
+  /* ── 들어올 때: 큰 제목이 화면 한가운데에 섰다가 사라진다 ──
+     제자리로 날아가는 대신 자리에서 사라지고, 같은 이름이 제자리에서 새로 올라온다
+     (제자리 등장은 아래 [data-at="1"] 이 맡는다 — 다른 것들과 같은 방식이다).
+     그래서 큰 글자와 작은 글자는 서로 다른 요소다. 읽히는 제목은 흐름 안의 것 하나뿐이라
+     이 큰 글자는 aria-hidden 으로 두고 화면에만 남긴다.
+     무대의 여백을 변수로 뽑아 두는 이유 — 큰 글자가 그 안쪽 한가운데에 서야
+     위에 고정된 탭 바에 눌리지 않고 보이는 화면의 중앙에 온다 */
+  .cvis-hero{position:absolute;left:0;right:0;top:var(--pad-t);bottom:var(--pad-b);
+    display:grid;place-items:center;pointer-events:none;
+    font-family:var(--suit);font-weight:800;font-size:clamp(26px,3.4vw,58px);
+    line-height:1.1;letter-spacing:-.02em;
+    opacity:0;transition:opacity .6s var(--ease)}
+  .cvision[data-step="0"] .cvis-hero{opacity:1}
+  /* 큰 글자가 걷히는 동안 작은 글자가 뒤따라 올라오도록 반 박자 늦춘다 */
+  .cvision .ceyebrow{transition-delay:.15s}
+
+  /* ── 단계별 등장 ──
+     data-at 이 "몇 번째 단계에 놓이는가"를 들고, 놓이기 전 상태는 아래 한 줄이 정한다.
+     자리(높이)는 처음부터 차지한 채 투명하기만 하다 — 뒤늦게 끼어들며 아래를 밀지 않는다.
+     "그 단계 이상이면 놓임"은 :is() 로 값을 나열해 표현했다 (CSS 에 '이상' 비교가 없다) */
+  .cvision [data-at]{opacity:0;translate:0 16px;
+    transition:opacity .6s var(--ease),translate .6s var(--ease)}
+  .cvision:is([data-step="1"],[data-step="2"],[data-step="3"],[data-step="4"]) [data-at="1"],
+  .cvision:is([data-step="2"],[data-step="3"],[data-step="4"]) [data-at="2"],
+  .cvision:is([data-step="3"],[data-step="4"]) [data-at="3"],
+  .cvision[data-step="4"] [data-at="4"]{opacity:1;translate:none}
+  /* 큰 문장 둘도 한꺼번에 서지 않는다 — 선이 그어지고, Global Top 5, 그다음
+     Total Energy 순으로 반 박자씩 놓인다 (목표 → 그 목표의 이름 순서다) */
+  .cvis-grid .c--h:first-child p{transition-delay:.3s}
+  .cvis-grid .c--h:last-child p{transition-delay:.62s}
+  /* 세 갈래는 한꺼번에 뜨지 않고 왼쪽부터 한 박자씩 놓인다 */
+  .cvis-items li:nth-child(2){transition-delay:.09s}
+  .cvis-items li:nth-child(3){transition-delay:.18s}
 
   /* 왼쪽이 좁고(35%) 오른쪽이 넓다 — 큰 문장이 좁은 칸과 넓은 칸에 번갈아 놓인다 */
   .cvis-grid{display:grid;grid-template-columns:35% 1fr;
     border-top:1px solid var(--vline);border-bottom:1px solid var(--vline)}
+  /* 표의 선은 칸 테두리라 길이를 직접 늘일 수 없다 → 표 전체를 왼쪽부터 열어
+     선이 그어지는 것처럼 보이게 한다. 열리는 동안 세로선·가로선과 큰 문장 둘이 함께 드러난다
+     (그래서 이 둘은 위 [data-at] 을 따로 달지 않는다).
+     늦게 나오는 줄글은 칸이 아니라 그 안의 글(p)에만 [data-at] 을 단다 —
+     칸에 달면 칸이 가진 테두리(가운데 가로선 오른쪽 절반 · 아랫줄 세로선)까지 같이 숨는다 */
+  .cvision .cvis-grid{clip-path:inset(0 100% 0 0);transition:clip-path .9s var(--ease)}
+  .cvision:is([data-step="1"],[data-step="2"],[data-step="3"],[data-step="4"]) .cvis-grid{clip-path:inset(0)}
   .cvis-grid .c{display:flex;align-items:center;
     padding:clamp(18px,3vh,40px) clamp(20px,2vw,40px)}
   /* 왼쪽 칸은 페이지 좌측선에 글이 붙는다 + 세로 구분선을 갖는다 */
@@ -250,6 +358,31 @@
   .cvis-grid .c:nth-child(-n+2){border-bottom:1px solid var(--vline)}   /* 가운데 가로선 */
   .cvis-grid .c--h p{font-family:var(--suit);font-weight:800;
     font-size:clamp(24px,3.1vw,52px);line-height:1.1;letter-spacing:-.03em;word-break:keep-all}
+  /* 큰 문장 둘에는 아래 사진들의 무드(옅은 하늘색)를 글자에 입힌다 — 흰빛에서 시작해
+     사진 속 하늘·웨이퍼의 옅은 파랑으로 내려간다. 왼쪽 위가 밝은 것도 사진의 빛 방향과 같다.
+     background-clip:text 는 글자 모양으로 배경을 오려 내는 것이라 글자색이 투명해야 한다 →
+     못 오려 내는 브라우저에서 글자가 통째로 사라지지 않도록 @supports 로 감싼다 */
+  @supports (background-clip:text) or (-webkit-background-clip:text){
+    /* 폭을 글자에 맞춘다 — 칸 폭에 맞추면 짧은 문장은 그라데이션의 앞부분만 쓰게 되어
+       두 문장의 끝 색이 서로 달라진다.
+       띠를 글자 폭의 2.6배로 깔아 두고 그 위를 천천히 지나가게 하면, 글자에 비치는
+       색이 계속 갈리며 일렁인다 (양끝을 같은 흰색으로 두어 되돌아올 때 이음매가 없다).
+       색은 옅은 하늘 → 브랜드 계열 파랑 → 아이시 시안으로, 사진들이
+       공통으로 갖고 있는 범위 안에서만 움직인다 — 벗어나면 무드가 깨진다 */
+    .cvis-grid .c--h p{width:fit-content;
+      background-image:linear-gradient(110deg,
+        #fff 0%,#cfe6f5 18%,#8ab2de 36%,#7fd8ec 55%,#9ab9df 74%,#eaf3fb 90%,#fff 100%);
+      background-size:170% 100%;
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;color:transparent;
+      animation:cvis-shimmer 7s cubic-bezier(.45,0,.55,1) infinite alternate paused}
+    /* 글자가 놓이는 순간부터 흐르게 한다 — 0단계에서는 세워 두어 주기의 처음(흰빛)에
+       머물러 있다가, 표가 열리며 글자가 드러날 때 거기서부터 움직이기 시작한다.
+       (안 세워 두면 로드 때부터 혼자 돌아, 나타날 땐 이미 주기 한가운데다) */
+    .cvision:is([data-step="1"],[data-step="2"],[data-step="3"],[data-step="4"]) .cvis-grid .c--h p{
+      animation-play-state:running}
+  }
+  @keyframes cvis-shimmer{from{background-position:0% 50%}to{background-position:100% 50%}}
   .cvis-grid .c--t p{font-family:var(--pre);font-size:clamp(14px,1.05vw,16px);
     line-height:1.7;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
   .csec--dark .cvis-grid .c--t p{color:var(--on-white-85)}
@@ -274,65 +407,236 @@
 
   .cvis-items{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--vgap)}
   .cvis-items li{display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px)}
-  /* 이미지 자리표시 — 안에 <img> 를 넣으면 이 자리를 그대로 대신한다 */
+  /* 이미지 칸 — 세 칸이 같은 비율로 서야 갈래가 나란해 보인다. 사진 원본 비율은
+     제각각이라(3:2 / 1.7:1) 이 칸이 비율을 정하고 사진은 그 안에서 잘린다.
+     배경(--vph)은 사진이 아직 안 온 동안 칸이 무너지지 않게 잡아 두는 색이다 */
   .cvis-items .ph{position:relative;display:grid;place-items:center;aspect-ratio:16/9;
-    background:var(--vph);overflow:hidden;
-    font-family:var(--rc);font-size:11px;letter-spacing:.1em;color:var(--teritary)}
-  .cvis-items .ph img{width:100%;height:100%;object-fit:cover}
-  /* 칸 사이를 잇는 짧은 눈금 — 세 갈래가 한 줄기에서 갈라졌다는 표시 */
+    background:var(--vph)}
+  /* 사진을 감싸는 한 겹 — 여기서만 넘치는 것을 자른다. 자르는 규칙을 칸(.ph)에 두면
+     칸 바깥에 그리는 아래 눈금까지 같이 잘려 안 보인다 */
+  .cvis-items .im{position:absolute;inset:0;overflow:hidden}
+  /* 사진은 칸에 딱 붙여(inset:0) 채운다 — 칸 높이를 넘겨 놓고 잘라내는 대신
+     object-fit 이 칸 안에서 가운데를 남기고 자르게 하려면 높이가 확정돼야 한다 */
+  .cvis-items .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    transition:scale .7s var(--ease)}
+  /* 얹으면 사진만 아주 얕게 다가온다 — 칸 크기는 그대로라 세 칸의 줄이 흔들리지 않는다.
+     칸이 아니라 항목(li) 에 걸어 글자 위에서도 같이 반응하게 한다 */
+  .cvis-items li:hover img{scale:1.06}
+  @media(prefers-reduced-motion:reduce){.cvis-items li:hover img{scale:none}}
+  /* 칸 사이를 잇는 짧은 눈금 — 세 갈래가 한 줄기에서 갈라졌다는 표시.
+     칸 바깥(왼쪽 거터)에 그리므로 자르는 규칙은 위 .im 한 겹이 대신 진다 */
   .cvis-items li+li .ph::before{content:"";position:absolute;top:50%;
     left:calc(-1 * var(--vgap) - 1px);width:calc(var(--vgap) + 2px);border-top:1px solid var(--vline)}
   .cvis-items p{text-align:center;font-family:var(--suit);font-weight:700;
     font-size:clamp(13px,1.15vw,18px);letter-spacing:-.3px;color:inherit}
 
+  /* 좁거나 낮은 화면에서는 붙들지 않는다 — 스크롤을 오래 잡아 둘 자리가 아니다.
+     이때는 스크립트가 마지막 단계로 세워 두어 전부 놓인 모습으로 보인다 (AAA 와 같다) */
+  @media(max-width:900px),(max-height:699px){
+    .cvis-track{height:auto}
+    .cvis-stage{position:static;height:auto;padding:clamp(88px,9vw,148px) 0}
+    /* 무대가 자리를 잡아 주지 않으면 큰 제목이 엉뚱한 곳에 눕는다 → 아예 걷는다
+       (어차피 이 화면에서는 마지막 단계로 세워 두어 보이지 않는다) */
+    .cvis-hero{display:none}
+  }
+
   /* =====================================================================
-     ⑦ AAA Strategy — 스케치 기준 뼈대 (2026-08-03)
-       위    : A-PRO 워드마크를 네 칸에 나눠 담는다 (A / -P / R / O)
-       가운데: [검은 칩 = A 의 키워드] [흰 칩 = 같은 말] ── 선 ── [해당 글자의 뜻]
-               오른쪽 칩은 제 글자 칸 바로 아래에 선다
-       아래  : 파란 띠 한 줄
+     ⑦ AAA Strategy (+ Culture) — 스크롤로 한 단계씩 켜지는 장 (2026-08-04)
+       위   : 큰 워드마크 + 오른쪽에 섹션 이름. 지나온 글자까지만 파랗다
+       띠   : 켜진 글자들의 폭을 합한 만큼 차는 진행 막대
+       가운데: [A 의 키워드] ──── [그 줄이 잇는 글자의 뜻] ──── [같은 키워드의 영문]
+       아래 : 파란 띠 — 단계마다 문구가 갈린다 (마지막은 Culture 문구)
+
+     단계(0~6)
+       0  들어옴      : 제목이 화면 한가운데에 크게 선다 (Vision 과 같은 방식)
+       1  본 내용     : 큰 제목은 사라지고 내용이 제자리에서 올라온다 — 전부 회색
+       2  A           : 왼쪽 키워드 세 개
+       3  P           : Pioneer · Advance      + 문구
+       4  R           : Remarkability · Aggressive + 문구
+       5  O           : Organism · Agile       + 문구
+       6  '-'         : 로고 완성 · 막대 가득   + 마무리 문구 + 화면 반전(파란 바탕)
+     한 번 켜진 것은 꺼지지 않는다 — 쌓여서 마지막에 로고가 완성되는 것이 이 장의 뼈대다.
+
+     상태는 섹션의 data-step 하나가 들고 있고, 아래 스크립트가 스크롤 위치로 그 값을 옮긴다.
+     "그 단계 이상이면 켜짐"은 :is() 로 값을 나열해 표현했다 (CSS 에 '이상' 비교가 없다).
      ===================================================================== */
-  /* 아홉 트랙(왼쪽 라벨 칸 + 거터 + 네 칸과 그 사이 거터)을 위·아래가 함께 쓴다 →
-     로고 칸과 아래 칩이 같은 세로선 위에 선다. 거터를 gap 이 아니라 트랙으로 둔 이유는
-     검은 칩이 라벨 칸과 그 오른쪽 거터까지 덮어 흰 칩과 맞닿아야 하기 때문 */
-  .caaasec{--gt:250px 12px minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1fr)}
-  .caaa-top{display:grid;grid-template-columns:var(--gt);align-items:start}
-  .caaa-top .chead{grid-column:1}
-  .caaa-top .chead .en{font-size:clamp(16px,1.4vw,22px);line-height:1.25}
-  /* 네 칸 — 정사각형이 기본이고, 화면이 낮으면 높이가 먼저 줄어 가로로 눕는다 */
-  .lbox{aspect-ratio:1;max-height:clamp(110px,23vh,280px);
-    border:1px solid var(--g900);display:grid;place-items:center;padding:11%}
-  .lbox:nth-of-type(1){grid-column:3}
-  .lbox:nth-of-type(2){grid-column:5}
-  .lbox:nth-of-type(3){grid-column:7}
-  .lbox:nth-of-type(4){grid-column:9}
-  .lbox svg{width:100%;height:100%;fill:var(--brand)}
+  /* 스크롤로 단계를 넘기려면 그동안 화면에 붙어 있어야 한다 →
+     트랙(높이 = 화면 + 단계수 × --step-h)이 스크롤을 만들고 무대는 그 안에서 붙는다 */
+  /* 색은 아래 토큰 여섯 개가 정한다. 마지막 단계에서 이 값들이 통째로 뒤집혀
+     바탕이 파랑이 되고 켜진 것들이 흰색이 된다 — 규칙은 그대로 두고 값만 갈린다 */
+  /* 워드마크 폭 = 머리 격자의 1~6열(6칸 + 5거터). 한 칸 = (100% − 9 × 12px) / 10 이므로
+     6칸+5거터 = 0.6 × 100% − 4.8px 이다. 아래 자리들 — 막대가 멈추는 곳 · 왼쪽 상자 폭 ·
+     가운데 글자 자리 — 은 전부 [이 폭 × (글자의 viewBox 좌표 ÷ 484)] 로 잡는다.
+     그래야 화면 폭이 어떻든 글자와 같은 세로선 위에 선다.
+     A 0~102.64 / '-' 108.65~179.93 / P 197.97~280.56 / R 290.39~373.89 / O 378.44~484 */
+  .caaasec{--acols:repeat(10,minmax(0,1fr));--agap:12px;--mark-w:calc(60% - 4.8px);
+    --page:var(--secondary-bg);   /* 바탕 */
+    --on:var(--g900);             /* 켜진 글자 · 선 */
+    --mark:var(--brand);          /* 켜진 워드마크 조각 */
+    --markoff:#e6e9ec;            /* 아직 안 켜진 워드마크 조각 */
+    --fill:var(--brand);          /* 채워지는 면 — 막대 · 오른쪽 상자 · 문구 띠 */
+    --fillink:#fff;               /* 그 면 위의 글자 */
+    --barempty:#e6e9ec;           /* 막대의 빈 부분 — 아직 안 켜진 로고와 같은 회색 */
+    background:var(--page);scroll-margin-top:0;
+    transition:background-color .6s var(--ease)}
+  .caaasec[data-step="6"]{--page:var(--brand);--on:#fff;--mark:#fff;
+    --markoff:rgba(255,255,255,.3);--fill:#fff;--fillink:var(--brand);
+    --barempty:rgba(255,255,255,.3)}
+  .caaa-track{position:relative;height:calc(100vh + 7 * var(--step-h))}
+  .caaa-stage{--pad-t:calc(78px + clamp(16px,2.5vh,32px));--pad-b:clamp(16px,3vh,32px);
+    position:sticky;top:0;height:100vh;height:100dvh;
+    display:flex;align-items:center;padding:var(--pad-t) 0 var(--pad-b)}
 
-  .caaa-rows{list-style:none;margin-top:clamp(24px,4vh,56px);
-    display:flex;flex-direction:column;gap:clamp(6px,1.1vh,14px)}
-  .caaa-row{display:grid;grid-template-columns:var(--gt)}
-  .caaa-row>*{grid-row:1}          /* 선과 칩이 같은 줄에서 겹쳐야 한다 */
-  .caaa-row .chip{display:flex;align-items:center;justify-content:center;gap:8px;
-    height:clamp(34px,4.6vh,50px);padding:0 14px;
-    font-family:var(--suit);font-weight:700;font-size:clamp(12px,1.02vw,16px);
-    letter-spacing:-.3px;white-space:nowrap}
-  .caaa-row .chip i{font-style:normal;font-weight:500;font-size:.84em;opacity:.85}
-  .caaa-row .key{grid-column:1 / 3;background:var(--g900);color:#fff}
-  .caaa-row .src{grid-column:3}
-  .caaa-row .src,.caaa-row .dst{background:#fff;border:1px solid var(--g900);color:var(--g900)}
-  /* 잇는 선 — 흰 칩에서 상대 칸까지. 칩이 불투명해서 선의 양끝은 칩 아래로 숨는다.
-     (DOM 에서 선이 칩보다 앞에 있어야 칩이 위에 그려진다) */
-  .caaa-row .line{align-self:center;height:0;border-top:1px solid var(--g900)}
-  .caaa-row:nth-child(1) .dst{grid-column:5}
-  .caaa-row:nth-child(1) .line{grid-column:3 / 6}
-  .caaa-row:nth-child(2) .dst{grid-column:7}
-  .caaa-row:nth-child(2) .line{grid-column:3 / 8}
-  .caaa-row:nth-child(3) .dst{grid-column:9}
-  .caaa-row:nth-child(3) .line{grid-column:3 / 10}
+  /* 들어올 때 — Vision 과 같은 방식이다. 0단계에서 큰 제목이 무대 안쪽 한가운데에 섰다가
+     사라지고, 1단계에서 본 내용이 제자리에서 아래에서 위로 올라온다.
+     읽히는 제목은 안쪽(.chead)의 것 하나뿐이라 이 큰 글자는 aria-hidden 으로 둔다 */
+  .caaa-hero{position:absolute;left:0;right:0;top:var(--pad-t);bottom:var(--pad-b);
+    display:grid;place-items:center;pointer-events:none;
+    font-family:var(--suit);font-weight:800;font-size:clamp(26px,3.4vw,58px);
+    line-height:1.1;letter-spacing:-.02em;color:var(--on);
+    opacity:0;transition:opacity .6s var(--ease)}
+  .caaasec[data-step="0"] .caaa-hero{opacity:1}
+  /* 큰 글자가 걷히는 동안 뒤따라 올라오도록 반 박자 늦춘다 */
+  .caaa-stage>.cwrap{opacity:0;translate:0 16px;
+    transition:opacity .6s .15s var(--ease),translate .6s .15s var(--ease)}
+  .caaasec:not([data-step="0"]) .caaa-stage>.cwrap{opacity:1;translate:none}
 
-  .caaa-claim{margin-top:clamp(24px,4vh,56px);background:var(--brand);color:#fff;text-align:center;
-    padding:clamp(12px,2vh,22px) 20px;font-family:var(--suit);font-weight:700;
-    font-size:clamp(14px,1.25vw,19px);letter-spacing:-.4px;word-break:keep-all}
+  /* 위·가운데가 같은 열 정의를 쓴다 → 워드마크·이름·세 줄이 같은 세로선 위에 선다 */
+  .caaa-head{display:grid;grid-template-columns:var(--acols);column-gap:var(--agap);
+    align-items:start}
+  .caaa-mark{grid-column:1 / span 6;width:100%;height:auto}
+  .caaa-head .chead{grid-column:8 / -1;position:static}
+  .caaa-head .chead .en{font-size:clamp(16px,1.4vw,22px);line-height:1.25;
+    color:var(--on);transition:color .5s var(--ease)}
+  /* 앞 장(Vision 2030)과 잇는 줄 — 앞 장 제목이 목표를 이고 있었다면 이 줄은
+     그걸 이루는 방법을 인다. 이름 위에 얹혀 [수식어 + 이름]이 한 덩어리로 읽힌다.
+     색은 켜진 워드마크와 같은 값이라 마지막 반전에서 함께 흰색이 된다 */
+  .caaa-head .chead .lead{margin-bottom:6px;font-family:var(--suit);font-weight:700;
+    font-size:clamp(12px,1vw,15px);line-height:1.4;letter-spacing:-.3px;
+    color:var(--mark);transition:color .5s var(--ease);word-break:keep-all}
+  /* 글자 조각마다 색을 따로 준다 — 조각 자르는 방식은 #apro-word + clipPath */
+  .caaa-mark .l{fill:var(--markoff);transition:fill .5s var(--ease)}
+  .caaasec:is([data-step="2"],[data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) .l-a,
+  .caaasec:is([data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) .l-p,
+  .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) .l-r,
+  .caaasec:is([data-step="5"],[data-step="6"]) .l-o,
+  .caaasec[data-step="6"] .l-h{fill:var(--mark)}
+
+  /* 막대는 그 단계에 켜진 글자의 오른쪽 선에서 멈춘다 — 바로 위 로고에서 같은 자리를 짚는다.
+     마지막(하이픈)은 로고가 완성되는 단계라 막대도 로고를 넘어 끝까지 간다 */
+  .caaa-prog{margin-top:clamp(24px,4.5vh,64px);height:clamp(5px,.6vh,7px);
+    background:var(--barempty);transition:background-color .5s var(--ease)}
+  .caaa-prog i{display:block;width:0;height:100%;background:var(--fill);
+    transition:width .5s var(--ease),background-color .5s var(--ease)}
+  .caaasec[data-step="2"] .caaa-prog i{width:calc(.21207 * var(--mark-w))}   /* A 오른쪽 102.64 */
+  .caaasec[data-step="3"] .caaa-prog i{width:calc(.57967 * var(--mark-w))}   /* P 오른쪽 280.56 */
+  .caaasec[data-step="4"] .caaa-prog i{width:calc(.77249 * var(--mark-w))}   /* R 오른쪽 373.89 */
+  .caaasec[data-step="5"] .caaa-prog i{width:var(--mark-w)}                  /* O 오른쪽 484 = 로고 끝 */
+  .caaasec[data-step="6"] .caaa-prog i{width:100%}
+
+  .caaa-rows{list-style:none;margin-top:clamp(12px,1.8vh,22px);
+    display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px)}
+  /* 한 줄의 색은 변수 네 개가 정한다 — 기본은 물러난 상태고, 켜진 줄에서만 값이 갈린다.
+     --lx = 이 줄이 잇는 글자의 viewBox 왼쪽 ÷ 484 (아래 .lbl 이 그 자리에 선다) */
+  .caaa-row{position:relative;display:grid;grid-template-columns:var(--acols);column-gap:var(--agap);
+    --tone:#c6cbd1;--accent:#c6cbd1;--valbg:transparent;--valbd:var(--border-g);--valfg:#c6cbd1}
+  .caaa-row:nth-child(1){--lx:.40904}   /* P 197.97 */
+  .caaa-row:nth-child(2){--lx:.59997}   /* R 290.39 */
+  .caaa-row:nth-child(3){--lx:.78190}   /* O 378.44 */
+  .caaasec:is([data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) .caaa-row:nth-child(1),
+  .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) .caaa-row:nth-child(2),
+  .caaasec:is([data-step="5"],[data-step="6"]) .caaa-row:nth-child(3){
+    --tone:var(--on);--accent:var(--mark);
+    --valbg:var(--fill);--valbd:var(--fill);--valfg:var(--fillink)}
+
+  .caaa-box{display:flex;flex-direction:column;justify-content:center;gap:3px;
+    min-height:clamp(58px,7.4vh,82px);padding:0 clamp(14px,1.4vw,22px)}
+  .caaa-box b{font-family:var(--suit);font-weight:700;font-size:clamp(14px,1.15vw,19px);
+    line-height:1.2;letter-spacing:-.4px}
+  /* 국문은 크기·굵기로만 한 단 내린다 — 색은 영문과 같다 */
+  .caaa-box i{font-style:normal;font-family:var(--pre);font-weight:500;
+    font-size:clamp(11px,.85vw,13px);line-height:1.3;letter-spacing:-.26px}
+  /* 왼쪽 = A 의 세 키워드. 1단계에서 셋이 한꺼번에 켜진다.
+     오른쪽 끝이 A 의 오른쪽 선과 맞는다 — 칸 경계에 없는 자리라 열로는 잡을 수 없어,
+     열은 다 차지하게 두고 폭만 직접 준다 (그래야 % 가 워드마크와 같은 기준으로 풀린다) */
+  /* min-width 는 안전줄이다 — 화면이 좁아지면 A 폭이 'Aggressiveness' 한 낱말보다
+     짧아지는데, 그때는 글자가 상자를 뚫고 나가는 대신 상자가 그만큼만 넓어진다.
+     여백도 이 좁은 상자에 맞춰 다른 상자보다 한 단 조인다 */
+  .caaa-key{grid-row:1;grid-column:1 / -1;
+    width:calc(.21207 * var(--mark-w));min-width:min-content;
+    padding-inline:clamp(10px,1.1vw,14px);
+    border:1px solid var(--border-g);color:#c6cbd1;
+    transition:border-color .4s var(--ease),color .4s var(--ease)}
+  .caaasec:is([data-step="2"],[data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) .caaa-key{
+    border-color:var(--mark);color:var(--mark)}
+  /* 오른쪽(8~10열) = 같은 키워드의 영문 짝. 제 줄이 켜질 때 파랗게 채워진다 */
+  .caaa-val{grid-row:1;grid-column:8 / -1;border:1px solid var(--valbd);background:var(--valbg);color:var(--valfg);
+    transition:background .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease)}
+
+  /* 두 상자를 잇는 선 한 줄. 양 끝이 상자 선에 딱 닿는다 —
+     왼쪽 끝 = 왼쪽 상자의 오른쪽 선(= A 의 오른쪽), 오른쪽 끝 = 오른쪽 상자의 왼쪽 선(8열).
+     8열이 시작하는 자리 = 7칸 + 7거터 = 70% + 8.4px 이므로 오른쪽 여백은 그 나머지다.
+     글자는 이 선 위에 얹힌다 */
+  .caaa-mid{grid-row:1;grid-column:1 / -1;align-self:center;height:0;
+    margin-left:calc(.21207 * var(--mark-w));margin-right:calc(30% - 8.4px);
+    border-top:1px solid var(--tone);transition:border-color .4s var(--ease)}
+  /* 글자는 워드마크의 제 글자 바로 아래에 선다 — 왼쪽이 그 글자의 왼쪽 선과 맞는다.
+     선 위에 얹혀 제 배경(--page)으로 선을 끊으므로, 그 좌우 여백만큼 왼쪽으로 당겨야
+     글자의 첫 획이 제자리에 온다. 자리는 줄마다 --lx 하나로 갈린다 */
+  .caaa-row .lbl{--lpad:clamp(10px,1vw,16px);
+    position:absolute;top:50%;translate:0 -50%;
+    left:calc(var(--lx) * var(--mark-w) - var(--lpad));
+    padding-inline:var(--lpad);background:var(--page);
+    color:var(--tone);white-space:nowrap;
+    transition:color .4s var(--ease),background-color .6s var(--ease)}
+  .caaa-row .lbl b{font-family:var(--suit);font-weight:700;font-size:clamp(14px,1.15vw,19px);
+    letter-spacing:-.4px}
+  .caaa-row .lbl b em{font-style:normal;color:var(--accent)}   /* 첫 글자 = 워드마크의 그 글자 */
+  /* 국문도 흐름 안에 둔다 — 선이 영문 한 줄이 아니라 [영문 + 국문] 덩어리의
+     한가운데를 지나야 글자 뭉치가 선 위에 얹힌 것으로 보인다 */
+  .caaa-row .lbl i{display:block;margin-top:3px;font-style:normal;
+    font-family:var(--pre);font-weight:500;font-size:clamp(11px,.85vw,13px);letter-spacing:-.26px}
+
+  /* 파란 띠 — 문구 네 개를 같은 칸에 겹쳐 두고 하나씩 보인다.
+     겹쳐 두는 이유: 칸 높이를 가장 긴 문구가 정하므로 문구가 갈려도 아래가 들썩이지 않는다 */
+  .caaa-msg{margin-top:clamp(16px,2.4vh,32px);display:grid;align-items:center;
+    background:var(--fill);color:var(--fillink);text-align:center;
+    padding:clamp(14px,2.4vh,26px) clamp(20px,3vw,48px);
+    opacity:0;transition:opacity .4s var(--ease),
+      background-color .5s var(--ease),color .5s var(--ease)}
+  .caaa-msg p{grid-area:1 / 1;opacity:0;transition:opacity .4s var(--ease);
+    font-family:var(--suit);font-weight:700;font-size:clamp(14px,1.25vw,19px);
+    line-height:1.6;letter-spacing:-.4px;word-break:keep-all}
+  .caaasec:is([data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) .caaa-msg{opacity:1}
+  .caaasec[data-step="3"] .caaa-msg p:nth-child(1),
+  .caaasec[data-step="4"] .caaa-msg p:nth-child(2),
+  .caaasec[data-step="5"] .caaa-msg p:nth-child(3),
+  .caaasec[data-step="6"] .caaa-msg p:nth-child(4){opacity:1}
+
+  /* ── 반전된 마지막 화면의 흰색 강약 ──
+     여기서는 모든 것이 흰색 하나로 말하게 되어 강약이 사라진다 (다 똑같이 세다).
+     그래서 이 화면에서만 목소리를 나눠 준다 — 값을 통째로 바꾸는 게 아니라
+     흰색의 농도만 내리는 것이라, 무엇이 켜지고 꺼지는지는 위 규칙들 그대로다.
+       순백        : 로고 · 게이지 · 마무리 문구 판 (이 장의 결론이 놓이는 자리)
+       한 단 아래  : 오른쪽 상자의 면 — 왼쪽 키워드의 되풀이라 로고보다 앞설 이유가 없다
+       한 단 아래  : 상자·라벨의 글자 (라벨 첫 글자만 순백 — 로고의 그 글자와 짝이다)
+       가장 아래   : 테두리 · 잇는 선 · 수식어 줄 — 읽는 것이 아니라 잇는 것들이다
+     아래 선택자들은 위의 켜짐 규칙과 특정도가 같아 순서로 이긴다 → 반드시 뒤에 둔다 */
+  .caaasec[data-step="6"] .caaa-val{
+    background:rgba(255,255,255,.82);border-color:rgba(255,255,255,.82)}
+  .caaasec[data-step="6"] .caaa-key{
+    border-color:rgba(255,255,255,.38);color:rgba(255,255,255,.9)}
+  .caaasec[data-step="6"] .caaa-mid{border-top-color:rgba(255,255,255,.35)}
+  .caaasec[data-step="6"] .caaa-row .lbl{color:rgba(255,255,255,.88)}
+  .caaasec[data-step="6"] .caaa-head .chead .lead{color:rgba(255,255,255,.6)}
+
+  /* 좁거나 낮은 화면에서는 붙들지 않는다 — 스크롤을 오래 잡아 둘 자리가 아니다.
+     이때는 스크립트가 마지막 단계로 세워 두어 전부 켜진 모습으로 보인다 */
+  @media(max-width:900px),(max-height:699px){
+    .caaa-track{height:auto}
+    .caaa-stage{position:static;height:auto;padding:clamp(88px,9vw,148px) 0}
+    .caaa-hero{display:none}
+  }
 
   /* =====================================================================
      ⑧ 01~03 풀스크린 — 한 섹션이 화면 한 장을 차지한다
@@ -350,9 +654,6 @@
     .csec{min-height:100vh;min-height:100dvh;scroll-margin-top:0;
       display:flex;align-items:center;
       padding:calc(78px + clamp(16px,2.5vh,32px)) 0 clamp(16px,3vh,32px)}
-    /* 한 섹션이 한 화면이라 타이틀만 따로 붙들 이유가 없다 */
-    .chead{position:static}
-
     /* 밀도 — 한 화면에 담기도록 한 단 줄인다.
        가장 긴 섹션(AAA)이 들어가는 선에 맞춘다 */
     .ccols>.cstats{margin-top:clamp(32px,5vh,72px)}
@@ -371,27 +672,7 @@
   }
 
   /* =====================================================================
-     ⑨ Culture — 마무리 메시지
-     ===================================================================== */
-  .cculture{position:relative;overflow:hidden;background:var(--g950);color:#fff;
-    padding:clamp(104px,11vw,180px) 0;scroll-margin-top:78px}
-  .cculture .bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-  .cculture .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 46%}
-  .cculture .bg::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(to bottom,rgba(14,22,30,.86),rgba(14,22,30,.72) 45%,rgba(14,22,30,.92))}
-  .cculture .in{position:relative;z-index:1;max-width:min(880px,88vw);margin-inline:auto;
-    text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(24px,3vw,40px)}
-  .cculture .en{font-family:var(--rc);font-weight:700;font-size:13px;letter-spacing:.2em;color:var(--point-300)}
-  .cculture h2{font-family:var(--suit);font-weight:800;font-size:clamp(26px,3.4vw,46px);
-    line-height:1.3;letter-spacing:-.03em;word-break:keep-all}
-  .cculture p{font-family:var(--pre);font-size:clamp(15px,1.4vw,18px);line-height:1.75;
-    letter-spacing:-.34px;color:var(--on-white-85);word-break:keep-all}
-  /* a-logo.svg 는 검은 심볼이라 이 어두운 바닥에서는 그대로 두면 보이지 않는다 →
-     흰색으로 뒤집는다 (밝기 0 으로 눌러 완전한 검정으로 만든 뒤 반전) */
-  .cculture .mark{width:64px;height:64px;opacity:.9;filter:brightness(0) invert(1)}
-
-  /* =====================================================================
-     ⑨ 진입 연출
+     ⑧ 진입 연출
      ===================================================================== */
   /* 공용 CSS 의 .rv 는 .hcard 안에서만 풀리므로(이 페이지엔 카드가 없다) 따로 둔다.
      초기 숨김은 html[data-crv] 안에서만 — 스크립트가 못 돌면 그냥 다 보인다 */
@@ -400,43 +681,47 @@
     transition:opacity .7s var(--ease) var(--crd,0ms),translate .7s var(--ease) var(--crd,0ms)}
   @media(prefers-reduced-motion:reduce){
     [data-crv] .crv,[data-crv] .crv.is-in{opacity:1;translate:none;transition:none}
+    /* 일렁이는 그라데이션도 세운다 — 색은 그대로 남고 움직임만 멈춘다 */
+    .cvis-grid .c--h p{animation:none}
   }
 
   /* =====================================================================
      ⑩ 좁은 화면
      ===================================================================== */
   @media(max-width:1180px){
+    /* 표가 두 칸으로 접히면 업력 칸 선이 절반 자리로 옮겨 간다 — 줄글은 그대로
+       1/4 자리에 둔다. 이 폭에서 줄글까지 절반으로 밀면 한 줄이 너무 짧아진다 */
     .cstats{grid-template-columns:repeat(2,1fr)}
   }
   @media(max-width:900px){
     /* 12열 그리드를 쓰지 않는 폭이라 2~11열 들여쓰기도 함께 푼다 */
     .cwrap{width:calc(100% - 48px);padding-inline:0}
-    /* 타이틀이 위로 올라오면 붙들 자리가 없다 → sticky 해제 */
+    /* 타이틀이 줄글 위로 올라온다 — 한 칸짜리 격자라 자리 지정을 모두 푼다 */
     .ccols{grid-template-columns:1fr;gap:28px}
-    .ccols>.chead,.ccols>.ctext,.ccols>.cstats{grid-row:auto;grid-column:1}
+    .ccols>.ceyebrow,.ccols>.ctext,.ccols>.cstats{grid-row:auto;grid-column:1}
     .ccols>.cstats{margin-top:0}
-    .chead{position:static}
-    .cculture .bg img{object-position:50% 50%}
     /* Vision : 2×2 표를 위아래 한 줄씩으로 편다 (세로선은 사라지고 가로선만 남는다) */
     .cvis-grid{grid-template-columns:1fr}
     .cvis-grid .c{padding:20px 0}
     .cvis-grid .c:nth-child(odd){border-right:0}
-    .cvis-grid .c:nth-child(-n+3){border-bottom:1px solid var(--g900)}
+    .cvis-grid .c:nth-child(-n+3){border-bottom:1px solid var(--vline)}
     .cvis-items{grid-template-columns:1fr}
     .cvis-items li+li .ph::before{display:none}
     .cvis-bracket{width:100%}
-    /* AAA : 라벨 칸을 접고, 네 칸과 세 줄을 각각 한 줄로 편다 */
-    .caaasec{--gt:minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1fr)}
-    .caaa-top .chead{grid-column:1 / -1;margin-bottom:16px}
-    .lbox:nth-of-type(1){grid-column:1}
-    .lbox:nth-of-type(2){grid-column:3}
-    .lbox:nth-of-type(3){grid-column:5}
-    .lbox:nth-of-type(4){grid-column:7}
-    .caaa-row{grid-template-columns:1fr 1fr}
-    .caaa-row .key{grid-column:1}
-    .caaa-row .src{display:none}          /* 검은 칩과 같은 말이라 좁은 화면에서는 뺀다 */
-    .caaa-row .dst{grid-column:2!important}
-    .caaa-row .line{display:none}
+    /* AAA : 워드마크와 이름을 위아래로 쌓고, 한 줄은 [키워드 | 영문] 두 칸으로 좁힌다.
+       가운데 잇는 선은 걷고 글자만 그 아래에 한 줄로 남긴다 */
+    .caaa-head{grid-template-columns:1fr;row-gap:14px}
+    .caaa-mark{grid-column:1;width:72%}
+    .caaa-head .chead{grid-column:1}
+    .caaa-row{grid-template-columns:1fr 1fr;row-gap:6px}
+    .caaa-key{grid-row:1;grid-column:1;width:auto}
+    .caaa-val{grid-row:1;grid-column:2}
+    /* 두 상자가 붙어 서므로 잇는 선은 걷고, 글자만 그 아래 한 줄로 남긴다
+       (좁은 화면에는 워드마크가 없어 글자를 그 아래에 맞출 이유도 사라진다) */
+    .caaa-mid{display:none}
+    .caaa-row .lbl{position:static;translate:none;grid-row:2;grid-column:1 / -1;
+      padding-inline:0;background:none}
+    .caaa-row .lbl i{display:inline;margin:0 0 0 8px}
   }
   @media(max-width:560px){
     .cstats{grid-template-columns:1fr}
@@ -474,7 +759,8 @@
          글자 조각과 다르면 남는 쪽에 옆 글자가 딸려 들어온다. 그래서 조각마다
          잘라내는 상자를 따로 둔다 (글자 사이 빈 구간 한가운데를 자르는 자리) -->
     <clipPath id="ap-a"><rect x="-2" y="-2" width="107" height="107"/></clipPath>
-    <clipPath id="ap-p"><rect x="106.6" y="-2" width="176" height="107"/></clipPath>
+    <clipPath id="ap-h"><rect x="106.6" y="-2" width="76.4" height="107"/></clipPath>
+    <clipPath id="ap-p"><rect x="185" y="-2" width="99" height="107"/></clipPath>
     <clipPath id="ap-r"><rect x="288.4" y="-2" width="87.5" height="107"/></clipPath>
     <clipPath id="ap-o"><rect x="376.4" y="-2" width="109.6" height="107"/></clipPath>
     <path id="apro-word" d="M373.887 79.2944L332.137 60.8892H346.169C360.935 60.8892 372.96 48.8636 372.96 34.098V27.3586C372.96 12.4131 360.935 0.373638 346.169 0.373638H290.386V21.6987H342.516C347.622 21.6987 351.635 25.7119 351.635 30.6245C351.635 35.5372 347.622 39.5503 342.516 39.5503H314.631C301.139 39.5503 290.386 50.4827 290.386 63.9752V100.799H311.531V75.1013L373.694 102.446L373.874 79.2944H373.887ZM445.155 79.4743H417.077C408.691 79.4743 401.758 66.5353 401.758 50.4827C401.758 34.4301 408.691 21.6849 417.077 21.6849H445.155C453.721 21.6849 460.475 34.4439 460.475 50.4827C460.475 66.5215 453.735 79.4743 445.155 79.4743ZM449.542 0.3598H412.898C393.759 0.3598 378.44 22.958 378.44 50.4965C378.44 78.0351 393.759 100.813 412.898 100.813H449.542C468.501 100.813 484 78.215 484 50.4965C484 22.7781 468.501 0.3598 449.542 0.3598ZM51.23 22.4183C52.3232 22.4183 53.0566 22.9718 53.4164 24.0651L78.7547 100.813H102.64L73.6483 12.5792C72.0015 5.46619 62.7159 0 51.23 0C39.744 0 30.6245 5.46619 28.9916 12.5792L0 100.813H23.8852L49.2234 24.0651C49.4033 22.9718 50.3166 22.4183 51.23 22.4183ZM197.973 0.3598V21.6849H250.296C255.403 21.6849 259.416 25.698 259.416 30.6107C259.416 35.5233 255.403 39.5365 250.296 39.5365H222.592C208.919 39.5365 197.987 50.4689 197.987 63.9613V100.785H219.312V73.8005C219.312 66.6875 225.152 60.8615 232.071 60.8615H253.77C268.535 60.8615 280.561 48.8359 280.561 34.0703V27.331C280.561 12.3854 268.535 0.345961 253.77 0.345961H197.987L197.973 0.3598ZM179.928 59.2424H108.646V37.9174H179.928V59.2424Z"/>
@@ -508,11 +794,12 @@
      자리이며, 그때는 <img> 를 <video autoplay muted loop playsinline> 로 바꾸면
      위 CSS 는 그대로 쓴다. --hero-pos 는 이 크롭에서의 기준점 -->
 <section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 34%"><img src="../assets/hq-building.jpg" alt="" aria-hidden="true" /></span>
+  <span class="dhero-bg" style="--hero-pos:50% 46%"><img src="../assets/hq-exterior.jpg" width="2560" height="1446" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <p class="dhero-eyebrow">THE BEST ELECTRICAL ENGINEERING SOLUTION PROVIDER</p>
-    <h1>미래에너지를 만드는 에이프로 A-PRO</h1>
-    <p class="dhero-en">공정 장비의 통합 설계 능력을 바탕으로 지속 성장 기반 구축</p>
+    <!-- 문안은 영문 슬로건 한 줄뿐이다. '회사소개'는 GNB·목차 탭이 이미 말하고 있어 뺐고,
+         국문 두 문안(미래에너지를 만드는… / 공정 장비의…)은 About 줄글 머리로 내려갔다.
+         줄바꿈은 뜻의 마디에서 끊는다 — [electrical engineering] / [solution provider] -->
+    <h1>THE BEST ELECTRICAL ENGINEERING<br />SOLUTION PROVIDER</h1>
   </div>
 </section>
 
@@ -523,123 +810,154 @@
       <a href="#about" aria-current="true">About A-PRO</a>
       <a href="#vision">Vision 2030</a>
       <a href="#aaa">AAA Strategy</a>
-      <a href="#culture">Culture</a>
     </div>
   </nav>
   <span class="cnav-rule" aria-hidden="true"></span>
 </div>
 
 <!-- ===================== 01 · ABOUT (회사소개 + 기업 현황) ===================== -->
-<section class="csec cabout" id="about">
-  <div class="cwrap ccols">
-    <div class="chead crv">
-      <p class="en">ABOUT<br />A-PRO</p>
-      <p class="ko">회사소개</p>
+<!-- 스크롤이 이 장을 지나는 동안 화면이 붙들리고 단계(data-step 0~2)가 올라간다.
+     data-at 은 그 요소가 몇 번째 단계에 놓이는지다. 눈썹줄·헤드라인(.crv)만은 단계가
+     아니라 '화면에 들어올 때' 뜬다 — 장이 스크롤로 올라오는 동안 이미 서 있어야 한다 -->
+<section class="cabout" id="about" data-step="0">
+  <div class="cabt-track">
+    <div class="cabt-stage">
+      <div class="cwrap ccols">
+        <p class="ceyebrow crv">ABOUT A-PRO</p>
+        <!-- 확정 문안 (2026-08-03) -->
+        <!-- 줄글은 덩어리째가 아니라 문단마다 따로 올라온다 — 눈썹줄 → 헤드라인 두 줄 →
+             본문 순으로 읽는 차례대로 놓인다 (지연은 문서 끝 스크립트가 순번으로 매긴다) -->
+        <div class="ctext">
+          <!-- 히어로에서 내려온 두 줄 -->
+          <div class="cabt-lead">
+            <p class="crv">미래에너지를 만드는 에이프로 A-PRO</p>
+            <p class="crv">공정 장비의 통합 설계 능력을 바탕으로 지속 성장 기반 구축</p>
+          </div>
+          <p data-at="1">A-PRO는 이차전지 제조 공정의 핵심 장비를 글로벌 시장에 공급하는 에너지 솔루션 전문기업입니다.</p>
+          <p data-at="1">독자적인 전력변환 및 정밀 제어 기술을 기반으로 전기자동차와 e-Mobility 등 다양한 배터리 응용 분야에 최적화된 통합 솔루션을 제공합니다.</p>
+          <p data-at="1">A-PRO는 고효율 전력변환 기술, 사용자 중심의 설계 역량, 축적된 생산 노하우와 체계적인 사후관리 시스템을 바탕으로 고객의 생산성과 품질 경쟁력을 높이고 있습니다. 앞으로도 첨단 전력변환·제어계측 기술을 지속적으로 고도화하여, 글로벌 친환경 에너지 산업의 성장을 선도하는 기업으로 도약하겠습니다.</p>
+        </div>
+        <!-- 숫자는 크게, 항목명은 작게 — "무엇"보다 "얼마"를 먼저 보게 한다 -->
+        <ul class="cstats">
+          <li class="cstat" data-at="2"><p class="k">코스닥 상장</p><p class="v">2020<span class="u">.07.16</span></p></li>
+          <li class="cstat" data-at="2"><p class="k">업력</p><p class="v">26<span class="u">년</span></p><p class="n">2000.06.27 설립</p></li>
+          <li class="cstat" data-at="2"><p class="k">대표이사</p><p class="v">임종현</p></li>
+          <li class="cstat" data-at="2"><p class="k">임직원</p><p class="v">270<span class="u">명</span></p></li>
+          <li class="cstat" data-at="2"><p class="k">자본금</p><p class="v">72.3<span class="u">억 원</span></p></li>
+          <li class="cstat" data-at="2"><p class="k">매출액</p><p class="v">1,416.2<span class="u">억 원</span></p><p class="n">2025년</p></li>
+          <li class="cstat" data-at="2"><p class="k">3년 평균 매출액</p><p class="v">1,944.3<span class="u">억 원</span></p></li>
+          <li class="cstat" data-at="2"><p class="k">수출 비중</p><p class="v">80<span class="u">% 이상</span></p></li>
+        </ul>
+      </div>
     </div>
-    <!-- 확정 문안 (2026-08-03) -->
-    <div class="ctext crv">
-      <p>A-PRO는 이차전지 제조 공정의 핵심 장비를 글로벌 시장에 공급하는 에너지 솔루션 전문기업입니다.</p>
-      <p>독자적인 전력변환 및 정밀 제어 기술을 기반으로 전기자동차와 e-Mobility 등 다양한 배터리 응용 분야에 최적화된 통합 솔루션을 제공합니다.</p>
-      <p>A-PRO는 고효율 전력변환 기술, 사용자 중심의 설계 역량, 축적된 생산 노하우와 체계적인 사후관리 시스템을 바탕으로 고객의 생산성과 품질 경쟁력을 높이고 있습니다. 앞으로도 첨단 전력변환·제어계측 기술을 지속적으로 고도화하여, 글로벌 친환경 에너지 산업의 성장을 선도하는 기업으로 도약하겠습니다.</p>
-    </div>
-    <!-- 숫자는 크게, 항목명은 작게 — "무엇"보다 "얼마"를 먼저 보게 한다 -->
-    <ul class="cstats">
-      <li class="cstat crv"><p class="k">코스닥 상장</p><p class="v">2020<span class="u">.07.16</span></p></li>
-      <li class="cstat crv"><p class="k">업력</p><p class="v">26<span class="u">년</span></p><p class="n">2000.06.27 설립</p></li>
-      <li class="cstat crv"><p class="k">대표이사</p><p class="v">임종현</p></li>
-      <li class="cstat crv"><p class="k">임직원</p><p class="v">270<span class="u">명</span></p></li>
-      <li class="cstat crv"><p class="k">자본금</p><p class="v">72.3<span class="u">억 원</span></p></li>
-      <li class="cstat crv"><p class="k">매출액</p><p class="v">1,416.2<span class="u">억 원</span></p><p class="n">2025년</p></li>
-      <li class="cstat crv"><p class="k">3년 평균 매출액</p><p class="v">1,944.3<span class="u">억 원</span></p></li>
-      <li class="cstat crv"><p class="k">수출 비중</p><p class="v">80<span class="u">% 이상</span></p></li>
-    </ul>
   </div>
 </section>
 
 <!-- ===================== 02 · VISION 2030 ===================== -->
-<!-- 스케치 기준 뼈대 — 2×2 표(큰 문장 둘이 대각선) + 세 갈래를 묶는 괄호.
+<!-- 스크롤이 이 장을 지나는 동안 단계(data-step 0~4)가 올라가며 한 장면씩 놓인다.
+     data-at 은 그 요소가 몇 번째 단계에 놓이는지다 (표와 큰 문장 둘은 표가 열리며 함께 드러난다).
      앞뒤 밝은 섹션 사이에서 이 장만 어둡게 간다 (선·이미지 자리 색은 --vline/--vph 가 받는다) -->
-<section class="csec csec--dark cvision" id="vision">
-  <div class="cwrap">
-    <p class="cvis-eyebrow crv">VISION 2030</p>
+<section class="csec--dark cvision" id="vision" data-step="0">
+  <div class="cvis-track">
+    <div class="cvis-stage">
+      <!-- 0단계에만 보이는 큰 제목. 1단계에서 사라지고 아래 제목이 제자리에서 올라온다 -->
+      <p class="cvis-hero" aria-hidden="true">VISION 2030</p>
+      <div class="cwrap">
+        <p class="ceyebrow" data-at="1">VISION 2030</p>
 
-    <div class="cvis-grid crv">
-      <div class="c c--h"><p>Global Top 5</p></div>
-      <div class="c c--t"><p>에이프로는 이차전지 제조 설비 공급 기업을 넘어,<br />에너지를 만들고 저장하고 쓰는 전 과정을 아우르는 종합 에너지 솔루션 기업을 목표로 합니다.</p></div>
-      <div class="c c--t"><p>충·방전 전력변환 기술을 축으로 에너지 저장 장치(ESS), 전기자동차 충전·제어 플랫폼, 화합물 전력 반도체까지 사업을 연결해 2030년 글로벌 Top 5 수준의 기술 경쟁력을 갖추고자 합니다.</p></div>
-      <div class="c c--h"><p>Total Energy - Solution Provider</p></div>
-    </div>
+        <div class="cvis-grid">
+          <div class="c c--h"><p data-at="1">Global Top 5</p></div>
+          <div class="c c--t"><p data-at="2">에이프로는 이차전지 제조 설비 공급 기업을 넘어,<br />에너지를 만들고 저장하고 쓰는 전 과정을 아우르는 종합 에너지 솔루션 기업을 목표로 합니다.</p></div>
+          <div class="c c--t"><p data-at="3">충·방전 전력변환 기술을 축으로 에너지 저장 장치(ESS), 전기자동차 충전·제어 플랫폼, 화합물 전력 반도체까지 사업을 연결해 2030년 글로벌 Top 5 수준의 기술 경쟁력을 갖추고자 합니다.</p></div>
+          <div class="c c--h"><p data-at="1">Total Energy - Solution Provider</p></div>
+        </div>
 
-    <!-- 세 갈래가 한 기술(양방향 전력변환)에서 갈라져 나온다는 그림 -->
-    <div class="cvis-flow">
-      <div class="cvis-bracket crv">
-        <i class="arm"></i><span>Bidirectional Power Conversion</span><i class="arm"></i>
+        <!-- 세 갈래가 한 기술(양방향 전력변환)에서 갈라져 나온다는 그림 -->
+        <div class="cvis-flow">
+          <div class="cvis-bracket" data-at="4">
+            <i class="arm"></i><span>Bidirectional Power Conversion</span><i class="arm"></i>
+          </div>
+          <!-- 세 장 모두 원본이 16:9 보다 세로로 길다 → 상하가 조금 잘린다(object-fit:cover).
+               주제가 모두 화면 한가운데에 있어 가운데 크롭으로 잘려 나가는 것이 없다 -->
+          <ul class="cvis-items">
+            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-ess.png" width="1536" height="1024" loading="lazy"
+                  alt="컨테이너형 에너지 저장 장치가 늘어선 발전 단지" /></span></span><p>에너지 저장 장치</p></li>
+            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-ev-platform.png" width="1638" height="960" loading="lazy"
+                  alt="도심 도로 위에서 주변과 신호를 주고받는 전기자동차" /></span></span><p>전기자동차 충전·제어 플랫폼</p></li>
+            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-power-semicon.png" width="1536" height="1024" loading="lazy"
+                  alt="소자가 새겨진 전력 반도체 웨이퍼" /></span></span><p>화합물 전력 반도체</p></li>
+          </ul>
+        </div>
       </div>
-      <ul class="cvis-items">
-        <li class="crv"><span class="ph">IMAGE</span><p>에너지 저장 장치</p></li>
-        <li class="crv"><span class="ph">IMAGE</span><p>전기자동차 충전·제어 플랫폼</p></li>
-        <li class="crv"><span class="ph">IMAGE</span><p>화합물 전력 반도체</p></li>
-      </ul>
     </div>
   </div>
 </section>
 
-<!-- ===================== 03 · AAA STRATEGY ===================== -->
-<!-- 스케치 기준 뼈대 — 네 칸에 나눠 담은 워드마크 + [A 키워드]─[글자의 뜻] 세 줄 + 파란 띠 -->
-<section class="csec csec--tint caaasec" id="aaa">
-  <div class="cwrap">
+<!-- ===================== 03 · AAA STRATEGY (+ CULTURE) ===================== -->
+<!-- 스크롤이 이 장을 지나는 동안 단계(data-step 0~6)가 올라가며 하나씩 켜진다.
+     마지막 단계에서 로고가 완성되고 Culture 문구로 장을 닫는다 (예전 Culture 섹션이 여기로 들어왔다) -->
+<section class="caaasec" id="aaa" data-step="0">
+  <div class="caaa-track">
+    <div class="caaa-stage">
+      <!-- 0단계에만 보이는 큰 제목. 1단계에서 사라지고 아래 내용이 제자리에서 올라온다 -->
+      <p class="caaa-hero" aria-hidden="true">AAA Strategy</p>
+      <div class="cwrap">
 
-    <div class="caaa-top">
-      <div class="chead crv"><p class="en">AAA<br />Strategy</p></div>
-      <!-- 네 칸은 같은 워드마크(#apro-word)를 viewBox 창만 옮겨 나눠 본다 —
-           A / -P / R / O 순. 글자를 따로 자른 파일이 없어도 되고, 로고가 바뀌면
-           <defs> 의 경로 하나만 갈면 네 칸이 함께 따라온다 -->
-      <span class="lbox crv"><svg viewBox="0 0 103 103" aria-hidden="true"><use href="#apro-word" clip-path="url(#ap-a)"/></svg></span>
-      <span class="lbox crv"><svg viewBox="108.6 0 172 103" aria-hidden="true"><use href="#apro-word" clip-path="url(#ap-p)"/></svg></span>
-      <span class="lbox crv"><svg viewBox="290.4 0 83.5 103" aria-hidden="true"><use href="#apro-word" clip-path="url(#ap-r)"/></svg></span>
-      <span class="lbox crv"><svg viewBox="378.4 0 105.6 103" aria-hidden="true"><use href="#apro-word" clip-path="url(#ap-o)"/></svg></span>
+        <div class="caaa-head">
+          <!-- 워드마크 한 벌(#apro-word)을 글자별로 잘라 다섯 겹으로 겹쳐 놓는다 —
+               조각마다 색을 따로 줄 수 있어야 "여기까지 왔다"를 색으로 말할 수 있다.
+               켜지는 순서는 A → P → R → O → '-' (하이픈이 마지막에 로고를 닫는다) -->
+          <svg class="caaa-mark" viewBox="0 0 484 103" role="img" aria-label="A-PRO">
+            <use class="l l-a" href="#apro-word" clip-path="url(#ap-a)"/>
+            <use class="l l-h" href="#apro-word" clip-path="url(#ap-h)"/>
+            <use class="l l-p" href="#apro-word" clip-path="url(#ap-p)"/>
+            <use class="l l-r" href="#apro-word" clip-path="url(#ap-r)"/>
+            <use class="l l-o" href="#apro-word" clip-path="url(#ap-o)"/>
+          </svg>
+          <div class="chead">
+            <p class="lead">VISION 2030을 실현하는</p>
+            <p class="en">AAA<br />Strategy</p>
+          </div>
+        </div>
+
+        <div class="caaa-prog" aria-hidden="true"><i></i></div>
+
+        <!-- 왼쪽 = A 의 세 키워드 / 가운데 = 그 줄이 잇는 글자(P·R·O)의 뜻 / 오른쪽 = 같은 키워드의 영문 -->
+        <ul class="caaa-rows">
+          <li class="caaa-row">
+            <span class="caaa-box caaa-key"><b>Advance</b><i>진보</i></span>
+            <i class="caaa-mid" aria-hidden="true"></i>
+            <span class="lbl"><b><em>P</em>ioneer</b><i>개척</i></span>
+            <span class="caaa-box caaa-val"><b>Advance</b><i>진보</i></span>
+          </li>
+          <li class="caaa-row">
+            <span class="caaa-box caaa-key"><b>Aggressiveness</b><i>적극성</i></span>
+            <i class="caaa-mid" aria-hidden="true"></i>
+            <span class="lbl"><b><em>R</em>emarkability</b><i>탁월함</i></span>
+            <span class="caaa-box caaa-val"><b>Aggressive</b><i>적극성</i></span>
+          </li>
+          <li class="caaa-row">
+            <span class="caaa-box caaa-key"><b>Agility</b><i>민첩성</i></span>
+            <i class="caaa-mid" aria-hidden="true"></i>
+            <span class="lbl"><b><em>O</em>rganism</b><i>유기적 조직</i></span>
+            <span class="caaa-box caaa-val"><b>Agile</b><i>민첩성</i></span>
+          </li>
+        </ul>
+
+        <!-- 단계별 문구 — 넷을 같은 칸에 겹쳐 두고 하나씩 보인다 -->
+        <div class="caaa-msg">
+          <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+          <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
+          <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+          <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로 6대 가치와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다.</p>
+        </div>
+
+      </div>
     </div>
-
-    <!-- 왼쪽 검은 칩 = A 의 세 키워드, 오른쪽 = 그 줄이 이어지는 글자(P·R·O)의 뜻.
-         [임시] 세 번째 줄은 스케치에 Aggressiveness 가 두 번 적혀 있어 Agility 로 두었다 -->
-    <ul class="caaa-rows">
-      <li class="caaa-row crv">
-        <i class="line"></i>
-        <span class="chip key">Advance <i>진보</i></span>
-        <span class="chip src">Advance <i>진보</i></span>
-        <span class="chip dst">Pioneer <i>개척</i></span>
-      </li>
-      <li class="caaa-row crv">
-        <i class="line"></i>
-        <span class="chip key">Aggressiveness <i>적극성</i></span>
-        <span class="chip src">Aggressiveness <i>적극성</i></span>
-        <span class="chip dst">Remarkability <i>탁월함</i></span>
-      </li>
-      <li class="caaa-row crv">
-        <i class="line"></i>
-        <span class="chip key">Agility <i>민첩성</i></span>
-        <span class="chip src">Agility <i>민첩성</i></span>
-        <span class="chip dst">Organism <i>유기적 조직</i></span>
-      </li>
-    </ul>
-
-    <p class="caaa-claim crv">앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
   </div>
 </section>
 
-<!-- ===================== 04 · CULTURE ===================== -->
-<section class="cculture" id="culture">
-  <span class="bg" aria-hidden="true"><img src="../assets/carousel-battery.jpg" alt="" /></span>
-  <div class="cwrap">
-    <div class="in">
-      <p class="en crv">A-PRO CULTURE</p>
-      <!-- [임시] 첫 문장만 확정, 나머지는 자리를 잡아둔 글이다 -->
-      <h2 class="crv">구성원이 자부심을 갖고 성장할 수 있는<br />‘일하기 좋은 일터’</h2>
-      <p class="crv">에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 고객과 사회가 함께 신뢰할 수 있는 기업이 되고자 합니다. 사람이 성장해야 기술이 자라고, 기술이 자라야 미래 에너지가 만들어진다고 믿습니다.</p>
-      <img class="mark crv" src="../assets/a-logo.svg" alt="A-PRO" />
-    </div>
-  </div>
-</section>
+<!-- Culture 는 독립 섹션에서 빠졌다 — 마무리 문구가 위 AAA Strategy 의 마지막 단계로 들어갔다 -->
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">
@@ -813,24 +1131,79 @@
   measure();paint();
 })();
 
+/* About · Vision 2030 · AAA Strategy — 스크롤 위치를 단계로 바꿔 섹션에 얹는다.
+   나머지(무엇이 언제 놓이고, 어느 글자가 파랗고, 막대가 얼마나 차는지)는 전부 CSS 가
+   data-step 하나를 보고 정한다. 여기서 하는 일은 그 숫자를 옮기는 것뿐이다.
+   세 장이 같은 구조라 구동부도 하나다 — 아래 표에 (섹션 id, 트랙, 단계 수)만 적는다.
+
+   트랙 높이 = 화면 한 장 + 단계 수 × --step-h. 붙어 있는 구간(트랙 높이 − 화면 한 장)을
+   단계 수로 등분해 지금 몇 번째인지 센다. 붙들지 않는 화면(좁거나 낮은)에서는 트랙이
+   화면보다 낮아 나눌 구간이 없다 → 마지막 단계로 세워 전부 놓인 모습을 보여 준다.
+
+   숫자가 바뀔 때 섹션에 알림(cstep)도 띄운다 — 기업 현황 숫자 세기가 이걸 듣는다 */
+(function(){
+  var LIST=[['about','.cabt-track',3],['vision','.cvis-track',5],['aaa','.caaa-track',7]],stages=[];
+  LIST.forEach(function(d){
+    var sec=document.getElementById(d[0]);
+    if(!sec)return;
+    var track=sec.querySelector(d[1]);
+    if(!track)return;
+    stages.push({sec:sec,track:track,n:d[2],cur:null});
+  });
+  if(!stages.length)return;
+
+  function paint(){
+    stages.forEach(function(s){
+      var span=s.track.offsetHeight-window.innerHeight,v;
+      if(span<=0){
+        v=s.n-1;
+      }else{
+        v=Math.floor(-s.track.getBoundingClientRect().top/span*s.n);
+        if(v<0)v=0;else if(v>s.n-1)v=s.n-1;
+      }
+      if(v===s.cur)return;
+      s.cur=v;
+      s.sec.setAttribute('data-step',v);
+      s.sec.dispatchEvent(new CustomEvent('cstep',{detail:v}));
+    });
+  }
+
+  var t=false;
+  window.addEventListener('scroll',function(){
+    if(t)return;t=true;
+    requestAnimationFrame(function(){t=false;paint();});
+  },{passive:true});
+  window.addEventListener('resize',paint);
+  paint();
+})();
+
+/* 한 덩어리 안의 순번 = 지연(--crd). 같은 단계에 켜지는 것들이 통째로 튀어나오지
+   않게 한 박자씩 늦춘다. 켜는 방식(.crv 는 화면 진입, [data-at] 은 스크롤 단계)과는
+   상관없이 순번만 매기는 일이라 따로 둔다.
+     [묶음, 자식, 칸 간격(ms), 시작 지연(ms), 순번을 되돌릴 주기(0=안 되돌림)]
+       · 머리글 : 눈썹줄(지연 0) 뒤로 헤드라인 두 줄이 따라온다
+       · 줄글   : 세 문단이 한 줄씩
+       · 기업 현황 : 한 줄(4칸)이 왼쪽부터 놓이고 다음 줄은 다시 처음부터 센다 —
+                    여덟 칸을 통으로 세면 아랫줄은 제 차례가 와도 반 박자를 더 기다린다 */
+(function(){
+  [['.cabout .ccols','.crv',80,0,0],
+   ['.cabout .ctext','p[data-at]',80,0,0],
+   ['.cstats','.cstat',70,0,4]].forEach(function(g){
+    var box=document.querySelector(g[0]);
+    if(!box)return;
+    [].slice.call(box.querySelectorAll(g[1])).forEach(function(el,i){
+      el.style.setProperty('--crd',(g[3] + (g[4] ? i % g[4] : i) * g[2])+'ms');
+    });
+  });
+})();
+
 /* 섹션 진입 연출 — 화면에 들어온 요소만 한 번씩 올라온다.
-   같은 줄에 여러 칸이 들어오는 격자(기업 현황·브랜드·전략)는 칸마다 조금씩 늦춰
-   한 덩어리로 튀어나오지 않게 한다. 되감지 않는다 — 오갈 때마다 재생되면 산만하다 */
+   되감지 않는다 — 오갈 때마다 재생되면 산만하다 */
 (function(){
   var root=document.documentElement;
   if(!root.hasAttribute('data-crv'))return;
   var els=[].slice.call(document.querySelectorAll('.crv'));
   if(!els.length){root.removeAttribute('data-crv');return;}
-
-  /* 같은 격자 안의 순번 = 지연 단위. 격자 밖 요소는 0 이라 지연이 없다 */
-  var STEP=70;
-  ['.cstats','.cvis-items','.caaa-top','.caaa-rows','.cculture .in'].forEach(function(sel){
-    var box=document.querySelector(sel);
-    if(!box)return;
-    [].slice.call(box.querySelectorAll('.crv')).forEach(function(el,i){
-      el.style.setProperty('--crd',(i*STEP)+'ms');
-    });
-  });
 
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){
@@ -840,6 +1213,84 @@
     });
   },{rootMargin:'0px 0px -12% 0px'});
   els.forEach(function(el){io.observe(el);});
+})();
+
+/* 기업 현황 숫자 오르기 — 칸이 드러나는 순간 0 에서 제 값까지 굴러 올라간다 (2026-08-04).
+   칸이 올라오는 것과 같은 시점·같은 지연(--crd)을 쓴다 — 그래야 한 동작으로 읽힌다.
+   셈이 끝나면 HTML 에 적힌 값 그대로 앉는다(반올림 오차 없음).
+
+   시작 조건이 둘인 이유 — 붙드는 화면에서는 표가 처음부터 무대 안에 있어(투명할 뿐)
+   '화면에 들어왔는지'만 보면 2단계가 오기 전에 세어 버린다. 반대로 안 붙드는 화면
+   (좁거나 낮은)에서는 단계가 로드 때 이미 끝 값이라 '단계'만 보면 표가 화면 밖에
+   있는 동안 다 세고 만다. 그래서 둘 다 만족할 때 센다.
+
+   IntersectionObserver 가 없으면 손대지 않는다 — 숫자를 0 으로 되돌리는 것은 칸이
+   아직 안 보일 때라야 안전한데, 그걸 알 방법이 없기 때문이다 (이때는 제 값으로 보인다) */
+(function(){
+  var box=document.querySelector('.cstats'),sec=document.getElementById('about');
+  if(!box||!sec||!('IntersectionObserver' in window))return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+
+  /* 값 칸(.v)의 첫 글자 조각만 센다 — 뒤에 붙은 단위(.u)는 건드리지 않는다.
+     대상은 '천 단위 쉼표까지 지킨 수'뿐이다. 이 규칙 하나로 수량(26 · 270 · 1,416.2)과
+     수량이 아닌 칸이 갈린다 — 상장일의 2020 은 네 자리인데 쉼표가 없어 걸리지 않고,
+     대표이사 이름은 애초에 숫자가 아니다 */
+  var NUM=/^\d{1,3}(?:,\d{3})*(?:\.\d+)?$/, DUR=1100, jobs=[];
+  [].slice.call(box.querySelectorAll('.cstat .v')).forEach(function(v){
+    var node=v.firstChild;
+    if(!node || node.nodeType!==3)return;
+    var raw=node.nodeValue.trim();
+    if(!NUM.test(raw))return;
+    var to=parseFloat(raw.replace(/,/g,''));
+    if(!(to>0))return;
+    jobs.push({node:node,card:v.parentNode,to:to,
+      dec:(raw.split('.')[1]||'').length, comma:raw.indexOf(',')>=0});
+    node.nodeValue='0';
+  });
+  if(!jobs.length)return;
+
+  /* 소수 자릿수와 쉼표는 원래 표기 그대로 따라간다 — 세는 동안 표기가 흔들리면 안 된다 */
+  function fmt(n,j){
+    var s=j.dec ? n.toFixed(j.dec) : String(Math.round(n));
+    if(!j.comma)return s;
+    var p=s.split('.');
+    p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    return p.join('.');
+  }
+
+  function run(j){
+    var t0=0;
+    requestAnimationFrame(function frame(now){
+      if(!t0)t0=now;
+      var p=(now-t0)/DUR; if(p>1)p=1;
+      /* 처음에 빠르게 나갔다가 끝에서 천천히 앉는다 — 멈추는 자리가 또렷해진다 */
+      j.node.nodeValue=fmt(j.to * (1 - Math.pow(1-p,3)), j);
+      if(p<1){requestAnimationFrame(frame);return;}
+      j.node.nodeValue=fmt(j.to,j);
+    });
+  }
+
+  var STEP=2,seen=false,stepped=false,done=false;
+  function maybe(){
+    if(!seen||!stepped||done)return;
+    done=true;
+    jobs.forEach(function(j){
+      setTimeout(function(){run(j);}, parseFloat(j.card.style.getPropertyValue('--crd'))||0);
+    });
+  }
+
+  var io=new IntersectionObserver(function(es){
+    if(!es[0].isIntersecting)return;
+    io.disconnect();seen=true;maybe();
+  },{rootMargin:'0px 0px -12% 0px'});
+  io.observe(box);
+
+  sec.addEventListener('cstep',function(e){
+    if(e.detail<STEP)return;
+    stepped=true;maybe();
+  });
+  /* 위 구동부의 첫 계산은 이 줄보다 먼저 끝난다 → 지금 값도 한 번 본다 */
+  if(+sec.getAttribute('data-step')>=STEP){stepped=true;maybe();}
 })();
 
 /* 맨 위로 가기 (사업영역 세부 페이지와 동일) */
