@@ -667,6 +667,12 @@
     .cnav-wrap:not(.is-fixed){--cnav-line:rgba(255,255,255,.2)}
     .cnav-wrap:not(.is-fixed) .cnav-tabs a{color:var(--on-white-85)}
     .cnav-wrap:not(.is-fixed) .cnav-tabs a:hover{color:#fff}
+    /* 띠의 윗선 — 아래 가로선(.cnav-rule)과 짝을 이뤄 탭이 앉은 띠를 위아래로 닫는다.
+       패널이 배경색이 된 뒤로는 띠가 어디서 시작하는지 말해 줄 것이 이 선뿐이다.
+       칸 구분선도 바 윗변(top:0)에서 시작하므로 셋이 한 격자로 맞물린다.
+       고정되면 바 자체가 흰 판이라 따로 그을 것이 없다 → 히어로 위에서만 */
+    .cnav-wrap:not(.is-fixed)::before{content:"";position:absolute;left:0;right:0;top:0;
+      height:1px;background:var(--cnav-line)}
   }
   /* 더 낮은 화면 — 한 단 더 줄인다 */
   @media(min-width:901px) and (min-height:700px) and (max-height:880px){
