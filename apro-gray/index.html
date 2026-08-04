@@ -126,7 +126,10 @@
   .v2banner{height:100vh;min-height:640px;background:#e4e8ed}
   /* background video (plays clean, no overlay effect) */
   .v2banner .v2b-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
-  .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px}
+  /* padding-bottom 0 — 아래 소분류 탭 띠가 히어로 밑변에 딱 붙어야 커브가 "히어로와
+     다음 장의 경계"에 놓인다. 좁은 화면(≤900px)에서는 띠가 그냥 상자 묶음으로 풀리므로
+     그때만 아래 여백을 되돌린다 */
+  .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px 24px 0}
   .v2banner .headline{padding-top:340px}
   .v2banner .headline .en,.v2banner .headline .kor{will-change:transform,opacity}
   /* 텍스트 전환 마이크로 모션: 현재 문구는 위로 살짝 빠지고, 새 문구가 아래에서 떠오름 (보조문구는 살짝 뒤따라옴) */
@@ -138,7 +141,7 @@
   .v2banner .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
   .v2banner .headline .en + .kor{margin-top:24px}   /* 보조문구: 강조문구 아래 간격 */
   .v2banner .en{font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff;white-space:pre-line}
-  .v2banner .info{margin-top:auto;margin-bottom:20px;display:flex;gap:20px;align-items:flex-end}
+  .v2banner .info{margin-top:auto;display:flex;gap:20px;align-items:flex-end}
   .v2banner .pag-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   .v2banner .pag{display:flex;gap:16px;align-items:center}
   .v2banner .pag .lbl{font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:#fff}
@@ -146,20 +149,76 @@
   .v2banner .arrows .ic{width:24px;height:24px;background:#fff;display:grid;place-content:center;font-size:13px;color:var(--g900);cursor:pointer;transition:transform .22s var(--ease),background .22s}
   .v2banner .arrows .ic:first-child:hover{transform:translateX(-2px)}
   .v2banner .arrows .ic:last-child:hover{transform:translateX(2px)}
-  .v2banner .bnav{display:flex;gap:4px;align-items:stretch;width:100%}
-  .v2banner .bnav .b{flex:1 0 0;min-width:0;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:8px 12px;
-    background:rgba(255,255,255,.05);box-shadow:0 0 16px -8px rgba(11,11,10,.1);cursor:pointer}
-  /* left→right gauge fill = current video segment progress */
-  .v2banner .bnav .b::before{content:"";position:absolute;inset:0;z-index:0;background:rgba(255,255,255,.16);transform:scaleX(0);transform-origin:left center}
+  /* ── 히어로 밑단 소분류 탭 띠 ────────────────────────────────────────────
+     사업영역 세부 페이지의 소분류 탭 바(business-layout.css .bnav-wrap)와 같은 그림 —
+     양끝이 S커브로 닫힌 흰 패널 위에 탭 줄이 놓인다. 다만 여기서는 상단에 고정되지
+     않고 히어로 안에만 머문다(스크롤하면 히어로와 같이 올라간다).
+
+     흰색이 맞는 이유 : 히어로 바로 뒤 장(.v2who)이 흰 바탕이라, 이 띠는 "본문이
+     히어로 밑변까지 올라와 첫 줄을 내민 것"으로 읽힌다 — 세부 페이지에서 같은 부품이
+     성립하는 것과 똑같은 이유다. 영상 프레임이 밝든 어둡든 글자가 늘 읽히는 건 덤.
+
+     띠의 평평한 부분은 위 헤드라인과 같은 상자 폭이고, 커브는 그 바깥으로 걸쳐 나간다
+     (세부 페이지에서 커브가 그리드 거터에 놓이는 것과 같은 관계) */
+  .v2banner .bnav{position:relative;width:100%;height:60px;
+    display:grid;grid-template-columns:repeat(5,1fr);align-items:stretch;
+    /* 커브 폭 = 패널 높이 × 24/40 (커브 원본의 종횡비) → 높이를 바꾸면 같이 따라온다 */
+    --cw:calc(60px * 24 / 40);
+    /* 히어로 배경에서 흰 패널로 넘어가는 S커브 (Figma 592:3954 Vector) — 공용
+       business-layout.css :root 의 --tab-curve 와 같은 도형. 이 페이지는 그 파일을
+       읽지 않으므로 여기 적어 둔다 */
+    --tab-curve:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23fff'/%3E%3C/svg%3E");
+    /* 오른쪽 커브 = 왼쪽 것을 좌우로 뒤집은 것 (경로를 x → 24-x 로 옮겨 적었다) */
+    --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E")}
+  /* 흰 패널 — 가운데는 흰 사각형, 양끝은 커브. 세 겹을 한 배경으로 얹는다 */
+  .v2banner .bnav::before{content:"";position:absolute;z-index:0;inset:0 calc(-1 * var(--cw));
+    background:
+      var(--tab-curve) left bottom/var(--cw) 100% no-repeat,
+      var(--tab-curve-r) right bottom/var(--cw) 100% no-repeat,
+      linear-gradient(#fff,#fff) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
+  /* 칸 경계의 세로 구분선 — 5등분이니 20/40/60/80% 자리. 칸마다 테두리를 주는 대신
+     띠 전체에 한 겹으로 그린다(경계마다 선이 겹치지 않는다). 양끝은 긋지 않는다 —
+     거기는 커브가 이미 "여기서 끝"이라고 말한다 */
+  .v2banner .bnav::after{content:"";position:absolute;z-index:2;inset:14px 0;pointer-events:none;
+    background-image:linear-gradient(to right,
+      transparent calc(20% - .5px),var(--border-g) calc(20% - .5px),var(--border-g) calc(20% + .5px),transparent calc(20% + .5px),
+      transparent calc(40% - .5px),var(--border-g) calc(40% - .5px),var(--border-g) calc(40% + .5px),transparent calc(40% + .5px),
+      transparent calc(60% - .5px),var(--border-g) calc(60% - .5px),var(--border-g) calc(60% + .5px),transparent calc(60% + .5px),
+      transparent calc(80% - .5px),var(--border-g) calc(80% - .5px),var(--border-g) calc(80% + .5px),transparent calc(80% + .5px),
+      transparent 100%)}
+  /* z-index:1 — 칸(과 그 게이지·글자)이 흰 패널 위에 놓이도록 */
+  .v2banner .bnav .b{position:relative;z-index:1;min-width:0;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;padding:0 8px;cursor:pointer}
+  /* left→right gauge fill = current video segment progress.
+     흰 바탕으로 옮겨 오면서 색만 바꿨다 — 반투명 흰색이던 것을 옅은 브랜드 틴트로.
+     같은 밝기 차(≈8%)를 유지해 예전만큼 보이되, 활성 글자색(--brand)과 한 계열이라
+     "이 칸이 차오르는 중"으로 읽힌다 */
+  .v2banner .bnav .b::before{content:"";position:absolute;inset:0;z-index:0;background:rgba(44,87,144,.09);transform:scaleX(0);transform-origin:left center}
   .v2banner .bnav .b.active::before{animation:bnavFill var(--bnav-dur,5s) linear forwards}
-  /* the brand (00 에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
+  /* the brand (에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
   .v2banner .bnav .b.brand{--bnav-dur:12.5s}
   @keyframes bnavFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  .v2banner .bnav .bn,.v2banner .bnav .bt{position:relative;z-index:1}
-  .v2banner .bnav .bn{font-family:'Roboto Condensed',var(--suit);font-weight:400;font-style:normal;font-size:16px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.55)}
-  .v2banner .bnav .bt{font-family:var(--suit);font-weight:600;font-size:18px;line-height:1;letter-spacing:-.32px;color:rgba(255,255,255,.72);transition:color .22s var(--ease)}
-  .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:#fff}
-  @media(max-width:900px){.v2banner .bnav{flex-wrap:wrap}.v2banner .bnav .b{flex:1 1 40%}}
+  /* 글자 크기·색은 세부 페이지 소분류 탭(16px/500, --teritary → 활성 --brand 700)을
+     그대로 가져왔다. 폭이 좁아지면 "화합물 전력 반도체"가 칸을 넘치므로 같이 줄인다 */
+  .v2banner .bnav .bt{position:relative;z-index:1;
+    font-family:var(--suit);font-weight:500;font-size:clamp(12px,1.02vw,16px);line-height:1.15;
+    letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
+    transition:color .22s var(--ease)}
+  .v2banner .bnav .b:hover .bt{color:#445464}
+  .v2banner .bnav .b.active .bt{font-weight:700;color:var(--brand)}
+  /* 좁은 화면 : 흰 패널·커브·구분선을 걷고 예전처럼 반투명 상자 묶음으로 돌아간다
+     (세부 페이지도 ≤900px 에서 패널을 걷는다). 바탕이 다시 영상이라 색도 되돌린다 */
+  @media(max-width:900px){
+    .v2banner .v2b-inner{padding-bottom:24px}
+    .v2banner .info{margin-bottom:20px}
+    .v2banner .bnav{height:auto;grid-template-columns:repeat(2,1fr);gap:4px}
+    .v2banner .bnav::before,.v2banner .bnav::after{display:none}
+    .v2banner .bnav .b{height:44px;background:rgba(255,255,255,.05);box-shadow:0 0 16px -8px rgba(11,11,10,.1)}
+    .v2banner .bnav .b::before{background:rgba(255,255,255,.16)}
+    .v2banner .bnav .bt{font-size:15px;color:rgba(255,255,255,.72)}
+    .v2banner .bnav .b:hover .bt{color:#fff}
+    .v2banner .bnav .b.active .bt{color:#fff}
+  }
 
   /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
@@ -707,11 +766,11 @@
         <div class="info">
           <div class="pag-info">
             <div class="bnav">
-              <span class="b brand"><em class="bn">00</em><span class="bt">에이프로</span></span>
-              <span class="b"><em class="bn">01</em><span class="bt">스마트 제조</span></span>
-              <span class="b"><em class="bn">02</em><span class="bt">에너지 인프라</span></span>
-              <span class="b"><em class="bn">03</em><span class="bt">인공지능 플랫폼</span></span>
-              <span class="b"><em class="bn">04</em><span class="bt">화합물 전력 반도체</span></span>
+              <span class="b brand"><span class="bt">에이프로</span></span>
+              <span class="b"><span class="bt">스마트 제조</span></span>
+              <span class="b"><span class="bt">에너지 인프라</span></span>
+              <span class="b"><span class="bt">인공지능 플랫폼</span></span>
+              <span class="b"><span class="bt">화합물 전력 반도체</span></span>
             </div>
           </div>
         </div>
