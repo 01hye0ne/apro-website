@@ -194,6 +194,25 @@
      "이 칸이 차오르는 중"으로 읽힌다 */
   .v2banner .bnav .b::before{content:"";position:absolute;z-index:0;inset:0;background:rgba(44,87,144,.09);transform:scaleX(0);transform-origin:left center}
   .v2banner .bnav .b.active::before{animation:bnavFill var(--bnav-dur,5s) linear forwards}
+  /* 첫 칸·끝 칸은 커브까지 차오른다 — 커브는 흰 패널의 일부인데 칸은 평평한 부분에서만
+     끝나서, 양끝만 게이지가 덜 찬 것처럼 보였다. 칸을 음수 마진으로 커브 위까지 넓히고
+     (안쪽 패딩으로 되밀어 글자는 원래 자리에 그대로 둔다), 넓어진 만큼을 커브 모양으로
+     오려 낸다.
+     오리는 자리가 칸(.b)인 이유 : 게이지는 scaleX 로 자라는데 transform 은 그 요소가
+     다 그려진 뒤에 걸린다 → 게이지 자신에 마스크를 씌우면 커브까지 같이 납작해진다.
+     부모를 오리면 자란 결과를 오리는 것이라 커브가 제 모양을 지킨다.
+     마스크는 패널(::before)이 커브를 그리는 것과 같은 값을 쓴다 — 두 도형이 어긋나면
+     흰 패널 밖으로 틴트가 삐져나온다 */
+  .v2banner .bnav .b:first-child{margin-left:calc(-1 * var(--cw));padding-left:calc(8px + var(--cw));
+    -webkit-mask:var(--tab-curve) left center/var(--cw) 100% no-repeat,
+      linear-gradient(#000,#000) right center/calc(100% - var(--cw)) 100% no-repeat;
+    mask:var(--tab-curve) left center/var(--cw) 100% no-repeat,
+      linear-gradient(#000,#000) right center/calc(100% - var(--cw)) 100% no-repeat}
+  .v2banner .bnav .b:last-child{margin-right:calc(-1 * var(--cw));padding-right:calc(8px + var(--cw));
+    -webkit-mask:var(--tab-curve-r) right center/var(--cw) 100% no-repeat,
+      linear-gradient(#000,#000) left center/calc(100% - var(--cw)) 100% no-repeat;
+    mask:var(--tab-curve-r) right center/var(--cw) 100% no-repeat,
+      linear-gradient(#000,#000) left center/calc(100% - var(--cw)) 100% no-repeat}
   /* the brand (에이프로) tab spans the three brand messages: its gauge fills from 0s until 이차전지 starts */
   .v2banner .bnav .b.brand{--bnav-dur:12.5s}
   @keyframes bnavFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
@@ -217,6 +236,9 @@
     .v2banner .bnav{height:auto;grid-template-columns:repeat(2,1fr);gap:4px}
     .v2banner .bnav::before,.v2banner .bnav::after{display:none}
     .v2banner .bnav .b{height:44px;background:rgba(255,255,255,.05);box-shadow:0 0 16px -8px rgba(11,11,10,.1)}
+    /* 커브가 없으니 첫·끝 칸을 넓히고 오려 내던 것도 같이 걷는다 */
+    .v2banner .bnav .b:first-child,.v2banner .bnav .b:last-child{
+      margin:0;padding:0 8px;-webkit-mask:none;mask:none}
     .v2banner .bnav .b::before{background:rgba(255,255,255,.16)}
     .v2banner .bnav .bt{font-size:15px;color:rgba(255,255,255,.72)}
     .v2banner .bnav .b:hover .bt{color:#fff}
