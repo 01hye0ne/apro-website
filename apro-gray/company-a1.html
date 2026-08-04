@@ -106,18 +106,34 @@
   /* ── ② 상단 고정 ── 자리를 화면 맨 위로 옮기고 그동안 GNB 는 접힌다.
      생김새에서 바뀌는 건 바닥뿐 — 흰 탭 패널과 좌우 커브를 걷고 바 전체를 흰색으로 채운다.
      탭 자리·구분선·아래 선은 히어로 상태 그대로여서, 전환이 "흰 바닥이 넓어지는 것"으로 읽힌다 */
+  /* --cnav-shift : 고정된 바가 제자리에서 위아래로 비키는 거리. 두 경우에 쓴다 —
+     GNB 를 꺼낼 때(아래로) · 푸터에서 접어 올릴 때(위로). 아래 두 규칙이 값만 바꾼다 */
   .cnav-wrap.is-fixed{position:fixed;top:var(--cnav-top);left:0;width:100%;
-    height:var(--bar-h);margin-top:0;background:#fff}
+    height:var(--bar-h);margin-top:0;background:#fff;
+    translate:0 var(--cnav-shift,0);transition:translate .34s var(--ease)}
   .cnav-wrap.is-fixed::after{display:none}
-  /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 네 탭이 나란한 목차일 뿐이라
+  @media(prefers-reduced-motion:reduce){.cnav-wrap.is-fixed{transition:none}}
+  /* 고정 상태에서만 현재 섹션을 표시한다 — 히어로 위에서는 세 탭이 나란한 목차일 뿐이라
      아직 "어디에 있다"가 없다 (세부 페이지 탭 바도 같은 규칙) */
-  .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
+  .cnav-wrap.is-fixed .cnav-tabs a[aria-current]{font-weight:700;color:var(--g900)}
+  .cnav-wrap.is-fixed .cnav-tabs a[aria-current]::after{opacity:1}
+
+  /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
+     목차 탭은 볼 일이 없다 (사업영역 .bnav-wrap.is-away 와 같은 판정·같은 동작) */
+  .cnav-wrap.is-fixed.is-away{--cnav-shift:calc(-100% - var(--cnav-top));
+    opacity:0;transition:translate .34s var(--ease),opacity .34s var(--ease)}
 
   /* 바가 화면 맨 위를 차지하는 동안 GNB 는 접는다 — 같은 자리에 둘이 겹칠 수 없다.
-     .gnb-group 째로 감춘다: 안에 든 로고·메뉴·언어 드롭다운·메가 패널이 한 벌로 빠진다
-     (공용 JS 가 쓰는 .nav-hide 는 건드리지 않는다 — 그쪽은 제 판단으로 다시 켜기 때문) */
-  body.cnav-stuck .gnb-group{opacity:0;visibility:hidden;pointer-events:none;
-    transition:opacity .3s var(--ease),visibility .3s var(--ease)}
+     .gnb-group 째로 접는다: 로고·메뉴·언어 드롭다운·메가 패널이 한 벌로 빠진다
+     (공용 JS 가 쓰는 .nav-hide 는 건드리지 않는다 — 그쪽은 제 판단으로 다시 켜기 때문).
+     visibility 로 지우지 않는 이유 — 그러면 Tab 으로도 닿을 수 없어 전역 메뉴가 이
+     페이지에서 아예 사라진다. 투명도만 0 이면 초점은 들어갈 수 있고, 들어가는 순간
+     아래 .nav-peek 가 다시 꺼낸다 (사업영역 .nav-hide 와 같은 방식) */
+  body.cnav-stuck .gnb-group{opacity:0;pointer-events:none;
+    transition:opacity .3s var(--ease)}
+  /* 커서가 화면 맨 위 띠(72px)에 들어오거나 초점이 GNB 로 들어오면 다시 꺼낸다.
+     판정은 공용 JS 가 하고 html.nav-peek 로 알린다 — 사업영역이 쓰는 그 판정 그대로다 */
+  .nav-peek body.cnav-stuck .gnb-group{opacity:1;pointer-events:auto}
   .cnav{position:relative;z-index:1;width:calc(100% - 168px);height:100%;margin:0 auto;
     display:grid;grid-template-columns:repeat(12,119px);column-gap:12px}
   .cnav-rule{display:none}
@@ -125,10 +141,20 @@
     display:flex;align-items:center;gap:20px;
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .cnav-tabs::-webkit-scrollbar{display:none}
-  .cnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;font-size:16px;
-    line-height:1.15;letter-spacing:-.32px;color:var(--g900);white-space:nowrap;
+  /* 쉬는 색은 본문 회색(--sec), 현재 탭은 가장 진한 먹(--g900) + 굵게. 방향이 중요하다 —
+     예전에는 쉬는 색이 이미 --g900 이고 현재 탭이 --brand 여서, 켜지면 되레 밝아졌다.
+     세 탭이 쉴 때 전부 최대 농도라 셋 다 골라진 것처럼 보이기도 했다.
+     (사업영역 .bnav-tabs 도 '연한 색 → 진한 색' 같은 문법이다. 거기 쉬는 색 --teritary 는
+      이쪽 20px 흰 바에서 대비가 3:1 아래로 떨어져 한 단 진한 --sec 를 쓴다) */
+  .cnav-tabs a{position:relative;flex-shrink:0;font-family:var(--suit);font-weight:500;
+    font-size:16px;line-height:1.15;letter-spacing:-.32px;color:var(--sec);white-space:nowrap;
     transition:color .3s var(--ease)}
-  .cnav-tabs a:hover{color:var(--brand)}
+  .cnav-tabs a:hover{color:var(--g900)}
+  /* 현재 탭 밑줄 — 이 바는 히어로 밑단에 얹힌 '폴더 탭'인데, 폴더 탭의 본래 신호(고른
+     탭이 앞으로 나온다)를 쓰지 않고 색·굵기로만 버티고 있었다. 밑줄 하나면 흰 바 위에서
+     색 대비에 기대지 않고도 어디에 있는지가 바로 읽힌다 */
+  .cnav-tabs a::after{content:"";position:absolute;left:0;right:0;top:calc(100% + 8px);
+    height:2px;background:var(--brand);opacity:0;transition:opacity .3s var(--ease)}
 
   @media(min-width:901px){
     /* 바 높이 65px, 히어로 밑단에서 60px 올라앉는다 → 내려온 거리는 65 + 60 */
@@ -140,7 +166,16 @@
     .cnav-tabs{position:absolute;left:262px;bottom:15px;width:var(--cnav-w);height:50px;
       display:grid;grid-template-columns:repeat(3,1fr);column-gap:0;
       justify-items:center;overflow:visible}
-    .cnav-tabs a{font-size:20px;transform:translateY(12px)}
+    /* align-self:start — 칸 높이(50px)만큼 늘어난 상자를 글자 높이로 줄인다. 글자는
+       원래도 상자 위쪽에 놓여 있어 자리가 그대로고, 밑줄만 글자 바로 밑에 붙는다 */
+    .cnav-tabs a{align-self:start;font-size:20px;transform:translateY(12px)}
+    /* GNB 를 꺼낼 때 바가 그 아래로 내려가 자리를 내준다 — 이 바는 높이가 65px 뿐이라
+       GNB(y 20~60)와 같은 자리를 쓴다. 사업영역 바는 128px 라 위쪽 절반이 비어 있어
+       GNB 가 그 위에 그냥 얹힌다. 높이가 다르니 비키는 방식도 다를 수밖에 없다 */
+       :not(.is-away) — 푸터에서 접어 올린 바는 GNB 를 꺼낼 때도 그대로 둔다.
+       이 규칙이 미디어 블록 안이라 소스 순서로는 접어 올리는 규칙보다 뒤다 → 안 적으면
+       푸터에서 위로 커서를 올릴 때 바가 도로 내려온다 */
+    .nav-peek .cnav-wrap.is-fixed:not(.is-away){--cnav-shift:72px}
     /* 칸 경계 구분선 — 3등분이라 33.3/66.7%. 양끝(0·100%)에는 긋지 않는다: 패널이 커브로
        닫혀 거기가 끝이라는 게 이미 보인다 (세부 페이지는 패널이 화면 오른쪽 끝까지 이어져서
        오른쪽 끝선을 하나 더 그어야 했다).
@@ -168,6 +203,13 @@
     .cnav-tabs{height:100%;flex:1}
     .cnav-tabs a{color:rgba(255,255,255,.62);text-shadow:0 1px 4px rgba(0,0,0,.28)}
     .cnav-tabs a[aria-current]{color:#fff}
+    /* 고정되면 바탕이 흰 바로 바뀐다 → 글자색도 되돌린다. 흰 글자는 히어로 사진 위에
+       있을 때만이다 (현재 탭은 위 .is-fixed 규칙이 특정도로 이미 이긴다) */
+    .cnav-wrap.is-fixed .cnav-tabs a{color:var(--sec);text-shadow:none}
+    /* 터치 화면에는 커서가 없어 핫존이 성립하지 않는다 → GNB 를 접지 않고 그 아래에
+       붙인다. 사업영역도 좁은 화면에서는 --bar-top:72px 로 같은 선택을 한다 */
+    .cnav-wrap{--cnav-top:72px}
+    body.cnav-stuck .gnb-group{opacity:1;pointer-events:auto}
   }
 
   /* =====================================================================
@@ -1087,16 +1129,20 @@
    "위에서 몇 px" 같은 기준보다 중앙 한 점으로 묻는 편이 흔들리지 않는다
    (business-layout.js 의 섹션 판정과 같은 기준) */
 (function(){
-  var wrap=document.querySelector('.cnav-wrap'),hero=document.querySelector('.dhero');
+  var wrap=document.querySelector('.cnav-wrap'),hero=document.querySelector('.dhero'),
+      ft=document.querySelector('.footer');
   if(!wrap||!hero)return;
   var tabs=[].slice.call(wrap.querySelectorAll('.cnav-tabs a[href^="#"]'));
   var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  var top=0,drop=0,fixed=null,cur=-1;
+  var top=0,drop=0,barH=0,fixed=null,cur=-1;
 
   function measure(){
     var cs=getComputedStyle(wrap);
     top=parseFloat(cs.getPropertyValue('--cnav-top'))||0;
     drop=parseFloat(cs.getPropertyValue('--cnav-drop'))||0;
+    /* 바 높이는 두 상태에서 같다(--bar-h) → 여기서 한 번만 잰다.
+       매 스크롤 프레임에서 offsetHeight 를 읽으면 그때마다 레이아웃을 다시 잡는다 */
+    barH=wrap.offsetHeight;
   }
   function paint(){
     var v=hero.getBoundingClientRect().bottom-drop<=top+0.5;
@@ -1105,6 +1151,16 @@
       wrap.classList.toggle('is-fixed',v);
       document.body.classList.toggle('cnav-stuck',v);
     }
+    /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
+       목차 탭은 볼 일이 없다. 푸터가 화면보다 낮아 밑변이 화면 위로 못 올라오는 큰
+       화면을 위해 "푸터 윗변이 바 밑변에 닿으면"도 OR 로 둔다 (사업영역과 같은 판정).
+       매 프레임 다시 봐야 하므로 아래 조기 반환보다 앞에 둔다 */
+    var away=false;
+    if(v&&ft){
+      var fr=ft.getBoundingClientRect(),shown=window.innerHeight-fr.top;
+      away=shown>=fr.height/2||fr.top<=top+barH+0.5;
+    }
+    wrap.classList.toggle('is-away',away);
     var mid=window.innerHeight/2,best=-1;
     for(var i=0;i<secs.length;i++){
       if(!secs[i])continue;

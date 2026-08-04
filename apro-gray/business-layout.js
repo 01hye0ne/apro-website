@@ -96,15 +96,32 @@
      돌아갈 길을 남겨야 하기 때문. 메가·언어 메뉴가 열려 있으면 커서가 띠를 벗어나도
      접지 않는다(메가 패널은 띠 아래까지 내려오므로 그때 접으면 메뉴가 사라진다).
      좁은 화면은 호버가 없는 터치 기기가 대부분이라 애초에 접지 않고, 바가 GNB 아래로 붙는다 */
-  var HOT=72,hotIn=false;
+  var HOT=72,hotIn=false,focusIn=false;
   function paintNav(){
-    var keep=hotIn||g.classList.contains('mega-open')||g.classList.contains('lang-open');
+    var keep=hotIn||focusIn||g.classList.contains('mega-open')||g.classList.contains('lang-open');
     g.classList.toggle('nav-hide',!!hid&&!keep);
+    /* 회사소개(.cnav-*)는 제 탭 바를 따로 굴리지만 GNB 접기·꺼내기는 이 판정을 그대로
+       쓴다 → '지금 꺼내야 하는 상태'만 문서에 걸어 두고 그쪽 CSS 가 받아 간다.
+       두 페이지가 같은 판정을 보므로 규칙이 갈릴 일이 없다 */
+    document.documentElement.classList.toggle('nav-peek',keep);
   }
   document.addEventListener('mousemove',function(e){
-    hotIn=e.clientY<=HOT;
-    if(hid)paintNav();
+    var v=e.clientY<=HOT;
+    if(v===hotIn)return;   /* 띠를 드나들 때만 다시 칠한다 */
+    hotIn=v;paintNav();
   },{passive:true});
+  /* 키보드 — 접힌 GNB 안으로 초점이 들어오면 꺼낸다. 마우스 핫존만 두면 Tab 으로는
+     로고·전체메뉴에 닿을 길이 아예 없다. 접힌 GNB 는 opacity 만 0 이라(visibility 가
+     아니라) 초점은 들어갈 수 있고, 들어가는 순간 여기서 다시 보이게 만든다 */
+  document.addEventListener('focusin',function(e){
+    var v=g.contains(e.target);
+    if(v===focusIn)return;
+    focusIn=v;paintNav();
+  });
+  document.addEventListener('focusout',function(e){
+    if(!focusIn||g.contains(e.relatedTarget))return;
+    focusIn=false;paintNav();
+  });
 
   function ap(){
     var hb=hero.getBoundingClientRect().bottom;
