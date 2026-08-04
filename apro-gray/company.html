@@ -56,9 +56,12 @@
     .dhero{min-height:100vh;min-height:100dvh}
     /* 탭 바가 밑단에 얹히는 만큼 가운데 문안을 위로 당겨 시각적 중앙을 맞춘다 */
     .dhero .in{transform:translateY(-40.5px)}
-    /* 히어로 밑단 60px 흰 띠 — 탭 바의 흰 패널과 이어져 폴더 탭 모양을 만든다 */
+    /* 히어로 밑단 60px 띠 — 탭 바의 패널과 이어져 한 덩어리가 된다.
+       색은 바로 뒤에 오는 장(Vision, --g950)과 같다. 예전에는 흰색이었는데, About 이
+       맨 뒤로 가고 어두운 Vision 이 앞으로 오면서 그 흰 띠가 히어로와 Vision 사이에
+       끼어 보였다 → 히어로 밑단부터 Vision 까지 끊기지 않고 이어진다 */
     .dhero::before{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;
-      height:60px;background:#fff}
+      height:60px;background:var(--g950)}
   }
   /* 히어로 문안은 영문 슬로건 한 줄뿐이다 — 그 줄이 곧 타이틀이라 크게 세운다.
      세부 페이지의 h1(국문 사업명, SUIT)과 달리 여기는 대문자 영문이라 글꼴도 그쪽
@@ -83,25 +86,25 @@
      찾아 제 규칙(어두운 바·GNB 접기)대로 고정시킨다. 전환은 이 문서 끝 스크립트가 한다.
      ===================================================================== */
   /* 음수 마진으로 히어로 밑단에 얹힌다 → 흐름 높이는 0, 아래 본문이 밀리지 않는다.
-     --bx4      : 흰 패널이 시작하는 x (뷰포트 기준). 본문 상자의 왼쪽 끝과 같은 선
+     --bx4      : 탭 패널이 시작하는 x (뷰포트 기준). 본문 상자의 왼쪽 끝과 같은 선
      --cnav-w   : 패널·탭 줄의 폭 (본문 상자와 같다)
      --cnav-drop: 히어로 밑변에서 바 윗변까지의 거리 (= 음수 마진의 크기)
      --cnav-top : 고정됐을 때 바가 서는 y (GNB 띠 아래)
-     뒤 두 값은 스크립트가 그대로 읽어 전환 시점을 잡는다 — CSS 와 JS 가 같은 값을 본다 */
+     --cnav-line: 칸 구분선·아래 가로선의 색 (어두운 바닥에서는 아래 ⑨ 가 갈아 끼운다)
+     --cnav-drop·--cnav-top 은 스크립트가 그대로 읽어 전환 시점을 잡는다 — CSS 와 JS 가
+     같은 값을 본다 */
   .cnav-wrap{position:relative;z-index:95;height:var(--bar-h);
     margin-top:calc(-1 * var(--bar-h));
     --bx4:346px;--cnav-w:1167px;--cnav-drop:var(--bar-h);--cnav-top:0px;
-    /* 오른쪽 커브 = 공용 --tab-curve 를 좌우로 뒤집은 것 (경로를 x → 24-x 로 옮겨 적었다) */
-    --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E")}
-  /* 흰 탭 패널 — 가운데는 흰 사각형, 양끝은 커브. 세 겹을 한 배경으로 얹는다.
-     커브 폭은 패널 높이 × 24/40 (원본 커브의 종횡비)이라 높이가 바뀌면 같이 따라온다 */
+    --cnav-line:var(--border-g)}
+  /* 탭 패널 — 히어로 밑단에 얹히는 판. 색은 히어로 밑단 띠·뒷 장(Vision)과 같은 --g950 라
+     사실상 배경에 녹아 있고, 그 위에 글자와 칸 구분선만 남는다.
+     예전에는 좌우가 커브로 닫힌 흰 판이었다(--tab-curve 두 장 + 흰 사각형). 어두운 Vision 이
+     앞으로 오면서 그 흰 판이 히어로와 Vision 사이에 끼어 보여 배경색으로 바꿨다 —
+     색이 같아지면 커브도 보이지 않으므로 한 겹 단색으로 줄였다.
+     되돌릴 자리는 여기 background 한 줄이다 */
   .cnav-wrap::after{content:"";position:absolute;bottom:0;height:60px;
-    --cw:calc(60px * 24 / 40);
-    left:calc(var(--bx4) - var(--cw));width:calc(var(--cnav-w) + 2 * var(--cw));
-    background:
-      var(--tab-curve) left bottom/var(--cw) 100% no-repeat,
-      var(--tab-curve-r) right bottom/var(--cw) 100% no-repeat,
-      linear-gradient(#fff,#fff) center bottom/calc(100% - 2 * var(--cw)) 100% no-repeat}
+    left:var(--bx4);width:var(--cnav-w);background:var(--g950)}
 
   /* ── ② 상단 고정 ── 자리를 화면 맨 위로 옮기고 그동안 GNB 는 접힌다.
      생김새에서 바뀌는 건 바닥뿐 — 흰 탭 패널과 좌우 커브를 걷고 바 전체를 흰색으로 채운다.
@@ -157,13 +160,13 @@
     .cnav-tabs::after{content:"";position:absolute;left:0;right:0;top:0;bottom:-27px;
       pointer-events:none;
       background-image:linear-gradient(to right,
-        transparent calc(33.333% - .5px),var(--border-g) calc(33.333% - .5px),var(--border-g) calc(33.333% + .5px),transparent calc(33.333% + .5px),
-        transparent calc(66.667% - .5px),var(--border-g) calc(66.667% - .5px),var(--border-g) calc(66.667% + .5px),transparent calc(66.667% + .5px),
+        transparent calc(33.333% - .5px),var(--cnav-line) calc(33.333% - .5px),var(--cnav-line) calc(33.333% + .5px),transparent calc(33.333% + .5px),
+        transparent calc(66.667% - .5px),var(--cnav-line) calc(66.667% - .5px),var(--cnav-line) calc(66.667% + .5px),transparent calc(66.667% + .5px),
         transparent 100%)}
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계.
        히어로 위에서는 히어로 밑단의 흰 띠 위에 그어진다 */
     .cnav-rule{display:block;position:absolute;left:0;right:0;bottom:-12px;
-      height:1px;background:var(--border-g)}
+      height:1px;background:var(--cnav-line)}
     /* 고정되면 그 흰 띠가 없다 → 바 아래로 12px 흰 띠를 이어 붙이고 그 밑에 선을 긋는다.
        탭 구분선이 바 아래로 12px 더 내려오므로 그 자리가 흰색이라야 히어로 때와 같아 보인다 */
     .cnav-wrap.is-fixed .cnav-rule{top:100%;bottom:auto;height:12px;
@@ -658,6 +661,12 @@
     .ccols>.cstats{margin-top:clamp(32px,5vh,72px)}
     .cstat{min-height:140px;padding:22px 24px;gap:10px}
     .cstat .v{font-size:clamp(24px,2.2vw,36px)}
+    /* 히어로 위에서는 탭이 어두운 밑단 위에 놓인다(패널이 배경색이라) → 글자와 선을
+       그 바닥에 맞춘다. 고정되면 바가 흰색으로 바뀌므로 원래 값으로 돌아간다 —
+       :not(.is-fixed) 조건이 꺼지면 그만이라 되돌리는 규칙이 따로 필요 없다 */
+    .cnav-wrap:not(.is-fixed){--cnav-line:rgba(255,255,255,.2)}
+    .cnav-wrap:not(.is-fixed) .cnav-tabs a{color:var(--on-white-85)}
+    .cnav-wrap:not(.is-fixed) .cnav-tabs a:hover{color:#fff}
   }
   /* 더 낮은 화면 — 한 단 더 줄인다 */
   @media(min-width:901px) and (min-height:700px) and (max-height:880px){
