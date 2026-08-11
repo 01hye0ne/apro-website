@@ -937,6 +937,20 @@
     .hcard:has(.pict)>.hright{margin-top:40px;
       border:1px solid var(--border-g)}
 
+    /* 비주얼 칸 모서리를 4px 굴린다 (2026-08-11 요청) — A-1 하단 탭 바(⑪)에
+       넣은 값과 같다. 본문에서 각진 채로 남는 것은 선으로만 짜인 것들
+       (픽토그램 행 · PLC/MES 판 · 공정 순서 칩)이고, "그림이 놓이는 면"은
+       전부 이 값을 쓴다.
+       두 가지 경우를 따로 건다 —
+         · 테두리로 묶인 판(위 :has(.pict) 카드) : 판에 반경을 준다. .hright 는
+           overflow:hidden 이라(위 .hcard>.hright) 안의 사진이 저절로 함께 오려진다.
+         · 판 없이 바탕에 바로 놓이는 그림(상|하 카드의 구성도·지도) : 오려낼
+           테두리가 없으므로 그림 자신에게 준다. 판이 있는 카드의 사진에까지
+           같이 걸면 판 반경(안쪽 실효 3px)과 어긋나 모서리에 흰 실선이 비쳐서,
+           :not(:has(.pict)) 로 갈라 둔다 */
+    .hcard>.hright{border-radius:4px}
+    .hcard:not(:has(.pict))>.hright img{border-radius:4px}
+
     /* ⑧ PLC·MES 그리드 — 칸 사이 간격을 없애 네 칸을 한 판으로 묶고, 좌우 여백도
        걷어 판의 좌우 끝이 제목 줄(4열)과 소분류 탭 오른쪽 끝(11열)에 맞게 한다.
 
@@ -1229,8 +1243,13 @@
        margin:0 auto 로 화면 정중앙 — 알약이 본문 격자를 따르지 않으므로
        기준으로 삼을 열이 따로 없다.
 
-       알약 자체는 흰 판이다 — 바탕 흰색 + 1px 외곽선. 모서리는 굴리지 않는다
-       (2026-08-11 요청). 그림자도 걷고 선 하나로만 바닥에서 떼어 놓는다 —
+       알약 자체는 흰 판이다 — 바탕 흰색 + 1px 외곽선. 모서리는 왼쪽 아래 하나만
+       각지고 나머지 셋은 4px 굴린다(2026-08-11 요청). 왼쪽 아래는 어두운 판의
+       밑변과 밑단 흰 띠가 만나는 자리라, 굴리면 그 두 면의 경계선이 모서리에서
+       끊겨 보인다.
+       overflow:hidden — 어두운 대분류 판은 알약 왼쪽 위 모서리에 그대로 붙는
+       사각형이라, 굴린 테두리 밖으로 삐져나오는 만큼을 여기서 오려낸다.
+       그림자도 걷고 선 하나로만 바닥에서 떼어 놓는다 —
        이 레이아웃이 ⑤·⑥·⑧ 에서 줄곧 "면이 아니라 선"으로 간 것과 같은 방향이다.
        선 색을 --line 이 아니라 반투명 먹으로 두는 이유 — 이 테두리는 흰 판
        위(오른쪽·밑단)와 어두운 대분류 판 위(왼쪽·윗변 일부)를 함께 지난다.
@@ -1245,16 +1264,23 @@
       max-width:calc(100% - 2 * var(--gm));height:var(--pill-h);margin:0 auto;
       padding-bottom:var(--pill-pad);
       display:flex;align-items:stretch;column-gap:0;pointer-events:auto;
-      background:#fff;border:1px solid rgba(27,39,51,.18);border-radius:0;
+      background:#fff;border:1px solid rgba(27,39,51,.18);
+      border-radius:4px 4px 4px 0;overflow:hidden;
       animation:pillIn .42s var(--ease)}
 
     /* ── 대분류 ── 알약 왼쪽의 어두운 판. 20px 은 이 폭에서 너무 커서 17px 로
        내린다 — 옆 소분류(16px)보다 한 칸 위지만 두 배 무게로 벌어지지는 않는다.
-       판의 오른쪽 경계는 이 칸이 아니라 옆 .bnav-tabs 의 커브가 긋는다.
-       그림자(text-shadow)는 사진 위에 놓일 때 필요했던 값이라 여기서는 끈다 */
+       그림자(text-shadow)는 사진 위에 놓일 때 필요했던 값이라 여기서는 끈다.
+
+       커브는 오른쪽 하나뿐이다 — 옆 .bnav-tabs 가 --tab-curve 로 긋는다.
+       판의 왼쪽 끝은 알약 왼쪽 변에 그대로 붙는 곧은 선이고, 모서리 라운드는
+       알약 자신이 든다(위 .bnav 의 border-radius). 한때 왼쪽에도 커브를 뒀다가
+       (반전판 / 180° 회전판 둘 다) 걷어낸 자리다 — 왼쪽은 열려 나갈 데가 없어서
+       커브가 "판이 이어진다"가 아니라 "모서리를 깎았다"로만 읽혔다 */
     .v-a1 .bnav-wrap.is-fixed .bnav-ttl{align-self:stretch;
-      height:auto;margin:0;padding:0 24px 0 26px;font-size:17px;
-      letter-spacing:-.34px;text-shadow:none;background:var(--g950)}
+      height:auto;margin:0;padding:0 24px 0 26px;
+      font-size:17px;letter-spacing:-.34px;text-shadow:none;
+      background:var(--g950)}
 
     /* ── 소분류 ── 절대배치(히어로·상단 고정에서 쓰던 방식)를 걷고 알약 안의
        평범한 flex 줄로 되돌린다. 칸을 균등 분할하지 않는 것도 의도다 — 알약이
