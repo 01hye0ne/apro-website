@@ -27,12 +27,16 @@ from pathlib import Path
 HERE = Path(__file__).parent
 
 # A-1 짝이 있는 페이지. 이 이름들의 링크를 A-1 안에서 -a1 로 바꿔 준다.
-# 홈(index)은 A/A-1 을 따로 만들고 있어 여기 함께 들어 있다 —
-# 홈 파일 이름이 바뀌면 이 목록만 고치면 된다.
+# 페이지 이름이 바뀌면 이 목록만 고치면 된다.
 PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
-         'business', 'company', 'index']
+         'business', 'company', 'network', 'index']
 
-# 실제로 A-1 을 생성할 페이지 (홈은 직접 관리하므로 제외)
+# 실제로 A-1 을 생성할 페이지
+#
+# index.html(홈)도 여기 들어와 있다 — 한동안은 A/A-1 을 손으로 따로 관리했다(히어로 밑단
+# 탭 띠와 Business 장이 갈래마다 달랐다). 지금은 홈 디자인을 하나로 합쳤으므로(히어로는
+# A-1 의 유리 탭 띠, 나머지는 A 의 정적 4타일) 두 갈래가 링크와 타이틀만 다르다 →
+# 다른 페이지와 똑같이 이 스크립트가 낸다. 홈을 고칠 때도 index.html 만 고치면 된다.
 #
 # business.html(사업영역 허브)도 A-1 이 필요하다 — 디자인은 A/A-1 이 같지만, 이 페이지가
 # 세부 페이지 4개와 홈을 하드링크하는데 모든 페이지의 GNB "사업영역"이 여기로 들어온다.
@@ -44,9 +48,13 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # 메가메뉴·전체메뉴의 "에이프로 소개"가 여기로 모이고, 이 페이지도 세부 페이지 4개와
 # 홈을 되짚어 링크한다. 한 벌만 두면 A-1 에서 회사소개를 한 번 누르는 순간 그 뒤로는
 # 전부 A 갈래가 된다. 디자인은 A/A-1 이 같고 링크만 갈라진다는 점도 business.html 과 같다.
+#
+# network.html(글로벌 네트워크)도 마찬가지다 — 홈에 있던 Global Network 장이 페이지로
+# 나온 것이고, 회사 정보 메뉴·푸터·전체메뉴가 모두 여기로 모인다. 디자인은 A/A-1 이
+# 같고 링크만 갈라진다.
 SOURCES = ['business-smart.html', 'business-energy.html',
            'business-ai.html', 'business-semicon.html',
-           'business.html', 'company.html']
+           'business.html', 'company.html', 'network.html', 'index.html']
 
 
 def build(src_text):

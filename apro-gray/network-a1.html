@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 글로벌 네트워크 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 글로벌 네트워크 — 경기도의 본사·R&D센터와 세계 각지의 생산·판매 거점." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<!-- ============================================================
+     글로벌 네트워크 — 홈(index.html)에 있던 Global Network 장을 그대로 옮겨 와
+     제 페이지로 세운 것이다. 회사 정보 > 글로벌 네트워크 로 들어온다.
+
+     장 하나가 페이지 전부라 히어로를 따로 두지 않는다 — 왼쪽 위 "Global / Network"
+     자체가 이 페이지의 제목이고, 무대(1280×900)가 첫 화면을 가득 채운다.
+     그래서 공용 JS(business-layout.js)가 찾는 .dhero·.bnav-wrap 이 이 페이지엔 없다.
+     그쪽은 히어로가 없으면 GNB 를 흰 글자 그대로 두도록 되어 있다(그 파일 ap() 참고).
+
+     GNB·푸터·전체메뉴는 사업영역 세부 페이지와 같은 한 벌(business-layout.css /
+     business-layout.js)을 쓴다 — 아래 <style> 은 이 페이지에만 필요한 두 가지,
+     ① 좌우 84px 그리드 맞춤 ② 옮겨 온 GLOBAL NETWORK 장의 CSS 뿐이다.
+
+     A-1(network-a1.html)은 이 파일에서 _gen-a1.py 로 나오므로 고칠 자리는 여기뿐이다.
+     디자인은 A/A-1 이 같고 갈라지는 것은 내부 링크뿐이다 -->
+<style>
+  /* =====================================================================
+     ① 그리드 — 세부 페이지·회사소개와 같은 좌우 84px 고정 여백
+        (business-layout.css 의 기본값은 --maxw 캡을 쓰는 옛 방식이라 여기서 덮는다)
+     ===================================================================== */
+  .gnb-group{--gutter:84px}
+  .gnb{width:calc(100% - 168px)}
+  .gnb-mega .inner{width:calc(100% - 168px)}
+
+  /* 본문 상자(2열~11열)의 왼쪽 선까지의 거리 — 12열 그리드(좌우 84px, 거터 12px)에서
+     "한 열 + 거터 하나"를 뽑은 값이다. 회사소개의 .cwrap 이 쓰는 패딩과 같은 식.
+     100% 가 아니라 100vw 인 이유: 아래 무대가 뷰포트가 아니라 고정폭(1280px) 상자를
+     기준으로 삼기 때문에, 그 안에서 100% 를 쓰면 상자 폭으로 잘못 풀린다 */
+  :root{--sec-inset:calc((100vw - 300px) / 12 + 12px)}
+
+  /* =====================================================================
+     ② GLOBAL NETWORK — 홈에서 옮겨 온 장 (원본: index.html 의 .v2gnet)
+     ===================================================================== */
+  /* 홈에서는 뉴스 장 뒤에 900px 높이로 놓였지만, 여기서는 이 장이 곧 첫 화면이다 →
+     화면이 900px 보다 높으면 그만큼 늘어나고 무대는 세로 가운데에 선다.
+     무대 자체는 홈과 똑같은 1280×900 고정 좌표계라 안쪽 값은 하나도 건드리지 않았다 */
+  .gnet{position:relative;width:100%;height:900px;min-height:100vh;min-height:100dvh;overflow:hidden;
+    background:radial-gradient(120% 75% at 42% 118%, rgba(160,168,178,.15), rgba(26,28,31,0) 62%),
+               linear-gradient(180deg,#1a1c1f 0%,#24272c 55%,#2d3137 100%)}
+  .gnet .gnet-stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1280px;height:900px}
+  .gnet .gnet-map{position:absolute;left:288px;top:249px;width:921px;height:451px;pointer-events:none}
+  .gnet .gnet-map img{width:100%;height:100%;display:block}
+  /* left = GNB의 좌측선(뷰포트 기준 84px + 한 열)을, 뷰포트 중앙에 고정폭(1280px)으로
+     떠 있는 gnet-stage 자신의 좌표계로 환산한 값 — 스테이지 좌측 끝이 뷰포트 기준
+     (100vw-1280px)/2 에 있으므로 거기서부터의 거리를 재면 아래 식이 된다.
+     뷰포트 폭마다 실제 값이 달라져 상수로 못 박을 수 없다 */
+  .gnet .gnet-gn{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:255px;font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .gnet .gnet-desc{position:absolute;left:calc(84px + var(--sec-inset) - (100vw - 1280px) / 2);top:764px;width:564px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  .gnet .gnet-stats{position:absolute;left:852px;top:764px;width:404px;display:flex}
+  .gnet .gnet-stat{flex:1;text-align:center}
+  .gnet .gnet-stat .num{font-family:var(--rc);font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff}
+  .gnet .gnet-stat .lab{margin-top:9px;font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:var(--on-white-85)}
+  .gnet .gnet-mk{position:absolute;width:20px;height:20px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:6px;cursor:pointer}
+  .gnet .gnet-mk .dot{width:6px;height:6px;background:#ff8f47;border:1px solid #fff;box-shadow:0 6px 4px 2px rgba(0,0,0,.25);flex-shrink:0}
+  .gnet .gnet-mk .tip{position:absolute;bottom:18px;left:50%;transform:translate(-50%,6px);white-space:nowrap;padding:8px 16px;
+    font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900);
+    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 0 16px rgba(11,11,10,.12);opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
+  .gnet .gnet-mk:hover{z-index:5}
+  .gnet .gnet-mk:hover .tip{opacity:1;transform:translate(-50%,0)}
+  /* 지도가 화면에 들어오면 표시가 하나씩 솟았다가, 그 뒤로는 은은한 파동으로 숨 쉰다 */
+  .gnet .gnet-mk .dot{position:relative}
+  .gnet .gnet-mk .dot::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;
+    border:1px solid #ff8f47;box-sizing:border-box;opacity:0;pointer-events:none}
+  @media (prefers-reduced-motion:no-preference){
+    /* 무대는 페이지의 첫 화면이라 스크롤을 기다리지 않고 뜨자마자 한 번 밝아진다 */
+    .js-anim .gnet .gnet-stage{animation:gnetIn 1.2s var(--ease) both}
+    @keyframes gnetIn{from{opacity:0}to{opacity:1}}
+    .js-anim .gnet .gnet-mk{opacity:0;transform:translateY(6px) scale(.35);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+    .js-anim .gnet .gnet-live .gnet-mk{opacity:1;transform:none}
+    .gnet .gnet-live .gnet-mk .dot::after{animation:mkPulse 2.8s var(--ease) infinite;animation-delay:var(--pd,0s)}
+  }
+  @keyframes mkPulse{0%{opacity:.5;transform:scale(1)}70%{opacity:0;transform:scale(3.4)}100%{opacity:0;transform:scale(3.4)}}
+  @media (prefers-reduced-motion:reduce){ .gnet .gnet-mk .tip{transition:none} }
+</style>
+<!-- 표시(마커)를 숨겼다 띄우는 연출 스위치. JS 가 없거나 못 돌면 그냥 다 보인다 -->
+<script>document.documentElement.classList.add('js-anim');</script>
+</head>
+<body class="v-a1">
+
+<!-- ===================== GNB (사업영역 세부 페이지와 동일) ===================== -->
+<div class="gnb-group">
+  <nav class="gnb">
+    <a class="logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="menus">
+      <a href="business-a1.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="#" data-i="2">투자정보</a><a href="#" data-i="3">지속가능경영</a><a href="#" data-i="4">커뮤니티</a>
+    </div>
+    <div class="tools">
+      <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
+      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
+    <div class="m-col" data-i="0"><a href="business-smart-a1.html">스마트 제조</a><a href="business-energy-a1.html">에너지 솔루션</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
+    <div class="m-col" data-i="1"><a href="company-a1.html">회사 소개</a><a href="network-a1.html" aria-current="page">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    <div class="m-col" data-i="2"><a href="#">재무정보</a><a href="#">내부정보관리규정</a><a href="#">내부회계관리규정</a></div>
+    <div class="m-col" data-i="3"><a href="#">환경</a><a href="#">사회</a><a href="#">지배구조</a><a href="#">내/외부 신고채널</a><a href="#">ESG 게시판</a></div>
+    <div class="m-col" data-i="4"><a href="#">공지사항</a><a href="#">보도자료</a></div>
+  </div><span class="m-globe"></span></div></div>
+  <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
+</div>
+
+<!-- ===================== GLOBAL NETWORK ===================== -->
+<!-- 표시(.gnet-mk)의 left/top 은 1280×900 무대 안의 좌표다 — 지도 이미지 위 실제
+     위치라 값 하나하나가 나라 한 곳을 가리킨다. 무대 크기를 바꾸면 전부 다시 잡아야 한다 -->
+<section class="gnet">
+  <div class="gnet-stage">
+    <div class="gnet-map"><img src="../assets/gnet-map.png" alt="" aria-hidden="true" /></div>
+
+    <h1 class="gnet-gn">Global<br/>Network</h1>
+
+    <p class="gnet-desc">A-PRO의 본사와 R&amp;D센터는 경기도에 있으며, 다양한 제품 포트폴리오를 개발하고 있습니다.<br/>최고의 엔지니어들이 새롭고 혁신적인 기술 개발을 위해 끊임 없이 노력하고 있습니다.<br/>제품은 여러 국가에서 현지 생산되고 있으며, 본사의 제품과 서비스는 글로벌<br/>해외 영업 네트워크를 통해 판매되고 있습니다.</p>
+
+    <div class="gnet-stats">
+      <div class="gnet-stat"><p class="num">00</p><p class="lab">생산</p></div>
+      <div class="gnet-stat"><p class="num">15</p><p class="lab">판매</p></div>
+    </div>
+
+    <span class="gnet-mk" style="left:485px;top:389px"><span class="tip">United States of America</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:490px;top:476px"><span class="tip">Nicaragua</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:489px;top:504px"><span class="tip">Panama</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:518px;top:541px"><span class="tip">Peru</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:742px;top:381px"><span class="tip">Germany</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:754px;top:399px"><span class="tip">Czech</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:768px;top:416px"><span class="tip">Austria</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:776px;top:364px"><span class="tip">Poland</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:783px;top:426px"><span class="tip">Hungary</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:785px;top:391px"><span class="tip">Slovakia</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:797px;top:408px"><span class="tip">Romania</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:974px;top:487px"><span class="tip">Vietnam</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:988px;top:433px"><span class="tip">China</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:1034px;top:424px"><span class="tip">Korea</span><span class="dot"></span></span>
+    <span class="gnet-mk" style="left:1088px;top:408px"><span class="tip">Japan</span><span class="dot"></span></span>
+  </div>
+</section>
+
+<!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul>
+          <li><a href="business-smart-a1.html">스마트 제조</a></li>
+          <li><a href="business-energy-a1.html">에너지 솔루션</a></li>
+          <li><a href="business-ai-a1.html">인공지능 플랫폼</a></li>
+          <li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-a1.html">회사 소개</a></li><li><a href="network-a1.html" aria-current="page">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="#">재무정보</a></li><li><a href="#">내부정보관리규정</a></li><li><a href="#">내부회계관리규정</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="#">환경</a></li><li><a href="#">사회</a></li><li><a href="#">지배구조</a></li><li><a href="#">내/외부 신고채널</a></li><li><a href="#">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="#">공지사항</a></li><li><a href="#">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network-a1.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-smart-a1.html">스마트 제조</a>
+        <a href="business-energy-a1.html">에너지 솔루션</a>
+        <a href="business-ai-a1.html">인공지능 플랫폼</a>
+        <a href="business-semicon-a1.html">화합물 전력 반도체</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links"><a href="company-a1.html">회사 소개</a><a href="network-a1.html" aria-current="page">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="#">재무정보</a><a href="#">내부정보관리규정</a><a href="#">내부회계관리규정</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="#">환경</a><a href="#">사회</a><a href="#">지배구조</a><a href="#">내/외부 신고채널</a><a href="#">ESG 게시판</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="#">공지사항</a><a href="#">보도자료</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
+     (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="business-layout.js"></script>
+<script>
+/* 지도 표시(마커)와 숫자 — 홈에 있던 그대로 옮겨 왔다.
+   숫자는 0 에서 제 값까지 오르고, 표시는 순서대로 하나씩 솟았다가 은은히 파동친다.
+   이 장이 페이지의 첫 화면이라 사실상 로드 직후에 켜지지만, 스크롤로 들어오는
+   경우(작은 화면에서 되돌아왔을 때)도 있어 판정은 그대로 IntersectionObserver 로 둔다 */
+(function(){
+  var stage = document.querySelector('.gnet .gnet-stage');
+  if(!stage){ return; }
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var markers = stage.querySelectorAll('.gnet-mk');
+  markers.forEach(function(m,i){
+    m.style.transitionDelay = (0.35 + i*0.06).toFixed(2) + 's';   /* 솟는 차례 */
+    m.style.setProperty('--pd', (-(i%7)*0.4).toFixed(2) + 's');   /* 파동 시점을 흩는다 */
+  });
+  /* 큰 숫자 둘 — 0 에서 시작하도록 되돌려 두고 목표값·자릿수를 기억한다 */
+  var targets = [];
+  stage.querySelectorAll('.gnet-stat .num').forEach(function(el){
+    var t = el.textContent.trim();
+    targets.push({ el:el, val:parseInt(t,10)||0, len:t.length });
+    if(!reduce){ el.textContent = String(0).padStart(t.length,'0'); }
+  });
+  function pad(v,l){ v=String(v); while(v.length<l){ v='0'+v; } return v; }
+  function countUp(o){
+    var dur = 1400, start = null;
+    function step(ts){
+      if(start===null){ start = ts; }
+      var p = Math.min(1, (ts-start)/dur), e = 1 - Math.pow(1-p, 3);   /* easeOutCubic */
+      o.el.textContent = pad(Math.round(e*o.val), o.len);
+      if(p<1){ requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+  var done = false;
+  function run(){
+    if(done){ return; } done = true;
+    stage.classList.add('gnet-live');
+    if(!reduce){ targets.forEach(countUp); }
+    else { targets.forEach(function(o){ o.el.textContent = pad(o.val, o.len); }); }
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ run(); io.disconnect(); } });
+    }, { threshold: 0.3 });
+    io.observe(stage);
+  } else { run(); }
+})();
+</script>
+</body>
+</html>

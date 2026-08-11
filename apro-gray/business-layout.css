@@ -1,6 +1,7 @@
 /* APRO 사업영역 서브페이지 공용 레이아웃
    business-{smart,energy,ai,semicon}.html(A)과 그 -a1.html(A-1), 여덟 페이지가 함께 쓴다.
-   두 버전의 차이는 히어로 하나뿐이고 그 분기도 이 파일이 만든다 (.dhero / .v-a1 규칙).
+   두 버전의 HTML 은 같고 보이는 차이는 전부 이 파일이 만든다(.v-a1 규칙).
+   2026-08-10 부터 히어로도 두 버전이 같아졌다 — 남은 차이는 A-1 의 "카드 묶음 상자" 하나.
    레이아웃 결정 과정에 쓴 목업 4종(가로형·좌측·우측 통합안)은 이 파일로 정리된 뒤
    삭제했다 — 내용이 필요하면 커밋 이력에서 business-smart-mockup*.html 을 찾으면 된다 */
 
@@ -48,6 +49,16 @@
        570:3893 의 stroke path(30×48)를 24×40 좌표로 옮기고 곡선 아래·오른쪽을 흰색으로
        채운 도형이다. 그리드 거터(24px)에 딱 맞게 들어간다 */
     --tab-curve:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0V40H0Z' fill='%23fff'/%3E%3C/svg%3E");
+    /* 같은 커브를 좌우로 뒤집은 것(x → 24-x) — 판의 오른쪽 끝을 닫는다.
+       그리고 채움 대신 선으로만 그린 두 벌 — 유리 판은 면이 아니라 모서리로 읽히므로
+       실루엣을 따라가는 빛선이 필요하다. 경로에서 아래·옆을 닫던 구간(V40H0Z)은 뺐다:
+       탭의 옆·밑은 보이는 변이 아니다. 굵기 1.5 인 이유 — 이 선은 mask 경계 위에
+       놓여 바깥 절반이 잘려 나간다(24×40 이 커브 폭으로 1.5배 확대되므로 약 1.1px 남는다).
+       농도 .32 는 아래 --edge-col 과 짝이다 — SVG 안에는 CSS 변수가 닿지 않아 손으로 맞춘다.
+       ▶ 넷 다 A-1 홈(index-a1.html)의 히어로 밑단 유리가 쓰는 것과 같은 도형이다 */
+    --tab-curve-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0V40H24Z' fill='%23fff'/%3E%3C/svg%3E");
+    --tab-edge:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40C3.69 40 6.74 38.28 7.26 35.78L16.74 4.66C17.29 2.15 20.31 0 24 0' fill='none' stroke='%23fff' stroke-opacity='.32' stroke-width='1.5'/%3E%3C/svg%3E");
+    --tab-edge-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 40' preserveAspectRatio='none'%3E%3Cpath d='M24 40C20.31 40 17.26 38.28 16.74 35.78L7.26 4.66C6.71 2.15 3.69 0 0 0' fill='none' stroke='%23fff' stroke-opacity='.32' stroke-width='1.5'/%3E%3C/svg%3E");
   }
   /* 좁은 화면은 위로 자라지 않고(--bar-rise:0) GNB 아래(72px)에 붙는다.
      터치 기기는 상단 호버로 GNB를 불러낼 수 없으므로 GNB를 접지 않고 그대로 두기 때문 */
@@ -151,29 +162,29 @@
   /* 허브 패널이 hover 때 사진을 여는 것과 같은 결의 아주 얕은 줌아웃 */
   @keyframes heroIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
   @media(prefers-reduced-motion:reduce){.dhero-bg img{animation:none}}
-  /* ---- 사진 위에 덮는 어둠 ---- 두 가지 일을 한다.
-     ① 흰 타이틀·설명글과 그 위 GNB 가 밝은 사진 위에서도 읽히게 한다.
-     ② 밑단을 --g950 단색으로 앉힌다. 탭 바는 화면 상단에 고정될 때 같은 --g950 을
-        들고 올라가는데(.bnav-wrap.is-fixed), 그 바가 덮고 있던 히어로 밑단이 단색이라야
-        전환 순간 이음선이 보이지 않는다 → 단색 구간을 바 높이와 같은 식(--bar-rise + --bar-h)
-        으로 잡아 둔다. 좁은 화면에서 바 높이가 줄면 이 구간도 같이 줄어든다 */
+  /* ---- 사진 위에 덮는 어둠 ---- 흰 타이틀·설명글과 그 위 GNB 가 밝은 사진 위에서도
+     읽히게 한다. 위쪽이 조금 더 진하고(.66) 아래는 고르게(.48) 깔린다.
+
+     밑단 그라데이션은 2026-08-11 요청으로 걷어냈다. 원래는 화면 아래 --bar-rise +
+     --bar-h(128px) 만큼을 --g950 단색으로 앉혔는데, 그 이유는 고정 탭 바가 같은
+     --g950 을 들고 화면 상단으로 올라가기 때문이었다(.bnav-wrap.is-fixed) — 바가
+     덮고 있던 히어로 밑단이 단색이라야 전환 순간 이음선이 안 보였다.
+     ⚠ 그 전제는 히어로 탭이 유리로 바뀌면서 이미 깨져 있었다. 지금은 바 자리에
+       흐린 사진이 비치므로, 단색 밑단을 둬도 고정되는 순간의 단차는 남는다 */
   .dhero::after{content:"";position:absolute;inset:0;
     background:
       radial-gradient(120% 80% at 50% -10%,rgba(64,119,183,.28),transparent 62%),
       linear-gradient(to top,
-        var(--g950) 0%,
-        var(--g950) calc(var(--bar-rise) + var(--bar-h)),
-        rgba(14,22,30,.55) calc(var(--bar-rise) + var(--bar-h) + 120px),
+        rgba(14,22,30,.48) 0%,
         rgba(14,22,30,.48) 72%,
         rgba(14,22,30,.66) 100%)}
   .dhero .in{position:relative;z-index:1;text-align:center}
-  /* ── A / A-1 의 유일한 차이 : 히어로 ─────────────────────────────────────
-     세부 페이지 8개는 히어로 말고는 다른 데가 없다. 그래서 사업명칭(h1)과 설명글
-     (.dhero-lead)을 HTML 에 둘 다 담아두고 여기서 하나만 보이게 한다 —
-       A            : 사업명칭 h1
-       A-1 (.v-a1)  : 설명글 2줄, h1 은 화면에서만 숨김(문서 구조에는 남긴다)
-     덕분에 8개 페이지의 히어로 마크업이 완전히 같아지고, 문안을 고칠 자리도
-     business-*.html 한 곳뿐이다 (business-*-a1.html 은 _gen-a1.py 가 복제한다).
+  /* ── 히어로 — A / A-1 공통 ───────────────────────────────────────────────
+     2026-08-10 이전에는 여기가 두 시안의 유일한 차이였다(A 는 사업명칭 h1 만,
+     A-1 은 설명글 2줄만). 지금은 **사업명칭(h1) + 영문(.dhero-en) + 설명글 2줄
+     (.dhero-lead)** 세 줄을 두 시안이 똑같이 보여준다 — 히어로 분기 규칙은 전부
+     걷어냈다. 문안을 고칠 자리는 여전히 business-*.html 한 곳뿐이다
+     (business-*-a1.html 은 _gen-a1.py 가 복제한다).
 
      480px 높이 배너에 18px 타이틀은 위계가 서지 않았다 → 34px.
      아래 .bnav-ttl(20px)과 크기를 맞추지 않는다 — 둘은 같은 자리를 잇는 게 아니라
@@ -186,13 +197,11 @@
      그러면 백분율 max-width 가 부모 폭을, 부모 폭이 자식 폭을 서로 참조해 브라우저가
      내재 크기 계산에서 이 값을 무시한다. 실제로 92% 로 뒀을 때 폭이 438px 로 쪼그라들어
      두 줄이 네 줄로 접혔다. vw 는 부모와 무관하므로 그 고리가 끊긴다 */
-  .dhero-lead{display:none;max-width:min(760px,88vw);margin-inline:auto;
+  /* 위쪽 영문(.dhero-en, 각 페이지 <style>)과의 사이 숨. 영문이 국문 h1 에 붙는
+     간격(14px)보다 넓게 잡아 [국문+영문] 한 덩어리와 설명글이 갈라져 읽히게 한다 */
+  .dhero-lead{max-width:min(760px,88vw);margin:22px auto 0;
     font-family:var(--pre);font-weight:400;font-size:21px;line-height:1.62;
     letter-spacing:-.42px;color:var(--on-white-90);word-break:keep-all}
-  .v-a1 .dhero-lead{display:block}
-  /* 화면에서만 뺀다 — display:none 으로 지우면 페이지에 h1 이 없어진다 */
-  .v-a1 .dhero h1{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
-    overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
   /* ===================== 소분류 탭 바 (Figma 592:3950) =====================
      두 가지 상태로 산다.
@@ -256,10 +265,10 @@
     transition:opacity .4s var(--ease),translate .4s var(--ease)}
   .bnav-wrap.is-fixed .bnav-ttl{opacity:1;translate:none}
   @media(prefers-reduced-motion:reduce){.bnav-ttl{translate:none;transition:none}}
-  /* A-1 : 히어로에서 사업명칭을 빼고 설명글을 넣었으므로, 이 줄이 페이지에서 사업명을
-     보여주는 유일한 자리다 → 히어로 구간에서도 계속 보인다. (A 는 배너 중앙 h1 과
-     중복되므로 고정될 때만 나타난다) */
-  .v-a1 .bnav-ttl{opacity:1;translate:none;transition:none}
+  /* 예전엔 A-1 만 이 줄을 히어로 구간에서도 띄웠다 — 그때는 A-1 히어로에 사업명칭이
+     없어 여기가 사업명을 보여주는 유일한 자리였기 때문이다. 히어로가 통일되면서
+     (2026-08-10) 그 이유가 사라져 규칙을 걷었다 — 이제 두 버전 모두 배너 중앙 h1 과
+     겹치지 않도록 탭 바가 고정될 때만 나타난다 */
   /* 탭 글자는 카드 트랙과 같은 4번째 열에서 시작한다 — 아래 카드 왼쪽 끝과 한 선.
      라벨이 길어 좁은 화면에서 넘칠 수 있으므로 간격을 줄이고 가로 스크롤을 허용한다 */
   .bnav-tabs{grid-column:4 / span 9;gap:clamp(20px,3.4vw,44px);
@@ -462,37 +471,14 @@
 
   /* ══ A / A-1 시안 차이 (본문 골격) ═══════════════════════════════════
      HTML 은 두 시안이 같다 — _gen-a1.py 가 바꾸는 건 body 클래스·타이틀·링크 셋뿐이고,
-     보이는 차이는 전부 이 파일이 만든다. 히어로 차이(.dhero / .dhero-lead)는 위쪽에
-     있고, 여기는 본문 차이다. 둘 다 "한 소분류 안에서 지금 어디인가"를 말하지만
-     수단이 다르다 —
-       A   : 번호를 붙여 글로 읽힌다 (소분류 탭 + 인덱스 바)
+     보이는 차이는 전부 이 파일이 만든다. 히어로는 2026-08-10 부터 두 시안이 같아졌고
+     (위쪽 .dhero 블록), A 쪽 번호 표기(소분류 탭 "01 …", 인덱스 바 "01 |")도 같은 날
+     요청으로 걷어냈다 — 그래서 지금 남은 차이는 아래 A-1 의 파란 묶음 상자 하나뿐이다.
+       A   : 카드가 낱장으로 선다
        A-1 : 세로선 하나로 그 소분류의 카드들을 한 덩어리로 묶는다
-     좁은 화면(≤900px)에서는 둘 다 걷는다 — 탭은 가로 스크롤 한 줄로 눌려 번호를
-     붙일 여유가 없고, 인덱스 바는 아예 접히며(.hidx{display:none}), 카드는 세로로
-     풀려 트랙이 소분류 하나를 감싸는 상자 노릇을 못 한다 */
+     좁은 화면(≤900px)에서는 이것도 걷는다 — 인덱스 바가 아예 접히고(.hidx{display:none}),
+     카드는 세로로 풀려 트랙이 소분류 하나를 감싸는 상자 노릇을 못 한다 */
   @media(min-width:901px){
-    /* ── A · 소분류 탭 번호 ─ "01 이차전지 활성화 전공정 설비"
-       탭이 페이지마다 2~4개라 HTML 에 손으로 적지 않고 카운터로 센다.
-       숫자 서체는 이 사이트의 번호 표기 관례를 따른다(.fsteps li b 와 같은 --rc 700).
-       색은 라벨과 완전히 같다(color:inherit, 투명도 없음) — 번호와 라벨이 한 덩어리로
-       읽히고, 활성·비활성 전환도 둘이 같이 움직인다 */
-    body:not(.v-a1) .bnav-tabs{counter-reset:subnav}
-    body:not(.v-a1) .bnav-tabs a::before{counter-increment:subnav;
-      content:counter(subnav,decimal-leading-zero);
-      margin-right:8px;font-family:var(--rc);font-weight:700;letter-spacing:.02em;
-      color:inherit}
-
-    /* ── A · 인덱스 바 번호 ─ "01 | 카드명 · 카드명 · 카드명"
-       카드 번호가 아니라 소분류(.hsec) 순번이다 — 그래서 카운터를 .wrap 에서 리셋하고
-       섹션마다 올린다. 바 안에서는 한 번만 나오므로 li 가 아니라 .hidx 자신에 붙인다.
-       구분은 세로선(오른쪽 테두리)으로 낸다 — 카드 이름끼리를 가르는 점
-       (.hidx li::before)과 모양이 달라야 "번호는 다른 종류"로 읽힌다 */
-    body:not(.v-a1) .wrap{counter-reset:hsec}
-    body:not(.v-a1) .hsec{counter-increment:hsec}
-    body:not(.v-a1) .hidx::before{content:counter(hsec,decimal-leading-zero);flex:none;
-      margin-right:14px;padding-right:14px;border-right:1px solid rgba(255,255,255,.3);
-      font-family:var(--rc);font-weight:700;font-size:15px;letter-spacing:.02em;color:#fff}
-
     /* ── A-1 · 카드를 묶는 파란 상자
        한 소분류의 카드들을 좌·우·아래 세 변으로 감싸 한 덩어리로 만든다. 색은 --brand —
        회색이면 카드가 테두리를 잃은 것으로 보일 뿐 묶였다는 신호가 안 되고, 파랑이면
@@ -757,6 +743,14 @@
   .hthumbs .th .nm{font-family:var(--suit);font-weight:700;font-size:12px;line-height:1.3;letter-spacing:-.24px;color:var(--g900);word-break:keep-all}
   .hthumbs .th .en{font-family:var(--rc);font-size:11px;letter-spacing:.04em;color:var(--teritary)}
 
+  /* 아직 내용이 없는 카드(.hcard--tbd) — 제목과 "내용 추가 예정" 한 줄만 있다.
+     v3.1 두 열 골격에서 오른쪽 비주얼 칸(.hright)을 아예 두지 않는 방식이라,
+     형제가 없는 .hleft 가 flex-grow 로 카드 폭을 그대로 다 쓴다 — 빈 회색 판이
+     남지 않는다. 자료가 들어오면 .hright 를 붙이고 이 클래스만 떼면 된다.
+     글자색은 자리표시(.hph)와 같은 --teritary — "아직 없다"는 표시끼리 톤을 맞춘다 */
+  .hcard--tbd .tbd{font-family:var(--pre);font-weight:400;font-size:17px;
+    line-height:var(--body-lh);letter-spacing:-.34px;color:var(--teritary)}
+
   /* ── 해외 거점 지도 카드 (.hcard--map) ────────────────────────────────
      assets/world-map.svg — Natural Earth 110m(퍼블릭 도메인)에서 생성한 국경선 지도.
      생성 스크립트는 assets/_unused/world-map-gen.py. 선·면 색은 SVG 안 <style>의
@@ -969,7 +963,7 @@
 
   /* ── 본문 + 우측 비주얼 카드 (.hcard--split) ──────────────────────────
      [좌: 본문 & 픽토그램 / 우: 이미지] 구조를 쓰는 카드들의 공통 프레임이다.
-     스마트 제조·에너지 인프라·인공지능 세 페이지에 흩어져 있어도 이 클래스를 붙인
+     스마트 제조·에너지 솔루션·인공지능 세 페이지에 흩어져 있어도 이 클래스를 붙인
      카드는 본문 폭·이미지 폭·이미지가 놓이는 자리가 전부 같다 — 페이지를 넘겨도
      카드 골격이 흔들리지 않아야 하므로 수치는 여기 한 군데서만 정한다.
 
@@ -1267,7 +1261,7 @@
   /* ══════════════════════════════════════════════════════════════════════
      시안 : 본문을 탭 바에 붙이기 (.wrap.tray / .bnav-wrap--tray)
      ══════════════════════════════════════════════════════════════════════
-     세부 페이지 4종(스마트 제조·에너지 인프라·인공지능·반도체)과 그 A-1 짝이 모두
+     세부 페이지 4종(스마트 제조·에너지 솔루션·인공지능·반도체)과 그 A-1 짝이 모두
      이 훅을 달고 있다. 클래스로 남겨 둔 이유는 되돌리기 위해서다 — 확정되면 규칙을
      기본값(.hsec / .httl / .bnav-wrap)에 접어 넣고 훅 두 개를 지우면 된다.
      하는 일은 네 가지다.
@@ -1424,7 +1418,7 @@
      본문(.wrap)이 끝나고 푸터가 시작되기 전, 다른 사업영역으로 건너가는 자리.
      픽토그램들이 바닥선을 맞춰 서서 하나의 스카이라인이 되고 그대로 푸터 윗변에 붙는다.
 
-     칸 순서는 어느 페이지에서나 스마트 제조 → 에너지 인프라 → 인공지능 플랫폼 →
+     칸 순서는 어느 페이지에서나 스마트 제조 → 에너지 솔루션 → 인공지능 플랫폼 →
      화합물 전력 반도체로 고정이다. 자리가 곧 사업영역 순서라 페이지를 옮겨 다녀도
      마을의 지형이 바뀌지 않는다 — 한 번 외운 위치로 다시 손이 간다.
 

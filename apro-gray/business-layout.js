@@ -76,6 +76,7 @@
     });
   }
   var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),
+      cn=document.querySelector('.cnav-wrap'),   /* 회사소개 목차 탭 바 (아래 ap 참고) */
       ft=document.querySelector('.footer'),on=null,hid=null;
   var narrowMq=window.matchMedia('(max-width:900px)');
   /* 기준선 = --bar-top + --bar-rise + --bar-h (= 고정됐을 때 바의 밑변 y).
@@ -111,17 +112,29 @@
   },{passive:true});
 
   function ap(){
-    var hb=hero.getBoundingClientRect().bottom;
+    /* 히어로가 없는 페이지도 있다(글로벌 네트워크 — 어두운 지도 한 장이 곧 첫 화면).
+       그때는 히어로 밑변이 화면 밖 저 아래에 있는 셈 치면 된다 → 흰 플레이트를 깔지
+       않고 GNB 글자도 흰색 그대로 남아, 어두운 바닥 위에서 그대로 읽힌다 */
+    var hb=hero?hero.getBoundingClientRect().bottom:Infinity;
     /* 소분류 탭 바는 히어로 밑단에 얹혀 있다가, 히어로 밑변이 바 밑변에 닿는 순간
        고정된다. 그 순간 탭 띠 위치가 그대로라 화면이 안 튄다.
        0.5px 여유는 소수점 스크롤 위치에서 붙었다 떨어졌다 하는 떨림을 막는다 */
     var h=!!bn&&hb<=barBase+0.5;
+    /* 회사소개(.cnav-wrap)는 제 탭 바를 따로 굴리지만 — 두 상태 사이 생김새가 달라
+       공용 규칙에 얹히지 않는다 — 고정되는 시점과 그때의 바는 이 바와 같다.
+       GNB 를 접고 꺼내는 판정도 그래서 같이 본다 (아래 want·d 가 fx 를 쓴다) */
+    var fx=(!!bn||!!cn)&&hb<=barBase+0.5;
     /* GNB 흰 플레이트는 GNB 뒤가 흰 본문일 때만 — 넓은 화면에서 바가 고정되면
        GNB 자리가 어두운 바라서 플레이트를 깔면 안 된다 */
     var nar=narrowMq.matches;
-    var d=hb<=40&&!(h&&!nar);
+    var d=hb<=40&&!(fx&&!nar);
     if(d!==on){on=d;g.classList.toggle('nav-light',d);}
-    if(!bn)return;
+    if(!bn){
+      /* 회사소개는 여기서 끝 — 바 자체(.is-fixed)는 그 페이지 스크립트가 붙인다 */
+      var w2=fx&&!nar;
+      if(w2!==hid){hid=w2;if(w2)g.classList.remove('mega-open','lang-open');paintNav();}
+      return;
+    }
     bn.classList.toggle('is-fixed',h);
     /* 푸터를 반 넘게 드러냈으면 바를 접어 올린다 — 거기서부터는 푸터를 읽는 중이고
        소분류 탭은 볼 일이 없다. 푸터(553px)가 화면보다 낮아 밑변이 화면 위로 못 올라오므로
@@ -232,9 +245,31 @@
      두면 바(=ol) 바깥이라 바 안쪽 끝에 설 수가 없다.
      ol 이 없는 소분류(카드가 하나뿐이라 목록을 안 만든 경우)는 그냥 레일에 남는다 —
      파란 바가 없는 자리이니 뱃지 기본 생김새(파란 채움) 그대로 읽힌다 */
-  function placeBadge(rail){
-    var badge=rail.querySelector(':scope > .hbadge'),ol=rail.querySelector('ol.hidx');
-    if(!badge||!ol)return;
+  function placeBadge(rail,sec){
+    var badge=rail.querySelector(':scope > .hbadge');
+    if(!badge)return;
+    /* A(2026-08-11 레이아웃) — 뱃지를 카드 제목 옆에 단다. 인덱스가 가로 바에서
+       세로 목록으로 바뀌면서, 바 오른쪽 끝에 붙던 이 꼬리표가 목록 옆에 혼자
+       떠 보이게 됐다. 뱃지는 "이 소분류를 어느 계열사가 만드는가"라 소분류 단위
+       정보인데, 카드는 한 번에 한 장만 보이므로 제목마다 하나씩 둔다 —
+       첫 장에는 원본을, 나머지에는 복제를 넣고 복제는 보조기술·탭 이동에서 뺀다
+       (같은 링크가 여러 번 읽히지 않게).
+       A-1(.v-a1)은 파란 가로 바를 그대로 쓰므로 종전대로 목록 끝에 붙인다 */
+    if(sec&&!document.body.classList.contains('v-a1')){
+      var hs=sec.querySelectorAll('.hcard h3');
+      if(hs.length){
+        for(var i=0;i<hs.length;i++){
+          if(i===0){hs[i].appendChild(badge);continue;}
+          var c=badge.cloneNode(true);
+          c.setAttribute('tabindex','-1');
+          c.setAttribute('aria-hidden','true');
+          hs[i].appendChild(c);
+        }
+        return;
+      }
+    }
+    var ol=rail.querySelector('ol.hidx');
+    if(!ol)return;
     var li=document.createElement('li');
     li.className='hidx-badge';
     li.appendChild(badge);
@@ -252,7 +287,7 @@
     else if(rail)st.btns=buildIndex(sec,rail,track,cards,st);
     /* buildIndex 밖에서 부른다 — 카드가 하나뿐이라 목록을 HTML 에 손으로 적어 둔
        소분류(예: 반도체 GaN 두 곳)도 같은 자리에 뱃지를 걸 수 있어야 한다 */
-    if(rail)placeBadge(rail);
+    if(rail)placeBadge(rail,sec);
 
     /* 트랙을 직접(터치·드래그) 스크롤한 경우 현재 카드 추적.
        JS가 움직일 때도 매 프레임 여기로 들어오므로 게이지는 먼저 갱신한다 */
