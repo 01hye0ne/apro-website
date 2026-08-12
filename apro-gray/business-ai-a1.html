@@ -137,16 +137,14 @@
     .hrail{grid-column:1;grid-row:1;display:block;padding:0}
     .hrail:empty{display:none}
     .htrack{grid-column:1;grid-row:2}
-    .hidx{list-style:none;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:0;
-      padding:10px 14px;background:var(--brand);border:1px solid var(--brand)}
-    .hidx li{display:flex;align-items:center;padding-left:20px}
-    .hidx li:first-child{padding-left:0}
-    .hidx li:not(:first-child)::before{content:"";width:4px;height:4px;flex:none;
-      background:rgba(255,255,255,.5);margin-right:20px}
-    .hidx button{padding:0;font-family:var(--suit);font-weight:500;font-size:15px;
-      letter-spacing:-.3px;color:rgba(255,255,255,.7);transition:color .2s var(--ease)}
-    .hidx button:hover{color:#fff}
-    .hidx button[aria-current]{font-weight:700;color:#fff}
+    /* 여기 있던 "파란 가로 인덱스 바"(.hidx 를 --brand 배경 + 흰 글자 + 점 구분자로
+       칠하던 규칙 열 줄)는 2026-08-11 에 걷어냈다. 아래 개편 블록의 인덱스가 본문
+       왼쪽 세로 목록을 만들고, 그 개편이 A-1 까지 넓어지면서 이 가로 바를 쓰는
+       시안이 하나도 남지 않았다.
+       ⚠ 단순히 죽은 코드라 지운 게 아니다 — 그 중
+         .hidx li:not(:first-child)::before 는 클래스 두 개짜리라, 개편 블록이
+         접두사를 떼면서 한 단 낮아진 순간 오히려 이쪽이 이겨
+         두 번째 항목만 점이 되살아난다 */
   }
 
   /* ③ 카드 내부 2열 — [좌: 타이틀+줄글(+픽토그램)] [우: 비주얼] */
@@ -241,7 +239,16 @@
 
      블록을 파일 맨 끝에 두는 이유 — 위 카드 규칙들보다 뒤에 와야 같은 특정도
      끼리도 이긴다. 되돌릴 때도 이 덩어리 하나만 다루면 된다.
-     ⚠ 모든 선택자에 body:not(.v-a1) — A-1 은 종전 레이아웃 그대로 둔다 */
+     -- 2026-08-11 : A-1 도 이 골격을 쓴다 ---------------------------------
+     처음에는 모든 선택자에 body:not(.v-a1) 이 걸려 있었다(A-1 은 종전 레이아웃
+     그대로 두려던 것). 스마트 제조에서 시안이 확정되어 그 접두사를 뗐다 —
+     본문 골격은 이제 두 시안이 함께 쓴다.
+     남은 차이는 **탭 바가 어디에 서는가** 하나다.
+       A   : 화면 상단 고정 (아래 1 · 어두운 띠 + 흰 탭 패널, GNB 는 접힌다)
+       A-1 : 화면 하단 플로팅 바 (파일 맨 끝 · 알약 하나, GNB 는 그대로 남는다)
+     그래서 body:not(.v-a1) 이 남아 있는 선택자는 전부 "상단 고정 바" 것이다.
+     ⚠ 접두사를 떼면 특정도가 클래스 하나만큼 낮아진다. 위 v3.1 블록에서
+       .hidx li:not(:first-child)::before 를 아예 지운 것이 그 때문이다 */
   @media(min-width:901px){
     /* ① 고정 탭 바 */
     body:not(.v-a1) .bnav-ttl{grid-column:2 / span 2}
@@ -260,50 +267,57 @@
         transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
       background-size:calc(100% / 4) 100%;background-repeat:repeat-x}
     /* 페이지네이션은 걷어낸다 — 소분류는 탭이, 그 안 위치는 왼쪽 인덱스가 말한다 */
-    body:not(.v-a1) .bnav-pager{display:none}
+    .bnav-pager{display:none}
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a{font-size:18px}
 
     /* ② 본문 자리 — 2열 시작에서 11열 끝까지, 10칸 − 거터 하나.
        그 안을 좌 레일 2열 | 거터 | 우 트랙 8열 로 가른다 */
-    body:not(.v-a1) .wrap{width:calc(10 * var(--gx) - var(--gcg));
+    .wrap{width:calc(10 * var(--gx) - var(--gcg));
       margin-left:calc(var(--gm) + var(--gx))}
-    body:not(.v-a1) .hsec{
+    .hsec{
       grid-template-columns:calc((100% - 9 * var(--gcg)) / 5 + var(--gcg)) minmax(0,1fr);
       grid-template-rows:minmax(0,1fr);column-gap:var(--gcg);--card-peek:0px}
-    body:not(.v-a1) .hsec::after{display:none}
-    body:not(.v-a1) .hrail{grid-column:1;grid-row:1;display:flex;padding-top:40px}
-    body:not(.v-a1) .htrack{grid-column:2;grid-row:1}
+    .hsec::after{display:none}
+    .hrail{grid-column:1;grid-row:1;display:flex;padding-top:40px}
+    .htrack{grid-column:2;grid-row:1}
+    /* A-1 은 이 트랙에 gap:0 이 걸려 있었다(business-layout.css — 카드들을 파란
+       세로선 하나로 묶던 시절, 선이 끊기지 않으려면 카드끼리 맞닿아야 했다).
+       그 상자를 아래에서 걷으므로 카드 사이 숨도 A 와 같은 값으로 되돌린다 */
+    .v-a1 .htrack{gap:16px}
 
     /* ③ 인덱스 — 글자는 고정 탭 바의 소분류 탭과 완전히 같은 값으로 맞춘다.
        글머리는 원이 아니라 대쉬(–) — 그림이 아니라 글자로 찍어야 첫 줄
        baseline 에 저절로 맞는다 */
-    body:not(.v-a1) .hidx{flex-direction:column;flex-wrap:nowrap;align-items:stretch;
-      padding:0;background:none;border:0}
-    body:not(.v-a1) .hidx li{display:flex;align-items:flex-start;gap:12px;padding-left:0}
-    /* width/height/margin/background 를 되돌리는 이유 — v3.1 파란 바 블록이 두 번째
-       항목부터의 글머리에 점(4×4px + margin-right:20px)을 그려 두었다 */
-    body:not(.v-a1) .hidx li::before{content:"–";flex:none;
-      width:auto;height:auto;margin:0;background:none;padding:9px 0;
+    .hidx{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
+    .hidx li{display:flex;align-items:flex-start;gap:12px;padding-left:0}
+    .hidx li::before{content:"–";flex:none;padding:9px 0;
       font-family:var(--suit);font-weight:500;font-size:18px;line-height:1.15;
       letter-spacing:-.32px;color:var(--teritary);transition:color .22s var(--ease)}
-    body:not(.v-a1) .hidx li:has(button[aria-current])::before{color:var(--brand)}
-    body:not(.v-a1) .hidx button{padding:9px 0;font-weight:500;font-size:18px;
+    .hidx li:has(button[aria-current])::before{color:var(--brand)}
+    .hidx button{padding:9px 0;font-weight:500;font-size:18px;
       line-height:1.15;letter-spacing:-.32px;color:var(--teritary)}
-    body:not(.v-a1) .hidx button:hover{color:var(--sec)}
-    body:not(.v-a1) .hidx button[aria-current]{font-weight:700;color:var(--brand)}
+    .hidx button:hover{color:var(--sec)}
+    .hidx button[aria-current]{font-weight:700;color:var(--brand)}
 
     /* ④ 카드 상자를 걷어 "섹션"으로. 제목 위 40px 은 "제목 위 숨"이고,
        레일에도 같은 값을 줘 인덱스 첫 줄이 첫 카드 제목과 한 줄에 선다.
        --stack-gap 은 제목 ~ 첫 줄글 사이(=.hcard>.hleft 의 flex gap) */
-    body:not(.v-a1){--stack-gap:20px}
-    body:not(.v-a1) .hcard{background:none;border:0}
-    body:not(.v-a1) .hcard>.hleft{margin-left:0;padding:40px 48px 0 0}
+    body{--stack-gap:20px}
+    .hcard{background:none;border:0}
+    /* A-1 의 "파란 묶음 상자"도 여기서 함께 걷는다 — business-layout.css 가
+       .v-a1 .hcard 로 흰 배경 + 좌우 파란 세로선(background-image)을, 카드 사이
+       9px 투명 아랫테두리로 틈을 그리고 있다. 클래스 두세 개짜리라 바로 위
+       .hcard 규칙으로는 안 지워진다 — 같은 모양의 선택자로 되받는다 */
+    .v-a1 .htrack>.hcard,
+    .v-a1 .htrack>.hcard:not(:last-child),
+    .v-a1 .htrack>.hcard:last-child{background:none;border:0}
+    .hcard>.hleft{margin-left:0;padding:40px 48px 0 0}
 
     /* ⑤ 바탕색 — 비주얼 칸에 깔려 있던 회색을 걷고 그 색을 페이지 바탕으로 올린다.
        소분류 탭 패널과 S커브는 흰색 그대로 두고, 히어로 밑단 띠(.dhero::before)는
        위 12px(탭 가로선 자리)만 흰색으로 남기고 그 아래를 회색으로 내린다 */
-    body:not(.v-a1){background:var(--secondary-bg)}
-    body:not(.v-a1) .dhero::before{background:linear-gradient(to bottom,
+    body{background:var(--secondary-bg)}
+    .dhero::before{background:linear-gradient(to bottom,
       #fff 0 12px,var(--secondary-bg) 12px 100%)}
 
     /* ⑥ 픽토그램 판 — 2열 2행 흰 판에서 1열 4행 목록으로. 판(흰 배경 + 테두리)을
@@ -313,20 +327,24 @@
        ⚠ margin-top 만은 auto 로 남긴다(.hleft>.pict 가 판을 열 바닥에 붙이는 값).
        아이콘 뒤 회색 타일도 없앤다 — 바탕이 그 색이라 묻힌다. 상자를 글리프
        크기(32px)로 줄여야 아이콘 왼쪽이 제목·줄글 시작선에 맞는다 */
-    body:not(.v-a1) .hcard .hleft .pict{grid-template-columns:minmax(0,1fr);
+    .hcard .hleft .pict{grid-template-columns:minmax(0,1fr);
       margin:auto 0 0;background:none;border:0;border-bottom:1px solid var(--line)}
-    body:not(.v-a1) .hcard .hleft .pict li{padding:18px 0;
+    .hcard .hleft .pict li{padding:18px 0;
       border-top:1px solid var(--line)}
-    body:not(.v-a1) .hcard .hleft .pict li:nth-child(odd){border-right:0;padding-left:0}
-    body:not(.v-a1) .hcard .hleft .pict li:nth-child(n+3){box-shadow:none}
-    body:not(.v-a1) .hcard .hleft .pict .ic{width:32px;height:32px;
+    .hcard .hleft .pict li:nth-child(odd){border-right:0;padding-left:0}
+    .hcard .hleft .pict li:nth-child(n+3){box-shadow:none}
+    .hcard .hleft .pict .ic{width:32px;height:32px;
       background:none;border-radius:0}
-    body:not(.v-a1) .hcard .hleft .pict .ic svg{width:100%;height:100%}
+    .hcard .hleft .pict .ic svg{width:100%;height:100%}
 
     /* ⑥ 비주얼 칸 — 회색 판과 세로 구분선을 걷고, 제목 윗선에서 시작해 카드
-       밑변까지 1px 테두리로 묶는다 */
-    body:not(.v-a1) .hcard>.hright{background:none;border-left:0;
-      margin-top:40px;border:1px solid var(--line)}
+       밑변까지 1px 테두리로 묶는다.
+       모서리는 4px 굴린다 (2026-08-11 요청) — A-1 하단 탭 바에 넣은 값과 같다.
+       안의 그림은 따로 굴릴 필요가 없다 — .hright 가 overflow:hidden 이라 판 반경에
+       맞춰 저절로 오려진다. 선으로만 짜인 것들(픽토그램 행 · 공정 순서 칩)은
+       각진 채로 둔다 — 이웃한 선끼리 어긋나기 때문이다 */
+    .hcard>.hright{background:none;border-left:0;
+      margin-top:40px;border:1px solid var(--line);border-radius:4px}
   }
 
   /* ⑦ 선 색 — 밝은 바닥 위 1px 선을 전부 이 값 하나로 모은다. 기본값
@@ -335,16 +353,16 @@
      ⚠ --point-200 자체는 건드리지 않는다 — 선 색이 아니라 ::selection 과
        인덱스 뱃지 호버에도 쓰는 파란 톤이다.
      ⚠ 어두운 바닥 위 흰 반투명 선(푸터·전체메뉴)은 별개라 그대로 둔다 */
-  body:not(.v-a1){--line:#d4dae1;--border-g:var(--line)}
-  body:not(.v-a1) .fsteps li{border-color:var(--line)}
+  body{--line:#d4dae1;--border-g:var(--line)}
+  .fsteps li{border-color:var(--line)}
 
   /* ⑧ 좁은 화면 글자 한 단 낮추기 — 왼쪽 인덱스 레일은 늘 2열이라 화면과 같이
      좁아진다(1280px 에서 약 187px). 18px 로는 긴 항목이 두 줄로 접힌다.
      ⚠ 고정 탭과 인덱스는 같은 글자여야 한다(③) — 반드시 함께 내린다 */
   @media(min-width:901px) and (max-width:1280px){
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a,
-    body:not(.v-a1) .hidx button,
-    body:not(.v-a1) .hidx li::before{font-size:16px}
+    .hidx button,
+    .hidx li::before{font-size:16px}
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
   }
   /* ════════════════════════════════════════
@@ -446,9 +464,9 @@
      ⚠ 100vw 는 스크롤바를 포함해 좌우로 15px 쯤 더 나가지만, body 에
        overflow-x:clip 이 걸려 있어 그만큼은 잘린다 — 가로 스크롤은 생기지 않는다 */
   @media(min-width:901px){
-    body:not(.v-a1) .hsec{position:relative}
-    body:not(.v-a1) .hsec + .hsec{border-top:0}
-    body:not(.v-a1) .hsec + .hsec::before{display:block;content:"";position:absolute;
+    .hsec{position:relative}
+    .hsec + .hsec{border-top:0}
+    .hsec + .hsec::before{display:block;content:"";position:absolute;
       z-index:1;top:0;height:1px;pointer-events:none;background:var(--line);
       left:calc(50% - 50vw);right:calc(50% - 50vw)}
   }
@@ -497,6 +515,100 @@
   }
   @media(prefers-reduced-motion:reduce){
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a::after{transition:none}
+  }
+
+  /* ======================================================================
+     A-1 - 소분류 탭 바를 화면 하단 플로팅 바로 (2026-08-11)
+
+     스마트 제조(business-smart.html)의 같은 블록을 그대로 옮겼다 — 값의 근거
+     주석은 전부 그 파일에 있다. 페이지마다 달라지는 값은 하나도 없다:
+     알약 폭이 내용에 맞춰 늘고 줄어서 소분류 개수와 무관하다.
+
+     골자만 —
+       · 상태 스위치(.is-fixed)는 A 와 같은 것을 쓴다. JS 는 건드리지 않는다.
+       · 알약은 흰 판 + 1px 외곽선. 왼쪽은 어두운 대분류 판이고, 그 오른쪽
+         마구리는 기존 S커브(--tab-curve)를 배경 두 장(어두운 사각형 + 흰 커브)
+         으로 그린다.
+       · 밑단 --pill-pad 만큼은 흰 띠로 비운다 — 커브의 밑점이 그 띠 윗선에
+         내려앉아 곡선과 띠가 한 줄로 이어진다.
+       · 본문 여백은 [위 GNB 플레이트 72 / 아래 알약자리 + 숨 24] 로 뒤집는다.
+       · GNB 는 접지 않는다 — JS 의 nav-hide·nav-light 판정이 "상단이 어두운 바"
+         를 전제하므로 :has() 로 되돌린다 */
+  @media(min-width:901px){
+    .v-a1{--pill-b:32px;--pill-hero-pull:40px;--pill-h:56px;--pill-pad:8px;
+      --pill-bh:calc(var(--pill-h) - 2px - var(--pill-pad));
+      --pill-cw:calc(var(--pill-bh) * 24 / 40)}
+    .v-a1 .bnav-wrap.is-fixed{top:auto;bottom:var(--pill-b);left:0;width:100%;
+      height:auto;background:none;pointer-events:none}
+    .v-a1 .bnav-wrap.is-fixed::before,
+    .v-a1 .bnav-wrap.is-fixed::after{display:none}
+    .v-a1 .bnav-wrap.is-fixed .bnav-rule{display:none}
+    .v-a1 .bnav-wrap.is-fixed.is-away{
+      transform:translateY(calc(100% + var(--pill-b)));opacity:0}
+    .v-a1 .bnav-wrap.is-fixed .bnav{width:max-content;
+      max-width:calc(100% - 2 * var(--gm));height:var(--pill-h);margin:0 auto;
+      padding-bottom:var(--pill-pad);
+      display:flex;align-items:stretch;column-gap:0;pointer-events:auto;
+      background:#fff;border:1px solid rgba(27,39,51,.18);
+      border-radius:4px 4px 4px 0;overflow:hidden;
+      animation:pillIn .42s var(--ease)}
+    .v-a1 .bnav-wrap.is-fixed .bnav-ttl{align-self:stretch;
+      height:auto;margin:0;padding:0 24px 0 26px;
+      font-size:17px;letter-spacing:-.34px;text-shadow:none;
+      background:var(--g950)}
+    .v-a1 .bnav-wrap.is-fixed .bnav-tabs{position:static;left:auto;width:auto;
+      height:auto;align-self:stretch;transform:none;display:flex;gap:0;
+      padding-left:var(--pill-cw);transition:none;
+      background:var(--tab-curve) left 0 top 0/var(--pill-cw) 100% no-repeat,
+        linear-gradient(var(--g950),var(--g950)) left 0 top 0/var(--pill-cw) 100% no-repeat}
+    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a{position:relative;display:flex;
+      align-items:center;padding:0 22px;font-size:16px;font-weight:500;
+      color:var(--teritary);transform:none}
+    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a:hover{color:var(--sec)}
+    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
+    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a + a::before{content:"";position:absolute;
+      left:0;top:12px;bottom:12px;width:1px;background:var(--line)}
+    .v-a1 .hsec{padding-top:72px;
+      padding-bottom:calc(var(--pill-b) + var(--pill-h) + 24px)}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb-group .gnb{opacity:1;
+      transform:translate(-50%,0);pointer-events:auto}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb-group::before{opacity:1}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .menus a{color:var(--g900);text-shadow:none}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .logo img{opacity:0}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .logo::after{opacity:1}
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .lang .lang-btn,
+    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .menu-toggle{color:var(--g900);filter:none}
+  }
+  @keyframes pillIn{from{opacity:0;transform:translateY(14px)}}
+  @media(prefers-reduced-motion:reduce){
+    .v-a1 .bnav-wrap.is-fixed .bnav{animation:none}
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     낮은 화면 — 세로 값을 한 단 줄인다 (2026-08-11)
+
+     이 레이아웃은 섹션 하나 = 화면 한 판이고 카드는 overflow:hidden 이라, 세로가
+     모자라면 스크롤바도 없이 그냥 잘린다. 1366×768 노트북(실제 뷰포트 768)에서
+     실측해 보니 스마트 제조 첫 카드의 비주얼 칸이 필요 418px / 가능 251px 로
+     40%가 잘려 있었다 — A 도 271px 라 같은 문제이고, A-1 은 알약 자리(112px)
+     때문에 20px 더 나쁘다.
+
+     820px 을 경계로 잡은 이유 — 1000px 창의 실제 뷰포트가 908px 이고 거기서는
+     남는 여유가 있었다. 768 과 908 사이에서 끊으면 두 흔한 노트북 해상도가
+     각각 다른 쪽에 들어간다.
+
+     A-1 은 알약 자체도 한 치수 줄인다(높이 56→48, 바닥 32→20). 알약 안 글자
+     크기는 그대로 둔다 — 여기서 더 줄이면 읽는 크기의 하한(16px)을 깬다 */
+  @media(min-width:901px) and (max-height:820px){
+    body{--stack-gap:14px}
+    .hrail{padding-top:24px}
+    .hcard>.hleft{padding-top:24px}
+    .hcard>.hright{margin-top:24px}
+    .hsec{padding-bottom:12px}
+
+    .v-a1{--pill-b:20px;--pill-h:48px}
+    .v-a1 .hsec{padding-top:60px;
+      padding-bottom:calc(var(--pill-b) + var(--pill-h) + 12px)}
   }
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야

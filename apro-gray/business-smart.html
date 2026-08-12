@@ -1213,7 +1213,7 @@
        24/40 을 곱해 원본 비율을 지킨다 — 상단 고정 바가 패널 높이를 바꿀 때마다
        width:calc(60px * 24 / 40) 로 같이 잡아 주던 것과 같은 공식이다.
        비율을 안 지키면 커브가 가로로 눌려 찌그러진다(지난 시도에서 겪었다) */
-    .v-a1{--pill-b:32px;--pill-h:56px;--pill-pad:8px;
+    .v-a1{--pill-b:32px;--pill-hero-pull:40px;--pill-h:56px;--pill-pad:8px;
       --pill-bh:calc(var(--pill-h) - 2px - var(--pill-pad));
       --pill-cw:calc(var(--pill-bh) * 24 / 40)}
 
@@ -1351,6 +1351,43 @@
   @keyframes pillIn{from{opacity:0;transform:translateY(14px)}}
   @media(prefers-reduced-motion:reduce){
     .v-a1 .bnav-wrap.is-fixed .bnav{animation:none}
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     낮은 화면 — 세로 값을 한 단 줄인다 (2026-08-11)
+
+     이 레이아웃은 섹션 하나 = 화면 한 판이고 카드는 overflow:hidden 이라, 세로가
+     모자라면 스크롤바도 없이 그냥 잘린다. 1366×768 노트북(실제 뷰포트 768)에서
+     실측해 보니 스마트 제조 첫 카드의 비주얼 칸이 필요 418px / 가능 251px 로
+     40%가 잘려 있었다 — A 도 271px 라 같은 문제이고, A-1 은 알약 자리(112px)
+     때문에 20px 더 나쁘다.
+
+     820px 을 경계로 잡은 이유 — 1000px 창의 실제 뷰포트가 908px 이고 거기서는
+     남는 여유가 있었다. 768 과 908 사이에서 끊으면 두 흔한 노트북 해상도가
+     각각 다른 쪽에 들어간다.
+
+     A-1 은 알약 자체도 한 치수 줄인다(높이 56→48, 바닥 32→20). 알약 안 글자
+     크기는 그대로 둔다 — 여기서 더 줄이면 읽는 크기의 하한(16px)을 깬다 */
+  @media(min-width:901px) and (max-height:820px){
+    body{--stack-gap:14px}
+    .hrail{padding-top:24px}
+    .hcard>.hleft{padding-top:24px}
+    .hcard:has(.pict)>.hright{margin-top:24px}
+    .hsec{padding-bottom:12px}
+
+    /* 공정 프로세스 맵 — 구성도(3096×651)가 폭에 맞춰 높이를 정하므로 남는 세로가
+       모자라면 통째로 잘렸다. flex:none 을 풀고 min-height:0 을 줘 남는 높이만큼만
+       차지하게 한다. object-fit:contain(.is-plate) 이라 줄어들어도 잘리지 않는다 —
+       작아질지언정 순서·구역이 다 보이는 편이 낫다 */
+    .hcard[data-tab*="프로세스 맵"]>.hright{padding:24px;gap:16px}
+    .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
+    .hcard[data-tab*="프로세스 맵"]>.hleft,
+    .hcard[data-tab="수정 필요"]>.hleft,
+    .hcard[data-tab^="PLC"]>.hleft,
+    .hcard[data-tab^="MES"]>.hleft{padding:24px 0 12px}
+    .v-a1{--pill-b:20px;--pill-h:48px}
+    .v-a1 .hsec{padding-top:60px;
+      padding-bottom:calc(var(--pill-b) + var(--pill-h) + 12px)}
   }
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
