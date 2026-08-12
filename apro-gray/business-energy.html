@@ -36,7 +36,10 @@
        기준이 다른 곳에 쓰면 조용히 어긋난다.
      ⚠ 공용 --grid-gutter(24px)는 S커브 이미지가 그 폭에 맞춰 그려진 것이라
        손대면 안 된다. 이 그리드의 12px 거터는 --gcg 로 따로 둔다 */
-  :root{--gm:84px;--gcg:12px;
+    /* 소분류 개수 — 히어로 탭 띠와 고정 탭 바가 이 값으로 칸을 나누고 칸 경계에
+     구분선을 긋는다(네 곳). 소분류를 늘리거나 줄일 때 고칠 자리는 여기 하나다.
+     ⚠ 마크업(.bnav-tabs 안 <a> 개수)과 반드시 같아야 한다 */
+:root{--tabs:2;--gm:84px;--gcg:12px;
     --gx:calc((100% - 2 * var(--gm) + var(--gcg)) / 12);
     --bx:calc((100% + var(--gcg)) / 12)}
   /* 좁아지면 좌우 마진을 단계로 줄인다. GNB 메뉴 한 칸(--mm-col)도 같이 줄인다 —
@@ -99,13 +102,13 @@
        택해 3열 시작점(262px)에 그대로 맞춘다 */
     .bnav-wrap:not(.is-fixed) .bnav-tabs{width:calc(9 * var(--bx) - var(--gcg));
       left:calc(2 * var(--bx));transform:translateX(0);
-      display:grid;grid-template-columns:repeat(2,1fr);column-gap:0;justify-items:center;overflow:visible}
+      display:grid;grid-template-columns:repeat(var(--tabs),1fr);column-gap:0;justify-items:center;overflow:visible}
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{transform:translateY(12px)}
     .bnav-wrap:not(.is-fixed) .bnav-tabs::after{content:"";position:absolute;left:0;right:0;
       top:0;bottom:-27px;pointer-events:none;
       background-image:linear-gradient(to right,
         transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
-      background-size:calc(100% / 2) 100%;background-repeat:repeat-x}
+      background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}
     .bnav-wrap:not(.is-fixed) .bnav-rule{display:block;position:absolute;left:0;right:0;
       bottom:-12px;height:1px;background:var(--border-g)}
   }
@@ -267,7 +270,7 @@
       width .4s var(--ease)}
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs{left:calc(3 * var(--bx));
       width:calc(8 * var(--bx) - var(--gcg));
-      display:grid;grid-template-columns:repeat(2,1fr);column-gap:0;
+      display:grid;grid-template-columns:repeat(var(--tabs),1fr);column-gap:0;
       justify-items:center;overflow:visible}
     /* 구분선 — 칸 하나짜리 타일을 가로로 반복한다. 전체 폭에 %하드 스톱을 찍는
        방식은 폭이 넓어지면 1px 이 보간에 묻혀 사라진다 */
@@ -275,7 +278,7 @@
       left:0;right:0;top:-8px;bottom:-24px;pointer-events:none;
       background-image:linear-gradient(to right,
         transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
-      background-size:calc(100% / 2) 100%;background-repeat:repeat-x}
+      background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}
     /* 페이지네이션은 걷어낸다 — 소분류는 탭이, 그 안 위치는 왼쪽 인덱스가 말한다 */
     .bnav-pager{display:none}
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a{font-size:18px}
@@ -523,72 +526,6 @@
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a::after{transition:none}
   }
 
-  /* ======================================================================
-     A-1 - 소분류 탭 바를 화면 하단 플로팅 바로 (2026-08-11)
-
-     스마트 제조(business-smart.html)의 같은 블록을 그대로 옮겼다 — 값의 근거
-     주석은 전부 그 파일에 있다. 페이지마다 달라지는 값은 하나도 없다:
-     알약 폭이 내용에 맞춰 늘고 줄어서 소분류 개수와 무관하다.
-
-     골자만 —
-       · 상태 스위치(.is-fixed)는 A 와 같은 것을 쓴다. JS 는 건드리지 않는다.
-       · 알약은 흰 판 + 1px 외곽선. 왼쪽은 어두운 대분류 판이고, 그 오른쪽
-         마구리는 기존 S커브(--tab-curve)를 배경 두 장(어두운 사각형 + 흰 커브)
-         으로 그린다.
-       · 밑단 --pill-pad 만큼은 흰 띠로 비운다 — 커브의 밑점이 그 띠 윗선에
-         내려앉아 곡선과 띠가 한 줄로 이어진다.
-       · 본문 여백은 [위 GNB 플레이트 72 / 아래 알약자리 + 숨 24] 로 뒤집는다.
-       · GNB 는 접지 않는다 — JS 의 nav-hide·nav-light 판정이 "상단이 어두운 바"
-         를 전제하므로 :has() 로 되돌린다 */
-  @media(min-width:901px){
-    .v-a1{--pill-b:32px;--pill-hero-pull:40px;--pill-h:56px;--pill-pad:8px;
-      --pill-bh:calc(var(--pill-h) - 2px - var(--pill-pad));
-      --pill-cw:calc(var(--pill-bh) * 24 / 40)}
-    .v-a1 .bnav-wrap.is-fixed{top:auto;bottom:var(--pill-b);left:0;width:100%;
-      height:auto;background:none;pointer-events:none}
-    .v-a1 .bnav-wrap.is-fixed::before,
-    .v-a1 .bnav-wrap.is-fixed::after{display:none}
-    .v-a1 .bnav-wrap.is-fixed .bnav-rule{display:none}
-    .v-a1 .bnav-wrap.is-fixed.is-away{
-      transform:translateY(calc(100% + var(--pill-b)));opacity:0}
-    .v-a1 .bnav-wrap.is-fixed .bnav{width:max-content;
-      max-width:calc(100% - 2 * var(--gm));height:var(--pill-h);margin:0 auto;
-      padding-bottom:var(--pill-pad);
-      display:flex;align-items:stretch;column-gap:0;pointer-events:auto;
-      background:#fff;border:1px solid rgba(27,39,51,.18);
-      border-radius:4px 4px 4px 0;overflow:hidden;
-      animation:pillIn .42s var(--ease)}
-    .v-a1 .bnav-wrap.is-fixed .bnav-ttl{align-self:stretch;
-      height:auto;margin:0;padding:0 24px 0 26px;
-      font-size:17px;letter-spacing:-.34px;text-shadow:none;
-      background:var(--g950)}
-    .v-a1 .bnav-wrap.is-fixed .bnav-tabs{position:static;left:auto;width:auto;
-      height:auto;align-self:stretch;transform:none;display:flex;gap:0;
-      padding-left:var(--pill-cw);transition:none;
-      background:var(--tab-curve) left 0 top 0/var(--pill-cw) 100% no-repeat,
-        linear-gradient(var(--g950),var(--g950)) left 0 top 0/var(--pill-cw) 100% no-repeat}
-    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a{position:relative;display:flex;
-      align-items:center;padding:0 22px;font-size:16px;font-weight:500;
-      color:var(--teritary);transform:none}
-    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a:hover{color:var(--sec)}
-    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a[aria-current]{font-weight:700;color:var(--brand)}
-    .v-a1 .bnav-wrap.is-fixed .bnav-tabs a + a::before{content:"";position:absolute;
-      left:0;top:12px;bottom:12px;width:1px;background:var(--line)}
-    .v-a1 .hsec{padding-top:72px;
-      padding-bottom:calc(var(--pill-b) + var(--pill-h) + 24px)}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb-group .gnb{opacity:1;
-      transform:translate(-50%,0);pointer-events:auto}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb-group::before{opacity:1}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .menus a{color:var(--g900);text-shadow:none}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .logo img{opacity:0}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .logo::after{opacity:1}
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .lang .lang-btn,
-    body.v-a1:has(.bnav-wrap.is-fixed) .gnb .menu-toggle{color:var(--g900);filter:none}
-  }
-  @keyframes pillIn{from{opacity:0;transform:translateY(14px)}}
-  @media(prefers-reduced-motion:reduce){
-    .v-a1 .bnav-wrap.is-fixed .bnav{animation:none}
-  }
 
   /* ══════════════════════════════════════════════════════════════════════
      낮은 화면 — 세로 값을 한 단 줄인다 (2026-08-11)
