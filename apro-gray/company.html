@@ -1516,6 +1516,10 @@
       <div class="pn free">
         <figure><img src="../assets/vision-solar-farm-cutout.png" width="2560" height="494" loading="lazy" alt="하늘을 지우고 남긴, 줄지어 선 태양광 패널" /></figure>
       </div>
+      <!-- 둘째 판부터 넷은 AAA 몫이다. 한 겹으로 묶어 둔 것은 목차 탭 때문이다 —
+           탭 바는 "화면 한가운데를 점유한 장"으로 현재 탭을 정하는데, 묶음이 없으면
+           #aaa 가 판 하나만 가리켜 그 판을 지나는 순간 표시가 Vision 으로 되돌아간다 -->
+      <div class="story-aaa">
       <div class="pn">
         <figure><img src="../assets/vision-smart-factory.png" width="1639" height="960" loading="lazy" alt="공정 설비들이 늘어선 자리 가운데 빛나는 장치 묶음" /></figure>
       </div>
@@ -1527,6 +1531,7 @@
       </div>
       <div class="pn">
         <figure><img src="../assets/vision-power-semicon.png" width="1536" height="1024" loading="lazy" alt="소자가 새겨진 전력 반도체 웨이퍼" /></figure>
+      </div>
       </div>
       </div>
 
@@ -1703,11 +1708,11 @@
 (function(){
   if(!document.body.classList.contains('v-a1'))return;
   var st=document.querySelector('.story');if(!st)return;
-  var v=document.getElementById('vision'),a=document.getElementById('aaa'),p=st.querySelectorAll('.pn');
+  var v=document.getElementById('vision'),a=document.getElementById('aaa'),g=st.querySelector('.story-aaa');
   if(v)v.removeAttribute('id');
   if(a)a.removeAttribute('id');
   st.id='vision';
-  if(p[1])p[1].id='aaa';
+  if(g)g.id='aaa';
 })();
 
 /* 목차 탭 바 — 히어로 상태 ↔ 상단 고정 전환 + 현재 섹션 표시.
