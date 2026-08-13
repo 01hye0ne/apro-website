@@ -883,9 +883,16 @@
     --aw:clamp(240px,28vw,54vh);       /* 가장 작은 A — 다리 둘이 다 보이는 건 이것뿐이다 */
     --astep:max(clamp(160px,18vw,320px),calc((110vh - var(--aw)) / 2));
     --lean:.3298;                      /* 왼다리 기울기 (마크 좌표에서 나온 값) */
-    --ky:clamp(110px,17vh,180px);      /* 키워드 첫 줄이 바닥에서 뜨는 높이 */
-    --kpad:clamp(12px,1.3vw,22px);     /* 다리와 키워드 사이 */
-    --kw:clamp(132px,11.5vw,186px);
+    --kbot:clamp(40px,6vh,72px);       /* 글 뭉치 밑단이 바닥에서 뜨는 높이 */
+    --kbox:clamp(190px,28vh,270px);    /* 한 뭉치가 잡아 두는 세로 자리 (아래 ⚠) */
+    --kpad:clamp(12px,1.3vw,22px);     /* 다리와 글 사이 */
+    /* 폭은 띠가 허락하는 만큼이다 — 다리 둘 사이는 어느 높이에서나 --astep 인데, 네모를
+       비스듬한 띠에 넣으면 기울기 × 뭉치 키만큼을 잃는다(위는 왼쪽 다리가, 아래는
+       오른쪽 다리가 먹는다). 그 몫을 통째로 빼면 글칸이 반 뼘밖에 안 남아, 절반만 뺀다 —
+       뭉치의 위 절반이 제 다리를 조금 타고 앉는 셈인데, 다리는 알파 8% 차이라 글이 그 위를
+       지나도 거의 티가 나지 않는다 */
+    --kw:min(clamp(170px,16vw,250px),
+             calc(var(--astep) - var(--lean) * var(--kbox) / 2 - var(--kpad) - 10px));
     /* .cwrap 이 좌우로 물린 만큼(84 + 그리드 한 칸). 판은 이걸 되물어 섹션 폭을 채운다 */
     --side:calc(84px + (100vw - 300px) / 12 + 12px);
     --a-mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 660 647'%3E%3Cpath d='M660 647L473.657 80.7213C462.985 35.2388 403.47 0 329.59 0C255.709 0 197.015 35.2388 186.754 80.7213L0 647H660Z' fill='%23fff'/%3E%3C/svg%3E")}
@@ -916,23 +923,40 @@
   body:not(.v-a1) .aorb-a.a3{--w:calc(var(--aw) + 4 * var(--astep));
     background:rgba(154,185,223,.24)}
 
-  /* 키워드 — 제 A 의 왼다리에서 --kpad 만큼 떨어져 선다. 기준이 되는 높이(--ky)는 글 뭉치의
-     첫 줄이다. 다리가 위로 갈수록 오른쪽으로 눕기 때문에, 아래로 갈수록 여백이 벌어진다 */
+  /* 키워드 뭉치 — 제 A 의 왼다리에서 --kpad 만큼 떨어져, 바닥 가까이에 선다.
+     한 뭉치는 [짝 · 키워드 + 뜻 · 문장 둘]이다. 셋이 다 켜지면 이 장의 내용이 한 화면에
+     모두 남는다 — 갈아 끼우지 않고 쌓는다.
+     ⚠ 왼쪽 기준을 뭉치의 '허리'에서 잰다(--kbot + --kbox/2). 다리가 위로 갈수록 오른쪽으로
+       눕기 때문에, 밑변에서 재면 위쪽 모서리를 다리가 파고든다. 윗변에서 재면 안전하지만
+       그만큼 글칸이 좁아져 글이 세로로 길어진다 — 허리가 그 사이다.
+     ⚠ 그래서 뭉치는 키를 못 박아 두고(--kbox) 글을 그 안 아래쪽에 붙인다. 글이 그보다
+       길어지면 위로 넘치는데, 넘친 만큼만 다리에 가까워질 뿐 자리는 흐트러지지 않는다 */
   body:not(.v-a1) .aorb-keys{list-style:none}
-  body:not(.v-a1) .aorb-keys li{position:absolute;top:calc(100% - var(--ky));
-    left:calc(var(--cx) - var(--w) / 2 + var(--lean) * var(--ky) + var(--kpad));
-    width:var(--kw)}
+  body:not(.v-a1) .aorb-keys li{position:absolute;bottom:var(--kbot);
+    left:calc(var(--cx) - var(--w) / 2 + var(--lean) * (var(--kbot) + var(--kbox) / 2) + var(--kpad));
+    width:var(--kw);height:var(--kbox);
+    display:flex;flex-direction:column;justify-content:flex-end}
   body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
-  body:not(.v-a1) .aorb-keys b{display:block;font-family:var(--suit);font-weight:800;
+  /* 짝 — 이 키워드가 업는 6대 가치 둘. 키워드 위에 얹어 머리글처럼 읽힌다 */
+  body:not(.v-a1) .aorb-keys em{display:block;margin-bottom:clamp(6px,.9vh,10px);
+    font-style:normal;font-family:var(--suit);font-weight:800;
+    font-size:clamp(12px,1.02vw,15px);line-height:1.3;letter-spacing:-.02em;
+    color:var(--g900);word-break:keep-all}
+  body:not(.v-a1) .aorb-keys em span{margin:0 .18em;font-weight:600;color:var(--point-300)}
+  /* 키워드와 뜻은 한 줄에 나란히 — 뜻은 영문 이름에 달린 꼬리표다. 줄을 끊지 않는다:
+     Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다 */
+  body:not(.v-a1) .aorb-keys .kn{display:block;white-space:nowrap}
+  body:not(.v-a1) .aorb-keys b{font-family:var(--suit);font-weight:800;
     font-size:clamp(17px,1.6vw,26px);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
-  body:not(.v-a1) .aorb-keys i{display:block;margin-top:5px;font-style:normal;
+  body:not(.v-a1) .aorb-keys i{margin-left:.5em;font-style:normal;
     font-family:var(--suit);font-weight:600;font-size:clamp(12px,1vw,15px);
     letter-spacing:-.3px;color:var(--g900)}
-  body:not(.v-a1) .aorb-keys p{margin-top:clamp(10px,1.4vh,18px);font-family:var(--pre);
+  body:not(.v-a1) .aorb-keys p{margin-top:clamp(8px,1.1vh,14px);font-family:var(--pre);
     font-size:clamp(12px,.95vw,14px);line-height:1.65;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
+  body:not(.v-a1) .aorb-keys p+p{margin-top:clamp(6px,.8vh,10px)}
 
   body:not(.v-a1) .aorb-head{position:relative;z-index:1}
   body:not(.v-a1) .aorb-head .lead{font-family:var(--suit);font-weight:700;
@@ -942,31 +966,13 @@
 
   body:not(.v-a1) .aorb-head{margin-block:auto}
 
-  /* 왼쪽 아래 — 켜진 키워드와 짝을 이루는 핵심가치 둘. AAA 하나가 6대 가치 둘을 업는
-     구조라(A-PRO 의 A 와 PRO), 오른쪽 A 가 자랄 때 왼쪽에서 그 짝이 갈린다.
-     ⚠ 쌓이지 않고 갈아 끼운다 — 셋을 한 칸(grid-area 1/1)에 겹쳐 두고 제 차례의 하나만
-       켠다. 오른쪽 A 는 쌓이는데 왼쪽은 갈리는 이유 : A 는 자란 자취가 그림이 되지만,
-       글은 셋이 다 남으면 그냥 긴 글이 된다.
-     ⚠ 위를 맞춰 겹친다(align-self:start) — 덩이마다 높이가 다르므로 아래를 맞추면
-       갈릴 때마다 첫 줄이 위아래로 튄다. 눈이 붙잡는 줄은 첫 줄이다.
-     폭은 가장 큰 A 의 왼다리에 닿지 않는 선까지다 */
-  body:not(.v-a1) .aorb-pairs{list-style:none;position:relative;z-index:1;
-    display:grid;width:min(28ch,24%)}
-  /* 나가는 글은 바로 지워지고 들어오는 글은 반 박자 뒤에 뜬다 — 겹쳐 있어서 한꺼번에
-     오가면 두 글이 서로를 뚫고 지나간다. 지연은 켜지는 쪽에만 걸린다(꺼질 때는 기본값) */
-  body:not(.v-a1) .aorb-pairs li{grid-area:1 / 1;align-self:start;
-    opacity:0;translate:0 12px;
-    transition:opacity .45s var(--ease),translate .45s var(--ease)}
-  body:not(.v-a1) .caaasec[data-step="2"] .aorb-pairs .p1,
-  body:not(.v-a1) .caaasec[data-step="3"] .aorb-pairs .p2,
-  body:not(.v-a1) .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) .aorb-pairs .p3{
-    opacity:1;translate:none;transition-delay:.4s}
-  body:not(.v-a1) .aorb-pairs b{display:block;font-family:var(--suit);font-weight:800;
-    font-size:clamp(15px,1.25vw,20px);line-height:1.25;letter-spacing:-.02em;
-    color:var(--g900)}
-  body:not(.v-a1) .aorb-pairs b span{margin:0 .18em;font-weight:600;color:var(--point-300)}
-  body:not(.v-a1) .aorb-pairs p{margin-top:5px;font-family:var(--pre);
-    font-size:clamp(11px,.85vw,13.5px);line-height:1.6;letter-spacing:-.3px;
+  /* 왼쪽 아래 — 이 장을 닫는 말(A-1 의 .caaa-msg 와 같은 문장이다).
+     짝은 이제 키워드마다 제 뭉치에 붙어 있으므로(위) 이 자리는 마무리 한 문단만 쓴다.
+     폭은 가장 큰 A 의 왼다리에 닿지 않는 선까지다.
+     ⚠ 세 A 가 다 자란 다음에 뜬다 — 마지막 단계에 반 박자 늦춰 붙인다(아래 등장 규칙) */
+  body:not(.v-a1) .aorb-note{position:relative;z-index:1;width:min(30ch,24%)}
+  body:not(.v-a1) .aorb-note p{font-family:var(--pre);
+    font-size:clamp(11px,.85vw,13.5px);line-height:1.75;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
 
   /* 단계별 등장 — 이 장의 걸음(느린 쪽)에 맞춰 .9s 다. A 는 곧게 미는 대신 바닥을 붙인 채
@@ -982,6 +988,9 @@
   body:not(.v-a1) .caaasec:is([data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) [data-at="3"],
   body:not(.v-a1) .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) [data-at="4"]{
     opacity:1;translate:none;--s:1}
+  /* 마무리 문구만 반 박자 늦는다 — 마지막 A 가 다 자란 뒤에 붙는 말이라, 같이 뜨면
+     그냥 넷째 덩이가 된다 */
+  body:not(.v-a1) .aorb-note{transition-delay:.55s}
 
   /* 좁거나 낮은 화면 : 그림을 걷고 목록으로 편다. 이 배치는 판이 넓고 높아야 성립한다 —
      화면이 낮으면 가장 작은 A 의 머리까지 잘리고, 좁으면 세 다리가 겹쳐 띠가 사라진다.
@@ -992,13 +1001,10 @@
     body:not(.v-a1) .aorb-a{display:none}
     body:not(.v-a1) .aorb-keys{margin-top:clamp(28px,5vh,52px);
       display:grid;gap:clamp(20px,3vh,32px)}
-    body:not(.v-a1) .aorb-keys li{position:static;width:auto;
+    body:not(.v-a1) .aorb-keys li{position:static;width:auto;height:auto;display:block;
       padding-left:16px;border-left:2px solid var(--point-300)}
     body:not(.v-a1) .aorb-head{margin-block:0}
-    /* 여기서는 갈아 끼울 자리가 없다 — 겹치기를 풀고 셋을 그냥 세운다 */
-    body:not(.v-a1) .aorb-pairs{margin-top:clamp(28px,5vh,52px);width:auto;
-      gap:clamp(20px,3vh,32px)}
-    body:not(.v-a1) .aorb-pairs li{grid-area:auto;opacity:1;translate:none;transition:none}
+    body:not(.v-a1) .aorb-note{margin-top:clamp(28px,5vh,52px);width:auto}
   }
 
   /* =====================================================================
@@ -1374,33 +1380,32 @@
             <span class="aorb-a a2" data-at="3" aria-hidden="true"></span>
             <span class="aorb-a a1" data-at="2" aria-hidden="true"></span>
 
+            <!-- 한 뭉치 = [짝 · 키워드 + 뜻 · 문장 둘]. 키워드 하나가 6대 가치 둘을 업는
+                 구조라(A-PRO 의 A 와 PRO) 짝을 머리글로 얹고, 문장은 키워드 뜻 · 짝 뜻
+                 순으로 잇는다. 셋 다 켜진 채 남는다 -->
             <ul class="aorb-keys">
               <li class="k1" data-at="2">
-                <b>Advanced</b><i>선진화</i>
-                <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p></li>
+                <em>Advance <span aria-hidden="true">＋</span> Pioneer</em>
+                <span class="kn"><b>Advanced</b><i>선진화</i></span>
+                <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+                <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></li>
               <li class="k2" data-at="3">
-                <b>Aggressive</b><i>적극성</i>
-                <p>도전적이고 과감한 자세로 시장을 확대합니다.</p></li>
+                <em>Aggressiveness <span aria-hidden="true">＋</span> Remarkability</em>
+                <span class="kn"><b>Aggressive</b><i>적극성</i></span>
+                <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
+                <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></li>
               <li class="k3" data-at="4">
-                <b>Agile</b><i>민첩성</i>
-                <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p></li>
+                <em>Agility <span aria-hidden="true">＋</span> Organism</em>
+                <span class="kn"><b>Agile</b><i>민첩성</i></span>
+                <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+                <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></li>
             </ul>
           </div>
 
-          <!-- 오른쪽 키워드 하나에 6대 가치 둘이 짝으로 붙는다 (Advanced ↔ Advance + Pioneer).
-               셋이 한 칸에 겹쳐 있고 제 차례의 하나만 켜진다 — 그래서 data-at(놓이면 남는다)이
-               아니라 제 이름표(p1·p2·p3)를 달고, 단계마다 켜질 하나를 CSS 가 짚는다 -->
-          <ul class="aorb-pairs">
-            <li class="p1">
-              <b>Advance <span aria-hidden="true">＋</span> Pioneer</b>
-              <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></li>
-            <li class="p2">
-              <b>Aggressiveness <span aria-hidden="true">＋</span> Remarkability</b>
-              <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></li>
-            <li class="p3">
-              <b>Agility <span aria-hidden="true">＋</span> Organism</b>
-              <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></li>
-          </ul>
+          <!-- 장을 닫는 말 — 세 A 가 다 자란 뒤에 붙는다(A-1 의 .caaa-msg 와 같은 문장) -->
+          <div class="aorb-note" data-at="4">
+            <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다.</p>
+          </div>
         </div>
 
         <div class="caaa-head">
