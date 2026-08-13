@@ -547,6 +547,54 @@
     .cvis-hero{display:none}
   }
 
+  /* ── ⑥-A · A 전용 : 가운데로 세운 Vision (2026-08-13) ───────────────────────
+     A-1 은 위 규칙 그대로다 — 선으로 나뉜 표 · 네 사업영역. 이 페이지에서 두 시안이
+     갈리는 곳은 여기뿐이라 마크업은 한 벌을 같이 쓰고, 이 블록이 A(body:not(.v-a1))
+     에서만 덮는다. _gen-a1.py 가 body 에 v-a1 을 다는 것이 그 스위치다.
+
+     스케치대로 : 선을 전부 걷고 [눈썹줄 → 큰 문장 둘 → 줄글 둘]을 한 줄기로 가운데 세운다.
+     글자 크기·색은 위 값 그대로 쓴다 — 달라지는 것은 자리뿐이다.
+     ⚠ A 에서는 네 갈래(4단계)가 없다 → 문서 끝 구동부의 Vision 단계 수도 4다
+
+     ▶ 배경 사진 자리 : 한 번 사진(하늘+태양광 패널)을 깔아 봤다가 되돌렸다 — 나중에
+       다른 사진으로 교체할 자리다. 그때 되살릴 것은 아래 세 줄이다.
+         body:not(.v-a1) .cvision{color:#fff;
+           background:#0e161e url("../assets/사진.jpg") center 35%/cover no-repeat}
+         body:not(.v-a1) .cvision .cwrap,
+         body:not(.v-a1) .cvis-hero{text-shadow:0 1px 4px rgba(0,0,0,.28)}
+         body:not(.v-a1) .cvis-grid .c--h p{-webkit-text-fill-color:#fff;color:#fff;
+           background-image:none;animation:none}
+         body:not(.v-a1) .cvis-grid .c--t p{color:var(--on-white-90)}
+       (세로 35% 는 패널 줄이 아래 5분의 1쯤에 걸리는 자리였다. 가운데로 두면 패널이
+        화면 절반까지 올라와 줄글이 그 위에 얹힌다. 그림자는 옅은 구름 띠 위에서
+        흰 글자가 버티지 못해 넣었던 값이고, 이 페이지가 쓰는 그 값 그대로다) */
+  body:not(.v-a1) .cvision .cwrap{text-align:center}
+  /* 표(2×2 · 선)를 세로 한 줄기로 편다. DOM 순서는 [큰문장 · 줄글 · 줄글 · 큰문장]인데
+     order 로 큰 문장 둘을 앞으로 모은다 — 마크업을 A-1 과 한 벌로 두기 위해서다.
+     선이 없어졌으니 왼쪽부터 열리던 clip-path 도 걷고, 덩어리째 떠오르는 것으로 바꾼다
+     (그 안의 줄글 둘은 제 [data-at] 로 2·3단계에 따로 놓인다) */
+  body:not(.v-a1) .cvision .cvis-grid{display:flex;flex-direction:column;align-items:center;
+    border:0;clip-path:none;
+    opacity:0;translate:0 16px;transition:opacity .6s var(--ease),translate .6s var(--ease)}
+  body:not(.v-a1) .cvision:is([data-step="1"],[data-step="2"],[data-step="3"]) .cvis-grid{
+    opacity:1;translate:none}
+  body:not(.v-a1) .cvis-grid .c{padding:0;border:0}
+  body:not(.v-a1) .cvis-grid .c--h{order:0}
+  body:not(.v-a1) .cvis-grid .c--t{order:1}
+  /* 줄글 덩어리는 큰 문장에서 한 숨 띄운다 (DOM 두 번째 칸 = 줄글 첫 줄) */
+  body:not(.v-a1) .cvis-grid .c:nth-child(2){margin-top:clamp(24px,4vh,44px)}
+  /* 큰 문장의 일렁이는 그라데이션(먹빛↔파랑)은 그대로 둔다 — 흰 바닥이라 A-1 과 같다.
+     다만 폭 맞춤(fit-content)만 푼다 : 가운데 정렬에서는 상자가 글자 폭이면 그만이다 */
+  body:not(.v-a1) .cvis-grid .c--h p{width:auto}
+  body:not(.v-a1) .cvis-flow{display:none}
+  /* 무대의 위 여백은 고정 탭 바를 피하는 값(158px)이고 아래는 22px 이라 서로 어긋난다.
+     한 덩어리를 가운데 세우는 장에서는 그 치우침이 그대로 보인다 → A 에서만 아래도
+     같은 값으로 맞춰 화면 한가운데에 세운다(스케치의 자리).
+     무대가 한 화면을 차지하지 않는 폭·높이에서는 손대지 않는다 — 거기는 이미 위아래가 같다 */
+  @media(min-width:901px) and (min-height:700px){
+    body:not(.v-a1) .cvis-stage{padding-bottom:var(--pad-t)}
+  }
+
   /* =====================================================================
      ⑦ AAA Strategy (+ Culture) — 스크롤로 한 단계씩 켜지는 장 (2026-08-04)
        위   : 큰 워드마크 + 오른쪽에 섹션 이름. 지나온 글자까지만 파랗다
@@ -780,6 +828,180 @@
   }
 
   /* =====================================================================
+     ⑦-A · A 전용 : 바닥에 붙은 채 커지는 A (2026-08-13, 시안 2)
+     =====================================================================
+     A-1 은 위 ⑦ 그대로다 — 워드마크가 한 글자씩 켜지는 어두운 장. 이 블록은
+     A(body:not(.v-a1))에서만 살고, 서로 상대의 마크업을 display:none 으로 덮는다.
+
+     그림의 뼈대 : A 마크를 바닥에 붙여 놓고, 같은 중심 · 같은 바닥으로 크기만 키운 A 를
+     셋 겹친다. 커진 A 는 장 밖으로 나가므로(.caaasec overflow:hidden) 남는 것은 왼쪽으로
+     비스듬히 누운 다리 셋이다. 겹친 자리가 한 겹씩 밝아져 띠처럼 갈린다.
+     키워드는 제 A 의 왼다리 옆에 선다 — 다리가 지나는 자리는
+     [중심 − 너비/2 + 기울기 × 높이] 하나로 나오므로, 시안을 만질 때 보는 값은
+     --cx(중심) · --aw(가장 작은 A) · --astep(다리 사이 거리) 셋뿐이다.
+
+     ⚠ --lean 은 마크 왼다리의 기울기다. 도형 좌표에서 (186.754,80.72)→(0,647) 이므로
+       186.754 / 566.279 = .3298 — 위로 1 올라가면 오른쪽으로 .3298 간다. 마크를 갈면
+       이 값도 같이 갈아야 키워드가 다리에 붙는다.
+     ⚠ --astep 은 너비를 따라가되 (110vh − --aw) / 2 보다 작아지지 않는다. 그보다 좁으면
+       둘째 A 의 머리가 화면 안으로 들어와, 머리가 온전히 보이는 A 가 둘이 된다.
+       110 인 이유 — 마크에서 머리(둥근 꼭대기)는 제 키의 12.4% 다. 판보다 8% 커야
+       그 머리의 3분의 2 가 위로 잘려 나가 다리만 남는다.
+     ⚠ A 가 자라는 순서가 곧 단계라, 화면에서는 오른쪽(가장 작은 A)부터 왼쪽으로 켜진다.
+       멈춘 화면을 왼쪽부터 읽으면 순서가 거꾸로다 — 세 li 의 문안만 맞바꾸면 뒤집힌다 */
+  .aorb{display:none}
+  body:not(.v-a1) .aorb{display:block}
+  /* 옛 시안의 부품은 A 에서 걷는다 (A-1 은 그대로 쓴다) */
+  body:not(.v-a1) .caaa-head,
+  body:not(.v-a1) .caaa-prog,
+  body:not(.v-a1) .caaa-rows,
+  body:not(.v-a1) .caaa-msg{display:none}
+
+  /* 판 — 바닥은 따뜻한 흰빛이고, 파랑은 A 가 갖는다. 로고의 파랑(--brand)을 아주 옅게
+     편 --point-300 을 겹치는 색으로 쓰고, 겹칠수록 진해지므로 안쪽(가장 작은 A)이 제일
+     또렷하다. 밝은 판이라 글자는 잉크색 그대로 읽힌다.
+     (마지막 단계에서 판이 통째로 뒤집히던 ⑦ 의 반전은 A 에 없다. 배경을 --page 토큰이
+     아니라 이 규칙이 직접 준다) */
+  body:not(.v-a1) .caaasec{overflow:hidden;background:#fdfdfa;color:var(--g900)}
+  body:not(.v-a1) .caaa-stage{
+    background:linear-gradient(176deg,#fdfdfa 0%,#fbfcfd 44%,#f4f8fd 76%,#eaf2fb 100%)}
+  body:not(.v-a1) .caaa-hero{color:var(--g900)}
+
+  /* .aorb 는 무대의 속높이를 그대로 받는다 — 그래야 아래 판(.aorb-plate)이 무대 여백을
+     되물어 섹션과 같은 네모가 된다 (.caaa-stage 는 align-items:center 라 내용이 짧으면 뜬다).
+     position:relative 를 여기서 못 박는 이유 — .cwrap 은 0단계에 translate 가 걸려 있어
+     그 동안만 스스로 컨테이닝 블록이 된다. 기준이 도중에 갈리면 그림이 튄다 */
+  body:not(.v-a1) .aorb{position:relative;
+    /* 왼쪽 칸은 [제목 · 핵심가치 세 짝] 두 덩이다. 짝은 바닥에 붙고, 제목은 그 위에 남은
+       빈 칸의 한가운데에 선다 — 세로 auto 여백이 남는 자리를 위아래로 똑같이 먹는다.
+       (짝의 높이가 글에 따라 달라지므로, 여백을 숫자로 못 박지 않고 auto 에 맡긴다) */
+    display:flex;flex-direction:column;
+    height:calc(100vh - var(--pad-t) - var(--pad-b));
+    height:calc(100dvh - var(--pad-t) - var(--pad-b));
+    /* ── 시안을 만지는 값 ───────────────────────────── */
+    --cx:84%;                          /* 세 A 가 함께 쓰는 가운데 (판 = 섹션 폭 기준) */
+    --aw:clamp(240px,28vw,54vh);       /* 가장 작은 A — 다리 둘이 다 보이는 건 이것뿐이다 */
+    --astep:max(clamp(160px,18vw,320px),calc((110vh - var(--aw)) / 2));
+    --lean:.3298;                      /* 왼다리 기울기 (마크 좌표에서 나온 값) */
+    --ky:clamp(110px,17vh,180px);      /* 키워드 첫 줄이 바닥에서 뜨는 높이 */
+    --kpad:clamp(12px,1.3vw,22px);     /* 다리와 키워드 사이 */
+    --kw:clamp(132px,11.5vw,186px);
+    /* .cwrap 이 좌우로 물린 만큼(84 + 그리드 한 칸). 판은 이걸 되물어 섹션 폭을 채운다 */
+    --side:calc(84px + (100vw - 300px) / 12 + 12px);
+    --a-mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 660 647'%3E%3Cpath d='M660 647L473.657 80.7213C462.985 35.2388 403.47 0 329.59 0C255.709 0 197.015 35.2388 186.754 80.7213L0 647H660Z' fill='%23fff'/%3E%3C/svg%3E")}
+  /* 그림판 — 위아래 여백과 좌우 물린 폭을 되물어 섹션과 같은 네모가 된다.
+     A 의 바닥(bottom:0)이 곧 섹션의 바닥이다 */
+  body:not(.v-a1) .aorb-plate{position:absolute;
+    left:calc(-1 * var(--side));right:calc(-1 * var(--side));
+    top:calc(-1 * var(--pad-t));bottom:calc(-1 * var(--pad-b));
+    overflow:hidden}
+
+  /* 도형은 assets/a-mark-closed.svg 와 같은 경로다. 파일 대신 데이터 URI 로 적어 두는 이유 —
+     바깥 SVG 를 마스크로 부르면 출처 규칙에 걸려 통째로 안 그려지는 자리가 있다
+     (이 코드베이스가 탭 커브를 데이터 URI 로 들고 있는 것과 같은 사정) */
+  body:not(.v-a1) .aorb-a{position:absolute;left:var(--cx);bottom:0;
+    width:var(--w);height:calc(var(--w) * 647 / 660);
+    transform-origin:50% 100%;transform:translateX(-50%) scale(var(--s,.88));
+    -webkit-mask:var(--a-mark) center/contain no-repeat;
+    mask:var(--a-mark) center/contain no-repeat}
+  /* 뒤로 갈수록 옅다 — 멀리 있는 것으로 읽힌다. 겹친 자리는 알파가 쌓여 안쪽이 저절로
+     진해지고, 그래서 가장 작은 A 만 마크로 보인다.
+     ⚠ 여기에 흐림(filter)을 얹으려면 색·마스크를 자식 한 겹 아래로 내려야 한다 —
+       filter 가 mask 보다 먼저 걸려서, 한 칸에 같이 주면 번진 가장자리를 마스크가
+       다시 칼같이 잘라 낸다 */
+  body:not(.v-a1) .aorb-a.a1{--w:var(--aw);
+    background:linear-gradient(196deg,rgba(154,185,223,.22) 0%,rgba(154,185,223,.4) 54%,rgba(64,119,183,.36) 100%)}
+  body:not(.v-a1) .aorb-a.a2{--w:calc(var(--aw) + 2 * var(--astep));
+    background:rgba(154,185,223,.32)}
+  body:not(.v-a1) .aorb-a.a3{--w:calc(var(--aw) + 4 * var(--astep));
+    background:rgba(154,185,223,.24)}
+
+  /* 키워드 — 제 A 의 왼다리에서 --kpad 만큼 떨어져 선다. 기준이 되는 높이(--ky)는 글 뭉치의
+     첫 줄이다. 다리가 위로 갈수록 오른쪽으로 눕기 때문에, 아래로 갈수록 여백이 벌어진다 */
+  body:not(.v-a1) .aorb-keys{list-style:none}
+  body:not(.v-a1) .aorb-keys li{position:absolute;top:calc(100% - var(--ky));
+    left:calc(var(--cx) - var(--w) / 2 + var(--lean) * var(--ky) + var(--kpad));
+    width:var(--kw)}
+  body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
+  body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
+  body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
+  body:not(.v-a1) .aorb-keys b{display:block;font-family:var(--suit);font-weight:800;
+    font-size:clamp(17px,1.6vw,26px);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
+  body:not(.v-a1) .aorb-keys i{display:block;margin-top:5px;font-style:normal;
+    font-family:var(--suit);font-weight:600;font-size:clamp(12px,1vw,15px);
+    letter-spacing:-.3px;color:var(--g900)}
+  body:not(.v-a1) .aorb-keys p{margin-top:clamp(10px,1.4vh,18px);font-family:var(--pre);
+    font-size:clamp(12px,.95vw,14px);line-height:1.65;letter-spacing:-.3px;
+    color:var(--sec);word-break:keep-all}
+
+  body:not(.v-a1) .aorb-head{position:relative;z-index:1}
+  body:not(.v-a1) .aorb-head .lead{font-family:var(--suit);font-weight:700;
+    font-size:clamp(13px,1.05vw,16px);letter-spacing:-.3px;color:var(--brand-2)}
+  body:not(.v-a1) .aorb-head .en{margin-top:10px;font-family:var(--suit);font-weight:800;
+    font-size:clamp(28px,3vw,46px);line-height:1.1;letter-spacing:-.03em;color:var(--g900)}
+
+  body:not(.v-a1) .aorb-head{margin-block:auto}
+
+  /* 왼쪽 아래 — 켜진 키워드와 짝을 이루는 핵심가치 둘. AAA 하나가 6대 가치 둘을 업는
+     구조라(A-PRO 의 A 와 PRO), 오른쪽 A 가 자랄 때 왼쪽에서 그 짝이 갈린다.
+     ⚠ 쌓이지 않고 갈아 끼운다 — 셋을 한 칸(grid-area 1/1)에 겹쳐 두고 제 차례의 하나만
+       켠다. 오른쪽 A 는 쌓이는데 왼쪽은 갈리는 이유 : A 는 자란 자취가 그림이 되지만,
+       글은 셋이 다 남으면 그냥 긴 글이 된다.
+     ⚠ 위를 맞춰 겹친다(align-self:start) — 덩이마다 높이가 다르므로 아래를 맞추면
+       갈릴 때마다 첫 줄이 위아래로 튄다. 눈이 붙잡는 줄은 첫 줄이다.
+     폭은 가장 큰 A 의 왼다리에 닿지 않는 선까지다 */
+  body:not(.v-a1) .aorb-pairs{list-style:none;position:relative;z-index:1;
+    display:grid;width:min(28ch,24%)}
+  /* 나가는 글은 바로 지워지고 들어오는 글은 반 박자 뒤에 뜬다 — 겹쳐 있어서 한꺼번에
+     오가면 두 글이 서로를 뚫고 지나간다. 지연은 켜지는 쪽에만 걸린다(꺼질 때는 기본값) */
+  body:not(.v-a1) .aorb-pairs li{grid-area:1 / 1;align-self:start;
+    opacity:0;translate:0 12px;
+    transition:opacity .45s var(--ease),translate .45s var(--ease)}
+  body:not(.v-a1) .caaasec[data-step="2"] .aorb-pairs .p1,
+  body:not(.v-a1) .caaasec[data-step="3"] .aorb-pairs .p2,
+  body:not(.v-a1) .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) .aorb-pairs .p3{
+    opacity:1;translate:none;transition-delay:.4s}
+  body:not(.v-a1) .aorb-pairs b{display:block;font-family:var(--suit);font-weight:800;
+    font-size:clamp(15px,1.25vw,20px);line-height:1.25;letter-spacing:-.02em;
+    color:var(--g900)}
+  body:not(.v-a1) .aorb-pairs b span{margin:0 .18em;font-weight:600;color:var(--point-300)}
+  body:not(.v-a1) .aorb-pairs p{margin-top:5px;font-family:var(--pre);
+    font-size:clamp(11px,.85vw,13.5px);line-height:1.6;letter-spacing:-.3px;
+    color:var(--sec);word-break:keep-all}
+
+  /* 단계별 등장 — 이 장의 걸음(느린 쪽)에 맞춰 .9s 다. A 는 곧게 미는 대신 바닥을 붙인 채
+     제자리에서 자란다(transform-origin 이 밑변) — 그게 이 시안이 하는 말이다.
+     --s 는 그 배율이다. 등장 규칙이 --s:1 을 얹으면 transform 이 다시 계산되고,
+     transform 에 걸어 둔 전이가 그 사이를 잇는다 */
+  body:not(.v-a1) .aorb [data-at]{opacity:0;translate:0 12px;
+    transition:opacity .9s var(--ease),translate .9s var(--ease)}
+  body:not(.v-a1) .aorb .aorb-a{translate:none;
+    transition:opacity 1s var(--ease),transform 1.15s var(--ease)}
+  body:not(.v-a1) .caaasec:is([data-step="1"],[data-step="2"],[data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) [data-at="1"],
+  body:not(.v-a1) .caaasec:is([data-step="2"],[data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) [data-at="2"],
+  body:not(.v-a1) .caaasec:is([data-step="3"],[data-step="4"],[data-step="5"],[data-step="6"]) [data-at="3"],
+  body:not(.v-a1) .caaasec:is([data-step="4"],[data-step="5"],[data-step="6"]) [data-at="4"]{
+    opacity:1;translate:none;--s:1}
+
+  /* 좁거나 낮은 화면 : 그림을 걷고 목록으로 편다. 이 배치는 판이 넓고 높아야 성립한다 —
+     화면이 낮으면 가장 작은 A 의 머리까지 잘리고, 좁으면 세 다리가 겹쳐 띠가 사라진다.
+     이때는 A 를 걷고 [키워드 · 뜻 · 문장] 세 덩이를 세로로 세운다 (읽는 내용은 같다) */
+  @media(max-width:900px),(max-height:699px){
+    body:not(.v-a1) .aorb{height:auto;padding-bottom:0}
+    body:not(.v-a1) .aorb-plate{position:static;overflow:visible}
+    body:not(.v-a1) .aorb-a{display:none}
+    body:not(.v-a1) .aorb-keys{margin-top:clamp(28px,5vh,52px);
+      display:grid;gap:clamp(20px,3vh,32px)}
+    body:not(.v-a1) .aorb-keys li{position:static;width:auto;
+      padding-left:16px;border-left:2px solid var(--point-300)}
+    body:not(.v-a1) .aorb-head{margin-block:0}
+    /* 여기서는 갈아 끼울 자리가 없다 — 겹치기를 풀고 셋을 그냥 세운다 */
+    body:not(.v-a1) .aorb-pairs{margin-top:clamp(28px,5vh,52px);width:auto;
+      gap:clamp(20px,3vh,32px)}
+    body:not(.v-a1) .aorb-pairs li{grid-area:auto;opacity:1;translate:none;transition:none}
+  }
+
+  /* =====================================================================
      ⑧ 진입 연출
      ===================================================================== */
   /* 공용 CSS 의 .rv 는 .hcard 안에서만 풀리므로(이 페이지엔 카드가 없다) 따로 둔다.
@@ -986,6 +1208,55 @@
       <!-- 0단계에만 보이는 큰 제목. 1단계에서 사라지고 아래 내용이 제자리에서 올라온다 -->
       <p class="caaa-hero" aria-hidden="true">AAA Strategy</p>
       <div class="cwrap">
+
+        <!-- ── A 전용 : 바닥에 붙은 채 커지는 A (2026-08-13, 시안 2) ──────────────────
+             A-1 은 아래 옛 블록(워드마크 · 3행 표 · 문구 띠)을 그대로 쓴다. 두 시안이 한
+             파일에 사는 방식은 Vision 과 같다 — 서로 상대 것을 display:none 으로 덮는다.
+             display:none 이면 읽기 도구도 건너뛰므로 같은 말이 두 번 읽히지 않는다.
+             ⚠ 두 시안은 문안이 다르다. A 는 AAA 를 Advanced · Aggressive · Agile 로 적고
+               6대 가치를 왼쪽 짝으로 따로 세우지만, A-1 은 표 한 장에 다 넣는다.
+               고칠 때 A-1 쪽(.caaa-rows)도 같은 말인지 보고 판단한다.
+             ⚠ A 는 큰 것부터 적어 둔다 — 뒤에 오는 것이 위에 그려지므로, 가장 작은 A 가
+               맨 앞에 오려면 순서가 거꾸로여야 한다 (켜지는 순서는 data-at 이 갖는다) -->
+        <div class="aorb">
+          <div class="aorb-head">
+            <p class="lead" data-at="1">VISION 2030을 실현하는</p>
+            <p class="en" data-at="1">AAA Strategy</p>
+          </div>
+
+          <div class="aorb-plate">
+            <span class="aorb-a a3" data-at="4" aria-hidden="true"></span>
+            <span class="aorb-a a2" data-at="3" aria-hidden="true"></span>
+            <span class="aorb-a a1" data-at="2" aria-hidden="true"></span>
+
+            <ul class="aorb-keys">
+              <li class="k1" data-at="2">
+                <b>Advanced</b><i>선진화</i>
+                <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p></li>
+              <li class="k2" data-at="3">
+                <b>Aggressive</b><i>적극성</i>
+                <p>도전적이고 과감한 자세로 시장을 확대합니다.</p></li>
+              <li class="k3" data-at="4">
+                <b>Agile</b><i>민첩성</i>
+                <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p></li>
+            </ul>
+          </div>
+
+          <!-- 오른쪽 키워드 하나에 6대 가치 둘이 짝으로 붙는다 (Advanced ↔ Advance + Pioneer).
+               셋이 한 칸에 겹쳐 있고 제 차례의 하나만 켜진다 — 그래서 data-at(놓이면 남는다)이
+               아니라 제 이름표(p1·p2·p3)를 달고, 단계마다 켜질 하나를 CSS 가 짚는다 -->
+          <ul class="aorb-pairs">
+            <li class="p1">
+              <b>Advance <span aria-hidden="true">＋</span> Pioneer</b>
+              <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></li>
+            <li class="p2">
+              <b>Aggressiveness <span aria-hidden="true">＋</span> Remarkability</b>
+              <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></li>
+            <li class="p3">
+              <b>Agility <span aria-hidden="true">＋</span> Organism</b>
+              <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></li>
+          </ul>
+        </div>
 
         <div class="caaa-head">
           <!-- 워드마크 한 벌(#apro-word)을 글자별로 잘라 다섯 겹으로 겹쳐 놓는다 —
@@ -1284,7 +1555,10 @@
      .75s 등)도 같이 늦췄고, 앞의 두 장은 전환값도 원래대로다.
      Vision 1단계처럼 긴 갈래(표가 .9s 동안 열리고 큰 문장 둘이 .62s 지연으로 따라온다)는
      다음 단계와 조금 겹치는데, 그건 이어 붙는 것이라 어색하지 않다 */
-  var LIST=[['about',3,450,700],['vision',5,450,700],['aaa',7,1000,1400]];
+  /* Vision 은 시안마다 단계 수가 다르다 — A-1 은 마지막(4)에서 네 사업영역이 놓이지만
+     A 에는 그 줄이 없다(⑥-A). 없는 단계를 세면 장 끝에 빈 박자 하나가 붙는다 */
+  var A1=document.body.classList.contains('v-a1');
+  var LIST=[['about',3,450,700],['vision',A1?5:4,450,700],['aaa',A1?7:5,1000,1400]];
   var stages=[];
   LIST.forEach(function(d){
     var sec=document.getElementById(d[0]);
