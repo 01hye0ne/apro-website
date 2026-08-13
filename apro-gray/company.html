@@ -884,8 +884,25 @@
     --astep:max(clamp(160px,18vw,320px),calc((110vh - var(--aw)) / 2));
     --lean:.3298;                      /* 왼다리 기울기 (마크 좌표에서 나온 값) */
     --kbot:clamp(40px,6vh,72px);       /* 글 뭉치 밑단이 바닥에서 뜨는 높이 */
-    --kbox:clamp(190px,28vh,270px);    /* 한 뭉치가 잡아 두는 세로 자리 (아래 ⚠) */
     --kpad:clamp(12px,1.3vw,22px);     /* 다리와 글 사이 */
+    /* 뭉치 안의 네 줄칸 — 짝 · 키워드 · 문장 · 문장. 칸마다 키를 못 박아 셋이 같은 격자를
+       쓴다. 이걸 안 하면 글 길이대로 칸이 늘고 줄어, 밑단만 맞고 그 위는 뭉치마다 어긋난다
+       (짝이 한 줄인 것과 두 줄인 것, 문장이 두 줄인 것과 세 줄인 것이 섞인다).
+       키는 [줄 수 × 줄 높이 × 글자 크기]다 — 셋 중 가장 긴 글에 맞춘 줄 수를 쓴다.
+       ⚠ 못 박은 것은 최소 키(min-height)다. 어느 폭에서 글이 한 줄 더 먹으면 그 칸만
+         늘어나고 글은 잘리지 않는다 — 그 뭉치만 위로 자란다 */
+    --emfs:clamp(12px,1.02vw,15px);    /* 짝   : 두 줄 (Aggressiveness ＋ Remarkability) */
+    --knfs:clamp(17px,1.6vw,26px);     /* 키워드 : 한 줄 */
+    --pfs:clamp(12px,.95vw,14px);      /* 문장  : 두 줄 + 세 줄 */
+    --g1:clamp(6px,.9vh,10px);
+    --g2:clamp(8px,1.1vh,14px);
+    --g3:clamp(6px,.8vh,10px);
+    --emh:calc(2 * 1.3 * var(--emfs));
+    --knh:calc(1.15 * var(--knfs));
+    --p1h:calc(2 * 1.65 * var(--pfs));
+    --p2h:calc(3 * 1.65 * var(--pfs));
+    --kbox:calc(var(--emh) + var(--g1) + var(--knh) + var(--g2)
+                + var(--p1h) + var(--g3) + var(--p2h));
     /* 폭은 띠가 허락하는 만큼이다 — 다리 둘 사이는 어느 높이에서나 --astep 인데, 네모를
        비스듬한 띠에 넣으면 기울기 × 뭉치 키만큼을 잃는다(위는 왼쪽 다리가, 아래는
        오른쪽 다리가 먹는다). 그 몫을 통째로 빼면 글칸이 반 뼘밖에 안 남아, 절반만 뺀다 —
@@ -929,34 +946,44 @@
      ⚠ 왼쪽 기준을 뭉치의 '허리'에서 잰다(--kbot + --kbox/2). 다리가 위로 갈수록 오른쪽으로
        눕기 때문에, 밑변에서 재면 위쪽 모서리를 다리가 파고든다. 윗변에서 재면 안전하지만
        그만큼 글칸이 좁아져 글이 세로로 길어진다 — 허리가 그 사이다.
-     ⚠ 그래서 뭉치는 키를 못 박아 두고(--kbox) 글을 그 안 아래쪽에 붙인다. 글이 그보다
-       길어지면 위로 넘치는데, 넘친 만큼만 다리에 가까워질 뿐 자리는 흐트러지지 않는다 */
+     ⚠ 세 뭉치는 윗변을 맞춘다. 밑변을 맞추면 글 길이가 다른 만큼 짝·키워드 줄이 위아래로
+       어긋나 뭉치마다 따로 노는 것으로 보인다 — 눈이 줄로 읽는 것은 굵은 윗줄들이다.
+       (그래서 --kbox 는 뭉치가 서는 자리를 정하는 값이지, 키를 가두는 값이 아니다.
+        글이 길면 그 뭉치만 아래로 조금 더 내려온다) */
   body:not(.v-a1) .aorb-keys{list-style:none}
-  body:not(.v-a1) .aorb-keys li{position:absolute;bottom:var(--kbot);
+  body:not(.v-a1) .aorb-keys li{position:absolute;
+    top:calc(100% - var(--kbot) - var(--kbox));
     left:calc(var(--cx) - var(--w) / 2 + var(--lean) * (var(--kbot) + var(--kbox) / 2) + var(--kpad));
-    width:var(--kw);height:var(--kbox);
-    display:flex;flex-direction:column;justify-content:flex-end}
+    width:var(--kw)}
   body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
-  /* 짝 — 이 키워드가 업는 6대 가치 둘. 키워드 위에 얹어 머리글처럼 읽힌다 */
-  body:not(.v-a1) .aorb-keys em{display:block;margin-bottom:clamp(6px,.9vh,10px);
+  /* 짝 — 이 키워드가 업는 6대 가치 둘. 키워드 위에 얹어 머리글처럼 읽힌다.
+     두 줄칸을 잡아 두고 글은 그 아래쪽에 붙인다 — 한 줄짜리 짝도 키워드와의 사이가
+     같아야 세 뭉치의 키워드 줄이 한 선에 선다 */
+  /* ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
+     가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
+  body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;
+    align-content:flex-end;align-items:baseline;
+    min-height:var(--emh);margin-bottom:var(--g1);
     font-style:normal;font-family:var(--suit);font-weight:800;
-    font-size:clamp(12px,1.02vw,15px);line-height:1.3;letter-spacing:-.02em;
+    font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
-  body:not(.v-a1) .aorb-keys em span{margin:0 .18em;font-weight:600;color:var(--point-300)}
+  /* 낱말 사이 띄어쓰기는 flex 가 지워 버리므로 여백을 이 표시가 직접 갖는다 */
+  body:not(.v-a1) .aorb-keys em span{margin:0 .32em;font-weight:600;color:var(--point-300)}
   /* 키워드와 뜻은 한 줄에 나란히 — 뜻은 영문 이름에 달린 꼬리표다. 줄을 끊지 않는다:
      Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다 */
-  body:not(.v-a1) .aorb-keys .kn{display:block;white-space:nowrap}
+  body:not(.v-a1) .aorb-keys .kn{display:block;min-height:var(--knh);white-space:nowrap}
   body:not(.v-a1) .aorb-keys b{font-family:var(--suit);font-weight:800;
-    font-size:clamp(17px,1.6vw,26px);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
+    font-size:var(--knfs);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
   body:not(.v-a1) .aorb-keys i{margin-left:.5em;font-style:normal;
     font-family:var(--suit);font-weight:600;font-size:clamp(12px,1vw,15px);
     letter-spacing:-.3px;color:var(--g900)}
-  body:not(.v-a1) .aorb-keys p{margin-top:clamp(8px,1.1vh,14px);font-family:var(--pre);
-    font-size:clamp(12px,.95vw,14px);line-height:1.65;letter-spacing:-.3px;
+  body:not(.v-a1) .aorb-keys p{min-height:var(--p1h);margin-top:var(--g2);
+    font-family:var(--pre);
+    font-size:var(--pfs);line-height:1.65;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
-  body:not(.v-a1) .aorb-keys p+p{margin-top:clamp(6px,.8vh,10px)}
+  body:not(.v-a1) .aorb-keys p+p{min-height:var(--p2h);margin-top:var(--g3)}
 
   body:not(.v-a1) .aorb-head{position:relative;z-index:1}
   body:not(.v-a1) .aorb-head .lead{font-family:var(--suit);font-weight:700;
@@ -970,7 +997,10 @@
      짝은 이제 키워드마다 제 뭉치에 붙어 있으므로(위) 이 자리는 마무리 한 문단만 쓴다.
      폭은 가장 큰 A 의 왼다리에 닿지 않는 선까지다.
      ⚠ 세 A 가 다 자란 다음에 뜬다 — 마지막 단계에 반 박자 늦춰 붙인다(아래 등장 규칙) */
-  body:not(.v-a1) .aorb-note{position:relative;z-index:1;width:min(30ch,24%)}
+  /* 밑단을 오른쪽 세 뭉치와 같은 선에 맞춘다 — 이 칸의 바닥은 무대 여백(--pad-b)까지고,
+     뭉치는 그보다 --kbot 만큼 위에 서므로 그 차이를 여기서 들어 올린다 */
+  body:not(.v-a1) .aorb-note{position:relative;z-index:1;width:min(30ch,24%);
+    margin-bottom:calc(var(--kbot) - var(--pad-b))}
   body:not(.v-a1) .aorb-note p{font-family:var(--pre);
     font-size:clamp(11px,.85vw,13.5px);line-height:1.75;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
@@ -1003,6 +1033,11 @@
       display:grid;gap:clamp(20px,3vh,32px)}
     body:not(.v-a1) .aorb-keys li{position:static;width:auto;height:auto;display:block;
       padding-left:16px;border-left:2px solid var(--point-300)}
+    /* 세로로 세우면 줄칸을 맞출 이유가 없다 — 못 박은 키를 풀어 글에 맞춘다 */
+    body:not(.v-a1) .aorb-keys em,
+    body:not(.v-a1) .aorb-keys .kn,
+    body:not(.v-a1) .aorb-keys p,
+    body:not(.v-a1) .aorb-keys p+p{min-height:0}
     body:not(.v-a1) .aorb-head{margin-block:0}
     body:not(.v-a1) .aorb-note{margin-top:clamp(28px,5vh,52px);width:auto}
   }
