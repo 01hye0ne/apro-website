@@ -905,21 +905,24 @@
     --g1:clamp(6px,.9vh,10px);
     --g2:clamp(8px,1.1vh,14px);
     --g3:clamp(6px,.8vh,10px);
-    /* 짝 칸 = 한 줄(1.3) + 선 안쪽 여백(.34×2). 선은 칸 위아래 변에 얹히므로 키를 먹지 않는다 */
-    --emh:calc(1.98 * var(--emfs));
-    --kline:rgba(27,39,51,.3);         /* 짝을 물고 있는 가는 선 (--g900 의 옅은 값) */
+    --emh:calc(1.3 * var(--emfs));     /* 짝 : 한 줄 */
+    --knh:calc(1.15 * var(--knfs));
+    /* 선 사이에 앉는 것은 키워드 줄이다 = 그 줄(1.15) + 선 안쪽 여백(.34×2).
+       선은 칸 위아래 변에 얹히므로 키를 먹지 않는다 */
+    --knband:calc(1.83 * var(--knfs));
+    --kline:rgba(64,119,183,.55);      /* 키워드를 물고 있는 가는 선 (--brand-2) */
+    --kline-t:rgba(64,119,183,0);      /* 오른쪽으로 스러지는 끝 (같은 색의 알파 0) */
     /* 선을 왼쪽으로 이만큼 더 뽑으면 다리에 닿는다.
        ⚠ 위아래 선의 값이 다르다 — 가로선은 비스듬한 다리와 한 점에서만 만나므로, 둘을
-         같은 자리에서 시작하면 하나는 넘고 하나는 못 미친다. 두 선이 --emh 만큼 떨어져
-         있으니 그 사이에서 다리는 [기울기 × --emh] 만큼 옆으로 간다.
+         같은 자리에서 시작하면 하나는 넘고 하나는 못 미친다. 두 선이 --knband 만큼 떨어져
+         있으니 그 사이에서 다리는 [기울기 × --knband] 만큼 옆으로 간다.
        기준선(--kpad)은 뭉치 '허리' 높이의 사이다. 거기서 위로 올라간 만큼 다리가
        오른쪽으로 누워 오므로, 그 몫을 빼면 그 높이에서의 실제 사이가 된다 */
     --kover-t:max(0px,calc(var(--kpad) - var(--lean) * var(--kbox) / 2));
-    --kover-b:max(0px,calc(var(--kpad) - var(--lean) * (var(--kbox) / 2 - var(--emh))));
-    --knh:calc(1.15 * var(--knfs));
+    --kover-b:max(0px,calc(var(--kpad) - var(--lean) * (var(--kbox) / 2 - var(--knband))));
     --p1h:calc(1.65 * var(--pfs));     /* 첫 문장은 언제나 한 줄이다(nowrap) */
     --p2h:calc(3 * 1.65 * var(--pfs));
-    --kbox:calc(var(--emh) + var(--g1) + var(--knh) + var(--g2)
+    --kbox:calc(var(--knband) + var(--g1) + var(--emh) + var(--g2)
                 + var(--p1h) + var(--g3) + var(--p2h));
     /* 폭은 띠가 허락하는 만큼이다 — 다리 둘 사이는 어느 높이에서나 --astep 인데, 네모를
        비스듬한 띠에 넣으면 기울기 × 뭉치 키만큼을 잃는다(위는 왼쪽 다리가, 아래는
@@ -976,35 +979,35 @@
   body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
-  /* 짝 — 이 키워드가 업는 6대 가치 둘. 위아래 가는 선 사이에 앉아 머리글처럼 읽힌다.
-     선은 왼쪽에서 A 의 다리에 닿았다가 오른쪽으로 가며 스러진다 — 다리에서 뽑아 낸 선으로
-     읽히게 하려는 것이다. 셋의 선이 같은 높이에 나란히 그어져 줄로도 묶인다.
+  /* 키워드 줄 — 위아래 가는 선 사이에 앉는다. 선은 왼쪽에서 A 의 다리에 닿았다가 오른쪽으로
+     가며 스러진다 — 다리에서 뽑아 낸 선으로 읽히게 하려는 것이다. 셋의 선이 같은 높이에
+     나란히 그어져 줄로도 묶인다. 키워드와 뜻은 한 줄에 나란히 서고 줄을 끊지 않는다:
+     Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다.
      ⚠ 선은 테두리가 아니라 따로 그린 두 줄이다(::before · ::after). 테두리로는 위아래가
        같은 자리에서 시작할 수밖에 없는데, 두 선이 닿아야 할 다리는 비스듬해서 시작점이
        서로 달라야 한다(--kover-t / --kover-b). 글칸 왼끝은 그대로 두고 선만 왼쪽으로
-       나가므로 글자는 제자리에 있다.
+       나가므로 글자는 제자리에 있다 */
+  body:not(.v-a1) .aorb-keys .kn{position:relative;display:block;
+    min-height:var(--knh);margin-bottom:var(--g1);padding:.34em 0;
+    white-space:nowrap}
+  body:not(.v-a1) .aorb-keys .kn::before,
+  body:not(.v-a1) .aorb-keys .kn::after{content:"";position:absolute;right:0;height:1px;
+    background:linear-gradient(90deg,var(--kline) 0%,var(--kline-t) 100%)}
+  body:not(.v-a1) .aorb-keys .kn::before{top:0;left:calc(-1 * var(--kover-t))}
+  body:not(.v-a1) .aorb-keys .kn::after{bottom:0;left:calc(-1 * var(--kover-b))}
+  /* 짝 — 이 키워드가 업는 6대 가치 둘. 선 아래에 한 줄로 붙어 키워드를 풀어 준다.
      ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
        가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
-  body:not(.v-a1) .aorb-keys em{position:relative;
-    display:flex;flex-wrap:wrap;row-gap:4px;
-    align-content:flex-end;align-items:baseline;
-    min-height:var(--emh);margin-bottom:var(--g1);padding:.34em 0;
+  body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;row-gap:4px;
+    align-items:baseline;min-height:var(--emh);
     font-style:normal;font-family:var(--suit);font-weight:800;
     font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
-  body:not(.v-a1) .aorb-keys em::before,
-  body:not(.v-a1) .aorb-keys em::after{content:"";position:absolute;right:0;height:1px;
-    background:linear-gradient(90deg,var(--kline) 0%,rgba(27,39,51,0) 100%)}
-  body:not(.v-a1) .aorb-keys em::before{top:0;left:calc(-1 * var(--kover-t))}
-  body:not(.v-a1) .aorb-keys em::after{bottom:0;left:calc(-1 * var(--kover-b))}
   /* ＋ 는 뒤엣 이름과 한 덩이로 묶는다 — 긴 짝(Aggressiveness ＋ Remarkability)은 두 줄로
      접히는데, 묶지 않으면 ＋ 만 윗줄 끝에 덩그러니 남는다 */
   body:not(.v-a1) .aorb-keys em .pl{display:flex;align-items:baseline}
   /* 낱말 사이 띄어쓰기는 flex 가 지워 버리므로 여백을 이 표시가 직접 갖는다 */
   body:not(.v-a1) .aorb-keys em .x{margin:0 .3em;font-weight:600;color:var(--point-300)}
-  /* 키워드와 뜻은 한 줄에 나란히 — 뜻은 영문 이름에 달린 꼬리표다. 줄을 끊지 않는다:
-     Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다 */
-  body:not(.v-a1) .aorb-keys .kn{display:block;min-height:var(--knh);white-space:nowrap}
   body:not(.v-a1) .aorb-keys b{font-family:var(--suit);font-weight:800;
     font-size:var(--knfs);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
   body:not(.v-a1) .aorb-keys i{margin-left:.5em;font-style:normal;
@@ -1104,8 +1107,8 @@
     body:not(.v-a1) .aorb-keys p,
     body:not(.v-a1) .aorb-keys p+p{min-height:0}
     /* 닿을 다리가 없으니 선을 왼쪽으로 뽑을 일도, 그 뒤에서 밀려 나올 일도 없다 */
-    body:not(.v-a1) .aorb-keys em::before,
-    body:not(.v-a1) .aorb-keys em::after{left:0}
+    body:not(.v-a1) .aorb-keys .kn::before,
+    body:not(.v-a1) .aorb-keys .kn::after{left:0}
     body:not(.v-a1) .aorb .aorb-keys li{clip-path:none}
     body:not(.v-a1) .aorb-keys .ks{translate:none;transition:none}
     body:not(.v-a1) .aorb-head{margin-block:0}
@@ -1153,9 +1156,10 @@
   .story-vision,.story-aaa{scroll-margin-top:var(--cnav-clear)}
   /* Vision 쪽 여백이 AAA 쪽보다 두 배 가까이 넓다. 이 장은 히어로에서 스크롤을 내리자마자
      닿는 첫 화면이라, --cnav-clear 만큼은 고정 탭 바가 덮어 버려서 눈에 보이는 여백이
-     그만큼 깎인다 — 1728×1080 에서 6vh 로는 눈썹줄 위가 77px 밖에 안 남아 답답했다.
-     12vh 로 올리면 140px 쯤 남아 큰 두 줄이 숨 쉴 자리가 생긴다 */
-  .story-vision{padding-top:calc(var(--cnav-clear) + clamp(48px,12vh,160px))}
+     그만큼 깎인다 — 눈에 보이는 여백은 [이 값 − 128px] 이다.
+     6vh(보이는 여백 77px)로는 답답해서 12vh(142px)로 올렸다가, 그것도 모자라 17vh 로
+     한 번 더 올렸다 — 1728×1080 에서 196px 이 남는다 (2026-08-13) */
+  .story-vision{padding-top:calc(var(--cnav-clear) + clamp(60px,17vh,220px))}
   .story-aaa{padding-top:calc(var(--cnav-clear) + clamp(20px,4.5vh,56px))}
   .story .st-head{text-align:center}
   /* AAA 쪽 머리글만 왼쪽으로 — 바로 아래 세 줄이 왼쪽에서 시작하므로 제목·문장도 그 선에
@@ -1346,7 +1350,7 @@
     /* 줄이 위아래로 펴지면 낱말이 가로를 통째로 쓴다 — 위의 '가장 긴 줄이 상자의 40%'
        라는 제약이 풀리므로 크기도 그만큼 되돌린다 (가장 긴 줄 ≈ 15.8em < 상자 폭) */
     .story{--st-word:clamp(20px,3.6vw,30px)}
-    .story-vision{padding-top:calc(var(--cnav-clear) + clamp(32px,7vh,72px))}
+    .story-vision{padding-top:calc(var(--cnav-clear) + clamp(36px,9vh,88px))}
     .story-aaa{padding-top:clamp(56px,9vh,88px)}
     /* 17:5 는 폭이 없으면 띠처럼 얇아진다 — 좁은 화면에서는 하늘을 더 남긴다 */
     .st-photo{aspect-ratio:16 / 9}
@@ -1610,18 +1614,18 @@
                  글만 그 안에서 움직여야, 다리 뒤에서 나오는 것으로 보인다 -->
             <ul class="aorb-keys">
               <li class="k1" data-at="2"><div class="ks">
-                <em><span class="v">Advance</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Pioneer</span></span></em>
                 <span class="kn"><b>Advanced</b><i>선진화</i></span>
+                <em><span class="v">Advance</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Pioneer</span></span></em>
                 <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
                 <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></div></li>
               <li class="k2" data-at="3"><div class="ks">
-                <em><span class="v">Aggressiveness</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Remarkability</span></span></em>
                 <span class="kn"><b>Aggressive</b><i>적극성</i></span>
+                <em><span class="v">Aggressiveness</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Remarkability</span></span></em>
                 <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
                 <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></div></li>
               <li class="k3" data-at="4"><div class="ks">
-                <em><span class="v">Agility</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Organism</span></span></em>
                 <span class="kn"><b>Agile</b><i>민첩성</i></span>
+                <em><span class="v">Agility</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Organism</span></span></em>
                 <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
                 <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></div></li>
             </ul>
