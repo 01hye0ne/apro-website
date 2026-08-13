@@ -1002,6 +1002,151 @@
   }
 
   /* =====================================================================
+     ⑨ · BRAND STORY 판 — 붙박이 글 · 흐르는 그림 (2026-08-13, A-1 갈래)
+     =====================================================================
+     왼쪽 글은 제자리에 붙어 있고(sticky) 오른쪽 그림만 흐른다. 한 화면이 한 판이고
+     판은 다섯이다. 판이 바뀔 때 왼쪽 글이 통째로 갈린다.
+       0  VISION 2030    Global Top 5 Total Energy-Solution Provider
+       1  AAA Strategy   Advanced      (선진화 · Advance + Pioneer)
+       2  AAA Strategy   Aggressive    (적극성 · Aggressiveness + Remarkability)
+       3  AAA Strategy   Agile         (민첩성 · Agility + Organism)
+       4  A-PRO          Core 6-Values (마무리 문장)
+
+     왼쪽은 창 셋이다 — 눈썹줄 · 큰 글자 · 문장. 창마다 세로로 늘어선 띠가 있고, 그 띠를
+     칸 수만큼 밀어 올린다. 창은 넘치는 부분을 잘라서, 글이 위로 밀려 나가고 다음 글이
+     아래에서 올라오는 것으로 읽힌다.
+     ⚠ 눈썹줄·문장 띠의 칸은 모두 같은 키여야 한다 — 미는 값이 [칸 번호 × 칸 높이]라서
+       칸마다 키가 다르면 두 번째부터 어긋난다. 그래서 칸 높이를 --eyeh/--parh 로 못 박고,
+       가장 긴 글(0번 판의 문장 네 줄)에 맞춰 잡았다. 큰 글자 띠만은 예외다(아래 참조).
+     ⚠ 눈썹줄은 제 번호(--ei)를 따로 쓴다. 1~3 판이 같은 'AAA Strategy' 라, --pi 를 그대로
+       쓰면 같은 글자가 판마다 올라갔다 내려오며 헛도는 것처럼 보인다 */
+  .story{--story-pt:calc(var(--cnav-clear) + clamp(16px,2.5vh,32px));
+    --story-pb:clamp(16px,3vh,32px);
+    /* 가로 기준선 셋 — 본문 상자 안쪽 폭 · 그림칸이 오른쪽으로 되무는 폭 · 둘을 합한
+       '큰 글자'의 폭. 큰 글자는 본문 상자를 넘어 그림칸 오른쪽 끝까지 간다 */
+    --gut:calc((100vw - 300px) / 12 + 12px);
+    --fullw:calc(100vw - 168px - 2 * var(--gut));
+    --bleed:calc(var(--gut) + 84px - clamp(16px,2vw,32px));
+    --bigw:calc(var(--fullw) + var(--bleed));
+    --big:clamp(30px,4vw,64px);
+    --eyeh:clamp(22px,2vw,32px);
+    /* 0번 판(Vision)의 두 줄 — 줄마다 폭을 꽉 채우느라 크기가 다르다(아래 .v1/.v2).
+       --vh 는 그 두 줄이 차지하는 키다. 꼬리의 .1 은 아랫줄 g·y 가 창 밑선 밖으로
+       삐져나가 잘리지 않게 두는 몫이다 */
+    --vbig:calc(var(--bigw) / 5.545);
+    --vbig2:calc(var(--bigw) / 13.617);
+    --vh:calc(1.06 * (var(--vbig) + var(--vbig2)) + .1 * var(--vbig2));
+    /* 한 낱말 판의 칸 — 글줄 키(1.06)가 아니라 1.16 이다. 글자의 획이 제 줄 상자 아래로
+       0.08em 쯤 빠져나가는데(Agile 의 g), 1.06 으로 잡으면 그 꼬리가 다음 칸 위쪽에
+       남아 창에 비친다 */
+    --kh:calc(1.16 * var(--big));
+    --parh:clamp(120px,16vh,180px);
+    background:#fdfdfa;color:var(--g900)}
+  /* --bigo 는 큰 글자 띠를 미는 값이다. 칸 높이가 판마다 달라(--vh 대 --kh) 곱셈으로
+     떨어지지 않으므로 누적합을 그대로 적어 둔다. 창 높이(--bigslot)도 함께 움직인다 */
+  .story[data-panel="0"]{--pi:0;--ei:0;--bigslot:var(--vh);--bigo:0px}
+  .story[data-panel="1"]{--pi:1;--ei:1;--bigslot:var(--kh);--bigo:var(--vh)}
+  .story[data-panel="2"]{--pi:2;--ei:1;--bigslot:var(--kh);--bigo:calc(var(--vh) + var(--kh))}
+  .story[data-panel="3"]{--pi:3;--ei:1;--bigslot:var(--kh);--bigo:calc(var(--vh) + 2 * var(--kh))}
+  .story[data-panel="4"]{--pi:4;--ei:2;--bigslot:var(--kh);--bigo:calc(var(--vh) + 3 * var(--kh))}
+
+  .story-grid{display:grid;grid-template-columns:44% 1fr;
+    column-gap:clamp(24px,3vw,56px);align-items:start}
+  /* 글칸 — 무대 여백만큼 띄워 붙고, 화면 한 장 높이 안에서 가운데에 선다 */
+  .story-text{position:sticky;top:var(--story-pt);
+    height:calc(100vh - var(--story-pt) - var(--story-pb));
+    height:calc(100dvh - var(--story-pt) - var(--story-pb));
+    display:flex;flex-direction:column;justify-content:center}
+
+  .story-win{overflow:hidden}
+  .story-win ol{list-style:none;margin:0;padding:0;
+    transition:transform .8s var(--ease)}
+  .story-win li{display:flex;flex-direction:column;justify-content:center}
+
+  .story-eye{height:var(--eyeh)}
+  .story-eye ol{transform:translateY(calc(var(--ei,0) * -1 * var(--eyeh)))}
+  .story-eye li{height:var(--eyeh);font-family:var(--suit);font-weight:800;
+    font-size:clamp(13px,1.05vw,16px);letter-spacing:.06em;color:var(--brand-2)}
+
+  /* 큰 글자 창만 본문 상자를 넘어 그림칸 오른쪽 끝까지 벌린다 — 0번 판의 두 줄이 가로를
+     꽉 채우는 구도라 그렇다(레퍼런스가 그렇다). 나머지 판은 낱말 하나뿐이라 넘칠 일이 없다.
+     칸 높이를 통일하지 않는 것도 그래서다 — 두 줄 판과 한 낱말 판의 키 차가 다섯 배라,
+     통일하면 낱말 판마다 글자 아래로 빈 데가 크게 남는다 */
+  .story-big{width:var(--bigw);height:var(--bigslot,var(--kh));
+    margin-top:clamp(10px,1.6vh,20px);transition:height .8s var(--ease)}
+  .story-big ol{transform:translateY(calc(-1 * var(--bigo,0px)))}
+  .story-big li{height:var(--kh);justify-content:flex-start;
+    font-family:var(--suit);font-weight:800;
+    font-size:var(--big);line-height:1.06;letter-spacing:-.03em}
+  .story-big li.v{height:var(--vh)}
+  /* 두 줄이 저마다 폭을 꽉 채우도록 줄마다 크기가 다르다. 나누는 수는 그 줄이 글자 크기의
+     몇 배 폭인지다 — SUIT 800 · letter-spacing −.03em 에서 쟀다(100px 기준으로
+     "Global Top 5" 551.8px, "Total Energy-Solution Provider" 1354.9px). 여기에 0.5% 를
+     더 얹어 나눈다 — 딱 맞추면 마지막 글자가 창 밖으로 반 픽셀 삐져나가 잘린다.
+     ⚠ letter-spacing 을 여기서 다시 적는 것은 빠뜨리면 안 된다. 이 값은 '계산된 px' 로
+       물려받는 성질이라, 물려받기만 하면 작은 글자 기준(−.03em × --big)이 그대로 와서
+       큰 글자가 잰 것보다 5% 가까이 넓어진다.
+     ⚠ 이 두 줄의 글을 고치면 폭이 달라진다. 그때는 이 수도 다시 재서 고쳐야 한다 */
+  /* 줄바꿈은 이 두 덩이 사이에서만 일어난다 — display:block 이 없으면 좁은 화면에서
+     둘이 한 줄에 붙어 흐른다(사이에 띄어쓰기가 없어 끊을 자리가 없다) */
+  .story-big .v1,.story-big .v2{display:block;line-height:1.06;white-space:nowrap;letter-spacing:-.03em}
+  .story-big .v1{font-size:var(--vbig)}
+  .story-big .v2{font-size:var(--vbig2)}
+
+  .story-par{height:var(--parh);margin-top:clamp(18px,3vh,38px)}
+  .story-par ol{transform:translateY(calc(var(--pi,0) * -1 * var(--parh)))}
+  .story-par li{height:var(--parh);justify-content:flex-start;gap:clamp(8px,1.2vh,14px)}
+  .story-par p{font-family:var(--pre);font-size:clamp(13px,1.05vw,16px);line-height:1.75;
+    letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
+  .story-par b{font-family:var(--suit);font-weight:700;color:var(--g900)}
+
+  /* 그림칸 — 한 판이 화면 한 장이다. 이 높이가 곧 스냅 한 걸음이라, 아래 스크립트가
+     이 칸들을 그대로 '장'으로 삼는다 */
+  /* 그림은 오른쪽으로 흘러넘친다 — .cwrap 이 물고 있는 만큼(--bleed)을 되물어 화면
+     가장자리 가까이까지 간다(레퍼런스가 그렇다). 큰 글자의 오른쪽 끝도 여기에 맞춰 선다 */
+  .story-media{margin-right:calc(-1 * var(--bleed))}
+  .story .pn{height:100vh;height:100dvh;
+    padding:var(--story-pt) 0 var(--story-pb);display:flex}
+  .story .pn figure{margin:0;flex:1;min-height:0;overflow:hidden;border-radius:6px;
+    background:var(--secondary-bg)}
+  .story .pn img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 배경을 딴 그림(.free)은 상자에 담지 않는다 — 판 밑단에 그대로 내려앉아 바닥선이 된다 */
+  .story .pn.free{align-items:flex-end;padding-bottom:0}
+  .story .pn.free figure{background:none;border-radius:0;overflow:visible}
+  .story .pn.free img{width:100%;height:auto;object-fit:contain}
+
+  /* 좁거나 낮은 화면 : 붙박이를 풀고 [글 · 그림]을 판마다 세로로 잇는다.
+     한 화면에 좌우로 벌려 놓는 배치라, 폭이 없으면 성립하지 않는다 */
+  @media(max-width:900px),(max-height:699px){
+    .story{--bleed:0px}
+    .story-grid{grid-template-columns:1fr;row-gap:clamp(20px,4vh,36px)}
+    .story-text{position:static;height:auto;display:block}
+    .story-win{height:auto;overflow:visible}
+    .story-win ol{transform:none}
+    .story-win li{height:auto;display:block}
+    .story-eye li+li{margin-top:2px}
+    .story-big{width:auto;height:auto}
+    .story-big li,.story-big li.v{height:auto;margin-top:6px}
+    .story-par li{margin-top:10px}
+    .story-media{margin-right:0}
+    .story .pn{height:auto;padding:0 0 clamp(20px,4vh,36px)}
+    .story .pn figure{aspect-ratio:4 / 3}
+    .story .pn.free{padding-bottom:clamp(20px,4vh,36px)}
+    .story .pn.free figure{aspect-ratio:auto}
+  }
+  /* 900 아래에서는 .cwrap 이 12열 들여쓰기를 풀고 좌우 24px 만 남긴다(위 ⑤ 참조).
+     큰 글자의 폭도 그 폭을 따라야 해서 여기서 다시 적는다. 48 이 아니라 64 인 것은
+     세로 스크롤 막대 몫이다 — 100vw 는 막대까지 세므로, 그만큼 빼 두지 않으면 폭을
+     꽉 채운 줄이 딱 그만큼 오른쪽으로 삐져나간다 */
+  @media(max-width:900px){.story{--fullw:calc(100vw - 64px)}}
+
+  /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
+     쓰고, 서로 상대의 마크업을 display:none 으로 덮는다(이 페이지의 다른 갈래와 같은 방식).
+     목차 탭이 가리키는 두 자리(#vision · #aaa)는 아래 스크립트가 갈래에 맞게 옮긴다 */
+  body:not(.v-a1) .story{display:none}
+  .v-a1 .cvision,.v-a1 .caaasec{display:none}
+
+  /* =====================================================================
      ⑧ 진입 연출
      ===================================================================== */
   /* 공용 CSS 의 .rv 는 .hcard 안에서만 풀리므로(이 페이지엔 카드가 없다) 따로 둔다.
@@ -1312,6 +1457,83 @@
   </div>
 </section>
 
+<!-- ===================== 01–02 · BRAND STORY (A-1 갈래) =====================
+     A-1 에서 앞의 Vision(01) · AAA(02) 두 장을 이 한 장이 대신한다.
+     왼쪽 글은 제자리에 붙어 있고 오른쪽 그림만 흐르며, 판이 바뀔 때 왼쪽의 창 셋
+     (눈썹줄 · 큰 글자 · 문장)이 통째로 갈린다.
+     ⚠ id 를 달지 않는다 — 앞의 두 장이 #vision · #aaa 를 이미 갖고 있어 겹친다.
+       A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장으로 옮긴다.
+     ⚠ 띠의 칸 순서 = 판 순서다. 칸을 더하거나 빼면 위 CSS 의 [data-panel] 표도 같이 고친다 -->
+<section class="story" data-panel="0">
+  <div class="cwrap">
+    <div class="story-grid">
+
+      <div class="story-text">
+        <div class="story-win story-eye">
+          <ol>
+            <li>VISION 2030</li>
+            <li>AAA Strategy</li>
+            <li>A-PRO</li>
+          </ol>
+        </div>
+
+        <div class="story-win story-big">
+          <ol>
+            <li class="v"><span class="v1">Global Top 5</span><span class="v2">Total Energy-Solution Provider</span></li>
+            <li>Advanced</li>
+            <li>Aggressive</li>
+            <li>Agile</li>
+            <li>Core 6-Values</li>
+          </ol>
+        </div>
+
+        <div class="story-win story-par">
+          <ol>
+            <li>
+              <p>에이프로 그룹은 2030년까지 종합 에너지 솔루션 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p>
+              <p>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p>
+            </li>
+            <li>
+              <p><b>선진화</b> — 앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+              <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p>
+            </li>
+            <li>
+              <p><b>적극성</b> — 도전적이고 과감한 자세로 시장을 확대합니다.</p>
+              <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p>
+            </li>
+            <li>
+              <p><b>민첩성</b> — 빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+              <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p>
+            </li>
+            <li>
+              <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="story-media">
+      <div class="pn free">
+        <figure><img src="../assets/vision-solar-farm-cutout.png" width="2560" height="494" loading="lazy" alt="하늘을 지우고 남긴, 줄지어 선 태양광 패널" /></figure>
+      </div>
+      <div class="pn">
+        <figure><img src="../assets/vision-smart-factory.png" width="1639" height="960" loading="lazy" alt="공정 설비들이 늘어선 자리 가운데 빛나는 장치 묶음" /></figure>
+      </div>
+      <div class="pn">
+        <figure><img src="../assets/vision-ess.png" width="1536" height="1024" loading="lazy" alt="컨테이너형 에너지 저장 장치가 늘어선 발전 단지" /></figure>
+      </div>
+      <div class="pn">
+        <figure><img src="../assets/vision-ev-platform.png" width="1638" height="960" loading="lazy" alt="도심 도로 위에서 주변과 신호를 주고받는 전기자동차" /></figure>
+      </div>
+      <div class="pn">
+        <figure><img src="../assets/vision-power-semicon.png" width="1536" height="1024" loading="lazy" alt="소자가 새겨진 전력 반도체 웨이퍼" /></figure>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ===================== 03 · ABOUT (회사소개 + 기업 현황) ===================== -->
 <!-- 스크롤이 이 장을 지나는 동안 화면이 붙들리고 단계(data-step 0~2)가 올라간다.
      data-at 은 그 요소가 몇 번째 단계에 놓이는지다. 눈썹줄·헤드라인(.crv)만은 단계가
@@ -1473,6 +1695,21 @@
      (카드 캐러셀·소분류 탭 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
 <script>
+/* A-1 : 목차 탭이 가리키는 두 자리를 BRAND STORY 장으로 옮긴다.
+   A-1 에서는 Vision·AAA 두 장이 display:none 이고 그 자리를 이 장 하나가 대신하는데,
+   #vision · #aaa 라는 이름은 여전히 안 보이는 두 장이 쥐고 있다. 아래 스크립트들이
+   모두 그 이름으로 장을 찾으므로(탭 바 · 단계 구동기 · 스냅), 여기서 먼저 넘겨준다.
+   ⚠ 다른 스크립트보다 앞에 서야 한다 */
+(function(){
+  if(!document.body.classList.contains('v-a1'))return;
+  var st=document.querySelector('.story');if(!st)return;
+  var v=document.getElementById('vision'),a=document.getElementById('aaa'),p=st.querySelectorAll('.pn');
+  if(v)v.removeAttribute('id');
+  if(a)a.removeAttribute('id');
+  st.id='vision';
+  if(p[1])p[1].id='aaa';
+})();
+
 /* 목차 탭 바 — 히어로 상태 ↔ 상단 고정 전환 + 현재 섹션 표시.
 
    전환 시점 : 히어로 밑변이 (바가 설 자리 --cnav-top + 히어로 밑단에서 내려온 거리
@@ -1555,10 +1792,12 @@
      .75s 등)도 같이 늦췄고, 앞의 두 장은 전환값도 원래대로다.
      Vision 1단계처럼 긴 갈래(표가 .9s 동안 열리고 큰 문장 둘이 .62s 지연으로 따라온다)는
      다음 단계와 조금 겹치는데, 그건 이어 붙는 것이라 어색하지 않다 */
-  /* Vision 은 시안마다 단계 수가 다르다 — A-1 은 마지막(4)에서 네 사업영역이 놓이지만
-     A 에는 그 줄이 없다(⑥-A). 없는 단계를 세면 장 끝에 빈 박자 하나가 붙는다 */
+  /* A-1 은 Vision·AAA 자리를 BRAND STORY 한 장이 대신한다 — 그 장은 판마다 제 감시자가
+     있어(아래) 여기서는 About 하나만 본다. #vision 은 이 시점에 이미 그 장으로 넘어가
+     있으므로, 이름으로 찾으면 단계 없는 장에 헛도는 걸음을 매게 된다 */
   var A1=document.body.classList.contains('v-a1');
-  var LIST=[['about',3,450,700],['vision',A1?5:4,450,700],['aaa',A1?7:5,1000,1400]];
+  var LIST=A1?[['about',3,450,700]]
+             :[['about',3,450,700],['vision',4,450,700],['aaa',5,1000,1400]];
   var stages=[];
   LIST.forEach(function(d){
     var sec=document.getElementById(d[0]);
@@ -1598,6 +1837,20 @@
   stages.forEach(function(s){io.observe(s.sec);});
 })();
 
+/* BRAND STORY 판 감시자 — 화면 한가운데를 차지한 판의 번호를 장에 적는다.
+   위아래 45% 를 잘라 낸 띠로 보므로 언제나 판 하나만 걸린다. 왼쪽 글이 갈리는 것은
+   전부 CSS 가 그 번호(--pi/--ei)를 보고 한다 */
+(function(){
+  var st=document.querySelector('.story');if(!st||!('IntersectionObserver'in window))return;
+  var pns=[].slice.call(st.querySelectorAll('.pn'));if(!pns.length)return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting)st.setAttribute('data-panel',pns.indexOf(e.target));
+    });
+  },{rootMargin:'-45% 0px -45% 0px',threshold:0});
+  pns.forEach(function(p){io.observe(p);});
+})();
+
 /* 섹션 스냅 — 휠 한 번에 한 장. 사업영역 세부 페이지의 그 동작에서 이 페이지 몫만 옮겼다
    (공용 JS 의 것은 .hsec + 카드 트랙 전용이라 이 페이지에서는 아무것도 잡지 않는다).
 
@@ -1610,8 +1863,11 @@
    셋 다 세부 페이지와 같은 값이다 — 두 페이지의 손맛이 갈리면 안 된다.
    좁은 화면은 잡지 않는다(터치는 제 관성이 있다). 모션을 줄여 달라는 설정이면 즉시 이동 */
 (function(){
-  var secs=['vision','aaa','about'].map(function(i){return document.getElementById(i);})
-             .filter(Boolean);
+  /* A-1 의 장 = [BRAND STORY 의 판 다섯 · About]. 판 하나가 화면 한 장이라 그대로 걸음이 된다 */
+  var secs=(document.body.classList.contains('v-a1')
+              ? [].slice.call(document.querySelectorAll('.story .pn'))
+              : ['vision','aaa'].map(function(i){return document.getElementById(i);}))
+            .concat([document.getElementById('about')]).filter(Boolean);
   if(!secs.length)return;
   var narrow=window.matchMedia('(max-width:900px)'),
       reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
