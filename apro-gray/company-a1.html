@@ -907,7 +907,11 @@
     --g3:clamp(6px,.8vh,10px);
     /* 짝 칸 = 한 줄(1.3) + 선 안쪽 여백(.34×2) + 선 두 줄(2px) */
     --emh:calc(1.98 * var(--emfs) + 2px);
-    --kline:rgba(27,39,51,.22);        /* 짝을 물고 있는 가는 선 (--g900 의 옅은 값) */
+    --kline:rgba(27,39,51,.3);         /* 짝을 물고 있는 가는 선 (--g900 의 옅은 값) */
+    /* 그 선을 왼쪽으로 이만큼 더 뽑아 다리에 닿게 한다. 뭉치의 왼끝은 '허리' 높이에서
+       잰 자리인데(--kpad), 짝은 그보다 위에 있고 다리는 위로 갈수록 오른쪽으로 눕는다 —
+       그 눕는 몫을 --kpad 에서 뺀 것이 짝 높이에서의 실제 사이다 */
+    --kover:max(0px,calc(var(--kpad) - var(--lean) * (var(--kbox) - var(--emh)) / 2));
     --knh:calc(1.15 * var(--knfs));
     --p1h:calc(1.65 * var(--pfs));     /* 첫 문장은 언제나 한 줄이다(nowrap) */
     --p2h:calc(3 * 1.65 * var(--pfs));
@@ -969,13 +973,20 @@
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
   /* 짝 — 이 키워드가 업는 6대 가치 둘. 위아래 가는 선 사이에 앉아 머리글처럼 읽힌다.
-     선은 뭉치 폭을 그대로 쓰므로, 세 뭉치의 선이 같은 높이에서 나란히 그어져 줄로 묶인다.
+     선은 왼쪽에서 A 의 다리에 닿았다가 오른쪽으로 가며 스러진다 — 다리에서 뽑아 낸 선으로
+     읽히게 하려는 것이다. 셋의 선이 같은 높이에 나란히 그어져 줄로도 묶인다.
+     ⚠ 왼쪽 여백(--kover)은 선만 늘리는 몫이다. 같은 값을 안쪽 여백으로 되돌려 주므로
+       글자는 제자리에 있다.
+     ⚠ 그라데이션 선은 border-image 로 그린다. 좌우 테두리를 0 으로 두면 위아래만 그려진다
+       (border-color 는 이때 무시되므로 --kline 은 그라데이션 안에서만 쓰인다).
      ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
        가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
   body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;row-gap:4px;
     align-content:flex-end;align-items:baseline;
-    min-height:var(--emh);margin-bottom:var(--g1);
-    padding:.34em 0;border-top:1px solid var(--kline);border-bottom:1px solid var(--kline);
+    min-height:var(--emh);margin:0 0 var(--g1) calc(-1 * var(--kover));
+    padding:.34em 0 .34em var(--kover);
+    border-width:1px 0;border-style:solid;
+    border-image:linear-gradient(90deg,var(--kline) 0%,rgba(27,39,51,0) 100%) 1;
     font-style:normal;font-family:var(--suit);font-weight:800;
     font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
@@ -1065,6 +1076,8 @@
     body:not(.v-a1) .aorb-keys .kn,
     body:not(.v-a1) .aorb-keys p,
     body:not(.v-a1) .aorb-keys p+p{min-height:0}
+    /* 닿을 다리가 없으니 선을 왼쪽으로 뽑을 일도 없다 */
+    body:not(.v-a1) .aorb-keys em{margin-left:0;padding-left:0}
     body:not(.v-a1) .aorb-head{margin-block:0}
     body:not(.v-a1) .aorb-note{margin-top:clamp(28px,5vh,52px);width:auto}
   }
@@ -1089,10 +1102,15 @@
        화면이 좁아질수록 상자는 화면보다 빨리 줄어드는데(양쪽 12열 들여쓰기 때문),
        vw 로만 잡으면 그 차이만큼 낱말이 상자를 넘는다 */
     --st-box:calc(83.333vw - 142px);
-    /* AAA 줄의 큰 영문. 나누는 수 40 은 가장 긴 줄(Aggressiveness ＋ Remarkability ≈
-       15.8em)이 상자의 40% 안에 들어가는 크기다 — 세 줄이 같은 크기여야 하므로 가장 긴
-       줄에 맞춘다. 900px 아래는 줄을 위아래로 펴므로 최솟값(16px)이면 넉넉하다 */
-    --st-word:clamp(16px,calc(var(--st-box) / 40),34px);
+    /* AAA 줄의 큰 영문. 판이 탭 선에 못 박히면서(아래 --st-panel) 왼쪽에 남는 자리가
+       상자의 40.5% 로 정해졌다. 가장 긴 줄(Aggressiveness ＋ Remarkability)이 재어 보니
+       글자 크기의 16.3배라, 44 로 나누면 그 자리의 92% 를 쓴다 — 남는 8% 가 글꼴이
+       바뀌거나 문안이 조금 길어질 때의 여유다. 세 줄이 같은 크기여야 하므로 가장 긴 줄에
+       맞춘다. 900px 아래는 줄을 위아래로 펴므로 최솟값(16px)이면 넉넉하다 */
+    --st-word:clamp(16px,calc(var(--st-box) / 44),34px);
+    /* 파란 판의 좌우 안쪽 여백. 판이 서는 자리(--st-panel)를 이 값에서 되짚어 잡으므로
+       한 곳에만 적혀 있어야 한다 */
+    --st-pad-x:clamp(18px,2.2vw,34px);
     /* 큰 두 줄이 채워지기 전의 색. 읽을 수는 있되 "아직 안 왔다"가 한눈에 보이는 선이다 */
     --st-hollow:#c9ced5;
     background:#fdfdfa;color:var(--g900);
@@ -1176,7 +1194,20 @@
   /* 세 줄 — <dl> 하나가 통째로 격자다(줄마다 격자를 두지 않는다). 왼쪽 칸을 auto 로
      두면 세 줄이 같은 폭을 나눠 쓰므로, 가장 긴 줄(Aggressiveness ＋ Remarkability)에
      맞춰 저절로 잡히고 회색 판의 왼쪽 선도 세 줄이 같이 선다 */
-  .st-rows{display:grid;grid-template-columns:auto minmax(0,1fr);
+  /* 판이 서는 자리 — 전략명(Advanced·Aggressive·Agile)의 첫 글자가 고정 탭 바의 첫
+     구분선(Vision 2030 | AAA Strategy 경계)에 맞아떨어지게 하는 폭이다. 그 선을 이 상자
+     기준으로 풀면 :
+       탭 줄은 고정 상태에서 [84 + 3×inset] 에서 시작해 [화면폭 − 84 − inset] 에서 끝나고
+       (오른쪽 끝은 이 상자의 오른쪽 끝과 같다), 그 폭을 셋으로 나눈 첫 경계다.
+       inset = 0.1 × 상자폭 + 1.2 이므로 경계 = 상자 왼끝 + (46.667% + 1.6px) 이 된다.
+     판은 그보다 안쪽 여백만큼 왼쪽에서 시작해야 글자가 선에 선다 →
+       판 폭 = 100% − (46.667% + 1.6px − 안쪽여백)
+     2.5px 은 1.6 에 스크롤 막대 몫을 얹은 값이다 — 탭 바의 inset 은 100vw(막대 포함)로,
+     이 상자는 100%(막대 제외)로 재기 때문에 둘이 막대폭/9 만큼 어긋난다. 막대가 없는
+     환경(맥 오버레이)에서는 1px 쯤 안쪽에 서는데, 900px 자리에서 눈에 띄지 않는다.
+     ⚠ 탭 판 그리드(위 ③ 의 --sec-inset · .cnav 폭)를 고치면 이 수도 다시 풀어야 한다 */
+  .st-rows{--st-panel:calc(53.3333% - 2.5px + var(--st-pad-x));
+    display:grid;grid-template-columns:minmax(0,1fr) var(--st-panel);
     column-gap:clamp(18px,2.6vw,46px);row-gap:clamp(24px,4vh,56px);
     align-items:center;margin:clamp(40px,6.5vh,78px) 0 0}
 
@@ -1209,7 +1240,9 @@
      subgrid 를 모르는 브라우저에서는 이 블록이 통째로 무시되고 위의 flex 배치로 남는다
      (＋ 만 줄마다 어긋날 뿐 읽는 데는 지장이 없다) */
   @supports (grid-template-columns:subgrid){
-    .st-rows{grid-template-columns:auto auto auto minmax(0,1fr)}
+    /* 셋째 칸이 1fr 인 것은 판이 못 박힌 자리(--st-panel)와 앞 두 낱말 사이의 남는 자리를
+       여기가 먹게 하려는 것이다 — 뒤 낱말은 그 칸의 왼쪽에 서므로 줄맞춤은 그대로다 */
+    .st-rows{grid-template-columns:auto auto minmax(0,1fr) var(--st-panel)}
     /* 칸 사이 간격은 subgrid 가 제 값을 쓰고, 판과의 사이(3↔4칸)만 부모 값을 쓴다 */
     .st-src{grid-column:1 / 4;display:grid;grid-template-columns:subgrid;
       column-gap:clamp(8px,1.1vw,18px);align-items:end}
@@ -1221,7 +1254,7 @@
      의 폭 차이만큼 줄마다 어긋난다 */
   .st-out{display:grid;grid-template-columns:30% minmax(0,1fr);
     column-gap:clamp(14px,1.8vw,30px);align-items:center;
-    padding:clamp(16px,2.4vh,28px) clamp(18px,2.2vw,34px);
+    padding:clamp(16px,2.4vh,28px) var(--st-pad-x);
     background-image:linear-gradient(135deg,var(--st-g1),var(--st-g2));
     border-radius:10px}
   /* 판마다 짙기가 다른 파랑 — 위에서 아래로 Advanced → Aggressive → Agile 순으로 밝아진다.
