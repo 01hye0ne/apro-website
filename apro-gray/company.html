@@ -891,7 +891,11 @@
        키는 [줄 수 × 줄 높이 × 글자 크기]다 — 셋 중 가장 긴 글에 맞춘 줄 수를 쓴다.
        ⚠ 못 박은 것은 최소 키(min-height)다. 어느 폭에서 글이 한 줄 더 먹으면 그 칸만
          늘어나고 글은 잘리지 않는다 — 그 뭉치만 위로 자란다 */
-    --emfs:clamp(13px,1.12vw,17px);    /* 짝   : 두 줄 (Aggressiveness ＋ Remarkability) */
+    /* 짝 — 위아래 선 사이에 한 줄로 앉는다. 접히면 그 뭉치만 선 간격이 벌어져 셋이
+       어긋나므로, 가장 긴 짝("Aggressiveness ＋ Remarkability" = 글자 크기의 16.1배)이
+       띠 안에 들어오는 크기를 넘지 않게 묶어 둔다.
+       ⚠ 짝 문안을 고치면 이 16.1 도 다시 재야 한다 */
+    --emfs:clamp(12px,min(1.12vw,calc((var(--astep) - var(--kpad) - 40px) / 16.1)),17px);
     --knfs:clamp(19px,1.8vw,30px);     /* 키워드 : 한 줄 */
     /* 문장 — 첫 줄은 한 줄로 두므로(아래 nowrap) 글자 크기가 띠 폭에 매인다.
        가장 긴 첫 문장("빠르게 변화하는 …")이 글자 크기의 20배 폭이라, 띠 폭에서 다음
@@ -901,8 +905,9 @@
     --g1:clamp(6px,.9vh,10px);
     --g2:clamp(8px,1.1vh,14px);
     --g3:clamp(6px,.8vh,10px);
-    /* 짝은 흰 알약을 쓴다 — 줄 높이(1.3)에 위아래 패딩(.24×2)이 붙는다 */
-    --emh:calc(2 * 1.78 * var(--emfs) + 4px);
+    /* 짝 칸 = 한 줄(1.3) + 선 안쪽 여백(.34×2) + 선 두 줄(2px) */
+    --emh:calc(1.98 * var(--emfs) + 2px);
+    --kline:rgba(27,39,51,.22);        /* 짝을 물고 있는 가는 선 (--g900 의 옅은 값) */
     --knh:calc(1.15 * var(--knfs));
     --p1h:calc(1.65 * var(--pfs));     /* 첫 문장은 언제나 한 줄이다(nowrap) */
     --p2h:calc(3 * 1.65 * var(--pfs));
@@ -963,20 +968,17 @@
   body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
-  /* 짝 — 이 키워드가 업는 6대 가치 둘. 키워드 위에 얹어 머리글처럼 읽힌다.
-     두 줄칸을 잡아 두고 글은 그 아래쪽에 붙인다 — 한 줄짜리 짝도 키워드와의 사이가
-     같아야 세 뭉치의 키워드 줄이 한 선에 선다 */
-  /* ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
-     가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
+  /* 짝 — 이 키워드가 업는 6대 가치 둘. 위아래 가는 선 사이에 앉아 머리글처럼 읽힌다.
+     선은 뭉치 폭을 그대로 쓰므로, 세 뭉치의 선이 같은 높이에서 나란히 그어져 줄로 묶인다.
+     ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
+       가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
   body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;row-gap:4px;
     align-content:flex-end;align-items:baseline;
     min-height:var(--emh);margin-bottom:var(--g1);
+    padding:.34em 0;border-top:1px solid var(--kline);border-bottom:1px solid var(--kline);
     font-style:normal;font-family:var(--suit);font-weight:800;
     font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
-  /* 가치 이름은 흰 알약을 깔고 앉는다 — A 의 파란 다리 위에 놓여도 이름 둘이 또렷하게
-     떨어져 읽힌다. 알약은 낱말마다 하나이고, 사이의 ＋ 는 맨몸이다 */
-  body:not(.v-a1) .aorb-keys em .v{padding:.24em .5em;border-radius:4px;background:#fff}
   /* ＋ 는 뒤엣 이름과 한 덩이로 묶는다 — 긴 짝(Aggressiveness ＋ Remarkability)은 두 줄로
      접히는데, 묶지 않으면 ＋ 만 윗줄 끝에 덩그러니 남는다 */
   body:not(.v-a1) .aorb-keys em .pl{display:flex;align-items:baseline}
@@ -1058,9 +1060,6 @@
       display:grid;gap:clamp(20px,3vh,32px)}
     body:not(.v-a1) .aorb-keys li{position:static;width:auto;height:auto;display:block;
       padding-left:16px;border-left:2px solid var(--point-300)}
-    /* 흰 알약은 파란 다리 위에서만 쓸모가 있다 — 여기서는 흰 바탕이라 보이지도 않으면서
-       첫 낱말만 왼쪽으로 밀려 나가게 한다 */
-    body:not(.v-a1) .aorb-keys em .v{padding:0;background:none}
     /* 세로로 세우면 줄칸을 맞출 이유가 없다 — 못 박은 키를 풀어 글에 맞춘다 */
     body:not(.v-a1) .aorb-keys em,
     body:not(.v-a1) .aorb-keys .kn,
@@ -1097,10 +1096,6 @@
     /* 큰 두 줄이 채워지기 전의 색. 읽을 수는 있되 "아직 안 왔다"가 한눈에 보이는 선이다 */
     --st-hollow:#c9ced5;
     background:#fdfdfa;color:var(--g900);
-    /* 사진이 화면 폭까지 열릴 때(아래 .st-photo) 100vw 는 스크롤 막대까지 세므로 막대
-       너비만큼 좌우로 삐져나간다. 그 몫을 잘라 가로 스크롤이 생기지 않게 한다 —
-       clip 은 hidden 과 달리 스크롤 컨테이너를 만들지 않아 안쪽 sticky 를 죽이지 않는다 */
-    overflow-x:clip;
     padding-bottom:clamp(88px,12vh,168px)}
 
   /* 두 덩이의 윗여백 = 고정된 탭 바가 덮는 높이 + 숨 돌릴 자리. 목차 탭은 덩이의 윗변으로
@@ -1111,6 +1106,9 @@
   .story-vision{padding-top:calc(var(--cnav-clear) + clamp(28px,6vh,84px))}
   .story-aaa{padding-top:calc(var(--cnav-clear) + clamp(20px,4.5vh,56px))}
   .story .st-head{text-align:center}
+  /* AAA 쪽 머리글만 왼쪽으로 — 바로 아래 세 줄이 왼쪽에서 시작하므로 제목·문장도 그 선에
+     맞춘다. Vision 쪽은 사진을 거느린 표지라 가운데 그대로다 */
+  .story-aaa .st-head{text-align:left}
 
   /* ── VISION 2030 ─────────────────────────────────────────────────── */
   .st-eye{font-family:var(--suit);font-weight:700;
@@ -1168,22 +1166,6 @@
   .st-photo img{display:block;width:100%;height:100%;
     object-fit:cover;object-position:50% 100%}
 
-  /* 그 사진이 본문 상자에서 화면 폭까지 열린다 — 다음 장으로 넘기는 매듭이다 (2026-08-13).
-     margin-inline:calc(50% - 50vw) 은 "가운데 정렬된 부모 안에서 화면 폭 꽉 채우기"의
-     정석이다 : 여백의 %는 부모 안쪽 폭 W 를 보므로 폭이 W − 2(W/2 − 50vw) = 100vw 가 된다.
-     .cwrap 이 좌우 대칭이라(margin-inline:auto) 그대로 화면에 맞아 떨어진다.
-     세로 비(17/5)는 그대로 두었다 — 폭과 함께 키도 커지므로 잘라 쓰는 자리가 변하지 않고
-     사진이 그냥 커진다. 이때 늘어나는 키(1728px 에서 382 → 508)만큼 아래 글이 밀리는데,
-     이 장이 화면 밑단에 걸릴 때 재생되므로 밀리는 장면은 화면 밖에서 끝난다.
-
-     ⚠ 전환 목록을 통째로 다시 적는다. 공용 규칙 [data-crv] .crv.is-in 이 transition 을
-       opacity·translate 두 줄로 덮어쓰기 때문에, 여기서 같이 적지 않으면 여백이
-       전환 없이 툭 벌어진다 (그래서 특정도도 한 계단 높다) */
-  [data-crv] .st-photo.crv.is-in{
-    margin-inline:calc(50% - 50vw);border-radius:0;
-    transition:opacity .7s var(--ease),translate .7s var(--ease),
-      margin-inline 1s var(--ease),border-radius 1s var(--ease)}
-
   /* ── AAA Strategy ────────────────────────────────────────────────── */
   .st-ttl{font-family:var(--suit);font-weight:800;
     font-size:clamp(22px,1.95vw,34px);line-height:1.2;letter-spacing:-.02em}
@@ -1208,22 +1190,55 @@
   /* 왼쪽 — 두 낱말과 사이의 ＋. 밑변으로 맞춰야 큰 글자끼리 한 줄에 선다
      (낱말 덩이의 마지막 줄이 곧 큰 글자라, 가운데나 윗변으로 맞추면 어긋난다) */
   .st-src{display:flex;align-items:flex-end;gap:clamp(8px,1.1vw,18px)}
+  /* ＋ 는 낱말이 아니라 이음표다 — 회색으로 물려 두 낱말보다 뒤로 물러나게 한다 */
   .st-plus{font-family:var(--suit);font-weight:800;font-size:var(--st-word);
-    line-height:1.16;letter-spacing:-.02em;color:var(--g900)}
+    line-height:1.16;letter-spacing:-.02em;color:#9ba3ac}
 
-  /* 오른쪽 회색 판 = [전략 이름 | 풀이 두 줄]. 이름 칸을 30% 로 못 박는 것은 세 줄의
+  /* 여섯 낱말의 첫 글자에만 브랜드 파랑을 넣는다 — 세로로 읽으면 A·A·A(AAA Strategy),
+     가로 오른쪽 줄이 P·R·O 라서 둘을 합치면 A-PRO 가 된다. 회사 이름이 6대 핵심가치
+     안에 숨어 있다는 것을 색 하나로 짚어 주는 자리다.
+     ⚠ 왼쪽 낱말에만 넣는다. 오른쪽 파란 판의 전략명(Advanced·Aggressive·Agile)은
+       흰 글자 한 벌로 두어야 판이 조용하다 */
+  .st-src .ini{color:var(--brand-2)}
+
+  /* 세 줄의 ＋ 와 뒷 낱말이 한 선에 서게 한다 (2026-08-13).
+     앞 낱말의 폭이 줄마다 크게 다른데(Advance 대 Aggressiveness) flex 로 두면 ＋ 가
+     줄마다 다른 자리에 떨어져 들쭉날쭉하다. dl 격자를 [앞 낱말 | ＋ | 뒤 낱말 | 판]
+     네 칸으로 늘리고, dt 가 앞 세 칸을 subgrid 로 그대로 물려받는다 — 그래야 세 줄이
+     한 칸 자를 나눠 쓴다. 앞 낱말 칸은 왼쪽 맞춤 그대로라 왼쪽 선도 지켜진다.
+     subgrid 를 모르는 브라우저에서는 이 블록이 통째로 무시되고 위의 flex 배치로 남는다
+     (＋ 만 줄마다 어긋날 뿐 읽는 데는 지장이 없다) */
+  @supports (grid-template-columns:subgrid){
+    .st-rows{grid-template-columns:auto auto auto minmax(0,1fr)}
+    /* 칸 사이 간격은 subgrid 가 제 값을 쓰고, 판과의 사이(3↔4칸)만 부모 값을 쓴다 */
+    .st-src{grid-column:1 / 4;display:grid;grid-template-columns:subgrid;
+      column-gap:clamp(8px,1.1vw,18px);align-items:end}
+    .st-out{grid-column:4}
+  }
+
+  /* 오른쪽 판 = [전략 이름 | 풀이 두 줄]. 이름 칸을 30% 로 못 박는 것은 세 줄의
      풀이가 같은 선에서 시작하게 하려는 것이다 — auto 로 두면 Advanced·Aggressive·Agile
-     의 폭 차이만큼 줄마다 어긋난다.
-     바탕은 공용 --secondary-bg(#f4f6f8)보다 한 단계 짙다 — 이 장의 바탕이 흰색이 아니라
-     #fdfdfa 라, 공용 값을 그대로 쓰면 판의 윤곽이 거의 잡히지 않는다 */
+     의 폭 차이만큼 줄마다 어긋난다 */
   .st-out{display:grid;grid-template-columns:30% minmax(0,1fr);
     column-gap:clamp(14px,1.8vw,30px);align-items:center;
     padding:clamp(16px,2.4vh,28px) clamp(18px,2.2vw,34px);
-    background:#eaeef3;border-radius:6px}
+    background-image:linear-gradient(135deg,var(--st-g1),var(--st-g2));
+    border-radius:10px}
+  /* 판마다 짙기가 다른 파랑 — 위에서 아래로 Advanced → Aggressive → Agile 순으로 밝아진다.
+     판 하나 안에서도 왼쪽 위(--st-g1)에서 오른쪽 아래(--st-g2)로 깊어진다. 판이 가로로
+     길고 낮아 대각선이 잘 안 드러나므로, 두 끝의 차이를 넉넉히 벌려 놓았다.
+     ⚠ 밝은 끝을 더 밝히면 안 된다. 셋 중 가장 밝은 지점(3번 판 왼쪽 위 #3f79b8)이 흰
+       글자와 4.53:1 로, 흰 본문이 읽히는 마지막 선이다 */
+  .st-rows dd:nth-of-type(1){--st-g1:#2f5d99;--st-g2:#17324f}
+  .st-rows dd:nth-of-type(2){--st-g1:#396dab;--st-g2:#1d3e66}
+  .st-rows dd:nth-of-type(3){--st-g1:#3f79b8;--st-g2:#23497b}
+  /* 판 안의 글은 전부 흰 계열로 뒤집는다 (판 밖 왼쪽 낱말은 그대로 남색이다) */
+  .st-out .st-word i{color:rgba(255,255,255,.8)}
+  .st-out .st-word b{color:#fff}
   .st-desc p{font-family:var(--pre);font-size:clamp(12px,.92vw,15px);line-height:1.8;
-    letter-spacing:-.26px;color:var(--sec);word-break:keep-all}
+    letter-spacing:-.26px;color:rgba(255,255,255,.9);word-break:keep-all}
 
-  /* 좁은 화면 : 한 줄을 [낱말 둘] 위, [회색 판] 아래로 편다. 한 칸짜리 격자가 되면
+  /* 좁은 화면 : 한 줄을 [낱말 둘] 위, [파란 판] 아래로 편다. 한 칸짜리 격자가 되면
      줄 사이와 줄 안의 간격이 같아져 셋이 여섯으로 읽히므로, 줄 사이만 다시 벌린다 */
   @media(max-width:900px){
     /* 줄이 위아래로 펴지면 낱말이 가로를 통째로 쓴다 — 위의 '가장 긴 줄이 상자의 40%'
@@ -1235,7 +1250,11 @@
     .st-photo{aspect-ratio:16 / 9}
     .st-rows{grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px)}
     .st-rows dd+dt{margin-top:clamp(20px,4vh,36px)}
-    .st-out{grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px);align-items:start}
+    /* 한 칸짜리 격자로 돌아오므로 위 subgrid 배치도 함께 푼다 — 안 풀면 dt 가
+       없는 칸(2·3)까지 걸쳐 빈 칸이 생긴다 */
+    .st-src{grid-column:1;display:flex}
+    .st-out{grid-column:1;
+      grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px);align-items:start}
   }
 
   /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
@@ -1256,12 +1275,11 @@
     [data-crv] .crv,[data-crv] .crv.is-in{opacity:1;translate:none;transition:none}
     /* 일렁이는 그라데이션도 세운다 — 색은 그대로 남고 움직임만 멈춘다 */
     .cvis-grid .c--h p{animation:none}
-    /* BRAND STORY(A-1) 두 연출도 결과만 남긴다. 위 ⑨ 가 전환 목록을 다시 적어 두었으므로
-       (특정도 0,4,x) 여기서도 같은 무게로 눌러야 멎는다.
-       큰 두 줄은 처음부터 다 채워진 모습이고, 사진은 열림 없이 제자리에 선다 */
+    /* BRAND STORY(A-1) 의 큰 두 줄은 채우지 않고 처음부터 다 채워진 모습으로 선다.
+       위 ⑨ 의 채움 규칙이 [data-crv] .st-big.is-in span 이라, 여기서도 그보다 무거운
+       선택자로 눌러야 멎는다 */
     [data-crv] .st-big.crv span,
     [data-crv] .st-big.crv.is-in span{--fill:100%;transition:none}
-    [data-crv] .st-photo.crv.is-in{margin-inline:0;border-radius:6px;transition:none}
   }
 
   /* =====================================================================
@@ -1597,9 +1615,9 @@
            갖고 있어(위 CSS) 세 줄의 칸 선이 저절로 맞는다 — dt/dd 를 줄마다 묶지 않는 이유다 -->
       <dl class="st-rows">
         <dt class="st-src crv">
-          <span class="st-word"><i>진보</i><b>Advance</b></span>
+          <span class="st-word"><i>진보</i><b><span class="ini">A</span>dvance</b></span>
           <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>개척</i><b>Pioneer</b></span>
+          <span class="st-word"><i>개척</i><b><span class="ini">P</span>ioneer</b></span>
         </dt>
         <dd class="st-out crv">
           <span class="st-word"><i>선진화</i><b>Advanced</b></span>
@@ -1610,9 +1628,9 @@
         </dd>
 
         <dt class="st-src crv">
-          <span class="st-word"><i>적극성</i><b>Aggressiveness</b></span>
+          <span class="st-word"><i>적극성</i><b><span class="ini">A</span>ggressiveness</b></span>
           <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>탁월함</i><b>Remarkability</b></span>
+          <span class="st-word"><i>탁월함</i><b><span class="ini">R</span>emarkability</b></span>
         </dt>
         <dd class="st-out crv">
           <span class="st-word"><i>적극성</i><b>Aggressive</b></span>
@@ -1623,9 +1641,9 @@
         </dd>
 
         <dt class="st-src crv">
-          <span class="st-word"><i>민첩성</i><b>Agility</b></span>
+          <span class="st-word"><i>민첩성</i><b><span class="ini">A</span>gility</b></span>
           <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>유기적 조직</i><b>Organism</b></span>
+          <span class="st-word"><i>유기적 조직</i><b><span class="ini">O</span>rganism</b></span>
         </dt>
         <dd class="st-out crv">
           <span class="st-word"><i>민첩성</i><b>Agile</b></span>
