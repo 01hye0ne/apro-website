@@ -274,9 +274,14 @@
       display:grid;grid-template-columns:repeat(var(--tabs),1fr);column-gap:0;
       justify-items:center;overflow:visible}
     /* 구분선 — 칸 하나짜리 타일을 가로로 반복한다. 전체 폭에 %하드 스톱을 찍는
-       방식은 폭이 넓어지면 1px 이 보간에 묻혀 사라진다 */
+       방식은 폭이 넓어지면 1px 이 보간에 묻혀 사라진다.
+       세로 범위는 탭 글자 높이다 — 상자(40px) 안에서 18px/1.15 글자가 세로 중앙 +
+       translateY(4px) 자리에 앉으므로 [12,36] 이 곧 글자가 차지하는 띠이고, 선의
+       가운데(24)가 글자 가운데와 맞는다. 한동안은 흰 패널 윗변부터 아래 가로
+       구분선까지 통으로 그었는데, 칸을 나누는 선이 아니라 바를 세로로 가르는
+       금으로 읽혔다 (홈 히어로 밑단 탭 띠도 같은 이유로 inset:14px 0 이다) */
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs::after{content:"";position:absolute;
-      left:0;right:0;top:-8px;bottom:-24px;pointer-events:none;
+      left:0;right:0;top:12px;bottom:4px;pointer-events:none;
       background-image:linear-gradient(to right,
         transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
       background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}

@@ -746,10 +746,12 @@
        글자 크기는 sticky 값(16px) 그대로 둔다 — 히어로의 20px 을 따라가지 않는다.
        ⚠ 균등 분할이라 글자는 칸 가운데 정렬된다(히어로와 같은 규칙). 종전처럼
        왼쪽부터 붙어 서지 않는다.
-       선의 세로 범위 — 탭 상자는 [76,116](바 높이 128 기준 bottom:12 + height:40)
-       인데 흰 패널(.bnav-wrap::after, 이 페이지는 height:60px)은 [68,128],
-       가로 구분선(.bnav-rule)은 140 에 있다. 그래서 top:-8px(=68) 에서 시작해
-       bottom:-24px(=140) 까지 내려 패널 윗변(=탭 끝)부터 가로선까지 온전히 잇는다.
+       선의 세로 범위 — 탭 글자 높이에 맞춘다. 탭 상자는 [76,116](바 높이 128 기준
+       bottom:12 + height:40)이고 그 안에서 18px/1.15 글자가 세로 중앙 + translateY(4px)
+       자리에 앉으므로, 상자 기준 [12,36] 이 곧 글자가 차지하는 띠다 — 선의 가운데(24)가
+       글자 가운데와 맞는다. 한동안은 흰 패널 윗변(68)부터 가로 구분선(140)까지 통으로
+       그었는데, 칸을 나누는 선이 아니라 바를 세로로 가르는 금으로 읽혔다
+       (홈 히어로 밑단 탭 띠의 구분선도 같은 이유로 inset:14px 0 이다).
        width 를 트랜지션에 넣은 이유 — 히어로(1167px)와 sticky(1036px)의 띠 폭이
        달라져서, 안 넣으면 고정되는 순간 칸 너비만 뚝 끊겨 보인다 */
     body:not(.v-a1) .bnav-tabs{transition:left .4s var(--ease),transform .4s var(--ease),
@@ -761,7 +763,7 @@
     /* 히어로 상태와 같은 "칸 하나짜리 타일" 방식(위 히어로 블록 주석 참고).
        ⚠ 4 는 소분류 개수다 */
     body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs::after{content:"";position:absolute;
-      left:0;right:0;top:-8px;bottom:-24px;pointer-events:none;
+      left:0;right:0;top:12px;bottom:4px;pointer-events:none;
       background-image:linear-gradient(to right,
         transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
       background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}
