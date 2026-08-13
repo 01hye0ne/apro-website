@@ -997,7 +997,8 @@
   /* 첫 문장은 한 줄로 둔다 — 키워드 바로 아래 붙는 짧은 뜻풀이라 두 줄로 접히면
      아래 긴 문장과 뭉쳐 읽힌다. 칸보다 길면 오른쪽으로 넘치는데, 넘어가는 쪽은
      다음 뭉치가 시작하기 전까지의 빈 띠다 */
-  body:not(.v-a1) .aorb-keys p:first-of-type{white-space:nowrap}
+  body:not(.v-a1) .aorb-keys p:first-of-type{white-space:nowrap;
+    font-weight:700;color:var(--g900)}
   body:not(.v-a1) .aorb-keys p+p{min-height:var(--p2h);margin-top:var(--g3)}
 
   body:not(.v-a1) .aorb-head{position:relative;z-index:1}
@@ -1016,8 +1017,10 @@
      뭉치는 그보다 --kbot 만큼 위에 서므로 그 차이를 여기서 들어 올린다 */
   body:not(.v-a1) .aorb-note{position:relative;z-index:1;width:min(30ch,24%);
     margin-bottom:calc(var(--kbot) - var(--pad-b))}
+  /* 장을 닫는 말이라 오른쪽 문장들보다 한 급 크다 — 이 칸에는 이 문단 하나뿐이라
+     커져도 부딪힐 것이 없고, 커지면서 위로 자랄수록 큰 A 의 다리와는 오히려 멀어진다 */
   body:not(.v-a1) .aorb-note p{font-family:var(--pre);
-    font-size:clamp(11px,.85vw,13.5px);line-height:1.75;letter-spacing:-.3px;
+    font-size:clamp(13px,1.1vw,17px);line-height:1.75;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
 
   /* 단계별 등장 — 이 장의 걸음(느린 쪽)에 맞춰 .9s 다. A 는 곧게 미는 대신 바닥을 붙인 채
