@@ -881,7 +881,7 @@
     /* ── 시안을 만지는 값 ───────────────────────────── */
     --cx:84%;                          /* 세 A 가 함께 쓰는 가운데 (판 = 섹션 폭 기준) */
     --aw:clamp(240px,28vw,54vh);       /* 가장 작은 A — 다리 둘이 다 보이는 건 이것뿐이다 */
-    --astep:max(clamp(160px,18vw,320px),calc((110vh - var(--aw)) / 2));
+    --astep:max(clamp(160px,20vw,380px),calc((110vh - var(--aw)) / 2));
     --lean:.3298;                      /* 왼다리 기울기 (마크 좌표에서 나온 값) */
     --kbot:clamp(40px,6vh,72px);       /* 글 뭉치 밑단이 바닥에서 뜨는 높이 */
     --kpad:clamp(20px,2.4vw,44px);     /* 다리와 글 사이 */
@@ -891,13 +891,13 @@
        키는 [줄 수 × 줄 높이 × 글자 크기]다 — 셋 중 가장 긴 글에 맞춘 줄 수를 쓴다.
        ⚠ 못 박은 것은 최소 키(min-height)다. 어느 폭에서 글이 한 줄 더 먹으면 그 칸만
          늘어나고 글은 잘리지 않는다 — 그 뭉치만 위로 자란다 */
-    --emfs:clamp(12px,1.02vw,15px);    /* 짝   : 두 줄 (Aggressiveness ＋ Remarkability) */
-    --knfs:clamp(17px,1.6vw,26px);     /* 키워드 : 한 줄 */
+    --emfs:clamp(13px,1.12vw,17px);    /* 짝   : 두 줄 (Aggressiveness ＋ Remarkability) */
+    --knfs:clamp(19px,1.8vw,30px);     /* 키워드 : 한 줄 */
     /* 문장 — 첫 줄은 한 줄로 두므로(아래 nowrap) 글자 크기가 띠 폭에 매인다.
        가장 긴 첫 문장("빠르게 변화하는 …")이 글자 크기의 20배 폭이라, 띠 폭에서 다음
        뭉치와의 사이(24px)를 뺀 값을 20으로 나눈 것이 넘치지 않는 최대 크기다.
        ⚠ 그 문장을 고치면 이 20 도 다시 재야 한다 (100px 로 폭을 재서 나눈 값) */
-    --pfs:clamp(12px,min(.95vw,calc((var(--astep) - 24px) / 20)),14px);
+    --pfs:clamp(12px,min(1.05vw,calc((var(--astep) - 24px) / 20)),16px);
     --g1:clamp(6px,.9vh,10px);
     --g2:clamp(8px,1.1vh,14px);
     --g3:clamp(6px,.8vh,10px);
@@ -913,7 +913,7 @@
        오른쪽 다리가 먹는다). 그 몫을 통째로 빼면 글칸이 반 뼘밖에 안 남아, 절반만 뺀다 —
        뭉치의 위 절반이 제 다리를 조금 타고 앉는 셈인데, 다리는 알파 8% 차이라 글이 그 위를
        지나도 거의 티가 나지 않는다 */
-    --kw:min(clamp(170px,16vw,250px),
+    --kw:min(clamp(190px,17vw,300px),
              calc(var(--astep) - var(--lean) * var(--kbox) / 2 - var(--kpad) - 10px));
     /* .cwrap 이 좌우로 물린 만큼(84 + 그리드 한 칸). 판은 이걸 되물어 섹션 폭을 채운다 */
     --side:calc(84px + (100vw - 300px) / 12 + 12px);
@@ -988,7 +988,7 @@
   body:not(.v-a1) .aorb-keys b{font-family:var(--suit);font-weight:800;
     font-size:var(--knfs);line-height:1.15;letter-spacing:-.02em;color:var(--brand)}
   body:not(.v-a1) .aorb-keys i{margin-left:.5em;font-style:normal;
-    font-family:var(--suit);font-weight:600;font-size:clamp(12px,1vw,15px);
+    font-family:var(--suit);font-weight:600;font-size:clamp(13px,1.15vw,18px);
     letter-spacing:-.3px;color:var(--g900)}
   body:not(.v-a1) .aorb-keys p{min-height:var(--p1h);margin-top:var(--g2);
     font-family:var(--pre);
@@ -1015,7 +1015,14 @@
      ⚠ 세 A 가 다 자란 다음에 뜬다 — 마지막 단계에 반 박자 늦춰 붙인다(아래 등장 규칙) */
   /* 밑단을 오른쪽 세 뭉치와 같은 선에 맞춘다 — 이 칸의 바닥은 무대 여백(--pad-b)까지고,
      뭉치는 그보다 --kbot 만큼 위에 서므로 그 차이를 여기서 들어 올린다 */
-  body:not(.v-a1) .aorb-note{position:relative;z-index:1;width:min(30ch,24%);
+  /* 폭은 가장 큰 A 의 왼다리에 닿지 않는 선까지다 — 세 번째 값이 그 선이다.
+     [다리가 바닥에서 서는 자리(--cx − 가장 큰 A 의 절반)] 에서 본문 상자 왼끝(--side)과
+     사이(24)를 뺀 값. A 간격을 넓히면 다리가 왼쪽으로 오므로 이 칸이 저절로 좁아진다 —
+     숫자로 못 박아 두면 넓힐 때마다 다리가 글을 밟는다.
+     (다리는 위로 갈수록 오른쪽으로 눕는다 = 바닥에서 가장 가깝다. 그래서 바닥 기준 하나면
+      이 칸 전체가 안전하다) */
+  body:not(.v-a1) .aorb-note{position:relative;z-index:1;
+    width:min(30ch,24%,calc(84vw - (var(--aw) + 4 * var(--astep)) / 2 - var(--side) - 24px));
     margin-bottom:calc(var(--kbot) - var(--pad-b))}
   /* 장을 닫는 말이라 오른쪽 문장들보다 한 급 크다 — 이 칸에는 이 문단 하나뿐이라
      커져도 부딪힐 것이 없고, 커지면서 위로 자랄수록 큰 A 의 다리와는 오히려 멀어진다 */
@@ -1087,7 +1094,13 @@
        15.8em)이 상자의 40% 안에 들어가는 크기다 — 세 줄이 같은 크기여야 하므로 가장 긴
        줄에 맞춘다. 900px 아래는 줄을 위아래로 펴므로 최솟값(16px)이면 넉넉하다 */
     --st-word:clamp(16px,calc(var(--st-box) / 40),34px);
+    /* 큰 두 줄이 채워지기 전의 색. 읽을 수는 있되 "아직 안 왔다"가 한눈에 보이는 선이다 */
+    --st-hollow:#c9ced5;
     background:#fdfdfa;color:var(--g900);
+    /* 사진이 화면 폭까지 열릴 때(아래 .st-photo) 100vw 는 스크롤 막대까지 세므로 막대
+       너비만큼 좌우로 삐져나간다. 그 몫을 잘라 가로 스크롤이 생기지 않게 한다 —
+       clip 은 hidden 과 달리 스크롤 컨테이너를 만들지 않아 안쪽 sticky 를 죽이지 않는다 */
+    overflow-x:clip;
     padding-bottom:clamp(88px,12vh,168px)}
 
   /* 두 덩이의 윗여백 = 고정된 탭 바가 덮는 높이 + 숨 돌릴 자리. 목차 탭은 덩이의 윗변으로
@@ -1109,8 +1122,38 @@
   .st-big{margin-top:clamp(22px,3.6vh,44px);
     font-family:var(--suit);font-weight:800;
     font-size:clamp(26px,4.7vw,82px);line-height:1.16;letter-spacing:-.03em}
-  /* 줄바꿈은 이 두 덩이 사이에서만 — 사이에 띄어쓰기가 없어 block 이 아니면 붙어 흐른다 */
-  .st-big span{display:block}
+  /* 줄바꿈은 이 두 덩이 사이에서만 — 사이에 띄어쓰기가 없어 block 이 아니면 붙어 흐른다.
+     폭을 글자에 맞춰 줄이는(fit-content) 것은 아래 채움 때문이다 : 배경은 상자 폭을
+     기준으로 깔리므로, block 이 줄 전체 폭을 차지하면 채움 경계가 글자 밖 허공에서
+     오래 머문다. 상자를 글자에 붙이면 0%~100% 가 그대로 글자의 왼끝~오른끝이 된다 */
+  .st-big span{display:block;width:fit-content;margin-inline:auto}
+
+  /* 큰 두 줄이 회색에서 검정으로 채워진다 (2026-08-13).
+     글자 모양으로 오려낸(background-clip:text) 가로 그라데이션 한 장이고, 채움 경계
+     --fill 만 0% → 100% 로 민다. 경계는 한 점에서 두 색이 맞붙은 단단한 선이다.
+     스크롤에 붙여 문지르지 않고 "장이 화면에 들어오면 한 번 재생"이다 — 이 페이지가
+     2026-08-11 에 스크롤 구동을 걷어내고 시간 구동으로 통일한 것과 같은 결이다.
+     줄마다 .16s 씩 밀어 한 번의 쓸림으로 읽히게 했고, .3s 늦게 시작해 .crv 의
+     떠오름(.7s)이 먼저 자리를 잡은 뒤 채워진다.
+     ⚠ 퍼센트를 전환하려면 --fill 이 등록된 속성이어야 한다(@property). 못 알아듣는
+       브라우저에서는 전환 없이 즉시 검정으로 앉는다 — 결과는 같다 */
+  @property --fill{syntax:'<percentage>';inherits:false;initial-value:0%}
+  /* clip 을 모르는 브라우저에서 글자가 통째로 사라지는 일이 없게 감싸 둔다 —
+     그런 브라우저에서는 이 블록이 통째로 무시되고 평범한 검은 글자로 남는다 */
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .st-big span{--fill:100%;
+      background-image:linear-gradient(90deg,
+        var(--g900) var(--fill),var(--st-hollow) var(--fill));
+      -webkit-background-clip:text;background-clip:text;
+      color:transparent;-webkit-text-fill-color:transparent;
+      /* --ease 를 쓰지 않는다 : 그 곡선은 끝에서 아주 느려서, 1초짜리 쓸림에 쓰면
+         마지막 몇 글자가 눈에 띄게 굼뜨다. 여기는 앞뒤로만 살짝 눌린 곡선이 낫다 */
+      transition:--fill .85s cubic-bezier(.5,0,.2,1) .3s}
+    .st-big span+span{transition-delay:.46s}
+    /* 스크립트가 도는 동안에만 비워 둔다 — 못 돌면 처음부터 검정이다(위 기본값) */
+    [data-crv] .st-big span{--fill:0%}
+    [data-crv] .st-big.is-in span{--fill:100%}
+  }
 
   .st-lead{margin-top:clamp(20px,3.4vh,42px)}
   .st-lead p{font-family:var(--pre);font-size:clamp(14px,1.05vw,18px);line-height:1.85;
@@ -1124,6 +1167,22 @@
     overflow:hidden;border-radius:6px;background:var(--secondary-bg)}
   .st-photo img{display:block;width:100%;height:100%;
     object-fit:cover;object-position:50% 100%}
+
+  /* 그 사진이 본문 상자에서 화면 폭까지 열린다 — 다음 장으로 넘기는 매듭이다 (2026-08-13).
+     margin-inline:calc(50% - 50vw) 은 "가운데 정렬된 부모 안에서 화면 폭 꽉 채우기"의
+     정석이다 : 여백의 %는 부모 안쪽 폭 W 를 보므로 폭이 W − 2(W/2 − 50vw) = 100vw 가 된다.
+     .cwrap 이 좌우 대칭이라(margin-inline:auto) 그대로 화면에 맞아 떨어진다.
+     세로 비(17/5)는 그대로 두었다 — 폭과 함께 키도 커지므로 잘라 쓰는 자리가 변하지 않고
+     사진이 그냥 커진다. 이때 늘어나는 키(1728px 에서 382 → 508)만큼 아래 글이 밀리는데,
+     이 장이 화면 밑단에 걸릴 때 재생되므로 밀리는 장면은 화면 밖에서 끝난다.
+
+     ⚠ 전환 목록을 통째로 다시 적는다. 공용 규칙 [data-crv] .crv.is-in 이 transition 을
+       opacity·translate 두 줄로 덮어쓰기 때문에, 여기서 같이 적지 않으면 여백이
+       전환 없이 툭 벌어진다 (그래서 특정도도 한 계단 높다) */
+  [data-crv] .st-photo.crv.is-in{
+    margin-inline:calc(50% - 50vw);border-radius:0;
+    transition:opacity .7s var(--ease),translate .7s var(--ease),
+      margin-inline 1s var(--ease),border-radius 1s var(--ease)}
 
   /* ── AAA Strategy ────────────────────────────────────────────────── */
   .st-ttl{font-family:var(--suit);font-weight:800;
@@ -1197,6 +1256,12 @@
     [data-crv] .crv,[data-crv] .crv.is-in{opacity:1;translate:none;transition:none}
     /* 일렁이는 그라데이션도 세운다 — 색은 그대로 남고 움직임만 멈춘다 */
     .cvis-grid .c--h p{animation:none}
+    /* BRAND STORY(A-1) 두 연출도 결과만 남긴다. 위 ⑨ 가 전환 목록을 다시 적어 두었으므로
+       (특정도 0,4,x) 여기서도 같은 무게로 눌러야 멎는다.
+       큰 두 줄은 처음부터 다 채워진 모습이고, 사진은 열림 없이 제자리에 선다 */
+    [data-crv] .st-big.crv span,
+    [data-crv] .st-big.crv.is-in span{--fill:100%;transition:none}
+    [data-crv] .st-photo.crv.is-in{margin-inline:0;border-radius:6px;transition:none}
   }
 
   /* =====================================================================
