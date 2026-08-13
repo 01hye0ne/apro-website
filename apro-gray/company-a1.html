@@ -884,7 +884,7 @@
     --astep:max(clamp(160px,18vw,320px),calc((110vh - var(--aw)) / 2));
     --lean:.3298;                      /* 왼다리 기울기 (마크 좌표에서 나온 값) */
     --kbot:clamp(40px,6vh,72px);       /* 글 뭉치 밑단이 바닥에서 뜨는 높이 */
-    --kpad:clamp(12px,1.3vw,22px);     /* 다리와 글 사이 */
+    --kpad:clamp(20px,2.4vw,44px);     /* 다리와 글 사이 */
     /* 뭉치 안의 네 줄칸 — 짝 · 키워드 · 문장 · 문장. 칸마다 키를 못 박아 셋이 같은 격자를
        쓴다. 이걸 안 하면 글 길이대로 칸이 늘고 줄어, 밑단만 맞고 그 위는 뭉치마다 어긋난다
        (짝이 한 줄인 것과 두 줄인 것, 문장이 두 줄인 것과 세 줄인 것이 섞인다).
@@ -893,13 +893,18 @@
          늘어나고 글은 잘리지 않는다 — 그 뭉치만 위로 자란다 */
     --emfs:clamp(12px,1.02vw,15px);    /* 짝   : 두 줄 (Aggressiveness ＋ Remarkability) */
     --knfs:clamp(17px,1.6vw,26px);     /* 키워드 : 한 줄 */
-    --pfs:clamp(12px,.95vw,14px);      /* 문장  : 두 줄 + 세 줄 */
+    /* 문장 — 첫 줄은 한 줄로 두므로(아래 nowrap) 글자 크기가 띠 폭에 매인다.
+       가장 긴 첫 문장("빠르게 변화하는 …")이 글자 크기의 20배 폭이라, 띠 폭에서 다음
+       뭉치와의 사이(24px)를 뺀 값을 20으로 나눈 것이 넘치지 않는 최대 크기다.
+       ⚠ 그 문장을 고치면 이 20 도 다시 재야 한다 (100px 로 폭을 재서 나눈 값) */
+    --pfs:clamp(12px,min(.95vw,calc((var(--astep) - 24px) / 20)),14px);
     --g1:clamp(6px,.9vh,10px);
     --g2:clamp(8px,1.1vh,14px);
     --g3:clamp(6px,.8vh,10px);
-    --emh:calc(2 * 1.3 * var(--emfs));
+    /* 짝은 흰 알약을 쓴다 — 줄 높이(1.3)에 위아래 패딩(.24×2)이 붙는다 */
+    --emh:calc(2 * 1.78 * var(--emfs) + 4px);
     --knh:calc(1.15 * var(--knfs));
-    --p1h:calc(2 * 1.65 * var(--pfs));
+    --p1h:calc(1.65 * var(--pfs));     /* 첫 문장은 언제나 한 줄이다(nowrap) */
     --p2h:calc(3 * 1.65 * var(--pfs));
     --kbox:calc(var(--emh) + var(--g1) + var(--knh) + var(--g2)
                 + var(--p1h) + var(--g3) + var(--p2h));
@@ -963,14 +968,20 @@
      같아야 세 뭉치의 키워드 줄이 한 선에 선다 */
   /* ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
      가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
-  body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;
+  body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;row-gap:4px;
     align-content:flex-end;align-items:baseline;
     min-height:var(--emh);margin-bottom:var(--g1);
     font-style:normal;font-family:var(--suit);font-weight:800;
     font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
+  /* 가치 이름은 흰 알약을 깔고 앉는다 — A 의 파란 다리 위에 놓여도 이름 둘이 또렷하게
+     떨어져 읽힌다. 알약은 낱말마다 하나이고, 사이의 ＋ 는 맨몸이다 */
+  body:not(.v-a1) .aorb-keys em .v{padding:.24em .5em;border-radius:4px;background:#fff}
+  /* ＋ 는 뒤엣 이름과 한 덩이로 묶는다 — 긴 짝(Aggressiveness ＋ Remarkability)은 두 줄로
+     접히는데, 묶지 않으면 ＋ 만 윗줄 끝에 덩그러니 남는다 */
+  body:not(.v-a1) .aorb-keys em .pl{display:flex;align-items:baseline}
   /* 낱말 사이 띄어쓰기는 flex 가 지워 버리므로 여백을 이 표시가 직접 갖는다 */
-  body:not(.v-a1) .aorb-keys em span{margin:0 .32em;font-weight:600;color:var(--point-300)}
+  body:not(.v-a1) .aorb-keys em .x{margin:0 .3em;font-weight:600;color:var(--point-300)}
   /* 키워드와 뜻은 한 줄에 나란히 — 뜻은 영문 이름에 달린 꼬리표다. 줄을 끊지 않는다:
      Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다 */
   body:not(.v-a1) .aorb-keys .kn{display:block;min-height:var(--knh);white-space:nowrap}
@@ -983,6 +994,10 @@
     font-family:var(--pre);
     font-size:var(--pfs);line-height:1.65;letter-spacing:-.3px;
     color:var(--sec);word-break:keep-all}
+  /* 첫 문장은 한 줄로 둔다 — 키워드 바로 아래 붙는 짧은 뜻풀이라 두 줄로 접히면
+     아래 긴 문장과 뭉쳐 읽힌다. 칸보다 길면 오른쪽으로 넘치는데, 넘어가는 쪽은
+     다음 뭉치가 시작하기 전까지의 빈 띠다 */
+  body:not(.v-a1) .aorb-keys p:first-of-type{white-space:nowrap}
   body:not(.v-a1) .aorb-keys p+p{min-height:var(--p2h);margin-top:var(--g3)}
 
   body:not(.v-a1) .aorb-head{position:relative;z-index:1}
@@ -1033,6 +1048,9 @@
       display:grid;gap:clamp(20px,3vh,32px)}
     body:not(.v-a1) .aorb-keys li{position:static;width:auto;height:auto;display:block;
       padding-left:16px;border-left:2px solid var(--point-300)}
+    /* 흰 알약은 파란 다리 위에서만 쓸모가 있다 — 여기서는 흰 바탕이라 보이지도 않으면서
+       첫 낱말만 왼쪽으로 밀려 나가게 한다 */
+    body:not(.v-a1) .aorb-keys em .v{padding:0;background:none}
     /* 세로로 세우면 줄칸을 맞출 이유가 없다 — 못 박은 키를 풀어 글에 맞춘다 */
     body:not(.v-a1) .aorb-keys em,
     body:not(.v-a1) .aorb-keys .kn,
@@ -1043,143 +1061,120 @@
   }
 
   /* =====================================================================
-     ⑨ · BRAND STORY 판 — 붙박이 글 · 흐르는 그림 (2026-08-13, A-1 갈래)
+     ⑨ · BRAND STORY 판 — 한 장으로 흐르는 Vision + AAA (2026-08-13, A-1 갈래)
      =====================================================================
-     왼쪽 글은 제자리에 붙어 있고(sticky) 오른쪽 그림만 흐른다. 한 화면이 한 판이고
-     판은 다섯이다. 판이 바뀔 때 왼쪽 글이 통째로 갈린다.
-       0  VISION 2030    Global Top 5 Total Energy-Solution Provider
-       1  AAA Strategy   Advanced      (선진화 · Advance + Pioneer)
-       2  AAA Strategy   Aggressive    (적극성 · Aggressiveness + Remarkability)
-       3  AAA Strategy   Agile         (민첩성 · Agility + Organism)
-       4  A-PRO          Core 6-Values (마무리 문장)
+     A-1 에서 앞의 Vision(⑥) · AAA(⑦) 두 장을 이 한 장이 대신한다.
+     화면을 붙들지도, 판을 넘기지도 않는다 — 가운데로 세운 글이 위에서 아래로 그냥 흐른다.
+     (2026-08-13 : 왼쪽 글이 붙박이고 오른쪽 그림만 흐르던 다섯 판짜리 시안을 걷어냈다.
+      단순해진 시안이 새로 와서, 판·띠·창을 만들던 계산은 전부 없어졌다)
 
-     왼쪽은 창 셋이다 — 눈썹줄 · 큰 글자 · 문장. 창마다 세로로 늘어선 띠가 있고, 그 띠를
-     칸 수만큼 밀어 올린다. 창은 넘치는 부분을 잘라서, 글이 위로 밀려 나가고 다음 글이
-     아래에서 올라오는 것으로 읽힌다.
-     ⚠ 눈썹줄·문장 띠의 칸은 모두 같은 키여야 한다 — 미는 값이 [칸 번호 × 칸 높이]라서
-       칸마다 키가 다르면 두 번째부터 어긋난다. 그래서 칸 높이를 --eyeh/--parh 로 못 박고,
-       가장 긴 글(0번 판의 문장 네 줄)에 맞춰 잡았다. 큰 글자 띠만은 예외다(아래 참조).
-     ⚠ 눈썹줄은 제 번호(--ei)를 따로 쓴다. 1~3 판이 같은 'AAA Strategy' 라, --pi 를 그대로
-       쓰면 같은 글자가 판마다 올라갔다 내려오며 헛도는 것처럼 보인다 */
-  .story{--story-pt:calc(var(--cnav-clear) + clamp(16px,2.5vh,32px));
-    --story-pb:clamp(16px,3vh,32px);
-    /* 가로 기준선 셋 — 본문 상자 안쪽 폭 · 그림칸이 오른쪽으로 되무는 폭 · 둘을 합한
-       '큰 글자'의 폭. 큰 글자는 본문 상자를 넘어 그림칸 오른쪽 끝까지 간다 */
-    --gut:calc((100vw - 300px) / 12 + 12px);
-    --fullw:calc(100vw - 168px - 2 * var(--gut));
-    --bleed:calc(var(--gut) + 84px - clamp(16px,2vw,32px));
-    --bigw:calc(var(--fullw) + var(--bleed));
-    --big:clamp(30px,4vw,64px);
-    --eyeh:clamp(22px,2vw,32px);
-    /* 0번 판(Vision)의 두 줄 — 줄마다 폭을 꽉 채우느라 크기가 다르다(아래 .v1/.v2).
-       --vh 는 그 두 줄이 차지하는 키다. 꼬리의 .1 은 아랫줄 g·y 가 창 밑선 밖으로
-       삐져나가 잘리지 않게 두는 몫이다 */
-    --vbig:calc(var(--bigw) / 5.545);
-    --vbig2:calc(var(--bigw) / 13.617);
-    --vh:calc(1.06 * (var(--vbig) + var(--vbig2)) + .1 * var(--vbig2));
-    /* 한 낱말 판의 칸 — 글줄 키(1.06)가 아니라 1.16 이다. 글자의 획이 제 줄 상자 아래로
-       0.08em 쯤 빠져나가는데(Agile 의 g), 1.06 으로 잡으면 그 꼬리가 다음 칸 위쪽에
-       남아 창에 비친다 */
-    --kh:calc(1.16 * var(--big));
-    --parh:clamp(120px,16vh,180px);
-    background:#fdfdfa;color:var(--g900)}
-  /* --bigo 는 큰 글자 띠를 미는 값이다. 칸 높이가 판마다 달라(--vh 대 --kh) 곱셈으로
-     떨어지지 않으므로 누적합을 그대로 적어 둔다. 창 높이(--bigslot)도 함께 움직인다 */
-  .story[data-panel="0"]{--pi:0;--ei:0;--bigslot:var(--vh);--bigo:0px}
-  .story[data-panel="1"]{--pi:1;--ei:1;--bigslot:var(--kh);--bigo:var(--vh)}
-  .story[data-panel="2"]{--pi:2;--ei:1;--bigslot:var(--kh);--bigo:calc(var(--vh) + var(--kh))}
-  .story[data-panel="3"]{--pi:3;--ei:1;--bigslot:var(--kh);--bigo:calc(var(--vh) + 2 * var(--kh))}
-  .story[data-panel="4"]{--pi:4;--ei:2;--bigslot:var(--kh);--bigo:calc(var(--vh) + 3 * var(--kh))}
+       story-vision   눈썹줄 → 큰 두 줄 → 문장 둘 → 가로로 긴 사진 한 장
+       story-aaa      제목 → 문장 둘 → 줄 셋 [ 핵심가치 두 낱말 | 회색 판 ]
 
-  .story-grid{display:grid;grid-template-columns:44% 1fr;
-    column-gap:clamp(24px,3vw,56px);align-items:start}
-  /* 글칸 — 무대 여백만큼 띄워 붙고, 화면 한 장 높이 안에서 가운데에 선다 */
-  .story-text{position:sticky;top:var(--story-pt);
-    height:calc(100vh - var(--story-pt) - var(--story-pb));
-    height:calc(100dvh - var(--story-pt) - var(--story-pb));
-    display:flex;flex-direction:column;justify-content:center}
+     줄 하나의 왼쪽은 그 전략이 나온 핵심가치 두 낱말이고, 오른쪽 회색 판이 결과다.
+     목차 탭 두 개(#vision · #aaa)가 각각 이 두 덩이를 가리킨다 — 그 이름은 아직 앞의 두
+     장이 쥐고 있어서, 문서 끝 스크립트가 여기로 옮겨 붙인다 */
+  .story{
+    /* .cwrap 안쪽 폭. 위 ④ 의 계산(100vw − 168 − 2 × ((100vw − 300)/12 + 12))을 한 줄로
+       편 것이다 — 아래 낱말 크기가 화면 폭이 아니라 이 상자 폭을 따라야 해서 필요하다.
+       화면이 좁아질수록 상자는 화면보다 빨리 줄어드는데(양쪽 12열 들여쓰기 때문),
+       vw 로만 잡으면 그 차이만큼 낱말이 상자를 넘는다 */
+    --st-box:calc(83.333vw - 142px);
+    /* AAA 줄의 큰 영문. 나누는 수 40 은 가장 긴 줄(Aggressiveness ＋ Remarkability ≈
+       15.8em)이 상자의 40% 안에 들어가는 크기다 — 세 줄이 같은 크기여야 하므로 가장 긴
+       줄에 맞춘다. 900px 아래는 줄을 위아래로 펴므로 최솟값(16px)이면 넉넉하다 */
+    --st-word:clamp(16px,calc(var(--st-box) / 40),34px);
+    background:#fdfdfa;color:var(--g900);
+    padding-bottom:clamp(88px,12vh,168px)}
 
-  .story-win{overflow:hidden}
-  .story-win ol{list-style:none;margin:0;padding:0;
-    transition:transform .8s var(--ease)}
-  .story-win li{display:flex;flex-direction:column;justify-content:center}
+  /* 두 덩이의 윗여백 = 고정된 탭 바가 덮는 높이 + 숨 돌릴 자리. 목차 탭은 덩이의 윗변으로
+     스크롤하므로, 이 여백이 곧 "탭으로 뛰어들어와도 첫 줄이 바 밑에 숨지 않는" 값이다.
+     scroll-margin 은 그 이동을 스크립트가 아니라 브라우저가 할 때를 위한 것이다 —
+     좁은 화면(탭이 기본 앵커 이동에 맡겨진다)과 주소 끝에 #aaa 를 달고 들어온 경우 */
+  .story-vision,.story-aaa{scroll-margin-top:var(--cnav-clear)}
+  .story-vision{padding-top:calc(var(--cnav-clear) + clamp(28px,6vh,84px))}
+  .story-aaa{padding-top:calc(var(--cnav-clear) + clamp(20px,4.5vh,56px))}
+  .story .st-head{text-align:center}
 
-  .story-eye{height:var(--eyeh)}
-  .story-eye ol{transform:translateY(calc(var(--ei,0) * -1 * var(--eyeh)))}
-  .story-eye li{height:var(--eyeh);font-family:var(--suit);font-weight:800;
-    font-size:clamp(13px,1.05vw,16px);letter-spacing:.06em;color:var(--brand-2)}
-
-  /* 큰 글자 창만 본문 상자를 넘어 그림칸 오른쪽 끝까지 벌린다 — 0번 판의 두 줄이 가로를
-     꽉 채우는 구도라 그렇다(레퍼런스가 그렇다). 나머지 판은 낱말 하나뿐이라 넘칠 일이 없다.
-     칸 높이를 통일하지 않는 것도 그래서다 — 두 줄 판과 한 낱말 판의 키 차가 다섯 배라,
-     통일하면 낱말 판마다 글자 아래로 빈 데가 크게 남는다 */
-  .story-big{width:var(--bigw);height:var(--bigslot,var(--kh));
-    margin-top:clamp(10px,1.6vh,20px);transition:height .8s var(--ease)}
-  .story-big ol{transform:translateY(calc(-1 * var(--bigo,0px)))}
-  .story-big li{height:var(--kh);justify-content:flex-start;
+  /* ── VISION 2030 ─────────────────────────────────────────────────── */
+  .st-eye{font-family:var(--suit);font-weight:700;
+    font-size:clamp(15px,1.35vw,24px);letter-spacing:-.01em;color:var(--g900)}
+  /* 큰 두 줄. 아랫줄이 상자 폭의 85% 쯤을 차지하는 구도라(레퍼런스가 그렇다) 크기는 그
+     줄을 기준으로 잡았다 — SUIT 800 · letter-spacing −.03em 에서 "Total Energy-Solution
+     Provider" 는 글자 크기의 13.55배 폭이다. 4.7vw × 13.55 ≈ 화면의 64% 이고 상자는 75%다.
+     ⚠ 이 줄의 글을 고치면 그 배수가 달라진다 — 넘치지 않는지 다시 봐야 한다 */
+  .st-big{margin-top:clamp(22px,3.6vh,44px);
     font-family:var(--suit);font-weight:800;
-    font-size:var(--big);line-height:1.06;letter-spacing:-.03em}
-  .story-big li.v{height:var(--vh)}
-  /* 두 줄이 저마다 폭을 꽉 채우도록 줄마다 크기가 다르다. 나누는 수는 그 줄이 글자 크기의
-     몇 배 폭인지다 — SUIT 800 · letter-spacing −.03em 에서 쟀다(100px 기준으로
-     "Global Top 5" 551.8px, "Total Energy-Solution Provider" 1354.9px). 여기에 0.5% 를
-     더 얹어 나눈다 — 딱 맞추면 마지막 글자가 창 밖으로 반 픽셀 삐져나가 잘린다.
-     ⚠ letter-spacing 을 여기서 다시 적는 것은 빠뜨리면 안 된다. 이 값은 '계산된 px' 로
-       물려받는 성질이라, 물려받기만 하면 작은 글자 기준(−.03em × --big)이 그대로 와서
-       큰 글자가 잰 것보다 5% 가까이 넓어진다.
-     ⚠ 이 두 줄의 글을 고치면 폭이 달라진다. 그때는 이 수도 다시 재서 고쳐야 한다 */
-  /* 줄바꿈은 이 두 덩이 사이에서만 일어난다 — display:block 이 없으면 좁은 화면에서
-     둘이 한 줄에 붙어 흐른다(사이에 띄어쓰기가 없어 끊을 자리가 없다) */
-  .story-big .v1,.story-big .v2{display:block;line-height:1.06;white-space:nowrap;letter-spacing:-.03em}
-  .story-big .v1{font-size:var(--vbig)}
-  .story-big .v2{font-size:var(--vbig2)}
+    font-size:clamp(26px,4.7vw,82px);line-height:1.16;letter-spacing:-.03em}
+  /* 줄바꿈은 이 두 덩이 사이에서만 — 사이에 띄어쓰기가 없어 block 이 아니면 붙어 흐른다 */
+  .st-big span{display:block}
 
-  .story-par{height:var(--parh);margin-top:clamp(18px,3vh,38px)}
-  .story-par ol{transform:translateY(calc(var(--pi,0) * -1 * var(--parh)))}
-  .story-par li{height:var(--parh);justify-content:flex-start;gap:clamp(8px,1.2vh,14px)}
-  .story-par p{font-family:var(--pre);font-size:clamp(13px,1.05vw,16px);line-height:1.75;
+  .st-lead{margin-top:clamp(20px,3.4vh,42px)}
+  .st-lead p{font-family:var(--pre);font-size:clamp(14px,1.05vw,18px);line-height:1.85;
     letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
-  .story-par b{font-family:var(--suit);font-weight:700;color:var(--g900)}
 
-  /* 그림칸 — 한 판이 화면 한 장이다. 이 높이가 곧 스냅 한 걸음이라, 아래 스크립트가
-     이 칸들을 그대로 '장'으로 삼는다 */
-  /* 그림은 오른쪽으로 흘러넘친다 — .cwrap 이 물고 있는 만큼(--bleed)을 되물어 화면
-     가장자리 가까이까지 간다(레퍼런스가 그렇다). 큰 글자의 오른쪽 끝도 여기에 맞춰 선다 */
-  .story-media{margin-right:calc(-1 * var(--bleed))}
-  .story .pn{height:100vh;height:100dvh;
-    padding:var(--story-pt) 0 var(--story-pb);display:flex}
-  .story .pn figure{margin:0;flex:1;min-height:0;overflow:hidden;border-radius:6px;
-    background:var(--secondary-bg)}
-  .story .pn img{display:block;width:100%;height:100%;object-fit:cover}
-  /* 배경을 딴 그림(.free)은 상자에 담지 않는다 — 판 밑단에 그대로 내려앉아 바닥선이 된다 */
-  .story .pn.free{align-items:flex-end;padding-bottom:0}
-  .story .pn.free figure{background:none;border-radius:0;overflow:visible}
-  .story .pn.free img{width:100%;height:auto;object-fit:contain}
+  /* 가로로 긴 사진 한 장. 원본은 하늘이 넓은 세로 사진(2560×1704)이라 아래쪽 —
+     패널이 늘어선 띠 — 만 잘라 쓴다. object-position 의 100% 가 그 몫이다 :
+     17/5 창에 cover 로 담으면 원본 세로의 44% 만 보이는데, 그 창을 맨 아래에 붙이면
+     하늘이 위 3분의 1쯤 남는다 (레퍼런스의 크롭이 그렇다) */
+  .st-photo{margin:clamp(40px,6.5vh,84px) 0 0;aspect-ratio:17 / 5;
+    overflow:hidden;border-radius:6px;background:var(--secondary-bg)}
+  .st-photo img{display:block;width:100%;height:100%;
+    object-fit:cover;object-position:50% 100%}
 
-  /* 좁거나 낮은 화면 : 붙박이를 풀고 [글 · 그림]을 판마다 세로로 잇는다.
-     한 화면에 좌우로 벌려 놓는 배치라, 폭이 없으면 성립하지 않는다 */
-  @media(max-width:900px),(max-height:699px){
-    .story{--bleed:0px}
-    .story-grid{grid-template-columns:1fr;row-gap:clamp(20px,4vh,36px)}
-    .story-text{position:static;height:auto;display:block}
-    .story-win{height:auto;overflow:visible}
-    .story-win ol{transform:none}
-    .story-win li{height:auto;display:block}
-    .story-eye li+li{margin-top:2px}
-    .story-big{width:auto;height:auto}
-    .story-big li,.story-big li.v{height:auto;margin-top:6px}
-    .story-par li{margin-top:10px}
-    .story-media{margin-right:0}
-    .story .pn{height:auto;padding:0 0 clamp(20px,4vh,36px)}
-    .story .pn figure{aspect-ratio:4 / 3}
-    .story .pn.free{padding-bottom:clamp(20px,4vh,36px)}
-    .story .pn.free figure{aspect-ratio:auto}
+  /* ── AAA Strategy ────────────────────────────────────────────────── */
+  .st-ttl{font-family:var(--suit);font-weight:800;
+    font-size:clamp(22px,1.95vw,34px);line-height:1.2;letter-spacing:-.02em}
+  .st-note{margin-top:clamp(12px,2vh,22px)}
+  .st-note p{font-family:var(--pre);font-size:clamp(13px,.95vw,16px);line-height:1.8;
+    letter-spacing:-.28px;color:var(--sec);word-break:keep-all}
+
+  /* 세 줄 — <dl> 하나가 통째로 격자다(줄마다 격자를 두지 않는다). 왼쪽 칸을 auto 로
+     두면 세 줄이 같은 폭을 나눠 쓰므로, 가장 긴 줄(Aggressiveness ＋ Remarkability)에
+     맞춰 저절로 잡히고 회색 판의 왼쪽 선도 세 줄이 같이 선다 */
+  .st-rows{display:grid;grid-template-columns:auto minmax(0,1fr);
+    column-gap:clamp(18px,2.6vw,46px);row-gap:clamp(24px,4vh,56px);
+    align-items:center;margin:clamp(40px,6.5vh,78px) 0 0}
+
+  /* 낱말 한 덩이 = 작은 국문 이름 위, 큰 영문 아래 */
+  .st-word i{display:block;margin-bottom:clamp(4px,.7vh,9px);
+    font-family:var(--pre);font-weight:500;font-size:clamp(12px,.95vw,15px);
+    font-style:normal;letter-spacing:-.24px;color:var(--sec);white-space:nowrap}
+  .st-word b{display:block;font-family:var(--suit);font-weight:800;
+    font-size:var(--st-word);line-height:1.16;letter-spacing:-.02em;white-space:nowrap}
+
+  /* 왼쪽 — 두 낱말과 사이의 ＋. 밑변으로 맞춰야 큰 글자끼리 한 줄에 선다
+     (낱말 덩이의 마지막 줄이 곧 큰 글자라, 가운데나 윗변으로 맞추면 어긋난다) */
+  .st-src{display:flex;align-items:flex-end;gap:clamp(8px,1.1vw,18px)}
+  .st-plus{font-family:var(--suit);font-weight:800;font-size:var(--st-word);
+    line-height:1.16;letter-spacing:-.02em;color:var(--g900)}
+
+  /* 오른쪽 회색 판 = [전략 이름 | 풀이 두 줄]. 이름 칸을 30% 로 못 박는 것은 세 줄의
+     풀이가 같은 선에서 시작하게 하려는 것이다 — auto 로 두면 Advanced·Aggressive·Agile
+     의 폭 차이만큼 줄마다 어긋난다.
+     바탕은 공용 --secondary-bg(#f4f6f8)보다 한 단계 짙다 — 이 장의 바탕이 흰색이 아니라
+     #fdfdfa 라, 공용 값을 그대로 쓰면 판의 윤곽이 거의 잡히지 않는다 */
+  .st-out{display:grid;grid-template-columns:30% minmax(0,1fr);
+    column-gap:clamp(14px,1.8vw,30px);align-items:center;
+    padding:clamp(16px,2.4vh,28px) clamp(18px,2.2vw,34px);
+    background:#eaeef3;border-radius:6px}
+  .st-desc p{font-family:var(--pre);font-size:clamp(12px,.92vw,15px);line-height:1.8;
+    letter-spacing:-.26px;color:var(--sec);word-break:keep-all}
+
+  /* 좁은 화면 : 한 줄을 [낱말 둘] 위, [회색 판] 아래로 편다. 한 칸짜리 격자가 되면
+     줄 사이와 줄 안의 간격이 같아져 셋이 여섯으로 읽히므로, 줄 사이만 다시 벌린다 */
+  @media(max-width:900px){
+    /* 줄이 위아래로 펴지면 낱말이 가로를 통째로 쓴다 — 위의 '가장 긴 줄이 상자의 40%'
+       라는 제약이 풀리므로 크기도 그만큼 되돌린다 (가장 긴 줄 ≈ 15.8em < 상자 폭) */
+    .story{--st-word:clamp(20px,3.6vw,30px)}
+    .story-vision{padding-top:calc(var(--cnav-clear) + clamp(24px,5vh,48px))}
+    .story-aaa{padding-top:clamp(56px,9vh,88px)}
+    /* 17:5 는 폭이 없으면 띠처럼 얇아진다 — 좁은 화면에서는 하늘을 더 남긴다 */
+    .st-photo{aspect-ratio:16 / 9}
+    .st-rows{grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px)}
+    .st-rows dd+dt{margin-top:clamp(20px,4vh,36px)}
+    .st-out{grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px);align-items:start}
   }
-  /* 900 아래에서는 .cwrap 이 12열 들여쓰기를 풀고 좌우 24px 만 남긴다(위 ⑤ 참조).
-     큰 글자의 폭도 그 폭을 따라야 해서 여기서 다시 적는다. 48 이 아니라 64 인 것은
-     세로 스크롤 막대 몫이다 — 100vw 는 막대까지 세므로, 그만큼 빼 두지 않으면 폭을
-     꽉 채운 줄이 딱 그만큼 오른쪽으로 삐져나간다 */
-  @media(max-width:900px){.story{--fullw:calc(100vw - 64px)}}
 
   /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
      쓰고, 서로 상대의 마크업을 display:none 으로 덮는다(이 페이지의 다른 갈래와 같은 방식).
@@ -1420,17 +1415,17 @@
                  순으로 잇는다. 셋 다 켜진 채 남는다 -->
             <ul class="aorb-keys">
               <li class="k1" data-at="2">
-                <em>Advance <span aria-hidden="true">＋</span> Pioneer</em>
+                <em><span class="v">Advance</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Pioneer</span></span></em>
                 <span class="kn"><b>Advanced</b><i>선진화</i></span>
                 <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
                 <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></li>
               <li class="k2" data-at="3">
-                <em>Aggressiveness <span aria-hidden="true">＋</span> Remarkability</em>
+                <em><span class="v">Aggressiveness</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Remarkability</span></span></em>
                 <span class="kn"><b>Aggressive</b><i>적극성</i></span>
                 <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
                 <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></li>
               <li class="k3" data-at="4">
-                <em>Agility <span aria-hidden="true">＋</span> Organism</em>
+                <em><span class="v">Agility</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Organism</span></span></em>
                 <span class="kn"><b>Agile</b><i>민첩성</i></span>
                 <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
                 <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></li>
@@ -1498,84 +1493,82 @@
 </section>
 
 <!-- ===================== 01–02 · BRAND STORY (A-1 갈래) =====================
-     A-1 에서 앞의 Vision(01) · AAA(02) 두 장을 이 한 장이 대신한다.
-     왼쪽 글은 제자리에 붙어 있고 오른쪽 그림만 흐르며, 판이 바뀔 때 왼쪽의 창 셋
-     (눈썹줄 · 큰 글자 · 문장)이 통째로 갈린다.
+     A-1 에서 앞의 Vision(01) · AAA(02) 두 장을 이 한 장이 대신한다. 붙들거나 판을
+     넘기지 않고 그냥 흐른다 — 가운데로 세운 글 아래에 사진 한 장, 그 아래 AAA 세 줄.
      ⚠ id 를 달지 않는다 — 앞의 두 장이 #vision · #aaa 를 이미 갖고 있어 겹친다.
-       A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장으로 옮긴다.
-     ⚠ 띠의 칸 순서 = 판 순서다. 칸을 더하거나 빼면 위 CSS 의 [data-panel] 표도 같이 고친다 -->
-<section class="story" data-panel="0">
+       A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장의 두 덩이로 옮긴다 -->
+<section class="story">
   <div class="cwrap">
-    <div class="story-grid">
 
-      <div class="story-text">
-        <div class="story-win story-eye">
-          <ol>
-            <li>VISION 2030</li>
-            <li>AAA Strategy</li>
-            <li>A-PRO</li>
-          </ol>
-        </div>
-
-        <div class="story-win story-big">
-          <ol>
-            <li class="v"><span class="v1">Global Top 5</span><span class="v2">Total Energy-Solution Provider</span></li>
-            <li>Advanced</li>
-            <li>Aggressive</li>
-            <li>Agile</li>
-            <li>Core 6-Values</li>
-          </ol>
-        </div>
-
-        <div class="story-win story-par">
-          <ol>
-            <li>
-              <p>에이프로 그룹은 2030년까지 종합 에너지 솔루션 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p>
-              <p>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p>
-            </li>
-            <li>
-              <p><b>선진화</b> — 앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
-              <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p>
-            </li>
-            <li>
-              <p><b>적극성</b> — 도전적이고 과감한 자세로 시장을 확대합니다.</p>
-              <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p>
-            </li>
-            <li>
-              <p><b>민첩성</b> — 빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
-              <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p>
-            </li>
-            <li>
-              <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다.</p>
-            </li>
-          </ol>
+    <div class="story-vision">
+      <div class="st-head">
+        <p class="st-eye crv">VISION 2030</p>
+        <!-- ⚠ 이 두 줄의 글을 고치면 위 CSS 의 크기 계산(아랫줄 폭 = 글자 크기 × 13.55)도
+             다시 재야 한다 -->
+        <h2 class="st-big crv"><span>Global Top 5</span><span>Total Energy-Solution Provider</span></h2>
+        <div class="st-lead crv">
+          <p>에이프로 그룹은 2030년까지 종합 에너지 솔루션 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p>
+          <p>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p>
         </div>
       </div>
-
-      <div class="story-media">
-      <div class="pn free">
-        <figure><img src="../assets/vision-solar-farm-cutout.png" width="2560" height="494" loading="lazy" alt="하늘을 지우고 남긴, 줄지어 선 태양광 패널" /></figure>
-      </div>
-      <!-- 둘째 판부터 넷은 AAA 몫이다. 한 겹으로 묶어 둔 것은 목차 탭 때문이다 —
-           탭 바는 "화면 한가운데를 점유한 장"으로 현재 탭을 정하는데, 묶음이 없으면
-           #aaa 가 판 하나만 가리켜 그 판을 지나는 순간 표시가 Vision 으로 되돌아간다 -->
-      <div class="story-aaa">
-      <div class="pn">
-        <figure><img src="../assets/vision-smart-factory.png" width="1639" height="960" loading="lazy" alt="공정 설비들이 늘어선 자리 가운데 빛나는 장치 묶음" /></figure>
-      </div>
-      <div class="pn">
-        <figure><img src="../assets/vision-ess.png" width="1536" height="1024" loading="lazy" alt="컨테이너형 에너지 저장 장치가 늘어선 발전 단지" /></figure>
-      </div>
-      <div class="pn">
-        <figure><img src="../assets/vision-ev-platform.png" width="1638" height="960" loading="lazy" alt="도심 도로 위에서 주변과 신호를 주고받는 전기자동차" /></figure>
-      </div>
-      <div class="pn">
-        <figure><img src="../assets/vision-power-semicon.png" width="1536" height="1024" loading="lazy" alt="소자가 새겨진 전력 반도체 웨이퍼" /></figure>
-      </div>
-      </div>
-      </div>
-
+      <figure class="st-photo crv">
+        <img src="../assets/vision-solar-farm.jpg" width="2560" height="1704" loading="lazy" alt="맑은 하늘 아래 줄지어 선 태양광 패널" />
+      </figure>
     </div>
+
+    <div class="story-aaa">
+      <div class="st-head">
+        <h2 class="st-ttl crv">AAA Strategy</h2>
+        <div class="st-note crv">
+          <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로,</p>
+          <p>6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다.</p>
+        </div>
+      </div>
+
+      <!-- 줄 하나 = [핵심가치 두 낱말(dt) | 그 결과인 전략(dd)]. 격자는 <dl> 이 통째로
+           갖고 있어(위 CSS) 세 줄의 칸 선이 저절로 맞는다 — dt/dd 를 줄마다 묶지 않는 이유다 -->
+      <dl class="st-rows">
+        <dt class="st-src crv">
+          <span class="st-word"><i>진보</i><b>Advance</b></span>
+          <span class="st-plus" aria-hidden="true">+</span>
+          <span class="st-word"><i>개척</i><b>Pioneer</b></span>
+        </dt>
+        <dd class="st-out crv">
+          <span class="st-word"><i>선진화</i><b>Advanced</b></span>
+          <div class="st-desc">
+            <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+            <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p>
+          </div>
+        </dd>
+
+        <dt class="st-src crv">
+          <span class="st-word"><i>적극성</i><b>Aggressiveness</b></span>
+          <span class="st-plus" aria-hidden="true">+</span>
+          <span class="st-word"><i>탁월함</i><b>Remarkability</b></span>
+        </dt>
+        <dd class="st-out crv">
+          <span class="st-word"><i>적극성</i><b>Aggressive</b></span>
+          <div class="st-desc">
+            <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
+            <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p>
+          </div>
+        </dd>
+
+        <dt class="st-src crv">
+          <span class="st-word"><i>민첩성</i><b>Agility</b></span>
+          <span class="st-plus" aria-hidden="true">+</span>
+          <span class="st-word"><i>유기적 조직</i><b>Organism</b></span>
+        </dt>
+        <dd class="st-out crv">
+          <span class="st-word"><i>민첩성</i><b>Agile</b></span>
+          <div class="st-desc">
+            <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+            <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p>
+          </div>
+        </dd>
+      </dl>
+    </div>
+
   </div>
 </section>
 
@@ -1748,11 +1741,12 @@
 (function(){
   if(!document.body.classList.contains('v-a1'))return;
   var st=document.querySelector('.story');if(!st)return;
-  var v=document.getElementById('vision'),a=document.getElementById('aaa'),g=st.querySelector('.story-aaa');
+  var v=document.getElementById('vision'),a=document.getElementById('aaa');
+  var sv=st.querySelector('.story-vision'),sa=st.querySelector('.story-aaa');
   if(v)v.removeAttribute('id');
   if(a)a.removeAttribute('id');
-  st.id='vision';
-  if(g)g.id='aaa';
+  if(sv)sv.id='vision';
+  if(sa)sa.id='aaa';
 })();
 
 /* 목차 탭 바 — 히어로 상태 ↔ 상단 고정 전환 + 현재 섹션 표시.
@@ -1882,20 +1876,6 @@
   stages.forEach(function(s){io.observe(s.sec);});
 })();
 
-/* BRAND STORY 판 감시자 — 화면 한가운데를 차지한 판의 번호를 장에 적는다.
-   위아래 45% 를 잘라 낸 띠로 보므로 언제나 판 하나만 걸린다. 왼쪽 글이 갈리는 것은
-   전부 CSS 가 그 번호(--pi/--ei)를 보고 한다 */
-(function(){
-  var st=document.querySelector('.story');if(!st||!('IntersectionObserver'in window))return;
-  var pns=[].slice.call(st.querySelectorAll('.pn'));if(!pns.length)return;
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting)st.setAttribute('data-panel',pns.indexOf(e.target));
-    });
-  },{rootMargin:'-45% 0px -45% 0px',threshold:0});
-  pns.forEach(function(p){io.observe(p);});
-})();
-
 /* 섹션 스냅 — 휠 한 번에 한 장. 사업영역 세부 페이지의 그 동작에서 이 페이지 몫만 옮겼다
    (공용 JS 의 것은 .hsec + 카드 트랙 전용이라 이 페이지에서는 아무것도 잡지 않는다).
 
@@ -1908,12 +1888,12 @@
    셋 다 세부 페이지와 같은 값이다 — 두 페이지의 손맛이 갈리면 안 된다.
    좁은 화면은 잡지 않는다(터치는 제 관성이 있다). 모션을 줄여 달라는 설정이면 즉시 이동 */
 (function(){
-  /* A-1 의 장 = [BRAND STORY 의 판 다섯 · About]. 판 하나가 화면 한 장이라 그대로 걸음이 된다 */
-  var secs=(document.body.classList.contains('v-a1')
-              ? [].slice.call(document.querySelectorAll('.story .pn'))
-              : ['vision','aaa'].map(function(i){return document.getElementById(i);}))
-            .concat([document.getElementById('about')]).filter(Boolean);
-  if(!secs.length)return;
+  /* A-1 은 휠을 잡지 않는다(secs 가 빈다) — BRAND STORY 가 화면 한 장짜리 판을 넘기던
+     시절엔 판 하나가 곧 한 걸음이었지만, 지금 그 장은 그냥 흐르는 글이라 한 장씩 끊으면
+     글 중간이 잘린다. 목차 탭을 눌렀을 때의 매끄러운 이동은 그대로 남는다(이 함수 끝) */
+  var secs=document.body.classList.contains('v-a1') ? []
+           : ['vision','aaa','about'].map(function(i){return document.getElementById(i);})
+               .filter(Boolean);
   var narrow=window.matchMedia('(max-width:900px)'),
       reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   var PAGE=820,REARM=180,GAP=24;
@@ -1949,7 +1929,7 @@
   }
 
   window.addEventListener('wheel',function(e){
-    if(narrow.matches||!e.deltaY)return;
+    if(!secs.length||narrow.matches||!e.deltaY)return;
     arm();                                   /* 입력이 이어지는 동안 재무장을 미룬다 */
     if(paging){e.preventDefault();return;}   /* 이동 중에는 입력을 받지 않는다 */
     var dir=e.deltaY>0?1:-1,i=current();
@@ -2008,12 +1988,21 @@
      (AAA 처럼 늦춘 장이 생기면 그 장 몫만 따로 적는다) */
   [['.cabout .ccols','.crv',80,0,0],
    ['.cabout .ctext','p[data-at]',80,0,0],
-   ['.cstats','.cstat',70,0,4]].forEach(function(g){
+   ['.cstats','.cstat',70,0,4],
+   /* A-1 BRAND STORY : 머리글 덩이는 읽는 차례대로 한 박자씩 */
+   ['.story-vision .st-head','.crv',90,0,0],
+   ['.story-aaa .st-head','.crv',90,0,0]].forEach(function(g){
     var box=document.querySelector(g[0]);
     if(!box)return;
     [].slice.call(box.querySelectorAll(g[1])).forEach(function(el,i){
       el.style.setProperty('--crd',(g[3] + (g[4] ? i % g[4] : i) * g[2])+'ms');
     });
+  });
+  /* AAA 세 줄만은 순번이 '칸'이 아니라 '줄'이다 — dt(핵심가치 두 낱말)와 dd(회색 판)가
+     한 줄을 이루므로 둘에 같은 값을 줘야 한 몸으로 올라온다. 위 표의 규칙(칸마다 한
+     박자)으로는 나눌 수 없어 따로 센다 */
+  [].slice.call(document.querySelectorAll('.st-rows>.crv')).forEach(function(el,i){
+    el.style.setProperty('--crd',(i >> 1) * 110 + 'ms');
   });
 })();
 
