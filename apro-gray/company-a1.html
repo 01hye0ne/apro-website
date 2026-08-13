@@ -905,29 +905,28 @@
     --g1:clamp(6px,.9vh,10px);
     --g2:clamp(8px,1.1vh,14px);
     --g3:clamp(6px,.8vh,10px);
-    --knh:calc(1.15 * var(--knfs));    /* 키워드 : 한 줄. 뭉치 맨 위에 선다 */
-    --emh:calc(1.3 * var(--emfs));     /* 짝 : 한 줄 */
-    /* 선 사이에 앉는 것은 짝이다 = 그 줄(1.3) + 선 안쪽 여백(.34×2).
+    --knh:calc(1.15 * var(--knfs));
+    --emh:calc(1.3 * var(--emfs));     /* 짝 : 한 줄. 선 아래에 붙는다 */
+    /* 선 사이에 앉는 것은 키워드 줄이다 = 그 줄(1.15) + 선 안쪽 여백(.34×2).
        선은 칸 위아래 변에 얹히므로 키를 먹지 않는다 */
-    --emband:calc(1.98 * var(--emfs));
-    --ktop:calc(var(--knh) + var(--g1));   /* 뭉치 윗변에서 윗선까지 = 키워드 줄 + 사이 */
-    --kline:rgba(64,119,183,.55);      /* 짝을 물고 있는 가는 선 (--brand-2) */
+    --knband:calc(1.83 * var(--knfs));
+    --kline:rgba(64,119,183,.55);      /* 키워드를 물고 있는 가는 선 (--brand-2) */
     --kline-t:rgba(64,119,183,0);      /* 오른쪽으로 스러지는 끝 (같은 색의 알파 0) */
     /* 선을 왼쪽으로 이만큼 더 뽑으면 다리에 닿는다.
        기준선(--kpad)은 뭉치 '허리' 높이의 사이다. 어떤 깊이 d 에서의 사이는
        [--kpad − 기울기 × (허리 − d)] 다 — 위로 갈수록 다리가 오른쪽으로 누워 오기 때문.
        ⚠ 위아래 선의 값이 다르다 — 가로선은 비스듬한 다리와 한 점에서만 만나므로, 둘을
          같은 자리에서 시작하면 하나는 넘고 하나는 못 미친다.
-       ⚠ 선은 이제 뭉치 윗변이 아니라 --ktop 만큼 내려온 자리에 있다. 키워드를 선 위로
-         올렸기 때문이다 — 이 값을 빠뜨리면 두 선이 다리에서 그만큼 떨어진다 */
-    --kover-t:max(0px,calc(var(--kpad) - var(--lean) * (var(--kbox) / 2 - var(--ktop))));
-    --kover-b:max(0px,calc(var(--kpad) - var(--lean)
-                 * (var(--kbox) / 2 - var(--ktop) - var(--emband))));
-    /* 자름선(미끄러져 나오는 글을 가리는 선)은 뭉치 윗변 기준이다 */
+       ⚠ 띠가 뭉치 맨 위에 있어 윗선의 깊이는 0 이다. 띠 아래에 무언가를 끼워 넣으면
+         두 값 모두 그 깊이만큼 다시 계산해야 한다 */
+    --kover-t:max(0px,calc(var(--kpad) - var(--lean) * var(--kbox) / 2));
+    --kover-b:max(0px,calc(var(--kpad) - var(--lean) * (var(--kbox) / 2 - var(--knband))));
+    /* 자름선(미끄러져 나오는 글을 가리는 선)도 뭉치 윗변 기준이다 — 지금은 윗선과 같은
+       값이지만, 선이 아래로 내려가도 이 선은 윗변에 남아야 하므로 따로 둔다 */
     --kclip:max(0px,calc(var(--kpad) - var(--lean) * var(--kbox) / 2));
     --p1h:calc(1.65 * var(--pfs));     /* 첫 문장은 언제나 한 줄이다(nowrap) */
     --p2h:calc(3 * 1.65 * var(--pfs));
-    --kbox:calc(var(--ktop) + var(--emband) + var(--g2)
+    --kbox:calc(var(--knband) + var(--g1) + var(--emh) + var(--g2)
                 + var(--p1h) + var(--g3) + var(--p2h));
     /* 폭은 띠가 허락하는 만큼이다 — 다리 둘 사이는 어느 높이에서나 --astep 인데, 네모를
        비스듬한 띠에 넣으면 기울기 × 뭉치 키만큼을 잃는다(위는 왼쪽 다리가, 아래는
@@ -984,30 +983,32 @@
   body:not(.v-a1) .aorb-keys .k1{--w:var(--aw)}
   body:not(.v-a1) .aorb-keys .k2{--w:calc(var(--aw) + 2 * var(--astep))}
   body:not(.v-a1) .aorb-keys .k3{--w:calc(var(--aw) + 4 * var(--astep))}
-  /* 키워드 줄 — 뭉치 맨 위에 선다. 키워드와 뜻은 한 줄에 나란히 서고 줄을 끊지 않는다:
-     Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의 빈 자리라 상관없다 */
-  body:not(.v-a1) .aorb-keys .kn{display:block;
-    min-height:var(--knh);margin-bottom:var(--g1);white-space:nowrap}
-  /* 짝 — 이 키워드가 업는 6대 가치 둘. 위아래 가는 선 사이에 앉아 키워드를 풀어 준다.
-     선은 왼쪽에서 A 의 다리에 닿았다가 오른쪽으로 가며 스러진다 — 다리에서 뽑아 낸 선으로
-     읽히게 하려는 것이다. 셋의 선이 같은 높이에 나란히 그어져 줄로도 묶인다.
+  /* 키워드 줄 — 위아래 가는 선 사이에 앉는다. 선이 무는 것이 곧 이 A 가 들고 있는 말이라,
+     그 자리는 키워드(Advanced · Aggressive · Agile)의 몫이다. 선은 왼쪽에서 A 의 다리에
+     닿았다가 오른쪽으로 가며 스러진다 — 다리에서 뽑아 낸 선으로 읽히게 하려는 것이다.
+     셋의 선이 같은 높이에 나란히 그어져 줄로도 묶인다. 키워드와 뜻은 한 줄에 나란히 서고
+     줄을 끊지 않는다: Aggressive 처럼 긴 이름은 칸을 조금 넘는데, 넘어가는 쪽은 띠의
+     빈 자리라 상관없다.
      ⚠ 선은 테두리가 아니라 따로 그린 두 줄이다(::before · ::after). 테두리로는 위아래가
        같은 자리에서 시작할 수밖에 없는데, 두 선이 닿아야 할 다리는 비스듬해서 시작점이
        서로 달라야 한다(--kover-t / --kover-b). 글칸 왼끝은 그대로 두고 선만 왼쪽으로
-       나가므로 글자는 제자리에 있다.
+       나가므로 글자는 제자리에 있다 */
+  body:not(.v-a1) .aorb-keys .kn{position:relative;display:block;
+    min-height:var(--knh);margin-bottom:var(--g1);padding:.34em 0;
+    white-space:nowrap}
+  body:not(.v-a1) .aorb-keys .kn::before,
+  body:not(.v-a1) .aorb-keys .kn::after{content:"";position:absolute;right:0;height:1px;
+    background:linear-gradient(90deg,var(--kline) 0%,var(--kline-t) 100%)}
+  body:not(.v-a1) .aorb-keys .kn::before{top:0;left:calc(-1 * var(--kover-t))}
+  body:not(.v-a1) .aorb-keys .kn::after{bottom:0;left:calc(-1 * var(--kover-b))}
+  /* 짝 — 이 키워드가 업는 6대 가치 둘. 선 아래에 한 줄로 붙어 키워드를 풀어 준다.
      ⚠ flex 인데 wrap 이다 — 세로로 세우면(column) 낱말 셋이 저마다 한 줄을 차지한다.
        가로로 흘리고 줄바꿈만 허용해야 "Advance ＋ Pioneer" 가 한 줄로 읽힌다 */
-  body:not(.v-a1) .aorb-keys em{position:relative;
-    display:flex;flex-wrap:wrap;row-gap:4px;
-    align-items:baseline;min-height:var(--emh);padding:.34em 0;
+  body:not(.v-a1) .aorb-keys em{display:flex;flex-wrap:wrap;row-gap:4px;
+    align-items:baseline;min-height:var(--emh);
     font-style:normal;font-family:var(--suit);font-weight:800;
     font-size:var(--emfs);line-height:1.3;letter-spacing:-.02em;
     color:var(--g900);word-break:keep-all}
-  body:not(.v-a1) .aorb-keys em::before,
-  body:not(.v-a1) .aorb-keys em::after{content:"";position:absolute;right:0;height:1px;
-    background:linear-gradient(90deg,var(--kline) 0%,var(--kline-t) 100%)}
-  body:not(.v-a1) .aorb-keys em::before{top:0;left:calc(-1 * var(--kover-t))}
-  body:not(.v-a1) .aorb-keys em::after{bottom:0;left:calc(-1 * var(--kover-b))}
   /* ＋ 는 뒤엣 이름과 한 덩이로 묶는다 — 긴 짝(Aggressiveness ＋ Remarkability)은 두 줄로
      접히는데, 묶지 않으면 ＋ 만 윗줄 끝에 덩그러니 남는다 */
   body:not(.v-a1) .aorb-keys em .pl{display:flex;align-items:baseline}
@@ -1112,8 +1113,8 @@
     body:not(.v-a1) .aorb-keys p,
     body:not(.v-a1) .aorb-keys p+p{min-height:0}
     /* 닿을 다리가 없으니 선을 왼쪽으로 뽑을 일도, 그 뒤에서 밀려 나올 일도 없다 */
-    body:not(.v-a1) .aorb-keys em::before,
-    body:not(.v-a1) .aorb-keys em::after{left:0}
+    body:not(.v-a1) .aorb-keys .kn::before,
+    body:not(.v-a1) .aorb-keys .kn::after{left:0}
     body:not(.v-a1) .aorb .aorb-keys li{clip-path:none}
     body:not(.v-a1) .aorb-keys .ks{translate:none;transition:none}
     body:not(.v-a1) .aorb-head{margin-block:0}
@@ -1367,6 +1368,48 @@
     .st-out{grid-column:1;
       grid-template-columns:1fr;row-gap:clamp(10px,1.8vh,16px);align-items:start}
   }
+
+  /* =====================================================================
+     ⑨-b · 하늘 배경 — Vision 의 사진이 자라 AAA 의 배경이 된다 (2026-08-13)
+     =====================================================================
+     ⚠ 되돌리기 : 이 블록 · 마크업의 .st-sky 덩이 · 문서 끝 "하늘 배경 구동기" 셋만
+       지우면 원래대로 돌아온다. 다른 규칙에는 손대지 않았다.
+
+     화면을 덮는 붙박이 한 장(.st-sky)을 깔고, clip-path 로 오려낸 창만 보여 준다.
+       창   배너 자리 → 화면 전체 → (AAA 가 끝나면 아래에서부터 잘려 나간다)
+       사진 배너 크롭(패널 띠) → 1.3배쯤 커지며 위로 밀림 → 하늘만 남는다
+       워시 0 → .6  하늘 위에서 남색 글이 읽히는 밝기까지 (대비 8:1 언저리)
+     이 셋을 스크롤 진행도 하나가 함께 몬다 — 이 페이지에서 스크롤에 물린 연출은 여기뿐이다.
+     장 하나 안의 등장이 아니라 두 장 사이를 잇는 동작이라, 시간으로 돌리면 엉뚱한 때
+     터진다(다른 연출들이 시간 구동인 것과 갈리는 이유다).
+
+     기하는 전부 JS 가 잰 값으로 넣는다 — 배너의 자리와 크기가 격자·화면에 따라 달라져서
+     CSS 로는 못 적는다. 여기서는 그 값을 받을 자리와 갈래(뜰지 말지)만 정한다.
+
+     ⚠ 흐름 레이아웃은 하나도 붙들지 않는다. 본문은 평소처럼 그냥 스크롤되고 배경만
+       붙어 있다 — 2026-08-11 에 걷어낸 pin 방식이 아니다 */
+  .st-sky{display:none}
+  /* 스위치는 구동기가 켠다 : 넓은 화면 · 모션 허용 · 스크립트가 돌 때만 */
+  html[data-sky] .st-sky{display:block;position:fixed;inset:0;z-index:0;
+    overflow:hidden;pointer-events:none;
+    opacity:0;transition:opacity .7s var(--ease)}
+  html[data-sky] .st-sky.is-in{opacity:1}
+  /* max-width:none 은 공용 CSS 의 img{max-width:100%} 를 푸는 것이다 — 하늘만 남기려면
+     사진이 화면보다 넓어져야 한다. transform-origin 은 왼쪽 위로 못 박는다(JS 의 계산 기준) */
+  html[data-sky] .st-sky img{position:absolute;left:0;top:0;max-width:none;
+    transform-origin:0 0;will-change:transform}
+  html[data-sky] .st-wash{position:absolute;inset:0;background:#fdfdfa;opacity:0}
+  /* 본문은 이 레이어 위로 올라온다 — .story 자체는 위치를 주지 않았으므로 그 배경(#fdfdfa)
+     은 레이어 아래에 남고, 두 덩이만 위로 뜬다 */
+  html[data-sky] .story-vision,html[data-sky] .story-aaa{position:relative;z-index:1}
+  /* 배너 자리는 구멍으로 비운다 — 그 자리에 보이는 사진은 레이어 쪽이다.
+     자리(높이)는 그대로 잡아 둬야 열리기 전 레이아웃이 지금과 같다 */
+  html[data-sky] .st-photo{background:none}
+  html[data-sky] .st-photo img{visibility:hidden}
+  /* 좁은 화면은 아예 뜨지 않는다 — 터치 스크롤에서 붙박이 배경은 못 믿을 동작이고
+     세로 여유도 없다. 배너는 배너로 남는다 */
+  @media(max-width:900px){html[data-sky] .st-sky{display:none}
+    html[data-sky] .st-photo img{visibility:visible}}
 
   /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
      쓰고, 서로 상대의 마크업을 display:none 으로 덮는다(이 페이지의 다른 갈래와 같은 방식).
@@ -1702,6 +1745,18 @@
      ⚠ id 를 달지 않는다 — 앞의 두 장이 #vision · #aaa 를 이미 갖고 있어 겹친다.
        A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장의 두 덩이로 옮긴다 -->
 <section class="story">
+
+  <!-- ===== 하늘 배경 레이어 (⑨-b) — 되돌리려면 이 덩이 하나만 지우면 된다 =====
+       Vision 의 사진 배너가 여기서 자라 AAA 의 배경이 된다. 화면을 덮는 붙박이 한 장이고,
+       처음에는 배너 자리만큼만 오려져 있어 아래 .st-photo 의 사진과 구분되지 않는다.
+       스크롤이 이 두 장 사이를 지나는 동안 오려낸 창이 화면 전체로 열리고, 사진은 커지며
+       위로 밀려 하늘만 남는다. 흰 워시는 그 하늘 위에 글이 읽히게 하는 몫이다.
+       JS 가 못 돌거나 좁은 화면이면 이 레이어는 아예 뜨지 않고 배너 그대로 남는다 -->
+  <div class="st-sky" aria-hidden="true">
+    <img src="../assets/vision-solar-farm.jpg" width="2560" height="1704" alt="" />
+    <span class="st-wash"></span>
+  </div>
+
   <div class="cwrap">
 
     <div class="story-vision">
@@ -2305,6 +2360,93 @@
   /* 모션을 줄여 달라는 설정에서는 위 구동부가 곧바로 마지막 단계로 세우는데, 그 일이
      이 줄보다 먼저 끝난다(구동부가 문서에서 앞선다) → 지금 값도 한 번 본다 */
   if(+sec.getAttribute('data-step')>=STEP){stepped=true;maybe();}
+})();
+
+/* 하늘 배경 구동기 (⑨-b) — 되돌리려면 이 덩이 하나만 지우면 된다.
+
+   Vision 의 사진 배너를 화면 전체로 열고, 그 안의 사진을 키우며 위로 밀어 하늘만 남긴다.
+   그 하늘이 AAA 의 배경이 된다. 진행도(p)는 스크롤 위치 하나에서 나온다 :
+     p=0  사진 배너가 화면 아래쪽 35% 지점까지 올라왔을 때
+     p=1  AAA 장의 윗변이 화면 맨 위에 닿았을 때
+   이 구간(1728×1080 에서 760px 쯤)이 두 장을 잇는 다리다. p=1 이 되는 시점에는 Vision 의
+   글이 이미 화면 위로 빠져나가 있어, 사진이 글을 덮고 지나가는 장면이 생기지 않는다.
+
+   기하 (measure 에서 한 번, 화면이 바뀌면 다시) :
+     하늘만 남기려면 원본(2560×1704)의 위 70% 가 화면 세로를 꽉 채워야 한다 →
+     배율 s1 = max(화면세로 / (1704×0.7), 화면가로 / 2560). 뒤쪽 항은 낮고 넓은 화면에서
+     사진이 화면보다 좁아지지 않게 하는 안전줄이다. 1728×1080 에서 1.34배쯤 된다.
+     사진은 그 크기(W1×H1)로 깔아 두고, 배너 상태는 transform 으로 되돌려 만든다 —
+     매 프레임 width/height 를 건드리면 래스터를 다시 뜨므로 transform 만 움직인다.
+
+   paint 에서 매 프레임 하는 일 :
+     창   clip-path:inset — 배너 사각형에서 0 으로 좁혀 간다. 아래쪽만은 AAA 의 밑변을
+          같이 보고 더 큰 쪽을 쓴다 → 열린 뒤에는 AAA 가 스크롤되어 올라간 만큼 잘려 나간다.
+     사진 translate + scale 로 배너 크롭(밑변 맞춤)에서 제자리(하늘)로 돌아온다.
+     워시 뒤쪽 절반에서만 든다 — 앞쪽에서 깔면 패널이 뿌옇게 바래 보인다. */
+(function(){
+  var sky=document.querySelector('.st-sky');if(!sky)return;
+  var img=sky.querySelector('img'),wash=sky.querySelector('.st-wash');
+  var ph=document.querySelector('.st-photo'),aaa=document.querySelector('.story-aaa');
+  if(!img||!wash||!ph||!aaa)return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+
+  var NW=2560,NH=1704,SKY=.70;          /* 원본 크기와, 그중 하늘이 차지하는 세로 비율 */
+  var WASH=.6;                          /* 다 열렸을 때의 흰 워시 농도 */
+  var wide=window.matchMedia('(min-width:901px)');
+  var VW=0,VH=0,W1=0,H1=0,X1=0,START=0,END=1,on=false,lit=false;
+
+  function measure(){
+    VW=document.documentElement.clientWidth;VH=window.innerHeight;
+    var s1=Math.max(VH/(NH*SKY),VW/NW);
+    W1=NW*s1;H1=NH*s1;X1=(VW-W1)/2;
+    img.style.width=W1+'px';img.style.height=H1+'px';img.style.left=X1+'px';
+    var y=window.scrollY;
+    START=ph.getBoundingClientRect().top+y-VH*.35;
+    END=aaa.getBoundingClientRect().top+y;
+    if(END<=START)END=START+1;
+  }
+
+  function paint(){
+    var p=(window.scrollY-START)/(END-START);
+    p=p<0?0:p>1?1:p;
+    /* easeInOutQuad — 앞뒤로만 살짝 눌린 곡선. 스크롤에 물린 동작이라 강한 이징을 쓰면
+       손가락이 미는 양과 화면이 움직이는 양이 어긋나 미끄러지는 느낌이 난다 */
+    var e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, r=1-e;
+    var b=ph.getBoundingClientRect();
+
+    /* 창 — 배너 사각형 → 화면 전체. 음수 인셋은 그대로 둔다(화면 밖으로 나가는 몫이라
+       overflow:hidden 이 어차피 자른다). 아래쪽만 AAA 밑변과 견줘 큰 쪽을 쓴다 */
+    var bot=Math.max((VH-b.bottom)*r, VH-aaa.getBoundingClientRect().bottom);
+    sky.style.clipPath='inset('+(b.top*r)+'px '+((VW-b.right)*r)+'px '+bot+'px '
+      +(b.left*r)+'px round '+(6*r)+'px)';
+
+    /* 사진 — 배너일 때의 축소율 s0 로 되돌렸다가 제자리(1배)로 돌아온다.
+       배너의 크롭은 object-fit:cover + object-position:50% 100% 와 같은 값이다 */
+    var s0=b.width/W1,k=1+(s0-1)*r,H0=H1*s0;
+    img.style.transform='translate('+((b.left-X1)*r)+'px,'+((b.top+b.height-H0)*r)+'px) scale('+k+')';
+
+    wash.style.opacity=(WASH*Math.min(1,Math.max(0,(e-.35)/.65))).toFixed(3);
+
+    /* 배너가 등장 연출로 떠오를 때 레이어도 같이 뜬다 — 구멍 뒤에 있는 것이 이 레이어라,
+       따로 두면 사진만 처음부터 또렷하게 서 있다 */
+    if(!lit&&ph.classList.contains('is-in')){lit=true;sky.classList.add('is-in');}
+  }
+
+  var t=false;
+  function tick(){if(t)return;t=true;requestAnimationFrame(function(){t=false;if(on)paint();});}
+
+  function sync(){
+    var want=wide.matches;
+    if(want===on)return;
+    on=want;
+    document.documentElement.toggleAttribute('data-sky',on);
+    if(on){measure();paint();}
+  }
+
+  window.addEventListener('scroll',tick,{passive:true});
+  window.addEventListener('resize',function(){if(on){measure();paint();}sync();});
+  window.addEventListener('load',function(){if(on){measure();paint();}});
+  sync();
 })();
 
 /* 맨 위로 가기 (사업영역 세부 페이지와 동일) */
