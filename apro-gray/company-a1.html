@@ -400,7 +400,17 @@
      12열 그리드의 한 칸 = (100vw − 좌우 84 × 2 − 거터 12 × 11) / 12 = (100% − 300px) / 12.
      (여기 100% 는 섹션 폭 = 화면 폭이다. 백분율 패딩은 제 폭이 아니라 부모 폭을 본다) */
   .cwrap{width:calc(100% - 168px);margin-inline:auto;
-    padding-inline:calc((100% - 300px) / 12 + 12px)}
+    padding-inline:calc((100% - 300px) / 12 + 12px);
+    /* 판 안쪽 여백. 예전엔 .story 만 갖고 있었는데 About 머리글도 같은 자리를
+       쓰게 되면서(아래 --head-r) 두 장이 함께 보는 자리로 올렸다 */
+    --st-pad-x:clamp(18px,2.2vw,34px);
+    /* 머리글 오른쪽 칸의 폭 — AAA 의 판(.st-out)이 서는 자리와 같다.
+       그 폭을 푸는 계산은 아래 ⑨ 의 --st-panel 에 적혀 있다(탭 바 첫 구분선에
+       전략명 첫 글자를 맞추는 값). 여기서 한 번 더 적는 대신 같은 식을 쓴다 —
+       두 장의 본문이 판·표와 같은 세로선에서 시작해야 레이아웃이 안 흔들린다.
+       ⚠ 이 값을 고치면 .st-rows 의 --st-panel 도 같이 고쳐야 한다 */
+    --head-r:calc(53.3333% - 2.5px + var(--st-pad-x));
+    --head-gap:clamp(18px,2.6vw,46px)}
   /* scroll-margin-top 은 탭에서 눌러 들어왔을 때 첫 줄이 고정된 탭 바 아래로 숨지 않게
      하는 값이다 (아래 풀스크린 모드에서는 여백을 섹션이 직접 갖고 있어 0 으로 되돌린다) */
   .csec{position:relative;background:#fff;padding:clamp(88px,9vw,148px) 0;scroll-margin-top:var(--cnav-clear)}
@@ -408,7 +418,9 @@
 
   /* 풀스크린 sticky 규칙은 섹션별 스타일(⑤~⑦)을 덮어야 해서 그 뒤 ⑧ 에 모아 두었다 */
 
-  /* 섹션 타이틀 — About·Vision 이 같은 한 줄을 쓴다 (정의도 한 곳) */
+  /* 섹션 타이틀 — About·Vision 이 같은 한 줄을 쓴다 (정의도 한 곳).
+     ⚠ 이 크기 식은 AAA 제목의 첫 줄(⑦-A .aorb-head .lead)도 그대로 쓴다 — 이음(⑪)에서
+       비전의 이 줄이 그 줄로 갈리기 때문이다. 크기를 고치면 그쪽도 같이 고칠 것 */
   .ceyebrow{margin-bottom:clamp(16px,2.4vh,30px);font-family:var(--suit);font-weight:700;
     font-size:clamp(15px,1.2vw,18px);letter-spacing:-.3px;color:inherit}
 
@@ -469,6 +481,78 @@
   @media(max-width:900px),(max-height:699px){
     .cabt-stage{min-height:0;padding:clamp(88px,9vw,148px) 0}
   }
+
+  /* 장을 닫는 와이드 사진 — 숫자 표가 이 사진 위에 앉는다 (2026-08-14).
+
+     처음에는 줄글·표가 한 화면을 다 쓴 뒤 그 밑에 따로 붙는 띠였다. 지금은 표와 같은
+     격자 칸(2행)에 겹쳐 놓아 사진이 표의 바탕이 된다 — 그러면 이 장이 AAA 와 같은
+     짜임이 된다 : [위는 흰 바탕에 글 / 아래는 사진 위에 내용].
+     표가 뒤 DOM 이 아니라 앞이라, 겹치는 순서는 z-index 로 못 박는다.
+
+     화면 폭 터뜨리기 — margin-inline 의 50% 는 격자 칸(= .cwrap 안쪽 폭)의 절반이라
+     [칸폭/2 − 50vw] 만큼 양쪽으로 밀면 폭이 정확히 100vw 가 되고, .cwrap 이 가운데
+     정렬이라 좌우도 저절로 맞는다. 100vw 는 스크롤 막대를 포함하므로 그만큼 넘치는데,
+     .cabout 의 overflow-x:clip 이 자른다 (clip 은 스크롤 상자를 만들지 않는다).
+
+     비율 2.6/1 — 표(2줄, 약 353px)보다 띠가 높아야 표가 사진 '위에 얹힌' 것으로
+     읽힌다. 1728px 에서 665px 이라 표 위아래로 150px 남짓씩 사진이 보인다.
+     잘려 나가는 몫은 위쪽 빈 하늘이다(object-position 의 100%) — 아래쪽에 노을과
+     사옥 간판이 있어 밑변을 붙들어야 한다. 원본 세로의 65% 가 남고, 사옥 옥상의
+     A-PRO 간판(세로 38% 지점)은 그 안에 들어온다.
+     ⚠ 이 사진의 하늘은 AAA 장의 하늘(vision-solar-farm)과 이어지는 그림이다 —
+       한쪽 색을 손보면 다른 쪽도 같이 봐야 한다. 그 하늘도 A-1 갈래에만 있다 */
+  .cabt-photo{margin:0;overflow:hidden;background:var(--secondary-bg)}
+  .cabt-photo img{display:block;width:100%;height:100%;
+    object-fit:cover;object-position:50% 100%}
+  .v-a1 .cabout{overflow-x:clip}
+  .v-a1 .ccols>.cabt-photo{grid-row:2;grid-column:1 / -1;
+    margin-top:clamp(40px,6vh,88px);
+    margin-inline:calc(50% - 50vw);aspect-ratio:2.6 / 1}
+  /* 표는 사진 위로 올라오고, 띠 한가운데에 선다.
+     ⚠ 두 칸이 같은 자리를 쓰므로 위 여백을 똑같이 줘야 한다 — align-self:center 는
+       바깥여백까지 포함한 상자를 가운데 두므로, 둘의 여백이 같으면 사진 위아래로
+       남는 몫이 정확히 반씩 나뉜다. 한쪽에만 주면 표가 사진 한가운데를 벗어난다 */
+  .v-a1 .ccols>.cstats{grid-row:2;grid-column:1 / -1;margin-top:clamp(40px,6vh,88px);
+    align-self:center;position:relative;z-index:1}
+  /* 줄글은 위로 붙인다 — 아래를 사진이 채우므로 무대 가운데 정렬이 할 일이 없다 */
+  .v-a1 .cabt-stage{align-items:flex-start}
+
+  /* ── About 머리글을 AAA 와 같은 두 칸으로 (2026-08-14) ─────────────────────
+     AAA→About 을 자리만 두고 내용만 바꾸려면 두 장의 뼈대가 같아야 한다. 짝은 이렇다 :
+
+       AAA    [AAA Strategy]  [에이프로는 구성원이…]
+       About  [ABOUT A-PRO]   [미래에너지를 만드는… + A-PRO는 이차전지…]
+       이미지 안  [세 줄]  ↔  [숫자 여덟 칸]      ← 여기는 1대1 이 아니라 통째로 교체
+
+     이 장도 원래 두 칸이었지만 칸의 폭이 달랐다(4등분의 1:3). AAA 의 판이 서는 자리
+     (--head-r)로 맞추면 두 장의 본문이 같은 세로선에서 시작한다.
+     장 이름은 AAA 의 제목(.st-ttl)과 같은 값으로 맞춘다 — 크기·굵기·자간 전부.
+     목차 탭의 이름("AAA Strategy" · "About A-PRO")과도 짝이 맞는 자리다 */
+  .v-a1 .ccols{grid-template-columns:minmax(0,1fr) var(--head-r);
+    column-gap:var(--head-gap)}
+  .v-a1 .ccols>.ceyebrow{grid-row:1;grid-column:1;margin-bottom:0;align-self:baseline;
+    font-weight:800;font-size:clamp(22px,1.95vw,34px);
+    line-height:1.2;letter-spacing:-.02em}
+  .v-a1 .ccols>.ctext{grid-row:1;grid-column:2;max-width:none;align-self:baseline}
+
+  @media(max-width:900px){
+    /* 한 칸짜리 격자로 펴지면 사진도 흐름에 맞춰 따로 선다(표를 덮지 않는다) —
+       좁은 폭에서 2.6/1 은 띠처럼 얇아 사옥이 안 읽히므로 16/9 로 되돌린다 */
+    .v-a1 .ccols>.cabt-photo{grid-row:auto;grid-column:1;
+      margin-inline:0;margin-top:0;aspect-ratio:16 / 9}
+    .v-a1 .ccols>.cstats{grid-row:auto;align-self:auto}
+    /* 좁은 폭에서는 두 칸을 접어 위아래로 편다 — 장 이름 밑에 본문이 온다 */
+    .v-a1 .ccols{grid-template-columns:1fr}
+    .v-a1 .ccols>.ceyebrow{grid-row:auto;grid-column:1;
+      margin-bottom:clamp(12px,2vh,22px);align-self:auto}
+    .v-a1 .ccols>.ctext{grid-row:auto;grid-column:1;align-self:auto}
+  }
+  /* A-1 에만 있다. 이 장은 두 갈래가 같은 마크업을 쓰므로 갈래 스위치를 여기 하나
+     둔다 — 위 ⑨ 의 body:not(.v-a1) .story 와 같은 방식이다.
+     ⚠ A 에서 요소가 사라지는 게 아니라 안 그려질 뿐이다. 아래 고정 바 스크립트가
+       이 사진이 안개 띠 뒤에 있는지 재는데, display:none 이면 사각형이 전부 0 이라
+       "겹친다" 조건이 저절로 거짓이 된다 — 스크립트 쪽에 갈래 분기가 따로 없는 이유다 */
+  body:not(.v-a1) .cabt-photo{display:none}
 
   /* 히어로에서 내려온 두 문안 — 줄글의 머리다. 본문보다 크고 브랜드색이라
      줄글 전체가 이 두 줄에 딸린 설명으로 읽힌다 (.ctext p 와 같은 특정도라 뒤에 둔다) */
@@ -1301,8 +1385,15 @@
   body:not(.v-a1) .aorb-keys p:first-of-type{color:rgba(255,255,255,.94)}
 
   body:not(.v-a1) .aorb-head{position:relative;z-index:1}
+  /* 크기 식이 섹션 라벨(.ceyebrow, ② 참조)과 글자 그대로 같다 — 이음(⑪)에서 비전의
+     눈썹줄이 이 줄로 갈리는데, 식이 다르면 갈리는 순간 글자가 커졌다 작아진다.
+     상한만 맞추면 안 된다 : 좁은 폭에서는 vw 항이 값을 끌고 가므로 식 전체가 같아야
+     모든 폭에서 같은 크기가 된다.
+     ⚠ 색은 일부러 다르게 둔다(먹빛 → 파랑). 크기가 튀는 것과 달리 색이 물드는 것은
+       "AAA 로 넘어왔다"는 신호로 읽힌다.
+     ⚠ .ceyebrow 의 크기를 고치면 여기도 같이 고쳐야 한다 */
   body:not(.v-a1) .aorb-head .lead{font-family:var(--suit);font-weight:700;
-    font-size:clamp(13px,1.05vw,16px);letter-spacing:-.3px;color:var(--brand-2)}
+    font-size:clamp(15px,1.2vw,18px);letter-spacing:-.3px;color:var(--brand-2)}
   body:not(.v-a1) .aorb-head .en{margin-top:10px;font-family:var(--suit);font-weight:800;
     font-size:clamp(28px,3vw,46px);line-height:1.1;letter-spacing:-.03em;color:var(--g900)}
 
@@ -1497,6 +1588,16 @@
   .story-vision{padding-top:calc(var(--cnav-clear) + clamp(60px,17vh,220px))}
   .story-aaa{padding-top:calc(var(--cnav-clear) + clamp(20px,4.5vh,56px))}
   .story .st-head{text-align:center}
+  /* AAA 머리글은 두 칸이다 — [장 이름 | 본문] (2026-08-14).
+     본문이 오른쪽 칸으로 가면 그 왼쪽 선이 바로 밑 판(.st-out)의 왼쪽 선과 같아진다.
+     칸도 사이도 .st-rows 와 같은 값을 쓰므로 저절로 맞는다.
+     baseline 정렬 — 장 이름(34px)과 본문(16px)은 줄 높이가 달라 윗변으로 맞추면
+     서로 다른 자리에서 시작한다. 첫 줄의 밑선을 맞추면 두 글이 한 줄에서 출발한 것으로
+     읽힌다. About 머리글도 같은 방식이다(⑧) */
+  .story-aaa .st-head{display:grid;grid-template-columns:minmax(0,1fr) var(--head-r);
+    column-gap:var(--head-gap);align-items:baseline}
+  .story-aaa .st-ttl{grid-column:1}
+  .story-aaa .st-note{grid-column:2;margin-top:0}
   /* AAA 쪽 머리글만 왼쪽으로 — 바로 아래 세 줄이 왼쪽에서 시작하므로 제목·문장도 그 선에
      맞춘다. Vision 쪽은 사진을 거느린 표지라 가운데 그대로다 */
   .story-aaa .st-head{text-align:left}
@@ -1802,8 +1903,14 @@
        바닥이 흰 종이라 원래의 밝기 방식이 맞고, 그 두 장에서는 이 규칙이 꺼진다.
      ⚠ 제목 뒤의 흰 바닥(.st-sheet)이 그 자리를 덮고 있을 때는 이 규칙이 다시 꺼진다 —
        그 면은 불투명 흰색이라 밝기 1.35배가 255 에서 잘리고, 원래의 방식이 맞다.
-       그 판단도 구동기가 매 프레임 함께 한다 */
-  html[data-sky-bar] .cnav-fog{
+       그 판단도 구동기가 매 프레임 함께 한다.
+     ⚠ [data-photo-bar] 는 같은 이야기를 About 을 닫는 와이드 사진(.cabt-photo)에
+       대고 한 것이다 — 그 사진도 중간 밝기라 밝기를 얹으면 띠가 뜬다. 이 페이지에서
+       바 뒤로 지나가는 그림은 이 둘뿐이다.
+       스위치를 하나로 합치지 않는다 : 하늘 쪽은 하늘 구동기가, 사진 쪽은 항상 도는
+       고정 바 스크립트가 적는데, 한 이름을 둘이 쓰면 매 프레임 서로의 값을 지운다 */
+  html[data-sky-bar] .cnav-fog,
+  html[data-photo-bar] .cnav-fog{
     -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
   /* 좁은 화면은 아예 뜨지 않는다 — 터치 스크롤에서 붙박이 배경은 못 믿을 동작이고
      세로 여유도 없다. 배너는 배너로 남는다 */
@@ -2381,6 +2488,17 @@
           <li class="cstat" data-at="2"><p class="k">3년 평균 매출액</p><p class="v">1,944.3<span class="u">억 원</span></p></li>
           <li class="cstat" data-at="2"><p class="k">수출 비중</p><p class="v">80<span class="u">% 이상</span></p></li>
         </ul>
+        <!-- 장을 닫는 와이드 사진 — 바로 위 숫자 표와 같은 격자 칸(2행)에 놓여 표의
+             바탕이 된다(위 CSS). 하늘은 AAA 장의 하늘과 이어지는 그림이다
+             (노을 하늘 + 태양광 패널 하늘 합성).
+             ⚠ 표보다 뒤에 적는다 — 겹치는 순서는 z-index 로 못 박지만, 읽어 주는
+               차례에서도 숫자가 먼저인 편이 맞다.
+             ⚠ A-1 에만 나온다. 이 장은 두 갈래가 같은 마크업을 쓰므로 마크업을 나누는
+               대신 위 CSS 의 body:not(.v-a1) .cabt-photo 가 A 에서 가린다 -->
+        <figure class="cabt-photo crv">
+          <img src="../assets/hq-sunset.jpg" width="2560" height="1511" loading="lazy"
+               alt="노을이 물든 하늘 아래 선 에이프로 글로벌 센터 사옥" />
+        </figure>
       </div>
     </div>
   </div>
@@ -2539,7 +2657,8 @@
   if(!wrap||!hero)return;
   var tabs=[].slice.call(wrap.querySelectorAll('.cnav-tabs a[href^="#"]'));
   var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  var top=0,drop=0,fixed=null,cur=-1;
+  var photo=document.querySelector('.cabt-photo');
+  var top=0,drop=0,fixed=null,cur=-1,shot=false;
 
   function measure(){
     var cs=getComputedStyle(wrap);
@@ -2555,6 +2674,18 @@
     if(v!==fixed){
       fixed=v;
       wrap.classList.toggle('is-fixed',v);
+    }
+
+    /* About 을 닫는 와이드 사진이 지금 안개 띠 뒤에 있는가 (2026-08-14).
+       그 띠(③ .cnav-fog)는 흐림에 밝기 1.35배를 얹어 글자를 바닥색으로 녹이는데,
+       그게 성립하는 근거가 "바닥이 흰 종이라 255 에서 잘린다" 였다. 중간 밝기의
+       사진이 뒤로 지나가면 그 밝기가 그대로 보여 사진을 가로지르는 흰 띠가 된다
+       (하늘 배경에서 겪은 것과 같은 일 — 위 CSS ⑨-b 의 [data-sky-bar] 참고).
+       띠의 자리는 바 밑변에서 잰다 : 윗변 +13(흰 띠 12 + 선 1), 아랫변 +39(키 26) */
+    if(photo){
+      var b=wrap.getBoundingClientRect().bottom,pr=photo.getBoundingClientRect();
+      var over=v&&pr.top<b+39&&pr.bottom>b+13;
+      if(over!==shot){shot=over;document.documentElement.toggleAttribute('data-photo-bar',over);}
     }
     var mid=window.innerHeight/2,best=-1;
     for(var i=0;i<secs.length;i++){
