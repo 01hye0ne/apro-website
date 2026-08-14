@@ -575,8 +575,11 @@
   /* 왼쪽 칸은 페이지 좌측선에 글이 붙는다 + 세로 구분선을 갖는다 */
   .cvis-grid .c:nth-child(odd){padding-left:0;border-right:1px solid var(--vline)}
   .cvis-grid .c:nth-child(-n+2){border-bottom:1px solid var(--vline)}   /* 가운데 가로선 */
+  /* ⚠ 이 크기는 이음(⑪)의 흐림 교차에서 AAA 제목(clamp(28px,3vw,46px))과 엇갈린다.
+     차이가 벌어질수록 갈리는 것이 아니라 갈아 끼우는 것으로 보이므로, 키울 때
+     그쪽도 같이 볼 것 (2026-08-14 : 52 → 56, 그쪽은 그대로 두어도 견딜 만했다) */
   .cvis-grid .c--h p{font-family:var(--suit);font-weight:800;
-    font-size:clamp(24px,3.1vw,52px);line-height:1.1;letter-spacing:-.03em;word-break:keep-all}
+    font-size:clamp(25px,3.3vw,56px);line-height:1.1;letter-spacing:-.03em;word-break:keep-all}
   /* 큰 문장 둘에는 아래 사진들의 무드(하늘·웨이퍼의 파랑)를 글자에 입힌다 — 먹빛에서
      시작해 브랜드 계열 파랑을 지나 다시 먹빛으로 돌아온다(양끝이 같은 색이라 되돌아올 때
      이음매가 없다). 어두운 바닥이던 시절에는 이 띠가 흰빛에서 옅은 하늘로 내려갔다 —
@@ -604,8 +607,15 @@
       animation-play-state:running}
   }
   @keyframes cvis-shimmer{from{background-position:0% 50%}to{background-position:100% 50%}}
-  .cvis-grid .c--t p{font-family:var(--pre);font-size:clamp(14px,1.05vw,16px);
-    line-height:1.7;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
+  /* 줄글 — 이 장은 한 화면에 글 몇 줄만 놓이는 장이라, 다른 장의 본문(16px) 기준을
+     그대로 쓰면 넓은 화면에서 작아 보인다. 그래서 이 장에서만 한 급 키운다.
+     ⚠ 두 문단 다 한 줄로 서는 것이 이 배치의 전제다. 가장 긴 첫 문단이 글자 크기의
+       44.4배 폭이라, 21px 에서 932px — 1440 폭의 글칸(1086px)까지는 한 줄이다.
+       더 키우려면 그 폭부터 재 볼 것 (넘치면 두 줄이 되어 가운데 덩이가 흔들린다).
+     ⚠ 줄 사이는 글자가 커진 만큼 좁힌다(1.7 → 1.65) — 큰 글자에 같은 배수를 주면
+       줄 사이가 벌어져 두 문단이 한 덩이로 안 읽힌다 */
+  .cvis-grid .c--t p{font-family:var(--pre);font-size:clamp(15px,1.35vw,21px);
+    line-height:1.65;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
 
   /* 네 갈래가 놓이는 줄. --vcols 가 칸 수다 — 칸 격자가 이 값에서 나온다
      (예전에는 위에 묶는 괄호가 있어 그 폭도 같은 값에서 계산했다. 괄호는 걷었다) */
@@ -926,8 +936,12 @@
     .cstat{min-height:118px;padding:18px 20px;gap:8px}
     .cstat .v{font-size:clamp(22px,1.9vw,30px)}
     /* Vision·AAA 는 크기를 대부분 vh 로 잡아 두어(칸 높이·여백) 여기서 손댈 것이
-       큰 문장 하나뿐이다 */
-    .cvis-grid .c--h p{font-size:clamp(22px,2.6vw,40px)}
+       글자 크기뿐이다. 이 질의는 낮은 화면(높이 880 이하)을 위한 것이라 — 덩이가
+       한 화면에 앉게 상한을 낮춘다.
+       ⚠ 줄글도 같이 낮춘다. 큰 문장만 낮추면 21px 그대로인 줄글과 두 배 차이도
+         안 나서 위계가 무너진다 (42 : 21 = 2.0, 42 : 17.4 = 2.4) */
+    .cvis-grid .c--h p{font-size:clamp(22px,2.8vw,42px)}
+    .cvis-grid .c--t p{font-size:clamp(15px,1.1vw,18px)}
   }
 
   /* =====================================================================
