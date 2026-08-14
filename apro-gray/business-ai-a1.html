@@ -167,7 +167,7 @@
   .hleft>.pict{margin-top:auto}
 
   /* 여러 장짜리 비주얼(.hph--slides) — 목업엔 선례가 없다(전부 사진 1장). 이 페이지엔
-     3종(산업 안전 진단 솔루션·건강 상태 진단·이상 상태 진단) 있어 새로 짠다. JS(business-layout.js)는
+     4종(산업 안전 진단 솔루션·건강 상태 진단·이상 상태 진단·EV 제어기) 있어 새로 짠다. JS(business-layout.js)는
      .hph--slides 안의 img 를 찾아 2초마다 .is-on 클래스를 옮기며 넘길 뿐이라, .hright
      자신에 이 클래스를 달고 이미지를 겹쳐 쌓기만 하면 그대로 작동한다. 진행 막대
      (.hslide-bar)는 business-layout.css 기본 스타일을 그대로 쓴다(특정 부모에
@@ -770,11 +770,64 @@
     <div class="hrail"></div>
     <div class="htrack">
 
-      <!-- 내용 미정 -->
-      <article class="hcard hcard--tbd" data-tab="급속 충전기">
+      <!-- v3.1(gray-v3.1, d7d00ba)의 'PICKLE Station' 카드를 그대로 되살린 것.
+           그 시절엔 이 소분류에 카드가 하나뿐이라 충전 솔루션 전체를 한 장이 다뤘고,
+           v4.0 에서 급속 / 완속으로 갈리면서 그 자리를 급속 충전기가 받는다.
+           제목만 새 체계의 이름을 쓰고(같은 브랜드인 완속 카드와 겹치면 안 된다)
+           줄글·키워드·사진은 원문 그대로다 — 제품명 PICKLE Station 은 줄글 첫 줄에 있다 -->
+      <article class="hcard" data-tab="급속 충전기">
         <div class="hleft">
           <h3>급속 충전기</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
+            <!-- 원문 둘째 단락 첫 문장이 "하드웨어 / 전력변환·제어 / 통신 / 인증·안전관리" 네 항목을
+                 그대로 나열하고 있어 아래 픽토그램으로 접었다. 뒷문장(원격 운영·EMS 연계)은 남겼다 -->
+            <p>원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.</p>
+            <p>에이프로가 축적해 온 전력전자와 배터리 시스템 기술을 기반으로 안전하고 지속 가능한 전기 모빌리티 충전 생태계를 구축합니다.</p>
+          </div>
+          <!-- v3.0 에는 이 위에 "통합 구성" 레이블(.lbl)이 있었지만 v3.1 픽토그램 박스에
+               자리가 없어 그때 뺐다. 지금 골격도 같으므로 되살리지 않는다 -->
+          <ul class="pict">
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.5 3.5v6"/><path d="M17.5 3.5v6"/>
+                <path d="M6.5 9.5h15v3.5a7.5 7.5 0 0 1-15 0V9.5z"/><path d="M14 20.5v4"/>
+              </svg></span>
+              <span class="k">충전 하드웨어</span>
+              <span class="en">Hardware</span>
+            </li>
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="8" y="8" width="12" height="12" rx="1.5"/>
+                <path d="M11.5 3.5v4.5"/><path d="M16.5 3.5v4.5"/>
+                <path d="M11.5 20v4.5"/><path d="M16.5 20v4.5"/>
+                <path d="M3.5 11.5h4.5"/><path d="M3.5 16.5h4.5"/>
+                <path d="M20 11.5h4.5"/><path d="M20 16.5h4.5"/>
+              </svg></span>
+              <span class="k">전력변환 · 제어</span>
+              <span class="en">Power &amp; Control</span>
+            </li>
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 17.5a12.5 12.5 0 0 1 18 0"/><path d="M9.5 21.5a7 7 0 0 1 9 0"/>
+                <circle cx="14" cy="25" r="1.2"/>
+              </svg></span>
+              <span class="k">차량 · 충전기 통신</span>
+              <span class="en">Communication</span>
+            </li>
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5.5" y="12.5" width="17" height="12" rx="2"/>
+                <path d="M9.5 12.5V9a4.5 4.5 0 0 1 9 0v3.5"/><path d="M14 17v3"/>
+              </svg></span>
+              <span class="k">인증 · 안전관리</span>
+              <span class="en">Auth &amp; Safety</span>
+            </li>
+          </ul>
+        </div>
+        <div class="hright">
+          <img src="../assets/pickle-station-gen2.jpg" width="1200" height="675" loading="lazy"
+               alt="에이프로 2세대 충전기 PICKLE Station이 늘어선 옥외 충전소 전경" />
         </div>
       </article>
 
@@ -782,8 +835,17 @@
       <article class="hcard hcard--tbd" data-tab="완속 충전기">
         <div class="hleft">
           <h3>완속 충전기</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p class="tbd">텍스트 추가 예정</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
         </div>
+        <div class="hright"></div>
       </article>
 
     </div>
@@ -794,11 +856,39 @@
     <div class="hrail"></div>
     <div class="htrack">
 
-      <!-- 내용 미정 -->
+      <!-- v3.1(gray-v3.1, d7d00ba)의 '미국 ECOTRON 제어기 국내 독점 수입사' 카드를
+           그대로 되살린 것. 그 시절엔 이 소분류가 카드 한 장이었고, v4.0 에서
+           EV 제어기 / 자율주행 제어기 / 소프트웨어 셋으로 갈리면서 그 자리를
+           EV 제어기가 받는다(2026-08-14 요청).
+           제목만 새 체계의 이름을 쓰고 줄글은 원문 그대로다 — 첫 단락이 VCU·ZCU·
+           EVCC 와 자율주행 제어기를 함께 나열하는 것도 손대지 않았다(요청).
+           ⚠ 그래서 옆 카드(자율주행 제어기)와 내용이 겹친다. 그쪽 글이 확정되면
+             이 나열을 어디까지 남길지 함께 정해야 한다.
+           클래스에 --tbd 가 남은 이유는 키워드 넉 줄이 아직 자리표시이기 때문이다 -->
       <article class="hcard hcard--tbd" data-tab="EV 제어기">
         <div class="hleft">
           <h3>EV 제어기</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p>에이프로는 ECOTRON 차량·자율주행 제어기의 국내 총판으로서 VCU, ZCU, EVCC, 자율주행 제어기 등 검증된 제어 솔루션을 공급합니다.</p>
+            <p>모든 제품은 ASIL-D 등급 반도체와 ISO 26262 기능안전, MATLAB/Simulink 모델 기반 개발을 지원해 높은 안전성과 개발 효율성을 제공합니다.</p>
+            <p>에이프로는 국내 공급과 기술 지원을 통해 전기차·자율주행·무인 이동체·로봇 분야 고객의 제어기 도입을 지원합니다.</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
+        </div>
+        <!-- 3장 — 제품컷(배경 뚫린 PNG)이 섞여 있어 한 벌 모두 통째로 담는다(is-plate).
+             한 장만 잘라 채우면 같은 자리에서 장마다 프레임이 달라져 넘어갈 때 튄다 -->
+        <div class="hright is-plate hph--slides">
+          <img src="../assets/ecotron-lineup.jpg" width="1200" height="499" loading="lazy"
+               alt="ECOTRON 차량·자율주행 제어기 라인업 — VCU, ZCU, EVCC" />
+          <img src="../assets/ecotron-products.png" width="1000" height="280" loading="lazy"
+               alt="ECOTRON 제어기 제품 이미지" />
+          <img src="../assets/ecotron-ev-platform.jpg" width="1200" height="900" loading="lazy"
+               alt="ECOTRON 협력사의 전기차 플랫폼에 제어기가 적용된 모습" />
         </div>
       </article>
 
@@ -806,16 +896,34 @@
       <article class="hcard hcard--tbd" data-tab="자율주행 제어기">
         <div class="hleft">
           <h3>자율주행 제어기</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p class="tbd">텍스트 추가 예정</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
         </div>
+        <div class="hright"></div>
       </article>
 
       <!-- 내용 미정 -->
       <article class="hcard hcard--tbd" data-tab="소프트웨어">
         <div class="hleft">
           <h3>소프트웨어</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p class="tbd">텍스트 추가 예정</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
         </div>
+        <div class="hright"></div>
       </article>
 
     </div>

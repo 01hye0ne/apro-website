@@ -394,13 +394,16 @@
   .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
     line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
   /* 이 카드 제목만 두 줄을 허용한다 — 위 nowrap 은 열 폭 안에서 제목을 한 줄로
-     붙잡아 두려는 규칙인데, 이 카드의 원래 제목("고객사 해외 생산기지 지원을 위한
-     법인 운용 및 해외 거점 확보", 25자)은 좁은 데스크톱 구간(901~1200px, 제목이
-     clamp 하한 22px)에서 열 폭을 넘었다. .hleft 가 overflow-x:hidden 이라 넘친
-     만큼은 스크롤도 없이 그냥 잘려 나간다. 지금은 제목이 "수정 필요"(임시)라 이
-     규칙이 하는 일이 없지만, 문구가 확정되면 다시 필요해질 자리라 선택자만 옮겨 둔다.
-     word-break:keep-all 로 어절 중간에서 끊기는 것만 막고 줄바꿈은 허용한다 */
-  .hcard[data-tab="수정 필요"] .hleft h3{white-space:normal;word-break:keep-all}
+     붙잡아 두려는 규칙인데, 이 카드 제목("고객사 해외 생산기지 지원을 위한 법인
+     운용 및 해외 거점 확보(*수정 예정)", 공백 빼고 33자)은 좁은 데스크톱 구간
+     (901~1200px, 제목이 clamp 하한 22px)에서 열 폭을 넘는다. .hleft 가
+     overflow-x:hidden 이라 넘친 만큼은 스크롤도 없이 그냥 잘려 나간다.
+     한동안 임시 제목("수정 필요")이 앉아 있어 이 규칙이 하는 일이 없었는데,
+     2026-08-14 에 원래 문구가 돌아오면서 다시 살아 있는 규칙이 됐다.
+     word-break:keep-all 로 어절 중간에서 끊기는 것만 막고 줄바꿈은 허용한다.
+     ⚠ 이 카드는 위아래 2단이라(아래 flex-direction:column 블록) 제목이 두 줄이
+       되면 그만큼 지도 칸이 낮아진다 — 문구를 더 늘릴 때는 지도 쪽도 같이 볼 것 */
+  .hcard[data-tab="해외 거점"] .hleft h3{white-space:normal;word-break:keep-all}
   .hleft>.pict{margin-top:auto}   /* 픽토그램은 "필요에 따라" 본문 아래, 열 바닥에 붙인다 */
   /* 아이콘+키워드 박스 — 기본(business-layout.css)은 4칸을 가로로 한 줄에 늘어놓고
      칸마다 흰 카드+그림자+모서리 점 장식을 넣는 방식인데, 카드 폭이 이제 열 하나
@@ -528,7 +531,17 @@
      항상 그대로 여백으로 보인다 */
   .hcard[data-tab*="프로세스 맵"]>.hright{flex-direction:column;
     justify-content:flex-start;gap:28px;padding:40px}
-  .hcard[data-tab*="프로세스 맵"]>.hright img{width:100%;height:auto;flex:none}
+  /* flex:0 1 auto + min-height:0 — 남는 높이만큼만 차지하고 모자라면 줄어든다.
+     예전엔 flex:none 이었다. 그때 그림은 3096×651(4.76:1)이라 폭에 맞추면 높이가
+     200px 남짓이었고, 그 위 순서 띠(.fsteps)까지 얹어도 칸에 들어왔다.
+     2026-08-14 임시 캡처(1118×508, 2.2:1)로 바뀌면서 같은 폭에서 높이가 두 배가
+     됐다 — 순서 띠를 내렸어도 칸을 넘긴다. .hright 가 overflow:hidden 이라 넘친
+     만큼은 스크롤도 없이 잘린다.
+     아래 max-height:820px 블록이 낮은 화면에서만 쓰던 값을 그대로 올린 것이고,
+     이유도 같다 — 작아질지언정 순서·구역이 다 보이는 편이 낫다.
+     .is-plate(object-fit:contain)라 줄어들어도 잘리지 않고 통째로 축소된다 */
+  .hcard[data-tab*="프로세스 맵"]>.hright img{width:100%;height:auto;
+    flex:0 1 auto;min-height:0}
   .hcard[data-tab*="프로세스 맵"]>.hright .fsteps{width:100%;margin:0}
 
   /* 우측이 사진이 아니라 자리표시 그리드인 카드들 (제품 카탈로그·아이콘) */
@@ -554,26 +567,26 @@
      특정도는 연산자와 무관하게 같으므로 규칙 순서는 종전 그대로다.
      PLC/MES 는 data-tab 이 약어만 남은 뒤에도 ^= 로 그대로 걸린다 */
   @media(min-width:901px){
-    .hcard[data-tab="수정 필요"],
+    .hcard[data-tab="해외 거점"],
     .hcard[data-tab^="PLC"],
     .hcard[data-tab^="MES"],
     .hcard[data-tab*="프로세스 맵"]{flex-direction:column}
 
-    .hcard[data-tab="수정 필요"]>.hleft,
+    .hcard[data-tab="해외 거점"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft,
     .hcard[data-tab*="프로세스 맵"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
       padding:40px 48px 24px;overflow:visible}
 
-    .hcard[data-tab="수정 필요"]>.hright,
+    .hcard[data-tab="해외 거점"]>.hright,
     .hcard[data-tab^="PLC"]>.hright,
     .hcard[data-tab^="MES"]>.hright,
     .hcard[data-tab*="프로세스 맵"]>.hright{flex:1 1 auto;width:100%;border-left:0}
 
-    /* 지도 카드(현재 제목 "수정 필요")·프로세스 맵 카드만 상단(본문)-하단(비주얼)
+    /* 지도 카드(해외 거점)·프로세스 맵 카드만 상단(본문)-하단(비주얼)
        사이 구분선을 남긴다 — 둘 다 비주얼이 통짜 이미지(지도/구성도)라 그 경계가
        곧 콘텐츠 전환점이다 */
-    .hcard[data-tab="수정 필요"]>.hright,
+    .hcard[data-tab="해외 거점"]>.hright,
     .hcard[data-tab*="프로세스 맵"]>.hright{border-top:1px solid var(--border-g)}
 
     /* PLC·MES 그리드 박스 — 본문 카드가 다른 곳에서 쓰는
@@ -596,7 +609,7 @@
     .hcard[data-tab^="PLC"]>.hright,
     .hcard[data-tab^="MES"]>.hright{align-items:flex-end}
 
-    /* 지도 카드(현재 제목 "수정 필요") — 지도 위쪽이 가위로 자른 듯 잘렸던 원인: .gmap 은 원래
+    /* 지도 카드(해외 거점) — 지도 위쪽이 가위로 자른 듯 잘렸던 원인: .gmap 은 원래
        "폭만으로" 크기를 정하고 높이는 aspect-ratio(1000/387.78)가 스스로
        계산하게 만든 컴포넌트다(business-layout.css 주석 — 마커 %좌표가 이
        비율에 고정돼 있어, 높이를 직접 정하면 비율이 깨진다). height:100% 를
@@ -609,7 +622,7 @@
        계산해 잘림·마커 어긋남이 둘 다 없어진다. .hright 는 이미
        align-items/justify-content:center 라 남는 위아래 공간은 자동으로
        가운데 정렬된다 */
-    .hcard[data-tab="수정 필요"]>.hright{padding:32px}
+    .hcard[data-tab="해외 거점"]>.hright{padding:32px}
   }
 
   /* PLC·MES — 4개 기능을 2열×2행 아이콘+국문+줄글 그리드로(요청으로 4×1 에서 바꿨다.
@@ -843,7 +856,7 @@
     body{--stack-gap:20px}
     .hcard{background:none;border:0}
     .hcard>.hleft{margin-left:0;padding:40px 48px 0 0}
-    .hcard[data-tab="수정 필요"]>.hleft,
+    .hcard[data-tab="해외 거점"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft,
     .hcard[data-tab*="프로세스 맵"]>.hleft{padding:40px 0 24px}
@@ -881,7 +894,7 @@
        회색 판이 사라지기 전에는 [흰 글 면 | 회색 그림 면]의 경계에 선이 얹혀
        면을 갈랐지만, 두 면이 같은 바탕색이 된 지금은 선 하나만 덩그러니 남는다 */
     .hcard>.hright{background:none;border-left:0}
-    .hcard[data-tab="수정 필요"]>.hright,
+    .hcard[data-tab="해외 거점"]>.hright,
     .hcard[data-tab*="프로세스 맵"]>.hright{border-top:0}
 
     /* ⑥ 픽토그램 판(.pict) — 2열 2행 흰 판에서 1열 4행 목록으로.
@@ -938,6 +951,27 @@
            :not(:has(.pict)) 로 갈라 둔다 */
     .hcard>.hright{border-radius:4px}
     .hcard:not(:has(.pict))>.hright img{border-radius:4px}
+
+    /* ── 임시 이미지 영역 (2026-08-14 요청) ──────────────────────────────
+       공정 프로세스 맵 카드의 그림이 아직 확정 전 시안 캡처다. 상|하 카드라
+       ⑦ 의 테두리(:has(.pict) = 좌|우 카드)가 걸리지 않아 그림이 바탕 위에 그냥
+       놓여 있었는데, "여기까지가 손볼 자리"가 눈에 잡히도록 같은 1px 선으로
+       영역을 묶고 "*수정예정" 표시를 붙인다.
+       선은 다른 카드의 이미지 판과 같은 solid --border-g 다 — 점선(자리표시 관례,
+       .hph)이 아닌 이유는 이 칸이 빈 자리가 아니라 실제 그림이 든 칸이고,
+       "임시"라는 말은 아래 글자가 이미 하고 있기 때문이다.
+       ⚠ 위 "본문/비주얼 구분선 없애기"가 이 카드의 border-top 을 0 으로 두었다 —
+         특정도가 같으므로 이 규칙은 반드시 그보다 뒤에 있어야 윗변이 살아난다.
+         살아난 윗변은 이제 '두 면을 가르는 금'이 아니라 '상자의 윗변'으로 읽힌다 */
+    .hcard[data-tab*="프로세스 맵"]>.hright{border:1px solid var(--border-g)}
+    /* 표시 글자 — 확정 전을 뜻하는 것들과 같은 톤(--teritary). 본문(17px)보다
+       한 단 작게 잡아 그림의 캡션이 아니라 곁말로 읽히게 한다.
+       flex:none — .hright 가 세로 flex 라, 이걸 안 주면 위 img 의 flex:0 1 auto 와
+       함께 남는 높이를 두고 경쟁하다 한 줄짜리 글이 눌린다.
+       align-self:flex-start — 폭을 글자만큼만 차지하게 해서 왼쪽 위에 붙인다 */
+    .hcard[data-tab*="프로세스 맵"]>.hright .tbd-note{flex:none;align-self:flex-start;
+      font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;
+      letter-spacing:-.3px;color:var(--teritary)}
 
     /* ⑧ PLC·MES 그리드 — 칸 사이 간격을 없애 네 칸을 한 판으로 묶고, 좌우 여백도
        걷어 판의 좌우 끝이 제목 줄(4열)과 소분류 탭 오른쪽 끝(11열)에 맞게 한다.
@@ -1194,7 +1228,7 @@
     .hcard[data-tab*="프로세스 맵"]>.hright{padding:24px;gap:16px}
     .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
     .hcard[data-tab*="프로세스 맵"]>.hleft,
-    .hcard[data-tab="수정 필요"]>.hleft,
+    .hcard[data-tab="해외 거점"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft{padding:24px 0 12px}
   }
@@ -1270,15 +1304,26 @@
             <li>각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</li>
           </ul>
         </div>
-        <!-- 3096×651 초광각 구성도 — 잘라내면 순서(충방전기→디개싱·전해액→물류창고→에이징룸)가
-             끊기므로 cover 로 채우지 않고 통째로 담는다(.is-plate → object-fit:contain).
-             활성화 순서(.fsteps)는 원래 좌측 본문 아래에 있었는데, 우측 이미지 영역
-             안으로 옮긴다 — 구성도(설비 배치)와 순서(공정 단계)가 같은 "활성화 공정"을
+        <!-- 2026-08-14 : 시안 캡처 한 장(activation-process-map.png)으로 임시 교체.
+             ⚠ 이 캡처 안에 공정 순서 띠가 이미 그려져 있다 — 그래서 위에 있던
+               .fsteps 목록을 함께 주석으로 내렸다. 그대로 두면 순서 줄이 두 번
+               나오고, 게다가 두 줄의 내용이 서로 다르다 (여기 7단계 "초기 충전 …
+               최종 외관 검사" vs 캡처 6단계 "1차 충전 … 불량 선별").
+               어느 쪽이 맞는지는 확정 전이므로 지우지 않고 되살릴 수 있게 남긴다.
+             ⚠ 캡처는 시안 한 상태(01번만 켜진 화면)를 찍은 것이라 나머지 다섯 단계는
+               흐리게 나온다 — 확정 이미지가 오면 이 주석 덩어리째 되돌린다.
+
+             종전 구성 (되살릴 때 참고) — activation-line.png(3096×651 초광각 구성도).
+             잘라내면 순서(충방전기→디개싱·전해액→물류창고→에이징룸)가 끊기므로
+             cover 로 채우지 않고 통째로 담았다(.is-plate → object-fit:contain).
+             활성화 순서(.fsteps)는 원래 좌측 본문 아래에 있었는데 우측 이미지 영역
+             안으로 옮겼다 — 구성도(설비 배치)와 순서(공정 단계)가 같은 "활성화 공정"을
              설명하는 짝이라 한 영역에 묶어 보여준다. 순서를 이미지 위(먼저)로 —
              "무엇이 순서고 무엇이 그 결과물(설비 배치도)인지" 읽는 흐름상 순서가
              먼저 오는 편이 자연스럽다는 요청으로 마크업 순서를 바꿨다(.hright 는
              flex-direction:column 이라 DOM 순서 = 화면 순서) -->
         <div class="hright is-plate">
+          <!--
           <ol class="fsteps">
             <li><b>01</b><span>초기 충전</span></li>
             <li><b>02</b><span>노화</span></li>
@@ -1289,14 +1334,23 @@
             <li><b>07</b><span>최종 외관 검사</span></li>
           </ol>
           <img src="../assets/activation-line.png" alt="이차전지 활성화 전공정 라인 구성도 — 충방전기 구역, 디개싱·전해액 설비, 물류 자동창고, 에이징 룸" loading="lazy" />
+          -->
+          <p class="tbd-note">*수정예정</p>
+          <img src="../assets/activation-process-map.png" width="1118" height="508" loading="lazy"
+               alt="이차전지 활성화 공정 프로세스 맵 — 1차 충전 · 디개싱 공정 · 에이징 공정 · 충·방전 · 품질 검사 · 불량 선별 6단계와 전공정 라인 구성도" />
         </div>
       </article>
 
-      <!-- 제목 미확정 — 인덱스·카드 제목 모두 임시로 "수정 필요". 본문(해외 법인·
-           거점)과 지도는 그대로 두고 제목만 확정되면 두 곳을 같이 바꾼다 -->
-      <article class="hcard" data-tab="수정 필요">
+      <!-- 2026-08-14 : 임시 제목 "수정 필요"를 걷고 원래 문구를 되살린다. 끝에 붙은
+           (*수정 예정)은 아직 확정 전이라는 표시이므로 문구가 굳으면 그 괄호만 뗀다.
+           data-tab 은 제목이 아니라 "이 카드가 무엇에 대한 카드인가"로 둔다 — 왼쪽
+           인덱스에 서는 글이라 형제 카드(공정 프로세스 맵)와 길이가 비슷해야 하고,
+           <style> 의 선택자 아홉 줄이 이 값을 훅으로 쓰기 때문이다. 제목처럼 문구가
+           흔들리는 값을 훅으로 두면 한 글자 고칠 때마다 그 아홉 줄이 조용히 풀린다
+           (PLC/MES 가 약어만 남긴 것과 같은 이유) -->
+      <article class="hcard" data-tab="해외 거점">
         <div class="hleft">
-          <h3>수정 필요</h3>
+          <h3>고객사 해외 생산기지 지원을 위한 법인 운용 및 해외 거점 확보(*수정 예정)</h3>
           <div class="hlead">
             <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
             <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
@@ -1420,12 +1474,22 @@
         </div>
       </article>
 
-      <!-- 내용 미정 -->
+      <!-- 내용 미정 — 다른 카드와 같은 [좌: 제목·줄글·키워드 | 우: 비주얼] 골격만
+           세워 둔다. 자리표시 규칙은 business-layout.css 의 .hcard--tbd 블록 참고 -->
       <article class="hcard hcard--tbd" data-tab="Pack">
         <div class="hleft">
           <h3>Pack</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p class="tbd">텍스트 추가 예정</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
         </div>
+        <div class="hright"></div>
       </article>
 
     </div>
@@ -1621,8 +1685,17 @@
       <article class="hcard hcard--tbd" data-tab="에이프로 머티리얼즈">
         <div class="hleft">
           <h3>에이프로 머티리얼즈</h3>
-          <p class="tbd">내용 추가 예정</p>
+          <div class="hlead">
+            <p class="tbd">텍스트 추가 예정</p>
+          </div>
+          <ul class="pict">
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          </ul>
         </div>
+        <div class="hright"></div>
       </article>
 
     </div>

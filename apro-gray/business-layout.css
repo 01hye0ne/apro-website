@@ -677,13 +677,39 @@
   .hthumbs .th .nm{font-family:var(--suit);font-weight:700;font-size:12px;line-height:1.3;letter-spacing:-.24px;color:var(--g900);word-break:keep-all}
   .hthumbs .th .en{font-family:var(--rc);font-size:11px;letter-spacing:.04em;color:var(--teritary)}
 
-  /* 아직 내용이 없는 카드(.hcard--tbd) — 제목과 "내용 추가 예정" 한 줄만 있다.
-     v3.1 두 열 골격에서 오른쪽 비주얼 칸(.hright)을 아예 두지 않는 방식이라,
-     형제가 없는 .hleft 가 flex-grow 로 카드 폭을 그대로 다 쓴다 — 빈 회색 판이
-     남지 않는다. 자료가 들어오면 .hright 를 붙이고 이 클래스만 떼면 된다.
-     글자색은 자리표시(.hph)와 같은 --teritary — "아직 없다"는 표시끼리 톤을 맞춘다 */
+  /* 아직 내용이 없는 카드(.hcard--tbd) ────────────────────────────────────
+     처음에는 제목과 "내용 추가 예정" 한 줄뿐이었고, 오른쪽 비주얼 칸(.hright)을
+     아예 두지 않아 형제 없는 .hleft 가 카드 폭을 다 쓰게 두었다(빈 회색 판을 안
+     남기려던 것).
+     2026-08-14 부터는 반대로 간다 — 내용이 든 카드와 똑같은
+     [좌: 제목 · 줄글 · 키워드 | 우: 비주얼] 골격을 미리 세우고 그 안을 자리표시로
+     채운다. 자리가 먼저 보여야 어떤 글과 그림이 얼마나 필요한지 읽히고, 자료가
+     들어올 때는 문구만 갈아 끼우면 되어 마크업을 다시 짤 일이 없다.
+
+     자리표시 넷 — 줄글(.tbd) · 키워드 넉 장(.k) · 아이콘 넉 장(빈 .ic) ·
+     비주얼(빈 .hright). 글자와 선은 전부 --teritary / 점선으로, 확정된 내용과
+     한눈에 갈린다(.hph 자리표시와 같은 톤).
+     자료가 들어오면 : .tbd 문구 → 실제 줄글, "키워드 N" → 실제 키워드, 빈 .ic →
+     인라인 SVG, 빈 .hright → <img>. 마지막 한 칸까지 채우고 나서 이 클래스를 뗀다.
+
+     한 칸씩 채워도 된다 — 줄글·아이콘·비주얼 규칙은 자리표시 자신(.tbd / :empty)을
+     짚으므로, 채운 칸은 클래스가 남아 있어도 알아서 제 색을 낸다. 실제로 EV 제어기
+     카드(business-ai.html)가 줄글·사진만 든 채 이 클래스를 달고 있다.
+     ⚠ 키워드만 예외다 — .k 를 통째로 흐리므로 넉 장이 함께 자리표시일 때만 맞는다.
+       일부만 채울 일이 생기면 그때 클래스를 떼고 남은 칸을 지운다.
+
+     ⚠ 키워드·아이콘 규칙에 .hcard 를 한 번 더 붙여 클래스를 다섯으로 만든 이유 —
+       각 페이지 <style> 의 v3.1 블록이 .hcard .hleft .pict .k / .ic (클래스 넷)로
+       색과 배경을 잡는데, 그 <style> 이 이 파일보다 뒤에 오므로 넷끼리는 진다 */
   .hcard--tbd .tbd{font-family:var(--pre);font-weight:400;font-size:17px;
     line-height:var(--body-lh);letter-spacing:-.34px;color:var(--teritary)}
+  .hcard.hcard--tbd .hleft .pict .k{color:var(--teritary)}
+  /* 아이콘도 미정 — 빈 <span class="ic"> 를 점선 상자로 세운다. 크기는 손대지
+     않는다: 넓은 화면 32px / 좁은 화면 44px 을 그대로 물려받아 실제 아이콘이
+     들어올 자리를 그 크기 그대로 보여준다.
+     ⚠ :empty 는 공백 한 칸에도 풀린다 — 마크업에서 여는 태그와 닫는 태그를
+       반드시 붙여 쓴다 */
+  .hcard.hcard--tbd .hleft .pict .ic:empty{border:1px dashed var(--border-g)}
 
   /* ── 해외 거점 지도 카드 (.hcard--map) ────────────────────────────────
      assets/world-map.svg — Natural Earth 110m(퍼블릭 도메인)에서 생성한 국경선 지도.

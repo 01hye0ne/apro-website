@@ -788,6 +788,24 @@
   .navover.open .ov-row:nth-child(4){transition-delay:.21s}
   .navover.open .ov-row:nth-child(5){transition-delay:.26s}
   @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
+  /* 맨 위로 가기 — 세부 페이지(business-*.html)와 같은 버튼을 그대로 옮겼다.
+     z-index 는 전체메뉴 오버레이(300)보다 낮게 두어 메뉴를 연 동안에는 가린다. */
+  .totop{position:fixed;right:32px;bottom:32px;z-index:150;width:52px;height:52px;
+    border-radius:50%;background:var(--g950);border:none;cursor:pointer;
+    display:grid;place-content:center;color:#fff;
+    box-shadow:0 12px 32px rgba(14,22,30,.22);
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .3s var(--ease),transform .3s var(--ease),
+      visibility 0s linear .3s,background .2s var(--ease)}
+  .totop.is-visible{opacity:1;visibility:visible;transform:none;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),background .2s var(--ease)}
+  .totop:hover{background:var(--brand)}
+  .totop svg{width:22px;height:22px}
+  @media(max-width:900px){
+    .totop{right:20px;bottom:20px;width:44px;height:44px}
+    .totop svg{width:18px;height:18px}
+  }
 </style>
 <script>document.documentElement.classList.add('js-anim');</script>
 </head>
@@ -1679,6 +1697,28 @@
   menus.addEventListener('focusin',open);
   group.addEventListener('mouseleave',close);
   group.addEventListener('focusout',function(e){ if(!group.contains(e.relatedTarget)) close(); });
+})();
+</script>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+<script>
+(function(){
+  var btn = document.getElementById('totop');
+  if (!btn) return;
+  var onScroll = function(){
+    btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 })();
 </script>
 </body>
