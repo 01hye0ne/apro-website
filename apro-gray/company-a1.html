@@ -3459,6 +3459,11 @@
     cancelAnimationFrame(raf);moving=true;
     (function step(){
       raf=requestAnimationFrame(function(now){
+        /* 이음(⑫)이 그새 자리를 가져갔으면 손을 뗀다 — paint() 는 이미 이렇게 하는데
+           scrollTo 는 그 앞에 있어 못 막았다. 손을 안 떼면 이 걸음의 마지막 프레임이
+           ⑫ 가 막 옮겨 놓은 자리를 도로 AAA 로 되돌려 버린다(빠르게 두 번 스크롤할 때
+           재현됨 — 2026-08-15) */
+        if(document.documentElement.hasAttribute('data-morph')){moving=false;return;}
         if(!t0)t0=now;
         var k=Math.min(1,(now-t0)/DUR),e=ease(k);
         p=p0+(to-p0)*e;
@@ -3555,6 +3560,7 @@
   var body=document.body,root=document.documentElement;
   if(!body.classList.contains('v-a1'))return;
   var st=document.querySelector('.story'),
+      about=document.getElementById('about'),
       ahead=document.querySelector('.story-aaa .st-head'),
       rows=document.querySelector('.st-rows'),
       stage=document.querySelector('.cabt-stage'),
@@ -3564,7 +3570,7 @@
       sun=sky&&sky.querySelector('.st-sun'),
       hq=sky&&sky.querySelector('.st-hq'),
       wash=sky&&sky.querySelector('.st-wash');
-  if(!st||!ahead||!rows||!stage||!photo||!sky||!sheet||!sun||!hq||!wash)return;
+  if(!st||!about||!ahead||!rows||!stage||!photo||!sky||!sheet||!sun||!hq||!wash)return;
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   /* 하늘이 뜨는 화면에서만 든다 — 좁은 화면은 배너 갈래라 이을 무대가 아예 없다 */
   var wide=window.matchMedia('(min-width:901px)');
@@ -3687,6 +3693,7 @@
 
   function down(){
     busy=true;
+    about.dispatchEvent(new CustomEvent('cstep-all'));   /* About 을 다 놓인 모습으로 (데려갈 때 늦게 켜지는 것을 막는다) */
     var s0=parseFloat(sheet.style.height)||0,w0=parseFloat(wash.style.opacity)||0;
     var A={sh:s0,bot:0,w:w0,c:camSky()};   /* 하늘에 선 지금 — 자리를 옮기기 전에 잰다 */
     layer=build(ahead.getBoundingClientRect().top);
@@ -3701,13 +3708,18 @@
     body.classList.add('amorph-go','amorph-in');
     play(A,{sh:b.top,bot:b.bot,w:0,c:camBand()},true,function(){
       /* 넘겨받을 진짜 사진이 등장 연출을 아직 안 지났을 수 있다 — 지나간 것으로 해 둔다.
-         안 그러면 넘기는 프레임에 사진이 한 번 비었다가 뒤늦게 떠오른다 */
+         ⚠ is-in 만 달아서는 안 된다 — amorph-on 이 걷히는 바로 이 프레임에 [.crv 의
+         숨은 값 → .crv.is-in 의 보인 값]으로 규칙이 바뀌는 것 자체가 새 전환(.7s)을
+         만든다. 그래서 사진이 한 번 비었다가 뒤늦게 떠오른다(2026-08-15 확인). 이 한
+         프레임만 트랜지션을 꺼서 값만 넘기고, 다음 프레임에 도로 풀어 준다 */
+      photo.style.transition='none';
       photo.classList.add('is-in');
       drop();giveBack();
       body.classList.remove('amorph-on','amorph-go','amorph-in');
       root.removeAttribute('data-morph');
       window.dispatchEvent(new Event('scroll'));   /* 구동기가 제 값을 되찾는다 */
       busy=false;
+      requestAnimationFrame(function(){photo.style.transition='';});
     });
   }
 
