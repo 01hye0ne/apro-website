@@ -567,7 +567,12 @@
      남으면 사진과 푸터 사이에 흰 줄이 하나 생긴다. 걷은 만큼은 띠가 가져간다(1fr).
      ⚠ 좁거나 낮은 화면에서는 되살아난다 — 그 조건의 .cabt-stage 규칙(위 ⑧ 첫머리)이
        padding 을 통째로 다시 적기 때문이고, 거기서는 사진이 띠가 아니라 한 덩이라 맞다 */
-  .v-a1 .cabt-stage{align-items:stretch;--pad-b:0px}
+  /* --title-anchor 는 하늘 구동기가 매긴다(문서 끝, layout()) — AAA 제목이 이음(⑫)에서
+     서는 그 자리(바 밑변에서 T 만큼)와 같은 값이다. 이 장을 목차 탭으로 바로 불러도,
+     이음을 타고 들어와도 제목이 같은 자리에 앉는다. 구동기가 못 돌면(좁은 화면·모션
+     줄이기) 값이 안 매겨지므로 예전 값(cnav-clear + clamp)으로 그냥 물러난다 */
+  .v-a1 .cabt-stage{align-items:stretch;--pad-b:0px;
+    --pad-t:var(--title-anchor,calc(var(--cnav-clear) + clamp(16px,2.5vh,32px)))}
 
   /* ── About 머리글을 AAA 와 같은 두 칸으로 (2026-08-14) ─────────────────────
      AAA→About 을 자리만 두고 내용만 바꾸려면 두 장의 뼈대가 같아야 한다. 짝은 이렇다 :
@@ -591,58 +596,45 @@
     line-height:1.2;letter-spacing:-.02em}
   .v-a1 .ccols>.ctext{grid-row:1;grid-column:2;max-width:none;align-self:baseline}
 
-  /* ── 숫자 표도 AAA 의 판과 같은 흰 유리로 (2026-08-14) ────────────────────
+  /* ── 숫자 표도 AAA 의 키워드 판과 같은 스타일로 (2026-08-14, 2026-08-15 칸도
+     AAA 처럼 갈라 세운다) ──────────────────────────────────────────────
      사진이 표 뒤로 들어오면서 불투명한 흰 판이 사진을 네모나게 도려낸 것처럼 보였다.
      장치는 AAA 의 판(⑨-b html[data-sky] .st-out)과 같은 것을 쓴다 :
        135° 흰 그라데이션 · 흰 실선 한 겹 · 낮게 깔린 그림자
        그리고 판이 색을 버린 만큼 글자를 [검정 + 투명도] 로 바꾼다
+     한 걸음 더 나아가 칸도 AAA 처럼 서로 떨어진 낱장으로 세운다 — 1px 이음매 대신
+     4px 틈을 두고, 칸마다 제 그라데이션·테두리·그림자를 따로 갖는다(AAA 의 .st-out
+     이 줄마다 따로 그런 것과 같다). 표 전체가 한 장인 척 이어 붙이던 눈속임
+     (background-position 을 칸마다 어긋나게 자르던 것)은 이제 필요 없다 — 칸이
+     정말로 떨어져 있으니 저마다의 판이 저마다의 자리에 그냥 서면 된다.
      사진이 표 뒤에 있을 때만이다 — 900px 아래에서는 사진이 표를 비켜 따로 서므로
-     (아래 media) 흰 종이 위의 표로 돌아간다. 그래서 이 블록 전체가 min-width 안에 있다.
+     (아래 media) 흰 종이 위의 표로 돌아간다. 그래서 유리 부분만 min-width 안에 있다.
 
      ⚠ 유리의 두께만은 AAA 와 다르다. 그 값(.62→.30)을 그대로 가져오면 이 사진 위에서
        숫자가 2.15:1 까지 내려간다 — AAA 의 판은 워시(.45)로 한 번 눌러 고르게 만든 하늘
        위에 앉지만, 이 사진은 눌린 적이 없는 데다 오른쪽 아래에 어두운 사옥이 있다.
        .82→.62 로 두껍게 잡으면 가장 나쁜 칸(오른쪽 아래, 사옥)에서 숫자 6.16:1 ·
        라벨 4.25:1 이라 AAA 가 적어 둔 바닥선(본문 6.3 · 이름 4.5)과 같은 자리에 선다.
-       가장 얇은 구석도 사진을 38% 남긴다.
+       가장 얇은 구석도 사진을 38% 남긴다. AAA 처럼 줄마다 얇아지게 하지 않는 이유도
+       이 두께다 — 이미 하한에 붙어 있어 더 얇은 칸을 두면 그 칸만 기준 밑으로 떨어진다.
      ⚠ 라벨 색은 반드시 같이 바꾼다. 지금 색(--teritary #96a3b3)은 이 유리 위에서
-       1.02:1 이다 — 글자가 사라진다. 흰 종이 위에서만 서던 색이다.
-     ⚠ 칸 사이 선과 바깥 테두리는 색만 갈아 끼운다. 선을 그리는 방식(1px 틈 + 표의
-       바탕색, 위 ②)은 그대로라 등장 연출(--border-g 로 켜지는 전환)도 손대지 않는다 */
+       1.02:1 이다 — 글자가 사라진다. 흰 종이 위에서만 서던 색이다. */
+  .v-a1 .cstats{gap:4px}
+  /* 하늘이 없을 때(좁은 화면 · 모션 최소화 · 스크립트 정지)의 낱장 — AAA 의 같은
+     경우(html:not([data-sky]) .st-out)와 같은 색이다 */
+  .v-a1 .cstat{background:#eaeff5}
   @media(min-width:901px){
-    .v-a1 .cabout[data-step="2"] .cstats{
-      background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.5);
-      box-shadow:0 2px 20px rgba(18,40,68,.05)}
-    /* ⚠ 그라데이션은 칸마다가 아니라 표 전체에 한 번 흐른다. 칸마다 걸면 경계마다
-       짙기가 처음으로 되돌아가 한 장이 여덟 조각으로 갈라진다. 그래서 바탕 상자를
-       표 크기(칸의 4×2 배)로 키우고, 칸은 저마다 제 몫의 자리만 본다 — 이어 붙이면
-       한 장이 된다. 1px 틈만큼의 어긋남은 눈에 잡히지 않는다 */
-    .v-a1 .cstat{background-color:transparent;
-      background-image:linear-gradient(135deg,
-        rgba(255,255,255,.82),rgba(255,255,255,.62));
-      background-size:400% 200%}
-    .v-a1 .cstat:nth-child(4n+1){background-position-x:0%}
-    .v-a1 .cstat:nth-child(4n+2){background-position-x:33.333%}
-    .v-a1 .cstat:nth-child(4n+3){background-position-x:66.667%}
-    .v-a1 .cstat:nth-child(4n){background-position-x:100%}
-    .v-a1 .cstat:nth-child(-n+4){background-position-y:0%}
-    .v-a1 .cstat:nth-child(n+5){background-position-y:100%}
+    .v-a1 .cabout[data-step="2"] .cstats{background:none;border-color:transparent}
+    .v-a1 .cabout[data-step="2"] .cstat{
+      background-color:transparent;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.62));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 2px 20px rgba(18,40,68,.05)}
     /* 글자 — 판이 색을 버렸으니 회색도 같이 버린다. 위계는 그대로 셋이다 :
        숫자(--g900) > 항목 이름(.62) > 딸린 주(.5). 단위는 숫자에 붙은 글자라
        숫자 쪽에 가깝게 .62 로 둔다(원래 --sec 도 본문 계열이었다) */
-    .v-a1 .cstat .k{color:rgba(0,0,0,.62)}
-    .v-a1 .cstat .v .u{color:rgba(0,0,0,.62)}
-    .v-a1 .cstat .n{color:rgba(0,0,0,.5)}
-    /* 표가 두 칸으로 접히면 한 장의 크기도 2×4 가 된다 (위 ⑩ 의 1180px 과 같은 자리) */
-    @media(max-width:1180px){
-      .v-a1 .cstat{background-size:200% 400%}
-      .v-a1 .cstat:nth-child(odd){background-position-x:0%}
-      .v-a1 .cstat:nth-child(even){background-position-x:100%}
-      .v-a1 .cstat:nth-child(-n+2){background-position-y:0%}
-      .v-a1 .cstat:nth-child(n+3):nth-child(-n+4){background-position-y:33.333%}
-      .v-a1 .cstat:nth-child(n+5):nth-child(-n+6){background-position-y:66.667%}
-      .v-a1 .cstat:nth-child(n+7){background-position-y:100%}
-    }
+    .v-a1 .cabout[data-step="2"] .cstat .k{color:rgba(0,0,0,.62)}
+    .v-a1 .cabout[data-step="2"] .cstat .v .u{color:rgba(0,0,0,.62)}
+    .v-a1 .cabout[data-step="2"] .cstat .n{color:rgba(0,0,0,.5)}
   }
 
   @media(max-width:900px){
@@ -1794,10 +1786,11 @@
      ⚠ 탭 판 그리드(위 ③ 의 --sec-inset · .cnav 폭)를 고치면 이 수도 다시 풀어야 한다 */
   .st-rows{--st-panel:calc(53.3333% - 2.5px + var(--st-pad-x));
     display:grid;grid-template-columns:minmax(0,1fr) var(--st-panel);
-    /* 줄 사이는 2026-08-14 에 절반으로 좁혔다(4vh → 2vh). 판이 짙은 파랑이던 시절엔
-       셋이 서로 밀어내야 해서 넓은 사이가 필요했는데, 흰 유리가 되면서 판끼리 다투지
-       않는다 — 넓은 사이가 셋을 묶어 주는 대신 갈라 놓고 있었다 */
-    column-gap:clamp(18px,2.6vw,46px);row-gap:clamp(12px,2vh,28px);
+    /* 줄 사이는 2026-08-14 에 절반으로 좁혔다(4vh → 2vh) 뒤, 2026-08-15 에 4px 로 더
+       좁혔다. 판이 짙은 파랑이던 시절엔 셋이 서로 밀어내야 해서 넓은 사이가 필요했는데,
+       흰 유리가 되면서 판끼리 다투지 않는다 — 넓은 사이가 셋을 묶어 주는 대신
+       갈라 놓고 있었다 */
+    column-gap:clamp(18px,2.6vw,46px);row-gap:4px;
     /* 윗여백은 하늘 갈래에서 구동기가 --st-mt 로 덮어쓴다 — 그 값 안에 [흰 바닥 아래
        남은 흰 여백 + 하늘 띠의 윗여백] 이 함께 들어 있다(구동기의 layout 참고).
        여기 적힌 값은 하늘이 없을 때(좁은 화면 · 모션 최소화 · 스크립트 정지)의 몫이다 */
@@ -3340,6 +3333,10 @@
   function layout(){
     T=Math.round(clampv(56,VH*.11,132));      /* 바 밑변 → 제목 윗변 */
     Q=Math.round(clampv(24,VH*.036,44));      /* 본문 밑변 → 흰 바닥 끝 */
+    /* About 의 제목(⑫ 이 데려가는 자리)도 이 값을 그대로 쓴다 — 문서 끝 CSS(.v-a1
+       .cabt-stage --pad-t)가 이 값을 읽는다. 여기서 한 번만 매겨 두면 두 장의 제목이
+       늘 같은 자리에 선다(2026-08-15) */
+    document.documentElement.style.setProperty('--title-anchor',(bar()+T)+'px');
     var hh=ahead.getBoundingClientRect().height,rh=rows.getBoundingClientRect().height;
     var P=Math.max(28,(VH-bar()-T-hh-Q-rh)/2);
     rows.style.setProperty('--st-mt',Math.round(Q+P)+'px');
