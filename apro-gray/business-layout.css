@@ -85,7 +85,7 @@
   img{display:block;max-width:none}
   p{margin:0}
   a{text-decoration:none;color:inherit}
-  ::selection{background:var(--point-200);color:var(--point-950)}
+  ::selection{background:var(--brand);color:#fff}
 
   /* ===================== GNB (business-smart.html과 동일) ===================== */
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;--gutter:calc((100% - min(var(--maxw) - 48px, 100% - 48px)) / 2)}
