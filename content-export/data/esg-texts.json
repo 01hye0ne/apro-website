@@ -1,0 +1,1669 @@
+{
+  "KOR": {
+    "badge": "지속가능경영",
+    "tabs": {
+      "overview": "개요",
+      "environment": "환경/안전보건",
+      "social": "사회",
+      "governance": "거버넌스",
+      "report": "제보센터",
+      "board": "ESG 게시판"
+    },
+    "report_content": {
+      "banner_title": "종합 제보/신고 센터",
+      "banner_desc": "A-PRO는 윤리적이고 책임 있는 기업활동을 위해\n모든 임직원과 이해관계자를 대상으로 종합 신고채널을 운영하고 있습니다.",
+      "info_title": "신고 안내",
+      "info_desc": "본 채널을 통해 윤리, 인권/노동, 환경, 안전보건과 관련된 위반행위 또는 부당한 처우, 위험 요소 등을 내/외부 누구나 제보하실 수 있습니다.\n제보해 주신 내용은 철저히 보호되며, 제보자의 익명성 또한 보장됩니다.\n신속하고 공정하게 처리될 수 있도록 최선을 다하겠습니다.",
+      "items_title": "제보 사항",
+      "items": [
+        {
+          "title": "윤리",
+          "desc": "공금 횡령 및 금품 수수, 청탁, 업무 관련 부정 행위 등"
+        },
+        {
+          "title": "인권/노동",
+          "desc": "차별 및 괴롭힘, 강제노동, 인권 침해, 부당한 처우 등"
+        },
+        {
+          "title": "안전보건",
+          "desc": "산업재해, 위험 방치, 유해 환경 등"
+        },
+        {
+          "title": "환경",
+          "desc": "폐기물 무단처리, 오염 유발, 에너지 낭비 등"
+        },
+        {
+          "title": "기타",
+          "desc": "제도 개선 제안 등"
+        }
+      ],
+      "method_title": "제보 방법",
+      "methods": [
+        "온라인 제보 (아래 양식 작성 후 '제보하기' 클릭)",
+        "전화 : 031-689-3963",
+        "서신 : 경기도 안양시 동안구 부림로 170번길 41-14, 에이프로 제보센터 담당자 앞"
+      ],
+      "process_title": "처리 절차",
+      "process_desc": "신고 접수후 10일 이내에 처리 절차를 진행하며, 접수일로부터 90일 이내에 조치가 완료됩니다.",
+      "process_note": "단, 사안의 성격과 중대성에 따라서 추가 기간이 소요될 수 있습니다.",
+      "form_title": "제보 작성",
+      "form": {
+        "name": "성명 (선택)",
+        "name_placeholder": "익명 제보 시 비워두세요",
+        "password": "비밀번호 (필수)",
+        "password_placeholder": "결과 확인용 비밀번호를 입력하세요",
+        "subject": "제목",
+        "subject_placeholder": "제목을 입력하세요",
+        "content": "내용",
+        "file": "파일첨부",
+        "file_limit": "최대 20MB",
+        "file_placeholder": "클릭하거나 파일을 이곳으로 드래그하세요.",
+        "captcha": "자동등록방지",
+        "captcha_placeholder": "자동등록방지 숫자를 입력하세요",
+        "privacy_agree": "개인정보 수집 및 이용에 동의합니다.",
+        "privacy_detail": "수집항목: 성명(선택), 비밀번호, 제목, 내용, 첨부파일 / 보유기간: 처리 완료 후 3년",
+        "submit": "제보하기"
+      },
+      "validation": {
+        "password": "비밀번호를 입력해주세요.",
+        "subject": "제목을 입력해주세요.",
+        "content": "내용을 입력해주세요.",
+        "captcha": "자동등록방지 문자를 입력해주세요.",
+        "privacy": "개인정보 수집 및 이용에 동의해주세요.",
+        "success": "메일 발송이 정상적으로 처리되었습니다. 귀하의 익명성은 철저히 보장되며, 신속하게 조치를 진행하겠습니다.",
+        "error_captcha": "자동등록방지 코드가 일치하지 않습니다."
+      }
+    },
+    "vision_title": "ESG VISION",
+    "vision_desc1": "첨단 기술과 투명한 책임경영을 기반으로,",
+    "vision_desc2": "지속가능한 에너지 미래를 함께 만들어가는 글로벌 기업",
+    "strategic_tasks": "ESG STRATEGIC TASKS",
+    "env": {
+      "title": "에너지 효율 극대화",
+      "desc": "첨단 기술을 통해 에너지 낭비를 최소화하고 탄소배출을 줄이는 가치",
+      "tasks": [
+        "환경경영체계 고도화",
+        "기후변화 대응 기반 마련",
+        "에너지 효율 중심 기술 개발",
+        "지속가능한 생산환경 조성"
+      ],
+      "main_title": "Green Future with Eco-Friendly Technology",
+      "main_desc": "에이프로는 기후변화 대응과 환경보호를 기업의 핵심 가치로 삼고 있습니다. 혁신적인 전력 변환 기술을 통해 에너지 효율을 극대화하고, 지속가능한 지구를 위한 친환경 경영을 실천합니다.",
+      "system_title": "환경경영시스템",
+      "system_desc": "ISO 14001 인증을 기반으로 글로벌 표준에 부합하는 환경경영체계를 구축하였습니다. PDCA(Plan-Do-Check-Act) 사이클을 통해 지속적인 개선 활동을 수행합니다.",
+      "system_items": [
+        "ISO 14001 인증 획득 및 유지",
+        "환경 법규 및 규제 준수"
+      ],
+      "ghg_title": "온실가스 감축",
+      "ghg_desc": "2050 탄소중립 달성을 목표로 온실가스 배출량을 체계적으로 관리합니다. 고효율 설비 도입과 공정 개선을 통해 탄소 배출을 최소화하고 있습니다.",
+      "ghg_items": [
+        "Scope 1, 2 배출량 모니터링",
+        "재생에너지 사용 확대"
+      ],
+      "resource_title": "자원 순환",
+      "resource_desc": "폐기물 발생을 억제하고 재활용률을 높여 순환 경제 실현에 기여합니다. 수자원 관리와 유해화학물질 관리 프로세스를 강화하고 있습니다.",
+      "resource_items": [
+        "폐기물 재활용률 제고",
+        "용수 사용량 절감 활동"
+      ],
+      "policy_title": "환경경영방침",
+      "policy_desc": "에이프로는 환경보전을 기업경영의 주요 요소로 인식하고, 제품의 개발, 생산, 폐기에 이르는 전 과정에서 환경영향을 최소화하기 위해 노력합니다. 모든 임직원은 환경방침을 숙지하고 이를 실천합니다.",
+      "toxic_title": "유해물질 관리",
+      "toxic_desc": "RoHS, REACH 등 국제 환경 규제를 준수하며, 제품 내 유해물질 사용을 엄격히 제한합니다. 협력사와의 공급망 관리 시스템을 통해 유해물질 미사용을 보증합니다.",
+      "safety_title": "안전보건 경영",
+      "safety_desc": "에이프로는 이차전지 장비 산업의 선도 기업으로서, 안전보건과 행복을 절대적 가치로 추구하고 있습니다.",
+      "safety_policy_title": "안전보건 방침",
+      "safety_items": [
+        "산업안전 법규 엄격 준수 및 위험 사전 예방",
+        "전 구성원의 자발적 교육과 실천으로 안전의식 함양",
+        "안전/보건 계획과 매뉴얼 준수로 산업재해 예방",
+        "충분한 인력과 예산 편성으로 최상의 안전보건 상태 유지",
+        "협력사와의 소통 및 동반 성장을 위한 ESG 정책 실천"
+      ],
+      "policy_btn": "A-PRO 환경 방침"
+    },
+    "social": {
+      "title": "상생과 안전 중심",
+      "desc": "임직원, 협력사, 고객 모두의 안전과 권리 보호, 지역사회 상생 도모",
+      "tasks": [
+        "인권 보호 및 노동 권리 존중",
+        "지속가능한 협력체계 구축",
+        "고객 중심의 서비스 실현",
+        "다양성, 포용성 기반 조직문화"
+      ],
+      "supply_title": "지속가능한 공급망 관리",
+      "supply_desc": "협력사와의 상생과 동반 성장을 위해 행동규범을 제안하고, 원자재 조달 과정에서의 인권, 윤리, 환경 이슈를 종합적으로 관리합니다.",
+      "supply_items": [
+        "협력사 행동규범 제정 및 운영",
+        "공급망 리스크 관리 강화",
+        "동반성장 프로그램 운영"
+      ],
+      "supplier_btn": "A-PRO 협력사 행동강령 보기",
+      "security_title": "정보보안",
+      "security_desc": "에이프로는 급변하는 디지털 환경 속에서 고객사와 임직원의 소중한 정보를 보호하는 것을 최우선 과제로 삼고 있습니다. 국제 표준에 부합하는 철저한 정보보안 관리 체계를 구축하여 운영하고 있으며, 회사의 핵심 자산인 지식재산권을 체계적으로 보호하고 관리함으로써 지속 가능한 성장의 토대를 마련하고 있습니다.",
+      "security_items": [
+        "개인정보 보호정책 시행",
+        "지식재산권 보호 및 관리"
+      ],
+      "contrib_title": "사회공헌 활동",
+      "contrib_desc": "에이프로는 지역사회와의 동반 성장을 목표로, 소외계층을 위한 실질적인 지원과 봉사활동을 지속적으로 확대하고 있습니다. 나눔과 상생의 가치를 기업 문화의 핵심으로 삼아, 임직원이 함께 참여하는 다양한 사회공헌 프로그램을 통해 따뜻한 사회를 만들어가는 데 앞장서겠습니다.",
+      "contrib_items": [
+        "'사랑의 쌀' 기부 (매년 햅쌀 100포대)",
+        "'사랑의 열매' 성금 후원"
+      ],
+      "human_title": "인권경영",
+      "human_desc": "에이프로는 세계인권선언, 유엔 기업과 인권 이행지침 등 국제 기준을 준수하며, 모든 사업장에서 최상의 인권존중 문화를 구축하고 있습니다.",
+      "human_items": [
+        "인권/노동 관련 국제기준 준수",
+        "자율준수 시스템 실행",
+        "인권존중 문화 확산"
+      ],
+      "policy_btn": "A-PRO 인권 정책 보기"
+    },
+    "gov": {
+      "title": "투명한 책임경영",
+      "desc": "공정거래 자율준수와 윤리적 의사결정 기반의 신뢰받는 지배구조 확립",
+      "tasks": [
+        "윤리경영 및 준법경영 내재화",
+        "공정거래 자율준수 문화 장착",
+        "투명한 의사결정 체계 확립",
+        "신뢰 기반 이해관계자 소통"
+      ],
+      "board_title": "이사회",
+      "board_desc": "에이프로는 전문성을 갖춘 독립적인 이사회를 운영하고 있으며, 모든 이해관계자들의 권익을 보호하기 위하여 최선을 다하고 있습니다.",
+      "member_inside": "사내이사",
+      "member_outside": "사외이사",
+      "member_lim": {
+        "name": "임종현",
+        "items": [
+          "성균관대학교 MBA 석사",
+          "호서대학교 전자공학 박사",
+          "(現) ㈜에이프로 대표이사 회장"
+        ]
+      },
+      "member_lim_jd": {
+        "name": "임종덕",
+        "items": [
+          "연성대학교 전자공학 학사",
+          "(現) ㈜에이프로 부사장"
+        ]
+      },
+      "member_hong": {
+        "name": "홍성수",
+        "items": [
+          "한국과학기술원 전기, 전자공학 박사",
+          "(前) ㈜현대전자 정보통신연구소 책임연구원",
+          "(前) 미국 VPI&SU 방문연구원",
+          "(前) ㈜삼성전기 파워사업팀 CTO(상무이사)",
+          "(現) 국민대학교 전자공학과 교수",
+          "(現) ㈜에이프로 사외이사"
+        ]
+      },
+      "ethics_title": "윤리경영",
+      "ethics_desc": "에이프로는 공정하고 투명한 윤리경영 체계를 확립하고 있으며, 고도화된 윤리적 가치를 추구하기 위하여 윤리헌장을 제정하고 모든 구성원이 적극 실천하고 있습니다.",
+      "fairness_title": "공정성",
+      "fairness_desc": "모든 업무 수행에 있어 공정성을 최우선 가치로 삼습니다.",
+      "transparency_title": "투명성",
+      "transparency_desc": "의사결정 과정과 결과를 투명하게 공개합니다.",
+      "practice_title": "실천",
+      "practice_desc": "윤리헌장을 제정하고 전 구성원이 이를 실천합니다.",
+      "compliance_title": "부패방지 및 준법점검 프로그램",
+      "compliance_desc": "에이프로는 부패방지 및 준법점검 프로그램을 실시함으로써 국내외 모든 사업장에서 전 부문을 대상으로 불공정거래행위, 법 위반 여부 등을 자율적으로 점검하고 있으며, 그 결과를 수시로 이사회에 보고하고 개선하도록 제도화하고 있습니다.",
+      "steps": {
+        "plan": {
+          "title": "Plan (계획)",
+          "items": [
+            "행동 규범 수립",
+            "시스템 기획 및 개발"
+          ]
+        },
+        "do": {
+          "title": "Do (실행)",
+          "items": [
+            "임직원 교육/가이드라인",
+            "상시 모니터링"
+          ]
+        },
+        "check": {
+          "title": "Check (평가)",
+          "items": [
+            "이사회 보고",
+            "결과 분석 및 개선안 도출"
+          ]
+        },
+        "act": {
+          "title": "Act (개선)",
+          "items": [
+            "시정조치",
+            "규범 및 시스템 재정립"
+          ]
+        }
+      },
+      "guidelines_title": "관련 규정 및 가이드라인",
+      "ethics_code": {
+        "title": "표준 윤리 강령",
+        "desc": "임직원이 준수해야 할 올바른 행동과 가치판단의 기준"
+      },
+      "ethics_charter": {
+        "title": "윤리헌장 및 실천규범",
+        "desc": "투명하고 공정한 경영 실천을 위한 우리의 다짐"
+      },
+      "fair_trade": {
+        "title": "공정거래 가이드 북",
+        "desc": "공정거래 자율준수를 위한 임직원 가이드라인"
+      }
+    },
+    "board": {
+      "title": "ESG 게시판",
+      "banner_title": "ESG 게시판",
+      "banner_desc": "에이프로는 투명하고 책임 있는 ESG 경영 실천을 위해\n다양한 활동과 성과를 이해관계자 여러분과 공유하고 있습니다.",
+      "search_placeholder": "검색어를 입력하세요",
+      "search_btn": "검색",
+      "table": {
+        "no": "번호",
+        "category": "구분",
+        "title": "제목",
+        "author": "작성자",
+        "date": "작성일",
+        "views": "조회수"
+      },
+      "back_btn": "목록",
+      "back_to_list": "목록으로 돌아가기",
+      "prev_post": "이전글",
+      "next_post": "다음글",
+      "admin": "관리자",
+      "sample_title": "2024년 지속가능경영보고서 발간 안내",
+      "empty": "등록된 게시글이 없습니다.",
+      "attachments": "첨부파일"
+    },
+    "esg_modals": {
+      "ethics_charter": {
+        "title": "A-PRO 윤리헌장 및 실천규범",
+        "charter_title": "에이프로 윤리헌장",
+        "charter_desc": "에이프로와 종속회사는 인류의 행복과 과학 기술의 발전에 기여하기 위하여 우수한 제품과 서비스를 공급하고 있습니다. 공정하고 투명한 업무수행 기준과 고도화된 윤리경영 체계를 확립하기 위해 이 헌장을 제정하고, 모든 임직원이 적극 실천할 것을 다짐합니다.",
+        "charter_items": [
+          "우리는 높은 윤리적 가치관을 바탕으로 모든 법령을 준수하고, 공정하고 청렴한 자세로 업무를 수행합니다.",
+          "우리는 고객과의 신뢰를 최우선으로 하며, 안전하고 우수한 제품과 최상의 서비스를 제공할 것을 약속합니다.",
+          "우리는 건전한 시장질서확립을 추구하고, 공정한 경쟁을 통해 모든 이해관계자와 공동 발전을 추구합니다.",
+          "우리는 미래 가치를 창조하는 기업으로서 사회적 역할과 책임을 성실하게 수행합니다."
+        ],
+        "practice_title": "실천 규범",
+        "chapters": [
+          {
+            "title": "제1장 개요",
+            "articles": [
+              {
+                "title": "제1조 (목적)",
+                "content": "에이프로는 공정하고 투명한 업무수행 기준과 고도화된 윤리경영 체계를 확립하기 위해 본 윤리실천규범을 제정한다. 모든 임직원은 높은 윤리적 가치관을 바탕으로 이를 적극 실천함으로써 인류의 행복과 과학 기술의 발전에 기여한다."
+              },
+              {
+                "title": "제2조 (적용범위)",
+                "content": "본 윤리실천규범은 에이프로의 국내외 생산 및 판매법인, 자회사 및 합작투자사의 모든 임직원에 적용하고, 지속적인 관리와 모니터링을 통해 부정부패 등 반윤리적 위험요소를 점검하고 개선한다. 더 나아가 협력사, 고객, 지역사회 등 이해관계자들에게도 적용될 수 있도록 노력한다."
+              }
+            ]
+          },
+          {
+            "title": "제2장 기본 원칙",
+            "articles": [
+              {
+                "title": "제3조 (고객에 대한 책임과 의무)",
+                "items": [
+                  "에이프로는 항상 고객의 입장에서 생각하고 행동하며, 고객이 만족하고 신뢰할 수 있는 최고의 제품과 서비스를 제공하기 위해 노력한다.",
+                  "에이프로는 고객에게 제품과 서비스 등에 관한 정확한 정보를 제공하고, 기만이나 과대 광고를 지양한다.",
+                  "에이프로는 고객의 이익과 안전 및 비밀 정보를 보호하고, 고객만족을 실현한다."
+                ]
+              },
+              {
+                "title": "제4조 (주주 및 투자자에 대한 의무)",
+                "items": [
+                  "에이프로는 건전하고 투명한 경영활동을 통해 기업 가치를 극대화하고, 주주 및 투자자의 권리를 보호하며, 장기적이고 안정적인 이익을 제공함으로써 신뢰를 받을 수 있도록 노력한다.",
+                  "에이프로는 경영에 관한 정보를 성실히 공개하여 주주 및 투자자와 상호 신뢰 관계를 구축하고, 주주 이익의 극대화를 위해 노력한다.",
+                  "에이프로는 모든 주주를 공정하게 대우하며, 경영의사결정에 있어서 주주의 이익이나 권리가 부당하게 침해되지 않도록 한다.",
+                  "에이프로는 공시되지 않은 회사의 내부 정보를 이용해 부당한 주식 거래 차익을 얻거나, 내부 정보를 외부에 유출하는 행위를 통해 주주의 이익을 침해하지 않는다."
+                ]
+              },
+              {
+                "title": "제5조 (협력회사에 대한 지침)",
+                "items": [
+                  "에이프로는 협력 업체와 거래에 있어서 시장경쟁 원칙을 준수하며, 공정하고 투명한 거래를 통해 상호 신뢰를 확보하여 장기적인 공존 발전을 추구한다.",
+                  "에이프로는 협력 업체와의 거래 시 공정거래법 등 관련 법령을 준수하고, 모든 거래를 상호 대등한 위치에서 공정하게 수행하며, 우월적 지위를 이용한 부당행위 하지 않는다.",
+                  "에이프로는 협력 업체의 지식재산권을 무단으로 활용하지 않으며, 지식재산권 관련 법령을 준수함으로써 제3자의 지식재산권을 보호하기 위한 주의를 기울인다.",
+                  "에이프로는 위조 부품의 사용, 구매, 유통을 엄격히 금지하며, 공급망 내 위조 부품 유입 방지를 위한 식별, 검증 및 대응 절차를 마련하여 운영한다."
+                ]
+              },
+              {
+                "title": "제6조 (공정경쟁과 법규준수)",
+                "items": [
+                  "에이프로는 기업활동에 있어서 제반 법규 및 사회윤리를 준수하며, 경쟁사와 시장에서 선의 의 경쟁을 통하여 상호발전을 추구한다.",
+                  "에이프로는 거래에 필요한 정보를 정당하게 입수하여 활용하고 외부에 부당하게 누설하지 않으며, 제3자의 영업 비밀이나 지적재산권을 침해하지 않는다.",
+                  "에이프로는 범죄수익 은닉 또는 조세탈루 행위 등 자금세탁과 관련된 일체의 행위를 하지 않는다."
+                ]
+              },
+              {
+                "title": "제7조 (국가와 사회에 대한 책임)",
+                "items": [
+                  "에이프로는 국가 및 지역사회의 일원으로서 보편적으로 통용되는 모든 법규를 준수하고, 윤리적 경영활동, 고용창출, 성실한 조세 부담 및 사회적 책임 이행을 통해 국가와 사회의 발전에 기여한다.",
+                  "에이프로는 기후변화 대응, 에너지 절감, 수자원 보호 등 환경보호와 관련된 국제기준, 관계법령 등을 엄격히 준수한다.",
+                  "에이프로는 사업장 내에서 어떠한 정치 활동도 하지 않으며, 임직원 개개인의 참정권과 정치적 견해가 존중받을 수 있도록 노력한다.",
+                  "에이프로는 기부 및 후원 활동에 임할 때 부정한 수익 목적이나 부당한 영향력을 행사를 엄격히 금지한다.",
+                  "에이프로는 전략물자, 기술, 제품의 수출입에 있어 국제 수출입 통제 및 국가 법령을 철저히 준수하며, 이에 위반되는 어떠한 행위도 하지 않는다."
+                ]
+              },
+              {
+                "title": "제8조 (임직원의 기본 윤리 및 직무수행)",
+                "items": [
+                  "모든 임직원은 정직과 성실을 근간으로 개인과 회사의 명예를 높이며, 깨끗하고 투명한 기업 이미지를 제고하기 위하여 노력한다.",
+                  "모든 임직원은 부패방지와 관련된 국내외 모든 법규를 준수하고, 부당거래나 뇌물수수 등을 포함한 어떠한 부패행위도 하지 않는다.",
+                  "모든 임직원은 서로를 존중하며, 불쾌한 언어와 행동, 성적 수치심을 유발하는 일체의 행위를 하지 않는다.",
+                  "모든 임직원은 직무 수행과 관련하여 회사와 이해가 상반되는 일체의 행위를 하지 않으며, 회사와 개인 또는 부서 간 이해가 상충할 경우 회사의 이익을 우선으로 생각한다.",
+                  "모든 임직원은 업적에 대하여 공정한 평가 기준에 따라 합리적으로 보상을 받는다.",
+                  "모든 임직원은 공사를 엄격히 구분하고 회사의 자산과 비용을 직무를 위한 목적으로만 사용한다.",
+                  "모든 임직원은 회사의 기밀 사항, 신규사업정보, 영업비밀, 고객 및 협력 업체의 정보 등을 제3자에게 유출하지 않는다.",
+                  "모든 임직원은 회사의 회계 및 재무기록을 정확하고 정직하게 작성해야 하며, 관련 법령과 회계기준을 철저히 준수함으로써 재정적 책임을 성실히 이행한다.",
+                  "모든 임직원은 윤리 위반 사실을 인지한 경우 내부신고제도에 따라 신고하고 투명하게 처리한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "제3장 경영시스템",
+            "articles": [
+              {
+                "title": "제9조 (추진조직 및 윤리경영 이행)",
+                "content": "에이프로는 최고의사결정권자 산하의 HR, 감사, 법무, 기획 등 유관 부서가 협업하여 윤리경영을 추진하며, 이사회가 윤리경영 이행 현황을 관리ㆍ감독한다. 유관부서는 경영활동으로 인해 발생하는 윤리적 위험요소를 최소화하기 위한 과제를 발굴하고 이행한다."
+              },
+              {
+                "title": "제10조 (고충 접수)",
+                "content": "에이프로는 사업 운영에서 발생하는 비위행위, 부정부패 등 관련 제보 및 윤리경영 위반 사항을 제보할 수 있도록 고충처리 제도를 운영한다. 고충접수 채널 홈페이지 및 이메일 등을 통해 위반행위를 제보할 수 있다. 접수된 내용은 절차에 따라 신속하게 조치하며, 고충처리 과정에서 제보내용 및 제보자의 신원은 철저히 비밀을 보장하여 제보자가 어떠한 불이익이나 차별을 겪지 않도록 보호한다.",
+                "channel_title": "[비위행위, 부정부패 및 고충 신고 채널]",
+                "channel_dept": "부서명: 경영기획팀, 인재문화팀, 상근감사",
+                "channel_btn": "제보센터 바로가기",
+                "process_title": "[고충처리 절차]",
+                "processes": [
+                  "사건 인지",
+                  "상담",
+                  "사건 조사",
+                  "조치 및 대응",
+                  "모니터링"
+                ],
+                "process_descs": [
+                  "사건 신고 접수",
+                  "신고인/피해자 상담",
+                  "조사 시행",
+                  "피해자 보호/징계",
+                  "지속 모니터링"
+                ]
+              },
+              {
+                "title": "제11조 (민감 거래 발생 시 처리 지침)",
+                "content": "임직원은 이유 여하를 불문하고 금품의 수수, 사회통념상 인정되는 범위를 벗어나는 선물 및 향응 등을 제공받거나 제공해서는 아니된다. 불가피하게 금품, 사회통념상 인정되는 범위를 벗어나는 선물 및 향응 등을 제공받는 등 본 행동강령 기준 민감한 거래 발생시 다음 별도 절차에 따라 승인 및 처리한다. 금품, 사회통념상 인정되는 범위를 벗어나는 선물 및 향응 등은 첨부에 따라 정한다.",
+                "items": [
+                  "금품 및 선물 등: 이를 수수한 자는 반환 가능 여부를 판단하여 반환 가능한 경우에는 지체 없이 반환 처리하고, 그 사실을 소속 부서장에게 보고하거나 및 윤리경영 담당부서의 장에게 신고한다. 반환불가한 경우에는 소속 부서장 보고 및 윤리경영 담당부서의 장에게 신고하며, 윤리경영 담당부서가 이를 신고 받은 때에는 관계법령, 회사의 규정 또는 조리에 따라 이를 적정하게 처리하여야 한다.",
+                  "향응, 편의 등: 소속 부서장 보고 및 윤리경영 담당부서의 장에게 신고하고, 업무관련성이 인정되는 경우에는 해당 향응, 편의 등에 소요된 가액을 회사경비로 지출 또는 반환처리 한다. 업무관련성이 없는 때에는 향응, 편의 등을 제공하거나 제공받은 자의 개인비용으로 지출 또는 반환 처리하고, 그 임직원은 이체확인증 등 증빙자료를 윤리경영 담당부서에 제출한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "[첨부] 거래 또는 직무 관련 상대방에게 제공받는 경우 사회통념상 인정되는 선물 및 향응",
+            "sections": [
+              {
+                "title": "① “금지되지 아니하는 선물/접대 등\"",
+                "desc": "다음 각 목의 어느 하나에 해당하는 금품 등을 제공하거나 제공받는 것을 말한다.",
+                "items": [
+                  "가. 사회 상식상 허용되는 빈도 범위 내에서 1회 1인당 3만원 미만의 음식물(식사, 다과, 주류, 음료, 그밖의 이에 준하는 것을 말한다)",
+                  "나. 설과 추석 명절 때의 10만원 이하의 물품",
+                  "다. 1회 1인당 5만원 이하의 제품",
+                  "라. 직무와 관련된 공식적인 행사에서 주최자가 참석자에게 통상적인 범위에서 일률적으로 제공하는 교통, 숙박, 음식물 등의 금품 등",
+                  "마. 불특정 다수인에게 배포하기 위한 기념품 또는 홍보용품 등이나 경연ㆍ추첨을 통하여 받는 금전 또는 경품 등",
+                  "바. 음료수 또는 회사 구내식당에서 평상시 임원과 직원에게 제공되는 식사",
+                  "사. 계약에 따른 여비/식대/숙박비 등 실비정산금액"
+                ]
+              },
+              {
+                "title": "② “금지되는 선물/접대 등”",
+                "desc": "제1호의 금지되지 아니하는 선물/접대 등을 제외한 다음 각 목의 어느 하나에 해당하는 금품 등을 제공하거나 제공받은 것을 말한다.",
+                "items": [
+                  "가. 금전, 유가증권, 부동산, 물품, 숙박권, 회원권, 상품권, 선불카드, 입장권, 할인권, 초대권, 관람권, 부동산 등의 사용권 등 일체의 재산적 이익 제공",
+                  "나. 채무 면제, 취업 제공, 이권부여 등 그 밖에 유형ㆍ무형의 경제적 이익 제공. 다만 사적거래(증여는 제외한다)로 인한 채무의 이행 등 정당한 권원에 따라 제공되는 금품 등은 제외한다.",
+                  "다. 업무와 관련성이 없이 회사, 관계회사, 경영진 또는 직무관련자의 비용 부담으로 지급되는 국내외 출장비",
+                  "라. 5만원을 초과하는 제품 등을 제공받거나 시가보다 현저하게 낮은 가격으로 구매하는 행위",
+                  "마. 1회 1인당 3만원을 초과하는 음식물(식사, 다과, 주류, 음료, 그 밖의 이에 준하는 것을 말한다)",
+                  "바. 설과 추석 명절 때 10만원을 초과하는 물품",
+                  "사. 골프(스크린골프를 포함한다) 등의 접대/향응",
+                  "아. 교통 및 숙박 등의 편의 제공"
+                ]
+              }
+            ]
+          }
+        ],
+        "addendum": "부 칙",
+        "addendum_content": "제1조(시행일) 이 정책은 제정일(2024. 12. 23)부터 시행한다."
+      },
+      "ethics_code": {
+        "title": "표준 윤리 강령",
+        "preamble": "우리 회사는 진취적이고 효율적인 경영활동으로 기업가치를 향상시켜 주주를 포함한 모든 이해관계자와 함계 성장/발전할 수 있도록 노력하며 상장회사로서 그 의무와 책임을 성실히 수행함으로써 신뢰받는 기업이 되도록 노력한다. 우리 회사는 국내외 모든 법규와 시장질서를 존중하고 공정거래질서 확립에 솔선수범하며, 사회적 가치와 관습을 존중하고 다양한 사회공헌활동을 통하여 국가와 사회발전에 이바지한다. 이에 우리 회사는 건전하고 공정한 기업문화를 창달할 수 있도록 윤리강령을 제정하고 적극 실천한다.",
+        "chapters": [
+          {
+            "title": "Ⅰ. 주주 및 투자자에 대한 자세",
+            "items": [
+              {
+                "title": "1. 주주의 권익 보호",
+                "list": [
+                  "회사는 주주의 권리를 보호하고 주주의 정당한 요구와 제안을 존중한다.",
+                  "회사는 경영정보를 성실히 공개하여 주주 및 투자자와 상호 신뢰관계를 구축하고 주주 이익의 극대화를 위해 노력한다."
+                ]
+              },
+              {
+                "title": "2. 평등한 대우",
+                "list": [
+                  "회사는 소액주주를 포함한 모든 주주를 공정하고 평등하게 대우한다.",
+                  "회사는 항상 전체주주의 이익을 고려하여 경영 의사를 결정함으로써 소액주주의 이익이나 권리가 부당하게 침해되지 않도록 한다."
+                ]
+              },
+              {
+                "title": "3. 적극적 정보제공",
+                "list": [
+                  "회사는 회계자료를 일반적으로 인정된 회계원칙에 따라 기록/관리하여 재무상태와 경영성과를 투명하게 제공한다.",
+                  "회사는 정확한 경영정보를 관련 법규에 따라 적시에 제공하여 투자자 등 정보이용자가 합리적인 투자판단을 할 수 있도록 한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅱ. 고객에 대한 자세",
+            "items": [
+              {
+                "title": "1. 고객존중",
+                "list": [
+                  "회사는 항상 고객의 입장에서 생각하고 행동하며, 고객이 만족하고 신뢰할 수 있는 최상의 제품과 서비스를 제공하여 고객만족 실현을 위해 노력한다.",
+                  "회사는 고객에게 제품 및 서비스 등에 관한 정확한 정보를 제공하고 과대선전이나 광고를 하지 않는다."
+                ]
+              },
+              {
+                "title": "2. 고객보호",
+                "list": [
+                  "회사는 고객의 이익과 안전, 개인정보를 보호하고 고객에게 부당한 행위를 하지 않는다.",
+                  "회사는 소비자보호에 관한 법률을 존중하고 준수한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅲ. 경쟁사와 협력회사에 대한 자세",
+            "items": [
+              {
+                "title": "1. 경쟁사와 공정한 경쟁",
+                "list": [
+                  "회사는 자유경쟁의 원칙에 따른 공정하고 자유로운 시장경제 질서를 존중하고, 경쟁사와 정당하게 경쟁한다.",
+                  "회사는 공정거래질서를 존중하고 공정거래 관련 법규를 준수한다."
+                ]
+              },
+              {
+                "title": "2. 협력회사와 공정한 거래",
+                "list": [
+                  "회사는 협력회사와 공정한 거래를 통해 상호신뢰와 협력관계를 구축함으로써 공동의 발전을 추구한다.",
+                  "회사는 우월적 지위를 이용하여 어떠한 형태의 부당한 행위를 강요하거나 영향력을 행사하지 않는다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅳ. 임직원에 대한 책임",
+            "items": [
+              {
+                "title": "1. 공정한 대우",
+                "list": [
+                  "회사는 임직원에 대하여 부당한 차별대우를 하지 않고 능력과 자질에 따라 공정한 기회를 부여한다."
+                ]
+              },
+              {
+                "title": "2. 근무환경 조성",
+                "list": [
+                  "회사는 임직원의 건강과 안전한 업무환경을 위해 노력한다.",
+                  "회사는 임직원 개개인의 자율과 창의를 존중하고 능력을 향상시킬 수 있는 기회를 공정하게 부여함으로써 인재육성과 함께 자아실현을 지원한다.",
+                  "회사는 임직원의 독립적 인격과 기본권을 존중하며 자유로운 제안과 건의를 할 수 있는 환경을 조성한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅴ. 사회에 대한 책임",
+            "items": [
+              {
+                "title": "1. 국내외 법규의 준수",
+                "list": [
+                  "회사는 국가 및 지역사회의 일원으로서 각종 법규를 준수할 뿐만 아니라 국제적으로 통용되는 제반 법규를 준수한다."
+                ]
+              },
+              {
+                "title": "2. 국가 경제 및 사회 발전에 기여",
+                "list": [
+                  "회사는 생산성의 향상, 고용의 창출 및 조세의 성실한 납부, 사회공헌 등을 통하여 국가경제와 사회발전에 기여한다."
+                ]
+              },
+              {
+                "title": "3. 환경보호",
+                "list": [
+                  "회사는 자연을 보호하고 깨끗한 환경의 보전을 위해 노력한다."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅵ. 임직원의 기본윤리",
+            "items": [
+              {
+                "title": "1. 건전한 기업문화 정착",
+                "list": [
+                  "임직원은 회사의 경영이념을 공유하고 회사가 추구하는 목표와 가치를 공감하여 회사업무 방침에 따라 각자에게 부여된 사명을 성실히 수행한다.",
+                  "임직원은 회사 내의 상하 및 동료간의 원활한 의사소통, 상호신뢰를 바탕으로 하는 조직 문화를 창출해 나간다.",
+                  "임직원은 주어진 직무를 최선을 다해 정당한 방법으로 수행하고 업무와 관련된 제반 관련법규와 회사의 규정을 준수한다."
+                ]
+              },
+              {
+                "title": "2. 이해상충행위 금지",
+                "list": [
+                  "임직원은 회사와 이해가 상충되는 어떠한 행위나 관계가 발생하지 않도록 노력하며 회사와 개인 또는 부서간의 이해가 상충될 경우에는 회사의 이익을 우선적으로 생각하고 행동한다."
+                ]
+              },
+              {
+                "title": "3. 내부정보이용 금지",
+                "list": [
+                  "임직원은 업무상 취득한 내부정보를 이용하여 주식을 거래하지 않는다.",
+                  "임직원은 주가에 영향을 미칠 수 있는 미공개 중요정보를 적법한 절차에 의하지 않고 제3자에게 제공하지 않는다."
+                ]
+              },
+              {
+                "title": "4. 회사재산 및 중요정보 보호",
+                "list": [
+                  "임직원은 회사의 물적 재산, 지적재산권, 영업비밀 등을 보호하여야 하며, 사적인 목적을 위해 사용하지 않는다.",
+                  "임직원은 직위를 이용한 사적 이익 추구, 회사에서 얻은 비공개 정보를 이용한 불공정 거래 행위를 하지 않는다.",
+                  "임직원은 회사의 이익에 영향을 미칠 수 있는 중요한 정보를 외부에 유출하지 않는다."
+                ]
+              },
+              {
+                "title": "5. 성희롱 방지",
+                "list": [
+                  "임직원은 성적 굴욕감을 유발하는 것으로 인정되는 육체적, 언어적, 시각적 언어나 행동을 포함하여 건전한 동료관계를 해치는 일체의 언어나 행동을 하지 않는다."
+                ]
+              },
+              {
+                "title": "6. 정치관여 금지",
+                "list": [
+                  "임직원은 사내에서 근무시간 중에는 정치활동을 하지 않으며 회사의 조직, 인력 및 재산을 정치적 목적으로 이용하지 않는다.",
+                  "임직원 개개인의 참정권과 정치적 견해는 존중되나 각자의 정치적 견해나 정치관여가 회사의 입장으로 오해받지 않도록 해야 한다."
+                ]
+              },
+              {
+                "title": "7. 금품 및 향응수수 금지",
+                "list": [
+                  "임직원은 거래처 등 이해관계자로부터 금전이나 선물 및 향응을 제공받지 않는다.",
+                  "임직원은 회사 업무와 관련하여 거래처 등 이해관계자에게 금품 또는 사회통념상 인정되는 범위를 벗어나는 선물 및 향응을 제공하지 않는다.",
+                  "임직원은 상호간에도 금품 또는 과도한 선물 및 향응을 수수하지 않는다."
+                ]
+              },
+              {
+                "title": "8. 윤리강령의 준수",
+                "list": [
+                  "모든 임직원은 윤리강령을 성실히 준수하여야 하며, 이를 위반한 경우 해당 행위에 대한 책임을 진다.",
+                  "임직원은 윤리강령에 반하는 행위를 강요받거나 부당한 행위를 인지하였을 경우에는 이를 윤리강령 담당부서에 신고하여야 한다.",
+                  "임직원은 윤리강령 위반행위 발생시 철저한 원인 규명과 교육을 통해 재발을 방지한다."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "fair_trade": {
+        "title": "공정거래 자율준수 선언문"
+      },
+      "human_rights": {
+        "title": "인권경영 선언문",
+        "chapters": [
+          {
+            "title": "제1장 일반원칙",
+            "articles": [
+              {
+                "title": "제1조 (목적)",
+                "content": "본 선언문은 에이프로(이하 '회사')가 기업 활동 전반에서 인간의 존엄과 가치를 존중하고 보호하기 위한 인권경영의 원칙과 기준을 정함을 목적으로 한다."
+              },
+              {
+                "title": "제2조 (적용범위)",
+                "content": "본 선언문은 회사의 모든 임직원에게 적용되며, 회사의 제품과 서비스를 제공하는 협력사 및 기타 이해관계자에게도 본 선언문을 존중하고 준수할 것을 권고한다."
+              },
+              {
+                "title": "제3조 (인권 존중의 의무)",
+                "content": "회사는 국가의 법령을 준수하며, 세계인권선언 등 국제적으로 통용되는 인권 기준을 지지하고 존중한다."
+              }
+            ]
+          },
+          {
+            "title": "제2장 기본 원칙",
+            "articles": [
+              {
+                "title": "제4조 (차별 금지)",
+                "content": "회사는 임직원의 채용, 승진, 교육, 임금, 복리후생 등 고용과 관련하여 인종, 종교, 장애, 성별, 학력, 나이, 지역, 정치적 견해 등을 이유로 차별하지 않는다."
+              },
+              {
+                "title": "제5조 (강제노동 및 아동노동 금지)",
+                "content": "회사는 정신적 또는 신체적 자유를 구속하는 강제노동을 금지하며, 각 국가의 법령에서 정한 최저 고용 연령을 준수하여 아동노동을 금지한다."
+              },
+              {
+                "title": "제6조 (결사 및 단체교섭의 자유 보장)",
+                "content": "회사는 임직원이 자유롭게 노동조합을 결성하거나 가입할 수 있는 권리를 존중하며, 단체교섭의 자유를 보장한다."
+              },
+              {
+                "title": "제7조 (산업안전 및 보건 보장)",
+                "content": "회사는 모든 임직원이 안전하고 쾌적한 환경에서 근무할 수 있도록 필요한 조치를 취하며, 작업장 내 안전사고 예방을 위해 최선을 다한다."
+              },
+              {
+                "title": "제8조 (책임 있는 공급망 관리)",
+                "content": "회사는 협력사가 인권경영을 실천할 수 있도록 지원하며, 공급망 내에서 인권 침해가 발생하지 않도록 노력한다."
+              },
+              {
+                "title": "제9조 (현지주민의 인권 보호)",
+                "content": "회사는 사업 활동이 이루어지는 지역사회의 인권을 존중하며, 지역주민의 생존권과 환경권을 보호하기 위해 노력한다."
+              },
+              {
+                "title": "제10조 (고객 인권 보호)",
+                "content": "회사는 고객의 생명, 건강, 재산을 보호하며, 수집된 개인정보가 유출되지 않도록 철저히 관리한다."
+              }
+            ]
+          },
+          {
+            "title": "제3장 인권경영 체계",
+            "articles": [
+              {
+                "title": "제11조 (인권경영 이행)",
+                "content": "회사는 인권경영을 효과적으로 이행하기 위해 담당 부서를 지정하고, 정기적인 인권 영향평가를 실시하여 인권 침해 요소를 사전에 파악하고 개선한다."
+              },
+              {
+                "title": "제12조 (구제절차)",
+                "content": "회사는 인권 침해 발생 시 신속하고 적절한 구제 조치를 제공하기 위해 고충처리 채널을 운영하며, 제보자의 비밀을 보장하고 불이익을 받지 않도록 보호한다.",
+                "channel_title": "[인권 침해 및 고충 신고 채널]",
+                "channel_dept": "부서명: 인재문화팀, 경영기획팀",
+                "process_title": "[고충처리 절차]",
+                "processes": [
+                  "사건 인지",
+                  "상담",
+                  "사건 조사",
+                  "조치 및 대응",
+                  "모니터링"
+                ],
+                "process_descs": [
+                  "사건 신고 접수",
+                  "신고인/피해자 상담",
+                  "조사 시행",
+                  "피해자 보호/징계",
+                  "지속 모니터링"
+                ]
+              }
+            ]
+          }
+        ],
+        "addendum": "부 칙",
+        "addendum_content": "본 선언문은 2024년 12월 23일부터 시행한다."
+      },
+      "supplier_code": {
+        "title": "협력사 행동 규범",
+        "sections": [
+          {
+            "title": "1. 개요",
+            "content": "에이프로는 모든 협력사가 비즈니스 운영에 있어 높은 윤리적 기준을 유지하고, 법규를 준수하며, 사회적 책임을 다할 것을 기대합니다. 본 행동규범은 에이프로와 거래하는 모든 협력사가 준수해야 할 최소한의 기준을 제시합니다."
+          },
+          {
+            "title": "2. 노동 및 인권",
+            "items": [
+              "자발적 근로: 모든 근로는 자발적이어야 하며, 강제노동, 노예노동 또는 인신매매를 금지합니다.",
+              "아동노동 금지: 각 국가의 법령에서 정한 최저 고용 연령을 준수하며, 아동노동을 엄격히 금지합니다.",
+              "근로시간: 해당 국가의 법정 근로시간 및 휴일 규정을 준수합니다.",
+              "임금 및 복리후생: 최저임금, 초과근무 수당 등 법정 급여 기준을 준수하고, 법으로 정해진 복리후생을 제공합니다.",
+              "차별 금지 및 인도적 대우: 인종, 종교, 성별 등을 이유로 한 차별을 금지하며, 가혹행위나 성희롱 등 비인도적인 대우를 금지합니다."
+            ]
+          },
+          {
+            "title": "3. 안전 및 보건",
+            "items": [
+              "산업안전: 작업장 내 위험 요소를 식별하고 관리하여 안전한 작업 환경을 제공합니다.",
+              "비상사태 대비: 화재 등 비상 상황에 대비한 대응 절차를 마련하고 훈련을 실시합니다.",
+              "산업재해 및 질병: 산업재해 및 질병을 예방하기 위한 체계를 구축하고 관리합니다."
+            ]
+          },
+          {
+            "title": "4. 환경",
+            "items": [
+              "환경 법규 준수: 환경 관련 법규 및 인허가 사항을 철저히 준수합니다.",
+              "오염 방지 및 자원 절약: 폐기물, 폐수, 대기오염 물질 배출을 최소화하고 자원을 효율적으로 사용합니다.",
+              "유해물질 관리: 인체나 환경에 유해한 화학물질을 안전하게 관리하고 배출을 통제합니다."
+            ]
+          },
+          {
+            "title": "5. 윤리 및 공정거래",
+            "items": [
+              "비즈니스 청렴성: 뇌물, 부패, 강요, 횡령 등 모든 형태의 부정부패를 금지합니다.",
+              "부당이득 금지: 뇌물이나 기타 부당한 이득을 제공하거나 받는 행위를 금지합니다.",
+              "정보 공개: 비즈니스 활동, 재무 상태 등에 관한 정보를 관련 법규에 따라 투명하게 공개합니다.",
+              "지식재산권 보호: 에이프로 및 제3자의 지식재산권을 존중하고 보호합니다.",
+              "공정거래 및 광고: 공정거래 관련 법규를 준수하고, 허위 광고를 지양합니다."
+            ]
+          },
+          {
+            "title": "6. 경영 시스템",
+            "items": [
+              "행동규범 준수 선언: 본 행동규범의 내용을 이해하고 준수할 것을 약속합니다.",
+              "리스크 관리: 비즈니스 운영과 관련된 리스크를 식별하고 관리하는 프로세스를 운영합니다.",
+              "시정 조치: 본 행동규범 위반 사항이 발견될 경우 즉시 시정 조치를 취합니다."
+            ]
+          }
+        ]
+      },
+      "env_policy": {
+        "title": "환경경영 방침",
+        "sections": [
+          {
+            "title": "1. 환경경영 목표",
+            "content": "에이프로는 '지속 가능한 미래를 위한 친환경 에너지 솔루션 리더'라는 비전 아래, 기후변화 대응과 환경 보호를 기업 경영의 핵심 가치로 삼고 다음과 같은 환경경영 방침을 수립하여 실천합니다."
+          },
+          {
+            "title": "2. 주요 실천 과제",
+            "items": [
+              {
+                "title": "환경 법규 및 기준 준수",
+                "content": "국내외 환경 관련 법규 및 협약을 철저히 준수하며, 자체적인 환경 관리 기준을 설정하여 엄격하게 운영합니다."
+              },
+              {
+                "title": "친환경 제품 및 기술 개발",
+                "content": "제품의 설계부터 폐기까지 전 과정에서 환경 영향을 최소화하는 친환경 기술을 개발하고, 에너지 효율이 높은 제품을 공급합니다."
+              },
+              {
+                "title": "기후변화 대응 및 탄소중립 실현",
+                "content": "온실가스 배출량을 체계적으로 관리하고, 에너지 절감 및 재생에너지 사용 확대를 통해 탄소중립 실현에 기여합니다."
+              },
+              {
+                "title": "자원 순환 및 오염 방지",
+                "content": "자원을 효율적으로 사용하고 폐기물 발생을 최소화하며, 수질 및 대기오염 방지를 위한 최적의 방지 시설을 운영합니다."
+              },
+              {
+                "title": "환경경영 시스템 고도화",
+                "content": "ISO 14001 등 국제 표준에 부합하는 환경경영 시스템을 구축하고, 지속적인 모니터링과 개선 활동을 수행합니다."
+              },
+              {
+                "title": "이해관계자와의 소통 및 협력",
+                "content": "임직원, 고객, 협력사 등 모든 이해관계자에게 환경경영 방침을 공유하고, 함께 환경 보호 활동에 참여할 수 있도록 독려합니다."
+              }
+            ]
+          }
+        ],
+        "addendum": "부 칙",
+        "addendum_content": "본 방침은 2024년 12월 23일부터 시행한다."
+      }
+    }
+  },
+  "ENG": {
+    "badge": "Sustainability",
+    "tabs": {
+      "overview": "Overview",
+      "environment": "EHS",
+      "social": "Social",
+      "governance": "Governance",
+      "report": "Reporting Center",
+      "board": "ESG Board"
+    },
+    "report_content": {
+      "banner_title": "Reporting Center",
+      "banner_desc": "A-PRO operates a comprehensive reporting channel for all employees and stakeholders\nto ensure ethical and responsible corporate activities.",
+      "info_title": "Reporting Information",
+      "info_desc": "Through this channel, anyone internally or externally can report violations related to ethics, human rights/labor, environment, safety and health, or unfair treatment and risk factors.\nThe contents of the report are strictly protected, and the anonymity of the reporter is also guaranteed.\nWe will do our best to ensure that it is processed quickly and fairly.",
+      "items_title": "Reporting Items",
+      "items": [
+        {
+          "title": "Ethics",
+          "desc": "Embezzlement of public funds, receipt of money and valuables, solicitation, work-related misconduct, etc."
+        },
+        {
+          "title": "Human Rights/Labor",
+          "desc": "Discrimination and harassment, forced labor, human rights violations, unfair treatment, etc."
+        },
+        {
+          "title": "Safety and Health",
+          "desc": "Industrial accidents, neglect of risks, hazardous environments, etc."
+        },
+        {
+          "title": "Environment",
+          "desc": "Unauthorized waste disposal, pollution, energy waste, etc."
+        },
+        {
+          "title": "Others",
+          "desc": "Suggestions for system improvement, etc."
+        }
+      ],
+      "method_title": "Reporting Method",
+      "methods": [
+        "Online report (Click 'Submit' after filling out the form below)",
+        "Phone: +82-31-689-3963",
+        "Mail: To the person in charge of A-PRO Reporting Center, 41-14, Burim-ro 170beon-gil, Dongan-gu, Anyang-si, Gyeonggi-do, Republic of Korea"
+      ],
+      "process_title": "Processing Procedure",
+      "process_desc": "The processing procedure will be carried out within 10 days after receiving the report, and measures will be completed within 90 days from the date of receipt.",
+      "process_note": "However, additional time may be required depending on the nature and importance of the matter.",
+      "form_title": "Write Report",
+      "form": {
+        "name": "Name (Optional)",
+        "name_placeholder": "Leave blank for anonymous reporting",
+        "password": "Password (Required)",
+        "password_placeholder": "Enter password for result check",
+        "subject": "Subject",
+        "subject_placeholder": "Enter subject",
+        "content": "Content",
+        "file": "File Attachment",
+        "file_limit": "Max 20MB",
+        "file_placeholder": "Click or drag files here.",
+        "captcha": "CAPTCHA",
+        "captcha_placeholder": "Enter the CAPTCHA numbers",
+        "privacy_agree": "I agree to the collection and use of personal information.",
+        "privacy_detail": "Collected items: Name (optional), Password, Subject, Content, Attachments / Retention period: 3 years after completion of processing",
+        "submit": "Submit"
+      },
+      "validation": {
+        "password": "Please enter your password.",
+        "subject": "Please enter a subject.",
+        "content": "Please enter content.",
+        "captcha": "Please enter the CAPTCHA numbers.",
+        "privacy": "Please agree to the collection and use of personal information.",
+        "success": "The mail has been successfully sent. Your anonymity is strictly guaranteed, and we will proceed with measures promptly.",
+        "error_captcha": "The CAPTCHA code does not match."
+      }
+    },
+    "vision_title": "ESG VISION",
+    "vision_desc1": "Based on advanced technology and transparent responsible management,",
+    "vision_desc2": "A global company creating a sustainable energy future together",
+    "strategic_tasks": "ESG STRATEGIC TASKS",
+    "env": {
+      "title": "Maximizing Energy Efficiency",
+      "desc": "Value of minimizing energy waste and reducing carbon emissions through advanced technology",
+      "tasks": [
+        "Advancing environmental management system",
+        "Establishing basis for climate change response",
+        "Developing energy efficiency-centered technology",
+        "Creating sustainable production environment"
+      ],
+      "main_title": "Green Future with Eco-Friendly Technology",
+      "main_desc": "A-PRO takes climate change response and environmental protection as core corporate values. We maximize energy efficiency through innovative power conversion technology and practice eco-friendly management for a sustainable planet.",
+      "system_title": "Environmental Management System",
+      "system_desc": "We have established an environmental management system that meets global standards based on ISO 14001 certification. We perform continuous improvement activities through the PDCA (Plan-Do-Check-Act) cycle.",
+      "system_items": [
+        "Acquisition and maintenance of ISO 14001 certification",
+        "Compliance with environmental laws and regulations"
+      ],
+      "ghg_title": "GHG Reduction",
+      "ghg_desc": "We systematically manage greenhouse gas emissions with the goal of achieving carbon neutrality by 2050. We are minimizing carbon emissions through the introduction of high-efficiency facilities and process improvements.",
+      "ghg_items": [
+        "Monitoring Scope 1, 2 emissions",
+        "Expanding use of renewable energy"
+      ],
+      "resource_title": "Resource Circulation",
+      "resource_desc": "We contribute to the realization of a circular economy by suppressing waste generation and increasing recycling rates. We are strengthening water resource management and hazardous chemical management processes.",
+      "resource_items": [
+        "Improving waste recycling rate",
+        "Water consumption reduction activities"
+      ],
+      "policy_title": "Environmental Management Policy",
+      "policy_desc": "A-PRO recognizes environmental preservation as a major element of corporate management and strives to minimize environmental impact throughout the entire process from product development, production, to disposal. All employees are familiar with and practice the environmental policy.",
+      "toxic_title": "Hazardous Substance Management",
+      "toxic_desc": "We comply with international environmental regulations such as RoHS and REACH, and strictly limit the use of hazardous substances in products. We guarantee the non-use of hazardous substances through a supply chain management system with partners.",
+      "safety_title": "Safety and Health Management",
+      "safety_desc": "As a leading company in the secondary battery equipment industry, A-PRO pursues safety, health, and happiness as absolute values.",
+      "safety_policy_title": "Safety and Health Policy",
+      "safety_items": [
+        "Strict compliance with industrial safety laws and prior prevention of risks",
+        "Cultivating safety awareness through voluntary education and practice of all members",
+        "Prevention of industrial accidents by complying with safety/health plans and manuals",
+        "Maintaining the best safety and health status with sufficient manpower and budget allocation",
+        "Practicing ESG policies for communication and mutual growth with partners"
+      ],
+      "policy_btn": "A-PRO Environmental Policy"
+    },
+    "social": {
+      "title": "Mutual Growth & Safety",
+      "desc": "Protecting the safety and rights of all employees, partners, and customers, and promoting mutual growth with local communities",
+      "tasks": [
+        "Respecting human rights and labor rights",
+        "Establishing sustainable cooperation system",
+        "Realizing customer-centered service",
+        "Organizational culture based on diversity and inclusion"
+      ],
+      "supply_title": "Sustainable Supply Chain Management",
+      "supply_desc": "We propose a code of conduct for mutual growth and shared growth with partners, and comprehensively manage human rights, ethics, and environmental issues in the raw material procurement process.",
+      "supply_items": [
+        "Establishment and operation of supplier code of conduct",
+        "Strengthening supply chain risk management",
+        "Operation of mutual growth programs"
+      ],
+      "supplier_btn": "View A-PRO Supplier Code of Conduct",
+      "security_title": "Information Security",
+      "security_desc": "A-PRO prioritizes protecting the valuable information of customers and employees in a rapidly changing digital environment. We establish and operate a thorough information security management system that meets international standards, and establish a foundation for sustainable growth by systematically protecting and managing intellectual property rights, which are the company's core assets.",
+      "security_items": [
+        "Implementation of personal information protection policy",
+        "Protection and management of intellectual property rights"
+      ],
+      "contrib_title": "Social Contribution Activities",
+      "contrib_desc": "A-PRO aims for mutual growth with local communities and is continuously expanding practical support and volunteer activities for the underprivileged. We will take the lead in creating a warm society through various social contribution programs in which employees participate, taking the value of sharing and mutual growth as the core of our corporate culture.",
+      "contrib_items": [
+        "'Rice of Love' donation (100 bags of new rice every year)",
+        "'Fruit of Love' donation support"
+      ],
+      "human_title": "Human Rights Management",
+      "human_desc": "A-PRO complies with international standards such as the Universal Declaration of Human Rights and the UN Guiding Principles on Business and Human Rights, and establishes the best culture of respect for human rights at all business sites.",
+      "human_items": [
+        "Compliance with international standards related to human rights and labor",
+        "Execution of voluntary compliance system",
+        "Spreading a culture of respect for human rights"
+      ],
+      "policy_btn": "View A-PRO Human Rights Policy"
+    },
+    "gov": {
+      "title": "Transparent Responsible Management",
+      "desc": "Establishing a trusted governance structure based on fair trade voluntary compliance and ethical decision-making",
+      "tasks": [
+        "Internalizing ethical and compliance management",
+        "Embedding fair trade voluntary compliance culture",
+        "Establishing transparent decision-making system",
+        "Trust-based stakeholder communication"
+      ],
+      "board_title": "Board of Directors",
+      "board_desc": "A-PRO operates an independent board of directors with expertise and does its best to protect the rights and interests of all stakeholders.",
+      "member_inside": "Inside Director",
+      "member_outside": "Outside Director",
+      "member_lim": {
+        "name": "Jong-hyun Lim",
+        "items": [
+          "Master of MBA, Sungkyunkwan University",
+          "Ph.D. in Electronic Engineering, Hoseo University",
+          "(Current) Chairman & CEO of A-PRO Co., Ltd."
+        ]
+      },
+      "member_lim_jd": {
+        "name": "Jong-deok Lim",
+        "items": [
+          "Bachelor of Electronic Engineering, Yeonsung University",
+          "(Current) Vice President of A-PRO Co., Ltd."
+        ]
+      },
+      "member_hong": {
+        "name": "Sung-soo Hong",
+        "items": [
+          "Ph.D. in Electrical and Electronic Engineering, KAIST",
+          "(Former) Senior Researcher, Hyundai Electronics Information & Communication Research Institute",
+          "(Former) Visiting Researcher, VPI&SU, USA",
+          "(Former) CTO (Managing Director), Power Business Team, Samsung Electro-Mechanics",
+          "(Current) Professor, Department of Electronic Engineering, Kookmin University",
+          "(Current) Outside Director of A-PRO Co., Ltd."
+        ]
+      },
+      "ethics_title": "Ethical Management",
+      "ethics_desc": "A-PRO has established a fair and transparent ethical management system, and has enacted an ethics charter to pursue advanced ethical values, which all members are actively practicing.",
+      "fairness_title": "Fairness",
+      "fairness_desc": "We take fairness as the top priority in performing all duties.",
+      "transparency_title": "Transparency",
+      "transparency_desc": "We transparently disclose the decision-making process and results.",
+      "practice_title": "Practice",
+      "practice_desc": "We enact an ethics charter and all members practice it.",
+      "compliance_title": "Anti-Corruption and Compliance Check Program",
+      "compliance_desc": "A-PRO conducts anti-corruption and compliance check programs to voluntarily check for unfair trade acts and law violations in all sectors at all domestic and overseas business sites, and has institutionalized reporting the results to the board of directors from time to time and improving them.",
+      "steps": {
+        "plan": {
+          "title": "Plan",
+          "items": [
+            "Establishment of code of conduct",
+            "System planning and development"
+          ]
+        },
+        "do": {
+          "title": "Do",
+          "items": [
+            "Employee education/guidelines",
+            "Constant monitoring"
+          ]
+        },
+        "check": {
+          "title": "Check",
+          "items": [
+            "Reporting to the board",
+            "Result analysis and improvement plan derivation"
+          ]
+        },
+        "act": {
+          "title": "Act",
+          "items": [
+            "Corrective action",
+            "Re-establishment of norms and systems"
+          ]
+        }
+      },
+      "guidelines_title": "Related Regulations and Guidelines",
+      "ethics_code": {
+        "title": "Standard Code of Ethics",
+        "desc": "Standards for correct behavior and value judgment that employees must observe"
+      },
+      "ethics_charter": {
+        "title": "Ethics Charter and Practice Norms",
+        "desc": "Our pledge to practice transparent and fair management"
+      },
+      "fair_trade": {
+        "title": "Fair Trade Guidebook",
+        "desc": "Employee guidelines for fair trade voluntary compliance"
+      }
+    },
+    "board": {
+      "title": "ESG Board",
+      "banner_title": "ESG Board",
+      "banner_desc": "A-PRO shares various activities and achievements with stakeholders\nto practice transparent and responsible ESG management.",
+      "search_placeholder": "Enter search term",
+      "search_btn": "Search",
+      "table": {
+        "no": "No.",
+        "category": "Category",
+        "title": "Title",
+        "author": "Author",
+        "date": "Date",
+        "views": "Views"
+      },
+      "back_btn": "List",
+      "back_to_list": "Back to List",
+      "prev_post": "Previous Post",
+      "next_post": "Next Post",
+      "admin": "Admin",
+      "sample_title": "Notice on the Publication of the 2024 Sustainability Report"
+    },
+    "esg_modals": {
+      "ethics_charter": {
+        "title": "A-PRO Ethics Charter and Practice Norms",
+        "charter_title": "A-PRO Ethics Charter",
+        "charter_desc": "A-PRO and its subsidiaries supply excellent products and services to contribute to human happiness and the development of science and technology. We enact this charter to establish fair and transparent business performance standards and an advanced ethical management system, and pledge that all employees will actively practice it.",
+        "charter_items": [
+          "We comply with all laws and regulations based on high ethical values and perform our duties with fairness and integrity.",
+          "We prioritize trust with customers and promise to provide safe and excellent products and the best services.",
+          "We pursue the establishment of a sound market order and pursue mutual development with all stakeholders through fair competition.",
+          "We faithfully perform our social roles and responsibilities as a company that creates future value."
+        ],
+        "practice_title": "Practice Norms",
+        "chapters": [
+          {
+            "title": "Chapter 1 Overview",
+            "articles": [
+              {
+                "title": "Article 1 (Purpose)",
+                "content": "A-PRO enacts these Ethics Practice Norms to establish fair and transparent business performance standards and an advanced ethical management system. All employees contribute to human happiness and the development of science and technology by actively practicing them based on high ethical values."
+              },
+              {
+                "title": "Article 2 (Scope of Application)",
+                "content": "These Ethics Practice Norms apply to all employees of A-PRO's domestic and foreign production and sales corporations, subsidiaries, and joint ventures, and we inspect and improve unethical risk factors such as corruption through continuous management and monitoring. Furthermore, we strive to apply it to stakeholders such as suppliers, customers, and local communities."
+              }
+            ]
+          },
+          {
+            "title": "Chapter 2 Basic Principles",
+            "articles": [
+              {
+                "title": "Article 3 (Responsibility and Duty to Customers)",
+                "items": [
+                  "A-PRO always thinks and acts from the customer's perspective and strives to provide the best products and services that customers can be satisfied with and trust.",
+                  "A-PRO provides accurate information about products and services to customers and avoids deception or exaggerated advertising.",
+                  "A-PRO protects customers' interests, safety, and confidential information, and realizes customer satisfaction."
+                ]
+              },
+              {
+                "title": "Article 4 (Duty to Shareholders and Investors)",
+                "items": [
+                  "A-PRO maximizes corporate value through sound and transparent management activities, protects the rights of shareholders and investors, and strives to gain trust by providing long-term and stable profits.",
+                  "A-PRO faithfully discloses management information to build mutual trust with shareholders and investors and strives to maximize shareholder interests.",
+                  "A-PRO treats all shareholders fairly and ensures that the interests or rights of shareholders are not unfairly infringed in management decisions.",
+                  "A-PRO does not infringe on shareholder interests by using undisclosed internal company information to obtain unfair stock trading profits or leaking internal information to the outside."
+                ]
+              },
+              {
+                "title": "Article 5 (Guidelines for Suppliers)",
+                "items": [
+                  "A-PRO complies with market competition principles in transactions with suppliers and pursues long-term coexistence and development by securing mutual trust through fair and transparent transactions.",
+                  "A-PRO complies with relevant laws such as the Fair Trade Act when trading with suppliers, performs all transactions fairly on an equal footing, and does not engage in unfair practices using its superior position.",
+                  "A-PRO does not use suppliers' intellectual property rights without permission and pays attention to protecting third-party intellectual property rights by complying with intellectual property-related laws.",
+                  "A-PRO strictly prohibits the use, purchase, and distribution of counterfeit parts and establishes and operates identification, verification, and response procedures to prevent the inflow of counterfeit parts into the supply chain."
+                ]
+              },
+              {
+                "title": "Article 6 (Fair Competition and Compliance)",
+                "items": [
+                  "A-PRO complies with all laws and social ethics in corporate activities and pursues mutual development through good faith competition with competitors in the market.",
+                  "A-PRO legitimately obtains and uses information necessary for transactions, does not unfairly disclose it to the outside, and does not infringe on third-party trade secrets or intellectual property rights.",
+                  "A-PRO does not engage in any acts related to money laundering, such as concealing criminal proceeds or tax evasion."
+                ]
+              },
+              {
+                "title": "Article 7 (Responsibility to the Nation and Society)",
+                "items": [
+                  "As a member of the nation and local community, A-PRO complies with all universally accepted laws and contributes to the development of the nation and society through ethical management activities, job creation, faithful tax burden, and fulfillment of social responsibilities.",
+                  "A-PRO strictly complies with international standards and related laws related to environmental protection, such as climate change response, energy saving, and water resource protection.",
+                  "A-PRO does not engage in any political activities within the workplace and strives to respect the voting rights and political views of individual employees.",
+                  "A-PRO strictly prohibits the exercise of unfair influence or purposes of illegal profit when engaging in donation and sponsorship activities.",
+                  "A-PRO strictly complies with international import/export controls and national laws in the import/export of strategic materials, technologies, and products, and does not engage in any acts that violate them."
+                ]
+              },
+              {
+                "title": "Article 8 (Basic Ethics and Job Performance of Employees)",
+                "items": [
+                  "All employees strive to enhance the honor of individuals and the company based on honesty and sincerity and to improve a clean and transparent corporate image.",
+                  "All employees comply with all domestic and foreign laws related to anti-corruption and do not engage in any corrupt acts, including unfair transactions or bribery.",
+                  "All employees respect each other and do not engage in any acts that cause unpleasant language, behavior, or sexual shame.",
+                  "All employees do not engage in any acts that conflict with the company's interests in relation to job performance, and prioritize the company's interests when interests conflict between the company and individuals or departments.",
+                  "All employees are reasonably compensated for their achievements according to fair evaluation criteria.",
+                  "All employees strictly distinguish between public and private matters and use company assets and expenses only for job purposes.",
+                  "All employees do not leak company confidential matters, new business information, trade secrets, customer and supplier information, etc., to third parties.",
+                  "All employees must accurately and honestly prepare company accounting and financial records and faithfully fulfill financial responsibilities by strictly complying with relevant laws and accounting standards.",
+                  "All employees report and handle transparently according to the internal reporting system when they recognize ethics violations."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Chapter 3 Management System",
+            "articles": [
+              {
+                "title": "Article 9 (Promotion Organization and Ethical Management Implementation)",
+                "content": "A-PRO promotes ethical management through collaboration among relevant departments such as HR, Audit, Legal, and Planning under the Chief Executive Officer, and the Board of Directors manages and supervises the status of ethical management implementation. Relevant departments discover and implement tasks to minimize ethical risk factors arising from management activities."
+              },
+              {
+                "title": "Article 10 (Grievance Receipt)",
+                "content": "A-PRO operates a grievance handling system so that reports related to misconduct, corruption, etc., arising from business operations and violations of ethical management can be reported. Violations can be reported through the grievance receipt channel website and email. Received contents are promptly handled according to procedures, and the identity of the reporter and the content of the report are strictly kept confidential during the grievance handling process to protect the reporter from any disadvantages, discrimination, or retaliation.",
+                "channel_title": "[Misconduct, Corruption, and Grievance Reporting Channel]",
+                "channel_dept": "Department: Management Planning Team, Talent Culture Team, Standing Auditor",
+                "channel_btn": "Go to Reporting Center"
+              },
+              {
+                "title": "Article 11 (Handling Guidelines for Sensitive Transactions)",
+                "content": "Employees shall not receive or provide money, valuables, or gifts and entertainment that exceed the scope accepted by social norms for any reason. In the event of sensitive transactions based on this Code of Conduct, such as inevitably receiving money, valuables, or gifts and entertainment that exceed the scope accepted by social norms, they shall be approved and handled according to the following separate procedures. Money, valuables, and gifts and entertainment that exceed the scope accepted by social norms are determined according to the attachment.",
+                "items": [
+                  "Money, Valuables, and Gifts, etc.: The recipient determines whether return is possible and, if possible, returns it without delay and reports the fact to the head of the department or the head of the ethical management department. If return is not possible, report to the head of the department and the head of the ethical management department, and when the ethical management department receives the report, it must handle it appropriately according to relevant laws, company regulations, or logic.",
+                  "Entertainment, Convenience, etc.: Report to the head of the department and the head of the ethical management department, and if work relevance is recognized, the amount spent on the entertainment, convenience, etc., is executed as company expenses or returned. If there is no work relevance, it is executed or returned at the personal expense of the person who provided or received the entertainment, convenience, etc., and the employee submits evidence such as transfer confirmation to the ethical management department."
+                ]
+              }
+            ]
+          }
+        ],
+        "attachment": {
+          "title": "[Attachment] Gifts and Entertainment Accepted by Social Norms When Received from Counterparties Related to Transactions or Duties",
+          "sections": [
+            {
+              "title": "① “Gifts, Entertainment, etc. Not Prohibited”",
+              "desc": "Refers to providing or receiving money or valuables falling under any of the following items.",
+              "items": [
+                "A. Food and beverages (meals, refreshments, alcohol, beverages, and other equivalents) of less than 30,000 KRW per person per time within the scope of frequency allowed by social common sense",
+                "B. Goods of 100,000 KRW or less during Lunar New Year and Chuseok holidays",
+                "C. Products of 50,000 KRW or less per person per time",
+                "D. Money or valuables such as transportation, accommodation, food, etc., provided uniformly to attendees within the usual scope by the organizer at official events related to duties",
+                "E. Souvenirs or promotional items for distribution to an unspecified number of people, or money or prizes received through contests or lotteries",
+                "F. Beverages or meals provided to executives and employees in the company cafeteria on a regular basis",
+                "G. Actual expense settlement amounts such as travel expenses, meal expenses, and accommodation expenses according to the contract"
+              ]
+            },
+            {
+              "title": "② “Prohibited Gifts, Entertainment, etc.”",
+              "desc": "Refers to providing or receiving money or valuables falling under any of the following items, excluding gifts, entertainment, etc., not prohibited in No. 1.",
+              "items": [
+                "A. Provision of any property benefits such as money, securities, real estate, goods, accommodation tickets, membership rights, gift certificates, prepaid cards, admission tickets, discount tickets, invitation tickets, viewing tickets, and usage rights of real estate",
+                "B. Provision of tangible or intangible economic benefits such as debt exemption, employment provision, granting of rights, etc. However, money or valuables provided according to legitimate titles such as fulfillment of debts due to private transactions (excluding gifts) are excluded.",
+                "C. Domestic and foreign travel expenses paid by the company, related companies, management, or duty-related persons without work relevance",
+                "D. Receiving products exceeding 50,000 KRW or purchasing them at a significantly lower price than the market price",
+                "E. Food and beverages (meals, refreshments, alcohol, beverages, and other equivalents) exceeding 30,000 KRW per person per time",
+                "F. Goods exceeding 100,000 KRW during Lunar New Year and Chuseok holidays",
+                "G. Entertainment and treats such as golf (including screen golf)",
+                "H. Provision of convenience such as transportation and accommodation"
+              ]
+            }
+          ]
+        },
+        "addendum": {
+          "title": "Addendum",
+          "content": "Article 1 (Enforcement Date) This policy shall be enforced from the date of enactment (December 23, 2024)."
+        }
+      },
+      "ethics_code": {
+        "title": "Standard Code of Ethics",
+        "preamble": "Our company strives to grow and develop together with all stakeholders, including shareholders, by improving corporate value through progressive and efficient management activities, and to become a trusted company by faithfully performing its duties and responsibilities as a listed company. Our company respects all domestic and foreign laws and market orders, takes the lead in establishing a fair trade order, respects social values and customs, and contributes to national and social development through various social contribution activities. Accordingly, our company enacts and actively practices this Code of Ethics to create a sound and fair corporate culture.",
+        "chapters": [
+          {
+            "title": "Ⅰ. Attitude towards Shareholders and Investors",
+            "items": [
+              {
+                "title": "1. Protection of Shareholder Rights",
+                "list": [
+                  "The company protects the rights of shareholders and respects their legitimate demands and suggestions.",
+                  "The company builds mutual trust with shareholders and investors by faithfully disclosing management information and strives to maximize shareholder interests."
+                ]
+              },
+              {
+                "title": "2. Equal Treatment",
+                "list": [
+                  "The company treats all shareholders, including minority shareholders, fairly and equally.",
+                  "The company always considers the interests of all shareholders when making management decisions so that the interests or rights of minority shareholders are not unfairly infringed."
+                ]
+              },
+              {
+                "title": "3. Active Information Provision",
+                "list": [
+                  "The company records and manages accounting data in accordance with generally accepted accounting principles to transparently provide financial status and management performance.",
+                  "The company provides accurate management information in a timely manner in accordance with relevant laws and regulations so that information users such as investors can make rational investment decisions."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅱ. Attitude towards Customers",
+            "items": [
+              {
+                "title": "1. Respect for Customers",
+                "list": [
+                  "The company always thinks and acts from the customer's perspective and strives to realize customer satisfaction by providing the best products and services that customers can be satisfied with and trust.",
+                  "The company provides accurate information about products and services to customers and does not engage in exaggerated advertising or publicity."
+                ]
+              },
+              {
+                "title": "2. Customer Protection",
+                "list": [
+                  "The company protects customers' interests, safety, and personal information and does not engage in unfair acts against customers.",
+                  "The company respects and complies with laws regarding consumer protection."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅲ. Attitude towards Competitors and Partners",
+            "items": [
+              {
+                "title": "1. Fair Competition with Competitors",
+                "list": [
+                  "The company respects the fair and free market economic order based on the principle of free competition and competes fairly with competitors.",
+                  "The company respects the fair trade order and complies with fair trade-related laws and regulations."
+                ]
+              },
+              {
+                "title": "2. Fair Trade with Partners",
+                "list": [
+                  "The company pursues mutual development by establishing mutual trust and cooperative relationships through fair trade with partners.",
+                  "The company does not use its superior position to force any form of unfair acts or exercise influence."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅳ. Responsibilities to Employees",
+            "items": [
+              {
+                "title": "1. Fair Treatment",
+                "list": [
+                  "The company does not discriminate against employees unfairly and provides fair opportunities according to their abilities and qualifications."
+                ]
+              },
+              {
+                "title": "2. Creation of Work Environment",
+                "list": [
+                  "The company strives for the health and safe working environment of employees.",
+                  "The company respects the autonomy and creativity of each employee and supports self-realization along with talent development by fairly providing opportunities to improve their abilities.",
+                  "The company respects the independent personality and basic rights of employees and creates an environment where they can freely make suggestions and proposals."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅴ. Responsibilities to Society",
+            "items": [
+              {
+                "title": "1. Compliance with Domestic and Foreign Laws",
+                "list": [
+                  "As a member of the nation and local community, the company complies with various laws and regulations as well as internationally accepted laws and regulations."
+                ]
+              },
+              {
+                "title": "2. Contribution to National Economy and Social Development",
+                "list": [
+                  "The company contributes to the national economy and social development through productivity improvement, job creation, faithful tax payment, and social contribution."
+                ]
+              },
+              {
+                "title": "3. Environmental Protection",
+                "list": [
+                  "The company strives to protect nature and preserve a clean environment."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Ⅵ. Basic Ethics of Employees",
+            "items": [
+              {
+                "title": "1. Establishment of Sound Corporate Culture",
+                "list": [
+                  "Employees share the company's management philosophy, sympathize with the goals and values pursued by the company, and faithfully perform the missions assigned to them according to the company's business policy.",
+                  "Employees create an organizational culture based on smooth communication and mutual trust between superiors and subordinates and colleagues within the company.",
+                  "Employees perform their assigned duties to the best of their ability in a legitimate manner and comply with all relevant laws and company regulations related to their work."
+                ]
+              },
+              {
+                "title": "2. Prohibition of Conflict of Interest",
+                "list": [
+                  "Employees strive to prevent any acts or relationships that conflict with the company's interests, and if the interests of the company and individuals or departments conflict, they prioritize the company's interests and act accordingly."
+                ]
+              },
+              {
+                "title": "3. Prohibition of Use of Internal Information",
+                "list": [
+                  "Employees do not trade stocks using internal information acquired during work.",
+                  "Employees do not provide undisclosed important information that may affect stock prices to third parties without following legal procedures."
+                ]
+              },
+              {
+                "title": "4. Protection of Company Assets and Important Information",
+                "list": [
+                  "Employees must protect the company's physical assets, intellectual property rights, and trade secrets, and do not use them for private purposes.",
+                  "Employees do not pursue private interests using their position or engage in unfair trading acts using non-public information obtained from the company.",
+                  "Employees do not leak important information that may affect the company's interests to the outside."
+                ]
+              },
+              {
+                "title": "5. Prevention of Sexual Harassment",
+                "list": [
+                  "Employees do not engage in any language or behavior that harms sound peer relationships, including physical, verbal, or visual language or behavior that is recognized as causing sexual humiliation."
+                ]
+              },
+              {
+                "title": "6. Prohibition of Political Involvement",
+                "list": [
+                  "Employees do not engage in political activities during working hours within the company and do not use the company's organization, manpower, and assets for political purposes.",
+                  "Although each employee's right to vote and political views are respected, they must ensure that their political views or political involvement are not misunderstood as the company's position."
+                ]
+              },
+              {
+                "title": "7. Prohibition of Receiving Money and Entertainment",
+                "list": [
+                  "Employees do not receive money, gifts, or entertainment from stakeholders such as business partners.",
+                  "Employees do not provide money, goods, or gifts and entertainment beyond the scope recognized by social norms to stakeholders such as business partners in connection with company business.",
+                  "Employees do not exchange money, goods, or excessive gifts and entertainment with each other."
+                ]
+              },
+              {
+                "title": "8. Compliance with Code of Ethics",
+                "list": [
+                  "All employees must faithfully comply with the Code of Ethics, and if they violate it, they will be held responsible for the act.",
+                  "If employees are forced to act against the Code of Ethics or become aware of unfair acts, they must report it to the department in charge of the Code of Ethics.",
+                  "In the event of a violation of the Code of Ethics, employees shall prevent recurrence through thorough investigation of the cause and education."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "fair_trade": {
+        "title": "Fair Trade Guidebook"
+      },
+      "human_rights": {
+        "title": "A-PRO Human Rights Policy",
+        "chapters": [
+          {
+            "title": "Chapter 1 Overview",
+            "articles": [
+              {
+                "title": "Article 1 (Purpose)",
+                "content": "A-PRO considers respect for human dignity as its top priority, recognizes the responsibility to respect and report human rights in all business activities, and establishes a human rights policy to prevent human rights violations and mitigate risks for stakeholders within the scope of the company's management activities. To implement human rights management, we comply with international standards and guidelines related to human rights and labor such as the International Labour Organization (ILO), the UN Universal Declaration of Human Rights (UDHR), and the UN Guiding Principles on Business and Human Rights."
+              },
+              {
+                "title": "Article 2 (Scope of Application)",
+                "content": "This human rights policy applies to all employees of A-PRO's domestic and overseas production and sales corporations, subsidiaries, and joint ventures, and checks and improves risk factors related to human rights and labor through continuous management and monitoring. Furthermore, we strive to apply it to stakeholders such as our partners, customers, and local communities."
+              }
+            ]
+          },
+          {
+            "title": "Chapter 2 Basic Principles",
+            "articles": [
+              {
+                "title": "Article 3 (Respect for Human Rights)",
+                "content": "A-PRO establishes a human rights protection policy and strictly complies with it to protect the human rights of all employees. We do not engage in mental or physical inhumane treatment that may occur within the company, respect privacy, and strictly protect personal information."
+              },
+              {
+                "title": "Article 4 (Prohibition of Discrimination)",
+                "content": "A-PRO prohibits discrimination in personnel matters such as recruitment, wages, promotion, and welfare benefits based on gender, education, age, race, ethnicity, nationality, disability, family relations, religion, political opinion, social status, marital status, pregnancy/childbirth, sexual minority status, etc. of all employees."
+              },
+              {
+                "title": "Article 5 (Prohibition of Workplace Sexual Harassment and Bullying)",
+                "content": "A-PRO prohibits acts such as sexual harassment and sexual violence in the workplace, and prohibits all bullying acts that cause physical or mental pain using one's position or relationship in the workplace."
+              },
+              {
+                "title": "Article 6 (Child Labor)",
+                "content": "A-PRO applies a zero-tolerance principle to child labor prohibited by the laws of the relevant country when hiring and does not allow any form of child labor. When hiring minors, we ensure that educational opportunities are not limited due to work. We establish and implement procedures to check whether applicants are children or minors during the recruitment process. If child labor is detected, we immediately stop the work and implement protection measures according to laws such as notifying guardians and reporting to the competent administrative agency."
+              },
+              {
+                "title": "Article 7 (Working Conditions)",
+                "content": "A-PRO complies with laws related to legal working hours and holidays in the relevant country and region, and pays reasonable remuneration for work to all employees along with pay stubs. We do not demand any fees or placement costs from workers for recruitment procedures."
+              },
+              {
+                "title": "Article 8 (Forced Labor)",
+                "content": "A-PRO does not force labor that restricts mental or physical freedom such as assault, threats, confinement, slavery, or human trafficking on all employees, and does not keep originals of personal documents such as ID cards, passports, or work permits issued by the government for the purpose of forced labor."
+              },
+              {
+                "title": "Article 9 (Career Management)",
+                "content": "A-PRO strives to strengthen employee capabilities and provides sufficient educational opportunities for capability development and career management."
+              },
+              {
+                "title": "Article 10 (Guarantee of Freedom of Association and Collective Bargaining)",
+                "content": "A-PRO respects the rights of employees to association and collective bargaining guaranteed by the labor laws of the relevant country and region."
+              },
+              {
+                "title": "Article 11 (Protection of Local Residents and Environmental Rights)",
+                "content": "All employees of A-PRO do their best to protect the human rights of local residents when performing their duties, and strive to protect the right to housing and the right to settle. We check whether there are negative impacts on the environment such as land, forests, and water resources in the area, and ecosystem and environmental damage, and strive to prevent infringement of environmental rights."
+              },
+              {
+                "title": "Article 12 (Working Environment)",
+                "content": "A-PRO provides a safe working environment for employees. We regularly inspect facilities and equipment at the workplace, and take appropriate measures and follow-up management to prevent safety accidents."
+              },
+              {
+                "title": "Article 13 (Living Wage)",
+                "content": "A-PRO strives to pay the living wage necessary for employees and their families to maintain a basic life. The evaluation of the living wage is based on the annual living wage determination announcement provided by the country and city."
+              }
+            ]
+          },
+          {
+            "title": "Chapter 3 Implementation System",
+            "articles": [
+              {
+                "title": "Article 14 (Organization and Implementation)",
+                "content": "A-PRO promotes, manages, and supervises human rights management by the department in charge of HR and safety and health under the Chief Executive Officer. The relevant department discovers and implements tasks to minimize negative impacts related to human rights arising from management activities. The following items must be observed."
+              },
+              {
+                "title": "Article 15 (Operation of Grievance Handling Procedure)",
+                "content": "A-PRO operates a grievance handling system so that employees and external stakeholders who recognize human rights risks or when human rights violations such as workplace grievances, sexual harassment, bullying, and discrimination occur can report them. Human rights violations can be reported through the grievance receipt channel website and email. Received contents are promptly handled according to procedures, and the identity of the reporter and the content of the report are strictly kept confidential during the grievance handling process to protect the reporter from any disadvantages, discrimination, or retaliation.",
+                "channel_title": "[Human Rights Violation and Grievance Reporting Channel]",
+                "channel_dept": "Department: Talent Culture Team",
+                "process_title": "[Grievance Handling Procedure]",
+                "process_desc": "In principle, the handling procedure proceeds within 10 days after receiving the report, and action is taken within 90 days, but additional time may be required depending on the nature and severity of the case. In addition, the parties to the case may raise objections to the result of the grievance handling, and the department in charge may accept and review it.",
+                "processes": [
+                  "Incident Recognition",
+                  "Consultation",
+                  "Incident Investigation",
+                  "Action and Response",
+                  "Monitoring"
+                ]
+              },
+              {
+                "title": "Article 16 (Human Rights Management Education)",
+                "content": "A-PRO spreads a culture of respect for human rights through education for employees to improve awareness of human rights and prevent human rights violations, as well as education on prevention of workplace sexual harassment, prevention of workplace bullying, improvement of disability awareness, and personal information protection."
+              }
+            ]
+          }
+        ],
+        "addendum": "Addendum <2024. 12. 09>",
+        "addendum_content": "Article 1 (Enforcement Date) This policy shall be enforced from the date of enactment (December 9, 2024)."
+      },
+      "supplier_code": {
+        "title": "A-PRO Supplier Code of Conduct",
+        "sections": [
+          {
+            "title": "Article 1 (Overview)",
+            "content": "As a leading company in the global secondary battery industry, A-PRO intends to implement responsible management in terms of environment, society, and governance. We are doing our best to minimize negative environmental and social impacts caused by management activities and expand positive impacts. This Code of Conduct was enacted reflecting global guidelines, laws, and systems, and we expect APRO and its suppliers to implement responsible management activities and grow together by complying with this Code of Conduct through mutual efforts. APRO will strive to apply international standard codes of conduct such as the OECD Guidelines for Multinational Enterprises, the UN Global Compact (UNGC) 10 Principles, and the International Labor Organization (ILO) Core Conventions, centering on the UN Universal Declaration of Human Rights, to a sustainable supply chain."
+          },
+          {
+            "title": "Article 2 (Scope of Application)",
+            "content": "It applies to suppliers (raw material suppliers, facility/construction companies, consignees, etc.) who have signed a contract for transaction. Suppliers subject to application should recommend that the entire supply chain, including business partners (sub-suppliers), comply with the matters presented in this Code of Conduct."
+          },
+          {
+            "title": "Article 3 (Responsibilities and Roles of Suppliers)",
+            "content": "Suppliers must consider compliance with this Code of Conduct in the process of management decision-making and business operation. APRO and third-party organizations entrusted by APRO may inspect or conduct due diligence on suppliers in accordance with domestic and foreign laws and agreements regarding whether suppliers are complying with the matters presented in this Code of Conduct. APRO may recommend improvement for risks identified based on the results of such inspection or due diligence, and suppliers must establish and implement a risk mitigation plan through consultation with APRO. Suppliers must understand and be aware that compliance with this Code of Conduct may be a major criterion for supplier selection, and furthermore, if they do not make appropriate efforts for improvement even after violating this Code of Conduct, changes may occur in the transaction relationship with APRO. This Code of Conduct is not a document specifying all compliance matters of suppliers, and this Code of Conduct may be regularly supplemented and revised for the establishment of a sustainable supply chain."
+          },
+          {
+            "title": "Article 4 (Protection and Respect for Human Rights)",
+            "items": [
+              "Suppliers do not discriminate in employment, promotion, education, welfare benefits, etc. on the grounds of gender, nationality, age, education, religion, region, disability, gender identity, marriage and pregnancy status, political orientation, social status, etc.",
+              "Suppliers make every effort for prevention, such as regularly conducting education for all employees to improve awareness so that cases of workplace bullying including sexual harassment do not occur, and if cases of workplace bullying occur, they apply a zero-tolerance principle and implement immediate measures.",
+              "Suppliers must not discriminate against employees in the payment of wages and the operation of welfare benefit systems.",
+              "Suppliers must protect women's human rights and support gender equality, and establish maternity protection policies and procedures regarding working conditions, etc. in accordance with local laws to protect the health and safety of pregnant and breastfeeding female employees. Maternity protection subjects must not be treated disadvantageously in work placement, wages, etc.",
+              "Suppliers must provide a pleasant working environment for employees and strive to operate a welfare benefit system to improve the quality of life.",
+              "Suppliers must comply with the legal working hours of each country where they operate business, and manage working hours including rest.",
+              "Suppliers must respect the privacy of employees and refrain from unnecessary work instructions outside of working hours.",
+              "Suppliers must not have inhumane treatment including sexual harassment, sexual abuse, corporal punishment, mental or physical coercion, and abusive language towards employees, and there must be no threat to do such treatment.",
+              "Workplace bullying that causes physical or mental pain or worsens the working environment beyond the appropriate scope of work by using the superiority of status or relationship in the workplace between employees must be prohibited, and the privacy of employees must be respected and unnecessary work instructions outside of working hours must be avoided.",
+              "Recognize and respect workers' rights to freedom of association and collective bargaining.",
+              "Do not use child labor in any form, and suppliers must comply with the following. 'Child' means a person under the age of 15, the age at which compulsory education ends, or the highest age among the legal minimum employment ages under local laws. If child workers are found, the supplier must take immediate response measures."
+            ]
+          },
+          {
+            "title": "Article 5 (Safety and Health)",
+            "items": [
+              "Provide a working environment that meets local and national safety, health, and fire safety laws.",
+              "Take all measures including legal requirements such as risk assessment, continuous education and emergency response training, and provision of personal protective equipment so that employees can work in a safe and healthy working environment.",
+              "Perform regular risk assessments and implement corrective and preventive measures to minimize workplace hazards, including mechanical, electrical, chemical, fire, and physical hazards.",
+              "All workplaces must have an effective fire safety management system and emergency plan.",
+              "Strive to keep all facilities clean and provide them to employees.",
+              "Physical labor risks must be controlled in advance, and safety risks of production facilities or other facilities must be checked.",
+              "Suppliers must regularly conduct general health checkups or special health checkups for employees in accordance with the health checkup laws of each country where they operate business. In addition, if necessary as a result of the health checkup, measures such as changing the employee's workspace, changing work, or shortening working hours must be implemented."
+            ]
+          },
+          {
+            "title": "Article 6 (Environment)",
+            "items": [
+              "Suppliers must comply with environmental laws and regulations of each country where they operate business, and acquire and maintain all environmental permits required for business operation.",
+              "Suppliers must strive to ensure that chemical substances handled in the process of business operation are safely managed during transportation, storage, use, and disposal. In addition, information that can identify the risk and hazard of handled chemical substances must be marked or disclosed.",
+              "Suppliers must strive to check whether raw materials and parts procured, produced, sold, and distributed contain substances harmful to the human body or the environment.",
+              "Suppliers must establish a system to measure energy consumption and greenhouse gas emissions and strive to reduce greenhouse gas emissions.",
+              "Suppliers must identify the characteristics of generated waste, dispose of it after treatment in accordance with relevant laws and regulations, and strive to reduce the amount generated."
+            ]
+          },
+          {
+            "title": "Article 7 (Ethical Management)",
+            "items": [
+              "Suppliers conduct business with high ethical standards as a business without bribery and corruption, honestly and responsibly according to established work regulations.",
+              "Suppliers comply with fair trade-related laws and standards of each country where they operate business, prohibit unfair competition acts, and maintain market fairness.",
+              "A zero-tolerance policy that does not allow any form of bribery, corruption, unfair profits, and embezzlement must be used.",
+              "All transactions must be made transparently and accurately reflected in accounting books and business records.",
+              "Suppliers must respect the intellectual property rights of all transaction partners in the supply chain including our company, and strive for mutual information protection such as trade secrets, internal information, and technology/know-how.",
+              "Suppliers comply with export regulations and economic sanctions laws of each country, and do not trade with countries, regions, corporations, organizations, individuals, etc. falling under this.",
+              "Suppliers must operate a grievance handling system where employees can report violations of relevant internal regulations and laws such as ethics, environment, labor, human rights, safety and health, and information security. In addition, all measures and efforts must be made so that reporters and whistleblowers are not subject to unreasonable measures due to reporting/whistleblowing through protection.",
+              "Suppliers must truthfully disclose information on labor/safety and health/environment management status, management activities, governance structure, financial status, and performance in accordance with relevant laws and industry best practices."
+            ]
+          },
+          {
+            "title": "Article 8 (Prohibition of Use of Conflict Minerals)",
+            "content": "Suppliers must establish a policy not to use raw materials obtained through illegal and unethical methods (e.g., minerals mined in mines occupied by armed groups, timber logged in forest conservation and logging prohibited areas, etc.)."
+          },
+          {
+            "title": "Article 9 (Management System)",
+            "items": [
+              "Suppliers must comply with the Code of Conduct, laws related to corporate operations and products, and customer requirements, and establish a management system that considers workers' human rights, safety, health, environment, and corporate ethics when making corporate management decisions.",
+              "Goals, targets, and implementation plans for performance improvement in social, environmental, and health and safety, and performance against goals must be periodically evaluated and monitored.",
+              "Suppliers must make reasonable efforts to protect the personal information of everyone involved in the business, including suppliers, customers, consumers, and employees. In addition, they must comply with laws related to personal information protection and information security in the collection, storage, processing, transmission, and sharing of personal information.",
+              "Suppliers must comply with environmental laws and regulations of each country where they operate business, and acquire and maintain all environmental permits required for business operation.",
+              "Suppliers must strive to ensure that chemical substances handled in the process of business operation are safely managed during transportation, storage, use, and disposal. In addition, information that can identify the risk and hazard of handled chemical substances must be marked or disclosed."
+            ]
+          }
+        ],
+        "addendum": "Addendum <2025. 01. 02>",
+        "addendum_content": "Article 1 (Enforcement Date) This Supplier Code of Conduct policy shall be enforced from January 2, 2025."
+      },
+      "env_policy": {
+        "title": "Environmental Management Policy",
+        "sections": [
+          {
+            "title": "Article 1 (Purpose)",
+            "content": "A-PRO establishes this policy to achieve environmental conservation and corporate sustainable management simultaneously by minimizing environmental impact and sustainable use of resources. This is to faithfully implement domestic and foreign environmental laws and ESG standards and realize responsible management that meets the expectations of customers and stakeholders."
+          },
+          {
+            "title": "Article 2 (Scope of Application)",
+            "content": "This policy applies to all A-PRO business sites and all suppliers, and is implemented together with internal regulations related to environmental management. A-PRO complies with domestic and foreign environmental laws and regulations in preference to this policy, and performs work in accordance with this environmental management policy for matters not specifically covered by relevant laws or without explicit standards."
+          },
+          {
+            "title": "Article 3 (Environmental Management Policy)",
+            "items": [
+              "Create long-term corporate value and fulfill social responsibilities through environmental management.",
+              "Continuously promote concrete implementation plans such as introducing renewable energy and improving energy efficiency to achieve greenhouse gas reduction.",
+              "Maintain the discharge of pollutants such as air, water quality, and soil below legal standards and actively strive for pollutant reduction activities.",
+              "Consider resource saving and energy efficiency improvement from the product design stage to the entire production process.",
+              "Prevent ecosystem damage caused by corporate activities in advance and strive to minimize biodiversity loss.",
+              "Suppress waste generation, expand recycling, and strengthen the pre-identification and management system for hazardous chemical substances.",
+              "Systematically manage environmental management performance and realize responsible environmental management through continuous improvement.",
+              "Manage water usage for sustainable use of water resources and strengthen water saving and reuse efforts."
+            ]
+          },
+          {
+            "title": "Article 4 (Responsibilities and Authority)",
+            "intro": "Responsibilities and authorities related to the environmental management policy are as follows.",
+            "items": [
+              "The Infrastructure Team is responsible for overall environmental management.",
+              "The Infrastructure Team cooperates with relevant departments to perform policy establishment, performance management, education, and external response.",
+              "The CEO oversees the establishment and execution of environmental management strategies and has decision-making authority on major environmental issues.",
+              "The executing department implements environmental management activities in its field, regularly reports performance data to the Infrastructure Team, and performs cause analysis and corrective actions when problems occur."
+            ]
+          },
+          {
+            "title": "Article 5 (Supplier Environmental Management)",
+            "content": "When signing a contract with a supplier, A-PRO requires compliance with environmental laws and practice of eco-friendly management, and reflects this in the supplier evaluation and management criteria. In addition, we provide relevant education and technical support if necessary so that suppliers can faithfully fulfill environmental requirements."
+          },
+          {
+            "title": "Article 6 (Stakeholder Communication)",
+            "content": "A-PRO strengthens communication with stakeholders such as customers and suppliers, and transparently shares major environmental performance and improvement efforts. In addition, we promote awareness of environmental management and spread practice through regular education and internal communication for employees."
+          },
+          {
+            "title": "Article 7 (Environmental Management Policy)",
+            "items": [
+              {
+                "title": "Greenhouse Gas Emissions",
+                "content": "Continuously promote concrete implementation plans such as introducing renewable energy and improving energy efficiency to achieve greenhouse gas reduction. Consider energy efficiency improvement from the product design stage to the entire production process. Regularly monitor workplace greenhouse gas emissions, establish emission targets, and improve/manage them."
+              },
+              {
+                "title": "Water Resource Management",
+                "content": "Manage efficiently by reducing water usage and increasing reuse and recycling for sustainable use of water resources. Regularly monitor water usage, establish usage targets, and improve/manage them."
+              },
+              {
+                "title": "Pollutant Management",
+                "content": "Measure and manage the amount of pollutants generated if pollutants such as air, water quality, and soil occur. Check the performance and operation efficiency of prevention facilities and establish improvement plans. Maintain pollutant discharge below legal standards and actively strive for pollutant reduction activities."
+              },
+              {
+                "title": "Waste Management",
+                "content": "Maximize waste suppression and expand recycling to achieve waste generation reduction. Regularly monitor waste generation, establish usage targets, and improve/manage them."
+              },
+              {
+                "title": "Chemical Substance Management",
+                "content": "Implement necessary measures to prevent harm to workers' health and the environment caused by chemical substances. Periodically check the MSDS of chemical substances, update to the latest version, and conduct MSDS education for workers handling them."
+              },
+              {
+                "title": "Biodiversity Management",
+                "content": "Predict negative impacts on biodiversity in advance and implement measures to minimize them. Strive to perform biodiversity conservation activities considering the opinions of stakeholders."
+              }
+            ]
+          },
+          {
+            "title": "Article 8 (Enforcement Date)",
+            "content": "This policy will be enforced from June 1, 2025, and will be regularly reviewed and revised reflecting changes in relevant laws and ESG standards, and customer requirements."
+          }
+        ]
+      }
+    }
+  }
+}

@@ -35,7 +35,11 @@ HERE = Path(__file__).parent
 # A-1 짝이 있는 페이지. 이 이름들의 링크를 A-1 안에서 -a1 로 바꿔 준다.
 # 페이지 이름이 바뀌면 이 목록만 고치면 된다.
 PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
-         'business', 'company', 'network', 'index']
+         'business', 'company', 'network', 'index',
+         # 투자정보 · 지속가능경영 · 커뮤니티 (content-layout.css 를 함께 쓰는 콘텐츠 페이지)
+         'ir-finance', 'ir-insider', 'ir-accounting',
+         'esg-environment', 'esg-social', 'esg-governance', 'esg-report', 'esg-board',
+         'community-notice', 'community-press']
 
 # 실제로 A-1 을 생성할 페이지
 #
@@ -58,9 +62,20 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # network.html(글로벌 네트워크)도 마찬가지다 — 홈에 있던 Global Network 장이 페이지로
 # 나온 것이고, 회사 정보 메뉴·푸터·전체메뉴가 모두 여기로 모인다. 디자인은 A/A-1 이
 # 같고 링크만 갈라진다.
+#
+# ⚠ 2026-08-20 부터 투자정보·지속가능경영·커뮤니티는 A 와 A-1 의 **내용이 다르다**.
+#   A   : 기존 사이트(aproele.com)에서 옮겨 온 글 — 지금 쓰는 원본
+#   A-1 : 리뉴얼 프로젝트 DB 추출본(content-export)에서 옮겨 온 글
+#   두 벌을 나란히 놓고 보려고 사용자가 그렇게 두라고 했다. 그래서 이 아홉 장은
+#   아래 SOURCES 에 넣지 않는다 — 넣는 순간 A 내용이 A-1 을 덮어써 한쪽이 사라진다.
+#   PAGES 에는 그대로 있어야 한다(다른 페이지의 A-1 이 이 아홉 장의 -a1 을 가리켜야 하므로).
+#   ir-insider 만 예외로 들어와 있다 — A-1 쪽에 짝이 아예 없던 새 페이지라 덮어쓸 것이
+#   없고, 빼 두면 A-1 에서 이 링크만 A 로 새기 때문이다.
+#   두 갈래를 다시 합치기로 하면 아홉 장을 여기 도로 넣고 한 번 돌리면 된다.
 SOURCES = ['business-smart.html', 'business-energy.html',
            'business-ai.html', 'business-semicon.html',
-           'business.html', 'company.html', 'network.html', 'index.html']
+           'business.html', 'company.html', 'network.html', 'index.html',
+           'ir-insider.html']
 
 # body 에 CSS 분기 스위치(class="v-a1")를 달 페이지.
 #

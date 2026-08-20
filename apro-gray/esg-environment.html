@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 환경</title>
+<meta name="description" content="에이프로(APRO) 환경경영 — 환경 방침과 환경경영 정책 전문." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<link rel="stylesheet" href="content-layout.css" />
+<!-- ============================================================
+     지속가능경영 > 환경
+
+     글과 수치는 content-export/ 에서 그대로 옮겨 온 것이다(원본: 구 apro_home).
+     레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
+     시안이 나오면 이 파일의 마크업은 두고 그 CSS 부터 갈아탄다.
+
+     GNB·푸터·전체메뉴는 사업영역 세부 페이지와 같은 한 벌
+     (business-layout.css / business-layout.js)을 쓴다.
+     A-1(esg-environment-a1.html)은 이 파일에서 _gen-a1.py 로 나온다 -->
+</head>
+<body>
+
+<!-- ===================== GNB ===================== -->
+<div class="gnb-group">
+  <nav class="gnb">
+    <a class="logo" href="index.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="menus">
+      <a href="business.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance.html" data-i="2">투자정보</a><a href="esg-environment.html" data-i="3">지속가능경영</a><a href="community-notice.html" data-i="4">커뮤니티</a>
+    </div>
+    <div class="tools">
+      <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
+      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
+    <div class="m-col" data-i="0"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 솔루션</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
+    <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-insider.html">내부정보관리규정</a><a href="ir-accounting.html">내부회계관리규정</a></div>
+    <div class="m-col" data-i="3"><a href="esg-environment.html" aria-current="page">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
+    <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
+  </div><span class="m-globe"></span></div></div>
+  <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
+</div>
+
+<!-- ===================== 히어로 ===================== -->
+<section class="chero">
+  <div class="cwrap in">
+    <p class="en">Sustainability</p>
+    <h1>환경</h1>
+    <p class="lead">책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.</p>
+  </div>
+</section>
+
+<!-- ===================== 소분류 탭 ===================== -->
+<nav class="csub" aria-label="지속가능경영 하위 메뉴">
+  <div class="cwrap in"><a href="esg-environment.html" aria-current="page">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
+</nav>
+
+<!-- ===================== 본문 ===================== -->
+<main class="cbody">
+  <div class="cwrap">
+    <section class="cblock">
+      <h2>환경 경영</h2>
+      <p class="lead">A-PRO는 환경영향을 최소화하고 자원의 지속가능한 사용을 통해 환경보전과
+        기업의 지속가능경영을 동시에 달성하고자 합니다. 우리는 국내외 환경 관련 법규 및 ESG 기준을
+        성실히 이행하고, 고객사와 이해관계자의 기대에 부합하는 책임 있는 경영을 실현하기 위해
+        노력합니다.</p>
+    </section>
+
+    <section class="cblock">
+      <h2>환경 방침</h2>
+      <p class="lead">A-PRO는 모든 사업장 및 협력업체에 적용되는 명확한 환경 경영 방침을
+        수립하고 실천합니다.</p>
+      <div class="ccards">
+        <article class="ccard">
+          <h3>지속적인 온실가스 감축</h3>
+          <p>재생에너지 도입 및 에너지 효율 개선을 통해 온실가스 감축 목표를 달성하고자 지속적으로 노력합니다. 제품 설계부터 생산 공정 전반에 걸쳐 에너지 효율 향상을 고려하며, 사업장 온실가스 배출량을 정기적으로 모니터링하고 관리합니다.</p>
+          
+        </article>
+        <article class="ccard">
+          <h3>오염물질 배출 최소화</h3>
+          <p>대기, 수질, 토양 등 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극적으로 참여합니다. 오염물질 발생량을 측정 및 관리하고, 방지시설의 성능 및 운영 효율을 점검하여 개선 계획을 수립합니다.</p>
+          
+        </article>
+        <article class="ccard">
+          <h3>자원 효율성 증대 및 폐기물 관리</h3>
+          <p>제품의 설계 단계부터 자원 절감과 에너지 효율 향상을 고려합니다. 폐기물 발생을 최대한 억제하고 재활용을 확대하며, 유해 화학물질에 대한 사전 식별 및 관리 체계를 강화합니다.</p>
+          
+        </article>
+        <article class="ccard">
+          <h3>수자원 관리</h3>
+          <p>수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.</p>
+          
+        </article>
+        <article class="ccard">
+          <h3>생물다양성 보호</h3>
+          <p>기업 활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력합니다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행합니다.</p>
+          
+        </article>
+        <article class="ccard">
+          <h3>투명한 정보 공개 및 소통</h3>
+          <p>고객사, 협력사 등 이해관계자와의 소통을 강화하고, 주요 환경 성과와 개선 노력을 투명하게 공유합니다. 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경 경영의 인식 제고와 실천 확산을 추진합니다.</p>
+          
+        </article>
+      </div>
+    </section>
+
+    <section class="cblock">
+      <h2>환경경영 정책</h2>
+      <p class="lead">2025년 6월 1일 시행</p>
+      <div class="cdoc">
+      <h3 id="e1">제1조(목적)</h3>
+      <p>에이프로는 환경영향을 최소화하고 자원의 지속가능한 사용을 통해 환경보전과 기업의 지속가능경영을 동시에 달성하고자 본 정책을 수립한다. 이는 국내외 환경 관련 법규 및 ESG 기준을 성실히 이행하고, 고객사와 이해관계자의 기대에 부합하는 책임 있는 경영을 실현하기 위함이다.</p>
+      <h3 id="e2">제2조(적용범위)</h3>
+      <p>이 정책은 에이프로의 전 사업장 및 전 협력업체에 적용되며, 환경관리 관련 내부 규정과 함께 이행된다. 에이프로는 국내외 환경 관련 법령 및 규제를 본 정책에 우선하여 준수하며, 관련 법령에서 구체적으로 다루고 있지 않거나 명시적 기준이 없는 사항에 대해서는 본 환경경영정책에 따라 업무를 수행한다.</p>
+      <h3 id="e3">제3조(환경경영 방침)</h3>
+      <ol><li>환경경영을 통해 기업의 장기적 가치를 창출하며 사회적 책임을 이행한다.</li><li>온실가스 감축 달성을 위해 재생에너지 도입, 에너지 효율 개선 등 구체적인 실행방안을 지속적으로 추진한다.</li><li>대기, 수질, 토양 등의 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극 노력한다.</li><li>제품의 설계 단계에서부터 생산공정 전반에 이르기까지 자원 절감과 에너지 효율 향상을 고려한다.</li><li>기업활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력한다.</li><li>폐기물 발생을 억제하고 재활용을 확대하며, 유해화학물질에 대한 사전 식별 및 관리체계를 강화한다.</li><li>환경경영 성과를 체계적으로 관리하고, 지속적인 개선을 통해 책임 있는 환경경영을 실현해 나간다.</li><li>수자원의 지속 가능한 이용을 위해 용수 사용량을 관리하고, 절수 및 재사용 노력을 강화한다.</li></ol>
+      <h3 id="e4">제4조(책임과 권한)</h3>
+      <p>환경경영 방침과 관련된 책임과 권한은 다음 각 호와 같다.</p>
+      <ol><li>환경경영 총괄은 인프라팀이 담당한다.</li><li>인프라팀은 관련 부서와 협력하여 정책 수립, 성과 관리, 교육 및 대외 대응을 수행한다.</li><li>대표이사는 환경경영의 전략 수립과 실행을 총괄하며, 주요 환경 이슈에 대한 의사결정 권한을 가진다.</li><li>실행부서는 담당 분야의 환경관리 활동을 이행하고, 성과 데이터를 정기적으로 인프라팀에 보고하며, 문제 발생 시 원인 분석 및 개선조치를 수행한다.</li></ol>
+      <h3 id="e5">제5조(협력사 환경관리)</h3>
+      <p>에이프로는 협력사와의 계약 체결 시 환경 관련 법규 준수와 친환경 경영 실천을 요구하며, 이를 협력사 평가 및 관리 기준에 반영한다. 또한, 협력업체가 환경 관련 요구사항을 충실히 이행할 수 있도록, 필요 시 관련 교육과 기술지원을 제공한다.</p>
+      <h3 id="e6">제6조(이해관계자 소통)</h3>
+      <p>에이프로는 고객사, 협력사 등의 이해관계자와의 소통을 강화하고, 주요 환경성과와 개선 노력을 투명하게 공유한다. 또한, 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경경영의 인식 제고와 실천 확산을 추진한다.</p>
+      <h3 id="e7">제7조(환경경영 정책)</h3>
+      <h4>온실가스 배출량</h4>
+      <p>온실가스 감축 달성을 위해 재생에너지 도입, 에너지 효율 개선 등 구체적인 실행방안을 지속적으로 추진한다. 제품의 설계 단계에서부터 생산공정 전반에 이르기까지 에너지 효율 향상을 고려한다. 사업장 온실가스 배출량을 정기적으로 모니터링 하며, 배출량 목표 실적을 수립하고 개선·관리한다.</p>
+      <h4>수자원 관리</h4>
+      <p>수자원의 지속 가능한 이용을 위해 수자원 사용량을 절감하고 재사용량 및 재활용량을 증가시켜 효율적으로 관리한다. 수자원 사용량을 정기적으로 모니터링 하며, 사용량 목표 실적을 수립하고 개선·관리한다.</p>
+      <h4>오염물질 관리</h4>
+      <p>대기, 수질, 토양 등의 오염물질이 발생하는 경우 오염물질 발생량을 측정, 관리한다. 방지시설의 성능 및 운영효율을 점검하고 개선계획을 수립한다. 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극 노력한다.</p>
+      <h4>폐기물 관리</h4>
+      <p>폐기물 발생량을 감축달성을 위해 폐기물을 최대한 억제하고 재활용을 확대한다. 폐기물 발생량을 정기적으로 모니터링 하며, 사용량 목표 실적을 수립하고 개선·관리한다.</p>
+      <h4>화학물질 관리</h4>
+      <p>화학물질로 인한 근로자의 건강 및 환경상의 위해를 예방하기 위해 필요한 조치를 실시한다. 화학물질의 MSDS를 주기적으로 확인하고 최신버전으로 갱신하며 취급하는 근로자를 대상으로 MSDS 교육을 실시한다.</p>
+      <h4>생물다양성 관리</h4>
+      <p>생물다양성에 미치는 부정적 영향을 사전에 예측하고, 최소화하기 위한 조치를 시행한다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행할 수 있도록 노력한다.</p>
+      <h3 id="e8">제8조(시행일)</h3>
+      <p>본 정책은 2025년 6월 1일부터 시행하며, 관련 법령 및 ESG 기준 변화, 고객사의 요구사항 등을 반영하여 정기적으로 검토 및 개정한다.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul><li><a href="business-smart.html">스마트 제조</a></li><li><a href="business-energy.html">에너지 솔루션</a></li><li><a href="business-ai.html">인공지능 플랫폼</a></li><li><a href="business-semicon.html">화합물 전력 반도체</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company.html">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance.html">재무정보</a></li><li><a href="ir-insider.html">내부정보관리규정</a></li><li><a href="ir-accounting.html">내부회계관리규정</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment.html" aria-current="page">환경</a></li><li><a href="esg-social.html">사회</a></li><li><a href="esg-governance.html">지배구조</a></li><li><a href="esg-report.html">내/외부 신고채널</a></li><li><a href="esg-board.html">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice.html">공지사항</a></li><li><a href="community-press.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 솔루션</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance.html">재무정보</a><a href="ir-insider.html">내부정보관리규정</a><a href="ir-accounting.html">내부회계관리규정</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="esg-environment.html" aria-current="page">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
+     (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="business-layout.js"></script>
+</body>
+</html>

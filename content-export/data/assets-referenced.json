@@ -1,0 +1,331 @@
+[
+  {
+    "url": "/api/uploads/1778808668569_apro_semicon_night.png",
+    "local": "public/uploads/1778808668569_apro_semicon_night.png",
+    "from": [
+      "NOTICE/KOR 2026.05.14 팝업 다시 보지 않기 테스트"
+    ],
+    "exists": true,
+    "size": 782566
+  },
+  {
+    "url": "/api/uploads/1778808683273_image.png",
+    "local": "public/uploads/1778808683273_image.png",
+    "from": [
+      "NOTICE/KOR 2026.05.14 팝업 다시 보지 않기 테스트"
+    ],
+    "exists": true,
+    "size": 89796
+  },
+  {
+    "url": "/api/uploads/1778817053740_1778817028533_apro_semicon_day.png",
+    "local": "public/uploads/1778817053740_1778817028533_apro_semicon_day.png",
+    "from": [
+      "NOTICE/KOR 2026.05.15 팝업 다시 보지 않기 테스트"
+    ],
+    "exists": true,
+    "size": 3811482
+  },
+  {
+    "url": "/api/uploads/1778817127805_image.png",
+    "local": "public/uploads/1778817127805_image.png",
+    "from": [
+      "NOTICE/KOR 2026.05.15 팝업 다시 보지 않기 테스트"
+    ],
+    "exists": true,
+    "size": 53174
+  },
+  {
+    "url": "/api/uploads/1778822592595_image.png",
+    "local": "public/uploads/1778822592595_image.png",
+    "from": [
+      "NOTICE/KOR 폰트 크기 확인"
+    ],
+    "exists": true,
+    "size": 71273
+  },
+  {
+    "url": "/esg/APRO-GUIDEBOOK-250106.pdf",
+    "local": "public/esg/APRO-GUIDEBOOK-250106.pdf",
+    "from": [
+      "components/esg/FairTradeModal.tsx"
+    ],
+    "exists": true,
+    "size": 701775
+  },
+  {
+    "url": "/img/esg/banner.png",
+    "local": "public/img/esg/banner.png",
+    "from": [
+      "components/esg/EsgBoard.tsx"
+    ],
+    "exists": true,
+    "size": 536112
+  },
+  {
+    "url": "/img/ir/listing_status_modern.jpg",
+    "local": "public/img/ir/listing_status_modern.jpg",
+    "from": [
+      "app/(public)/ir/stock/page.tsx",
+      "components/ir/IRHeader.tsx"
+    ],
+    "exists": true,
+    "size": 180229
+  },
+  {
+    "url": "/img/ir/office.png",
+    "local": "public/img/ir/office.png",
+    "from": [
+      "app/(public)/ir/reports/page.tsx",
+      "app/(public)/ir/reports/[id]/page.tsx",
+      "components/ir/IRHeader.tsx"
+    ],
+    "exists": true,
+    "size": 870544
+  },
+  {
+    "url": "/img/ir/stock_chart.png",
+    "local": "public/img/ir/stock_chart.png",
+    "from": [
+      "app/(public)/ir/stock/page.tsx",
+      "components/ir/IRHeader.tsx"
+    ],
+    "exists": true,
+    "size": 781815
+  },
+  {
+    "url": "/img/ir/stock_info.png",
+    "local": "public/img/ir/stock_info.png",
+    "from": [
+      "app/(public)/ir/page.tsx",
+      "components/ir/IRHeader.tsx"
+    ],
+    "exists": true,
+    "size": 869922
+  },
+  {
+    "url": "/img/sub/esg_1_top.jpg",
+    "local": "public/img/sub/esg_1_top.jpg",
+    "from": [
+      "app/(public)/esg/page.tsx"
+    ],
+    "exists": true,
+    "size": 8778800
+  },
+  {
+    "url": "/img/sub/esg_1_top.png",
+    "local": "public/img/sub/esg_1_top.png",
+    "from": [
+      "app/(public)/esg/page.tsx"
+    ],
+    "exists": true,
+    "size": 2153705
+  },
+  {
+    "url": "/img/sub/esg_safety.png",
+    "local": "public/img/sub/esg_safety.png",
+    "from": [
+      "app/(public)/esg/page.tsx"
+    ],
+    "exists": true,
+    "size": 735793
+  },
+  {
+    "url": "/img/sub/esg_social_supply_v2.png",
+    "local": "public/img/sub/esg_social_supply_v2.png",
+    "from": [
+      "app/(public)/esg/page.tsx"
+    ],
+    "exists": true,
+    "size": 640435
+  },
+  {
+    "url": "/img/whistleblowing_soft_header.png",
+    "local": "public/img/whistleblowing_soft_header.png",
+    "from": [
+      "components/esg/ReportContent.tsx"
+    ],
+    "exists": true,
+    "size": 528163
+  },
+  {
+    "url": "/uploads/1765960289012_1765960233184_ev1_02_3d.jpg",
+    "local": "public/uploads/1765960289012_1765960233184_ev1_02_3d.jpg",
+    "from": [
+      "NOTICE/KOR 합병종료보고 공고"
+    ],
+    "exists": true,
+    "size": 494751
+  },
+  {
+    "url": "/uploads/1765961978430_ev1_03_3d.png",
+    "local": "public/uploads/1765961978430_ev1_03_3d.png",
+    "from": [
+      "NOTICE/KOR 합병종료보고 공고"
+    ],
+    "exists": true,
+    "size": 685221
+  },
+  {
+    "url": "/uploads/1765965542508_image.png",
+    "local": "public/uploads/1765965542508_image.png",
+    "from": [
+      "PRESS/KOR (상위1%툴) \"안티그래비티\" 출시! AI 에이전트 성능이 미쳤습니다"
+    ],
+    "exists": true,
+    "size": 195273
+  },
+  {
+    "url": "/uploads/1766028812610_image.png",
+    "local": "public/uploads/1766028812610_image.png",
+    "from": [
+      "PRESS/KOR 노트북LM 사용자라면 필수 크롬 확장 프로그램 2종(무료!)"
+    ],
+    "exists": true,
+    "size": 578668
+  },
+  {
+    "url": "/uploads/1766028894858_image.png",
+    "local": "public/uploads/1766028894858_image.png",
+    "from": [
+      "PRESS/KOR 노트북LM 사용자라면 필수 크롬 확장 프로그램 2종(무료!)"
+    ],
+    "exists": true,
+    "size": 642598
+  },
+  {
+    "url": "/uploads/1766454503606_contact_ir.png",
+    "local": "public/uploads/1766454503606_contact_ir.png",
+    "from": [
+      "NOTICE/ENG Public Notice Reporting Merger Details"
+    ],
+    "exists": true,
+    "size": 946223
+  },
+  {
+    "url": "/uploads/1766471914177_image.png",
+    "local": "public/uploads/1766471914177_image.png",
+    "from": [
+      "ESG/KOR 온실가스 배출량 및 집약도 (2022~2024)"
+    ],
+    "exists": true,
+    "size": 105654
+  },
+  {
+    "url": "/uploads/1766471946285_image.png",
+    "local": "public/uploads/1766471946285_image.png",
+    "from": [
+      "ESG/KOR 용수 사용량 (2022~2024)"
+    ],
+    "exists": true,
+    "size": 77614
+  },
+  {
+    "url": "/uploads/1766471968676_image.png",
+    "local": "public/uploads/1766471968676_image.png",
+    "from": [
+      "ESG/KOR 환경경영시스템 (ISO 14001:2015)"
+    ],
+    "exists": true,
+    "size": 2535675
+  },
+  {
+    "url": "/uploads/1766472016523_image.png",
+    "local": "public/uploads/1766472016523_image.png",
+    "from": [
+      "ESG/KOR 에너지 소비량 및 집약도 (2022~2024)"
+    ],
+    "exists": true,
+    "size": 80985
+  },
+  {
+    "url": "/uploads/1766472041199_image.png",
+    "local": "public/uploads/1766472041199_image.png",
+    "from": [
+      "ESG/KOR 폐기물 발생 현황 (2024)"
+    ],
+    "exists": true,
+    "size": 75799
+  },
+  {
+    "url": "/uploads/1766472088311_image.png",
+    "local": "public/uploads/1766472088311_image.png",
+    "from": [
+      "ESG/ENG Greenhouse gas emissions and intensity (2022–2024)"
+    ],
+    "exists": true,
+    "size": 105654
+  },
+  {
+    "url": "/uploads/1766472138711_image.png",
+    "local": "public/uploads/1766472138711_image.png",
+    "from": [
+      "ESG/ENG Water usage (2022-2024)"
+    ],
+    "exists": true,
+    "size": 77614
+  },
+  {
+    "url": "/uploads/1766472180995_image.png",
+    "local": "public/uploads/1766472180995_image.png",
+    "from": [
+      "ESG/ENG Environmental Management System (ISO 14001:2015)"
+    ],
+    "exists": true,
+    "size": 2535675
+  },
+  {
+    "url": "/uploads/1766472208312_image.png",
+    "local": "public/uploads/1766472208312_image.png",
+    "from": [
+      "ESG/ENG Energy Consumption and Intensity (2022–2024)"
+    ],
+    "exists": true,
+    "size": 80985
+  },
+  {
+    "url": "/uploads/1766472271441_image.png",
+    "local": "public/uploads/1766472271441_image.png",
+    "from": [
+      "ESG/ENG Waste Generation Status (2024)"
+    ],
+    "exists": true,
+    "size": 75799
+  },
+  {
+    "url": "/uploads/attachments/2025/12/business_energy_main-1765965577781-651493107.png",
+    "local": "public/uploads/attachments/2025/12/business_energy_main-1765965577781-651493107.png",
+    "from": [
+      "첨부: (상위1%툴) \"안티그래비티\" 출시! AI 에이전트 성능이 미쳤습니다"
+    ],
+    "exists": true,
+    "size": 658140
+  },
+  {
+    "url": "/uploads/attachments/2025/12/ev_formation_3d_new-1765954945723-442020240.png",
+    "local": "public/uploads/attachments/2025/12/ev_formation_3d_new-1765954945723-442020240.png",
+    "from": [
+      "첨부: 소규모합병 공고 : 수정 OK"
+    ],
+    "exists": true,
+    "size": 616165
+  },
+  {
+    "url": "/uploads/attachments/2025/12/ev2_01_3d-1765960321401-356088433.png",
+    "local": "public/uploads/attachments/2025/12/ev2_01_3d-1765960321401-356088433.png",
+    "from": [
+      "첨부: 합병종료보고 공고"
+    ],
+    "exists": true,
+    "size": 494208
+  },
+  {
+    "url": "/uploads/attachments/2025/12/ev4_01-1765954945737-859687525.png",
+    "local": "public/uploads/attachments/2025/12/ev4_01-1765954945737-859687525.png",
+    "from": [
+      "첨부: 소규모합병 공고 : 수정 OK"
+    ],
+    "exists": true,
+    "size": 188591
+  }
+]

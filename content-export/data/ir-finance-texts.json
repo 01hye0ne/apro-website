@@ -1,0 +1,96 @@
+{
+  "KOR": {
+    "title": "재무정보",
+    "desc": "투명하고 정확한 재무 정보를 제공하여 주주 가치를 제고합니다.",
+    "sub_tabs": {
+      "separate_balance": "별도 재무상태표",
+      "consolidated_balance": "연결 재무상태표",
+      "separate_income": "별도 손익계산서",
+      "consolidated_income": "연결 손익계산서"
+    },
+    "chart": {
+      "assets": "자산총계",
+      "capital": "자본총계",
+      "debt": "부채총계",
+      "revenue": "매출액",
+      "unit": "백만원"
+    },
+    "table": {
+      "account": "계정과목",
+      "unit": "(단위: 백만원)"
+    },
+    "account_items": {
+      "유동자산": "유동자산",
+      "비유동자산": "비유동자산",
+      "자산총계": "자산총계",
+      "유동부채": "유동부채",
+      "비유동부채": "비유동부채",
+      "부채총계": "부채총계",
+      "자본총계": "자본총계",
+      "자본과부채총계": "자본과부채총계",
+      "매출액": "매출액",
+      "매출원가": "매출원가",
+      "매출총이익": "매출총이익",
+      "판매비와관리비": "판매비와관리비",
+      "영업이익(손실)": "영업이익(손실)",
+      "영업이익": "영업이익",
+      "기타수익(비용)": "기타수익(비용)",
+      "금융수익(비용)": "금융수익(비용)",
+      "법인세차감전순이익(비용)": "법인세차감전순이익(비용)",
+      "법인세비용(수익)": "법인세비용(수익)",
+      "당기순이익(손실)": "당기순이익(손실)",
+      "순이익": "순이익",
+      "자본": "자본",
+      "부채": "부채",
+      "매출": "매출"
+    },
+    "accounting_btn": "내부회계관리규정"
+  },
+  "ENG": {
+    "title": "Financial Info",
+    "desc": "We enhance shareholder value by providing transparent and accurate financial information.",
+    "sub_tabs": {
+      "separate_balance": "Separate Balance Sheet",
+      "consolidated_balance": "Consolidated Balance Sheet",
+      "separate_income": "Separate Income Statement",
+      "consolidated_income": "Consolidated Income Statement"
+    },
+    "chart": {
+      "assets": "Total Assets",
+      "capital": "Total Capital",
+      "debt": "Total Liabilities",
+      "revenue": "Revenue",
+      "unit": "Million KRW"
+    },
+    "table": {
+      "account": "Account Item",
+      "unit": "(Unit: Million KRW)"
+    },
+    "account_items": {
+      "유동자산": "Current Assets",
+      "비유동자산": "Non-current Assets",
+      "자산총계": "Total Assets",
+      "유동부채": "Current Liabilities",
+      "비유동부채": "Non-current Liabilities",
+      "부채총계": "Total Liabilities",
+      "자본총계": "Total Equity",
+      "자본과부채총계": "Total Liabilities and Equity",
+      "매출액": "Revenue",
+      "매출원가": "Cost of Sales",
+      "매출총이익": "Gross Profit",
+      "판매비와관리비": "Selling, General and Administrative Expenses",
+      "영업이익(손실)": "Operating Income (Loss)",
+      "영업이익": "Operating Income",
+      "기타수익(비용)": "Other Income (Expenses)",
+      "금융수익(비용)": "Financial Income (Expenses)",
+      "법인세차감전순이익(비용)": "Net Income before Income Tax Expense",
+      "법인세비용(수익)": "Income Tax Expense (Benefit)",
+      "당기순이익(손실)": "Net Income (Loss)",
+      "순이익": "Net Income",
+      "자본": "Equity",
+      "부채": "Liabilities",
+      "매출": "Revenue"
+    },
+    "accounting_btn": "Internal Accounting Regulations"
+  }
+}

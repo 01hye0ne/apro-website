@@ -1,0 +1,72 @@
+{
+  "KOR": {
+    "header": {
+      "subtitle": "커뮤니티"
+    },
+    "tabs": {
+      "notice": "공지사항",
+      "press": "보도자료"
+    },
+    "notice": {
+      "title": "NOTICE",
+      "subtitle": "A-PRO의 새로운 소식과 공지사항을 확인하세요.",
+      "empty": "등록된 공지사항이 없습니다."
+    },
+    "press": {
+      "title": "PRESS RELEASE",
+      "subtitle": "A-PRO의 언론 보도 자료를 확인하세요.",
+      "empty": "등록된 보도자료가 없습니다."
+    },
+    "search": {
+      "title": "제목",
+      "content": "내용",
+      "placeholder": "검색어 입력",
+      "button": "검색"
+    },
+    "table": {
+      "no": "번호",
+      "title": "제목",
+      "author": "작성자",
+      "date": "작성일",
+      "views": "조회수",
+      "admin": "관리자",
+      "pinned": "공지",
+      "global": "전체공지"
+    }
+  },
+  "ENG": {
+    "header": {
+      "subtitle": "Community"
+    },
+    "tabs": {
+      "notice": "Notice",
+      "press": "Press Release"
+    },
+    "notice": {
+      "title": "NOTICE",
+      "subtitle": "Check out the latest news and notices from A-PRO.",
+      "empty": "No notices registered."
+    },
+    "press": {
+      "title": "PRESS RELEASE",
+      "subtitle": "Check out A-PRO's press releases.",
+      "empty": "No press releases registered."
+    },
+    "search": {
+      "title": "Title",
+      "content": "Content",
+      "placeholder": "Enter keyword",
+      "button": "Search"
+    },
+    "table": {
+      "no": "No.",
+      "title": "Title",
+      "author": "Author",
+      "date": "Date",
+      "views": "Views",
+      "admin": "Admin",
+      "pinned": "Notice",
+      "global": "Global Notice"
+    }
+  }
+}

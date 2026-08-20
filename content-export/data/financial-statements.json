@@ -1,0 +1,1228 @@
+[
+  {
+    "type": "SEPARATE_BALANCE",
+    "period": "제 26 기",
+    "year": 2025,
+    "data": [
+      {
+        "no": 1,
+        "key": "유동자산",
+        "value": 134187,
+        "level": 1
+      },
+      {
+        "no": 2,
+        "key": "비유동자산",
+        "value": 143894,
+        "level": 1
+      },
+      {
+        "no": 3,
+        "key": "자산총계",
+        "value": 278081,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "유동부채",
+        "value": 154303,
+        "level": 1
+      },
+      {
+        "no": 5,
+        "key": "비유동부채",
+        "value": 35834,
+        "level": 1
+      },
+      {
+        "no": 6,
+        "key": "부채총계",
+        "value": 190137,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "자본총계",
+        "value": 87944,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "자본과부채총계",
+        "value": 278081,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_INCOME",
+    "period": "제 26 기",
+    "year": 2025,
+    "data": [
+      {
+        "no": 1,
+        "key": "매출액",
+        "value": 141602,
+        "level": 0
+      },
+      {
+        "no": 2,
+        "key": "매출원가",
+        "value": 122036,
+        "level": 0
+      },
+      {
+        "no": 3,
+        "key": "매출총이익",
+        "value": 19566,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "판매비와관리비",
+        "value": 16457,
+        "level": 0
+      },
+      {
+        "no": 5,
+        "key": "영업이익(손실)",
+        "value": 3109,
+        "level": 0
+      },
+      {
+        "no": 6,
+        "key": "기타수익(비용)",
+        "value": 2144,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "금융수익(비용)",
+        "value": -1509,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "법인세차감전순이익(비용)",
+        "value": 3744,
+        "level": 0
+      },
+      {
+        "no": 9,
+        "key": "법인세비용(수익)",
+        "value": 2550,
+        "level": 0
+      },
+      {
+        "no": 10,
+        "key": "당기순이익(손실)",
+        "value": 1194,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_BALANCE",
+    "period": "제 26 기",
+    "year": 2025,
+    "data": [
+      {
+        "no": 1,
+        "key": "유동자산",
+        "value": 134492,
+        "level": 1
+      },
+      {
+        "no": 2,
+        "key": "비유동자산",
+        "value": 193025,
+        "level": 1
+      },
+      {
+        "no": 3,
+        "key": "자산총계",
+        "value": 327517,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "유동부채",
+        "value": 206734,
+        "level": 1
+      },
+      {
+        "no": 5,
+        "key": "비유동부채",
+        "value": 59472,
+        "level": 1
+      },
+      {
+        "no": 6,
+        "key": "부채총계",
+        "value": 266206,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "자본총계",
+        "value": 61311,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "자본과부채총계",
+        "value": 327517,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_INCOME",
+    "period": "제 26 기",
+    "year": 2025,
+    "data": [
+      {
+        "no": 1,
+        "key": "매출액",
+        "value": 147080,
+        "level": 0
+      },
+      {
+        "no": 2,
+        "key": "매출원가",
+        "value": 124195,
+        "level": 0
+      },
+      {
+        "no": 3,
+        "key": "매출총이익",
+        "value": 22885,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "판매비와관리비",
+        "value": 28719,
+        "level": 0
+      },
+      {
+        "no": 5,
+        "key": "영업이익(손실)",
+        "value": -5835,
+        "level": 0
+      },
+      {
+        "no": 6,
+        "key": "기타수익(비용)",
+        "value": 1829,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "지분법손익",
+        "value": 149,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "금융수익(비용)",
+        "value": -4345,
+        "level": 0
+      },
+      {
+        "no": 9,
+        "key": "법인세차감전순이익(비용)",
+        "value": -8202,
+        "level": 0
+      },
+      {
+        "no": 10,
+        "key": "법인세비용(수익)",
+        "value": 2551,
+        "level": 0
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": -10753,
+        "level": 0,
+        "no": 11
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_BALANCE",
+    "period": "제 25 기",
+    "year": 2024,
+    "data": [
+      {
+        "no": 1,
+        "key": "유동자산",
+        "value": 246847,
+        "level": 1
+      },
+      {
+        "no": 2,
+        "key": "비유동자산",
+        "value": 111074,
+        "level": 1
+      },
+      {
+        "no": 3,
+        "key": "자산총계",
+        "value": 357921,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "유동부채",
+        "value": 232864,
+        "level": 1
+      },
+      {
+        "no": 5,
+        "key": "비유동부채",
+        "value": 37043,
+        "level": 1
+      },
+      {
+        "no": 6,
+        "key": "부채총계",
+        "value": 269907,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "자본총계",
+        "value": 88014,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "자본과부채총계",
+        "value": 357921,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_BALANCE",
+    "period": "제 25 기",
+    "year": 2024,
+    "data": [
+      {
+        "no": 1,
+        "key": "유동자산",
+        "value": 252354,
+        "level": 1
+      },
+      {
+        "no": 2,
+        "key": "비유동자산",
+        "value": 162299,
+        "level": 1
+      },
+      {
+        "no": 3,
+        "key": "자산총계",
+        "value": 414653,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "유동부채",
+        "value": 278830,
+        "level": 1
+      },
+      {
+        "no": 5,
+        "key": "비유동부채",
+        "value": 62760,
+        "level": 1
+      },
+      {
+        "no": 6,
+        "key": "부채총계",
+        "value": 341590,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "자본총계",
+        "value": 73063,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "자본과부채총계",
+        "value": 414653,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_INCOME",
+    "period": "제 25 기",
+    "year": 2024,
+    "data": [
+      {
+        "no": 1,
+        "key": "매출액",
+        "value": 197497,
+        "level": 0
+      },
+      {
+        "no": 2,
+        "key": "매출원가",
+        "value": 167555,
+        "level": 0
+      },
+      {
+        "no": 3,
+        "key": "매출총이익",
+        "value": 29942,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "판매비와관리비",
+        "value": 20828,
+        "level": 0
+      },
+      {
+        "no": 5,
+        "key": "영업이익(손실)",
+        "value": 9114,
+        "level": 0
+      },
+      {
+        "no": 6,
+        "key": "기타수익(비용)",
+        "value": 121,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "금융수익(비용)",
+        "value": 440,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "법인세차감전순이익(비용)",
+        "value": 9675,
+        "level": 0
+      },
+      {
+        "no": 9,
+        "key": "법인세비용(수익)",
+        "value": -524,
+        "level": 0
+      },
+      {
+        "no": 10,
+        "key": "당기순이익(손실)",
+        "value": 10199,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_INCOME",
+    "period": "제 25 기",
+    "year": 2024,
+    "data": [
+      {
+        "no": 1,
+        "key": "매출액",
+        "value": 200156,
+        "level": 0
+      },
+      {
+        "no": 2,
+        "key": "매출원가",
+        "value": 168493,
+        "level": 0
+      },
+      {
+        "no": 3,
+        "key": "매출총이익",
+        "value": 31663,
+        "level": 0
+      },
+      {
+        "no": 4,
+        "key": "판매비와관리비",
+        "value": 28302,
+        "level": 0
+      },
+      {
+        "no": 5,
+        "key": "영업이익(손실)",
+        "value": 3361,
+        "level": 0
+      },
+      {
+        "no": 6,
+        "key": "기타수익(비용)",
+        "value": 860,
+        "level": 0
+      },
+      {
+        "no": 7,
+        "key": "금융수익(비용)",
+        "value": -1988,
+        "level": 0
+      },
+      {
+        "no": 8,
+        "key": "법인세차감전순이익(비용)",
+        "value": 2233,
+        "level": 0
+      },
+      {
+        "no": 9,
+        "key": "법인세비용(수익)",
+        "value": -524,
+        "level": 0
+      },
+      {
+        "no": 10,
+        "key": "당기순이익(손실)",
+        "value": 2757,
+        "level": 0
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_BALANCE",
+    "period": "제 24 기",
+    "year": 2023,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 175687,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 61314,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 237001,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 155741,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 1257,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 156998,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 80003,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 237001,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_INCOME",
+    "period": "제 24 기",
+    "year": 2023,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 234330,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 197286,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 37044,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 18222,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": 18822,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": -1949,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": 501,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": 17374,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": 2222,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": 15152,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_BALANCE",
+    "period": "제 24 기",
+    "year": 2023,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 174767,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 71630,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 246397,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 163634,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 10505,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 174139,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 72258,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 246397,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_INCOME",
+    "period": "제 24 기",
+    "year": 2023,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 235952,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 196928,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 39024,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 23510,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": 15514,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": -604,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": -620,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": 14290,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": 2222,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": 12068,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_BALANCE",
+    "period": "제 23 기",
+    "year": 2022,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 102744,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 40137,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 142881,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 78210,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 36,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 78246,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 64635,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 142881,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_INCOME",
+    "period": "제 23 기",
+    "year": 2022,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 78468,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 66298,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 12170,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 10282,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": 1888,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": 71,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": -714,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": 1245,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": -883,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": 2128,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_BALANCE",
+    "period": "제 23 기",
+    "year": 2022,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 104082,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 36172,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 140254,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 78760,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 1572,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 80332,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 59922,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 140254,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_INCOME",
+    "period": "제 23 기",
+    "year": 2022,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 79393,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 66472,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 12921,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 15435,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": -2514,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": 76,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": -108,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": -2546,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": -864,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": -1682,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_BALANCE",
+    "period": "제 22 기",
+    "year": 2021,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 68792,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 29889,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 98681,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 38271,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 73,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 38344,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 60337,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 98681,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "SEPARATE_INCOME",
+    "period": "제 22 기",
+    "year": 2021,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 58836,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 52758,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 6078,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 8931,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": -2853,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": 34,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": 1027,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": -1792,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": -2151,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": 359,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_BALANCE",
+    "period": "제 22 기",
+    "year": 2021,
+    "data": [
+      {
+        "key": "유동자산",
+        "value": 73666,
+        "level": 1,
+        "no": 1
+      },
+      {
+        "key": "비유동자산",
+        "value": 26463,
+        "level": 1,
+        "no": 2
+      },
+      {
+        "key": "자산총계",
+        "value": 100129,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "유동부채",
+        "value": 40661,
+        "level": 1,
+        "no": 4
+      },
+      {
+        "key": "비유동부채",
+        "value": 123,
+        "level": 1,
+        "no": 5
+      },
+      {
+        "key": "부채총계",
+        "value": 40784,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "자본총계",
+        "value": 59345,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "자본과부채총계",
+        "value": 100129,
+        "level": 0,
+        "no": 8
+      }
+    ]
+  },
+  {
+    "type": "CONSOLIDATED_INCOME",
+    "period": "제 22 기",
+    "year": 2021,
+    "data": [
+      {
+        "key": "매출액",
+        "value": 61532,
+        "level": 0,
+        "no": 1
+      },
+      {
+        "key": "매출원가",
+        "value": 54869,
+        "level": 0,
+        "no": 2
+      },
+      {
+        "key": "매출총이익",
+        "value": 6663,
+        "level": 0,
+        "no": 3
+      },
+      {
+        "key": "판매비와관리비",
+        "value": 11490,
+        "level": 0,
+        "no": 4
+      },
+      {
+        "key": "영업이익(손실)",
+        "value": -4827,
+        "level": 0,
+        "no": 5
+      },
+      {
+        "key": "기타수익(비용)",
+        "value": 268,
+        "level": 0,
+        "no": 6
+      },
+      {
+        "key": "금융수익(비용)",
+        "value": 1010,
+        "level": 0,
+        "no": 7
+      },
+      {
+        "key": "법인세차감전순이익(비용)",
+        "value": -3549,
+        "level": 0,
+        "no": 8
+      },
+      {
+        "key": "법인세비용(수익)",
+        "value": -2266,
+        "level": 0,
+        "no": 9
+      },
+      {
+        "key": "당기순이익(손실)",
+        "value": -1283,
+        "level": 0,
+        "no": 10
+      }
+    ]
+  }
+]
