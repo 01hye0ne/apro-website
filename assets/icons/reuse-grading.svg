@@ -1,0 +1,70 @@
+<!-- APRO 본문 아이콘 : 재사용 적합성 선별
+     쓰이는 곳 : 인공지능 플랫폼>이상 상태 진단
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="8"/><path d="M17.8 17.8l6.7 6.7"/>
+  </svg></span>
+  <span class="k">이상 셀 조기 식별</span>
+  <span class="en">Cell Screening</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.5 14h4.5l2-5.5 3.5 11.5 3-6h12"/>
+  </svg></span>
+  <span class="k">과전압 · 불균형 감시</span>
+  <span class="en">Voltage Watch</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.5 16.2V6.5a3.5 3.5 0 0 1 7 0v9.7a5.5 5.5 0 1 1-7 0z"/>
+  <path d="M15 11v6.5"/>
+  </svg></span>
+  <span class="k">이상 온도 감시</span>
+  <span class="en">Thermal Watch</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="9" width="16" height="11" rx="2"/>
+  <path d="M22.5 12.5v4"/><path d="M7 14.5l2.5 2.5 5-5"/>
+  </svg></span>
+  <span class="k">열화 · SOH 평가</span>
+  <span class="en">Health Estimation</span>
+  </li>
+  </ul>
+  </div>
+  <div class="hright is-plate hph--slides">
+  <img src="../assets/battery-safety-dashboard.png" width="1200" height="645" loading="lazy"
+  alt="배터리 안전 진단 관제 대시보드 화면 — 셀 전압·모듈 온도 실시간 모니터링" />
+  <img src="../assets/battery-safety-mobile.png" width="700" height="1518" loading="lazy"
+  alt="배터리 안전 진단 모바일 앱 화면 — 충전 중 배터리 상태와 이상 알림" />
+  </div>
+  </article>
+  <article class="hcard" data-tab="이상 상태 진단">
+  <div class="hleft">
+  <h3>이상 상태 진단</h3>
+  <div class="hlead">
+  <p>전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.</p>
+  <p>배터리의 부분 방전 데이터를 기존 배터리 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.</p>
+  </div>
+  <!-- 원래 이 자리에 있던 "선별 · 자원순환" 레이블(.lbl)은 v3.1 픽토그램 박스에
+  해당 자리가 없어 뺀다 — 카드 제목이 이미 맥락을 잡아 준다 -->
+  <ul class="pict">
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="14" cy="14" r="10"/><path d="M14 8.5V14l4 2.5"/>
+  </svg></span>
+  <span class="k">10분 내 SOH 예측</span>
+  <span class="en">10-min SOH</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 23V12"/><path d="M11 23V6"/><path d="M18 23v-8"/><path d="M25 23V10"/>
+  </svg></span>
+  <span class="k">셀 · 모듈 편차 분석</span>
+  <span class="en">Deviation</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.5 5.5h21l-8 9.5v8.5l-5-2.5v-6l-8-9.5z"/>
+</svg>

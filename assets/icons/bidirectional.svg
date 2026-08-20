@@ -1,0 +1,8 @@
+<!-- APRO 본문 아이콘 : 양방향 충·방전
+     쓰이는 곳 : 스마트 제조>Cell & Module
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 10.5h22"/><path d="M20.5 6l4.5 4.5-4.5 4.5"/>
+  <path d="M25 17.5H3"/><path d="M7.5 13L3 17.5l4.5 4.5"/>
+</svg>

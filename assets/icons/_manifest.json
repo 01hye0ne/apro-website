@@ -1,0 +1,650 @@
+[
+ {
+  "file": "bidirectional.svg",
+  "labels": [
+   "양방향 충·방전"
+  ],
+  "en": "Bidirectional",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "Cell & Module",
+    "k": "양방향 충·방전"
+   }
+  ]
+ },
+ {
+  "file": "regenerative.svg",
+  "labels": [
+   "회생 에너지 회수"
+  ],
+  "en": "Regenerative",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "Cell & Module",
+    "k": "회생 에너지 회수"
+   }
+  ]
+ },
+ {
+  "file": "grid-return.svg",
+  "labels": [
+   "전력망 반환"
+  ],
+  "en": "Grid Return",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "Cell & Module",
+    "k": "전력망 반환"
+   }
+  ]
+ },
+ {
+  "file": "loss-reduction.svg",
+  "labels": [
+   "내부 저항 저감",
+   "운영 효율 극대화",
+   "전력 낭비 · 냉각 부하 저감"
+  ],
+  "en": "Loss Reduction",
+  "uses": 3,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "Cell & Module",
+    "k": "전력 낭비 · 냉각 부하 저감"
+   },
+   {
+    "page": "스마트 제조",
+    "card": "탄소나노튜브",
+    "k": "내부 저항 저감"
+   },
+   {
+    "page": "에너지 솔루션",
+    "card": "ESS",
+    "k": "운영 효율 극대화"
+   }
+  ]
+ },
+ {
+  "file": "equipment-control.svg",
+  "labels": [
+   "설비 제어"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "PLC",
+    "k": "설비 제어"
+   }
+  ]
+ },
+ {
+  "file": "data-collect.svg",
+  "labels": [
+   "데이터 수집"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "PLC",
+    "k": "데이터 수집"
+   }
+  ]
+ },
+ {
+  "file": "safety-interlock.svg",
+  "labels": [
+   "안전 인터록"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "PLC",
+    "k": "안전 인터록"
+   }
+  ]
+ },
+ {
+  "file": "host-link.svg",
+  "labels": [
+   "상위 연동"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "PLC",
+    "k": "상위 연동"
+   }
+  ]
+ },
+ {
+  "file": "production-trace.svg",
+  "labels": [
+   "생산 추적"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "MES",
+    "k": "생산 추적"
+   }
+  ]
+ },
+ {
+  "file": "recipe-download.svg",
+  "labels": [
+   "레시피 하향"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "MES",
+    "k": "레시피 하향"
+   }
+  ]
+ },
+ {
+  "file": "quality-check.svg",
+  "labels": [
+   "품질 판정"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "MES",
+    "k": "품질 판정"
+   }
+  ]
+ },
+ {
+  "file": "data-integration.svg",
+  "labels": [
+   "데이터 통합"
+  ],
+  "en": "",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "MES",
+    "k": "데이터 통합"
+   }
+  ]
+ },
+ {
+  "file": "cycle-life.svg",
+  "labels": [
+   "배터리 수명 개선",
+   "전체 수명 연장"
+  ],
+  "en": "Cycle Life",
+  "uses": 2,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "탄소나노튜브",
+    "k": "전체 수명 연장"
+   },
+   {
+    "page": "에너지 솔루션",
+    "card": "UPS",
+    "k": "배터리 수명 개선"
+   }
+  ]
+ },
+ {
+  "file": "fast-charge.svg",
+  "labels": [
+   "고속 충전 성능 극대화",
+   "충전 시간 단축"
+  ],
+  "en": "Fast Charge",
+  "uses": 2,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "탄소나노튜브",
+    "k": "충전 시간 단축"
+   },
+   {
+    "page": "스마트 제조",
+    "card": "LiFSI 전해염",
+    "k": "고속 충전 성능 극대화"
+   }
+  ]
+ },
+ {
+  "file": "volume-control.svg",
+  "labels": [
+   "부피 팽창 / 입자 붕괴 현상 억제"
+  ],
+  "en": "Volume Control",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "탄소나노튜브",
+    "k": "부피 팽창 / 입자 붕괴 현상 억제"
+   }
+  ]
+ },
+ {
+  "file": "ionic-conductivity.svg",
+  "labels": [
+   "이온 전도도 향상"
+  ],
+  "en": "Ionic Conductivity",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "LiFSI 전해염",
+    "k": "이온 전도도 향상"
+   }
+  ]
+ },
+ {
+  "file": "thermal-stability.svg",
+  "labels": [
+   "열 폭주 · 전이 방지",
+   "전해액 열분해 억제"
+  ],
+  "en": "Thermal Stability",
+  "uses": 2,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "LiFSI 전해염",
+    "k": "전해액 열분해 억제"
+   },
+   {
+    "page": "에너지 솔루션",
+    "card": "UPS",
+    "k": "열 폭주 · 전이 방지"
+   }
+  ]
+ },
+ {
+  "file": "stable-sei.svg",
+  "labels": [
+   "SEI 피막 형성 &amp; 계면 저항 저감"
+  ],
+  "en": "Stable SEI",
+  "uses": 1,
+  "where": [
+   {
+    "page": "스마트 제조",
+    "card": "LiFSI 전해염",
+    "k": "SEI 피막 형성 &amp; 계면 저항 저감"
+   }
+  ]
+ },
+ {
+  "file": "precision-control.svg",
+  "labels": [
+   "고도화된 BMS &amp; BCP · BPU 시스템"
+  ],
+  "en": "Precision Control",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "ESS",
+    "k": "고도화된 BMS &amp; BCP · BPU 시스템"
+   }
+  ]
+ },
+ {
+  "file": "realtime-monitoring.svg",
+  "labels": [
+   "실시간 상태 모니터링",
+   "온도 · 전압 정밀 제어"
+  ],
+  "en": "Real-time Monitoring",
+  "uses": 2,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "ESS",
+    "k": "온도 · 전압 정밀 제어"
+   },
+   {
+    "page": "에너지 솔루션",
+    "card": "무인 이동체/수상정",
+    "k": "실시간 상태 모니터링"
+   }
+  ]
+ },
+ {
+  "file": "data-analytics.svg",
+  "labels": [
+   "실시간 모니터링 및 데이터 분석"
+  ],
+  "en": "Data Analytics",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "ESS",
+    "k": "실시간 모니터링 및 데이터 분석"
+   }
+  ]
+ },
+ {
+  "file": "thermal-control.svg",
+  "labels": [
+   "내부 온도 정밀 제어",
+   "열관리 설계",
+   "이상 온도 감시"
+  ],
+  "en": "Thermal Control",
+  "uses": 3,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "UPS",
+    "k": "내부 온도 정밀 제어"
+   },
+   {
+    "page": "에너지 솔루션",
+    "card": "우주 발사체",
+    "k": "열관리 설계"
+   },
+   {
+    "page": "인공지능 플랫폼",
+    "card": "건강 상태 진단",
+    "k": "이상 온도 감시"
+   }
+  ]
+ },
+ {
+  "file": "cell-balancing.svg",
+  "labels": [
+   "셀 단위 온도 · 전압 밸런싱 제어"
+  ],
+  "en": "Cell Balancing",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "UPS",
+    "k": "셀 단위 온도 · 전압 밸런싱 제어"
+   }
+  ]
+ },
+ {
+  "file": "shock-resistant.svg",
+  "labels": [
+   "내진동 · 내충격 구조 설계"
+  ],
+  "en": "Shock Resistant",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "우주 발사체",
+    "k": "내진동 · 내충격 구조 설계"
+   }
+  ]
+ },
+ {
+  "file": "lightweight.svg",
+  "labels": [
+   "저중량 · 저비용화 배터리팩"
+  ],
+  "en": "Lightweight",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "우주 발사체",
+    "k": "저중량 · 저비용화 배터리팩"
+   }
+  ]
+ },
+ {
+  "file": "cost-efficiency.svg",
+  "labels": [
+   "발사체 탑재 효율 · 운용 경제성 향상"
+  ],
+  "en": "Cost Efficiency",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "우주 발사체",
+    "k": "발사체 탑재 효율 · 운용 경제성 향상"
+   }
+  ]
+ },
+ {
+  "file": "bypass.svg",
+  "labels": [
+   "바이패스 기술(배터리 이상 셀 분리)"
+  ],
+  "en": "Bypass",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "무인 이동체/수상정",
+    "k": "바이패스 기술(배터리 이상 셀 분리)"
+   }
+  ]
+ },
+ {
+  "file": "limp-home.svg",
+  "labels": [
+   "최소 전력 유지"
+  ],
+  "en": "Limp-home",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "무인 이동체/수상정",
+    "k": "최소 전력 유지"
+   }
+  ]
+ },
+ {
+  "file": "fault-protection.svg",
+  "labels": [
+   "이상 감지 · 보호 제어"
+  ],
+  "en": "Fault Protection",
+  "uses": 1,
+  "where": [
+   {
+    "page": "에너지 솔루션",
+    "card": "무인 이동체/수상정",
+    "k": "이상 감지 · 보호 제어"
+   }
+  ]
+ },
+ {
+  "file": "cell-screening.svg",
+  "labels": [
+   "이상 셀 조기 식별"
+  ],
+  "en": "Cell Screening",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "건강 상태 진단",
+    "k": "이상 셀 조기 식별"
+   }
+  ]
+ },
+ {
+  "file": "voltage-watch.svg",
+  "labels": [
+   "과전압 · 불균형 감시"
+  ],
+  "en": "Voltage Watch",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "건강 상태 진단",
+    "k": "과전압 · 불균형 감시"
+   }
+  ]
+ },
+ {
+  "file": "health-estimation.svg",
+  "labels": [
+   "열화 · SOH 평가"
+  ],
+  "en": "Health Estimation",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "건강 상태 진단",
+    "k": "열화 · SOH 평가"
+   }
+  ]
+ },
+ {
+  "file": "soh-10min.svg",
+  "labels": [
+   "10분 내 SOH 예측"
+  ],
+  "en": "10-min SOH",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "이상 상태 진단",
+    "k": "10분 내 SOH 예측"
+   }
+  ]
+ },
+ {
+  "file": "deviation.svg",
+  "labels": [
+   "셀 · 모듈 편차 분석"
+  ],
+  "en": "Deviation",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "이상 상태 진단",
+    "k": "셀 · 모듈 편차 분석"
+   }
+  ]
+ },
+ {
+  "file": "reuse-grading.svg",
+  "labels": [
+   "재사용 적합성 선별"
+  ],
+  "en": "Reuse Grading",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "이상 상태 진단",
+    "k": "재사용 적합성 선별"
+   }
+  ]
+ },
+ {
+  "file": "circular-economy.svg",
+  "labels": [
+   "ESS 이차 활용"
+  ],
+  "en": "Circular Economy",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "이상 상태 진단",
+    "k": "ESS 이차 활용"
+   }
+  ]
+ },
+ {
+  "file": "hardware.svg",
+  "labels": [
+   "충전 하드웨어"
+  ],
+  "en": "Hardware",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "급속 충전기",
+    "k": "충전 하드웨어"
+   }
+  ]
+ },
+ {
+  "file": "power-and-control.svg",
+  "labels": [
+   "전력변환 · 제어"
+  ],
+  "en": "Power &amp; Control",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "급속 충전기",
+    "k": "전력변환 · 제어"
+   }
+  ]
+ },
+ {
+  "file": "communication.svg",
+  "labels": [
+   "차량 · 충전기 통신"
+  ],
+  "en": "Communication",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "급속 충전기",
+    "k": "차량 · 충전기 통신"
+   }
+  ]
+ },
+ {
+  "file": "auth-and-safety.svg",
+  "labels": [
+   "인증 · 안전관리"
+  ],
+  "en": "Auth &amp; Safety",
+  "uses": 1,
+  "where": [
+   {
+    "page": "인공지능 플랫폼",
+    "card": "급속 충전기",
+    "k": "인증 · 안전관리"
+   }
+  ]
+ }
+]

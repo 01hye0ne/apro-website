@@ -1,0 +1,8 @@
+<!-- APRO 본문 아이콘 : 고도화된 BMS & BCP · BPU 시스템
+     쓰이는 곳 : 에너지 솔루션>ESS
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 4v20"/><path d="M14 4v20"/><path d="M23 4v20"/>
+  <path d="M1.5 9.5h7"/><path d="M10.5 17h7"/><path d="M19.5 12h7"/>
+</svg>

@@ -1,0 +1,78 @@
+<!-- APRO 본문 아이콘 : 셀 단위 온도 · 전압 밸런싱 제어
+     쓰이는 곳 : 에너지 솔루션>UPS
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 4v20"/><path d="M14 4v20"/><path d="M23 4v20"/>
+  <path d="M1.5 9.5h7"/><path d="M10.5 17h7"/><path d="M19.5 12h7"/>
+  </svg></span>
+  <span class="k">고도화된 BMS &amp; BCP · BPU 시스템</span>
+  <span class="en">Precision Control</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.5 20a10.5 10.5 0 1 1 21 0"/><path d="M14 20l5.5-6.5"/>
+  </svg></span>
+  <span class="k">온도 · 전압 정밀 제어</span>
+  <span class="en">Real-time Monitoring</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="14" cy="7" rx="9.5" ry="3.5"/>
+  <path d="M4.5 7v14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5V7"/>
+  <path d="M4.5 14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5"/>
+  </svg></span>
+  <span class="k">실시간 모니터링 및 데이터 분석</span>
+  <span class="en">Data Analytics</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="3 20 11 12 16 17 25 6"/>
+  <polyline points="19 6 25 6 25 12"/>
+  </svg></span>
+  <span class="k">운영 효율 극대화</span>
+  <span class="en">Operating Efficiency</span>
+  </li>
+  </ul>
+  </div>
+  <!-- --img-pos 82% : 컨테이너가 가로로 길어 한가운데를 남기면 밋밋한 흰 벽면만 잘려
+  나온다. 네이비 도어가 있는 뒷단(원본 폭의 70~95%)을 남겨야 ESS 컨테이너로 읽힌다 -->
+  <div class="hright">
+  <img src="../assets/ess-container.jpg" width="1000" height="667" loading="lazy"
+  style="--img-pos:82% 50%"
+  alt="A-PRO ESS 컨테이너형 에너지 저장 장치 — 흰색 컨테이너 측면에 A-PRO ESS 표기, 후면은 네이비 도어" />
+  </div>
+  </article>
+  <article class="hcard" data-tab="UPS">
+  <div class="hleft">
+  <h3>UPS</h3>
+  <div class="hlead">
+  <p>안정적인 전력 공급을 보장하는 UPS는 BMS 및 BCP 기반의 초고출력 모듈과 개별 셀 단위의 전압·온도 밸런싱 제어로 시스템의 효율성을 극대화한 핵심 전력 솔루션입니다.</p>
+  <p>에이프로의 UPS는 배터리 화재에 대비해 내부 온도를 정밀하게 제어하여 열 폭주와 전이를 사전에 방지함으로써, 배터리 수명을 크게 개선하고 장기적인 안정성을 확보했습니다.</p>
+  </div>
+  <!-- "안전 · 열 관리" 레이블(.lbl)은 뺀다 -->
+  <ul class="pict">
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.5 16.2V6.5a3.5 3.5 0 0 1 7 0v9.7a5.5 5.5 0 1 1-7 0z"/>
+  <path d="M15 11v6.5"/>
+  </svg></span>
+  <span class="k">내부 온도 정밀 제어</span>
+  <span class="en">Thermal Control</span>
+  </li>
+  <li>
+  <!-- 불꽃은 좌우 비대칭 실루엣이라 28 좌표계로 옮기면 형태가 무너진다 →
+  24 좌표계를 그대로 쓰고 선 굵기만 1.4로 낮춰 다른 아이콘과 두께를 맞춘다 -->
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+  <path d="M3 3l18 18"/>
+  </svg></span>
+  <span class="k">열 폭주 · 전이 방지</span>
+  <span class="en">Runaway Prevention</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 4.5v19"/><path d="M6 9h16"/>
+  <path d="M6 9l-3.5 6.5h7L6 9z"/><path d="M22 9l-3.5 6.5h7L22 9z"/>
+  <path d="M10 23.5h8"/>
+</svg>

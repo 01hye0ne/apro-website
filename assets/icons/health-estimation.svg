@@ -1,0 +1,30 @@
+<!-- APRO 본문 아이콘 : 열화 · SOH 평가
+     쓰이는 곳 : 인공지능 플랫폼>건강 상태 진단
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="8"/><path d="M17.8 17.8l6.7 6.7"/>
+  </svg></span>
+  <span class="k">이상 셀 조기 식별</span>
+  <span class="en">Cell Screening</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.5 14h4.5l2-5.5 3.5 11.5 3-6h12"/>
+  </svg></span>
+  <span class="k">과전압 · 불균형 감시</span>
+  <span class="en">Voltage Watch</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.5 16.2V6.5a3.5 3.5 0 0 1 7 0v9.7a5.5 5.5 0 1 1-7 0z"/>
+  <path d="M15 11v6.5"/>
+  </svg></span>
+  <span class="k">이상 온도 감시</span>
+  <span class="en">Thermal Watch</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="9" width="16" height="11" rx="2"/>
+  <path d="M22.5 12.5v4"/><path d="M7 14.5l2.5 2.5 5-5"/>
+</svg>

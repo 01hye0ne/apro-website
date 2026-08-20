@@ -1,0 +1,204 @@
+<!-- APRO 본문 아이콘 : 이상 감지 · 보호 제어
+     쓰이는 곳 : 에너지 솔루션>무인 이동체/수상정
+     stroke="currentColor" 는 글자색을 따라가라는 뜻이다 — Figma 에서
+     돌아올 때 이 값이 살아 있어야 어두운 카드 위에서도 보인다 -->
+<svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 4v20"/><path d="M14 4v20"/><path d="M23 4v20"/>
+  <path d="M1.5 9.5h7"/><path d="M10.5 17h7"/><path d="M19.5 12h7"/>
+  </svg></span>
+  <span class="k">고도화된 BMS &amp; BCP · BPU 시스템</span>
+  <span class="en">Precision Control</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.5 20a10.5 10.5 0 1 1 21 0"/><path d="M14 20l5.5-6.5"/>
+  </svg></span>
+  <span class="k">온도 · 전압 정밀 제어</span>
+  <span class="en">Real-time Monitoring</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="14" cy="7" rx="9.5" ry="3.5"/>
+  <path d="M4.5 7v14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5V7"/>
+  <path d="M4.5 14c0 1.93 4.25 3.5 9.5 3.5s9.5-1.57 9.5-3.5"/>
+  </svg></span>
+  <span class="k">실시간 모니터링 및 데이터 분석</span>
+  <span class="en">Data Analytics</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="3 20 11 12 16 17 25 6"/>
+  <polyline points="19 6 25 6 25 12"/>
+  </svg></span>
+  <span class="k">운영 효율 극대화</span>
+  <span class="en">Operating Efficiency</span>
+  </li>
+  </ul>
+  </div>
+  <!-- --img-pos 82% : 컨테이너가 가로로 길어 한가운데를 남기면 밋밋한 흰 벽면만 잘려
+  나온다. 네이비 도어가 있는 뒷단(원본 폭의 70~95%)을 남겨야 ESS 컨테이너로 읽힌다 -->
+  <div class="hright">
+  <img src="../assets/ess-container.jpg" width="1000" height="667" loading="lazy"
+  style="--img-pos:82% 50%"
+  alt="A-PRO ESS 컨테이너형 에너지 저장 장치 — 흰색 컨테이너 측면에 A-PRO ESS 표기, 후면은 네이비 도어" />
+  </div>
+  </article>
+  <article class="hcard" data-tab="UPS">
+  <div class="hleft">
+  <h3>UPS</h3>
+  <div class="hlead">
+  <p>안정적인 전력 공급을 보장하는 UPS는 BMS 및 BCP 기반의 초고출력 모듈과 개별 셀 단위의 전압·온도 밸런싱 제어로 시스템의 효율성을 극대화한 핵심 전력 솔루션입니다.</p>
+  <p>에이프로의 UPS는 배터리 화재에 대비해 내부 온도를 정밀하게 제어하여 열 폭주와 전이를 사전에 방지함으로써, 배터리 수명을 크게 개선하고 장기적인 안정성을 확보했습니다.</p>
+  </div>
+  <!-- "안전 · 열 관리" 레이블(.lbl)은 뺀다 -->
+  <ul class="pict">
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.5 16.2V6.5a3.5 3.5 0 0 1 7 0v9.7a5.5 5.5 0 1 1-7 0z"/>
+  <path d="M15 11v6.5"/>
+  </svg></span>
+  <span class="k">내부 온도 정밀 제어</span>
+  <span class="en">Thermal Control</span>
+  </li>
+  <li>
+  <!-- 불꽃은 좌우 비대칭 실루엣이라 28 좌표계로 옮기면 형태가 무너진다 →
+  24 좌표계를 그대로 쓰고 선 굵기만 1.4로 낮춰 다른 아이콘과 두께를 맞춘다 -->
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+  <path d="M3 3l18 18"/>
+  </svg></span>
+  <span class="k">열 폭주 · 전이 방지</span>
+  <span class="en">Runaway Prevention</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 4.5v19"/><path d="M6 9h16"/>
+  <path d="M6 9l-3.5 6.5h7L6 9z"/><path d="M22 9l-3.5 6.5h7L22 9z"/>
+  <path d="M10 23.5h8"/>
+  </svg></span>
+  <span class="k">셀 단위 온도 · 전압 밸런싱 제어</span>
+  <span class="en">Cell Balancing</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M23.5 12A10 10 0 0 0 6 7.5"/><path d="M4 4v5h5"/>
+  <path d="M4.5 16A10 10 0 0 0 22 20.5"/><path d="M24 24v-5h-5"/>
+  </svg></span>
+  <span class="k">배터리 수명 개선</span>
+  <span class="en">Longer Life</span>
+  </li>
+  </ul>
+  </div>
+  <!-- 실제 제품 사진 미확보 — 자리표시(.hph, business-layout.css 점선 박스)를
+  그대로 .hright 안에 둔다. 사진이 들어오면 다른 카드처럼 <img>로 교체 -->
+  <div class="hright"><div class="hph">UPS</div></div>
+  </article>
+  <!-- 내용 미정 — 다른 카드와 같은 [좌: 제목·줄글·키워드 | 우: 비주얼] 골격만
+  세워 둔다. 자리표시 규칙은 business-layout.css 의 .hcard--tbd 블록 참고 -->
+  <article class="hcard hcard--tbd" data-tab="BMS">
+  <div class="hleft">
+  <h3>BMS</h3>
+  <div class="hlead">
+  <p class="tbd">텍스트 추가 예정</p>
+  </div>
+  <ul class="pict">
+  <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
+  <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
+  <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
+  <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+  </ul>
+  </div>
+  <div class="hright"></div>
+  </article>
+  </div>
+  </section>
+  <!-- 02 -->
+  <section class="hsec" id="s2">
+  <div class="hrail"></div>
+  <div class="htrack">
+  <article class="hcard" data-tab="우주 발사체">
+  <div class="hleft">
+  <h3>우주 발사체</h3>
+  <div class="hlead">
+  <p>에이프로는 고에너지밀도 하이브리드 배터리 기술을 기반으로 소형·나노 발사체에 최적화된 경량 배터리 팩과 전원 시스템을 제공합니다.</p>
+  <p>이를 통해 발사체 임무 수행의 신뢰성을 높이고, 위성 및 우주 모빌리티 분야로 확장 가능한 고안전성 우주 전원 솔루션을 제공합니다.</p>
+  </div>
+  <!-- "발사 환경 대응" 레이블(.lbl)은 뺀다 -->
+  <ul class="pict">
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.5 14h3l2-6 3 12 3-9 2.5 5 2-3h6.5"/>
+  </svg></span>
+  <span class="k">내진동 · 내충격 구조 설계</span>
+  <span class="en">Shock Resistant</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.5 16.2V6.5a3.5 3.5 0 0 1 7 0v9.7a5.5 5.5 0 1 1-7 0z"/>
+  <path d="M15 11v6.5"/>
+  </svg></span>
+  <span class="k">열관리 설계</span>
+  <span class="en">Thermal Design</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M23.6 14.3a7 7 0 0 0-9.9-9.9L5.8 12.3v9.9h9.9z"/>
+  <path d="M18.7 9.3L4.5 23.5"/><path d="M20.4 17.5H10.5"/>
+  </svg></span>
+  <span class="k">저중량 · 저비용화 배터리팩</span>
+  <span class="en">Lightweight</span>
+  </li>
+  <li>
+  <!-- 통화 기호($)는 국내 사이트에서 뜻이 좁아진다 → 통화 중립적인 가격표로 -->
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/>
+  <circle cx="7.5" cy="7.5" r="1.2"/>
+  </svg></span>
+  <span class="k">발사체 탑재 효율 · 운용 경제성 향상</span>
+  <span class="en">Cost Efficiency</span>
+  </li>
+  </ul>
+  </div>
+  <div class="hright">
+  <img src="../assets/launch-vehicle-hanbit.jpg" width="600" height="375" loading="lazy"
+  alt="이노스페이스 한빛-나노 발사체가 이송 거치대에 실려 있는 모습" />
+  </div>
+  </article>
+  <article class="hcard" data-tab="무인 이동체/수상정">
+  <div class="hleft">
+  <h3>무인 이동체/수상정</h3>
+  <div class="hlead">
+  <p>에이프로의 무인 이동체 전원 시스템은 구동 배터리부터 저전압 전력변환, 전력 분배 및 관리까지 UGV와 로봇 플랫폼의 전원 아키텍처 전반을 포괄하는 맞춤형 통합 솔루션입니다.</p>
+  <p>이를 통해 군수·산업용 UGV와 다양한 로봇 플랫폼에 최적화된 고신뢰성 전원 시스템을 제공합니다.</p>
+  </div>
+  <!-- "이상 대응 · 안전 복귀" 레이블(.lbl)은 뺀다 -->
+  <ul class="pict">
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.5 19h6"/><path d="M19.5 19h6"/><path d="M8.5 19l9-10"/>
+  <circle cx="8.5" cy="19" r="1.6"/><circle cx="19.5" cy="19" r="1.6"/>
+  </svg></span>
+  <span class="k">바이패스 기술(배터리 이상 셀 분리)</span>
+  <span class="en">Bypass</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="9" width="17" height="11" rx="2"/>
+  <rect x="6.5" y="12.5" width="3.5" height="4"/>
+  <path d="M23 12.5v4"/>
+  </svg></span>
+  <span class="k">최소 전력 유지</span>
+  <span class="en">Limp-home</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.5 20a10.5 10.5 0 1 1 21 0"/><path d="M14 20l5.5-6.5"/>
+  </svg></span>
+  <span class="k">실시간 상태 모니터링</span>
+  <span class="en">Real-time Monitoring</span>
+  </li>
+  <li>
+  <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 3.5l9.5 3.2v6.8c0 5.6-3.9 9.6-9.5 11-5.6-1.4-9.5-5.4-9.5-11V6.7l9.5-3.2z"/>
+  <path d="M10.5 14l2.5 2.5 5-5"/>
+</svg>
