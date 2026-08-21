@@ -574,7 +574,8 @@
      100vw 라 화면 끝까지 번지고, 세로만 카드 밑변에서 정확히 끊긴다 */
   .pmap-mask{position:fixed;left:0;width:100vw;overflow:hidden;
     pointer-events:none;z-index:1;display:none}
-  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-clone,.pmap-line-edge{
+  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-clone,.pmap-line-edge,
+  .pmap-line-vedge{
     position:absolute;left:0;top:0;margin:0;pointer-events:none;display:none}
   .pmap-rig-clone,.pmap-line-clone{height:auto}
   /* 연장선(화면 가장자리) 진행 겹 — 예전엔 옅은 색 막대(트랙)와 진한 색
@@ -1969,7 +1970,7 @@
   // 한다(2026-08-21 — "이게 바닥이 되는거지"). 카드 밑변에 붙인 채로 높이만
   // 고정값으로 키운다 — 위 GRAD_TOP_FRAC/GRAD_BOT_FRAC 은 여전히 설비(rig)
   // 위치를 잡는 기준으로만 쓰고, 이 판 자체의 높이는 건드리지 않는다
-  var PLATE_H = 240;   // 350 → 240 으로 낮춘다(2026-08-21 재요청)
+  var PLATE_H = 180;   // 350 → 240(2026-08-21 재요청) → 60px 더 줄여 180(2026-08-22 재요청)
   // 바닥 높이를 고정값으로 우선 확보하는 방식은 화면이 좁으면 설비를 아예
   // 안 보이게(폭 0) 만들 정도로 대가가 컸다(2026-08-21 확인). 바닥을 아예
   // 빼고, 설비는 본문 열(.hleft) 좌우 너비에 정확히 맞춘다(2026-08-21
@@ -1990,8 +1991,11 @@
   var LINE_STROKE = 12;
   var LINE_LIGHT_COLOR = '#C9D9EE';
   // line-dark.svg 안 "Progress line" 자체의 stroke 값 그대로 — 연장선
-  // 채움(--fill-color) 색을 rig 안쪽 진행 라인과 픽셀 단위로 맞춘다
-  var LINE_DARK_COLOR = '#2c5790';
+  // 채움(--fill-color) 색을 rig 안쪽 진행 라인과 픽셀 단위로 맞춘다.
+  // 원래 #2c5790 이 너무 눈에 띈다는 지적(2026-08-22)에 명도를 올렸다
+  // (HSL L 37% → 50%) — svg 파일 쪽 stroke 값도 같이 바꿔야 rig 안쪽과
+  // 색이 어긋나지 않는다
+  var LINE_DARK_COLOR = '#3c76c3';
 
   // 시간차 자동 재생(2026-08-21 개편, 설비 호버 방식에서 변경) — 새
   // SVG(공정 프로세스 맵_1635.svg)에 진행 라인이 추가되면서, 01~06 단계를
@@ -2026,7 +2030,8 @@
   var tabEls = [].slice.call(hright.querySelectorAll('.pmap-tab'));
   var specEl = hright.querySelector('.pmap-spec');
   var rigClone = null, floorFill = null, gradFill = null, lineClone = null, pmapMask = null;
-  var lineEdgeL = null, lineEdgeR = null;
+  var lineEdgeR = null;
+  var lineVEdgeL = null;
   var visible = false, raf = null, activeStep = 0;
   // 재생 상태(2026-08-22 재작업) — setInterval 로 2초마다 activeStep 만 계단식
   // 으로 바꾸고 게이지는 그 변화를 CSS transition(1.6s)이 뒤늦게 뒤쫓아가던
@@ -2106,24 +2111,15 @@
     return floorFill;
   }
 
-  // 라인 양 끝 연장 막대 — rig 그림 밖(화면 가장자리 쪽)으로 라인이 계속
-  // 이어지는 것처럼 보이게 하는 옅은 색(트랙) 막대. 진행분(진한 색)은 이
-  // 엘리먼트의 ::after 의사요소가 맡는다(CSS 참고) — 트랙과 채움을 별개
-  // 엘리먼트 두 장으로 두고 자리를 매번 각각 맞추던 예전 방식(2026-08-21)을
-  // "두 라인이 따로 논다"는 지적(2026-08-22)에 이렇게 하나로 합쳤다. 이제
-  // JS 가 신경 쓸 값은 트랙 자체의 자리·두께(el)와 채움 비율(--fill) 뿐이고,
-  // 채움의 자리·두께는 CSS 상속으로 트랙과 항상 같다
-  function ensureLineEdgeL(){
-    if (lineEdgeL) return lineEdgeL;
-    lineEdgeL = document.createElement('div');
-    lineEdgeL.setAttribute('aria-hidden', 'true');
-    lineEdgeL.className = 'pmap-line-edge';
-    lineEdgeL.style.background = LINE_LIGHT_COLOR;
-    lineEdgeL.style.setProperty('--fill-color', LINE_DARK_COLOR);
-    ensureMask().appendChild(lineEdgeL);
-    return lineEdgeL;
-  }
-
+  // 라인 오른쪽 끝 연장 막대 — rig 그림 밖(화면 오른쪽 가장자리 쪽)으로
+  // 라인이 계속 이어지는 것처럼 보이게 하는 옅은 색(트랙) 막대. 왼쪽은
+  // 더 없다(2026-08-22 요청 — "왼쪽 연장선은 그냥 없애줘") — rig 겹의
+  // 라인이 곧 왼쪽 끝이다. 진행분(진한 색)은 이 엘리먼트의 ::after
+  // 의사요소가 맡는다(CSS 참고) — 트랙과 채움을 별개 엘리먼트 두 장으로
+  // 두고 자리를 매번 각각 맞추던 예전 방식(2026-08-21)을 "두 라인이 따로
+  // 논다"는 지적(2026-08-22)에 이렇게 하나로 합쳤다. JS 가 신경 쓸 값은
+  // 트랙 자체의 자리·두께(el)와 채움 비율(--fill) 뿐이고, 채움의 자리·
+  // 두께는 CSS 상속으로 트랙과 항상 같다
   function ensureLineEdgeR(){
     if (lineEdgeR) return lineEdgeR;
     lineEdgeR = document.createElement('div');
@@ -2133,6 +2129,20 @@
     lineEdgeR.style.setProperty('--fill-color', LINE_DARK_COLOR);
     ensureMask().appendChild(lineEdgeR);
     return lineEdgeR;
+  }
+
+  // 왼쪽 세로 연장 — 가로 연장선을 없앤 뒤(2026-08-22) 라인이 설비 왼쪽
+  // 끝에서 뚝 끊긴 채로 남는데, 그 지점에서 바닥판(.pmap-grad-fill)
+  // 윗변까지 짧게 위로 이어 준다(2026-08-22 재요청). 진행에 따라 채워지는
+  // 게이지가 아니라 옅은 색 고정 막대라 ::after 없이 단색으로 그린다
+  function ensureLineVEdgeL(){
+    if (lineVEdgeL) return lineVEdgeL;
+    lineVEdgeL = document.createElement('div');
+    lineVEdgeL.setAttribute('aria-hidden', 'true');
+    lineVEdgeL.className = 'pmap-line-vedge';
+    lineVEdgeL.style.background = LINE_LIGHT_COLOR;
+    ensureMask().appendChild(lineVEdgeL);
+    return lineVEdgeL;
   }
 
   function ensureRigClone(){
@@ -2202,8 +2212,8 @@
     var mask = ensureMask();
     var grad = ensureGradFill();
     var fill = ensureFloorFill();
-    var edgeL = ensureLineEdgeL();
     var edgeR = ensureLineEdgeR();
+    var vedgeL = ensureLineVEdgeL();
     var rig = ensureRigClone();
     var line = ensureLineClone();
     var r = img.getBoundingClientRect();
@@ -2268,8 +2278,7 @@
     // 본문 좌측에 딱 붙이니 오히려 오른쪽으로 치우쳐 보인다는 지적
     // (2026-08-22 재요청) — 왼쪽으로 40px 옮긴다. 가로 넘침 계산(availW)은
     // col.left 기준 그대로 두고 자리만 옮기므로, 오른쪽 끝이 화면을
-    // 넘어가는 일은 없고(오히려 40px 여유가 더 생긴다) 왼쪽 연장선
-    // (edgeLW = Math.max(0, rigLeft))만 그만큼 짧아진다
+    // 넘어가는 일은 없고(오히려 40px 여유가 더 생긴다)
     var rigLeft = col.left - 40;
     var rigTop = gradBottom - rigH * GRAD_BOT_FRAC;
     // 위에서 크기를 이미 남는 자리에 맞췄지만, gradBottom 기준 역산이라 위치가
@@ -2293,44 +2302,35 @@
     line.style.top = (rigTop - mtop) + 'px';
     line.style.width = rigW + 'px';
 
-    // 라인 양 끝 연장 — rig 양 끝에서 라인이 지나는 세로 위치(LINE_Y_FRAC)에
-    // 맞춰 같은 굵기(LINE_STROKE, rig 스케일만큼 곱해서)의 옅은 색 막대를
-    // 화면 가장자리까지 그린다
+    // 라인 오른쪽 끝 연장 — rig 오른쪽 끝에서 라인이 지나는 세로 위치
+    // (LINE_Y_FRAC)에 맞춰 같은 굵기(LINE_STROKE, rig 스케일만큼 곱해서)의
+    // 옅은 색 막대를 화면 오른쪽 가장자리까지 그린다. 왼쪽은 더 없다
+    // (2026-08-22 요청) — rig 겹의 라인이 곧 왼쪽 끝이다
     var lineScale = rigW / SVG_W;
     var lineY = rigTop + LINE_Y_FRAC * rigH;
     var lineThick = LINE_STROKE * lineScale;
-    var edgeLW = Math.max(0, rigLeft);
     var edgeRW = Math.max(0, vw - (rigLeft + rigW));
-    edgeL.style.display = 'block';
-    edgeL.style.left = '0px';
-    edgeL.style.width = edgeLW + 'px';
-    edgeL.style.top = (lineY - lineThick / 2 - mtop) + 'px';
-    edgeL.style.height = lineThick + 'px';
     edgeR.style.display = 'block';
     edgeR.style.left = (rigLeft + rigW) + 'px';
     edgeR.style.width = edgeRW + 'px';
     edgeR.style.top = (lineY - lineThick / 2 - mtop) + 'px';
     edgeR.style.height = lineThick + 'px';
 
-    // 진행 게이지 — 왼쪽 연장선 → rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은
-    // 전체 길이를 기준으로, revealFrac(위에서 이미 계산한 연속값) 만큼
-    // 왼쪽부터 진한 색으로 채운다(2026-08-21 지적 — "라인 게이지가 연장선
-    // 부터 시작하지 않는다"). 연장선 쪽 채움은 트랙(edgeL/edgeR)의 --fill
-    // 비율 하나로, rig 안쪽은 여전히 clip-path 로 표현한다 — 자리·두께
-    // 값은 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀 필요가 없다
+    // 진행 게이지 — rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은 전체
+    // 길이를 기준으로, revealFrac(위에서 이미 계산한 연속값) 만큼 왼쪽부터
+    // 진한 색으로 채운다. 연장선 쪽 채움은 트랙(edgeR)의 --fill 비율
+    // 하나로, rig 안쪽은 여전히 clip-path 로 표현한다 — 자리·두께 값은
+    // 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀 필요가 없다
     // (2026-08-22, "따로 논다"는 지적에 트랙+채움 두 엘리먼트 구조를
     // 하나로 합치며 정리)
-    var totalLen = edgeLW + rigW + edgeRW;
+    var totalLen = rigW + edgeRW;
     var revealedLen = totalLen * revealFrac;
 
-    var fillL = Math.max(0, Math.min(edgeLW, revealedLen));
-    edgeL.style.setProperty('--fill', (edgeLW > 0 ? (fillL / edgeLW * 100) : 0) + '%');
-
-    var rigRevealLen = Math.max(0, Math.min(rigW, revealedLen - edgeLW));
+    var rigRevealLen = Math.max(0, Math.min(rigW, revealedLen));
     var rigRevealPct = rigW > 0 ? (rigRevealLen / rigW * 100) : 0;
     line.style.clipPath = 'inset(0 ' + (100 - rigRevealPct) + '% 0 0)';
 
-    var fillR = Math.max(0, Math.min(edgeRW, revealedLen - edgeLW - rigW));
+    var fillR = Math.max(0, Math.min(edgeRW, revealedLen - rigW));
     edgeR.style.setProperty('--fill', (edgeRW > 0 ? (fillR / edgeRW * 100) : 0) + '%');
 
     // 바닥(CSS 평면) — rig 겹의 실측 밑변부터 카드 밑변까지 채운다. rig 그림
@@ -2356,6 +2356,16 @@
     grad.style.display = 'block';
     grad.style.top = (plateTop - mtop) + 'px';
     grad.style.height = (plateBottom - plateTop) + 'px';
+
+    // 왼쪽 세로 연장 — 라인이 끊긴 지점(rigLeft, lineY)에서 바닥판 윗변
+    // (plateTop)까지만 짧게 잇는다(2026-08-22 요청). 라인이 이미 바닥판
+    // 안쪽에 있으면(lineY 가 plateTop 보다 아래) 이을 게 없으니 감춘다
+    var vedgeH = Math.max(0, lineY - plateTop);
+    vedgeL.style.display = vedgeH > 0 ? 'block' : 'none';
+    vedgeL.style.left = rigLeft + 'px';
+    vedgeL.style.top = (plateTop - mtop) + 'px';
+    vedgeL.style.width = lineThick + 'px';
+    vedgeL.style.height = vedgeH + 'px';
   }
 
   // 스크롤 이벤트만 믿으면 놓치는 경우가 있다(2026-08-21 지적) — 상단 탭이
