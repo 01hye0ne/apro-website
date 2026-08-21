@@ -545,7 +545,7 @@
     gap:4px;width:100%}
   .pmap-tab{grid-row:1;display:flex;align-items:baseline;justify-content:center;gap:6px;
     padding:8px 6px;border-radius:0;background:var(--secondary-bg);
-    border:1px solid var(--border-g);
+    border:1px solid var(--border-g);cursor:pointer;
     transition:background .3s var(--ease),border-color .3s var(--ease)}
   .pmap-tab b{font-family:var(--pre);font-weight:700;font-size:15px;
     letter-spacing:-.3px;color:var(--teritary);transition:color .3s var(--ease)}
@@ -577,18 +577,22 @@
   .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-clone,.pmap-line-edge{
     position:absolute;left:0;top:0;margin:0;pointer-events:none;display:none}
   .pmap-rig-clone,.pmap-line-clone{height:auto}
-  .pmap-line-clone{transition:clip-path 1.6s linear}
   /* 연장선(화면 가장자리) 진행 겹 — 예전엔 옅은 색 막대(트랙)와 진한 색
      막대(채움)를 별개의 두 엘리먼트로 두고 자리·두께를 매번 JS로 각각
      맞췄는데(2026-08-21), "두 라인이 따로 논다"는 구조적 불안 지적
      (2026-08-22)에 채움을 의사요소(::after)로 바꿨다 — 의사요소는 부모
      (.pmap-line-edge) 자리를 CSS 상속으로 그대로 따라가므로(top:0 left:0
      height:100%) 자리·두께가 어긋날 방법 자체가 없다. JS 가 매번 새로
-     맞춰야 하는 값은 이제 채워진 비율(--fill) 하나뿐이다 */
+     맞춰야 하는 값은 이제 채워진 비율(--fill) 하나뿐이다.
+     .pmap-line-clone 의 clip-path 와 이 ::after 의 width 는 더는 CSS
+     transition 을 걸지 않는다(2026-08-22 재지적 — "연장선과 기존선이 따로
+     움직인다") — 매 프레임(sync(), rAF) 흐른 시간으로 직접 계산한 값을
+     즉시 그대로 그리므로, 트랙 전체가 항상 같은 순간 같은 값을 반영해
+     하나의 선처럼 보인다. CSS transition 을 얹으면 오히려 그 프레임 값을
+     다시 뒤늦게 뒤쫓아가며 지연(랙)이 생겨 어긋나 보였다 */
   .pmap-line-edge{--fill:0%}
   .pmap-line-edge::after{content:'';position:absolute;left:0;top:0;height:100%;
-    width:var(--fill);background:var(--fill-color);transition:width 1.6s linear}
-  .pmap-line-edge.pmap-no-anim::after{transition:none}
+    width:var(--fill);background:var(--fill-color)}
 
   /* 활성화 카드는 이제(요청으로) 상|하 레이아웃이라 .hright 가 카드 전체 폭을
      쓴다 — 7칸이 한 줄에 다 들어가므로 위 4열 규칙을 적용하지 않고 기본값
@@ -1972,7 +1976,7 @@
   // 재요청) — RIG_SCALE 을 1로 되돌려 더는 본문 폭보다 키우지 않는다. 바닥
   // 자리를 더는 예약하지 않으니 rig 겹의 실측 밑변부터 카드 밑변까지 남는
   // 자리가 있으면 그게 곧 바닥이고, 없으면 안 보인다(그걸로 충분하다)
-  var RIG_SCALE = 1.15 * 1.20 * 0.9;   // 본문 열 폭 그대로(1)에서 15%(2026-08-21) → 20%(2026-08-21 재요청) 키운 뒤, 너무 커져서 다시 90%로(2026-08-21 재요청)
+  var RIG_SCALE = 1.15 * 1.20 * 0.9 * 0.9 * 1.2;   // 본문 열 폭 그대로(1)에서 15%(2026-08-21) → 20%(2026-08-21 재요청) 키운 뒤, 너무 커져서 90%(2026-08-21 재요청) → 다시 90%(2026-08-22 재요청, 첫 설비가 본문 좌측 정렬과 맞도록) → 감 맞추기 어려워 다시 20%(2026-08-22 재요청)
   var SVG_W = 2246, SVG_H = 653;
   // 탭 패널과 겹쳐도 좋으니 목표 크기(100%)에 도달하게 해달라는 요청
   // (2026-08-21) — 이제 설비 크기를 탭 패널 자리에 맞춰 줄이지 않는다.
@@ -2023,21 +2027,20 @@
   var specEl = hright.querySelector('.pmap-spec');
   var rigClone = null, floorFill = null, gradFill = null, lineClone = null, pmapMask = null;
   var lineEdgeL = null, lineEdgeR = null;
-  var visible = false, raf = null, playTimer = null, activeStep = 0;
+  var visible = false, raf = null, activeStep = 0;
+  // 재생 상태(2026-08-22 재작업) — setInterval 로 2초마다 activeStep 만 계단식
+  // 으로 바꾸고 게이지는 그 변화를 CSS transition(1.6s)이 뒤늦게 뒤쫓아가던
+  // 예전 방식 대신, "언제부터(playStartTime) 몇 번째 단계(playStartStep)에서
+  // 재생을 시작했는지"만 기록해 두고 sync() 가 매 프레임 흐른 시간으로
+  // 진행 위치를 직접 계산한다 — 연장선·설비 안쪽 라인이 항상 같은 순간 같은
+  // 값을 참조하니 "따로 논다"는 문제도, 무한 반복도(마지막 단계 dwell 이
+  // 끝나면 playing 을 꺼서 멈춘다) 여기서 함께 해결된다
+  var playing = false, playStartTime = 0, playStartStep = 0, lastRenderedStep = -1;
+  var revealFrac = 0;
 
-  // 연장선 진행 채움(--fill) 리셋 — 트랙(el)과 채움(::after)이 이제 한
-  // 엘리먼트라 el 하나에만 클래스를 잠깐 걸어 트랜지션을 끈다
-  function resetEdgeFill(el){
-    if (!el) return;
-    el.classList.add('pmap-no-anim');
-    el.style.setProperty('--fill', '0%');
-    el.getBoundingClientRect();
-    el.classList.remove('pmap-no-anim');
-  }
-
-  // 탭 활성 표시·스펙 목록·진행 라인 드러난 폭을 현재 activeStep 에 맞춰
-  // 한 번에 갱신한다. 진한 파랑 겹은 clip-path 에 transition 이 걸려 있어
-  // (CSS, 1.6s) 값만 바꿔주면 자동으로 부드럽게 드러난다
+  // 탭 활성 표시·스펙 목록을 activeStep 에 맞춰 갱신한다 — activeStep 이
+  // 실제로 바뀐 프레임에서만 sync() 가 불러 준다(매 프레임 innerHTML 을
+  // 다시 쓰지 않도록)
   function renderStep(){
     tabEls.forEach(function(el, i){ el.classList.toggle('is-active', i === activeStep); });
     var info = STEP_INFO[activeStep];
@@ -2048,37 +2051,25 @@
       // 좁은 한 칸 안에서 여러 줄로 심하게 접히지 않게 한다
       specEl.style.gridColumn = (activeStep + 1) + ' / 7';
     }
-    // 진행 게이지(연장선 + rig 안쪽 라인 + 연장선) 자체는 여기서 손대지
-    // 않는다 — 연장선 폭이 레이아웃(뷰포트)에 따라 달라지는 값이라, 그
-    // 값을 아는 sync() 안에서 activeStep 을 참고해 매 프레임 다시 그린다
-    // (2026-08-21 — 게이지가 연장선부터 시작하지 않던 문제를 고치며 이동)
   }
 
-  // 카드가 다시 보일 때마다 처음(01)부터 새로 재생한다 — transition 을 잠깐
-  // 끄고 완전히 가린(clip-path 폭 0%) 상태로 강제 리플로우한 뒤 다시 켜야,
-  // 이전에 재생하다 만 지점에서 거꾸로 줄어드는 것처럼 안 보이고 깔끔하게
-  // 0%에서 다시 차오른다
-  function startPlay(){
-    if (playTimer) return;
-    activeStep = 0;
-    if (lineClone){
-      lineClone.style.transition = 'none';
-      lineClone.style.clipPath = 'inset(0 100% 0 0)';
-      lineClone.getBoundingClientRect();
-      lineClone.style.transition = '';
-    }
-    resetEdgeFill(lineEdgeL);
-    resetEdgeFill(lineEdgeR);
-    renderStep();
-    playTimer = setInterval(function(){
-      activeStep = (activeStep + 1) % STEP_INFO.length;
-      renderStep();
-    }, STEP_DWELL);
+  // fromStep 번째 단계부터 시간차 재생을 시작한다 — 카드가 화면에 들어올
+  // 때는 항상 0(처음)부터, 탭을 클릭하면 그 탭부터 이어서 흘러간다
+  // (2026-08-22 요청 — "단계를 클릭하면 그 부분부터 시간차순으로")
+  function startPlay(fromStep){
+    playStartStep = fromStep || 0;
+    playStartTime = performance.now();
+    playing = true;
+    lastRenderedStep = -1;   // 같은 단계에서 다시 시작해도 renderStep() 이 한 번은 돌게
   }
 
   function stopPlay(){
-    if (playTimer){ clearInterval(playTimer); playTimer = null; }
+    playing = false;
   }
+
+  tabEls.forEach(function(el, i){
+    el.addEventListener('click', function(){ startPlay(i); });
+  });
 
   // 마스크 — .hright 의 실측 세로 범위만큼만 오려내는 fixed 상자(가로는
   // 100vw 그대로). grad·floor·rig·line 은 전부 이 안의 absolute 자식이라,
@@ -2185,6 +2176,26 @@
       hright.classList.remove('is-pmap-bled');
       return;
     }
+
+    // 진행 위치 계산(2026-08-22 재작업) — playing 인 동안 매 프레임 흐른
+    // 시간으로 activeStep(정수, 탭 강조용)과 revealFrac(연속값, 게이지
+    // 채움용)을 함께 다시 잰다. 마지막 단계 dwell 이 끝나면(posInSteps 가
+    // 전체 단계 수에 닿으면) playing 을 꺼서 멈춘다 — 무한 반복하지 않고
+    // 마지막 단계에 그대로 머문다("단계가 다 끝나면 그대로 있게" 요청)
+    if (playing){
+      var posInSteps = playStartStep + (performance.now() - playStartTime) / STEP_DWELL;
+      if (posInSteps >= STEP_INFO.length){
+        posInSteps = STEP_INFO.length;
+        playing = false;
+      }
+      activeStep = Math.min(STEP_INFO.length - 1, Math.floor(posInSteps));
+      revealFrac = posInSteps / STEP_INFO.length;
+      if (activeStep !== lastRenderedStep){
+        lastRenderedStep = activeStep;
+        renderStep();
+      }
+    }
+
     // 넷 다 z-index 가 같아 DOM 순서가 곧 쌓임 순서다(먼저 붙을수록 아래) —
     // grad·floor(배경) → rig(설비) → line(맨 위, rig 와 픽셀 단위로 같은
     // 그림이라 위에 포개져도 드러난 부분만 "라인 색이 바뀐" 것처럼 보인다)
@@ -2221,13 +2232,13 @@
     var gradTop = floorTop + floorH * GRAD_TOP_FRAC;
     var gradBottom = floorTop + floorH * GRAD_BOT_FRAC;
 
-    // rig 겹 — 본문 열(.hleft) 폭 기준으로 RIG_SCALE 배 키우고, 늘어난 만큼은
-    // 열 가운데를 기준으로 좌우로 고르게 번지게 한다(왼쪽만 밀리지 않도록).
-    // 바닥 시작선(옛 바닥 띠가 시작하던 gradBottom)에 rig 겹의 같은 지점이
-    // 겹치도록 top 을 역산한다 — 설비는 원래 그림에서 서 있던 자리 그대로,
-    // 바닥판만 짧아진다
+    // rig 겹 — 본문 열(.hleft) 폭 기준으로 RIG_SCALE 배 키운다. 바닥 시작선
+    // (옛 바닥 띠가 시작하던 gradBottom)에 rig 겹의 같은 지점이 겹치도록
+    // top 을 역산한다 — 설비는 원래 그림에서 서 있던 자리 그대로, 바닥판만
+    // 짧아진다
     var rigW = col.width * RIG_SCALE;
     var rigH = rigW * aspect;
+    var vw = window.innerWidth;
 
     // 탭 패널과 겹쳐도 된다는 확인을 받았다(2026-08-21 재요청) — 더는 탭
     // 자리를 피해 줄이지 않는다. 유일한 제약은 이 카드 자체의 실측 세로
@@ -2235,12 +2246,31 @@
     // 넘어가지 않는 것 — 다음 카드를 침범하는 일만은 없어야 한다
     var availH = Math.max(0, hrightRect.bottom - hrightRect.top);
     if (rigH > availH){
-      var shrink = availH / rigH;
-      rigW *= shrink;
+      var shrinkH = availH / rigH;
+      rigW *= shrinkH;
       rigH = availH;
     }
 
-    var rigLeft = col.left - (rigW - col.width) / 2;
+    // 좌우 가운데 기준으로 고르게 번지게 하면(예전 방식) 첫 설비가 본문
+    // 좌측 정렬보다 왼쪽으로 밀려나 보였다(2026-08-22 지적) — 본문 열
+    // 왼쪽에 그대로 붙이고 늘어난 만큼은 오른쪽으로만 번지게 한다. 그래서
+    // 세로뿐 아니라 가로도 한 번 더 가둬야 한다 — 왼쪽이 col.left 에
+    // 고정된 채로 커지기만 하면 화면 오른쪽 끝(vw)을 넘어간 만큼은
+    // .pmap-mask 의 overflow:hidden 에 그대로 잘려 마지막 설비가 화면
+    // 밖으로 사라진다(2026-08-22 확인 — 크기를 키우다 발견)
+    var availW = Math.max(0, vw - col.left);
+    if (rigW > availW){
+      var shrinkW = availW / rigW;
+      rigW *= shrinkW;
+      rigH *= shrinkW;
+    }
+
+    // 본문 좌측에 딱 붙이니 오히려 오른쪽으로 치우쳐 보인다는 지적
+    // (2026-08-22 재요청) — 왼쪽으로 40px 옮긴다. 가로 넘침 계산(availW)은
+    // col.left 기준 그대로 두고 자리만 옮기므로, 오른쪽 끝이 화면을
+    // 넘어가는 일은 없고(오히려 40px 여유가 더 생긴다) 왼쪽 연장선
+    // (edgeLW = Math.max(0, rigLeft))만 그만큼 짧아진다
+    var rigLeft = col.left - 40;
     var rigTop = gradBottom - rigH * GRAD_BOT_FRAC;
     // 위에서 크기를 이미 남는 자리에 맞췄지만, gradBottom 기준 역산이라 위치가
     // 그 범위를 살짝 벗어날 수 있다 — 밑변을 카드 밑변 안으로, 그다음 윗변을
@@ -2269,7 +2299,6 @@
     var lineScale = rigW / SVG_W;
     var lineY = rigTop + LINE_Y_FRAC * rigH;
     var lineThick = LINE_STROKE * lineScale;
-    var vw = window.innerWidth;
     var edgeLW = Math.max(0, rigLeft);
     var edgeRW = Math.max(0, vw - (rigLeft + rigW));
     edgeL.style.display = 'block';
@@ -2284,14 +2313,14 @@
     edgeR.style.height = lineThick + 'px';
 
     // 진행 게이지 — 왼쪽 연장선 → rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은
-    // 전체 길이를 기준으로, activeStep 진행률만큼 왼쪽부터 진한 색으로
-    // 채운다(2026-08-21 지적 — "라인 게이지가 연장선부터 시작하지 않는다").
-    // 연장선 쪽 채움은 트랙(edgeL/edgeR)의 --fill 비율 하나로, rig 안쪽은
-    // 여전히 clip-path 로 표현한다 — 자리·두께 값은 위에서 트랙에 이미
-    // 맞춰 놓았으므로 여기서 다시 셀 필요가 없다(2026-08-22, "따로 논다"는
-    // 지적에 트랙+채움 두 엘리먼트 구조를 하나로 합치며 정리)
+    // 전체 길이를 기준으로, revealFrac(위에서 이미 계산한 연속값) 만큼
+    // 왼쪽부터 진한 색으로 채운다(2026-08-21 지적 — "라인 게이지가 연장선
+    // 부터 시작하지 않는다"). 연장선 쪽 채움은 트랙(edgeL/edgeR)의 --fill
+    // 비율 하나로, rig 안쪽은 여전히 clip-path 로 표현한다 — 자리·두께
+    // 값은 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀 필요가 없다
+    // (2026-08-22, "따로 논다"는 지적에 트랙+채움 두 엘리먼트 구조를
+    // 하나로 합치며 정리)
     var totalLen = edgeLW + rigW + edgeRW;
-    var revealFrac = (activeStep + 1) / STEP_INFO.length;
     var revealedLen = totalLen * revealFrac;
 
     var fillL = Math.max(0, Math.min(edgeLW, revealedLen));
@@ -2361,7 +2390,7 @@
     visible = entries[0].isIntersecting;
     if (visible){
       if (!raf) raf = requestAnimationFrame(loop);
-      startPlay();
+      startPlay(0);
     } else {
       queue();   // 사라질 때도 한 번 더 sync 해서 클론들을 확실히 감춘다
       stopPlay();
