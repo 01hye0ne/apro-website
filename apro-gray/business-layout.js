@@ -75,11 +75,10 @@
       paintNav();   // 메가가 닫혔으니 접힘 여부를 다시 판정
     });
   }
-  /* .chero — 투자정보·지속가능경영·커뮤니티 콘텐츠 페이지의 히어로(content-layout.css).
-     .dhero 와 생김새는 다르지만 "어두운 첫 화면 뒤로 흰 본문이 이어진다"는 점이 같아
-     아래 흰 플레이트 판정(nav-light)을 그대로 쓴다. 이걸 빼면 히어로를 지나는 순간
-     흰 본문 위에 흰 GNB 글자가 남아 메뉴가 사라진다 */
-  var hero=document.querySelector('.dhero,.chero'),bn=document.querySelector('.bnav-wrap'),
+  /* 한동안 여기서 .chero(콘텐츠 페이지의 낮은 띠 히어로)도 함께 찾았다. 2026-08-21
+     에 투자정보·지속가능경영·커뮤니티 아홉 장이 세부 페이지와 같은 .dhero + .bnav-wrap
+     으로 갈아타면서 그 클래스가 사이트에서 사라져 선택자를 되돌린다 */
+  var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),
       cn=document.querySelector('.cnav-wrap'),   /* 회사소개 목차 탭 바 (아래 ap 참고) */
       ft=document.querySelector('.footer'),on=null,hid=null;
   var narrowMq=window.matchMedia('(max-width:900px)');

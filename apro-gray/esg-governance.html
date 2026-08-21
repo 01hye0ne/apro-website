@@ -15,11 +15,16 @@
      지속가능경영 > 지배구조
 
      글과 수치는 content-export/ 에서 그대로 옮겨 온 것이다(원본: 구 apro_home).
-     레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
+     본문 레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
      시안이 나오면 이 파일의 마크업은 두고 그 CSS 부터 갈아탄다.
 
-     GNB·푸터·전체메뉴는 사업영역 세부 페이지와 같은 한 벌
-     (business-layout.css / business-layout.js)을 쓴다.
+     GNB·푸터·전체메뉴, 그리고 2026-08-21 부터 히어로(.dhero)까지 사업영역 세부
+     페이지와 같은 한 벌(business-layout.css / business-layout.js)을 쓴다.
+     그 위에 얹는 값은 content-layout.css 의 "1. 히어로" 블록에 있다.
+
+     형제 페이지로 가는 소분류 탭 줄은 두지 않는다 — 대분류 안에서 어디로
+     갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
+     열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
      A-1(esg-governance-a1.html)은 이 파일에서 _gen-a1.py 로 나온다 -->
 </head>
 <body>
@@ -47,18 +52,13 @@
 </div>
 
 <!-- ===================== 히어로 ===================== -->
-<section class="chero">
-  <div class="cwrap in">
-    <p class="en">Sustainability</p>
+<section class="dhero">
+  <span class="dhero-bg" style="--hero-pos:50% 78%"><img src="../assets/vision-solar-farm.jpg" alt="" aria-hidden="true" /></span>
+  <div class="in">
     <h1>지배구조</h1>
-    <p class="lead">책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.</p>
+    <p class="dhero-lead">책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.</p>
   </div>
 </section>
-
-<!-- ===================== 소분류 탭 ===================== -->
-<nav class="csub" aria-label="지속가능경영 하위 메뉴">
-  <div class="cwrap in"><a href="esg-environment.html">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html" aria-current="page">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
-</nav>
 
 <!-- ===================== 본문 ===================== -->
 <main class="cbody">

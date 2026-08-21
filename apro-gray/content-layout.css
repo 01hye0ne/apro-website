@@ -19,15 +19,24 @@
 /* =====================================================================
    0. 그리드 — 글로벌 네트워크·회사소개와 같은 좌우 84px 고정 여백
    ===================================================================== */
-.gnb-group{--gutter:84px}
-.gnb{width:calc(100% - 168px)}
-.gnb-mega .inner{width:calc(100% - 168px)}
+/* 168px 은 2 × 84px 을 풀어 적은 것이었다. --cx 가 좁은 화면에서 단계로 줄어드는데
+   이 셋만 84px 에 못 박혀 있어 그 구간에서 GNB 와 본문이 어긋났다 — 변수로 묶는다 */
+.gnb-group{--gutter:var(--cx)}
+.gnb{width:calc(100% - var(--cx) * 2)}
+.gnb-mega .inner{width:calc(100% - var(--cx) * 2)}
+/* GNB 메뉴 한 칸(--mm-col, business-layout.css 기본 176px)도 화면을 따라 줄인다.
+   .gnb .menus a 는 폭이 고정이라 좁아져도 줄지 않고(플렉스 항목의 최소 크기가 지정 폭
+   그대로다), 그래서 메뉴 줄이 로고·언어·전체메뉴 버튼을 화면 밖으로 밀어냈다 —
+   1200px 에서 전체메뉴 버튼이 잘려 나가는 것이 실제로 보였다. 이 페이지들은 대분류
+   안 이동을 전적으로 이 메뉴에 맡기고 있어 더더욱 잘리면 안 된다. 값·경계는 사업영역
+   세부 페이지가 쓰는 것과 같다. 900px 이하는 공용 CSS 가 메뉴 자체를 감춘다 */
+@media(max-width:1600px){.gnb-group{--mm-col:150px}}
+@media(max-width:1280px){.gnb-group{--mm-col:112px} .gnb{gap:20px}}
+@media(max-width:1000px){.gnb-group{--mm-col:96px}}
 
 :root{
   /* 본문 상자의 좌우 여백 */
   --cx:84px;
-  /* 소분류 탭 줄 높이. 아래 본문의 scroll-margin 이 같은 값을 쓴다 */
-  --csub-h:60px;
   /* 화면 상단을 차지하는 GNB 흰 플레이트(.gnb-group::before)의 높이.
      business-layout.css 가 72px 로 못 박아 둔 값이고, 소분류 탭 줄이 그 밑에 붙는다 —
      0 으로 두면 탭이 GNB 뒤로 들어가 통째로 가려진다 */
@@ -37,57 +46,46 @@
 .cwrap{width:calc(100% - var(--cx) * 2);max-width:1440px;margin:0 auto}
 
 /* =====================================================================
-   1. 히어로 — 대분류 이름과 한 줄 설명
-   ===================================================================== */
-/* 사업영역 세부 페이지의 .dhero 는 사진을 깐 480px 배너지만 이쪽은 아직 쓸 사진이
-   없다 — content-export 가 참조하는 이미지가 이 저장소에 없다(ASSETS.md 참고).
-   그래서 같은 --g950 바탕에 은은한 브랜드 광량만 얹고 높이를 낮게 잡았다.
-   사진이 들어오면 .dhero-bg 와 같은 구조를 여기에 붙이면 된다 */
-.chero{position:relative;background:var(--g950);color:#fff;overflow:hidden;
-  padding:152px 0 64px}
-.chero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(120% 90% at 18% -20%,rgba(64,119,183,.32),transparent 64%)}
-.chero .in{position:relative;z-index:1}
-/* 영문 대분류명 — 국문 제목 위에 작게. 홈·세부 페이지의 영문 라벨과 같은 결 */
-.chero .en{font-family:var(--rc);font-weight:700;font-size:15px;line-height:1.2;
-  letter-spacing:.14em;color:var(--point-300);text-transform:uppercase}
-.chero h1{margin-top:14px;font-family:var(--suit);font-weight:800;font-size:clamp(34px,3.6vw,52px);
-  line-height:1.2;letter-spacing:-1px}
-.chero .lead{margin-top:18px;max-width:760px;font-family:var(--pre);font-size:19px;
-  line-height:1.62;letter-spacing:-.38px;color:var(--on-white-85);word-break:keep-all}
+   1. 히어로 — 사업영역 세부 페이지와 같은 배너 (.dhero)
+   =====================================================================
+   2026-08-21 요청으로 이 열 장의 첫 화면을 사업영역 세부 페이지(business-smart.html
+   계열)와 같은 스타일로 갈아탔다. 그전에는 사진 없이 --g950 바탕에 광량만 얹은
+   낮은 띠(.chero)였다. 마크업·클래스는 세부 페이지 것을 그대로 쓴다 — 뼈대 규칙은
+   business-layout.css 의 .dhero 블록에 있고 여기 있는 것은 그 위에 얹는 값이다.
 
-@media(prefers-reduced-motion:no-preference){
-  .chero .in>*{animation:cheroIn .9s var(--ease) both}
-  .chero .en{animation-delay:.05s}
-  .chero h1{animation-delay:.13s}
-  .chero .lead{animation-delay:.21s}
-  @keyframes cheroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+   ⚠ 소분류 탭 줄은 두지 않는다.
+     한동안 세부 페이지의 탭 바(.bnav-wrap — 히어로 밑단 유리 판, 스크롤하면 화면
+     상단에 고정)까지 함께 옮겨 왔다가 같은 날 걷어냈다. 그 바는 형제 페이지 링크를
+     늘어놓는 자리였는데, 대분류 안에서 어디로 갈지는 메가메뉴·전체메뉴·푸터가 이미
+     다 보여 주고 있다 — 메가메뉴에서 "환경"을 눌러 들어왔으면 그 페이지에는 환경만
+     보이는 편이 낫다는 판단이다.
+     ▶ 되살릴 일이 생기면 세부 페이지의 <style> 에서 .bnav-* 규칙을 다시 가져오면
+       된다(그 파일은 개편이 층으로 쌓여 있어 마지막 층을 봐야 한다). 그때는 아래
+       .dhero 의 padding-bottom 도 함께 되돌려야 한다 — 공용 기본값 var(--bar-h)가
+       바로 그 바가 히어로 밑단에 얹히는 자리다.
+
+   세부 페이지와 다른 점은 높이 하나다. 저쪽 히어로는 데스크톱에서 100vh 인데 그건
+   한 섹션 = 화면 한 판으로 넘기는 구조(.hsec + pageTo)에서 나온 값이다. 이 열 장은
+   그냥 내려 읽는 문서라 100vh 로 두면 첫 화면에 본문이 한 줄도 안 걸리고, 넘길
+   장치도 없어 스크롤 말고는 내려갈 길이 없다 → 공용 기본값(480px)을 그대로 쓴다.
+   ===================================================================== */
+/* 배경 사진은 각 페이지의 <img> 가 정한다 — 대분류마다 한 장씩이다.
+     투자정보      hq-exterior.jpg       사옥
+     지속가능경영  vision-solar-farm.jpg 태양광 패널
+     커뮤니티      hq-sunset.jpg         노을 아래 사옥
+   세부 페이지가 사업영역 허브의 패널 사진을 그대로 받아 오는 것과 같은 자리다.
+   시안 사진이 들어오면 <img src> 와 그 옆 --hero-pos 만 갈아 끼우면 된다.
+   사진 위 어둠(.dhero::after)·얕은 줌아웃(heroIn)은 공용 CSS 가 이미 갖고 있다.
+   ⚠ --hero-pos 는 세로만 듣는다 — 사진이 배너보다 세로로 길어 cover 가 폭에 맞춰
+     늘리므로 가로는 잘리는 데가 없다. 흰 타이틀이 밝은 면에 묻히면 이 값으로 어두운
+     띠를 타이틀 뒤로 끌어온다(투자정보의 8% 가 그렇게 나온 값이다) */
+.dhero{padding-left:var(--cx);padding-right:var(--cx);
+  /* 공용 기본값은 var(--bar-h) — 소분류 탭 바가 히어로 밑단에 얹히는 자리였다.
+     바가 없으니 위 여백과 같은 값으로 돌려 타이틀이 배너 정중앙에 오게 한다 */
+  padding-bottom:80px}
+@media(min-width:901px){
+  .dhero h1{font-size:60px;line-height:1.22}
 }
-
-/* =====================================================================
-   2. 소분류 탭 줄 — 같은 대분류의 형제 페이지들
-   ===================================================================== */
-/* 사업영역의 .bnav-wrap 은 히어로 밑단에 얹혔다가 화면 상단에 고정되는 장치인데
-   그건 한 페이지 안의 앵커 탭(#)을 위한 것이라 여기엔 맞지 않는다 — 이 탭은 서로
-   다른 페이지로 가는 링크다. 그래서 흔한 sticky 한 줄로 둔다 */
-/* z-index 는 GNB 플레이트(98)보다 낮게 둔다 — 탭 줄이 그 아래로 미끄러져 들어가야
-   위쪽 72px 이 늘 GNB 자리로 남는다 */
-.csub{position:sticky;top:var(--gnb-h);z-index:80;height:var(--csub-h);background:#fff;
-  border-bottom:1px solid var(--border-g)}
-.csub .in{height:100%;display:flex;align-items:center;gap:clamp(20px,2.6vw,40px);
-  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.csub .in::-webkit-scrollbar{display:none}
-.csub a{position:relative;flex-shrink:0;height:100%;display:flex;align-items:center;
-  font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.15;letter-spacing:-.32px;
-  color:var(--teritary);white-space:nowrap;transition:color .3s var(--ease)}
-.csub a:hover{color:var(--sec)}
-.csub a[aria-current]{font-weight:700;color:var(--g900)}
-/* 현재 페이지 밑줄 — 탭 줄의 아래 테두리 위에 겹쳐 그린다 */
-.csub a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
-  background:var(--brand)}
-/* 아직 페이지가 없는 항목(내부정보관리규정)은 눌리지 않는다 — 링크처럼 보이면
-   눌러 보고 아무 일도 안 일어나는 게 더 나쁘다 */
-.csub a[aria-disabled]{color:var(--border-g);pointer-events:none}
 
 /* =====================================================================
    3. 본문 블록
@@ -239,8 +237,9 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ctoc ol{margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:7px}
 .ctoc li{font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;color:var(--sec)}
 .ctoc a:hover{color:var(--brand);text-decoration:underline}
-/* GNB + sticky 탭 줄에 제목이 가리지 않도록 */
-.cdoc h3[id],.cblock[id]{scroll-margin-top:calc(var(--gnb-h) + var(--csub-h) + 24px)}
+/* 화면 상단 GNB 흰 플레이트에 제목이 가리지 않도록. 화면에 늘 떠 있는 것이 이제
+   그것 하나뿐이라 여기서 피할 것도 그것뿐이다 */
+.cdoc h3[id],.cblock[id]{scroll-margin-top:calc(var(--gnb-h) + 24px)}
 
 /* 접어 둔 전문 — 정책 원문과 공지 본문이 같은 장치를 쓴다.
    본문 흐름 위에 3천 자짜리 규정을 그대로 펼쳐 놓으면 그 아래 내용이 묻힌다.
@@ -328,7 +327,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 }
 @media(max-width:760px){
   :root{--cx:24px}
-  .chero{padding:112px 0 44px}
+  .dhero{min-height:380px}
   .cbody{padding:56px 0 80px}
   .cblock+.cblock{margin-top:64px}
   .ccard,.cperson,.cway{padding:24px}
