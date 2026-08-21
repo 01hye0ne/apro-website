@@ -368,8 +368,13 @@
   /* 타이틀과 인덱스가 위에서부터 이어 붙는다 — 예전엔 하단에 스크롤 게이지가 있어
      space-between 으로 위아래로 벌렸지만, 인덱스가 그 자리를 받으면서 타이틀 바로
      아래에 붙어야 "이 소분류에 무엇이 담겼는가"로 읽힌다 */
-  .hrail{grid-column:1 / span 3;grid-row:1;min-width:0;display:flex;flex-direction:column;
-    justify-content:flex-start;gap:26px}
+  /* position+z-index — 공정 프로세스 맵처럼 화면 끝까지 번지는 그림(position:fixed
+     복제본, z-index 1~3)이 있는 카드에서, 그 그림이 non-positioned 인 레일보다
+     항상 위에 그려져(포지션드 요소는 z-index 값과 무관하게 static 요소보다 위에
+     그려진다) 왼쪽 인덱스 탭을 가리는 문제(2026-08-21 지적) — 레일을 포지션드로
+     만들고 그 그림들보다 높은 z-index를 줘서 항상 탭이 맨 위에 남게 한다 */
+  .hrail{position:relative;z-index:4;grid-column:1 / span 3;grid-row:1;min-width:0;
+    display:flex;flex-direction:column;justify-content:flex-start;gap:26px}
   .htrack{grid-column:4 / span 9;grid-row:1;min-width:0;position:relative;
     display:flex;flex-direction:column;gap:16px;overflow-x:hidden;overflow-y:auto;
     scroll-snap-type:none;   /* 스냅·smooth 모두 JS가 처리 — CSS 스냅을 켜두면 프레임마다 되잡아채 튄다 */

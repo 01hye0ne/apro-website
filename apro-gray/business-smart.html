@@ -517,6 +517,35 @@
   .hleft .fsteps{grid-template-columns:repeat(4,minmax(0,1fr))}
   .hleft .fsteps li:nth-child(4n+1)::before{display:none}
 
+  /* ── 공정 프로세스 맵 — 설비(오브젝트) 호버 (2026-08-21 요청, 텍스트 탭
+     방식에서 변경) ──────────────────────────────────────────────────
+     그림은 <img> 복제본이라 안쪽 개별 설비에 직접 이벤트를 걸 수 없다 —
+     그래서 투명 히트 영역(.pmap-hit)을 설비마다 그림 위에 겹쳐 놓고,
+     그 히트 영역에 호버하면 강조 테두리(.pmap-highlight)와 근처 툴팁
+     (.pmap-tip)이 뜬다. 좌표는 이 파일 맨 아래 스크립트가 SVG 실측값을
+     rig 겹 스케일로 변환해서 매긴다(탭 방식일 때 쓰던 것과 같은 좌표) */
+  .pmap-hit{position:fixed;pointer-events:auto;z-index:2;cursor:pointer}
+  .pmap-highlight{position:fixed;pointer-events:none;z-index:2;
+    border-radius:6px;background:rgba(44,87,144,.08);
+    box-shadow:inset 0 0 0 1px rgba(44,87,144,.35);
+    opacity:0;transition:opacity .15s var(--ease)}
+  .pmap-highlight.is-on{opacity:1}
+  .pmap-tip{position:fixed;pointer-events:none;z-index:3;
+    background:#fff;border-radius:6px;padding:12px 16px;
+    box-shadow:0 4px 20px rgba(18,40,68,.14),0 0 0 1px var(--border-g);
+    opacity:0;transform:translateY(4px);
+    transition:opacity .15s var(--ease),transform .15s var(--ease)}
+  .pmap-tip.is-on{opacity:1;transform:translateY(0)}
+  .pmap-tip .tip-ttl{font-family:var(--pre);font-weight:700;font-size:14px;
+    letter-spacing:-.3px;color:var(--g900);white-space:nowrap;margin:0 0 6px}
+  .pmap-tip ul{list-style:none;margin:0;padding:0;display:flex;
+    flex-direction:column;gap:4px}
+  .pmap-tip li{position:relative;padding-left:12px;font-family:var(--pre);
+    font-weight:400;font-size:13px;line-height:1.5;letter-spacing:-.3px;
+    color:var(--sec);white-space:nowrap}
+  .pmap-tip li::before{content:"";position:absolute;left:1px;top:7px;
+    width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+
   /* 활성화 카드는 이제(요청으로) 상|하 레이아웃이라 .hright 가 카드 전체 폭을
      쓴다 — 7칸이 한 줄에 다 들어가므로 위 4열 규칙을 적용하지 않고 기본값
      (business-layout.css 의 repeat(7,1fr))을 그대로 둔다. 순서(.fsteps)를
@@ -964,6 +993,10 @@
          특정도가 같으므로 이 규칙은 반드시 그보다 뒤에 있어야 윗변이 살아난다.
          살아난 윗변은 이제 '두 면을 가르는 금'이 아니라 '상자의 윗변'으로 읽힌다 */
     .hcard[data-tab*="프로세스 맵"]>.hright{border:1px solid var(--border-g)}
+    /* 그림이 화면 끝까지 번지는 동안(is-pmap-bled, 아래 스크립트가 토글)은 이 선이
+       (이제 화면에 안 보이는) 원본 이미지 자리 주위에 빈 테두리 상자로 남아
+       보인다 — 번지는 동안은 투명하게 지운다 */
+    .hcard[data-tab*="프로세스 맵"]>.hright.is-pmap-bled{border-color:transparent}
     /* 표시 글자 — 확정 전을 뜻하는 것들과 같은 톤(--teritary). 본문(17px)보다
        한 단 작게 잡아 그림의 캡션이 아니라 곁말로 읽히게 한다.
        flex:none — .hright 가 세로 flex 라, 이걸 안 주면 위 img 의 flex:0 1 auto 와
@@ -1297,6 +1330,12 @@
       <article class="hcard" data-tab="공정 프로세스 맵">
         <div class="hleft">
           <h3>공정 프로세스 맵</h3>
+          <!-- 스텝 호버 인터랙션(2026-08-21) — 처음엔 텍스트 탭(01~06)에 호버하는
+               방식으로 만들었는데, "본문은 원래 설명 그대로 두고 호버는 탭이
+               아니라 그림 속 설비 자체에" 로 바뀌었다. 그래서 이 자리(.hleft)는
+               고정 설명 4줄로 되돌리고, 탭 목록은 완전히 없앤다 — 호버 트리거·
+               스텝 이름/스펙 텍스트는 전부 이 파일 맨 아래 스크립트가 그림 위에
+               만드는 투명 히트 영역 + 툴팁이 담당한다(호버한 설비 근처에 뜬다) -->
           <ul>
             <li>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며, 활성화 공정에 필요한 9가지 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</li>
             <li>배터리 셀 활성화 공정은 셀 제조의 마지막 단계로, 배터리의 성능과 품질을 최종적으로 결정하는 핵심 공정입니다.</li>
@@ -1336,7 +1375,7 @@
           <img src="../assets/activation-line.png" alt="이차전지 활성화 전공정 라인 구성도 — 충방전기 구역, 디개싱·전해액 설비, 물류 자동창고, 에이징 룸" loading="lazy" />
           -->
           <p class="tbd-note">*수정예정</p>
-          <img src="../assets/activation-process-map.png" width="1118" height="508" loading="lazy"
+          <img src="../assets/공정 프로세스 맵.svg" width="2246" height="653" loading="lazy"
                alt="이차전지 활성화 공정 프로세스 맵 — 1차 충전 · 디개싱 공정 · 에이징 공정 · 충·방전 · 품질 검사 · 불량 선별 6단계와 전공정 라인 구성도" />
         </div>
       </article>
@@ -1843,6 +1882,315 @@
 </button>
 
 <script src="business-layout.js"></script>
+<script>
+(function(){
+  // 공정 프로세스 맵 그림 — 바닥은 화면 좌우 끝까지, 설비(오브젝트)는 본문 열
+  // 폭에 맞춘다(2026-08-21 요청). 실제 <img>는 .htrack(overflow-x:hidden —
+  // 카드 사이 세로 스크롤용, overflow-y:auto 와 짝이라 x만 visible 로 못 푼다:
+  // 페어가 non-visible 이면 visible 쪽이 auto 로 강제되는 CSS 규칙이 있어
+  // 결국 다시 잘린다)와 .hright(overflow:hidden) 안에 갇혀 있어 마진만으로는
+  // 화면 끝까지 못 나간다. 그래서 실제 그림은 숨기고(레이아웃 자리는 그대로
+  // 차지) 화면(position:fixed)에 붙는 복제본 두 장을 만들어 원본의 위치를
+  // 따라가게 한다 — 클리핑 조상을 아예 안 거치므로 위 문제를 건드릴 필요가
+  // 없다.
+  // 그림에서 두 가지를 화면에 따로 깐다:
+  //   · rig 겹: 그림 자체(설비)를 본문 열(.hleft) 폭으로 줄여서 그대로 복제
+  //   · floor/grad: 그림 속 바닥·배경 그라데이션은 이제 CSS 평면으로 새로
+  //     그린다(원본 바닥 띠는 SVG에서 지웠다 — 2026-08-21 요청, 이 스크립트가
+  //     만드는 화면 끝까지 바닥과 겹쳐 보였다)
+  // fetch/inline SVG 없이 <img> 복제 + clip-path 만으로 되는 이유 — 로컬
+  // file:// 미리보기는 CORS 때문에 fetch 로 SVG를 파싱해 넣는 방식을 못 쓴다.
+  // SVG 쪽 바닥·배경 그라데이션(Rectangle 332/333)은 이제 둘 다 삭제됐다 —
+  // rig 겹(설비)엔 더 이상 바닥 관련 내용이 없으므로, 아래 두 상수는 SVG
+  // 원본 좌표를 따라갈 필요 없이 순전히 이 CSS 레이어들만의 비율이다.
+  // GRAD_TOP_FRAC 을 낮췄다(2026-08-21 지적 — "연그레이 바닥"이 설비 키
+  // 대부분을 덮을 만큼 위에서부터 시작해 너무 높았다. 표시해 준 선만큼
+  // 아래로 내려 바닥 근처에서만 은은하게 밝아지도록 줄인다)
+  var FLOOR_COLOR = '#CDD4DC';   // 옛 바닥 띠(Rectangle 332)와 같은 색
+  var GRAD_TOP_FRAC = 0.65;   // 연그레이(그라데이션) 밴드 시작 — 예전 0.424 에서 내림
+  var GRAD_BOT_FRAC = 616 / 653;   // 연그레이 밴드 끝(=진그레이 바닥 쪽으로 이어지는 기준선)
+  var GRAD_TOP_COLOR = '#E4E8ED', GRAD_BOT_COLOR = '#F4F6F8';
+  var RIG_SCALE = 1.15;   // 설비 겹을 본문 열 폭보다 15% 더 키운다(2026-08-21 요청)
+
+  // 설비(오브젝트) 호버(2026-08-21, 텍스트 탭 방식에서 변경) — 좌표는
+  // assets/공정 프로세스 맵.svg 를 직접 열어 각 "Step N" 그룹(과 하위
+  // "설비 N" 그룹)의 getBBox() 를 실측한 값이다(스크린샷 눈대중이 아니라
+  // SVG 좌표 자체라 정확하다). 좌표계는 그 SVG 의 viewBox 그대로(2246×653)
+  // — rig 겹으로 그릴 때의 스케일(rigW/2246)을 곱하면 화면 좌표가 나온다.
+  // 스텝 5·6처럼 같은 설비가 두 벌 떨어져 있으면 각각 따로 히트 영역을
+  // 둔다 — 어느 쪽에 호버해도 같은 스텝 정보가 뜨지만, 강조 테두리는
+  // 실제로 마우스가 올라간 그 하나만 켜진다(직접 가리키는 물건이라는 감각)
+  var SVG_W = 2246, SVG_H = 653;
+  var STEP_INFO = {
+    '1': { label: '01 1차 충전', spec: ['Pre-formation', '고온가압 충방전기 (High Temperature, Pressure, Formation)', 'Selector'] },
+    '2': { label: '02 디개싱 공정', spec: ['Degas'] },
+    '3': { label: '03 에이징 공정', spec: ['High Temp Aging', 'Normal Temp Aging', 'Shipping Temp Aging'] },
+    '4': { label: '04 충·방전', spec: ['충방전기 (Formation)', 'Selector'] },
+    '5': { label: '05 품질 검사', spec: ['DCIR (DC Internal Resistance Tester)', 'IR-OCV (Internal Resistance & Open Circuit Voltage Tester)', 'OCV (Open Circuit Voltage Tester)'] },
+    '6': { label: '06 불량 선별', spec: ['DSF/EOL (Double Side Folding / End Of Line)'] }
+  };
+  var STEP_REGIONS = [
+    { step: '1', x: 58,   y: 217,   w: 124, h: 322 },   // Pre-formation 컨테이너 1
+    { step: '1', x: 218,  y: 217,   w: 124, h: 322 },   // Pre-formation 컨테이너 2
+    { step: '2', x: 428,  y: 215,   w: 100, h: 324 },   // Degas
+    { step: '3', x: 614,  y: 119,   w: 220, h: 420 },   // 에이징 랙 1조
+    { step: '3', x: 916,  y: 119,   w: 220, h: 420 },   // 에이징 랙 2조
+    { step: '4', x: 1281, y: 177,   w: 792, h: 317.5 }, // 충방전기 배열 전체
+    { step: '5', x: 1403, y: 480.5, w: 134, h: 77 },    // 품질검사 장비 1조
+    { step: '5', x: 1686, y: 480.5, w: 134, h: 77 },    // 품질검사 장비 2조
+    { step: '6', x: 1246, y: 492,   w: 121, h: 53 },    // 불량선별 장비 1조
+    { step: '6', x: 1850, y: 492,   w: 121, h: 53 }     // 불량선별 장비 2조
+  ];
+
+  var img = document.querySelector('.hcard[data-tab*="프로세스 맵"]>.hright img');
+  if (!img) return;
+  var track = img.closest('.htrack');
+  var hright = img.closest('.hright');
+  var hcard = img.closest('.hcard');
+  var hleft = hcard.querySelector('.hleft');
+  var rigClone = null, floorFill = null, gradFill = null, visible = false, raf = null;
+  var hitAreas = [], highlightEl = null, tipEl = null, hoverIdx = -1;
+
+  function ensureHitAreas(){
+    if (hitAreas.length) return hitAreas;
+    STEP_REGIONS.forEach(function(region, i){
+      var hit = document.createElement('div');
+      hit.setAttribute('aria-hidden', 'true');
+      hit.className = 'pmap-hit';
+      hit.style.display = 'none';
+      document.body.appendChild(hit);
+      hit.addEventListener('mouseenter', function(){ hoverIdx = i; });
+      hit.addEventListener('mouseleave', function(){ if (hoverIdx === i) hoverIdx = -1; });
+      hitAreas.push(hit);
+    });
+    return hitAreas;
+  }
+
+  function ensureHighlight(){
+    if (highlightEl) return highlightEl;
+    highlightEl = document.createElement('div');
+    highlightEl.setAttribute('aria-hidden', 'true');
+    highlightEl.className = 'pmap-highlight';
+    document.body.appendChild(highlightEl);
+    return highlightEl;
+  }
+
+  function ensureTip(){
+    if (tipEl) return tipEl;
+    tipEl = document.createElement('div');
+    tipEl.setAttribute('aria-hidden', 'true');
+    tipEl.className = 'pmap-tip';
+    document.body.appendChild(tipEl);
+    return tipEl;
+  }
+
+  function ensureGradFill(){
+    if (gradFill) return gradFill;
+    gradFill = document.createElement('div');
+    gradFill.setAttribute('aria-hidden', 'true');
+    gradFill.className = 'pmap-grad-fill';
+    gradFill.style.cssText = 'position:fixed;left:0;width:100vw;'
+      + 'pointer-events:none;z-index:1;margin:0;display:none;'
+      + 'background:linear-gradient(' + GRAD_TOP_COLOR + ',' + GRAD_BOT_COLOR + ')';
+    document.body.appendChild(gradFill);
+    return gradFill;
+  }
+
+  function ensureFloorFill(){
+    if (floorFill) return floorFill;
+    floorFill = document.createElement('div');
+    floorFill.setAttribute('aria-hidden', 'true');
+    floorFill.className = 'pmap-floor-fill';
+    floorFill.style.cssText = 'position:fixed;left:0;width:100vw;'
+      + 'pointer-events:none;z-index:1;margin:0;display:none;background:' + FLOOR_COLOR;
+    document.body.appendChild(floorFill);
+    return floorFill;
+  }
+
+  function ensureRigClone(){
+    if (rigClone) return rigClone;
+    rigClone = document.createElement('img');
+    rigClone.src = img.currentSrc || img.getAttribute('src');
+    rigClone.alt = '';
+    rigClone.setAttribute('aria-hidden', 'true');
+    rigClone.className = 'pmap-rig-clone';
+    rigClone.style.cssText = 'position:fixed;left:0;top:0;height:auto;'
+      + 'pointer-events:none;z-index:1;margin:0;display:none';
+    document.body.appendChild(rigClone);
+    return rigClone;
+  }
+
+  function sync(){
+    // raf 는 "예약된 프레임이 있다"는 표시로도 쓰는데, loop() 밖(queue() 를
+    // 통한 1회성 호출)에서 실행된 sync() 는 이 값을 정리하지 않아 오래된
+    // (이미 실행된) id 가 그대로 남는다 — 그러면 나중에 visible 이 true 로
+    // 바뀌어도 아래 IO 콜백의 if(!raf) 가 항상 거짓이라 loop() 가 영영
+    // 시작되지 못한다. 매번 sync() 시작 시 비워 두고, loop() 가 필요하면
+    // 자기 호출 뒤에 다시 채운다
+    raf = null;
+    if (window.innerWidth < 901 || !visible){
+      if (rigClone) rigClone.style.display = 'none';
+      if (floorFill) floorFill.style.display = 'none';
+      if (gradFill) gradFill.style.display = 'none';
+      for (var hi0 = 0; hi0 < hitAreas.length; hi0++) hitAreas[hi0].style.display = 'none';
+      if (highlightEl) highlightEl.classList.remove('is-on');
+      if (tipEl) tipEl.classList.remove('is-on');
+      hoverIdx = -1;
+      img.style.visibility = '';
+      hright.classList.remove('is-pmap-bled');
+      return;
+    }
+    // grad 를 제일 먼저 만들어야(=DOM 에 제일 먼저 붙어야) floor·rig 보다 뒤에
+    // (배경으로) 깔린다 — 셋 다 z-index 가 같아 DOM 순서가 곧 쌓임 순서다
+    var grad = ensureGradFill();
+    var fill = ensureFloorFill();
+    var rig = ensureRigClone();
+    var r = img.getBoundingClientRect();
+    var col = hleft.getBoundingClientRect();
+    var aspect = (img.naturalWidth && img.naturalHeight)
+      ? img.naturalHeight / img.naturalWidth : r.height / r.width;
+    img.style.visibility = 'hidden';
+    hright.classList.add('is-pmap-bled');
+
+    // 그림 전체를 뷰포트 폭으로 늘렸다면 가졌을 높이·위치 — grad·바닥 시작선
+    // 계산의 공통 스케일 기준이다(원본 img 와 같은 세로 중심에 맞춘 채로)
+    var floorH = window.innerWidth * aspect;
+    var floorTop = r.top + r.height / 2 - floorH / 2;
+
+    // 배경 그라데이션판(Rectangle 333) 시작선·옛 바닥 자리(=그라데이션이
+    // 끝나던 지점) 스케일 — 아래 바닥·rig 계산에 쓰는 기준값
+    var gradTop = floorTop + floorH * GRAD_TOP_FRAC;
+    var gradBottom = floorTop + floorH * GRAD_BOT_FRAC;
+
+    // 바닥(CSS 평면, 2026-08-21 요청) — 카드(.hright) 밑변에 붙인 채로, 옛
+    // 바닥 자리(그라데이션 끝~카드 밑변)의 절반 높이만 채운다. 밑변은 그대로
+    // 두고 윗변만 아래로 내려 절반이 되므로, 새 윗변은 그 구간의 중간점이다
+    var fillBottom = hright.getBoundingClientRect().bottom;
+    var fullFloorH = Math.max(0, fillBottom - gradBottom);
+    var fillH = fullFloorH / 2;
+    var fillTop = fillBottom - fillH;
+    fill.style.display = fillH > 0 ? 'block' : 'none';
+    fill.style.top = fillTop + 'px';
+    fill.style.height = fillH + 'px';
+
+    // 배경 그라데이션판 — rig 겹(본문 열 폭)에만 그려지면 그 폭 밖은
+    // 그라데이션 없이 뚝 끊겨 상자처럼 보인다(2026-08-21 지적). 이 구간엔
+    // 설비가 걸쳐 있지만 grad 는 DOM 에 제일 먼저 붙어 맨 뒤(배경)에 깔리고,
+    // rig 겹은 그 뒤(나중)에 붙어 맨 앞이라 설비가 가려질 일은 없다.
+    // 밑변은 원래 자리(gradBottom)가 아니라 방금 짧아진 바닥의 윗변(fillTop)
+    // 까지 늘린다 — 그라데이션은 이미 그 끝에서 페이지 배경색과 같아지므로
+    // (E4E8ED→F4F6F8, 후자가 곧 페이지 배경) 늘어난 부분은 안 보이면서
+    // 바닥과 그라데이션 사이에 빈 틈(페이지 배경이 그대로 드러나는 구간)이
+    // 안 남는다
+    grad.style.display = 'block';
+    grad.style.width = '100vw';
+    grad.style.top = gradTop + 'px';
+    grad.style.height = Math.max(0, fillTop - gradTop) + 'px';
+
+    // rig 겹 — 본문 열(.hleft) 폭 기준으로 RIG_SCALE 배 키우고, 늘어난 만큼은
+    // 열 가운데를 기준으로 좌우로 고르게 번지게 한다(왼쪽만 밀리지 않도록).
+    // 바닥 시작선(옛 바닥 띠가 시작하던 gradBottom)에 rig 겹의 같은 지점이
+    // 겹치도록 top 을 역산한다 — 설비는 원래 그림에서 서 있던 자리 그대로,
+    // 바닥판만 짧아진다
+    var rigW = col.width * RIG_SCALE;
+    var rigH = rigW * aspect;
+    var rigLeft = col.left - (rigW - col.width) / 2;
+    var rigTop = gradBottom - rigH * GRAD_BOT_FRAC;
+    rig.style.display = 'block';
+    rig.style.left = rigLeft + 'px';
+    rig.style.width = rigW + 'px';
+    rig.style.top = rigTop + 'px';
+
+    // 설비 히트 영역 — rig 겹과 같은 스케일(rigW/SVG_W)로 SVG 좌표를 화면
+    // 좌표로 바꿔 투명 영역을 그림 위 각 설비 자리에 겹쳐 놓는다. rig 가
+    // 매 프레임 다시 그려지는 것과 같은 이유(사이드바 sticky 전환 등)로
+    // 여기도 매 프레임 다시 맞춰야 호버 판정이 어긋나지 않는다
+    var scale = rigW / SVG_W;
+    var areas = ensureHitAreas();
+    for (var ri = 0; ri < STEP_REGIONS.length; ri++){
+      var region = STEP_REGIONS[ri];
+      var el = areas[ri];
+      el.style.display = 'block';
+      el.style.left = (rigLeft + region.x * scale) + 'px';
+      el.style.top = (rigTop + region.y * scale) + 'px';
+      el.style.width = (region.w * scale) + 'px';
+      el.style.height = (region.h * scale) + 'px';
+    }
+
+    // 강조 테두리 + 툴팁 — 지금 호버된 히트 영역(hoverIdx)이 있을 때만 켠다.
+    // 툴팁은 그 설비 바로 위에 뜨되, 상단 탭 바에 가릴 만큼 화면 위쪽이면
+    // 아래로 뒤집는다(clamp)
+    var hi = ensureHighlight(), tip = ensureTip();
+    if (hoverIdx >= 0 && STEP_REGIONS[hoverIdx]){
+      var hr = STEP_REGIONS[hoverIdx];
+      var hx = rigLeft + hr.x * scale, hy = rigTop + hr.y * scale;
+      var hw = hr.w * scale, hh = hr.h * scale;
+      hi.style.left = hx + 'px';
+      hi.style.top = hy + 'px';
+      hi.style.width = hw + 'px';
+      hi.style.height = hh + 'px';
+      hi.classList.add('is-on');
+
+      var info = STEP_INFO[hr.step];
+      tip.innerHTML = '<p class="tip-ttl">' + info.label + '</p><ul>'
+        + info.spec.map(function(s){ return '<li>' + s + '</li>'; }).join('')
+        + '</ul>';
+      tip.classList.add('is-on');
+      var tipRect = tip.getBoundingClientRect();
+      var tipLeft = hx + hw / 2 - tipRect.width / 2;
+      tipLeft = Math.max(8, Math.min(tipLeft, window.innerWidth - tipRect.width - 8));
+      var tipTop = hy - tipRect.height - 10;
+      if (tipTop < 60) tipTop = hy + hh + 10;
+      tip.style.left = tipLeft + 'px';
+      tip.style.top = tipTop + 'px';
+    } else {
+      hi.classList.remove('is-on');
+      tip.classList.remove('is-on');
+    }
+  }
+
+  // 스크롤 이벤트만 믿으면 놓치는 경우가 있다(2026-08-21 지적) — 상단 탭이
+  // sticky 로 바뀌는 순간 .hsec 의 padding-top 이 CSS 변수(--bar-rise 등)로
+  // 다시 계산되는데, 이건 'scroll' 이벤트가 아니라 그 변수를 갱신하는 별도
+  // 로직이 트리거라 우리 스크롤 리스너가 그 타이밍을 못 잡을 수 있다.
+  // 그래서 이 카드가 보이는 동안은 매 프레임 다시 계산한다 — 원인이 스크롤이든
+  // 아니든 상관없이 항상 최신 위치로 맞는다(다른 원인 하나하나 찾아 리스너를
+  // 늘리는 대신, 안전하게 매 프레임 검증한다)
+  function loop(){
+    sync();
+    if (visible) raf = requestAnimationFrame(loop);
+    else raf = null;
+  }
+
+  function queue(){
+    // 보이는 동안은 반드시 loop() 로 이어야 한다 — 여기서 sync() 를 한 번만
+    // 예약하면(옛 버전) 그 프레임이 스스로를 다시 예약하지 않으므로, scroll·
+    // resize 이벤트가 (섹션 전환 애니메이션처럼) 연달아 이 함수를 부르는 동안
+    // loop() 가 걸어 둔 "다음 프레임" 예약이 매번 취소되고 1회성 sync() 로
+    // 바뀐다 — 마지막 이벤트가 지나가고 나면 그 1회성 프레임이 끝으로,
+    // 이후로는 아무도 다시 예약하지 않아 루프가 영영 멈춘다(2026-08-21 확인 —
+    // 카드에 두 번째로 진입했을 때, 또는 스크롤로 벗어났다 되돌아왔을 때
+    // 호버가 안 먹던 원인. 위치는 마지막으로 찍힌 값 그대로라 눈으로는
+    // 멀쩡해 보이지만, hoverIdx 가 바뀌어도 다시 그려줄 프레임이 없어 반영이
+    // 안 됐다)
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(visible ? loop : sync);
+  }
+
+  new IntersectionObserver(function(entries){
+    visible = entries[0].isIntersecting;
+    if (visible){
+      if (!raf) raf = requestAnimationFrame(loop);
+    } else {
+      queue();   // 사라질 때도 한 번 더 sync 해서 클론들을 확실히 감춘다
+    }
+  }, { threshold: 0 }).observe(img);
+
+  window.addEventListener('resize', queue);
+  window.addEventListener('scroll', queue, { passive: true });
+  if (track) track.addEventListener('scroll', queue, { passive: true });
+})();
+</script>
 <script>
 (function(){
   var btn = document.getElementById('totop');
