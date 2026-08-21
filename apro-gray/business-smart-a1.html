@@ -517,34 +517,78 @@
   .hleft .fsteps{grid-template-columns:repeat(4,minmax(0,1fr))}
   .hleft .fsteps li:nth-child(4n+1)::before{display:none}
 
-  /* ── 공정 프로세스 맵 — 설비(오브젝트) 호버 (2026-08-21 요청, 텍스트 탭
+  /* ── 공정 프로세스 맵 — 시간차 자동 재생 (2026-08-21 개편, 설비 호버
      방식에서 변경) ──────────────────────────────────────────────────
-     그림은 <img> 복제본이라 안쪽 개별 설비에 직접 이벤트를 걸 수 없다 —
-     그래서 투명 히트 영역(.pmap-hit)을 설비마다 그림 위에 겹쳐 놓고,
-     그 히트 영역에 호버하면 강조 테두리(.pmap-highlight)와 근처 툴팁
-     (.pmap-tip)이 뜬다. 좌표는 이 파일 맨 아래 스크립트가 SVG 실측값을
-     rig 겹 스케일로 변환해서 매긴다(탭 방식일 때 쓰던 것과 같은 좌표) */
-  .pmap-hit{position:fixed;pointer-events:auto;z-index:2;cursor:pointer}
-  .pmap-highlight{position:fixed;pointer-events:none;z-index:2;
-    border-radius:6px;background:rgba(44,87,144,.08);
-    box-shadow:inset 0 0 0 1px rgba(44,87,144,.35);
-    opacity:0;transition:opacity .15s var(--ease)}
-  .pmap-highlight.is-on{opacity:1}
-  .pmap-tip{position:fixed;pointer-events:none;z-index:3;
-    background:#fff;border-radius:6px;padding:12px 16px;
-    box-shadow:0 4px 20px rgba(18,40,68,.14),0 0 0 1px var(--border-g);
-    opacity:0;transform:translateY(4px);
-    transition:opacity .15s var(--ease),transform .15s var(--ease)}
-  .pmap-tip.is-on{opacity:1;transform:translateY(0)}
-  .pmap-tip .tip-ttl{font-family:var(--pre);font-weight:700;font-size:14px;
-    letter-spacing:-.3px;color:var(--g900);white-space:nowrap;margin:0 0 6px}
-  .pmap-tip ul{list-style:none;margin:0;padding:0;display:flex;
-    flex-direction:column;gap:4px}
-  .pmap-tip li{position:relative;padding-left:12px;font-family:var(--pre);
-    font-weight:400;font-size:13px;line-height:1.5;letter-spacing:-.3px;
-    color:var(--sec);white-space:nowrap}
-  .pmap-tip li::before{content:"";position:absolute;left:1px;top:7px;
+     업데이트된 SVG(공정 프로세스 맵_1635.svg)에 진행 라인이 추가돼, 호버로
+     하나씩 짚어보는 대신 01~06 단계를 그림 위에서 2초마다 자동으로 넘겨가며
+     보여준다. 탭 박스(.pmap-tab)·스펙 목록(.pmap-spec)은 카드 폭 안의
+     평범한 문서 흐름 요소라 그림처럼 화면 끝까지 번질 필요가 없어
+     position:fixed 클론 없이 그대로 둔다.
+     진행 라인(옅은 파랑→진한 파랑)은 처음엔 rig 겹 위에 진한 파랑 <path>를
+     따로 그려 얹었는데, 그러면 설비 건물을 가로지르는 구간에서 라인이 건물
+     "위로" 떠 보였다(2026-08-21 지적) — 원본 SVG는 라인을 설비보다 먼저
+     그려 건물 밑에 자연히 숨긴다. <img> 래스터라 그 쌓임 순서를 그대로
+     흉내낼 수 없어, 대신 라인만 진한 파랑으로 바꾼 SVG 사본을 통째로 하나
+     더 만들었다(assets/공정 프로세스 맵_1635_line-dark.svg — 건물은 완전히
+     같고 라인 색만 다르다). rig 겹 위에 이 사본을 그대로 포개고
+     clip-path(inset 오른쪽)로 왼쪽부터 조금씩 더 드러낸다 — 두 그림이
+     픽셀 단위로 똑같으니 어디를 드러내도 건물이 라인을 가리는 자리는 항상
+     원본과 똑같이 맞는다(좌표는 이 파일 맨 아래 스크립트 참고) */
+  /* 탭 6칸 + 스펙 목록이 한 grid(.pmap-panel)를 같이 쓴다 — 탭은 1행의 6칸,
+     스펙은 2행이고 grid-column을 이 파일 맨 아래 스크립트가 활성 탭 번호로
+     맞춰(활성 칸 → 오른쪽 끝까지 걸치게) "그 탭 아래에서 시작"하게 만든다
+     (2026-08-21 요청). min-height로 스펙 칸 높이를 고정한다 — 안 그러면
+     단계마다 줄 수가 달라져(품질검사 3항목 vs 디개싱 1항목) 이 블록 아래
+     그림이 계속 오르락내리락한다(2026-08-21 지적).
+     탭 안쪽 패딩도 빠듯하게 잡아 이 블록 자체가 세로를 많이 먹지 않게 한다 */
+  .pmap-panel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:4px;width:100%}
+  .pmap-tab{grid-row:1;display:flex;align-items:baseline;justify-content:center;gap:6px;
+    padding:8px 6px;border-radius:0;background:var(--secondary-bg);
+    border:1px solid var(--border-g);
+    transition:background .3s var(--ease),border-color .3s var(--ease)}
+  .pmap-tab b{font-family:var(--pre);font-weight:700;font-size:15px;
+    letter-spacing:-.3px;color:var(--teritary);transition:color .3s var(--ease)}
+  .pmap-tab span{font-family:var(--pre);font-weight:500;font-size:14px;
+    letter-spacing:-.3px;color:var(--teritary);white-space:nowrap;
+    transition:color .3s var(--ease)}
+  .pmap-tab.is-active{background:var(--brand);border-color:var(--brand)}
+  .pmap-tab.is-active b,.pmap-tab.is-active span{color:#fff}
+  .pmap-spec{grid-row:2;grid-column:1/2;min-height:156px;
+    list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .pmap-spec li{position:relative;padding-left:14px;font-family:var(--pre);
+    font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.3px;
+    color:var(--sec)}
+  .pmap-spec li::before{content:"";position:absolute;left:1px;top:7px;
     width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+  /* 마스크(2026-08-21 요청) — 그림이 이따금 카드 밑변을 넘어 다음 카드(예:
+     "해외 거점" 제목)까지 침범해 보이는 문제가 있었다. rig 겹의 높이는
+     본문 열 폭(RIG_SCALE) 기준으로만 정해져 카드에 실제로 남은 세로 공간과
+     무관하다 — 그래서 설비가 넓고 낮은 화면에서는 원래 .hright 의
+     overflow:hidden 이 잘라 줬을 몫까지 넘어섰다. 그런데 이 그림들은 전부
+     position:fixed 로 조상 클리핑을 일부러 피해 화면 끝까지 번지게 만든
+     것들이라(맨 위 큰 주석 참고) hright 의 overflow:hidden 이 더는 안 먹는다.
+     그래서 .hright 의 실측 세로 범위(top~bottom)만큼만 잘라내는 마스크를
+     따로 두고, 실제 그림들(grad·floor·rig·line)은 이제 fixed 대신 이
+     마스크 기준 absolute 로 그 안에 넣는다 — 가로는 여전히 마스크 자체가
+     100vw 라 화면 끝까지 번지고, 세로만 카드 밑변에서 정확히 끊긴다 */
+  .pmap-mask{position:fixed;left:0;width:100vw;overflow:hidden;
+    pointer-events:none;z-index:1;display:none}
+  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-clone,.pmap-line-edge{
+    position:absolute;left:0;top:0;margin:0;pointer-events:none;display:none}
+  .pmap-rig-clone,.pmap-line-clone{height:auto}
+  .pmap-line-clone{transition:clip-path 1.6s linear}
+  /* 연장선(화면 가장자리) 진행 겹 — 예전엔 옅은 색 막대(트랙)와 진한 색
+     막대(채움)를 별개의 두 엘리먼트로 두고 자리·두께를 매번 JS로 각각
+     맞췄는데(2026-08-21), "두 라인이 따로 논다"는 구조적 불안 지적
+     (2026-08-22)에 채움을 의사요소(::after)로 바꿨다 — 의사요소는 부모
+     (.pmap-line-edge) 자리를 CSS 상속으로 그대로 따라가므로(top:0 left:0
+     height:100%) 자리·두께가 어긋날 방법 자체가 없다. JS 가 매번 새로
+     맞춰야 하는 값은 이제 채워진 비율(--fill) 하나뿐이다 */
+  .pmap-line-edge{--fill:0%}
+  .pmap-line-edge::after{content:'';position:absolute;left:0;top:0;height:100%;
+    width:var(--fill);background:var(--fill-color);transition:width 1.6s linear}
+  .pmap-line-edge.pmap-no-anim::after{transition:none}
 
   /* 활성화 카드는 이제(요청으로) 상|하 레이아웃이라 .hright 가 카드 전체 폭을
      쓴다 — 7칸이 한 줄에 다 들어가므로 위 4열 규칙을 적용하지 않고 기본값
@@ -558,8 +602,21 @@
      overflow:hidden 에 잘려나가, 순서 줄이 위쪽 구분선에 거의 딱 붙어(패딩이
      안 보이게) 잘려 보였다. 위쪽부터 채우도록 고정하면 padding-top(40px)이
      항상 그대로 여백으로 보인다 */
+  /* gap 을 28px→16px 로 줄인다(2026-08-21) — 탭·스펙 두 줄이 추가되면서 이 여백이
+     겹쳐(탭↔스펙, 스펙↔이미지) 그림이 필요 이상으로 아래로 밀려 보였다.
+     그림 쪽이 흡수해야 하는 압박을 그만큼 던다.
+     좌우 패딩은 0 — .hcard 자체가 이미 40px 좌우 패딩을 갖고 있어(공용 규칙)
+     여기 또 40px를 얹으면 이 칸(탭·이미지)만 본문(.hleft, 좌우 패딩이 hcard
+     것 하나뿐)보다 양쪽 40px씩 더 안으로 들어가 보였다(2026-08-21 지적 — 단계
+     탭 줄 폭이 본문 폭과 안 맞음). 위아래 패딩만 남긴다 */
   .hcard[data-tab*="프로세스 맵"]>.hright{flex-direction:column;
-    justify-content:flex-start;gap:28px;padding:40px}
+    justify-content:flex-start;gap:16px;padding:40px 0}
+  /* 패딩을 걷어 탭 줄까지 위로 당겼더니(2026-08-21) 설비는 커졌지만 탭
+     위치 자체가 옮겨져 버렸다(2026-08-21 재지적 — "탭 위치는 옮기지
+     말아줘"). 패딩은 원래대로 되돌리고, 대신 (보이지 않는) 원본 <img> 에만
+     음수 margin-top 을 줘 그 실측 자리(r.top, rig 크기 계산의 기준)만
+     끌어올린다 — 탭·스펙 패널은 원래 자리 그대로, 설비만 커진 상태를
+     유지한다(아래 img 규칙 참고) */
   /* flex:0 1 auto + min-height:0 — 남는 높이만큼만 차지하고 모자라면 줄어든다.
      예전엔 flex:none 이었다. 그때 그림은 3096×651(4.76:1)이라 폭에 맞추면 높이가
      200px 남짓이었고, 그 위 순서 띠(.fsteps)까지 얹어도 칸에 들어왔다.
@@ -998,14 +1055,6 @@
        보인다(2026-08-21 지적) — 두께는 그대로 두고 색만 지운다. border:0 으로
        걷으면 테두리 두께만큼 패딩 상자가 흔들리므로 border-color 만 바꾼다 */
     .hcard[data-tab*="프로세스 맵"]>.hright.is-pmap-bled{border-color:transparent}
-    /* 표시 글자 — 확정 전을 뜻하는 것들과 같은 톤(--teritary). 본문(17px)보다
-       한 단 작게 잡아 그림의 캡션이 아니라 곁말로 읽히게 한다.
-       flex:none — .hright 가 세로 flex 라, 이걸 안 주면 위 img 의 flex:0 1 auto 와
-       함께 남는 높이를 두고 경쟁하다 한 줄짜리 글이 눌린다.
-       align-self:flex-start — 폭을 글자만큼만 차지하게 해서 왼쪽 위에 붙인다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright .tbd-note{flex:none;align-self:flex-start;
-      font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;
-      letter-spacing:-.3px;color:var(--teritary)}
 
     /* ⑧ PLC·MES 그리드 — 칸 사이 간격을 없애 네 칸을 한 판으로 묶고, 좌우 여백도
        걷어 판의 좌우 끝이 제목 줄(4열)과 소분류 탭 오른쪽 끝(11열)에 맞게 한다.
@@ -1259,8 +1308,10 @@
        모자라면 통째로 잘렸다. flex:none 을 풀고 min-height:0 을 줘 남는 높이만큼만
        차지하게 한다. object-fit:contain(.is-plate) 이라 줄어들어도 잘리지 않는다 —
        작아질지언정 순서·구역이 다 보이는 편이 낫다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright{padding:24px;gap:16px}
+    .hcard[data-tab*="프로세스 맵"]>.hright{padding:24px 0;gap:10px}
     .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
+    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-tab{padding:6px 6px}
+    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:2px}
     .hcard[data-tab*="프로세스 맵"]>.hleft,
     .hcard[data-tab="해외 거점"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
@@ -1331,12 +1382,6 @@
       <article class="hcard" data-tab="공정 프로세스 맵">
         <div class="hleft">
           <h3>공정 프로세스 맵</h3>
-          <!-- 스텝 호버 인터랙션(2026-08-21) — 처음엔 텍스트 탭(01~06)에 호버하는
-               방식으로 만들었는데, "본문은 원래 설명 그대로 두고 호버는 탭이
-               아니라 그림 속 설비 자체에" 로 바뀌었다. 그래서 이 자리(.hleft)는
-               고정 설명 4줄로 되돌리고, 탭 목록은 완전히 없앤다 — 호버 트리거·
-               스텝 이름/스펙 텍스트는 전부 이 파일 맨 아래 스크립트가 그림 위에
-               만드는 투명 히트 영역 + 툴팁이 담당한다(호버한 설비 근처에 뜬다) -->
           <ul>
             <li>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며, 활성화 공정에 필요한 9가지 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</li>
             <li>배터리 셀 활성화 공정은 셀 제조의 마지막 단계로, 배터리의 성능과 품질을 최종적으로 결정하는 핵심 공정입니다.</li>
@@ -1344,39 +1389,30 @@
             <li>각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</li>
           </ul>
         </div>
-        <!-- 2026-08-14 : 시안 캡처 한 장(activation-process-map.png)으로 임시 교체.
-             ⚠ 이 캡처 안에 공정 순서 띠가 이미 그려져 있다 — 그래서 위에 있던
-               .fsteps 목록을 함께 주석으로 내렸다. 그대로 두면 순서 줄이 두 번
-               나오고, 게다가 두 줄의 내용이 서로 다르다 (여기 7단계 "초기 충전 …
-               최종 외관 검사" vs 캡처 6단계 "1차 충전 … 불량 선별").
-               어느 쪽이 맞는지는 확정 전이므로 지우지 않고 되살릴 수 있게 남긴다.
-             ⚠ 캡처는 시안 한 상태(01번만 켜진 화면)를 찍은 것이라 나머지 다섯 단계는
-               흐리게 나온다 — 확정 이미지가 오면 이 주석 덩어리째 되돌린다.
-
-             종전 구성 (되살릴 때 참고) — activation-line.png(3096×651 초광각 구성도).
-             잘라내면 순서(충방전기→디개싱·전해액→물류창고→에이징룸)가 끊기므로
-             cover 로 채우지 않고 통째로 담았다(.is-plate → object-fit:contain).
-             활성화 순서(.fsteps)는 원래 좌측 본문 아래에 있었는데 우측 이미지 영역
-             안으로 옮겼다 — 구성도(설비 배치)와 순서(공정 단계)가 같은 "활성화 공정"을
-             설명하는 짝이라 한 영역에 묶어 보여준다. 순서를 이미지 위(먼저)로 —
-             "무엇이 순서고 무엇이 그 결과물(설비 배치도)인지" 읽는 흐름상 순서가
-             먼저 오는 편이 자연스럽다는 요청으로 마크업 순서를 바꿨다(.hright 는
-             flex-direction:column 이라 DOM 순서 = 화면 순서) -->
         <div class="hright is-plate">
-          <!--
-          <ol class="fsteps">
-            <li><b>01</b><span>초기 충전</span></li>
-            <li><b>02</b><span>노화</span></li>
-            <li><b>03</b><span>방전</span></li>
-            <li><b>04</b><span>반복 충방전</span></li>
-            <li><b>05</b><span>용량 및 성능 검사</span></li>
-            <li><b>06</b><span>불량 선별</span></li>
-            <li><b>07</b><span>최종 외관 검사</span></li>
-          </ol>
-          <img src="../assets/activation-line.png" alt="이차전지 활성화 전공정 라인 구성도 — 충방전기 구역, 디개싱·전해액 설비, 물류 자동창고, 에이징 룸" loading="lazy" />
-          -->
-          <p class="tbd-note">*수정예정</p>
-          <img src="../assets/공정 프로세스 맵.svg" width="2246" height="653" loading="lazy"
+          <!-- 시간차 자동 재생(2026-08-21 개편, 설비 호버 방식에서 변경) — 새
+               SVG(공정 프로세스 맵_1635.svg)에 진행 라인이 추가되면서, 01~06
+               단계를 2초마다 자동으로 넘겨가며 탭·스펙·진행 라인을 함께 보여
+               준다. 탭·스펙 목록은 카드 폭 안의 평범한 문서 흐름 요소라(그림처럼
+               화면 끝까지 번질 필요가 없다) 위치 계산이 필요 없고, 내용만 이 파일
+               맨 아래 스크립트가 타이머로 갱신한다. 자동으로 바뀌는 내용이라
+               스크린리더에는 굳이 안 읽는다(요약은 위 본문 4줄이 이미 담당).
+               탭·스펙이 한 grid(.pmap-panel)를 같이 쓴다 — 스펙 목록(.pmap-spec)
+               도 탭과 같은 6열에 걸쳐 있는 grid item이라, 그 grid-column을
+               활성 탭 번호로 맞추면 스펙이 "그 탭 바로 아래"에서 시작한다
+               (2026-08-21 요청). 스펙 칸엔 min-height를 줘 단계마다 줄 수가
+               달라져도 높이가 고정되게 한다 — 안 그러면 이 블록 아래 그림이
+               스펙 길이에 따라 계속 오르락내리락한다(2026-08-21 지적) -->
+          <div class="pmap-panel" aria-hidden="true">
+            <div class="pmap-tab"><b>01</b><span>1차 충전</span></div>
+            <div class="pmap-tab"><b>02</b><span>디개싱 공정</span></div>
+            <div class="pmap-tab"><b>03</b><span>에이징 공정</span></div>
+            <div class="pmap-tab"><b>04</b><span>충·방전</span></div>
+            <div class="pmap-tab"><b>05</b><span>품질 검사</span></div>
+            <div class="pmap-tab"><b>06</b><span>불량 선별</span></div>
+            <ul class="pmap-spec"></ul>
+          </div>
+          <img src="../assets/공정 프로세스 맵_1635.svg" width="2246" height="653" loading="lazy"
                alt="이차전지 활성화 공정 프로세스 맵 — 1차 충전 · 디개싱 공정 · 에이징 공정 · 충·방전 · 품질 검사 · 불량 선별 6단계와 전공정 라인 구성도" />
         </div>
       </article>
@@ -1925,37 +1961,57 @@
   var GRAD_TOP_FRAC = 0.65;   // 연그레이(그라데이션) 밴드 시작 — 예전 0.424 에서 내림
   var GRAD_BOT_FRAC = 616 / 653;   // 연그레이 밴드 끝(=진그레이 바닥 쪽으로 이어지는 기준선)
   var GRAD_TOP_COLOR = '#E4E8ED', GRAD_BOT_COLOR = '#F4F6F8';
-  var RIG_SCALE = 1.15;   // 설비 겹을 본문 열 폭보다 15% 더 키운다(2026-08-21 요청)
-
-  // 설비(오브젝트) 호버(2026-08-21, 텍스트 탭 방식에서 변경) — 좌표는
-  // assets/공정 프로세스 맵.svg 를 직접 열어 각 "Step N" 그룹(과 하위
-  // "설비 N" 그룹)의 getBBox() 를 실측한 값이다(스크린샷 눈대중이 아니라
-  // SVG 좌표 자체라 정확하다). 좌표계는 그 SVG 의 viewBox 그대로(2246×653)
-  // — rig 겹으로 그릴 때의 스케일(rigW/2246)을 곱하면 화면 좌표가 나온다.
-  // 스텝 5·6처럼 같은 설비가 두 벌 떨어져 있으면 각각 따로 히트 영역을
-  // 둔다 — 어느 쪽에 호버해도 같은 스텝 정보가 뜨지만, 강조 테두리는
-  // 실제로 마우스가 올라간 그 하나만 켜진다(직접 가리키는 물건이라는 감각)
+  // 바닥(.pmap-floor-fill)을 뺀 뒤로는 이 그라데이션판이 사실상 바닥 역할을
+  // 한다(2026-08-21 — "이게 바닥이 되는거지"). 카드 밑변에 붙인 채로 높이만
+  // 고정값으로 키운다 — 위 GRAD_TOP_FRAC/GRAD_BOT_FRAC 은 여전히 설비(rig)
+  // 위치를 잡는 기준으로만 쓰고, 이 판 자체의 높이는 건드리지 않는다
+  var PLATE_H = 240;   // 350 → 240 으로 낮춘다(2026-08-21 재요청)
+  // 바닥 높이를 고정값으로 우선 확보하는 방식은 화면이 좁으면 설비를 아예
+  // 안 보이게(폭 0) 만들 정도로 대가가 컸다(2026-08-21 확인). 바닥을 아예
+  // 빼고, 설비는 본문 열(.hleft) 좌우 너비에 정확히 맞춘다(2026-08-21
+  // 재요청) — RIG_SCALE 을 1로 되돌려 더는 본문 폭보다 키우지 않는다. 바닥
+  // 자리를 더는 예약하지 않으니 rig 겹의 실측 밑변부터 카드 밑변까지 남는
+  // 자리가 있으면 그게 곧 바닥이고, 없으면 안 보인다(그걸로 충분하다)
+  var RIG_SCALE = 1.15 * 1.20 * 0.9;   // 본문 열 폭 그대로(1)에서 15%(2026-08-21) → 20%(2026-08-21 재요청) 키운 뒤, 너무 커져서 다시 90%로(2026-08-21 재요청)
   var SVG_W = 2246, SVG_H = 653;
-  var STEP_INFO = {
-    '1': { label: '01 1차 충전', spec: ['Pre-formation', '고온가압 충방전기 (High Temperature, Pressure, Formation)', 'Selector'] },
-    '2': { label: '02 디개싱 공정', spec: ['Degas'] },
-    '3': { label: '03 에이징 공정', spec: ['High Temp Aging', 'Normal Temp Aging', 'Shipping Temp Aging'] },
-    '4': { label: '04 충·방전', spec: ['충방전기 (Formation)', 'Selector'] },
-    '5': { label: '05 품질 검사', spec: ['DCIR (DC Internal Resistance Tester)', 'IR-OCV (Internal Resistance & Open Circuit Voltage Tester)', 'OCV (Open Circuit Voltage Tester)'] },
-    '6': { label: '06 불량 선별', spec: ['DSF/EOL (Double Side Folding / End Of Line)'] }
-  };
-  var STEP_REGIONS = [
-    { step: '1', x: 58,   y: 217,   w: 124, h: 322 },   // Pre-formation 컨테이너 1
-    { step: '1', x: 218,  y: 217,   w: 124, h: 322 },   // Pre-formation 컨테이너 2
-    { step: '2', x: 428,  y: 215,   w: 100, h: 324 },   // Degas
-    { step: '3', x: 614,  y: 119,   w: 220, h: 420 },   // 에이징 랙 1조
-    { step: '3', x: 916,  y: 119,   w: 220, h: 420 },   // 에이징 랙 2조
-    { step: '4', x: 1281, y: 177,   w: 792, h: 317.5 }, // 충방전기 배열 전체
-    { step: '5', x: 1403, y: 480.5, w: 134, h: 77 },    // 품질검사 장비 1조
-    { step: '5', x: 1686, y: 480.5, w: 134, h: 77 },    // 품질검사 장비 2조
-    { step: '6', x: 1246, y: 492,   w: 121, h: 53 },    // 불량선별 장비 1조
-    { step: '6', x: 1850, y: 492,   w: 121, h: 53 }     // 불량선별 장비 2조
+  // 탭 패널과 겹쳐도 좋으니 목표 크기(100%)에 도달하게 해달라는 요청
+  // (2026-08-21) — 이제 설비 크기를 탭 패널 자리에 맞춰 줄이지 않는다.
+  // 유일한 제약은 이 카드(.hright) 자체의 실측 세로 범위(마스크 범위와
+  // 동일) 밖으로는 넘어가지 않는 것 — 그래야 다음 카드(예: "해외 거점")를
+  // 침범하는, 세션 초반에 고쳤던 문제가 다시 생기지 않는다
+  // 진행 라인 — rig 그림 안에서 끝나 화면 끝까지 닿지 않는다(2026-08-21
+  // 재지적 — "양 끝 라인이 스크린 끝까지"). 라인 양 끝(수평 구간)의 세로
+  // 위치·두께는 원본 SVG path 좌표 그대로(이 파일 상단 큰 주석의 좌표 참고)
+  var LINE_Y_FRAC = 584.5 / 653;
+  var LINE_STROKE = 12;
+  var LINE_LIGHT_COLOR = '#C9D9EE';
+  // line-dark.svg 안 "Progress line" 자체의 stroke 값 그대로 — 연장선
+  // 채움(--fill-color) 색을 rig 안쪽 진행 라인과 픽셀 단위로 맞춘다
+  var LINE_DARK_COLOR = '#2c5790';
+
+  // 시간차 자동 재생(2026-08-21 개편, 설비 호버 방식에서 변경) — 새
+  // SVG(공정 프로세스 맵_1635.svg)에 진행 라인이 추가되면서, 01~06 단계를
+  // 2초마다 자동으로 넘겨가며 탭·스펙·진행 라인을 함께 갱신한다
+  var STEP_INFO = [
+    { label: '01 1차 충전', spec: ['Pre-formation', '고온가압 충방전기 (High Temperature, Pressure, Formation)', 'Selector'] },
+    { label: '02 디개싱 공정', spec: ['Degas'] },
+    { label: '03 에이징 공정', spec: ['High Temp Aging', 'Normal Temp Aging', 'Shipping Temp Aging'] },
+    { label: '04 충·방전', spec: ['충방전기 (Formation)', 'Selector'] },
+    { label: '05 품질 검사', spec: ['DCIR (DC Internal Resistance Tester)', 'IR-OCV (Internal Resistance & Open Circuit Voltage Tester)', 'OCV (Open Circuit Voltage Tester)'] },
+    { label: '06 불량 선별', spec: ['DSF/EOL (Double Side Folding / End Of Line)'] }
   ];
+  var STEP_DWELL = 2000;   // 단계당 재생 시간(ms)
+
+  // 진행 라인 겹(2026-08-21 재작업) — assets/공정 프로세스 맵_1635_line-dark.svg
+  // 는 원본과 완전히 같은 그림에 "Progress line"만 진한 파랑(--brand)으로
+  // 바꾼 사본이다(건물 등 나머지는 전부 동일 — 원본 SVG에서 라인이 설비
+  // 그룹보다 먼저 그려져 건물 밑에 깔리는 쌓임 순서까지 그대로 살아 있다).
+  // rig 겹 위에 이 사본을 통째로 포개고 clip-path 로 왼쪽부터 조금씩 더
+  // 드러내면, 두 그림이 픽셀 단위로 같으니 어디를 드러내도 건물이 라인을
+  // 가리는 자리가 원본과 어긋나지 않는다 — 얇은 <path> 하나를 rig 겹 위에
+  // 따로 그렸던 첫 버전은 라인이 항상 최상단에 있어 건물을 가로지르는
+  // 구간에서 라인이 건물 "위로" 떠 보이는 문제가 있었다(2026-08-21 지적)
+  var LINE_DARK_SRC = '../assets/공정 프로세스 맵_1635_line-dark.svg';
 
   var img = document.querySelector('.hcard[data-tab*="프로세스 맵"]>.hright img');
   if (!img) return;
@@ -1963,40 +2019,78 @@
   var hright = img.closest('.hright');
   var hcard = img.closest('.hcard');
   var hleft = hcard.querySelector('.hleft');
-  var rigClone = null, floorFill = null, gradFill = null, visible = false, raf = null;
-  var hitAreas = [], highlightEl = null, tipEl = null, hoverIdx = -1;
+  var tabEls = [].slice.call(hright.querySelectorAll('.pmap-tab'));
+  var specEl = hright.querySelector('.pmap-spec');
+  var rigClone = null, floorFill = null, gradFill = null, lineClone = null, pmapMask = null;
+  var lineEdgeL = null, lineEdgeR = null;
+  var visible = false, raf = null, playTimer = null, activeStep = 0;
 
-  function ensureHitAreas(){
-    if (hitAreas.length) return hitAreas;
-    STEP_REGIONS.forEach(function(region, i){
-      var hit = document.createElement('div');
-      hit.setAttribute('aria-hidden', 'true');
-      hit.className = 'pmap-hit';
-      hit.style.display = 'none';
-      document.body.appendChild(hit);
-      hit.addEventListener('mouseenter', function(){ hoverIdx = i; });
-      hit.addEventListener('mouseleave', function(){ if (hoverIdx === i) hoverIdx = -1; });
-      hitAreas.push(hit);
-    });
-    return hitAreas;
+  // 연장선 진행 채움(--fill) 리셋 — 트랙(el)과 채움(::after)이 이제 한
+  // 엘리먼트라 el 하나에만 클래스를 잠깐 걸어 트랜지션을 끈다
+  function resetEdgeFill(el){
+    if (!el) return;
+    el.classList.add('pmap-no-anim');
+    el.style.setProperty('--fill', '0%');
+    el.getBoundingClientRect();
+    el.classList.remove('pmap-no-anim');
   }
 
-  function ensureHighlight(){
-    if (highlightEl) return highlightEl;
-    highlightEl = document.createElement('div');
-    highlightEl.setAttribute('aria-hidden', 'true');
-    highlightEl.className = 'pmap-highlight';
-    document.body.appendChild(highlightEl);
-    return highlightEl;
+  // 탭 활성 표시·스펙 목록·진행 라인 드러난 폭을 현재 activeStep 에 맞춰
+  // 한 번에 갱신한다. 진한 파랑 겹은 clip-path 에 transition 이 걸려 있어
+  // (CSS, 1.6s) 값만 바꿔주면 자동으로 부드럽게 드러난다
+  function renderStep(){
+    tabEls.forEach(function(el, i){ el.classList.toggle('is-active', i === activeStep); });
+    var info = STEP_INFO[activeStep];
+    if (specEl){
+      specEl.innerHTML = info.spec.map(function(s){ return '<li>' + s + '</li>'; }).join('');
+      // 활성 탭 칸 → grid 오른쪽 끝까지 걸친다 — 시작 칸이 "그 탭 아래"라는
+      // 자리를 잡아 주고, 오른쪽으로 남은 칸까지 폭을 넓혀 영문 스펙 설명이
+      // 좁은 한 칸 안에서 여러 줄로 심하게 접히지 않게 한다
+      specEl.style.gridColumn = (activeStep + 1) + ' / 7';
+    }
+    // 진행 게이지(연장선 + rig 안쪽 라인 + 연장선) 자체는 여기서 손대지
+    // 않는다 — 연장선 폭이 레이아웃(뷰포트)에 따라 달라지는 값이라, 그
+    // 값을 아는 sync() 안에서 activeStep 을 참고해 매 프레임 다시 그린다
+    // (2026-08-21 — 게이지가 연장선부터 시작하지 않던 문제를 고치며 이동)
   }
 
-  function ensureTip(){
-    if (tipEl) return tipEl;
-    tipEl = document.createElement('div');
-    tipEl.setAttribute('aria-hidden', 'true');
-    tipEl.className = 'pmap-tip';
-    document.body.appendChild(tipEl);
-    return tipEl;
+  // 카드가 다시 보일 때마다 처음(01)부터 새로 재생한다 — transition 을 잠깐
+  // 끄고 완전히 가린(clip-path 폭 0%) 상태로 강제 리플로우한 뒤 다시 켜야,
+  // 이전에 재생하다 만 지점에서 거꾸로 줄어드는 것처럼 안 보이고 깔끔하게
+  // 0%에서 다시 차오른다
+  function startPlay(){
+    if (playTimer) return;
+    activeStep = 0;
+    if (lineClone){
+      lineClone.style.transition = 'none';
+      lineClone.style.clipPath = 'inset(0 100% 0 0)';
+      lineClone.getBoundingClientRect();
+      lineClone.style.transition = '';
+    }
+    resetEdgeFill(lineEdgeL);
+    resetEdgeFill(lineEdgeR);
+    renderStep();
+    playTimer = setInterval(function(){
+      activeStep = (activeStep + 1) % STEP_INFO.length;
+      renderStep();
+    }, STEP_DWELL);
+  }
+
+  function stopPlay(){
+    if (playTimer){ clearInterval(playTimer); playTimer = null; }
+  }
+
+  // 마스크 — .hright 의 실측 세로 범위만큼만 오려내는 fixed 상자(가로는
+  // 100vw 그대로). grad·floor·rig·line 은 전부 이 안의 absolute 자식이라,
+  // 계산상 카드 밑변을 넘는 값이 나와도 여기서 잘려 다음 카드를 침범하지
+  // 않는다(2026-08-21 지적). 자식들을 body 가 아니라 이 마스크에 붙인다
+  function ensureMask(){
+    if (pmapMask) return pmapMask;
+    pmapMask = document.createElement('div');
+    pmapMask.setAttribute('aria-hidden', 'true');
+    pmapMask.className = 'pmap-mask';
+    document.body.appendChild(pmapMask);
+    return pmapMask;
   }
 
   function ensureGradFill(){
@@ -2004,10 +2098,9 @@
     gradFill = document.createElement('div');
     gradFill.setAttribute('aria-hidden', 'true');
     gradFill.className = 'pmap-grad-fill';
-    gradFill.style.cssText = 'position:fixed;left:0;width:100vw;'
-      + 'pointer-events:none;z-index:1;margin:0;display:none;'
-      + 'background:linear-gradient(' + GRAD_TOP_COLOR + ',' + GRAD_BOT_COLOR + ')';
-    document.body.appendChild(gradFill);
+    gradFill.style.width = '100vw';
+    gradFill.style.background = 'linear-gradient(' + GRAD_TOP_COLOR + ',' + GRAD_BOT_COLOR + ')';
+    ensureMask().appendChild(gradFill);
     return gradFill;
   }
 
@@ -2016,10 +2109,39 @@
     floorFill = document.createElement('div');
     floorFill.setAttribute('aria-hidden', 'true');
     floorFill.className = 'pmap-floor-fill';
-    floorFill.style.cssText = 'position:fixed;left:0;width:100vw;'
-      + 'pointer-events:none;z-index:1;margin:0;display:none;background:' + FLOOR_COLOR;
-    document.body.appendChild(floorFill);
+    floorFill.style.width = '100vw';
+    floorFill.style.background = FLOOR_COLOR;
+    ensureMask().appendChild(floorFill);
     return floorFill;
+  }
+
+  // 라인 양 끝 연장 막대 — rig 그림 밖(화면 가장자리 쪽)으로 라인이 계속
+  // 이어지는 것처럼 보이게 하는 옅은 색(트랙) 막대. 진행분(진한 색)은 이
+  // 엘리먼트의 ::after 의사요소가 맡는다(CSS 참고) — 트랙과 채움을 별개
+  // 엘리먼트 두 장으로 두고 자리를 매번 각각 맞추던 예전 방식(2026-08-21)을
+  // "두 라인이 따로 논다"는 지적(2026-08-22)에 이렇게 하나로 합쳤다. 이제
+  // JS 가 신경 쓸 값은 트랙 자체의 자리·두께(el)와 채움 비율(--fill) 뿐이고,
+  // 채움의 자리·두께는 CSS 상속으로 트랙과 항상 같다
+  function ensureLineEdgeL(){
+    if (lineEdgeL) return lineEdgeL;
+    lineEdgeL = document.createElement('div');
+    lineEdgeL.setAttribute('aria-hidden', 'true');
+    lineEdgeL.className = 'pmap-line-edge';
+    lineEdgeL.style.background = LINE_LIGHT_COLOR;
+    lineEdgeL.style.setProperty('--fill-color', LINE_DARK_COLOR);
+    ensureMask().appendChild(lineEdgeL);
+    return lineEdgeL;
+  }
+
+  function ensureLineEdgeR(){
+    if (lineEdgeR) return lineEdgeR;
+    lineEdgeR = document.createElement('div');
+    lineEdgeR.setAttribute('aria-hidden', 'true');
+    lineEdgeR.className = 'pmap-line-edge';
+    lineEdgeR.style.background = LINE_LIGHT_COLOR;
+    lineEdgeR.style.setProperty('--fill-color', LINE_DARK_COLOR);
+    ensureMask().appendChild(lineEdgeR);
+    return lineEdgeR;
   }
 
   function ensureRigClone(){
@@ -2029,10 +2151,24 @@
     rigClone.alt = '';
     rigClone.setAttribute('aria-hidden', 'true');
     rigClone.className = 'pmap-rig-clone';
-    rigClone.style.cssText = 'position:fixed;left:0;top:0;height:auto;'
-      + 'pointer-events:none;z-index:1;margin:0;display:none';
-    document.body.appendChild(rigClone);
+    ensureMask().appendChild(rigClone);
     return rigClone;
+  }
+
+  // 진행 라인 겹 — rig 겹과 똑같은 위치·크기(fixed)로 라인만 진한 파랑인
+  // 사본(LINE_DARK_SRC)을 하나 더 깔고, clip-path 로 왼쪽부터 드러낸다.
+  // rig 보다 나중에(=DOM 에서 뒤에) 붙어야 그 위에 포개진다 — 두 그림이
+  // 픽셀 단위로 같으므로 드러난 부분만 진한 파랑으로 "바뀐" 것처럼 보인다
+  function ensureLineClone(){
+    if (lineClone) return lineClone;
+    lineClone = document.createElement('img');
+    lineClone.src = LINE_DARK_SRC;
+    lineClone.alt = '';
+    lineClone.setAttribute('aria-hidden', 'true');
+    lineClone.className = 'pmap-line-clone';
+    lineClone.style.clipPath = 'inset(0 100% 0 0)';
+    ensureMask().appendChild(lineClone);
+    return lineClone;
   }
 
   function sync(){
@@ -2044,28 +2180,36 @@
     // 자기 호출 뒤에 다시 채운다
     raf = null;
     if (window.innerWidth < 901 || !visible){
-      if (rigClone) rigClone.style.display = 'none';
-      if (floorFill) floorFill.style.display = 'none';
-      if (gradFill) gradFill.style.display = 'none';
-      for (var hi0 = 0; hi0 < hitAreas.length; hi0++) hitAreas[hi0].style.display = 'none';
-      if (highlightEl) highlightEl.classList.remove('is-on');
-      if (tipEl) tipEl.classList.remove('is-on');
-      hoverIdx = -1;
+      if (pmapMask) pmapMask.style.display = 'none';
       img.style.visibility = '';
       hright.classList.remove('is-pmap-bled');
       return;
     }
-    // grad 를 제일 먼저 만들어야(=DOM 에 제일 먼저 붙어야) floor·rig 보다 뒤에
-    // (배경으로) 깔린다 — 셋 다 z-index 가 같아 DOM 순서가 곧 쌓임 순서다
+    // 넷 다 z-index 가 같아 DOM 순서가 곧 쌓임 순서다(먼저 붙을수록 아래) —
+    // grad·floor(배경) → rig(설비) → line(맨 위, rig 와 픽셀 단위로 같은
+    // 그림이라 위에 포개져도 드러난 부분만 "라인 색이 바뀐" 것처럼 보인다)
+    var mask = ensureMask();
     var grad = ensureGradFill();
     var fill = ensureFloorFill();
+    var edgeL = ensureLineEdgeL();
+    var edgeR = ensureLineEdgeR();
     var rig = ensureRigClone();
+    var line = ensureLineClone();
     var r = img.getBoundingClientRect();
     var col = hleft.getBoundingClientRect();
+    var hrightRect = hright.getBoundingClientRect();
     var aspect = (img.naturalWidth && img.naturalHeight)
       ? img.naturalHeight / img.naturalWidth : r.height / r.width;
     img.style.visibility = 'hidden';
     hright.classList.add('is-pmap-bled');
+
+    // 마스크 — .hright 의 실측 세로 범위 그대로. 아래 grad·fill·rig·line 의
+    // top 은 전부 뷰포트 기준값에서 이 mtop 을 뺀 "마스크 안쪽 좌표"로 넣는다
+    // (마스크 자체가 이미 뷰포트의 mtop 지점에 옮겨져 있으므로)
+    mask.style.display = 'block';
+    var mtop = hrightRect.top;
+    mask.style.top = mtop + 'px';
+    mask.style.height = hrightRect.height + 'px';
 
     // 그림 전체를 뷰포트 폭으로 늘렸다면 가졌을 높이·위치 — grad·바닥 시작선
     // 계산의 공통 스케일 기준이다(원본 img 와 같은 세로 중심에 맞춘 채로)
@@ -2077,31 +2221,6 @@
     var gradTop = floorTop + floorH * GRAD_TOP_FRAC;
     var gradBottom = floorTop + floorH * GRAD_BOT_FRAC;
 
-    // 바닥(CSS 평면, 2026-08-21 요청) — 카드(.hright) 밑변에 붙인 채로, 옛
-    // 바닥 자리(그라데이션 끝~카드 밑변)의 절반 높이만 채운다. 밑변은 그대로
-    // 두고 윗변만 아래로 내려 절반이 되므로, 새 윗변은 그 구간의 중간점이다
-    var fillBottom = hright.getBoundingClientRect().bottom;
-    var fullFloorH = Math.max(0, fillBottom - gradBottom);
-    var fillH = fullFloorH / 2;
-    var fillTop = fillBottom - fillH;
-    fill.style.display = fillH > 0 ? 'block' : 'none';
-    fill.style.top = fillTop + 'px';
-    fill.style.height = fillH + 'px';
-
-    // 배경 그라데이션판 — rig 겹(본문 열 폭)에만 그려지면 그 폭 밖은
-    // 그라데이션 없이 뚝 끊겨 상자처럼 보인다(2026-08-21 지적). 이 구간엔
-    // 설비가 걸쳐 있지만 grad 는 DOM 에 제일 먼저 붙어 맨 뒤(배경)에 깔리고,
-    // rig 겹은 그 뒤(나중)에 붙어 맨 앞이라 설비가 가려질 일은 없다.
-    // 밑변은 원래 자리(gradBottom)가 아니라 방금 짧아진 바닥의 윗변(fillTop)
-    // 까지 늘린다 — 그라데이션은 이미 그 끝에서 페이지 배경색과 같아지므로
-    // (E4E8ED→F4F6F8, 후자가 곧 페이지 배경) 늘어난 부분은 안 보이면서
-    // 바닥과 그라데이션 사이에 빈 틈(페이지 배경이 그대로 드러나는 구간)이
-    // 안 남는다
-    grad.style.display = 'block';
-    grad.style.width = '100vw';
-    grad.style.top = gradTop + 'px';
-    grad.style.height = Math.max(0, fillTop - gradTop) + 'px';
-
     // rig 겹 — 본문 열(.hleft) 폭 기준으로 RIG_SCALE 배 키우고, 늘어난 만큼은
     // 열 가운데를 기준으로 좌우로 고르게 번지게 한다(왼쪽만 밀리지 않도록).
     // 바닥 시작선(옛 바닥 띠가 시작하던 gradBottom)에 rig 겹의 같은 지점이
@@ -2109,59 +2228,105 @@
     // 바닥판만 짧아진다
     var rigW = col.width * RIG_SCALE;
     var rigH = rigW * aspect;
+
+    // 탭 패널과 겹쳐도 된다는 확인을 받았다(2026-08-21 재요청) — 더는 탭
+    // 자리를 피해 줄이지 않는다. 유일한 제약은 이 카드 자체의 실측 세로
+    // 범위(hrightRect.top ~ hrightRect.bottom, 마스크 범위와 동일) 밖으로
+    // 넘어가지 않는 것 — 다음 카드를 침범하는 일만은 없어야 한다
+    var availH = Math.max(0, hrightRect.bottom - hrightRect.top);
+    if (rigH > availH){
+      var shrink = availH / rigH;
+      rigW *= shrink;
+      rigH = availH;
+    }
+
     var rigLeft = col.left - (rigW - col.width) / 2;
     var rigTop = gradBottom - rigH * GRAD_BOT_FRAC;
+    // 위에서 크기를 이미 남는 자리에 맞췄지만, gradBottom 기준 역산이라 위치가
+    // 그 범위를 살짝 벗어날 수 있다 — 밑변을 카드 밑변 안으로, 그다음 윗변을
+    // 카드 자체의 실측 위쪽(hrightRect.top) 밑으로 다시 한번 눌러 확실히
+    // 가둔다 — 탭 패널과는 겹쳐도 되지만, 이 카드 밖(다음 카드 등)으로는
+    // 넘어가면 안 된다
+    var rigBottom = rigTop + rigH;
+    if (rigBottom > hrightRect.bottom) rigTop -= (rigBottom - hrightRect.bottom);
+    if (rigTop < hrightRect.top) rigTop = hrightRect.top;
+    rigBottom = rigTop + rigH;
     rig.style.display = 'block';
     rig.style.left = rigLeft + 'px';
     rig.style.width = rigW + 'px';
-    rig.style.top = rigTop + 'px';
+    rig.style.top = (rigTop - mtop) + 'px';
 
-    // 설비 히트 영역 — rig 겹과 같은 스케일(rigW/SVG_W)로 SVG 좌표를 화면
-    // 좌표로 바꿔 투명 영역을 그림 위 각 설비 자리에 겹쳐 놓는다. rig 가
-    // 매 프레임 다시 그려지는 것과 같은 이유(사이드바 sticky 전환 등)로
-    // 여기도 매 프레임 다시 맞춰야 호버 판정이 어긋나지 않는다
-    var scale = rigW / SVG_W;
-    var areas = ensureHitAreas();
-    for (var ri = 0; ri < STEP_REGIONS.length; ri++){
-      var region = STEP_REGIONS[ri];
-      var el = areas[ri];
-      el.style.display = 'block';
-      el.style.left = (rigLeft + region.x * scale) + 'px';
-      el.style.top = (rigTop + region.y * scale) + 'px';
-      el.style.width = (region.w * scale) + 'px';
-      el.style.height = (region.h * scale) + 'px';
-    }
+    // 진행 라인 겹 — rig 와 완전히 같은 그림(라인 색만 다름)이라 자리·크기도
+    // rig 와 똑같이 맞춘다(height:auto 라 width 만 맞으면 그대로 겹친다)
+    line.style.display = 'block';
+    line.style.left = rigLeft + 'px';
+    line.style.top = (rigTop - mtop) + 'px';
+    line.style.width = rigW + 'px';
 
-    // 강조 테두리 + 툴팁 — 지금 호버된 히트 영역(hoverIdx)이 있을 때만 켠다.
-    // 툴팁은 그 설비 바로 위에 뜨되, 상단 탭 바에 가릴 만큼 화면 위쪽이면
-    // 아래로 뒤집는다(clamp)
-    var hi = ensureHighlight(), tip = ensureTip();
-    if (hoverIdx >= 0 && STEP_REGIONS[hoverIdx]){
-      var hr = STEP_REGIONS[hoverIdx];
-      var hx = rigLeft + hr.x * scale, hy = rigTop + hr.y * scale;
-      var hw = hr.w * scale, hh = hr.h * scale;
-      hi.style.left = hx + 'px';
-      hi.style.top = hy + 'px';
-      hi.style.width = hw + 'px';
-      hi.style.height = hh + 'px';
-      hi.classList.add('is-on');
+    // 라인 양 끝 연장 — rig 양 끝에서 라인이 지나는 세로 위치(LINE_Y_FRAC)에
+    // 맞춰 같은 굵기(LINE_STROKE, rig 스케일만큼 곱해서)의 옅은 색 막대를
+    // 화면 가장자리까지 그린다
+    var lineScale = rigW / SVG_W;
+    var lineY = rigTop + LINE_Y_FRAC * rigH;
+    var lineThick = LINE_STROKE * lineScale;
+    var vw = window.innerWidth;
+    var edgeLW = Math.max(0, rigLeft);
+    var edgeRW = Math.max(0, vw - (rigLeft + rigW));
+    edgeL.style.display = 'block';
+    edgeL.style.left = '0px';
+    edgeL.style.width = edgeLW + 'px';
+    edgeL.style.top = (lineY - lineThick / 2 - mtop) + 'px';
+    edgeL.style.height = lineThick + 'px';
+    edgeR.style.display = 'block';
+    edgeR.style.left = (rigLeft + rigW) + 'px';
+    edgeR.style.width = edgeRW + 'px';
+    edgeR.style.top = (lineY - lineThick / 2 - mtop) + 'px';
+    edgeR.style.height = lineThick + 'px';
 
-      var info = STEP_INFO[hr.step];
-      tip.innerHTML = '<p class="tip-ttl">' + info.label + '</p><ul>'
-        + info.spec.map(function(s){ return '<li>' + s + '</li>'; }).join('')
-        + '</ul>';
-      tip.classList.add('is-on');
-      var tipRect = tip.getBoundingClientRect();
-      var tipLeft = hx + hw / 2 - tipRect.width / 2;
-      tipLeft = Math.max(8, Math.min(tipLeft, window.innerWidth - tipRect.width - 8));
-      var tipTop = hy - tipRect.height - 10;
-      if (tipTop < 60) tipTop = hy + hh + 10;
-      tip.style.left = tipLeft + 'px';
-      tip.style.top = tipTop + 'px';
-    } else {
-      hi.classList.remove('is-on');
-      tip.classList.remove('is-on');
-    }
+    // 진행 게이지 — 왼쪽 연장선 → rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은
+    // 전체 길이를 기준으로, activeStep 진행률만큼 왼쪽부터 진한 색으로
+    // 채운다(2026-08-21 지적 — "라인 게이지가 연장선부터 시작하지 않는다").
+    // 연장선 쪽 채움은 트랙(edgeL/edgeR)의 --fill 비율 하나로, rig 안쪽은
+    // 여전히 clip-path 로 표현한다 — 자리·두께 값은 위에서 트랙에 이미
+    // 맞춰 놓았으므로 여기서 다시 셀 필요가 없다(2026-08-22, "따로 논다"는
+    // 지적에 트랙+채움 두 엘리먼트 구조를 하나로 합치며 정리)
+    var totalLen = edgeLW + rigW + edgeRW;
+    var revealFrac = (activeStep + 1) / STEP_INFO.length;
+    var revealedLen = totalLen * revealFrac;
+
+    var fillL = Math.max(0, Math.min(edgeLW, revealedLen));
+    edgeL.style.setProperty('--fill', (edgeLW > 0 ? (fillL / edgeLW * 100) : 0) + '%');
+
+    var rigRevealLen = Math.max(0, Math.min(rigW, revealedLen - edgeLW));
+    var rigRevealPct = rigW > 0 ? (rigRevealLen / rigW * 100) : 0;
+    line.style.clipPath = 'inset(0 ' + (100 - rigRevealPct) + '% 0 0)';
+
+    var fillR = Math.max(0, Math.min(edgeRW, revealedLen - edgeLW - rigW));
+    edgeR.style.setProperty('--fill', (edgeRW > 0 ? (fillR / edgeRW * 100) : 0) + '%');
+
+    // 바닥(CSS 평면) — rig 겹의 실측 밑변부터 카드 밑변까지 채운다. rig 그림
+    // 자체에 이미 포함된 바닥(옛 바닥 띠)과 이어져 어디서 봐도 남는 틈이
+    // 그대로 채워진다. 설비 크기를 먼저 정하고 남는 자리만 쓰므로(위 참고),
+    // 화면이 좁아 설비가 카드 밑변까지 꽉 채우면 이 바닥은 0이 될 수 있다
+    var fillBottom = hrightRect.bottom;
+    var fillTop = Math.min(fillBottom, rigBottom);
+    var fillH = Math.max(0, fillBottom - fillTop);
+    fill.style.display = fillH > 0 ? 'block' : 'none';
+    fill.style.top = (fillTop - mtop) + 'px';
+    fill.style.height = fillH + 'px';
+
+    // 배경 그라데이션판 — rig 겹(본문 열 폭)에만 그려지면 그 폭 밖은
+    // 그라데이션 없이 뚝 끊겨 상자처럼 보인다(2026-08-21 지적). 이 구간엔
+    // 설비가 걸쳐 있지만 grad 는 DOM 에 제일 먼저 붙어 맨 뒤(배경)에 깔리고,
+    // rig 겹은 그 뒤(나중)에 붙어 맨 앞이라 설비가 가려질 일은 없다.
+    // 바닥(.pmap-floor-fill) 을 뺀 뒤로 이 판이 사실상 바닥 역할이라
+    // (2026-08-21), 카드 밑변에 붙인 채로 높이를 PLATE_H 고정값으로 잡는다
+    // — 탭·스펙 패널(mtop 기준) 위로는 넘어가지 않게 막는다
+    var plateBottom = hrightRect.bottom;
+    var plateTop = Math.max(mtop, plateBottom - PLATE_H);
+    grad.style.display = 'block';
+    grad.style.top = (plateTop - mtop) + 'px';
+    grad.style.height = (plateBottom - plateTop) + 'px';
   }
 
   // 스크롤 이벤트만 믿으면 놓치는 경우가 있다(2026-08-21 지적) — 상단 탭이
@@ -2196,14 +2361,29 @@
     visible = entries[0].isIntersecting;
     if (visible){
       if (!raf) raf = requestAnimationFrame(loop);
+      startPlay();
     } else {
       queue();   // 사라질 때도 한 번 더 sync 해서 클론들을 확실히 감춘다
+      stopPlay();
     }
   }, { threshold: 0 }).observe(img);
 
   window.addEventListener('resize', queue);
   window.addEventListener('scroll', queue, { passive: true });
   if (track) track.addEventListener('scroll', queue, { passive: true });
+
+  // 실사용 크롬에서 새로고침 직후 텍스트·탭 패널 밑과 설비 사이에 빈 틈이
+  // 보이는데, 개발자도구를 여는 것만으로(=resize 이벤트 한 번) 고쳐지는
+  // 현상이 확인됐다(2026-08-21). 즉 sync() 가 라이브 값으로 매 프레임
+  // 다시 그리는 루프 자체는 정상인데, 그 루프가 스크롤·리사이즈 같은
+  // 트리거 없이는 시작되지 않는 시점(웹폰트가 늦게 적용돼 패널 높이가
+  // 사후에 바뀌거나, 탭이 백그라운드에 있어 requestAnimationFrame 이
+  // 쉬는 동안 레이아웃이 바뀐 경우)에 취약하다 — 그 두 트리거를 각각
+  // 명시적으로 추가해 스스로 다시 맞추게 한다
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queue);
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden) queue();
+  });
 })();
 </script>
 </body>
