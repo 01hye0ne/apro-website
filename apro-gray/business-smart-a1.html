@@ -542,25 +542,45 @@
      그림이 계속 오르락내리락한다(2026-08-21 지적).
      탭 안쪽 패딩도 빠듯하게 잡아 이 블록 자체가 세로를 많이 먹지 않게 한다 */
   .pmap-panel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:4px;width:100%}
-  .pmap-tab{grid-row:1;display:flex;align-items:baseline;justify-content:center;gap:6px;
-    padding:8px 6px;border-radius:0;background:var(--secondary-bg);
+    row-gap:0;column-gap:4px;width:100%}
+  .pmap-tab{grid-row:1;display:flex;align-items:center;justify-content:flex-start;gap:8px;
+    padding:8px 6px 8px 8px;border-radius:0;background:var(--secondary-bg);
     border:1px solid var(--border-g);cursor:pointer;
     transition:background .3s var(--ease),border-color .3s var(--ease)}
-  .pmap-tab b{font-family:var(--pre);font-weight:700;font-size:15px;
-    letter-spacing:-.3px;color:var(--teritary);transition:color .3s var(--ease)}
-  .pmap-tab span{font-family:var(--pre);font-weight:500;font-size:14px;
+  .pmap-tab b{font-family:var(--pre);font-weight:500;font-size:14px;
+    letter-spacing:-.3px;color:var(--teritary);
+    padding-right:8px;border-right:1px solid var(--border-g);
+    transition:color .3s var(--ease),border-color .3s var(--ease)}
+  .pmap-tab span{font-family:var(--pre);font-weight:700;font-size:15px;
     letter-spacing:-.3px;color:var(--teritary);white-space:nowrap;
     transition:color .3s var(--ease)}
   .pmap-tab.is-active{background:var(--brand);border-color:var(--brand)}
   .pmap-tab.is-active b,.pmap-tab.is-active span{color:#fff}
+  .pmap-tab.is-active b{border-right-color:rgba(255,255,255,.4)}
   .pmap-spec{grid-row:2;grid-column:1/2;min-height:156px;
-    list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
-  .pmap-spec li{position:relative;padding-left:14px;font-family:var(--pre);
-    font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.3px;
-    color:var(--sec)}
-  .pmap-spec li::before{content:"";position:absolute;left:1px;top:7px;
-    width:4px;height:4px;border-radius:50%;background:var(--brand-2)}
+    list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+    align-items:stretch;gap:0}
+  .pmap-spec li{font-family:var(--pre)}
+  /* 칩 스타일 재조정(2026-08-22 요청) — "단계별 너비"는 스펙 목록 전체가
+     오른쪽 끝까지 넓어진 폭이 아니라, 활성 탭 "한 칸"의 폭을 말한 것이었다
+     ("6번 단계처럼", 드롭다운 메뉴 UI) — renderStep() 의 grid-column 을
+     활성 탭 한 칸으로만 고정했다(위 참고). 그 탭과 폭이 똑같이 겹치므로
+     양쪽 정렬을 위해 따로 두던 왼쪽 여백(9px)도 필요 없어져 뺐다.
+     align-items:stretch(부모, flex 기본값)로 각 li 가 그 한 칸의 가로폭
+     100%로 늘어난다. 간격은 0, 모서리는 각지게(border-radius 없음) —
+     칩끼리 위아래로 맞닿아 하나의 판처럼 보인다. 위아래 테두리가 겹쳐
+     두 배로 굵어지지 않도록 li+li 에서만 위 테두리를 뺀다.
+     .pmap-spec 자체의 gap:0(위)도 business-layout.css 의 공용 규칙
+     (.hcard ul{gap:var(--para-gap)}, 8px)이 특정도가 더 높아(.hcard 클래스
+     +ul 타입 vs .pmap-spec 클래스 하나) 그대로 씹혔다(2026-08-22 확인,
+     계산된 gap 이 8px 그대로였다) — 여기서도 같은 특정도로 다시 0 을 준다 */
+  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:0}
+  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li{
+    font-weight:500;font-size:13px;line-height:1.4;
+    letter-spacing:-.2px;color:var(--g900);background:var(--secondary-bg);
+    border:1px solid var(--border-g);border-radius:0;padding:6px 10px}
+  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li+li{border-top:none}
+  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li::before{content:none}
   /* 마스크(2026-08-21 요청) — 그림이 이따금 카드 밑변을 넘어 다음 카드(예:
      "해외 거점" 제목)까지 침범해 보이는 문제가 있었다. rig 겹의 높이는
      본문 열 폭(RIG_SCALE) 기준으로만 정해져 카드에 실제로 남은 세로 공간과
@@ -574,10 +594,16 @@
      100vw 라 화면 끝까지 번지고, 세로만 카드 밑변에서 정확히 끊긴다 */
   .pmap-mask{position:fixed;left:0;width:100vw;overflow:hidden;
     pointer-events:none;z-index:1;display:none}
-  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-clone,.pmap-line-edge,
+  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-edge,
   .pmap-line-vedge{
     position:absolute;left:0;top:0;margin:0;pointer-events:none;display:none}
-  .pmap-rig-clone,.pmap-line-clone{height:auto}
+  /* rig(.pmap-rig-clone) 은 이제 <svg viewBox> 라 그 안의 <image> 두 장
+     (설비 원본 + 라인만 진한 색 사본, 후자는 SVG 네이티브 mask 속성으로
+     trim path 만큼만 드러낸다)이 함께 스케일된다 — 2026-08-22 재작업.
+     예전엔 <img> 두 장을 겹치고 CSS mask-image 로 후자를 잘랐는데, 실제
+     크롬에서 그 CSS mask 가 전혀 반영되지 않는 걸 픽셀로 확인했다
+     ("채워지는 선이 안 보여" 지적) — SVG 안에서 이미지·마스크가 같은
+     좌표계를 쓰는 네이티브 방식으로 바꿔 크기 불일치 여지 자체를 없앴다 */
   /* 연장선(화면 가장자리) 진행 겹 — 예전엔 옅은 색 막대(트랙)와 진한 색
      막대(채움)를 별개의 두 엘리먼트로 두고 자리·두께를 매번 JS로 각각
      맞췄는데(2026-08-21), "두 라인이 따로 논다"는 구조적 불안 지적
@@ -585,12 +611,12 @@
      (.pmap-line-edge) 자리를 CSS 상속으로 그대로 따라가므로(top:0 left:0
      height:100%) 자리·두께가 어긋날 방법 자체가 없다. JS 가 매번 새로
      맞춰야 하는 값은 이제 채워진 비율(--fill) 하나뿐이다.
-     .pmap-line-clone 의 clip-path 와 이 ::after 의 width 는 더는 CSS
-     transition 을 걸지 않는다(2026-08-22 재지적 — "연장선과 기존선이 따로
-     움직인다") — 매 프레임(sync(), rAF) 흐른 시간으로 직접 계산한 값을
-     즉시 그대로 그리므로, 트랙 전체가 항상 같은 순간 같은 값을 반영해
-     하나의 선처럼 보인다. CSS transition 을 얹으면 오히려 그 프레임 값을
-     다시 뒤늦게 뒤쫓아가며 지연(랙)이 생겨 어긋나 보였다 */
+     rig 안 라인 사본의 mask(stroke-dashoffset) 와 이 ::after 의 width 는
+     CSS transition 을 걸지 않는다(2026-08-22 재지적 — "연장선과 기존선이
+     따로 움직인다") — 매 프레임(sync(), rAF) 흐른 시간으로 직접 계산한
+     값을 즉시 그대로 그리므로, 트랙 전체가 항상 같은 순간 같은 값을
+     반영해 하나의 선처럼 보인다. CSS transition 을 얹으면 오히려 그
+     프레임 값을 다시 뒤늦게 뒤쫓아가며 지연(랙)이 생겨 어긋나 보였다 */
   .pmap-line-edge{--fill:0%}
   .pmap-line-edge::after{content:'';position:absolute;left:0;top:0;height:100%;
     width:var(--fill);background:var(--fill-color)}
@@ -1315,7 +1341,7 @@
        작아질지언정 순서·구역이 다 보이는 편이 낫다 */
     .hcard[data-tab*="프로세스 맵"]>.hright{padding:24px 0;gap:10px}
     .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
-    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-tab{padding:6px 6px}
+    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-tab{padding:6px 6px 6px 8px}
     .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:2px}
     .hcard[data-tab*="프로세스 맵"]>.hleft,
     .hcard[data-tab="해외 거점"]>.hleft,
@@ -2014,12 +2040,25 @@
   // 는 원본과 완전히 같은 그림에 "Progress line"만 진한 파랑(--brand)으로
   // 바꾼 사본이다(건물 등 나머지는 전부 동일 — 원본 SVG에서 라인이 설비
   // 그룹보다 먼저 그려져 건물 밑에 깔리는 쌓임 순서까지 그대로 살아 있다).
-  // rig 겹 위에 이 사본을 통째로 포개고 clip-path 로 왼쪽부터 조금씩 더
-  // 드러내면, 두 그림이 픽셀 단위로 같으니 어디를 드러내도 건물이 라인을
+  // rig 겹 위에 이 사본을 통째로 포개고, 어디를 드러내도 건물이 라인을
   // 가리는 자리가 원본과 어긋나지 않는다 — 얇은 <path> 하나를 rig 겹 위에
   // 따로 그렸던 첫 버전은 라인이 항상 최상단에 있어 건물을 가로지르는
   // 구간에서 라인이 건물 "위로" 떠 보이는 문제가 있었다(2026-08-21 지적)
   var LINE_DARK_SRC = '../assets/공정 프로세스 맵_1635_line-dark.svg';
+
+  // 드러내는 방식(2026-08-22 재작업) — clip-path:inset() 은 사각형이라
+  // 왼쪽→오른쪽 한 방향으로만 진행된다. 그런데 실제 라인은 설비를 피해
+  // 위아래로 꺾이는 구간이 있어(건물 옆을 타고 올라갔다 내려오는 loop),
+  // 그 구간에서는 "실제 라인을 따라 그려지는" 진행이 아니라 "화면 왼쪽
+  // 몇 %까지 보이는" 진행이 되어 방향이 라인과 어긋나 보인다("구불구불한
+  // 선에서 코너가 있을 때 방향이 달라질 수 있다"는 지적). 원본과 똑같은
+  // path 좌표(LINE_PATH_D)로 SVG <mask> 를 만들고, 그 안의 <path> 에
+  // stroke-dasharray/dashoffset(trim path)을 걸어 라인 진행 사본에 씌운다.
+  // (처음엔 HTML <img> 에 CSS mask-image 로 이 mask 를 씌우려 했는데
+  // 실제 크롬에서 전혀 반영되지 않았다 — 2026-08-22 확인, "채워지는 선이
+  // 안 보여" 지적. 그래서 rig 자체를 <svg> 로 바꿔 SVG 네이티브 mask
+  // 속성을 쓴다 — ensureRigClone() 참고)
+  var LINE_PATH_D = 'M0.5 584.5H117.551C120.292 584.5 122.523 582.293 122.551 579.551L124.593 379.449C124.621 376.708 126.851 374.5 129.593 374.5H283.092C285.874 374.5 288.12 376.77 288.092 379.551L286.052 579.449C286.023 582.23 288.27 584.5 291.051 584.5H463.051C465.792 584.5 468.023 582.293 468.051 579.551L470.093 379.449C470.121 376.708 472.351 374.5 475.093 374.5H484.592C487.374 374.5 489.62 376.77 489.592 379.551L487.552 579.449C487.523 582.23 489.77 584.5 492.551 584.5H644.551C647.292 584.5 649.523 582.293 649.551 579.551L651.593 379.449C651.621 376.708 653.851 374.5 656.593 374.5L1096.59 374.5C1099.37 374.5 1101.62 376.77 1101.59 379.551L1099.55 579.449C1099.52 582.23 1101.77 584.5 1104.55 584.5H1161.25C1164.01 584.5 1166.25 582.262 1166.25 579.5V379.5C1166.25 376.739 1168.49 374.5 1171.25 374.5H2136.87C2139.64 374.5 2141.88 376.739 2141.88 379.5V462C2141.88 464.762 2139.64 467 2136.87 467H1214C1211.24 467 1209 469.239 1209 472V579.5C1209 582.262 1211.24 584.5 1214 584.5H2245.88';
 
   var img = document.querySelector('.hcard[data-tab*="프로세스 맵"]>.hright img');
   if (!img) return;
@@ -2029,7 +2068,8 @@
   var hleft = hcard.querySelector('.hleft');
   var tabEls = [].slice.call(hright.querySelectorAll('.pmap-tab'));
   var specEl = hright.querySelector('.pmap-spec');
-  var rigClone = null, floorFill = null, gradFill = null, lineClone = null, pmapMask = null;
+  var rigClone = null, floorFill = null, gradFill = null, pmapMask = null;
+  var lineMaskPath = null, lineTotalLen = 0;
   var lineEdgeR = null;
   var lineVEdgeL = null;
   var visible = false, raf = null, activeStep = 0;
@@ -2051,10 +2091,11 @@
     var info = STEP_INFO[activeStep];
     if (specEl){
       specEl.innerHTML = info.spec.map(function(s){ return '<li>' + s + '</li>'; }).join('');
-      // 활성 탭 칸 → grid 오른쪽 끝까지 걸친다 — 시작 칸이 "그 탭 아래"라는
-      // 자리를 잡아 주고, 오른쪽으로 남은 칸까지 폭을 넓혀 영문 스펙 설명이
-      // 좁은 한 칸 안에서 여러 줄로 심하게 접히지 않게 한다
-      specEl.style.gridColumn = (activeStep + 1) + ' / 7';
+      // 활성 탭 칸 하나에만 정확히 맞춘다(2026-08-22 재요청 — "6번 단계
+      // 처럼", 드롭다운 메뉴 UI) — 오른쪽 끝까지 넓히던 이전 방식(칩 스타일
+      // 실험 중 한 번 그렇게 바꿨었다)을 되돌린다. 그 탭 바로 아래, 그
+      // 탭과 같은 폭으로만 뜬다
+      specEl.style.gridColumn = (activeStep + 1) + ' / ' + (activeStep + 2);
     }
   }
 
@@ -2145,31 +2186,70 @@
     return lineVEdgeL;
   }
 
+  // rig 겹 — 예전엔 <img> 두 장(원본 사본 + 라인만 진한 색 사본)을 겹치고
+  // CSS mask-image 로 후자를 잘라내는 방식이었는데, 실제 크롬에서 확인하니
+  // 그 CSS mask(HTML <img> 에 SVG <mask> 를 mask-size 로 늘려 씌우는 조합)가
+  // 전혀 반영되지 않았다(2026-08-22 확인 — 픽셀을 직접 찍어 보니 100%
+  // 진행되어도 시작색 그대로였다. "채워지는 선이 안 보여" 지적이 맞았다).
+  // 대신 인라인 <svg viewBox="0 0 2246 653"> 하나 안에 두 <image> 를 넣고,
+  // SVG 네이티브 mask 속성(HTML mask-image 아님)으로 라인 사본만 잘라낸다
+  // — 같은 좌표계 안에서 이미지·마스크가 전부 SVG 자체 스케일링으로
+  // 처리되니 CSS 쪽 크기 불일치 문제 자체가 생기지 않는다. 이 svg 하나가
+  // 곧 rig(설비) 겹이자 라인 겹이라 위치·크기는 이 svg 하나에만 잡으면
+  // 된다(둘을 따로 맞출 필요가 없어졌다)
   function ensureRigClone(){
     if (rigClone) return rigClone;
-    rigClone = document.createElement('img');
-    rigClone.src = img.currentSrc || img.getAttribute('src');
-    rigClone.alt = '';
+    var svgNS = 'http://www.w3.org/2000/svg';
+    rigClone = document.createElementNS(svgNS, 'svg');
     rigClone.setAttribute('aria-hidden', 'true');
-    rigClone.className = 'pmap-rig-clone';
-    ensureMask().appendChild(rigClone);
-    return rigClone;
-  }
+    rigClone.setAttribute('viewBox', '0 0 ' + SVG_W + ' ' + SVG_H);
+    rigClone.setAttribute('preserveAspectRatio', 'none');
+    rigClone.setAttribute('class', 'pmap-rig-clone');
 
-  // 진행 라인 겹 — rig 겹과 똑같은 위치·크기(fixed)로 라인만 진한 파랑인
-  // 사본(LINE_DARK_SRC)을 하나 더 깔고, clip-path 로 왼쪽부터 드러낸다.
-  // rig 보다 나중에(=DOM 에서 뒤에) 붙어야 그 위에 포개진다 — 두 그림이
-  // 픽셀 단위로 같으므로 드러난 부분만 진한 파랑으로 "바뀐" 것처럼 보인다
-  function ensureLineClone(){
-    if (lineClone) return lineClone;
-    lineClone = document.createElement('img');
-    lineClone.src = LINE_DARK_SRC;
-    lineClone.alt = '';
-    lineClone.setAttribute('aria-hidden', 'true');
-    lineClone.className = 'pmap-line-clone';
-    lineClone.style.clipPath = 'inset(0 100% 0 0)';
-    ensureMask().appendChild(lineClone);
-    return lineClone;
+    var defs = document.createElementNS(svgNS, 'defs');
+    var mask = document.createElementNS(svgNS, 'mask');
+    mask.setAttribute('id', 'pmap-line-mask');
+    mask.setAttribute('maskUnits', 'userSpaceOnUse');
+    mask.setAttribute('x', '0');
+    mask.setAttribute('y', '0');
+    mask.setAttribute('width', String(SVG_W));
+    mask.setAttribute('height', String(SVG_H));
+    var maskPath = document.createElementNS(svgNS, 'path');
+    maskPath.setAttribute('d', LINE_PATH_D);
+    maskPath.setAttribute('fill', 'none');
+    maskPath.setAttribute('stroke', '#fff');
+    maskPath.setAttribute('stroke-width', String(LINE_STROKE));
+    mask.appendChild(maskPath);
+    defs.appendChild(mask);
+    rigClone.appendChild(defs);
+
+    var baseImg = document.createElementNS(svgNS, 'image');
+    baseImg.setAttribute('href', img.currentSrc || img.getAttribute('src'));
+    baseImg.setAttribute('x', '0');
+    baseImg.setAttribute('y', '0');
+    baseImg.setAttribute('width', String(SVG_W));
+    baseImg.setAttribute('height', String(SVG_H));
+    rigClone.appendChild(baseImg);
+
+    var darkImg = document.createElementNS(svgNS, 'image');
+    darkImg.setAttribute('href', LINE_DARK_SRC);
+    darkImg.setAttribute('x', '0');
+    darkImg.setAttribute('y', '0');
+    darkImg.setAttribute('width', String(SVG_W));
+    darkImg.setAttribute('height', String(SVG_H));
+    darkImg.setAttribute('mask', 'url(#pmap-line-mask)');
+    rigClone.appendChild(darkImg);
+
+    ensureMask().appendChild(rigClone);
+
+    // 실측 길이 — 원본 path 그대로라 화면 크기와 무관하게 고정값이다.
+    // dasharray 를 그 길이만큼 잡아 실선으로 만들고, dashoffset 을 같은
+    // 값으로 시작해 0%(아무것도 안 보임) 상태로 둔다
+    lineTotalLen = maskPath.getTotalLength();
+    maskPath.setAttribute('stroke-dasharray', lineTotalLen);
+    maskPath.setAttribute('stroke-dashoffset', lineTotalLen);
+    lineMaskPath = maskPath;
+    return rigClone;
   }
 
   function sync(){
@@ -2206,16 +2286,15 @@
       }
     }
 
-    // 넷 다 z-index 가 같아 DOM 순서가 곧 쌓임 순서다(먼저 붙을수록 아래) —
-    // grad·floor(배경) → rig(설비) → line(맨 위, rig 와 픽셀 단위로 같은
-    // 그림이라 위에 포개져도 드러난 부분만 "라인 색이 바뀐" 것처럼 보인다)
+    // 셋(grad·floor·rig) 이 z-index 가 같아 DOM 순서가 곧 쌓임 순서다
+    // (먼저 붙을수록 아래) — grad·floor(배경) → rig(설비 + 라인, 그 안에서
+    // 라인 진행 사본이 mask 로 다시 한 번 겹쳐 그려진다)
     var mask = ensureMask();
     var grad = ensureGradFill();
     var fill = ensureFloorFill();
     var edgeR = ensureLineEdgeR();
     var vedgeL = ensureLineVEdgeL();
     var rig = ensureRigClone();
-    var line = ensureLineClone();
     var r = img.getBoundingClientRect();
     var col = hleft.getBoundingClientRect();
     var hrightRect = hright.getBoundingClientRect();
@@ -2290,17 +2369,14 @@
     if (rigBottom > hrightRect.bottom) rigTop -= (rigBottom - hrightRect.bottom);
     if (rigTop < hrightRect.top) rigTop = hrightRect.top;
     rigBottom = rigTop + rigH;
+    // rig 는 이제 <svg viewBox> 라 <img> 때와 달리 height 가 폭만으로
+    // 자동 계산되지 않는다 — width·height 를 둘 다 명시한다(rigH 는 이미
+    // 위에서 aspect 로 계산해 둔 값 그대로)
     rig.style.display = 'block';
     rig.style.left = rigLeft + 'px';
     rig.style.width = rigW + 'px';
+    rig.style.height = rigH + 'px';
     rig.style.top = (rigTop - mtop) + 'px';
-
-    // 진행 라인 겹 — rig 와 완전히 같은 그림(라인 색만 다름)이라 자리·크기도
-    // rig 와 똑같이 맞춘다(height:auto 라 width 만 맞으면 그대로 겹친다)
-    line.style.display = 'block';
-    line.style.left = rigLeft + 'px';
-    line.style.top = (rigTop - mtop) + 'px';
-    line.style.width = rigW + 'px';
 
     // 라인 오른쪽 끝 연장 — rig 오른쪽 끝에서 라인이 지나는 세로 위치
     // (LINE_Y_FRAC)에 맞춰 같은 굵기(LINE_STROKE, rig 스케일만큼 곱해서)의
@@ -2319,16 +2395,16 @@
     // 진행 게이지 — rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은 전체
     // 길이를 기준으로, revealFrac(위에서 이미 계산한 연속값) 만큼 왼쪽부터
     // 진한 색으로 채운다. 연장선 쪽 채움은 트랙(edgeR)의 --fill 비율
-    // 하나로, rig 안쪽은 여전히 clip-path 로 표현한다 — 자리·두께 값은
-    // 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀 필요가 없다
-    // (2026-08-22, "따로 논다"는 지적에 트랙+채움 두 엘리먼트 구조를
-    // 하나로 합치며 정리)
+    // 하나로, rig 안쪽은 위 mask 의 stroke-dashoffset 으로 표현한다 —
+    // 자리·두께 값은 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀
+    // 필요가 없다(2026-08-22, "따로 논다"는 지적에 트랙+채움 두 엘리먼트
+    // 구조를 하나로 합치며 정리)
     var totalLen = rigW + edgeRW;
     var revealedLen = totalLen * revealFrac;
 
     var rigRevealLen = Math.max(0, Math.min(rigW, revealedLen));
     var rigRevealPct = rigW > 0 ? (rigRevealLen / rigW * 100) : 0;
-    line.style.clipPath = 'inset(0 ' + (100 - rigRevealPct) + '% 0 0)';
+    if (lineMaskPath) lineMaskPath.setAttribute('stroke-dashoffset', lineTotalLen * (1 - rigRevealPct / 100));
 
     var fillR = Math.max(0, Math.min(edgeRW, revealedLen - rigW));
     edgeR.style.setProperty('--fill', (edgeRW > 0 ? (fillR / edgeRW * 100) : 0) + '%');
