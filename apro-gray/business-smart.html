@@ -541,8 +541,15 @@
      단계마다 줄 수가 달라져(품질검사 3항목 vs 디개싱 1항목) 이 블록 아래
      그림이 계속 오르락내리락한다(2026-08-21 지적).
      탭 안쪽 패딩도 빠듯하게 잡아 이 블록 자체가 세로를 많이 먹지 않게 한다 */
+  /* z-index 2 — 아래 그래픽이 단계탭을 덮는 것을 막는다(2026-08-24 지적).
+     그림들은 .pmap-mask 안에 들어 있는데 그 마스크가 <body> 직속에 position:fixed
+     z-index:1 로 붙는다(화면 끝까지 번지려고 조상 클리핑을 일부러 피한 구조라
+     카드 안으로 되돌릴 수 없다). 탭은 카드 안 평범한 흐름 요소라 z-index 를 갖지
+     않으면 그 뒤로 깔린다 — 위치를 잡아(position:relative) 마스크보다 높은 층에
+     올린다. .htrack·.hcard·.hright 는 셋 다 position:relative 에 z-index 가
+     없어(=쌓임 맥락을 만들지 않아) 이 값이 루트 기준으로 그대로 먹는다 */
   .pmap-panel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
-    row-gap:0;column-gap:4px;width:100%}
+    row-gap:0;column-gap:4px;width:100%;position:relative;z-index:2}
   .pmap-tab{grid-row:1;display:flex;align-items:center;justify-content:flex-start;gap:8px;
     padding:8px 6px 8px 8px;border-radius:0;background:var(--secondary-bg);
     border:1px solid var(--border-g);cursor:pointer;
