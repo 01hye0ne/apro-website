@@ -339,34 +339,30 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 
 /* 보도자료 카드 (.cnews)
    [이미지 / 제목 / 작성일] 한 장이 한 건이고 3열로 깐다.
-   제목은 두 줄에서 자른다 — 길이가 제각각이라 안 자르면 한 줄짜리와 세 줄짜리가
-   같은 줄에 서서 카드 높이가 들쭉날쭉해진다. 자른 뒤 카드는 모두 같은 높이다.
+   테두리는 이미지에만 두른다 — 카드 전체를 상자로 묶으면 글자까지 가둬져 목록이
+   무거워진다. 그림만 판으로 서고 글은 그 밑에 그냥 놓이는 편이 가볍다.
+   그래서 글 쪽에는 좌우 여백을 주지 않는다(테두리가 없으니 안쪽 여백도 없다).
 
-   섬네일은 아직 없다. 원본 글의 그림이 전부 언론사 서버에 있어 그대로 끌어다
-   쓸 수 없다(끊기면 깨지고, 남의 대역폭·저작물이다). 자리만 잡아 두고 A 마크를
-   옅게 깔아 비어 보이지 않게 한다 — <img> 가 들어오면 그 위를 덮는다 */
+   제목은 두 줄에서 자른다 — 길이가 제각각이라 안 자르면 한 줄짜리와 세 줄짜리가
+   같은 줄에 서서 카드 높이가 들쭉날쭉해진다.
+
+   섬네일 자리는 비어 있다. 원본 글의 그림이 전부 언론사 서버에 있어 그대로 끌어다
+   쓸 수 없다(끊기면 깨지고, 남의 대역폭·저작물이다). <img> 가 들어오면 그 자리를 채운다 */
 .cnews{margin-top:28px;list-style:none;display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
-.cnews>li>a{display:flex;flex-direction:column;height:100%;
-  border:1px solid var(--border-g);background:#fff;
-  transition:border-color .22s var(--ease),box-shadow .22s var(--ease),transform .22s var(--ease)}
-.cnews>li>a:hover{border-color:var(--point-300);
-  box-shadow:0 10px 24px rgba(27,39,51,.08);transform:translateY(-2px)}
-@media(prefers-reduced-motion:reduce){.cnews>li>a:hover{transform:none}}
-.cnews .thumb{position:relative;aspect-ratio:4/3;overflow:hidden;
-  background:var(--secondary-bg);border-bottom:1px solid var(--border-g)}
-/* 그림이 없을 때 깔리는 바탕 — <img> 가 있으면 그 밑으로 가려진다 */
-.cnews .thumb::after{content:"";position:absolute;inset:0;
-  background:url("../assets/a-logo.svg") center/34% no-repeat;opacity:.1}
-.cnews .thumb img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block}
-.cnews .txt{flex:1;display:flex;flex-direction:column;padding:20px}
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.4vw,28px)}
+.cnews>li>a{display:flex;flex-direction:column;height:100%}
+/* 16:9 — 기사 사진이 대체로 가로가 긴 판이라 그 비율에 맞춘다 */
+.cnews .thumb{aspect-ratio:16/9;overflow:hidden;
+  background:var(--secondary-bg);border:1px solid var(--border-g)}
+.cnews .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.cnews .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
 .cnews .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
   overflow:hidden;font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;
   letter-spacing:-.34px;color:var(--g900);word-break:keep-all;
   transition:color .2s var(--ease)}
 .cnews>li>a:hover .ttl{color:var(--brand)}
 /* margin-top:auto — 제목이 한 줄이든 두 줄이든 날짜는 카드 밑변에 붙는다 */
-.cnews .date{margin-top:auto;padding-top:16px;font-family:var(--rc);font-weight:400;
+.cnews .date{margin-top:auto;padding-top:12px;font-family:var(--rc);font-weight:400;
   font-size:14px;letter-spacing:.04em;color:var(--teritary)}
 @media(max-width:900px){.cnews{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.cnews{grid-template-columns:minmax(0,1fr)}}
