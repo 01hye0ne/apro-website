@@ -142,6 +142,12 @@ ul.cul li{position:relative;padding-left:16px;font-family:var(--pre);font-size:1
 ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width:4px;height:4px;
   border-radius:50%;background:var(--brand-2)}
 
+/* 한 줄 문구 (.ctagline)
+   설명글(.lead)이 아니라 내거는 말이다 — IR Contact 의 "Partnership for Future"
+   같은 것. 같은 자리에 .lead 로 두면 17px 회색이라 안내문처럼 읽혀 힘이 빠진다 */
+.cblock>.ctagline{margin-top:16px;font-family:var(--suit);font-weight:800;
+  font-size:clamp(22px,2vw,30px);line-height:1.3;letter-spacing:-.6px;color:var(--brand)}
+
 /* =====================================================================
    4. 카드 — 소제목 + 설명 + (선택) 불릿
    ===================================================================== */
