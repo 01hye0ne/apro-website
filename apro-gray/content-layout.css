@@ -224,6 +224,52 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   flex-wrap:wrap;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;
   color:var(--teritary)}
 
+/* 재무상태표 막대그래프 (.cchart)
+   부채총계 위에 자본총계를 쌓아 자산총계를 만든다 — 세 값이 실제로 그런 관계라
+   (부채 + 자본 = 자산) 쌓은 막대가 곧 자산총계 높이가 된다.
+   막대 높이는 빌드할 때 계산해 style="--h:..%" 로 박는다. 스크립트로 그리지 않는
+   이유는 이 사이트가 정적 페이지라 값이 바뀌는 일이 없고, JS 가 꺼져도 그림이
+   남아야 하기 때문이다.
+   손익계산서 탭에는 이 그림을 두지 않는다 — 영업이익·당기순이익이 해에 따라
+   음수라(연결 제26기 -5,835) 쌓는 방식이 성립하지 않는다 */
+.cchart{margin-top:20px;padding:clamp(20px,3vw,36px);border:1px solid var(--border-g);
+  background:var(--secondary-bg)}
+.cchart-legend{display:flex;justify-content:flex-end;gap:16px;
+  font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--sec)}
+.cchart-legend span{display:inline-flex;align-items:center;gap:6px}
+.cchart-legend span::before{content:"";width:9px;height:9px;border-radius:50%}
+.cchart-legend .l-debt::before{background:var(--brand-2)}
+.cchart-legend .l-cap::before{background:var(--point-900)}
+/* 눈금 — 25% 간격 점선. 막대 뒤에 깔리도록 자리표시만 하고 색은 옅게 */
+.cchart-plot{position:relative;margin-top:20px;display:flex;align-items:flex-end;
+  justify-content:space-around;gap:clamp(12px,4vw,56px)}
+.cchart-plot::before{content:"";position:absolute;left:0;right:0;bottom:34px;height:240px;
+  background-image:repeating-linear-gradient(to top,var(--border-g) 0 1px,transparent 1px 60px);
+  pointer-events:none}
+.cchart .col{position:relative;flex:1 1 0;max-width:180px;text-align:center}
+.cchart .total{font-family:var(--suit);font-weight:800;font-size:clamp(15px,1.5vw,19px);
+  letter-spacing:-.38px;color:var(--g900);font-variant-numeric:tabular-nums}
+.cchart .track{margin-top:10px;height:240px;display:flex;flex-direction:column;
+  justify-content:flex-end}
+.cchart .bar{width:100%;height:var(--h);display:flex;flex-direction:column;overflow:hidden}
+.cchart .seg{display:grid;place-items:center;min-height:0;
+  font-family:var(--pre);font-weight:600;font-size:clamp(12px,1.2vw,15px);letter-spacing:-.3px;
+  color:#fff;font-variant-numeric:tabular-nums}
+.cchart .seg-debt{background:linear-gradient(180deg,var(--brand-2),var(--brand))}
+.cchart .seg-cap{background:var(--point-900)}
+/* 칸이 얕으면 숫자가 넘쳐 두 겹으로 보인다 — 안 보이게 접는다 */
+.cchart .seg span{padding:0 4px}
+.cchart .yr{margin-top:12px;font-family:var(--rc);font-weight:700;font-size:14px;
+  letter-spacing:.06em;color:var(--teritary)}
+/* 표·그림 위 오른쪽 단위 표기 */
+.cfin-unit{margin-top:24px;text-align:right;font-family:var(--pre);font-size:14px;
+  letter-spacing:-.28px;color:var(--teritary)}
+@media(max-width:760px){
+  .cchart .track{height:180px}
+  .cchart-plot::before{height:180px;background-image:repeating-linear-gradient(
+    to top,var(--border-g) 0 1px,transparent 1px 45px)}
+}
+
 /* =====================================================================
    6. 게시판 목록
    ===================================================================== */

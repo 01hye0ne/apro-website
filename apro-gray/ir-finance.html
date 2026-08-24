@@ -66,89 +66,160 @@
     <section class="cblock">
       <h2>재무제표</h2>
       <p class="lead">별도·연결 재무상태표와 손익계산서를 제22기(2021)부터 제26기(2025)까지 공개합니다.</p>
-      <!-- 탭 넷이 표 한 자리를 나눠 쓴다 — 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
-           전환 스크립트는 이 파일 맨 아래에 있다 -->
-      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="SEPARATE_BALANCE" aria-current="true">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_BALANCE">연결 재무상태표</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button></div>
-      <div class="cfin-panel" data-fin="SEPARATE_BALANCE">
-        <div class="ctable-wrap">
-          <table class="ctable">
-            <caption class="sr-only">별도 재무상태표</caption>
-            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
-            <tbody>
-            <tr><th scope="row">유동자산</th><td>134,187</td><td>246,847</td><td>175,687</td><td>102,744</td><td>68,792</td></tr>
-            <tr><th scope="row">비유동자산</th><td>143,894</td><td>111,074</td><td>61,314</td><td>40,137</td><td>29,889</td></tr>
-            <tr class="sum"><th scope="row">자산총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
-            <tr><th scope="row">유동부채</th><td>154,303</td><td>232,864</td><td>155,741</td><td>78,210</td><td>38,271</td></tr>
-            <tr><th scope="row">비유동부채</th><td>35,834</td><td>37,043</td><td>1,257</td><td>36</td><td>73</td></tr>
-            <tr class="sum"><th scope="row">부채총계</th><td>190,137</td><td>269,907</td><td>156,998</td><td>78,246</td><td>38,344</td></tr>
-            <tr class="sum"><th scope="row">자본총계</th><td>87,944</td><td>88,014</td><td>80,003</td><td>64,635</td><td>60,337</td></tr>
-            <tr class="sum"><th scope="row">자본과부채총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
-            </tbody>
-          </table>
+      <!-- 탭 넷이 표 한 자리를 나눠 쓴다. 재무상태표 두 탭에는 최근 3개년 막대그래프를
+           함께 얹는다 — 부채 위에 자본을 쌓으면 그 높이가 곧 자산총계다.
+           손익계산서에는 두지 않는다(위 CSS 의 .cchart 주석 참고) -->
+      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="CONSOLIDATED_BALANCE" aria-current="true">연결 재무상태표</button><button type="button" data-fin="SEPARATE_BALANCE">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button></div>
+      <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE">
+        <p class="cfin-unit">(단위: 백만원)</p>
+        <div class="cchart" role="img" aria-label="연결 재무상태표 — 2025 자산총계 327,517, 부채총계 266,206, 자본총계 61,311">
+          <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
+          <div class="cchart-plot">
+          <div class="col">
+            <p class="total">327,517</p>
+            <div class="track">
+              <div class="bar" style="--h:79.0%">
+                <div class="seg seg-debt" style="flex:266206 1 0"><span>266,206</span></div>
+                <div class="seg seg-cap" style="flex:61311 1 0"><span>61,311</span></div>
+              </div>
+            </div>
+            <p class="yr">2025</p>
+          </div>
+          <div class="col">
+            <p class="total">414,653</p>
+            <div class="track">
+              <div class="bar" style="--h:100.0%">
+                <div class="seg seg-debt" style="flex:341590 1 0"><span>341,590</span></div>
+                <div class="seg seg-cap" style="flex:73063 1 0"><span>73,063</span></div>
+              </div>
+            </div>
+            <p class="yr">2024</p>
+          </div>
+          <div class="col">
+            <p class="total">246,397</p>
+            <div class="track">
+              <div class="bar" style="--h:59.4%">
+                <div class="seg seg-debt" style="flex:174139 1 0"><span>174,139</span></div>
+                <div class="seg seg-cap" style="flex:72258 1 0"><span>72,258</span></div>
+              </div>
+            </div>
+            <p class="yr">2023</p>
+          </div>
+          </div>
         </div>
-        <p class="ctable-unit">(단위: 백만원)</p>
-      </div>
-      <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">연결 재무상태표</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
-            <tr><th scope="row">유동자산</th><td>134,492</td><td>252,354</td><td>174,767</td><td>104,082</td><td>73,666</td></tr>
-            <tr><th scope="row">비유동자산</th><td>193,025</td><td>162,299</td><td>71,630</td><td>36,172</td><td>26,463</td></tr>
-            <tr class="sum"><th scope="row">자산총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
-            <tr><th scope="row">유동부채</th><td>206,734</td><td>278,830</td><td>163,634</td><td>78,760</td><td>40,661</td></tr>
-            <tr><th scope="row">비유동부채</th><td>59,472</td><td>62,760</td><td>10,505</td><td>1,572</td><td>123</td></tr>
-            <tr class="sum"><th scope="row">부채총계</th><td>266,206</td><td>341,590</td><td>174,139</td><td>80,332</td><td>40,784</td></tr>
-            <tr class="sum"><th scope="row">자본총계</th><td>61,311</td><td>73,063</td><td>72,258</td><td>59,922</td><td>59,345</td></tr>
-            <tr class="sum"><th scope="row">자본과부채총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
+              <tr><th scope="row">유동자산</th><td>134,492</td><td>252,354</td><td>174,767</td><td>104,082</td><td>73,666</td></tr>
+              <tr><th scope="row">비유동자산</th><td>193,025</td><td>162,299</td><td>71,630</td><td>36,172</td><td>26,463</td></tr>
+              <tr class="sum"><th scope="row">자산총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
+              <tr><th scope="row">유동부채</th><td>206,734</td><td>278,830</td><td>163,634</td><td>78,760</td><td>40,661</td></tr>
+              <tr><th scope="row">비유동부채</th><td>59,472</td><td>62,760</td><td>10,505</td><td>1,572</td><td>123</td></tr>
+              <tr class="sum"><th scope="row">부채총계</th><td>266,206</td><td>341,590</td><td>174,139</td><td>80,332</td><td>40,784</td></tr>
+              <tr class="sum"><th scope="row">자본총계</th><td>61,311</td><td>73,063</td><td>72,258</td><td>59,922</td><td>59,345</td></tr>
+              <tr class="sum"><th scope="row">자본과부채총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="ctable-unit">(단위: 백만원)</p>
       </div>
-      <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
+      <div class="cfin-panel" data-fin="SEPARATE_BALANCE" hidden>
+        <p class="cfin-unit">(단위: 백만원)</p>
+        <div class="cchart" role="img" aria-label="별도 재무상태표 — 2025 자산총계 278,081, 부채총계 190,137, 자본총계 87,944">
+          <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
+          <div class="cchart-plot">
+          <div class="col">
+            <p class="total">278,081</p>
+            <div class="track">
+              <div class="bar" style="--h:77.7%">
+                <div class="seg seg-debt" style="flex:190137 1 0"><span>190,137</span></div>
+                <div class="seg seg-cap" style="flex:87944 1 0"><span>87,944</span></div>
+              </div>
+            </div>
+            <p class="yr">2025</p>
+          </div>
+          <div class="col">
+            <p class="total">357,921</p>
+            <div class="track">
+              <div class="bar" style="--h:100.0%">
+                <div class="seg seg-debt" style="flex:269907 1 0"><span>269,907</span></div>
+                <div class="seg seg-cap" style="flex:88014 1 0"><span>88,014</span></div>
+              </div>
+            </div>
+            <p class="yr">2024</p>
+          </div>
+          <div class="col">
+            <p class="total">237,001</p>
+            <div class="track">
+              <div class="bar" style="--h:66.2%">
+                <div class="seg seg-debt" style="flex:156998 1 0"><span>156,998</span></div>
+                <div class="seg seg-cap" style="flex:80003 1 0"><span>80,003</span></div>
+              </div>
+            </div>
+            <p class="yr">2023</p>
+          </div>
+          </div>
+        </div>
         <div class="ctable-wrap">
           <table class="ctable">
-            <caption class="sr-only">별도 손익계산서</caption>
+            <caption class="sr-only">별도 재무상태표</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
-            <tr class="sum"><th scope="row">매출액</th><td>141,602</td><td>197,497</td><td>234,330</td><td>78,468</td><td>58,836</td></tr>
-            <tr class="sum"><th scope="row">매출원가</th><td>122,036</td><td>167,555</td><td>197,286</td><td>66,298</td><td>52,758</td></tr>
-            <tr class="sum"><th scope="row">매출총이익</th><td>19,566</td><td>29,942</td><td>37,044</td><td>12,170</td><td>6,078</td></tr>
-            <tr class="sum"><th scope="row">판매비와관리비</th><td>16,457</td><td>20,828</td><td>18,222</td><td>10,282</td><td>8,931</td></tr>
-            <tr class="sum"><th scope="row">영업이익(손실)</th><td>3,109</td><td>9,114</td><td>18,822</td><td>1,888</td><td class="minus">-2,853</td></tr>
-            <tr class="sum"><th scope="row">기타수익(비용)</th><td>2,144</td><td>121</td><td class="minus">-1,949</td><td>71</td><td>34</td></tr>
-            <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">-1,509</td><td>440</td><td>501</td><td class="minus">-714</td><td>1,027</td></tr>
-            <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td>3,744</td><td>9,675</td><td>17,374</td><td>1,245</td><td class="minus">-1,792</td></tr>
-            <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,550</td><td class="minus">-524</td><td>2,222</td><td class="minus">-883</td><td class="minus">-2,151</td></tr>
-            <tr class="sum"><th scope="row">당기순이익(손실)</th><td>1,194</td><td>10,199</td><td>15,152</td><td>2,128</td><td>359</td></tr>
+              <tr><th scope="row">유동자산</th><td>134,187</td><td>246,847</td><td>175,687</td><td>102,744</td><td>68,792</td></tr>
+              <tr><th scope="row">비유동자산</th><td>143,894</td><td>111,074</td><td>61,314</td><td>40,137</td><td>29,889</td></tr>
+              <tr class="sum"><th scope="row">자산총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
+              <tr><th scope="row">유동부채</th><td>154,303</td><td>232,864</td><td>155,741</td><td>78,210</td><td>38,271</td></tr>
+              <tr><th scope="row">비유동부채</th><td>35,834</td><td>37,043</td><td>1,257</td><td>36</td><td>73</td></tr>
+              <tr class="sum"><th scope="row">부채총계</th><td>190,137</td><td>269,907</td><td>156,998</td><td>78,246</td><td>38,344</td></tr>
+              <tr class="sum"><th scope="row">자본총계</th><td>87,944</td><td>88,014</td><td>80,003</td><td>64,635</td><td>60,337</td></tr>
+              <tr class="sum"><th scope="row">자본과부채총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="ctable-unit">(단위: 백만원)</p>
       </div>
       <div class="cfin-panel" data-fin="CONSOLIDATED_INCOME" hidden>
+        <p class="cfin-unit">(단위: 백만원)</p>
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">연결 손익계산서</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
-            <tr class="sum"><th scope="row">매출액</th><td>147,080</td><td>200,156</td><td>235,952</td><td>79,393</td><td>61,532</td></tr>
-            <tr class="sum"><th scope="row">매출원가</th><td>124,195</td><td>168,493</td><td>196,928</td><td>66,472</td><td>54,869</td></tr>
-            <tr class="sum"><th scope="row">매출총이익</th><td>22,885</td><td>31,663</td><td>39,024</td><td>12,921</td><td>6,663</td></tr>
-            <tr class="sum"><th scope="row">판매비와관리비</th><td>28,719</td><td>28,302</td><td>23,510</td><td>15,435</td><td>11,490</td></tr>
-            <tr class="sum"><th scope="row">영업이익(손실)</th><td class="minus">-5,835</td><td>3,361</td><td>15,514</td><td class="minus">-2,514</td><td class="minus">-4,827</td></tr>
-            <tr class="sum"><th scope="row">기타수익(비용)</th><td>1,829</td><td>860</td><td class="minus">-604</td><td>76</td><td>268</td></tr>
-            <tr class="sum"><th scope="row">지분법손익</th><td>149</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-            <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">-4,345</td><td class="minus">-1,988</td><td class="minus">-620</td><td class="minus">-108</td><td>1,010</td></tr>
-            <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td class="minus">-8,202</td><td>2,233</td><td>14,290</td><td class="minus">-2,546</td><td class="minus">-3,549</td></tr>
-            <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,551</td><td class="minus">-524</td><td>2,222</td><td class="minus">-864</td><td class="minus">-2,266</td></tr>
-            <tr class="sum"><th scope="row">당기순이익(손실)</th><td class="minus">-10,753</td><td>2,757</td><td>12,068</td><td class="minus">-1,682</td><td class="minus">-1,283</td></tr>
+              <tr class="sum"><th scope="row">매출액</th><td>147,080</td><td>200,156</td><td>235,952</td><td>79,393</td><td>61,532</td></tr>
+              <tr class="sum"><th scope="row">매출원가</th><td>124,195</td><td>168,493</td><td>196,928</td><td>66,472</td><td>54,869</td></tr>
+              <tr class="sum"><th scope="row">매출총이익</th><td>22,885</td><td>31,663</td><td>39,024</td><td>12,921</td><td>6,663</td></tr>
+              <tr class="sum"><th scope="row">판매비와관리비</th><td>28,719</td><td>28,302</td><td>23,510</td><td>15,435</td><td>11,490</td></tr>
+              <tr class="sum"><th scope="row">영업이익(손실)</th><td class="minus">-5,835</td><td>3,361</td><td>15,514</td><td class="minus">-2,514</td><td class="minus">-4,827</td></tr>
+              <tr class="sum"><th scope="row">기타수익(비용)</th><td>1,829</td><td>860</td><td class="minus">-604</td><td>76</td><td>268</td></tr>
+              <tr class="sum"><th scope="row">지분법손익</th><td>149</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">-4,345</td><td class="minus">-1,988</td><td class="minus">-620</td><td class="minus">-108</td><td>1,010</td></tr>
+              <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td class="minus">-8,202</td><td>2,233</td><td>14,290</td><td class="minus">-2,546</td><td class="minus">-3,549</td></tr>
+              <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,551</td><td class="minus">-524</td><td>2,222</td><td class="minus">-864</td><td class="minus">-2,266</td></tr>
+              <tr class="sum"><th scope="row">당기순이익(손실)</th><td class="minus">-10,753</td><td>2,757</td><td>12,068</td><td class="minus">-1,682</td><td class="minus">-1,283</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="ctable-unit">(단위: 백만원)</p>
+      </div>
+      <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
+        <p class="cfin-unit">(단위: 백만원)</p>
+        <div class="ctable-wrap">
+          <table class="ctable">
+            <caption class="sr-only">별도 손익계산서</caption>
+            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
+            <tbody>
+              <tr class="sum"><th scope="row">매출액</th><td>141,602</td><td>197,497</td><td>234,330</td><td>78,468</td><td>58,836</td></tr>
+              <tr class="sum"><th scope="row">매출원가</th><td>122,036</td><td>167,555</td><td>197,286</td><td>66,298</td><td>52,758</td></tr>
+              <tr class="sum"><th scope="row">매출총이익</th><td>19,566</td><td>29,942</td><td>37,044</td><td>12,170</td><td>6,078</td></tr>
+              <tr class="sum"><th scope="row">판매비와관리비</th><td>16,457</td><td>20,828</td><td>18,222</td><td>10,282</td><td>8,931</td></tr>
+              <tr class="sum"><th scope="row">영업이익(손실)</th><td>3,109</td><td>9,114</td><td>18,822</td><td>1,888</td><td class="minus">-2,853</td></tr>
+              <tr class="sum"><th scope="row">기타수익(비용)</th><td>2,144</td><td>121</td><td class="minus">-1,949</td><td>71</td><td>34</td></tr>
+              <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">-1,509</td><td>440</td><td>501</td><td class="minus">-714</td><td>1,027</td></tr>
+              <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td>3,744</td><td>9,675</td><td>17,374</td><td>1,245</td><td class="minus">-1,792</td></tr>
+              <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,550</td><td class="minus">-524</td><td>2,222</td><td class="minus">-883</td><td class="minus">-2,151</td></tr>
+              <tr class="sum"><th scope="row">당기순이익(손실)</th><td>1,194</td><td>10,199</td><td>15,152</td><td>2,128</td><td>359</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   </div>
