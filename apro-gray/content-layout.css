@@ -288,13 +288,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    높이는 손으로 정할 수밖에 없다 — 다른 출처(cross-origin)라 안쪽 문서 높이를
    읽을 수 없어 내용에 맞춰 자동으로 늘릴 방법이 없다. 원본이 알려준 720px 을 쓰고,
    모자라면 상자 안에서 스크롤된다(scrolling="yes") */
-.cframe{margin-top:24px;width:100%;max-width:780px;
+/* 이 상자는 780px 이 상한인데 공시정보 본문은 1440px 까지 간다 — 왼쪽에 붙여
+   두면 오른쪽에 그만큼이 통째로 빈다. 가운데로 세워 그 빈자리를 양쪽으로 나눈다 */
+.cframe{margin-top:24px;margin-inline:auto;width:100%;max-width:780px;
   border:1px solid var(--border-g);background:#fff;
   border-radius:var(--r);overflow:clip}
 .cframe iframe{display:block;width:100%;height:720px;border:0}
 @media(max-width:760px){.cframe iframe{height:560px}}
-/* 상자가 막히거나 비었을 때 빠져나갈 길 — 늘 같이 둔다 */
-.cframe-out{margin-top:12px;font-family:var(--pre);font-size:15px;letter-spacing:-.3px;
+/* 상자가 막히거나 비었을 때 빠져나갈 길 — 늘 같이 둔다.
+   상자와 같은 자를 써서 함께 가운데로 간다. 상자만 옮기고 이 줄이 본문 왼쪽
+   끝에 남으면 둘이 딴 것으로 보인다 — 글은 상자 왼쪽 모서리에서 시작한다 */
+.cframe-out{margin-top:12px;margin-inline:auto;max-width:780px;
+  font-family:var(--pre);font-size:15px;letter-spacing:-.3px;
   color:var(--teritary)}
 .cframe-out a{color:var(--brand);font-weight:600}
 .cframe-out a:hover{text-decoration:underline}
