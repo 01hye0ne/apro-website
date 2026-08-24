@@ -228,6 +228,26 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cframe-out a{color:var(--brand);font-weight:600}
 .cframe-out a:hover{text-decoration:underline}
 
+/* 주식현황 표 (.cstock)
+   재무제표(.ctable)와 달리 칸 수가 적고 줄이 둘뿐이라 가로 스크롤·계정과목 고정
+   같은 장치가 필요 없다. 가운데 정렬에 합계 줄만 굵게 — 시안 그대로다.
+   숫자 칸은 tabular-nums 로 자릿수를 맞춘다. 비례폭 숫자로 두면 같은 값이
+   두 줄에 있을 때(보통주식/합계) 자릿점 위치가 미세하게 어긋나 보인다 */
+.cstock-wrap{margin-top:24px;overflow-x:auto}
+.cstock{width:100%;min-width:560px;border-collapse:collapse;border-top:2px solid var(--g900)}
+.cstock th,.cstock td{padding:18px 16px;border-bottom:1px solid var(--border-g);
+  text-align:center;font-family:var(--pre);font-weight:400;font-size:16px;
+  letter-spacing:-.32px;color:var(--sec)}
+.cstock thead th{background:var(--secondary-bg);font-family:var(--suit);font-weight:700;
+  font-size:15px;color:var(--g900)}
+.cstock tbody td{font-variant-numeric:tabular-nums}
+/* 합계 — 위 줄을 받는 자리라 글자를 굵게 하고 색을 본문색으로 올린다 */
+.cstock tr.sum th,.cstock tr.sum td{font-family:var(--suit);font-weight:700;color:var(--g900)}
+/* 표 밑 두 줄 — 왼쪽은 주석, 오른쪽은 단위. 좁아지면 아래로 접힌다 */
+.cstock-foot{margin-top:12px;display:flex;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;
+  color:var(--teritary)}
+
 /* =====================================================================
    6. 게시판 목록
    ===================================================================== */
