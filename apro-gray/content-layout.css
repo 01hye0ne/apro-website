@@ -576,7 +576,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   border-radius:50%;background:var(--point-300)}
 
 /* =====================================================================
-   11. 제보센터 — 연락 수단 줄
+   11. 제보센터 — 연락 수단 줄 · 처리 절차 표 · 온라인 제보 양식
    ===================================================================== */
 .cways{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:1px;background:var(--border-g);border:1px solid var(--border-g)}
@@ -585,6 +585,84 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cway .v{margin-top:12px;font-family:var(--pre);font-size:17px;line-height:1.6;
   letter-spacing:-.34px;color:var(--g900);word-break:keep-all}
 .cway .v small{display:block;margin-top:6px;font-size:15px;color:var(--teritary)}
+
+/* 처리 절차 표 (.cflow) — 단계 이름 한 줄, 그 아래 설명 한 줄. 왼쪽에서
+   오른쪽으로 흐르는 것이 곧 순서다. 칸을 고정 폭(table-layout:fixed)으로 나눠
+   설명 길이가 달라도 다섯 단계의 무게가 같아 보이게 한다.
+   좁은 화면에서도 접지 않고 가로로 굴린다 — 접으면 순서가 끊긴다 */
+.cflow-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g)}
+.cflow{width:100%;min-width:760px;border-collapse:collapse;table-layout:fixed}
+.cflow th,.cflow td{padding:16px 18px;text-align:center;vertical-align:middle;
+  border-left:1px solid var(--border-g);word-break:keep-all}
+.cflow th:first-child,.cflow td:first-child{border-left:0}
+.cflow thead th{background:var(--secondary-bg);border-bottom:1px solid var(--border-g);
+  font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.5;
+  letter-spacing:-.3px;color:var(--g900)}
+.cflow tbody td{padding:26px 18px;font-family:var(--pre);font-size:15px;line-height:1.7;
+  letter-spacing:-.3px;color:var(--sec)}
+
+/* 온라인 제보 양식 (.cform) — 이름표 한 칸 + 입력 한 칸이 한 줄.
+   표처럼 보이지만 <table> 이 아니라 격자다. 좁은 화면에서는 이름표를 입력 위로
+   올려야 하는데, 표로 짜면 칸을 그렇게 접을 수 없다 */
+.cform{margin-top:24px;border:1px solid var(--border-g);border-bottom:0}
+.cform-row{display:grid;grid-template-columns:clamp(110px,14%,180px) minmax(0,1fr);
+  border-bottom:1px solid var(--border-g)}
+.cform-k{display:flex;align-items:center;justify-content:center;gap:2px;
+  padding:16px 12px;background:var(--secondary-bg);
+  border-right:1px solid var(--border-g);
+  font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;
+  color:var(--g900);text-align:center;word-break:keep-all}
+/* 꼭 채워야 하는 칸 — 화면에는 별표만, 읽어 주는 기계에는 <abbr title> 로 '필수' */
+.cform-k .req{color:var(--brand-2);text-decoration:none}
+.cform-v{padding:12px 14px;display:flex;align-items:center}
+.cform-v>*{min-width:0}
+
+.cform input,.cform select,.cform textarea{width:100%;padding:11px 13px;
+  font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;
+  color:var(--g900);background:#fff;border:1px solid var(--border-g);border-radius:0;
+  transition:border-color .2s}
+.cform input::placeholder,.cform textarea::placeholder{color:var(--teritary)}
+.cform textarea{min-height:220px;resize:vertical;line-height:1.75}
+/* 마우스로 짚었을 때는 테두리 색만 바꾸고, 자판으로 옮겨 왔을 때는 테를 둘러
+   지금 어디에 서 있는지 보이게 한다 */
+.cform input:focus,.cform select:focus,.cform textarea:focus{
+  border-color:var(--brand);outline:none}
+.cform input:focus-visible,.cform select:focus-visible,.cform textarea:focus-visible{
+  outline:2px solid var(--brand);outline-offset:1px}
+/* 고르는 칸의 화살표는 브라우저마다 생김새가 달라 직접 그린다 */
+.cform select{appearance:none;-webkit-appearance:none;padding-right:36px;cursor:pointer;
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2396a3b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:16px}
+/* 도메인을 목록에서 고르면 앞칸이 잠긴다 — 잠긴 칸은 회색으로 알린다 */
+.cform input[readonly]{background:var(--secondary-bg);color:var(--sec)}
+
+/* 이메일 줄 — 아이디 @ 도메인 + 도메인 고르기 */
+.cform-v--mail{display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) minmax(0,180px);
+  align-items:center;gap:8px}
+.cform-v--mail .at{font-family:var(--pre);font-size:15px;color:var(--teritary)}
+@media(max-width:760px){
+  .cform-v--mail{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .cform-v--mail select{grid-column:1 / -1}
+}
+/* 좁은 화면 — 이름표를 입력 위로 올린다. 옆에 두면 입력칸이 손가락 두 개 폭이 된다 */
+@media(max-width:640px){
+  .cform-row{grid-template-columns:minmax(0,1fr)}
+  .cform-k{justify-content:flex-start;padding:12px 14px;
+    border-right:0;border-bottom:1px solid var(--border-g);text-align:left}
+}
+
+.cform-submit{margin-top:20px;width:100%;padding:20px;
+  background:var(--g900);color:#fff;border:0;cursor:pointer;
+  font-family:var(--suit);font-weight:700;font-size:17px;letter-spacing:-.34px;
+  transition:background .25s var(--ease)}
+.cform-submit:hover{background:var(--brand)}
+/* 누른 뒤에 뜨는 한 줄 */
+.cform-msg{margin-top:14px;padding:16px 18px;background:#fffaf2;
+  border:1px solid #f0dcc0;border-left:3px solid #d99b3f;
+  font-family:var(--pre);font-size:15px;line-height:1.7;letter-spacing:-.3px;
+  color:#7a5620;word-break:keep-all}
+.cform-msg[hidden]{display:none}
 
 /* =====================================================================
    12. 좁은 화면
