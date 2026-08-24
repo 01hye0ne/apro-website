@@ -91,52 +91,51 @@
    3. 본문 블록
    ===================================================================== */
 .cbody{padding:88px 0 120px}
-/* 좁은 본문 — 12열 그리드의 3열~10열
-   지속가능경영 다섯 장 + 투자정보 > 내부규정. 규정·방침 전문처럼 줄글이 길게
-   이어지는 장들이다.
-   가운데 여덟 열만 쓰고 양옆 두 열씩을 비운다. 규정·방침처럼 줄글이 길게 이어지는
-   장이라 폭을 좁히면 시선이 가운데로 모이고 한 줄이 짧아져 읽기 쉬워진다.
+/* 좁은 본문 — 12열 그리드에서 가운데 몇 열만 쓰고 양옆을 비운다. 두 가지다.
 
-   8c + 7g 를 푼 값이다 — 열 폭 c = (W - 11g) / 12 이므로 (2/3)W - g/3.
-   거터 24px 기준으로 1440px 본문에서 952px 이 된다.
+     .cbody--narrow   3열~10열 (8열)    투자정보 > 내부규정
+     .cbody--mid      2열~11열 (10열)   지속가능경영 다섯 장
+
+   규정·방침 전문처럼 줄글이 길게 이어지는 장들이라, 폭을 좁히면 시선이 가운데로
+   모이고 한 줄이 짧아져 읽기 쉬워진다. 지속가능경영 쪽은 그 안에 카드 묶음이
+   많아 — 다섯 칸으로 갈리는 줄까지 있다 — 내부규정보다 두 열 넓게 쓴다.
+
+   열 폭 c = (W - 11g) / 12 이므로
+     8열  = 8c + 7g  = (2/3)W - g/3     거터 24px · 본문 1440px 에서 952px
+     10열 = 10c + 9g = (5/6)W - g/6     같은 기준에서 1196px
 
    안쪽 상자들의 폭 상한(.cdoc 900px 등)은 여기서 푼다. 상한이 컨테이너보다
    조금 좁아 오른쪽만 남는 어정쩡한 여백이 생기기 때문이다 — 좁힌 폭 자체가
    이미 읽기 좋은 길이라 상한이 하던 일을 컨테이너가 대신한다 */
-.cbody--narrow{--cgap:24px}
+.cbody--narrow,.cbody--mid{--cgap:24px}
 .cbody--narrow>.cwrap{width:calc((100% - var(--cx) * 2) * 2 / 3 - var(--cgap) / 3);
   max-width:calc(1440px * 2 / 3 - var(--cgap) / 3)}
+.cbody--mid>.cwrap{width:calc((100% - var(--cx) * 2) * 5 / 6 - var(--cgap) / 6);
+  max-width:calc(1440px * 5 / 6 - var(--cgap) / 6)}
 .cbody--narrow .cdoc,.cbody--narrow .ctoc,.cbody--narrow .cnote,
-.cbody--narrow .cdetails,.cbody--narrow .cblock>.lead{max-width:none}
+.cbody--narrow .cdetails,.cbody--narrow .cblock>.lead,
+.cbody--mid .cdoc,.cbody--mid .ctoc,.cbody--mid .cnote,
+.cbody--mid .cdetails,.cbody--mid .cblock>.lead{max-width:none}
 /* 좁은 화면에서는 열을 나눌 만큼 폭이 없다 — 원래대로 좌우 여백만 남긴다 */
 @media(max-width:900px){
-  .cbody--narrow>.cwrap{width:calc(100% - var(--cx) * 2);max-width:1440px}
+  .cbody--narrow>.cwrap,.cbody--mid>.cwrap{width:calc(100% - var(--cx) * 2);max-width:1440px}
 }
 .cblock+.cblock{margin-top:96px}
-/* 넓은 단락 (.cblock--wide) — 좁은 본문(3~10열) 안에서 2~11열까지 벌린다.
-   글은 좁게 읽히되 특정 장만 넓게 두고 싶을 때 쓴다. 이 클래스는 폭만 벌린다 —
-   바탕까지 깔려면 아래 .cblock--plate 를 겹쳐 쓴다.
+/* 판 (.cblock--plate) — 장 하나를 바탕색에 얹어 한 묶음으로 보이게 한다.
+   바탕은 화면 폭을 통으로 채우되, 글은 다른 장과 같은 본문 열에 그대로 선다.
 
-   폭 계산 — 컨테이너(.cwrap)가 이미 3~10열이라 그 폭을 기준으로 푼다.
-     3~10열 W1 = (2/3)W - g/3      2~11열 W2 = (5/6)W - g/6
-     둘을 잇면 W2 = 1.25·W1 + g/4  → 컨테이너 기준 125% + g/4
-   한쪽으로 삐져나가는 양은 그 차의 절반, 곧 12.5% + g/8 이다.
-   백분율 마진도 컨테이너 폭을 기준 삼으므로 두 값이 같은 자를 쓴다.
-   1440px 본문에서 952px → 1196px, 양옆 122px 씩 나간다. */
-.cblock--wide{width:calc(125% + var(--cgap) / 4 + var(--wpad, 0px) * 2);
-  margin-left:calc(-12.5% - var(--cgap) / 8 - var(--wpad, 0px))}
-/* 좁은 화면에서는 컨테이너가 이미 전체 폭이라 벌릴 자리가 없다 */
-@media(max-width:900px){
-  .cblock--wide{width:auto;margin-left:0}
-}
+   상자를 늘리는 대신 그림자를 사방 100vmax 로 퍼뜨려 칠했다. 그림자는 배치에도
+   스크롤 영역에도 끼어들지 않아서, 100vw 로 늘릴 때 따라오는 가로 넘침이 없다.
+   위아래로도 함께 퍼지므로 clip-path 로 그 두 방향만 상자 선에서 자르고, 좌우는
+   -100vmax 로 열어 둔다. 화면 밖으로 나간 자리는 body 의 overflow-x:clip 이
+   잘라 낸다.
 
-/* 판 (.cblock--plate) — 장 하나를 회색 바탕에 얹어 한 묶음으로 보이게 한다.
-   --wpad 는 판 안쪽 여백이다. .cblock--wide 와 겹쳐 쓰면 위 폭식이 이 값을
-   읽어 폭에 더하므로, 글은 그대로 2~11열에 서고 판만 그 바깥으로 나간다
-   (box-sizing:border-box). 판만 쓸 때는 폭식이 없으니 그냥 안쪽 여백이다 */
-.cblock--plate{--wpad:clamp(24px,2.6vw,40px);
-  padding:clamp(32px,3.4vw,52px) var(--wpad);
-  background:var(--secondary-bg)}
+   상자 폭이 곧 본문 열이므로 좌우 안쪽 여백은 두지 않는다 — 여백을 주면 판 위의
+   글만 다른 장보다 안으로 밀려 줄 시작점이 어긋난다 */
+.cblock--plate{padding:clamp(44px,4vw,68px) 0;
+  background:var(--secondary-bg);
+  box-shadow:0 0 0 100vmax var(--secondary-bg);
+  clip-path:inset(0 -100vmax)}
 /* 판 위에 놓이는 것은 흰색으로 뒤집는다 — 같은 색이면 판에 묻혀 낱낱이 안 보인다 */
 .cblock--plate .ccard,
 .cblock--plate .cdetails,
