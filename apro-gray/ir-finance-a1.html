@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APRO | 에이프로 — 재무정보 (A-1)</title>
-<meta name="description" content="에이프로(APRO) 재무정보 — 2021~2025 별도·연결 재무상태표와 손익계산서." />
+<meta name="description" content="에이프로(APRO) 재무정보 — 제22기~제26기 별도·연결 재무상태표와 손익계산서." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -34,7 +34,7 @@
   <nav class="gnb">
     <a class="logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
     <div class="menus">
-      <a href="business-a1.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance-a1.html" data-i="2">투자정보</a><a href="esg-environment-a1.html" data-i="3">지속가능경영</a><a href="community-notice-a1.html" data-i="4">커뮤니티</a>
+      <a href="business-a1.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance-a1.html" aria-current="page" data-i="2">투자정보</a><a href="esg-environment-a1.html" data-i="3">지속가능경영</a><a href="community-notice-a1.html" data-i="4">커뮤니티</a>
     </div>
     <div class="tools">
       <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
@@ -56,7 +56,7 @@
   <span class="dhero-bg" style="--hero-pos:50% 8%"><img src="../assets/hq-exterior.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
     <h1>재무정보</h1>
-    <p class="dhero-lead">A-PRO의 미래 가치와 투명한 기업 정보를 공유합니다.</p>
+    <p class="dhero-lead">자연이 숨 쉬게 하는 기술력으로 더불어 사는 세상을 만들어 갑니다.</p>
   </div>
 </section>
 
@@ -65,9 +65,11 @@
   <div class="cwrap">
     <section class="cblock">
       <h2>재무제표</h2>
-      <p class="lead">투명하고 정확한 재무 정보를 제공하여 주주 가치를 제고합니다.</p>
-      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="0" aria-current="true">별도 재무상태표</button><button type="button" data-fin="1">연결 재무상태표</button><button type="button" data-fin="2">별도 손익계산서</button><button type="button" data-fin="3">연결 손익계산서</button></div>
-      <div class="cfin-panel" data-fin="0">
+      <p class="lead">별도·연결 재무상태표와 손익계산서를 제22기(2021)부터 제26기(2025)까지 공개합니다.</p>
+      <!-- 탭 넷이 표 한 자리를 나눠 쓴다 — 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
+           전환 스크립트는 이 파일 맨 아래에 있다 -->
+      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="SEPARATE_BALANCE" aria-current="true">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_BALANCE">연결 재무상태표</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button></div>
+      <div class="cfin-panel" data-fin="SEPARATE_BALANCE">
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">별도 재무상태표</caption>
@@ -86,7 +88,7 @@
         </div>
         <p class="ctable-unit">(단위: 백만원)</p>
       </div>
-      <div class="cfin-panel" data-fin="1" hidden>
+      <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">연결 재무상태표</caption>
@@ -105,7 +107,7 @@
         </div>
         <p class="ctable-unit">(단위: 백만원)</p>
       </div>
-      <div class="cfin-panel" data-fin="2" hidden>
+      <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">별도 손익계산서</caption>
@@ -126,7 +128,7 @@
         </div>
         <p class="ctable-unit">(단위: 백만원)</p>
       </div>
-      <div class="cfin-panel" data-fin="3" hidden>
+      <div class="cfin-panel" data-fin="CONSOLIDATED_INCOME" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
             <caption class="sr-only">연결 손익계산서</caption>
@@ -147,15 +149,6 @@
           </table>
         </div>
         <p class="ctable-unit">(단위: 백만원)</p>
-      </div>
-    </section>
-
-    <section class="cblock">
-      <h2>관련 규정</h2>
-      <p class="lead">재무 보고의 신뢰성을 뒷받침하는 회사의 내부 규정입니다.</p>
-      <div class="cbtns">
-        <a class="cbtn fill" href="ir-policy-a1.html">내부규정 보기</a>
-        <span class="cbtn" aria-disabled="true">내부정보관리규정 (준비 중)</span>
       </div>
     </section>
   </div>
@@ -271,6 +264,24 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
+<script>
+/* 재무제표 탭 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
+   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
+(function(){
+  var bar=document.querySelector('.cfin-tabs');if(!bar)return;
+  var tabs=[].slice.call(bar.querySelectorAll('button'));
+  var panels=[].slice.call(document.querySelectorAll('.cfin-panel'));
+  tabs.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var k=btn.getAttribute('data-fin');
+      tabs.forEach(function(b){
+        if(b===btn){b.setAttribute('aria-current','true');}else{b.removeAttribute('aria-current');}
+      });
+      panels.forEach(function(p){p.hidden=(p.getAttribute('data-fin')!==k);});
+    });
+  });
+})();
+</script>
 <script>
 /* 재무제표 4종 전환 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
    서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */

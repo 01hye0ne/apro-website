@@ -63,19 +63,19 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # 나온 것이고, 회사 정보 메뉴·푸터·전체메뉴가 모두 여기로 모인다. 디자인은 A/A-1 이
 # 같고 링크만 갈라진다.
 #
-# ⚠ 2026-08-20 부터 투자정보·지속가능경영·커뮤니티는 A 와 A-1 의 **내용이 다르다**.
-#   A   : 기존 사이트(aproele.com)에서 옮겨 온 글 — 지금 쓰는 원본
-#   A-1 : 리뉴얼 프로젝트 DB 추출본(content-export)에서 옮겨 온 글
-#   두 벌을 나란히 놓고 보려고 사용자가 그렇게 두라고 했다. 그래서 이 아홉 장은
-#   아래 SOURCES 에 넣지 않는다 — 넣는 순간 A 내용이 A-1 을 덮어써 한쪽이 사라진다.
-#   PAGES 에는 그대로 있어야 한다(다른 페이지의 A-1 이 이 아홉 장의 -a1 을 가리켜야 하므로).
-#   투자정보 세 장(공시정보·주식정보·내부규정)은 예외로 들어와 있다 — 2026-08-24 개편으로
-#   새로 생겨 A-1 쪽에 짝이 없다. 덮어쓸 것이 없고, 빼 두면 A-1 에서 이 링크만 A 로 샌다.
-#   두 갈래를 다시 합치기로 하면 아홉 장을 여기 도로 넣고 한 번 돌리면 된다.
+# 2026-08-20 부터 나흘간 투자정보·지속가능경영·커뮤니티는 A 와 A-1 의 내용이 달랐다.
+# A 는 기존 사이트(aproele.com)에서 옮겨 온 글, A-1 은 리뉴얼 프로젝트 DB 추출본
+# (content-export)에서 옮겨 온 글이었고, 두 벌을 나란히 놓고 보려고 그 아홉 장을
+# 이 SOURCES 에서 빼 두었다. 2026-08-24 그 비교가 끝나 A 쪽으로 합쳤다 —
+# 이제 열여덟 장 모두 A 에서 나오고, A-1 은 타이틀과 링크만 다르다.
+# A-1 쪽에만 있던 content-export 판 글은 이 커밋 직전 이력에 그대로 남아 있다.
 SOURCES = ['business-smart.html', 'business-energy.html',
            'business-ai.html', 'business-semicon.html',
            'business.html', 'company.html', 'network.html', 'index.html',
-           'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html']
+           'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
+           'esg-environment.html', 'esg-social.html', 'esg-governance.html',
+           'esg-report.html', 'esg-board.html',
+           'community-notice.html', 'community-press.html']
 
 # body 에 CSS 분기 스위치(class="v-a1")를 달 페이지.
 #
