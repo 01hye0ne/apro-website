@@ -95,11 +95,15 @@
     <section class="cblock" id="dart">
       <h2>공시 자료</h2>
       <p class="lead">금융감독원 전자공시시스템(DART)에 제출한 공시를 그대로 가져와 보여줍니다.</p>
-      <div class="cnote">
-        <p><strong>아직 붙이지 않았습니다.</strong> DART 오픈API 를 호출해 목록을 받아오는 서버가 있어야 동작하는데, 지금 이 사이트는 정적 페이지만으로 되어 있습니다.</p>
-        <p>붙이는 방법은 두 갈래입니다 — ① 빌드할 때 목록을 받아 HTML 로 구워 두기(하루 한 번 갱신) ② 페이지에서 직접 API 를 부르기(실시간이지만 API 키를 감출 서버가 따로 필요합니다).</p>
-        <p>어느 쪽으로 갈지 정해 주시면 그때 맞춰 짓겠습니다.</p>
+      <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 회사 이름(textCrpNM)이 질의문에
+           들어가 있고 목록은 저쪽에서 채운다 — 우리가 갱신할 것이 없다.
+           frameborder·marginwidth 같은 옛 속성은 걷고 크기·테두리는 CSS(.cframe)가 맡는다 -->
+      <div class="cframe">
+        <iframe src="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=%EC%97%90%EC%9D%B4%ED%94%84%EB%A1%9C"
+                title="금융감독원 전자공시시스템 — 에이프로 공시 목록"
+                name="IR" scrolling="yes" loading="lazy"></iframe>
       </div>
+      <p class="cframe-out">목록이 보이지 않으면 <a href="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=%EC%97%90%EC%9D%B4%ED%94%84%EB%A1%9C" target="_blank" rel="noopener">DART에서 직접 보기</a></p>
     </section>
   </div>
 </main>

@@ -211,6 +211,23 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 }
 .cfin-panel[hidden]{display:none}
 
+/* 바깥 문서를 심는 상자 (.cframe)
+   금감원 전자공시(DART)처럼 남의 사이트를 그대로 데려오는 자리다.
+   원본이 750px 고정폭으로 짜여 있어 상자를 그보다 넓게 벌려도 안쪽은 늘지 않고
+   오른쪽에 빈 자리만 생긴다 → 780px 에서 멈춘다.
+   높이는 손으로 정할 수밖에 없다 — 다른 출처(cross-origin)라 안쪽 문서 높이를
+   읽을 수 없어 내용에 맞춰 자동으로 늘릴 방법이 없다. 원본이 알려준 720px 을 쓰고,
+   모자라면 상자 안에서 스크롤된다(scrolling="yes") */
+.cframe{margin-top:24px;width:100%;max-width:780px;
+  border:1px solid var(--border-g);background:#fff}
+.cframe iframe{display:block;width:100%;height:720px;border:0}
+@media(max-width:760px){.cframe iframe{height:560px}}
+/* 상자가 막히거나 비었을 때 빠져나갈 길 — 늘 같이 둔다 */
+.cframe-out{margin-top:12px;font-family:var(--pre);font-size:15px;letter-spacing:-.3px;
+  color:var(--teritary)}
+.cframe-out a{color:var(--brand);font-weight:600}
+.cframe-out a:hover{text-decoration:underline}
+
 /* =====================================================================
    6. 게시판 목록
    ===================================================================== */
