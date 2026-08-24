@@ -95,15 +95,17 @@
     <section class="cblock" id="dart">
       <h2>공시 자료</h2>
       <p class="lead">금융감독원 전자공시시스템(DART)에 제출한 공시를 그대로 가져와 보여줍니다.</p>
-      <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 회사 이름(textCrpNM)이 질의문에
-           들어가 있고 목록은 저쪽에서 채운다 — 우리가 갱신할 것이 없다.
+      <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 질의문의 textCrpNM 에는 회사
+           이름 대신 종목코드(262260, 코스닥 에이프로)를 넣는다 — 이름으로 넣으면 같은
+           글자를 쓰는 회사가 섞일 수 있어 코드 쪽이 확실하다. 목록은 저쪽에서 채우므로
+           우리가 갱신할 것이 없다.
            frameborder·marginwidth 같은 옛 속성은 걷고 크기·테두리는 CSS(.cframe)가 맡는다 -->
       <div class="cframe">
-        <iframe src="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=%EC%97%90%EC%9D%B4%ED%94%84%EB%A1%9C"
+        <iframe src="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260"
                 title="금융감독원 전자공시시스템 — 에이프로 공시 목록"
                 name="IR" scrolling="yes" loading="lazy"></iframe>
       </div>
-      <p class="cframe-out">목록이 보이지 않으면 <a href="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=%EC%97%90%EC%9D%B4%ED%94%84%EB%A1%9C" target="_blank" rel="noopener">DART에서 직접 보기</a></p>
+      <p class="cframe-out">목록이 보이지 않으면 <a href="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260" target="_blank" rel="noopener">DART에서 직접 보기</a></p>
     </section>
   </div>
 </main>
