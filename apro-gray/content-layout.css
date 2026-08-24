@@ -242,16 +242,30 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    읽을 만한 길이가 된다. 제목 칸을 고정 폭으로 둔 것은 여섯 줄의 설명 시작점을
    맞추기 위해서다 — 제목 길이를 따라가면 줄마다 들쭉날쭉해진다.
 
+   줄 키를 170~210px 로 잡아 사진이 들어설 자리를 만든다. 글만 놓고 보면 이보다
+   낮아도 되지만, 가로로 긴 띠(1196 x 200)는 풍경 사진에 잘 맞는 크롭이라
+   사진이 사진 구실을 하려면 이만한 키가 필요하다. 남는 세로는 글을 가운데로
+   모아 메운다(align-items:center) — 위로 붙이면 아래가 비어 보인다.
+
    ⚠ 지금은 사진도 아이콘도 자리만 잡아 둔 상태다. 점선이 그 자리를 가리킨다.
      둘 다 들어오면 아래 [data-bg] 묶음과 .ic 의 점선만 손보면 된다
    ===================================================================== */
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
+  min-height:clamp(170px,15vw,210px);
   display:grid;grid-template-columns:auto 260px minmax(0,1fr);
-  align-items:start;gap:clamp(20px,2.2vw,32px);
+  align-items:center;gap:clamp(20px,2.2vw,32px);
   padding:clamp(24px,2.6vw,36px);
   background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
-/* 아이콘 자리 — 파일이 오면 안에 <svg> 를 넣고 이 점선만 걷으면 된다.
+/* 왼쪽 표 — 번호와 아이콘이 세로로 선다. 둘 다 '이 줄이 무엇인가' 를 가리키는
+   같은 성격이라 한 칸에 모은다. 따로 떼어 네 칸으로 벌리면 작은 표시가 둘로
+   흩어져 어느 쪽도 표 구실을 못 한다 */
+.cpolicy .mk{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+/* 번호 — 여섯 줄에 리듬을 준다. 숫자만 쓰는 자리라 폭이 좁은 서체(--rc)를
+   쓴다. 순서가 뜻을 갖는 것은 아니고 세는 눈금이다 */
+.cpolicy .no{font-family:var(--rc);font-weight:700;font-size:clamp(30px,2.8vw,42px);
+  line-height:1;letter-spacing:.01em;color:var(--brand-2)}
+/* 아이콘 자리 — 파일이 오면 안에 도형을 넣고 이 점선만 걷으면 된다.
    글자색을 따라가는 아이콘(stroke:currentColor)이라 색은 여기서 정한다 */
 .cpolicy .ic{flex:none;width:56px;height:56px;display:grid;place-items:center;
   color:var(--brand);border:1px dashed var(--border-g);border-radius:var(--r)}
@@ -273,14 +287,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(90deg,rgba(14,22,30,.8) 34%,rgba(14,22,30,.36))}
 .cpolicy>li[data-bg] h3{color:#fff}
+/* 번호는 흰색까지 가지 않는다 — 제목과 같은 무게가 되면 눈금이 아니라 제목의
+   일부로 읽힌다. 어두운 사진 위에서 브랜드색으로 읽히는 밝은 값을 쓴다 */
+.cpolicy>li[data-bg] .no{color:var(--point-300)}
 .cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
 .cpolicy>li[data-bg] .ic{color:#fff;border-color:rgba(255,255,255,.45)}
 
 /* 좁은 화면 — 석 줄을 세울 자리가 없다. 아이콘과 제목을 한 줄에 두고 설명을
    그 아래로 내린다. 설명은 아이콘 칸을 건너뛰어 제목 밑에서 시작한다 */
 @media(max-width:900px){
-  .cpolicy>li{grid-template-columns:auto minmax(0,1fr);gap:16px 20px}
-  .cpolicy .ic{grid-row:1}
+  .cpolicy>li{min-height:0;grid-template-columns:auto minmax(0,1fr);
+    align-items:start;gap:16px 20px}
+  .cpolicy .mk{grid-row:1;flex-direction:row;align-items:center;gap:12px}
   .cpolicy h3{align-self:center}
   .cpolicy p{grid-column:2}
 }
