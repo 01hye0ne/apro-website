@@ -242,18 +242,22 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    읽을 만한 길이가 된다. 제목 칸을 고정 폭으로 둔 것은 여섯 줄의 설명 시작점을
    맞추기 위해서다 — 제목 길이를 따라가면 줄마다 들쭉날쭉해진다.
 
-   줄 키를 170~210px 로 잡아 사진이 들어설 자리를 만든다. 글만 놓고 보면 이보다
-   낮아도 되지만, 가로로 긴 띠(1196 x 200)는 풍경 사진에 잘 맞는 크롭이라
-   사진이 사진 구실을 하려면 이만한 키가 필요하다. 남는 세로는 글을 가운데로
-   모아 메운다(align-items:center) — 위로 붙이면 아래가 비어 보인다.
+   줄 키는 240~300px 이다. 글만 놓고 보면 절반이면 되지만 이 키는 사진이 정한다.
+   받은 사진이 2.5:1 인데 cover 는 폭을 맞추고 남는 세로를 버리므로, 줄이 낮을수록
+   사진이 가운데 띠만 남기고 잘린다 — 1196px 폭에서 210px 이면 44%, 300px 이면
+   63% 가 보인다. 사진을 통째로 살리려면 478px 이 되어야 하는데 여섯 줄이면
+   2928px 이라 글이 사진 설명처럼 읽힌다. 63% 는 하늘·지평선·바닥이 다 들어오면서
+   여섯 줄 총 키가 1860px 에 머무는 자리다.
+   남는 세로는 글을 가운데로 모아 메운다(align-items:center) — 위로 붙이면
+   아래가 비어 보인다.
 
    ===================================================================== */
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
-  min-height:clamp(170px,15vw,210px);
+  min-height:clamp(240px,21vw,300px);
   display:grid;grid-template-columns:auto 260px minmax(0,1fr);
   align-items:center;gap:clamp(20px,2.2vw,32px);
-  padding:clamp(24px,2.6vw,36px);
+  padding:clamp(28px,3vw,44px);
   background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
 /* 번호 — 여섯 줄에 리듬을 준다. 순서가 뜻을 갖는 것은 아니고 세는 눈금이다.
    본문 서체(--suit)를 쓴다 — 숫자만 있는 자리라도 사이트에 서체가 하나 더
