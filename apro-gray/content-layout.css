@@ -234,7 +234,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 @media(max-width:560px){.ccard>.cvalues{grid-template-columns:minmax(0,1fr)}}
 
 /* =====================================================================
-   방침 줄 (.cpolicy) — 한 줄에 방침 하나. 아이콘 · 제목 · 설명이 왼쪽에서
+   방침 줄 (.cpolicy) — 한 줄에 방침 하나. 번호 · 제목 · 설명이 왼쪽에서
    오른쪽으로 선다. 환경 페이지의 환경 방침이 쓴다.
 
    석 줄로 나눈 이유 — 줄 폭이 2~11열(1196px)이라 설명을 통으로 흘리면 한 줄이
@@ -247,8 +247,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    사진이 사진 구실을 하려면 이만한 키가 필요하다. 남는 세로는 글을 가운데로
    모아 메운다(align-items:center) — 위로 붙이면 아래가 비어 보인다.
 
-   ⚠ 지금은 사진도 아이콘도 자리만 잡아 둔 상태다. 점선이 그 자리를 가리킨다.
-     둘 다 들어오면 아래 [data-bg] 묶음과 .ic 의 점선만 손보면 된다
+   ⚠ 사진은 아직 자리만 잡아 둔 상태다. 점선이 그 자리를 가리킨다 —
+     들어오면 아래 [data-bg] 묶음이 받는다
    ===================================================================== */
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
@@ -257,21 +257,12 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   align-items:center;gap:clamp(20px,2.2vw,32px);
   padding:clamp(24px,2.6vw,36px);
   background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
-/* 왼쪽 표 — 번호와 아이콘이 세로로 선다. 둘 다 '이 줄이 무엇인가' 를 가리키는
-   같은 성격이라 한 칸에 모은다. 따로 떼어 네 칸으로 벌리면 작은 표시가 둘로
-   흩어져 어느 쪽도 표 구실을 못 한다 */
-.cpolicy .mk{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
 /* 번호 — 여섯 줄에 리듬을 준다. 순서가 뜻을 갖는 것은 아니고 세는 눈금이다.
    본문 서체(--suit)를 쓴다 — 숫자만 있는 자리라도 사이트에 서체가 하나 더
    끼어들면 이 줄만 다른 데서 온 것처럼 보인다. 폭이 넓어진 만큼 자간을 조금
    당긴다(큰 글자는 저절로 벌어 보인다) */
 .cpolicy .no{font-family:var(--suit);font-weight:800;font-size:clamp(30px,2.8vw,42px);
   line-height:1;letter-spacing:-.01em;color:var(--brand-2)}
-/* 아이콘 자리 — 파일이 오면 안에 도형을 넣고 이 점선만 걷으면 된다.
-   글자색을 따라가는 아이콘(stroke:currentColor)이라 색은 여기서 정한다 */
-.cpolicy .ic{flex:none;width:56px;height:56px;display:grid;place-items:center;
-  color:var(--brand);border:1px dashed var(--border-g);border-radius:var(--r)}
-.cpolicy .ic svg{width:28px;height:28px}
 .cpolicy h3{font-family:var(--suit);font-weight:700;font-size:19px;line-height:1.4;
   letter-spacing:-.38px;color:var(--g900);word-break:keep-all}
 .cpolicy p{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
@@ -293,14 +284,13 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    일부로 읽힌다. 어두운 사진 위에서 브랜드색으로 읽히는 밝은 값을 쓴다 */
 .cpolicy>li[data-bg] .no{color:var(--point-300)}
 .cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
-.cpolicy>li[data-bg] .ic{color:#fff;border-color:rgba(255,255,255,.45)}
 
 /* 좁은 화면 — 석 줄을 세울 자리가 없다. 아이콘과 제목을 한 줄에 두고 설명을
    그 아래로 내린다. 설명은 아이콘 칸을 건너뛰어 제목 밑에서 시작한다 */
 @media(max-width:900px){
   .cpolicy>li{min-height:0;grid-template-columns:auto minmax(0,1fr);
     align-items:start;gap:16px 20px}
-  .cpolicy .mk{grid-row:1;flex-direction:row;align-items:center;gap:12px}
+  .cpolicy .no{grid-row:1}
   .cpolicy h3{align-self:center}
   .cpolicy p{grid-column:2}
 }
