@@ -630,24 +630,59 @@
   });
 })();
 
-/* 페이지 안 단락 탭(.ctabs) — 지금 화면에 있는 단락의 탭에 표시를 옮긴다.
-   콘텐츠 페이지에만 있는 줄이라 없으면 이 블록은 스스로 빠진다 */
+/* 목록 페이지 넘김 — .cboard 의 줄이 10 을 넘으면 표 밑에 번호 줄을 만든다.
+   서버가 없으니 줄을 전부 내려받아 두고 보여줄 열 줄만 남기는 방식이다. 글이
+   수백 건으로 늘면 그때는 나눠 받는 쪽으로 바꿔야 한다(지금 최대는 보도자료 85건).
+   번호(글번호)는 원래대로 큰 수부터 내려가므로 쪽을 넘겨도 이어서 읽힌다 */
 (function(){
-  var bar=document.querySelector('.ctabs');if(!bar)return;
-  var tabs=[].slice.call(bar.querySelectorAll('a[href^="#"]'));
-  var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  if(secs.some(function(s){return !s;}))return;   /* 앵커가 어긋나면 손대지 않는다 */
-  function paint(i){tabs.forEach(function(a,k){a.classList.toggle('is-on',k===i);});}
-  paint(0);
-  /* 탭 줄 바로 밑을 기준선으로 삼는다 — 그 선을 마지막으로 지난 단락이 "읽는 중" */
-  function onScroll(){
-    var line=bar.getBoundingClientRect().bottom+1,i=0;
-    secs.forEach(function(s,k){if(s.getBoundingClientRect().top<=line)i=k;});
-    paint(i);
-  }
-  var t=false;
-  window.addEventListener('scroll',function(){
-    if(t)return;t=true;requestAnimationFrame(function(){t=false;onScroll();});
-  },{passive:true});
-  onScroll();
+  var PER = 10, WIN = 5;   /* 한 쪽에 열 줄, 번호는 현재 쪽 둘레로 최대 다섯 개 */
+  [].slice.call(document.querySelectorAll('.cboard')).forEach(function(tbl){
+    var rows = [].slice.call(tbl.querySelectorAll('tbody > tr'));
+    if (rows.length <= PER) return;              /* 한 쪽에 다 들어가면 줄을 안 만든다 */
+    var last = Math.ceil(rows.length / PER) - 1, cur = 0;
+
+    var nav = document.createElement('nav');
+    nav.className = 'cpager';
+    nav.setAttribute('aria-label', '목록 페이지');
+    tbl.parentNode.insertBefore(nav, tbl.nextSibling);
+
+    function btn(label, title){
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = label;
+      if (title) b.setAttribute('aria-label', title);
+      return b;
+    }
+    function draw(){
+      rows.forEach(function(r, i){ r.hidden = (i < cur * PER || i >= (cur + 1) * PER); });
+      nav.textContent = '';
+      var prev = btn('‹', '이전 페이지');
+      prev.className = 'arw'; prev.disabled = (cur === 0);
+      prev.addEventListener('click', function(){ go(cur - 1); });
+      nav.appendChild(prev);
+      /* 현재 쪽을 가운데 두되 양 끝에서는 창을 안쪽으로 민다 */
+      var s = Math.max(0, Math.min(cur - (WIN >> 1), last - WIN + 1));
+      var e = Math.min(last, s + WIN - 1);
+      for (var i = s; i <= e; i++){
+        (function(n){
+          var b = btn(String(n + 1), n + 1 + '쪽');
+          if (n === cur) b.setAttribute('aria-current', 'true');
+          b.addEventListener('click', function(){ go(n); });
+          nav.appendChild(b);
+        })(i);
+      }
+      var next = btn('›', '다음 페이지');
+      next.className = 'arw'; next.disabled = (cur === last);
+      next.addEventListener('click', function(){ go(cur + 1); });
+      nav.appendChild(next);
+    }
+    function go(n){
+      if (n < 0 || n > last || n === cur) return;
+      cur = n; draw();
+      /* 표 머리가 화면 위로 넘어가 있으면 되돌려 준다 — 쪽을 넘겼는데 눈이
+         목록 한가운데에 있으면 바뀐 것을 못 본다 */
+      var top = tbl.getBoundingClientRect().top;
+      if (top < 0) window.scrollBy({ top: top - 140, behavior: 'smooth' });
+    }
+    draw();
+  });
 })();
