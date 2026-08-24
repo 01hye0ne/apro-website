@@ -502,6 +502,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cdoc li::marker{color:var(--teritary);font-family:var(--pre)}
 .cdoc li{font-family:var(--pre);font-size:16px;line-height:1.75;letter-spacing:-.32px;
   color:var(--sec);word-break:keep-all}
+/* 규정 안의 링크 — 전역 a 는 색도 밑줄도 없다(a{color:inherit}). 규정 글 사이에
+   섞이면 눌러지는 것인 줄 모르므로 여기서만 색으로 알린다 */
+.cdoc a{color:var(--brand);font-weight:600}
+.cdoc a:hover{text-decoration:underline}
 .cdoc blockquote{margin-top:16px;padding:20px 24px;background:var(--secondary-bg);
   border-radius:var(--r);
   border-left:3px solid var(--brand-2)}
