@@ -636,8 +636,16 @@
    번호(글번호)는 원래대로 큰 수부터 내려가므로 쪽을 넘겨도 이어서 읽힌다 */
 (function(){
   var PER = 10, WIN = 5;   /* 한 쪽에 열 줄, 번호는 현재 쪽 둘레로 최대 다섯 개 */
-  [].slice.call(document.querySelectorAll('.cboard')).forEach(function(tbl){
-    var rows = [].slice.call(tbl.querySelectorAll('tbody > tr'));
+  /* 표(.cboard)는 tbody 의 줄이, 카드 목록(.cnews)은 li 가 한 건이다 */
+  var lists = [];
+  [].slice.call(document.querySelectorAll('.cboard')).forEach(function(el){
+    lists.push({ box: el, rows: [].slice.call(el.querySelectorAll('tbody > tr')) });
+  });
+  [].slice.call(document.querySelectorAll('.cnews')).forEach(function(el){
+    lists.push({ box: el, rows: [].slice.call(el.children) });
+  });
+  lists.forEach(function(set){
+    var tbl = set.box, rows = set.rows;
     if (rows.length <= PER) return;              /* 한 쪽에 다 들어가면 줄을 안 만든다 */
     var last = Math.ceil(rows.length / PER) - 1, cur = 0;
 
