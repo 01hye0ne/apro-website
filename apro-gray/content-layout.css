@@ -205,28 +205,31 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    달라 한 줄을 여럿으로 나눌 수 없을 때 쓴다 */
 .ccards--stack{grid-template-columns:minmax(0,1fr)}
 
-/* 낱말 다섯 (.cvalues) — 카드 안에서 낱말만 다섯 칸으로 세운다.
-   상자 안에 또 상자를 두면 겹으로 읽히므로 테두리 대신 칸 사이 세로선으로만
-   가른다. 칸 사이를 띄우지 않아야 그 선이 두 칸의 경계로 읽힌다 — 띄우면
-   선이 어느 쪽에도 붙지 않은 채 떠 있는 막대가 된다.
+/* 낱말 다섯 (.cvalues) — 카드 안에서 낱말 하나씩을 흰 낱장으로 세운다.
+
+   처음에는 바탕 없이 칸 사이 세로선으로만 갈랐다. 낱말 다섯이 나열된 것으로만
+   읽혀 '가치' 라는 무게가 서지 않아 낱장으로 바꿨다.
+
+   테두리는 두르지 않는다. 담고 있는 카드가 회색(--secondary-bg)이라 흰 바탕
+   하나로 이미 낱장이 떨어져 보인다 — 테두리를 더하면 회색 카드 · 흰 낱장 ·
+   테두리로 선이 한 겹 더 늘 뿐이다. 판 위의 카드를 흰색으로 뒤집는 것과 같은
+   수법이고, 여기서는 그 관계가 한 겹 더 안쪽에서 되풀이된다.
 
    선택자에 .ccard 를 세우고 자식 기호를 쓴 것은 위 .ccard ul 묶음(세로로 쌓고
    점을 찍는 목록)을 이기기 위해서다. 특정도를 맞춰 두고 뒤에 놓아 덮는다 */
 .ccard>.cvalues{margin-top:24px;display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+  grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .ccard>.cvalues>li{display:flex;align-items:center;justify-content:center;
-  padding:8px 14px;font-family:var(--suit);font-weight:700;font-size:16px;
+  padding:22px 14px;background:#fff;border-radius:var(--r);
+  font-family:var(--suit);font-weight:700;font-size:16px;
   line-height:1.45;letter-spacing:-.32px;color:var(--g900);
   text-align:center;word-break:keep-all}
-.ccard>.cvalues>li+li{border-left:1px solid var(--border-g)}
 /* 세로로 쌓는 목록에 찍던 점은 여기서 거둔다 — 가운데 세운 낱말 앞에 점이
    붙으면 글이 한쪽으로 밀린다 */
 .ccard>.cvalues>li::before{display:none}
-/* 좁은 화면에서는 다섯 칸을 세울 자리가 없다. 칸이 접히면 세로선이 뜻을 잃으므로
-   선을 걷고 대신 칸 사이를 띄운다 */
+/* 좁은 화면에서는 다섯 칸을 세울 자리가 없다 */
 @media(max-width:900px){
-  .ccard>.cvalues{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 0}
-  .ccard>.cvalues>li+li{border-left:0}
+  .ccard>.cvalues{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){.ccard>.cvalues{grid-template-columns:minmax(0,1fr)}}
 
