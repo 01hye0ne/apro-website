@@ -41,24 +41,6 @@
      business-layout.css 가 72px 로 못 박아 둔 값이고, 소분류 탭 줄이 그 밑에 붙는다 —
      0 으로 두면 탭이 GNB 뒤로 들어가 통째로 가려진다 */
   --gnb-h:72px;
-
-  /* 모서리 — 한 값뿐이다. 이 한 줄을 바꾸면 사이트 전체가 따라온다.
-
-     처음에는 두 단계로 잡았다 — 부품은 4px, 카드·접이식 상자 같은 '면' 은 8px.
-     겹쳐 놓았을 때 바깥이 안쪽보다 한 단계 둥글면 의도한 모양으로 읽히기
-     때문이었다. 사회 페이지에 걸어 놓고 보니 8px 이 이 사이트에는 과했다.
-     그래서 면도 4px 로 내리고 단계를 없앴다.
-
-     크기에 상관없이 4px 하나면 카드 안의 버튼과 카드가 같은 곡률을 갖는다.
-     겹친 티는 안 나지만, 이 사이트가 원하는 것은 '각을 살짝 죽인' 정도이지
-     겹의 깊이를 곡률로 보여 주는 것이 아니다.
-
-     큰 면에 더 큰 값이 필요해지면 --r-lg 를 여기 한 줄 더 세우면 된다.
-     지금은 쓰는 데가 없어 두지 않는다.
-
-     글자에 붙는 조각(뱃지·막대)은 이미 2~3px 로 흩어져 있다. 그쪽은 전체로
-     펼칠 때 --r-xs:2px 로 모은다 */
-  --r:4px;
 }
 
 .cwrap{width:calc(100% - var(--cx) * 2);max-width:1440px;margin:0 auto}
@@ -193,7 +175,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 .ccards{margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:16px}
-.ccard{padding:32px;background:var(--secondary-bg);border:1px solid var(--border-g)}
+.ccard{padding:32px;background:var(--secondary-bg);border:1px solid var(--border-g);
+  border-radius:var(--r)}
 .ccard h3{font-family:var(--suit);font-weight:700;font-size:20px;line-height:1.4;
   letter-spacing:-.4px;color:var(--g900);word-break:keep-all}
 .ccard p{margin-top:12px;font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
@@ -252,7 +235,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 /* 5개년 × 10행이라 좁은 화면에서 반드시 넘친다. 표 자체를 줄이지 않고 가로 스크롤을
    허용하되 계정과목 열은 왼쪽에 붙여 둔다 — 숫자만 남으면 무슨 줄인지 알 수 없다 */
-.ctable-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g)}
+.ctable-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g);
+  border-radius:var(--r)}
 .ctable{width:100%;min-width:760px;border-collapse:collapse;
   font-family:var(--pre);font-size:16px;letter-spacing:-.32px;color:var(--g900)}
 .ctable th,.ctable td{position:relative;padding:14px 20px;border-bottom:1px solid var(--border-g);
@@ -305,7 +289,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    읽을 수 없어 내용에 맞춰 자동으로 늘릴 방법이 없다. 원본이 알려준 720px 을 쓰고,
    모자라면 상자 안에서 스크롤된다(scrolling="yes") */
 .cframe{margin-top:24px;width:100%;max-width:780px;
-  border:1px solid var(--border-g);background:#fff}
+  border:1px solid var(--border-g);background:#fff;
+  border-radius:var(--r);overflow:clip}
 .cframe iframe{display:block;width:100%;height:720px;border:0}
 @media(max-width:760px){.cframe iframe{height:560px}}
 /* 상자가 막히거나 비었을 때 빠져나갈 길 — 늘 같이 둔다 */
@@ -343,6 +328,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    손익계산서 탭에는 이 그림을 두지 않는다 — 영업이익·당기순이익이 해에 따라
    음수라(연결 제26기 -5,835) 쌓는 방식이 성립하지 않는다 */
 .cchart{margin-top:20px;padding:clamp(20px,3vw,36px);border:1px solid var(--border-g);
+  border-radius:var(--r);
   background:var(--secondary-bg)}
 .cchart-legend{display:flex;justify-content:flex-end;gap:16px;
   font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--sec)}
@@ -410,6 +396,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpager{margin-top:28px;display:flex;justify-content:center;align-items:center;gap:4px;
   flex-wrap:wrap}
 .cpager button{min-width:36px;height:36px;padding:0 10px;border:1px solid transparent;
+  border-radius:var(--r);
   background:none;font-family:var(--pre);font-size:15px;letter-spacing:-.3px;color:var(--sec);
   cursor:pointer;transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease)}
 .cpager button:hover:not(:disabled):not([aria-current]){color:var(--brand);border-color:var(--border-g)}
@@ -429,6 +416,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   font-variant-numeric:tabular-nums}
 .csearch{display:flex;align-items:center;gap:8px;width:min(300px,100%);
   padding:0 12px 0 14px;height:42px;border:1px solid var(--border-g);background:#fff;
+  border-radius:var(--r);
   transition:border-color .2s var(--ease)}
 .csearch:focus-within{border-color:var(--brand)}
 .csearch input{flex:1;min-width:0;border:0;background:none;outline:none;
@@ -443,6 +431,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .csearch svg{width:17px;height:17px}
 /* 검색 결과가 없을 때 목록 자리에 서는 줄 */
 .cempty{margin-top:28px;padding:48px 20px;text-align:center;border:1px solid var(--border-g);
+  border-radius:var(--r);
   background:var(--secondary-bg);font-family:var(--pre);font-size:16px;letter-spacing:-.32px;
   color:var(--teritary)}
 .cempty[hidden]{display:none}
@@ -463,7 +452,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cnews>li>a{display:flex;flex-direction:column;height:100%}
 /* 16:9 — 기사 사진이 대체로 가로가 긴 판이라 그 비율에 맞춘다 */
 .cnews .thumb{aspect-ratio:16/9;overflow:hidden;
-  background:var(--secondary-bg);border:1px solid var(--border-g)}
+  background:var(--secondary-bg);border:1px solid var(--border-g);
+  border-radius:var(--r)}
 .cnews .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .cnews .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
 .cnews .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
@@ -505,6 +495,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cdoc li{font-family:var(--pre);font-size:16px;line-height:1.75;letter-spacing:-.32px;
   color:var(--sec);word-break:keep-all}
 .cdoc blockquote{margin-top:16px;padding:20px 24px;background:var(--secondary-bg);
+  border-radius:var(--r);
   border-left:3px solid var(--brand-2)}
 .cdoc blockquote p{margin-top:0;color:var(--g900)}
 .cdoc blockquote p+p{margin-top:8px}
@@ -517,6 +508,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 
 /* 긴 문서 위의 목차 */
 .ctoc{margin-top:32px;max-width:900px;padding:28px 32px;background:var(--secondary-bg);
+  border-radius:var(--r);
   border:1px solid var(--border-g)}
 .ctoc p{font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;color:var(--g900)}
 .ctoc ol{margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:7px}
@@ -529,7 +521,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 접어 둔 전문 — 정책 원문과 공지 본문이 같은 장치를 쓴다.
    본문 흐름 위에 3천 자짜리 규정을 그대로 펼쳐 놓으면 그 아래 내용이 묻힌다.
    <details> 라 JS 없이 열리고, 검색(Ctrl+F)에도 최근 브라우저는 접힌 안을 찾아 준다 */
-.cdetails{margin-top:28px;max-width:900px;border:1px solid var(--border-g)}
+.cdetails{margin-top:28px;max-width:900px;border:1px solid var(--border-g);
+  border-radius:var(--r);overflow:clip}
 .cdetails+.cdetails{margin-top:12px}
 .cdetails summary{padding:20px 26px;background:var(--secondary-bg);cursor:pointer;list-style:none;
   display:flex;align-items:center;gap:12px;
@@ -555,7 +548,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 .cbtns{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
 .cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;
-  border:1px solid var(--g900);background:#fff;
+  border:1px solid var(--g900);background:#fff;border-radius:var(--r);
   font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--g900);
   transition:background .24s var(--ease),color .24s var(--ease),border-color .24s var(--ease)}
 .cbtn:hover{background:var(--g900);color:#fff}
@@ -572,7 +565,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    이 저장소로 옮겨오지 못한 자리(ESG 게시판 본문)에 둔다.
    빈칸으로 두면 "빠뜨린 것"과 "아직 없는 것"이 구분되지 않는다 */
 .cnote{margin-top:28px;max-width:900px;padding:22px 26px;background:#fffaf2;
-  border:1px solid #f0dcc0;border-left:3px solid #d99b3f}
+  border:1px solid #f0dcc0;border-left:3px solid #d99b3f;border-radius:var(--r)}
 .cnote p{font-family:var(--pre);font-size:15px;line-height:1.7;letter-spacing:-.3px;
   color:#7a5620;word-break:keep-all}
 .cnote p+p{margin-top:8px}
@@ -582,7 +575,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    10. 이사회 — 사람 카드
    ===================================================================== */
 .cpeople{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.cperson{padding:32px;border:1px solid var(--border-g)}
+.cperson{padding:32px;border:1px solid var(--border-g);border-radius:var(--r)}
 .cperson .role{font-family:var(--rc);font-weight:700;font-size:13px;letter-spacing:.12em;
   color:var(--brand-2);text-transform:uppercase}
 .cperson .nm{margin-top:12px;font-family:var(--suit);font-weight:800;font-size:24px;
@@ -597,7 +590,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    11. 제보센터 — 연락 수단 줄 · 처리 절차 표 · 온라인 제보 양식
    ===================================================================== */
 .cways{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1px;background:var(--border-g);border:1px solid var(--border-g)}
+  gap:1px;background:var(--border-g);border:1px solid var(--border-g);
+  border-radius:var(--r);overflow:clip}
 .cway{padding:30px 28px;background:#fff}
 .cway .k{font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;color:var(--brand)}
 .cway .v{margin-top:12px;font-family:var(--pre);font-size:17px;line-height:1.6;
@@ -608,7 +602,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    오른쪽으로 흐르는 것이 곧 순서다. 칸을 고정 폭(table-layout:fixed)으로 나눠
    설명 길이가 달라도 다섯 단계의 무게가 같아 보이게 한다.
    좁은 화면에서도 접지 않고 가로로 굴린다 — 접으면 순서가 끊긴다 */
-.cflow-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g)}
+.cflow-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g);
+  border-radius:var(--r)}
 .cflow{width:100%;min-width:760px;border-collapse:collapse;table-layout:fixed}
 .cflow th,.cflow td{padding:16px 18px;text-align:center;vertical-align:middle;
   border-left:1px solid var(--border-g);word-break:keep-all}
@@ -622,9 +617,13 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 온라인 제보 양식 (.cform) — 이름표 한 칸 + 입력 한 칸이 한 줄.
    표처럼 보이지만 <table> 이 아니라 격자다. 좁은 화면에서는 이름표를 입력 위로
    올려야 하는데, 표로 짜면 칸을 그렇게 접을 수 없다 */
-.cform{margin-top:24px;border:1px solid var(--border-g);border-bottom:0}
+.cform{margin-top:24px;border:1px solid var(--border-g);
+  border-radius:var(--r);overflow:clip}
 .cform-row{display:grid;grid-template-columns:clamp(110px,14%,180px) minmax(0,1fr);
   border-bottom:1px solid var(--border-g)}
+/* 아래 테두리는 상자가 긋는다 — 마지막 줄이 대신 그으면 둥근 모서리에서
+   그 직선이 잘려 양끝에 틈이 보인다 */
+.cform-row:last-child{border-bottom:0}
 .cform-k{display:flex;align-items:center;justify-content:center;gap:2px;
   padding:16px 12px;background:var(--secondary-bg);
   border-right:1px solid var(--border-g);
@@ -637,7 +636,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 
 .cform input,.cform select,.cform textarea{width:100%;padding:11px 13px;
   font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;
-  color:var(--g900);background:#fff;border:1px solid var(--border-g);border-radius:0;
+  color:var(--g900);background:#fff;border:1px solid var(--border-g);border-radius:var(--r);
   transition:border-color .2s}
 .cform input::placeholder,.cform textarea::placeholder{color:var(--teritary)}
 .cform textarea{min-height:220px;resize:vertical;line-height:1.75}
@@ -671,46 +670,43 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 }
 
 .cform-submit{margin-top:20px;width:100%;padding:20px;
-  background:var(--g900);color:#fff;border:0;cursor:pointer;
+  background:var(--g900);color:#fff;border:0;border-radius:var(--r);cursor:pointer;
   font-family:var(--suit);font-weight:700;font-size:17px;letter-spacing:-.34px;
   transition:background .25s var(--ease)}
 .cform-submit:hover{background:var(--brand)}
 /* 누른 뒤에 뜨는 한 줄 */
 .cform-msg{margin-top:14px;padding:16px 18px;background:#fffaf2;
-  border:1px solid #f0dcc0;border-left:3px solid #d99b3f;
+  border:1px solid #f0dcc0;border-left:3px solid #d99b3f;border-radius:var(--r);
   font-family:var(--pre);font-size:15px;line-height:1.7;letter-spacing:-.3px;
   color:#7a5620;word-break:keep-all}
 .cform-msg[hidden]{display:none}
 
 /* =====================================================================
-   12. 모서리 — 시험판 (.cbody--round)
+   12. 모서리 — 각을 지키는 자리
 
-   ⚠ 임시 비계다. 사회 페이지 한 장에서만 보려고 선택자 앞에 .cbody--round 를
-     세워 두었다. 전체로 펼칠 때는 이 접두사와 페이지의 클래스만 걷어내면
-     나머지 규칙은 그대로 쓴다.
+   값은 --r 하나(4px)이고 business-layout.css 의 :root 에 있다. 상자마다 그
+   자리에서 직접 붙였으므로 여기 목록은 없다 — 새 상자를 만들 때 같이 붙이면
+   되고, 이 절은 붙이지 말아야 할 곳만 적는다.
 
-   값은 --r 하나(4px)다. 크기나 역할에 따라 나누지 않는다 — 두 단계로 시작했다가
-   큰 쪽(8px)이 이 사이트에는 과해서 내렸다. :root 의 주석에 그 경위를 적어 두었다.
+     .cblock--plate    화면 끝까지 가는 판. 모서리를 둥글리면 화면 가장자리에서
+                       잘려 깨져 보인다. clip-path 와도 부딪힌다
+     .dhero            같은 이유 — 전면 배너
+     GNB 바 · 푸터      같은 이유 — 전면 띠
+     표 안쪽 칸         .cflow / .ctable / .cdoc / .cboard 의 th·td.
+                       감싼 틀만 둥글면 되고, 안쪽까지 둥글리면 격자가 흐트러진다
+     .cway             .cways 묶음 안쪽 칸. 같은 이유
+     .cvalues li       카드 안에서 세로선으로 가른 칸. 같은 이유
+     .cform-row / -k   양식 안쪽 줄과 이름표. 같은 이유
+     .cfin-tabs button 탭. 밑줄(inset box-shadow)로 지금 자리를 가리키는데
+                       모서리를 둥글리면 그 밑줄 끝이 같이 휜다
 
-   값이 하나여도 규칙이 필요한 곳은 남는다. 각을 지키는 것들이다.
-     .cblock--plate   화면 끝까지 가는 판. 모서리를 둥글리면 화면 가장자리에서
-                      잘려 깨져 보인다. clip-path 와도 부딪힌다
-     .cway            .cways 묶음 안쪽 칸. 감싼 틀만 둥글면 된다
-     표 안쪽 칸        같은 이유로 감싼 틀만
+   모서리에 닿는 자식이 있는 상자는 overflow:clip 을 함께 준다. 안 그러면
+   자식의 각진 모서리가 둥근 테 밖으로 삐져나온다 — .cdetails(제목줄이 자기
+   배경을 가진다) · .cways(gap:1px 과 배경색으로 테두리를 흉내낸다) ·
+   .cform(첫 줄 이름표가 모서리에 닿는다) · .cframe(iframe) 이 그렇다.
+   hidden 이 아니라 clip 인 것은, hidden 이 스크롤 상자를 만들어 안쪽에 초점이
+   옮겨갈 때 상자가 슬쩍 밀리는 일이 있어서다
    ===================================================================== */
-/* 카드 · 접이식 상자 · 연락 수단 묶음 */
-.cbody--round .ccard,
-.cbody--round .cdetails,
-.cbody--round .cways{border-radius:var(--r)}
-/* 모서리에 닿는 자식이 있는 상자는 잘라 주어야 한다. 안 그러면 자식의 각진
-   모서리가 둥근 테 밖으로 삐져나온다 —
-     .cdetails  제목줄이 자기 배경을 가진다
-     .cways     gap:1px 과 배경색으로 테두리를 흉내내는 구조라 칸이 모서리에 닿는다
-   overflow:hidden 이 아니라 clip 을 쓴다. hidden 은 스크롤 상자를 만들어서,
-   안쪽에 초점이 옮겨갈 때 상자가 슬쩍 밀리는 일이 생긴다 */
-.cbody--round .cdetails,
-.cbody--round .cways{overflow:clip}
-
 
 /* =====================================================================
    13. 좁은 화면
