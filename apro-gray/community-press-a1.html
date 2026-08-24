@@ -65,7 +65,14 @@
   <div class="cwrap">
     <section class="cblock">
       <h2>보도자료</h2>
-      <p class="lead">2020년 코스닥 상장부터 지금까지, 언론에 실린 에이프로 소식입니다. 전체 85건.</p>
+      <div class="clist-hd">
+        <p class="count">총 <b>85</b>건</p>
+        <form class="csearch" role="search">
+          <label class="sr-only" for="q-press">보도자료 검색</label>
+          <input type="search" id="q-press" placeholder="검색어를 입력하세요" />
+          <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </form>
+      </div>
       <!-- [이미지 / 제목 / 작성일] 한 장이 한 건, 3열로 깔린다. 섬네일 자리는 비어 있고
            CSS(.cnews .thumb::after)가 A 마크를 옅게 깔아 둔다 — <img> 가 들어오면 덮인다.
            쪽 넘김은 공용 스크립트가 맡는다 -->
@@ -836,6 +843,7 @@
           </a>
         </li>
       </ul>
+      <p class="cempty" hidden>검색 결과가 없습니다.</p>
       <div class="cnote">
         <p>제목을 누르면 <strong>기존 사이트의 원본 글</strong>이 새 창으로 열립니다.</p>
         <p><strong>섬네일은 아직 비어 있습니다.</strong> 원본 글의 그림이 모두 언론사 서버에 있어

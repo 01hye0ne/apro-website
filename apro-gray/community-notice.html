@@ -65,7 +65,14 @@
   <div class="cwrap">
     <section class="cblock">
       <h2>공지사항</h2>
-      <p class="lead">주주총회 소집통지와 각종 공고를 게시합니다. 전체 34건.</p>
+      <div class="clist-hd">
+        <p class="count">총 <b>34</b>건</p>
+        <form class="csearch" role="search">
+          <label class="sr-only" for="q-notice">공지사항 검색</label>
+          <input type="search" id="q-notice" placeholder="검색어를 입력하세요" />
+          <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </form>
+      </div>
       <table class="cboard">
         <thead><tr><th>번호</th><th>제목</th><th>작성일</th></tr></thead>
         <tbody>
@@ -241,6 +248,7 @@
           </tr>
         </tbody>
       </table>
+      <p class="cempty" hidden>검색 결과가 없습니다.</p>
       <div class="cnote">
         <p>제목을 누르면 <strong>기존 사이트의 원본 글</strong>이 새 창으로 열립니다.
           새 사이트에는 아직 글 상세 페이지가 없어서, 링크를 죽여 두는 것보다 원본을
