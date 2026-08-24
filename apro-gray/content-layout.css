@@ -247,8 +247,6 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    사진이 사진 구실을 하려면 이만한 키가 필요하다. 남는 세로는 글을 가운데로
    모아 메운다(align-items:center) — 위로 붙이면 아래가 비어 보인다.
 
-   ⚠ 사진은 아직 자리만 잡아 둔 상태다. 점선이 그 자리를 가리킨다 —
-     들어오면 아래 [data-bg] 묶음이 받는다
    ===================================================================== */
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
@@ -268,15 +266,21 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy p{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
   letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
 
-/* 사진이 들어왔을 때 — <li data-bg style="--bg:url('../assets/….jpg')">
+/* 사진이 깔린 줄 — <li data-bg style="--bg:url('../assets/….jpg')">
    점선을 걷고 사진을 깔고 글을 흰색으로 뒤집는다. 사진은 z-index:-2 층에,
    글을 읽히게 하는 어둠은 -1 층에 둔다 — 상자에 isolation:isolate 가 걸려
    있어 음수 층이 바깥으로 새지 않는다.
    어둠은 왼쪽이 짙고 오른쪽이 옅다. 글이 왼쪽에 몰려 있어서, 오른쪽까지 같은
-   농도로 덮으면 사진이 사진 구실을 못 한다 */
+   농도로 덮으면 사진이 사진 구실을 못 한다.
+
+   --bgpos 는 크롭 위치다. 띠가 6:1 인데 사진은 2.5:1 이라(한 장은 3:2) 세로로
+   절반 넘게 잘린다 — cover 는 폭을 맞추고 남는 세로를 버리기 때문이다. 기본은
+   가운데지만 보여 줄 것이 가운데에 없는 장은 줄마다 이 값으로 끌어올리거나
+   내린다. 값은 background-position 문법 그대로다 (예: "center 62%") */
 .cpolicy>li[data-bg]{border-color:transparent;background:var(--g950)}
 .cpolicy>li[data-bg]::before{content:"";position:absolute;inset:0;z-index:-2;
-  background-image:var(--bg);background-size:cover;background-position:center}
+  background-image:var(--bg);background-size:cover;
+  background-position:var(--bgpos,center)}
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(90deg,rgba(14,22,30,.8) 34%,rgba(14,22,30,.36))}
 .cpolicy>li[data-bg] h3{color:#fff}
