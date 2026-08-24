@@ -234,6 +234,62 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 @media(max-width:560px){.ccard>.cvalues{grid-template-columns:minmax(0,1fr)}}
 
 /* =====================================================================
+   방침 줄 (.cpolicy) — 한 줄에 방침 하나. 아이콘 · 제목 · 설명이 왼쪽에서
+   오른쪽으로 선다. 환경 페이지의 환경 방침이 쓴다.
+
+   석 줄로 나눈 이유 — 줄 폭이 2~11열(1196px)이라 설명을 통으로 흘리면 한 줄이
+   1000px 을 넘는다. 제목에 260px 을 떼어 주면 설명이 760px 안으로 들어와
+   읽을 만한 길이가 된다. 제목 칸을 고정 폭으로 둔 것은 여섯 줄의 설명 시작점을
+   맞추기 위해서다 — 제목 길이를 따라가면 줄마다 들쭉날쭉해진다.
+
+   ⚠ 지금은 사진도 아이콘도 자리만 잡아 둔 상태다. 점선이 그 자리를 가리킨다.
+     둘 다 들어오면 아래 [data-bg] 묶음과 .ic 의 점선만 손보면 된다
+   ===================================================================== */
+.cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
+.cpolicy>li{position:relative;isolation:isolate;overflow:clip;
+  display:grid;grid-template-columns:auto 260px minmax(0,1fr);
+  align-items:start;gap:clamp(20px,2.2vw,32px);
+  padding:clamp(24px,2.6vw,36px);
+  background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
+/* 아이콘 자리 — 파일이 오면 안에 <svg> 를 넣고 이 점선만 걷으면 된다.
+   글자색을 따라가는 아이콘(stroke:currentColor)이라 색은 여기서 정한다 */
+.cpolicy .ic{flex:none;width:56px;height:56px;display:grid;place-items:center;
+  color:var(--brand);border:1px dashed var(--border-g);border-radius:var(--r)}
+.cpolicy .ic svg{width:28px;height:28px}
+.cpolicy h3{font-family:var(--suit);font-weight:700;font-size:19px;line-height:1.4;
+  letter-spacing:-.38px;color:var(--g900);word-break:keep-all}
+.cpolicy p{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
+  letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+
+/* 사진이 들어왔을 때 — <li data-bg style="--bg:url('../assets/….jpg')">
+   점선을 걷고 사진을 깔고 글을 흰색으로 뒤집는다. 사진은 z-index:-2 층에,
+   글을 읽히게 하는 어둠은 -1 층에 둔다 — 상자에 isolation:isolate 가 걸려
+   있어 음수 층이 바깥으로 새지 않는다.
+   어둠은 왼쪽이 짙고 오른쪽이 옅다. 글이 왼쪽에 몰려 있어서, 오른쪽까지 같은
+   농도로 덮으면 사진이 사진 구실을 못 한다 */
+.cpolicy>li[data-bg]{border-color:transparent;background:var(--g950)}
+.cpolicy>li[data-bg]::before{content:"";position:absolute;inset:0;z-index:-2;
+  background-image:var(--bg);background-size:cover;background-position:center}
+.cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(14,22,30,.8) 34%,rgba(14,22,30,.36))}
+.cpolicy>li[data-bg] h3{color:#fff}
+.cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
+.cpolicy>li[data-bg] .ic{color:#fff;border-color:rgba(255,255,255,.45)}
+
+/* 좁은 화면 — 석 줄을 세울 자리가 없다. 아이콘과 제목을 한 줄에 두고 설명을
+   그 아래로 내린다. 설명은 아이콘 칸을 건너뛰어 제목 밑에서 시작한다 */
+@media(max-width:900px){
+  .cpolicy>li{grid-template-columns:auto minmax(0,1fr);gap:16px 20px}
+  .cpolicy .ic{grid-row:1}
+  .cpolicy h3{align-self:center}
+  .cpolicy p{grid-column:2}
+}
+@media(max-width:560px){
+  .cpolicy>li{grid-template-columns:minmax(0,1fr)}
+  .cpolicy p{grid-column:1}
+}
+
+/* =====================================================================
    5. 표 — 재무제표
    ===================================================================== */
 /* 5개년 × 10행이라 좁은 화면에서 반드시 넘친다. 표 자체를 줄이지 않고 가로 스크롤을
