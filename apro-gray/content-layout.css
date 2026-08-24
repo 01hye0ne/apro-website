@@ -187,7 +187,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ccard ul li::before{content:"";position:absolute;left:0;top:calc(.78em - 2px);width:4px;height:4px;
   border-radius:50%;background:var(--brand-2)}
 /* 번호가 붙는 카드 — PDCA 4단계처럼 순서가 뜻을 갖는 묶음 */
-.ccard .no{display:block;margin-bottom:14px;font-family:var(--rc);font-weight:700;font-size:14px;
+.ccard .no{display:block;margin-bottom:14px;font-family:var(--suit);font-weight:700;font-size:14px;
   letter-spacing:.12em;color:var(--brand-2)}
 
 /* 좌 1 · 우 3 (.ccards--split) — 왼쪽에 장의 요지를 큰 한 장으로 세우고,
@@ -261,10 +261,12 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    같은 성격이라 한 칸에 모은다. 따로 떼어 네 칸으로 벌리면 작은 표시가 둘로
    흩어져 어느 쪽도 표 구실을 못 한다 */
 .cpolicy .mk{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
-/* 번호 — 여섯 줄에 리듬을 준다. 숫자만 쓰는 자리라 폭이 좁은 서체(--rc)를
-   쓴다. 순서가 뜻을 갖는 것은 아니고 세는 눈금이다 */
-.cpolicy .no{font-family:var(--rc);font-weight:700;font-size:clamp(30px,2.8vw,42px);
-  line-height:1;letter-spacing:.01em;color:var(--brand-2)}
+/* 번호 — 여섯 줄에 리듬을 준다. 순서가 뜻을 갖는 것은 아니고 세는 눈금이다.
+   본문 서체(--suit)를 쓴다 — 숫자만 있는 자리라도 사이트에 서체가 하나 더
+   끼어들면 이 줄만 다른 데서 온 것처럼 보인다. 폭이 넓어진 만큼 자간을 조금
+   당긴다(큰 글자는 저절로 벌어 보인다) */
+.cpolicy .no{font-family:var(--suit);font-weight:800;font-size:clamp(30px,2.8vw,42px);
+  line-height:1;letter-spacing:-.01em;color:var(--brand-2)}
 /* 아이콘 자리 — 파일이 오면 안에 도형을 넣고 이 점선만 걷으면 된다.
    글자색을 따라가는 아이콘(stroke:currentColor)이라 색은 여기서 정한다 */
 .cpolicy .ic{flex:none;width:56px;height:56px;display:grid;place-items:center;
@@ -437,7 +439,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cchart .seg-cap{background:var(--point-900)}
 /* 칸이 얕으면 숫자가 넘쳐 두 겹으로 보인다 — 안 보이게 접는다 */
 .cchart .seg span{padding:0 4px}
-.cchart .yr{margin-top:12px;font-family:var(--rc);font-weight:700;font-size:14px;
+.cchart .yr{margin-top:12px;font-family:var(--suit);font-weight:700;font-size:14px;
   letter-spacing:.06em;color:var(--teritary)}
 /* 표·그림 위 오른쪽 단위 표기 */
 .cfin-unit{margin-top:24px;text-align:right;font-family:var(--pre);font-size:14px;
@@ -544,7 +546,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   transition:color .2s var(--ease)}
 .cnews>li>a:hover .ttl{color:var(--brand)}
 /* margin-top:auto — 제목이 한 줄이든 두 줄이든 날짜는 카드 밑변에 붙는다 */
-.cnews .date{margin-top:auto;padding-top:12px;font-family:var(--rc);font-weight:400;
+.cnews .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:500;
   font-size:14px;letter-spacing:.04em;color:var(--teritary)}
 @media(max-width:900px){.cnews{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.cnews{grid-template-columns:minmax(0,1fr)}}
@@ -662,7 +664,11 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 .cpeople{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .cperson{padding:32px;border:1px solid var(--border-g);border-radius:var(--r)}
-.cperson .role{font-family:var(--rc);font-weight:700;font-size:13px;letter-spacing:.12em;
+/* 직책 — 들어가는 글이 '사내이사' 같은 한글이다. Roboto Condensed 에는 한글
+   글립이 없어 그동안 폴백 서체로 떨어지고 있었다(그래서 이 줄만 다른 서체로
+   보였다). 자간도 한글에는 너무 벌어 조금 줄인다. uppercase 는 한글에 아무
+   일도 하지 않지만, 영문 직책이 들어올 자리라 남겨 둔다 */
+.cperson .role{font-family:var(--suit);font-weight:700;font-size:13px;letter-spacing:.06em;
   color:var(--brand-2);text-transform:uppercase}
 .cperson .nm{margin-top:12px;font-family:var(--suit);font-weight:800;font-size:24px;
   line-height:1.3;letter-spacing:-.48px;color:var(--g900)}
