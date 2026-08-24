@@ -188,13 +188,27 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ctable-unit{margin-top:10px;text-align:right;font-family:var(--pre);font-size:14px;
   letter-spacing:-.28px;color:var(--teritary)}
 
-/* 재무제표 4종 전환 탭 */
-.cfin-tabs{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px}
-.cfin-tabs button{padding:11px 22px;border:1px solid var(--border-g);background:#fff;
-  font-family:var(--suit);font-weight:600;font-size:15px;letter-spacing:-.3px;color:var(--sec);
-  cursor:pointer;transition:background .22s var(--ease),color .22s var(--ease),border-color .22s var(--ease)}
-.cfin-tabs button:hover{border-color:var(--point-300);color:var(--brand)}
-.cfin-tabs button[aria-current]{background:var(--brand);border-color:var(--brand);color:#fff}
+/* 재무제표 전환 탭 — 네 갈래가 표 한 자리를 나눠 쓴다.
+   알약 버튼을 늘어놓던 것을 한 줄 가득 채우는 칸으로 바꿨다(2026-08-24 시안).
+   넷이 같은 폭을 갖고, 활성 칸만 바닥을 옅게 깔고 밑줄을 두껍게 긋는다 —
+   "지금 보고 있는 표"가 탭 줄에서 바로 읽힌다.
+   밑줄은 box-shadow 로 그린다 : border-bottom 을 쓰면 활성 칸만 1px 높아져
+   줄 전체가 흔들린다(inset 이라 칸 안쪽에 그려져 자리를 차지하지 않는다) */
+.cfin-tabs{margin-top:28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-bottom:1px solid var(--border-g)}
+.cfin-tabs button{padding:16px 12px;border:0;background:none;
+  font-family:var(--suit);font-weight:500;font-size:15px;letter-spacing:-.3px;color:var(--teritary);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+  transition:background .22s var(--ease),color .22s var(--ease),box-shadow .22s var(--ease)}
+.cfin-tabs button:hover{color:var(--sec)}
+.cfin-tabs button[aria-current]{background:var(--secondary-bg);color:var(--g900);font-weight:700;
+  box-shadow:inset 0 -2px 0 var(--brand)}
+.cfin-tabs button:focus-visible{outline:2px solid var(--brand-2);outline-offset:-2px}
+/* 좁은 화면 — 넷을 한 줄에 넣으면 글자가 잘린다. 2×2 로 접는다 */
+@media(max-width:760px){
+  .cfin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cfin-tabs button{padding:13px 10px;font-size:14px}
+}
 .cfin-panel[hidden]{display:none}
 
 /* =====================================================================

@@ -60,23 +60,19 @@
   </div>
 </section>
 
-<!-- 페이지 안 단락 탭 — 규칙은 content-layout.css 의 .ctabs, 활성 표시는
-     business-layout.js 가 스크롤을 보고 옮긴다 -->
-<nav class="ctabs" aria-label="재무정보 단락">
-  <div class="cwrap in"><a href="#balance">재무상태표</a><a href="#income">손익계산서</a></div>
-</nav>
-
 <!-- ===================== 본문 ===================== -->
 <main class="cbody">
   <div class="cwrap">
-    <section class="cblock" id="balance">
-      <h2>재무상태표</h2>
-      <p class="lead">별도·연결 재무상태표를 제22기(2021)부터 제26기(2025)까지 공개합니다.</p>
-      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="SEPARATE_BALANCE" aria-current="true">별도</button><button type="button" data-fin="CONSOLIDATED_BALANCE">연결</button></div>
+    <section class="cblock">
+      <h2>재무제표</h2>
+      <p class="lead">별도·연결 재무상태표와 손익계산서를 제22기(2021)부터 제26기(2025)까지 공개합니다.</p>
+      <!-- 탭 넷이 표 한 자리를 나눠 쓴다 — 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
+           전환 스크립트는 이 파일 맨 아래에 있다 -->
+      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="SEPARATE_BALANCE" aria-current="true">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_BALANCE">연결 재무상태표</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button></div>
       <div class="cfin-panel" data-fin="SEPARATE_BALANCE">
         <div class="ctable-wrap">
           <table class="ctable">
-            <caption class="sr-only">별도</caption>
+            <caption class="sr-only">별도 재무상태표</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
             <tr><th scope="row">유동자산</th><td>134,187</td><td>246,847</td><td>175,687</td><td>102,744</td><td>68,792</td></tr>
@@ -95,7 +91,7 @@
       <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
-            <caption class="sr-only">연결</caption>
+            <caption class="sr-only">연결 재무상태표</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
             <tr><th scope="row">유동자산</th><td>134,492</td><td>252,354</td><td>174,767</td><td>104,082</td><td>73,666</td></tr>
@@ -111,16 +107,10 @@
         </div>
         <p class="ctable-unit">(단위: 백만원)</p>
       </div>
-    </section>
-
-    <section class="cblock" id="income">
-      <h2>손익계산서</h2>
-      <p class="lead">별도·연결 손익계산서를 제22기(2021)부터 제26기(2025)까지 공개합니다.</p>
-      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="SEPARATE_INCOME" aria-current="true">별도</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결</button></div>
-      <div class="cfin-panel" data-fin="SEPARATE_INCOME">
+      <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
-            <caption class="sr-only">별도</caption>
+            <caption class="sr-only">별도 손익계산서</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
             <tr class="sum"><th scope="row">매출액</th><td>141,602</td><td>197,497</td><td>234,330</td><td>78,468</td><td>58,836</td></tr>
@@ -141,7 +131,7 @@
       <div class="cfin-panel" data-fin="CONSOLIDATED_INCOME" hidden>
         <div class="ctable-wrap">
           <table class="ctable">
-            <caption class="sr-only">연결</caption>
+            <caption class="sr-only">연결 손익계산서</caption>
             <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
             <tbody>
             <tr class="sum"><th scope="row">매출액</th><td>147,080</td><td>200,156</td><td>235,952</td><td>79,393</td><td>61,532</td></tr>
@@ -275,21 +265,19 @@
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
 <script>
-/* 별도/연결 전환 — 표를 미리 깔아 두고 보여줄 하나만 남긴다. 단락마다 제 짝만
-   본다(closest) — 재무상태표 탭이 손익계산서 표까지 건드리면 안 된다 */
+/* 재무제표 탭 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
+   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
 (function(){
-  [].slice.call(document.querySelectorAll('.cfin-tabs')).forEach(function(bar){
-    var sec=bar.closest('.cblock');
-    var tabs=[].slice.call(bar.querySelectorAll('button'));
-    var panels=[].slice.call(sec.querySelectorAll('.cfin-panel'));
-    tabs.forEach(function(btn){
-      btn.addEventListener('click',function(){
-        var k=btn.getAttribute('data-fin');
-        tabs.forEach(function(b){
-          if(b===btn){b.setAttribute('aria-current','true');}else{b.removeAttribute('aria-current');}
-        });
-        panels.forEach(function(p){p.hidden=(p.getAttribute('data-fin')!==k);});
+  var bar=document.querySelector('.cfin-tabs');if(!bar)return;
+  var tabs=[].slice.call(bar.querySelectorAll('button'));
+  var panels=[].slice.call(document.querySelectorAll('.cfin-panel'));
+  tabs.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var k=btn.getAttribute('data-fin');
+      tabs.forEach(function(b){
+        if(b===btn){b.setAttribute('aria-current','true');}else{b.removeAttribute('aria-current');}
       });
+      panels.forEach(function(p){p.hidden=(p.getAttribute('data-fin')!==k);});
     });
   });
 })();
