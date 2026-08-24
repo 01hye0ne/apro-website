@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APRO | 에이프로 — ESG 게시판 (A-1)</title>
-<meta name="description" content="에이프로(APRO) ESG 게시판 — 온실가스·에너지·용수·폐기물 등 환경 성과 공개." />
+<title>APRO | 에이프로 — 공시정보 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 공시정보 — 결산공고·사업보고서와 금융감독원 전자공시." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
 <!-- ============================================================
-     지속가능경영 > ESG 게시판
+     투자정보 > 재무정보
 
      글과 수치는 content-export/ 에서 그대로 옮겨 온 것이다(원본: 구 apro_home).
      본문 레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
@@ -25,7 +25,7 @@
      형제 페이지로 가는 소분류 탭 줄은 두지 않는다 — 대분류 안에서 어디로
      갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
      열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
-     A-1(esg-board-a1.html)은 이 파일에서 _gen-a1.py 로 나온다 -->
+     A-1(ir-finance-a1.html)은 이 파일에서 _gen-a1.py 로 나온다 -->
 </head>
 <body>
 
@@ -44,8 +44,8 @@
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart-a1.html">스마트 제조</a><a href="business-energy-a1.html">에너지 솔루션</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
     <div class="m-col" data-i="1"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
-    <div class="m-col" data-i="2"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
-    <div class="m-col" data-i="3"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html" aria-current="page">ESG 게시판</a></div>
+    <div class="m-col" data-i="2"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html" aria-current="page">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
+    <div class="m-col" data-i="3"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
     <div class="m-col" data-i="4"><a href="community-notice-a1.html">공지사항</a><a href="community-press-a1.html">보도자료</a></div>
   </div><span class="m-globe"></span></div></div>
   <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
@@ -53,66 +53,52 @@
 
 <!-- ===================== 히어로 ===================== -->
 <section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 78%"><img src="../assets/vision-solar-farm.jpg" alt="" aria-hidden="true" /></span>
+  <span class="dhero-bg" style="--hero-pos:50% 8%"><img src="../assets/hq-exterior.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <h1>ESG 게시판</h1>
-    <p class="dhero-lead">다양한 ESG 활동과 성과를 이해관계자 여러분과 공유합니다.</p>
+    <h1>공시정보</h1>
+    <p class="dhero-lead">투명하고 정확한 기업 정보를 적시에 공개합니다.</p>
   </div>
 </section>
+
+<!-- 페이지 안 단락 탭 — 규칙은 content-layout.css 의 .ctabs, 활성 표시는
+     business-layout.js 가 스크롤을 보고 옮긴다 -->
+<nav class="ctabs" aria-label="공시정보 단락">
+  <div class="cwrap in"><a href="#settlement">결산 자료</a><a href="#dart">공시 자료</a></div>
+</nav>
 
 <!-- ===================== 본문 ===================== -->
 <main class="cbody">
   <div class="cwrap">
-    <section class="cblock">
-      <h2>ESG 게시판</h2>
-      <p class="lead">에이프로는 투명하고 책임 있는 ESG 경영 실천을 위해<br />
-        다양한 활동과 성과를 이해관계자 여러분과 공유하고 있습니다.</p>
+    <section class="cblock" id="settlement">
+      <h2>결산 자료</h2>
+      <p class="lead">결산공고와 사업보고서·감사보고서를 공시합니다.</p>
       <table class="cboard">
-        <thead><tr><th>번호</th><th>구분</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th></tr></thead>
+        <thead><tr><th>번호</th><th>제목</th><th>등록일</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="no">5</td><td>환경</td>
-            <td class="ttl">폐기물 발생 현황 (2024)</td>
-            <td>관리자</td>
-            <td>2025-12-23</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td class="no">4</td><td>환경</td>
-            <td class="ttl">에너지 소비량 및 집약도 (2022~2024)</td>
-            <td>관리자</td>
-            <td>2025-12-23</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="no">3</td><td>환경</td>
-            <td class="ttl">환경경영시스템 (ISO 14001:2015)</td>
-            <td>관리자</td>
-            <td>2025-12-23</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="no">2</td><td>환경</td>
-            <td class="ttl">용수 사용량 (2022~2024)</td>
-            <td>관리자</td>
-            <td>2025-12-23</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td class="no">1</td><td>환경</td>
-            <td class="ttl">온실가스 배출량 및 집약도 (2022~2024)</td>
-            <td>관리자</td>
-            <td>2025-12-23</td>
-            <td>0</td>
-          </tr>
+          <tr><td class="no">12</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=12" target="_blank" rel="noopener">주식회사 에이프로 제26기 결산공고</a></td><td>2026-03-30</td></tr>
+          <tr><td class="no">11</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=11" target="_blank" rel="noopener">주식회사 에이프로 제26기 사업보고서 및 감사보고서</a></td><td>2026-03-19</td></tr>
+          <tr><td class="no">10</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=10" target="_blank" rel="noopener">주식회사 에이프로 제25기 결산공고</a></td><td>2025-03-27</td></tr>
+          <tr><td class="no">9</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=9" target="_blank" rel="noopener">주식회사 에이프로 제25기 사업보고서 및 감사보고서</a></td><td>2025-03-19</td></tr>
+          <tr><td class="no">8</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=8" target="_blank" rel="noopener">주식회사 에이프로 제24기 결산공고</a></td><td>2024-03-28</td></tr>
+          <tr><td class="no">7</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=7" target="_blank" rel="noopener">주식회사 에이프로 제24기 사업보고서 및 감사보고서</a></td><td>2024-03-20</td></tr>
+          <tr><td class="no">6</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=6" target="_blank" rel="noopener">주식회사 에이프로 제23기 결산공고</a></td><td>2023-03-31</td></tr>
+          <tr><td class="no">5</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=5" target="_blank" rel="noopener">주식회사 에이프로 제23기 사업보고서 및 감사보고서</a></td><td>2023-03-22</td></tr>
+          <tr><td class="no">4</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=4" target="_blank" rel="noopener">주식회사 에이프로 제22기 결산공고</a></td><td>2022-03-31</td></tr>
+          <tr><td class="no">3</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=3" target="_blank" rel="noopener">주식회사 에이프로 제22기 사업보고서 및 감사보고서</a></td><td>2022-03-23</td></tr>
         </tbody>
       </table>
       <div class="cnote">
-        <p><strong>글 본문은 아직 옮기지 못했습니다.</strong>
-          다섯 편 모두 본문이 글이 아니라 표를 찍은 <strong>이미지 한 장</strong>뿐이고,
-          그 이미지 파일이 이 저장소에 없습니다(content-export/ASSETS.md 참고).</p>
-        <p>이미지를 받아 그대로 올리는 것보다, 원본 수치를 받아 HTML 표로 다시 세우기를 권합니다 —
-          지금 형태로는 검색도, 영문 전환도, 좁은 화면 대응도 되지 않습니다.</p>
+        <p>제목을 누르면 <strong>기존 사이트의 원본 글</strong>이 새 창으로 열립니다. 첨부된 공고·보고서 파일이 그쪽에 있어서, 새 사이트로 파일을 옮기기 전까지는 이렇게 이어 둡니다.</p>
+      </div>
+    </section>
+
+    <section class="cblock" id="dart">
+      <h2>공시 자료</h2>
+      <p class="lead">금융감독원 전자공시시스템(DART)에 제출한 공시를 그대로 가져와 보여줍니다.</p>
+      <div class="cnote">
+        <p><strong>아직 붙이지 않았습니다.</strong> DART 오픈API 를 호출해 목록을 받아오는 서버가 있어야 동작하는데, 지금 이 사이트는 정적 페이지만으로 되어 있습니다.</p>
+        <p>붙이는 방법은 두 갈래입니다 — ① 빌드할 때 목록을 받아 HTML 로 구워 두기(하루 한 번 갱신) ② 페이지에서 직접 API 를 부르기(실시간이지만 API 키를 감출 서버가 따로 필요합니다).</p>
+        <p>어느 쪽으로 갈지 정해 주시면 그때 맞춰 짓겠습니다.</p>
       </div>
     </section>
   </div>
@@ -132,11 +118,11 @@
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
-        <ul><li><a href="ir-finance-a1.html">재무정보</a></li><li><a href="ir-disclosure-a1.html">공시정보</a></li><li><a href="ir-stock-a1.html">주식정보</a></li><li><a href="ir-policy-a1.html">내부규정</a></li></ul>
+        <ul><li><a href="ir-finance-a1.html">재무정보</a></li><li><a href="ir-disclosure-a1.html" aria-current="page">공시정보</a></li><li><a href="ir-stock-a1.html">주식정보</a></li><li><a href="ir-policy-a1.html">내부규정</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">지속가능경영</p>
-        <ul><li><a href="esg-environment-a1.html">환경</a></li><li><a href="esg-social-a1.html">사회</a></li><li><a href="esg-governance-a1.html">지배구조</a></li><li><a href="esg-report-a1.html">내/외부 신고채널</a></li><li><a href="esg-board-a1.html" aria-current="page">ESG 게시판</a></li></ul>
+        <ul><li><a href="esg-environment-a1.html">환경</a></li><li><a href="esg-social-a1.html">사회</a></li><li><a href="esg-governance-a1.html">지배구조</a></li><li><a href="esg-report-a1.html">내/외부 신고채널</a></li><li><a href="esg-board-a1.html">ESG 게시판</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">커뮤니티</p>
@@ -204,11 +190,11 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
-      <div class="ov-links"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
+      <div class="ov-links"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html" aria-current="page">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">지속가능경영</div>
-      <div class="ov-links"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html" aria-current="page">ESG 게시판</a></div>
+      <div class="ov-links"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">커뮤니티</div>
@@ -228,5 +214,24 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
+<script>
+/* 재무제표 4종 전환 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
+   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
+(function(){
+  var tabs = [].slice.call(document.querySelectorAll('.cfin-tabs button'));
+  var panels = [].slice.call(document.querySelectorAll('.cfin-panel'));
+  if(!tabs.length){ return; }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var k = btn.getAttribute('data-fin');
+      tabs.forEach(function(b){
+        if(b === btn){ b.setAttribute('aria-current','true'); }
+        else { b.removeAttribute('aria-current'); }
+      });
+      panels.forEach(function(p){ p.hidden = (p.getAttribute('data-fin') !== k); });
+    });
+  });
+})();
+</script>
 </body>
 </html>

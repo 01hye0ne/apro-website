@@ -37,7 +37,7 @@ HERE = Path(__file__).parent
 PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
          'business', 'company', 'network', 'index',
          # 투자정보 · 지속가능경영 · 커뮤니티 (content-layout.css 를 함께 쓰는 콘텐츠 페이지)
-         'ir-finance', 'ir-insider', 'ir-accounting',
+         'ir-finance', 'ir-disclosure', 'ir-stock', 'ir-policy',
          'esg-environment', 'esg-social', 'esg-governance', 'esg-report', 'esg-board',
          'community-notice', 'community-press']
 
@@ -69,13 +69,13 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #   두 벌을 나란히 놓고 보려고 사용자가 그렇게 두라고 했다. 그래서 이 아홉 장은
 #   아래 SOURCES 에 넣지 않는다 — 넣는 순간 A 내용이 A-1 을 덮어써 한쪽이 사라진다.
 #   PAGES 에는 그대로 있어야 한다(다른 페이지의 A-1 이 이 아홉 장의 -a1 을 가리켜야 하므로).
-#   ir-insider 만 예외로 들어와 있다 — A-1 쪽에 짝이 아예 없던 새 페이지라 덮어쓸 것이
-#   없고, 빼 두면 A-1 에서 이 링크만 A 로 새기 때문이다.
+#   투자정보 세 장(공시정보·주식정보·내부규정)은 예외로 들어와 있다 — 2026-08-24 개편으로
+#   새로 생겨 A-1 쪽에 짝이 없다. 덮어쓸 것이 없고, 빼 두면 A-1 에서 이 링크만 A 로 샌다.
 #   두 갈래를 다시 합치기로 하면 아홉 장을 여기 도로 넣고 한 번 돌리면 된다.
 SOURCES = ['business-smart.html', 'business-energy.html',
            'business-ai.html', 'business-semicon.html',
            'business.html', 'company.html', 'network.html', 'index.html',
-           'ir-insider.html']
+           'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html']
 
 # body 에 CSS 분기 스위치(class="v-a1")를 달 페이지.
 #

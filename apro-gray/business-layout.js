@@ -629,3 +629,25 @@
     });
   });
 })();
+
+/* 페이지 안 단락 탭(.ctabs) — 지금 화면에 있는 단락의 탭에 표시를 옮긴다.
+   콘텐츠 페이지에만 있는 줄이라 없으면 이 블록은 스스로 빠진다 */
+(function(){
+  var bar=document.querySelector('.ctabs');if(!bar)return;
+  var tabs=[].slice.call(bar.querySelectorAll('a[href^="#"]'));
+  var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  if(secs.some(function(s){return !s;}))return;   /* 앵커가 어긋나면 손대지 않는다 */
+  function paint(i){tabs.forEach(function(a,k){a.classList.toggle('is-on',k===i);});}
+  paint(0);
+  /* 탭 줄 바로 밑을 기준선으로 삼는다 — 그 선을 마지막으로 지난 단락이 "읽는 중" */
+  function onScroll(){
+    var line=bar.getBoundingClientRect().bottom+1,i=0;
+    secs.forEach(function(s,k){if(s.getBoundingClientRect().top<=line)i=k;});
+    paint(i);
+  }
+  var t=false;
+  window.addEventListener('scroll',function(){
+    if(t)return;t=true;requestAnimationFrame(function(){t=false;onScroll();});
+  },{passive:true});
+  onScroll();
+})();
