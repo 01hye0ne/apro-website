@@ -91,6 +91,25 @@
    3. 본문 블록
    ===================================================================== */
 .cbody{padding:88px 0 120px}
+/* 좁은 본문 — 12열 그리드의 3열~10열 (지속가능경영 다섯 장)
+   가운데 여덟 열만 쓰고 양옆 두 열씩을 비운다. 규정·방침처럼 줄글이 길게 이어지는
+   장이라 폭을 좁히면 시선이 가운데로 모이고 한 줄이 짧아져 읽기 쉬워진다.
+
+   8c + 7g 를 푼 값이다 — 열 폭 c = (W - 11g) / 12 이므로 (2/3)W - g/3.
+   거터 24px 기준으로 1440px 본문에서 952px 이 된다.
+
+   안쪽 상자들의 폭 상한(.cdoc 900px 등)은 여기서 푼다. 상한이 컨테이너보다
+   조금 좁아 오른쪽만 남는 어정쩡한 여백이 생기기 때문이다 — 좁힌 폭 자체가
+   이미 읽기 좋은 길이라 상한이 하던 일을 컨테이너가 대신한다 */
+.cbody--narrow{--cgap:24px}
+.cbody--narrow>.cwrap{width:calc((100% - var(--cx) * 2) * 2 / 3 - var(--cgap) / 3);
+  max-width:calc(1440px * 2 / 3 - var(--cgap) / 3)}
+.cbody--narrow .cdoc,.cbody--narrow .ctoc,.cbody--narrow .cnote,
+.cbody--narrow .cdetails,.cbody--narrow .cblock>.lead{max-width:none}
+/* 좁은 화면에서는 열을 나눌 만큼 폭이 없다 — 원래대로 좌우 여백만 남긴다 */
+@media(max-width:900px){
+  .cbody--narrow>.cwrap{width:calc(100% - var(--cx) * 2);max-width:1440px}
+}
 .cblock+.cblock{margin-top:96px}
 /* 제목 줄 — 왼쪽 짧은 브랜드 선 + 제목. 페이지 안에서 장을 가르는 유일한 장치다 */
 .cblock>h2{font-family:var(--suit);font-weight:800;
