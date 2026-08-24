@@ -310,39 +310,39 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 앞뒤 화살표 — 숫자와 같은 크기 자리를 차지하되 글자만 부호로 */
 .cpager .arw{font-size:17px;line-height:1}
 
-/* 보도자료 카드 목록 (.cnews)
-   [이미지 | 제목 · 요약 두 줄 · 작성일] 한 줄이 한 건이다. 표(.cboard)를 쓰지
-   않는 이유는 칸이 아니라 덩어리로 읽히는 목록이라서다 — 제목 길이가 제각각이고
-   요약이 두 줄 붙는다.
+/* 보도자료 카드 (.cnews)
+   [이미지 / 제목 / 작성일] 한 장이 한 건이고 3열로 깐다.
+   제목은 두 줄에서 자른다 — 길이가 제각각이라 안 자르면 한 줄짜리와 세 줄짜리가
+   같은 줄에 서서 카드 높이가 들쭉날쭉해진다. 자른 뒤 카드는 모두 같은 높이다.
 
    섬네일은 아직 없다. 원본 글의 그림이 전부 언론사 서버에 있어 그대로 끌어다
    쓸 수 없다(끊기면 깨지고, 남의 대역폭·저작물이다). 자리만 잡아 두고 A 마크를
    옅게 깔아 비어 보이지 않게 한다 — <img> 가 들어오면 그 위를 덮는다 */
-.cnews{margin-top:28px;list-style:none;border-top:1px solid var(--border-g)}
-.cnews>li{border-bottom:1px solid var(--border-g)}
-.cnews>li>a{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(20px,3vw,32px);
-  align-items:center;padding:24px 8px;transition:background .2s var(--ease)}
-.cnews>li>a:hover{background:var(--secondary-bg)}
+.cnews{margin-top:28px;list-style:none;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.cnews>li>a{display:flex;flex-direction:column;height:100%;
+  border:1px solid var(--border-g);background:#fff;
+  transition:border-color .22s var(--ease),box-shadow .22s var(--ease),transform .22s var(--ease)}
+.cnews>li>a:hover{border-color:var(--point-300);
+  box-shadow:0 10px 24px rgba(27,39,51,.08);transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){.cnews>li>a:hover{transform:none}}
 .cnews .thumb{position:relative;aspect-ratio:4/3;overflow:hidden;
-  background:var(--secondary-bg);border:1px solid var(--border-g)}
+  background:var(--secondary-bg);border-bottom:1px solid var(--border-g)}
 /* 그림이 없을 때 깔리는 바탕 — <img> 가 있으면 그 밑으로 가려진다 */
 .cnews .thumb::after{content:"";position:absolute;inset:0;
   background:url("../assets/a-logo.svg") center/34% no-repeat;opacity:.1}
 .cnews .thumb img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block}
-.cnews .ttl{display:block;font-family:var(--suit);font-weight:700;
-  font-size:clamp(17px,1.6vw,20px);line-height:1.45;letter-spacing:-.4px;color:var(--g900);
-  word-break:keep-all}
+.cnews .txt{flex:1;display:flex;flex-direction:column;padding:20px}
+.cnews .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;
+  letter-spacing:-.34px;color:var(--g900);word-break:keep-all;
+  transition:color .2s var(--ease)}
 .cnews>li>a:hover .ttl{color:var(--brand)}
-/* 요약 — 딱 두 줄에서 자른다. 세 줄째가 반쯤 보이면 잘린 것이 눈에 걸린다 */
-.cnews .ex{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  margin-top:10px;font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;
-  color:var(--sec);word-break:keep-all}
-.cnews .date{display:block;margin-top:12px;font-family:var(--rc);font-weight:400;font-size:14px;
-  letter-spacing:.04em;color:var(--teritary)}
-@media(max-width:640px){
-  .cnews>li>a{grid-template-columns:104px minmax(0,1fr);gap:16px;padding:18px 4px}
-  .cnews .ex{-webkit-line-clamp:2;font-size:14px}
-}
+/* margin-top:auto — 제목이 한 줄이든 두 줄이든 날짜는 카드 밑변에 붙는다 */
+.cnews .date{margin-top:auto;padding-top:16px;font-family:var(--rc);font-weight:400;
+  font-size:14px;letter-spacing:.04em;color:var(--teritary)}
+@media(max-width:900px){.cnews{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cnews{grid-template-columns:minmax(0,1fr)}}
 
 /* =====================================================================
    7. 규정 전문 — 장·조로 내려가는 긴 문서
