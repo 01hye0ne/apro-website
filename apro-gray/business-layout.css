@@ -726,6 +726,10 @@
      ⚠ :empty 는 공백 한 칸에도 풀린다 — 마크업에서 여는 태그와 닫는 태그를
        반드시 붙여 쓴다 */
   .hcard.hcard--tbd .hleft .pict .ic:empty{border:1px dashed var(--border-g)}
+  /* 미정 카드의 4칸 그리드(.descgrid)도 같은 자리표시 톤을 따른다 —
+     위 공용 규칙은 .pict 기준이라 이쪽 .descitem 에는 닿지 않는다 */
+  .hcard--tbd .descitem .k,.hcard--tbd .descitem .txt{color:var(--teritary)}
+  .hcard--tbd .descitem .ic:empty{border:1px dashed var(--border-g)}
 
   /* ── 해외 거점 지도 카드 (.hcard--map) ────────────────────────────────
      assets/world-map.svg — Natural Earth 110m(퍼블릭 도메인)에서 생성한 국경선 지도.
