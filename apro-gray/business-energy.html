@@ -55,14 +55,7 @@
   .gnb-mega .inner{width:calc(100% - 2 * var(--gm))}
   .dhero{padding-left:var(--gm);padding-right:var(--gm)}
   @media(min-width:901px){
-    /* 72vh — 배너 존재감은 남기되 아래에 내용이 있다는 신호를 준다(2026-08-24 요청,
-       종전 100vh). 콘텐츠 페이지(투자정보·지속가능경영·커뮤니티)의 480px 과
-       세부 페이지의 화면 한 판 사이를 잡은 값이다.
-       ⚠ 100vh 였던 원래 이유는 위 주석에 적힌 "빨간 부분" — s1 섹션 윗부분이
-         로드 직후 화면 밑에 삐져나와 지저분해 보인다는 지적이었다. 72vh 는 그
-         자리를 다시 드러낸다(1080px 화면에서 약 300px). 그게 거슬리면 이 값을
-         올려(88vh 쯤이면 살짝 비치는 정도) 조절한다 */
-    .dhero{min-height:72vh;min-height:72dvh}
+    /* 히어로 높이는 공용 규칙(business-layout.css)의 88vh 를 그대로 쓴다 */
     .dhero .in{transform:translateY(-38px)}
     .dhero::before{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;
       height:60px;background:#fff}

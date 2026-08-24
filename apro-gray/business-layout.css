@@ -161,6 +161,17 @@
   /* 하단 패딩 = 탭 바 높이. 바가 음수 마진으로 히어로 밑단에 얹히므로 h1 이 그 위에서 중앙에 온다.
      background:var(--g950) 는 사진이 없거나 못 불러왔을 때의 바닥색으로 남겨 둔다 */
   .dhero{position:relative;min-height:480px;display:grid;place-items:center;background:var(--g950);color:#fff;overflow:hidden;padding:80px 24px var(--bar-h)}
+  /* 데스크톱 히어로 높이 — .dhero 를 쓰는 15장이 이 한 값을 함께 쓴다
+     (사업영역 세부 4 · 회사정보 · 투자정보 3 · 지속가능경영 5 · 커뮤니티 2).
+     2026-08-24 이전에는 페이지마다 갈렸다 — 세부·회사정보는 100vh, 나머지는 위
+     기본값 480px. 480px 은 회사정보에서 답답해 보였고 100vh 는 아래에 내용이
+     있다는 신호를 아예 지웠다. 88vh 는 1080px 화면에서 130px 쯤을 남겨,
+     배너 존재감은 지키면서 다음 장이 살짝 비치게 한다.
+     위 480px 은 좁은 화면(901px 미만)에서 그대로 쓰인다 — 세로가 짧은 기기에서
+     88vh 는 배너만으로 첫 화면이 끝난다 */
+  @media(min-width:901px){
+    .dhero{min-height:88vh;min-height:88dvh}
+  }
   /* ---- 배경 사진 ----
      사업영역 허브(business.html)의 패널이 hover 때 드러내는 사진과 같은 파일이다.
      허브에서 패널을 눌러 들어오면 방금 본 그 장면이 그대로 배너가 된다.
