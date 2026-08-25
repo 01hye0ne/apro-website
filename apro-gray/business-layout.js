@@ -316,7 +316,13 @@
      값이 그대로면 DOM 을 건드리지 않는다 → 매 프레임 불려도 부담이 없다 */
   function paint(st){
     if(!st.btns.length)return;
-    var top=st.track.scrollTop,best=0,bd=Infinity;
+    var top=st.track.scrollTop,c0=st.cards[0].offsetTop,best=-1,bd=Infinity;
+    /* 트랙 맨 위에 카드 아닌 한 칸(도입 띠)이 있는 섹션에서는 그 칸도 후보다 —
+       자리는 0, 번호는 -1(= 아무 카드도 아님). 띠에 멈춰 있는 동안 가장 가까운
+       카드를 억지로 켜 두면, 인덱스가 가리키는 것과 눈에 보이는 것이 어긋난다.
+       띠가 없는 섹션은 c0 이 0 이라 이 줄이 후보를 만들지 않고, 아래 반복문이
+       반드시 카드 하나를 고른다 — 종전과 같다 */
+    if(c0>0)bd=Math.abs(top);
     st.cards.forEach(function(c,i){
       var d=Math.abs(c.offsetTop-top);
       if(d<bd){bd=d;best=i;}
