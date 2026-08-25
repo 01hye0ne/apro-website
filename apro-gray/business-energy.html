@@ -473,7 +473,7 @@
      틴트와 윗변 눈금선)는 가져오지 않는다.
 
      달라지는 것 셋 —
-       ① 흰 판 → 유리 : 반투명 흰 5% + 뒤 흐림(6px), 실루엣은 흰 32% 빛선으로
+       ① 흰 판 → 유리 : 반투명 흰 10~50%(--floor) + 뒤 흐림(3px), 실루엣은 흰 32% 빛선으로
        ② 중앙 정렬     : 판이 2열 시작 ~ 11열 끝. 좌우 여백이 같은 값이라
                         (둘 다 --gm + --gx) 화면 정중앙에 선다
        ③ 양끝 커브     : 왼쪽만 있던 커브를 오른쪽에도 — 판이 양쪽으로 닫힌다
@@ -533,7 +533,7 @@
         var(--tab-edge) left calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
         var(--tab-edge-r) right calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
         var(--floor);
-      -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
       -webkit-mask:var(--floor-shape);mask:var(--floor-shape)}
     /* 왼쪽 커브만 그리던 ::before 는 걷는다 — 이제 위 ::after 가 두 장 다 그린다 */
     .bnav-wrap:not(.is-fixed)::before{display:none}
