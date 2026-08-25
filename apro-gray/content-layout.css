@@ -239,11 +239,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    점을 찍는 목록)을 이기기 위해서다. 특정도를 맞춰 두고 뒤에 놓아 덮는다 */
 .ccard>.cvalues{margin-top:24px;display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
-.ccard>.cvalues>li{display:flex;align-items:center;justify-content:center;
-  padding:22px 14px;background:#fff;border-radius:var(--r);
+.ccard>.cvalues>li{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;
+  padding:26px 14px;background:#fff;border-radius:var(--r);
   font-family:var(--suit);font-weight:700;font-size:16px;
   line-height:1.45;letter-spacing:-.32px;color:var(--g900);
   text-align:center;word-break:keep-all}
+/* 아이콘 자리 — 아직 그림이 없어 점선으로 자리만 잡아 둔다. 파일이 오면 안에
+   도형을 넣고 이 점선만 걷으면 된다. 색은 글자색을 따라가는 아이콘
+   (stroke:currentColor)이라 여기서 정한다 — assets/icons/README.md 의 규격이다 */
+.ccard>.cvalues .ic{flex:none;width:44px;height:44px;display:grid;place-items:center;
+  color:var(--brand);border:1px dashed var(--border-g);border-radius:var(--r)}
+.ccard>.cvalues .ic svg{width:24px;height:24px}
 /* 세로로 쌓는 목록에 찍던 점은 여기서 거둔다 — 가운데 세운 낱말 앞에 점이
    붙으면 글이 한쪽으로 밀린다 */
 .ccard>.cvalues>li::before{display:none}
