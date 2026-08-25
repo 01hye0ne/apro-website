@@ -294,7 +294,9 @@
                   흩어 준다 — 값을 더 벌리지 않고 매끄러움을 얻는 방법이다
      SVG feTurbulence 를 data URI 로 넣어 파일을 만들지 않았다. 색은
      feColorMatrix saturate 0 으로 빼고(색 있는 알갱이는 파랑 위에서 얼룩이
-     된다) 불투명도 .22 로 아주 얇게 깐다. stitchTiles 로 타일 이음매를 없애고
+     된다) 불투명도 .12 로 아주 얇게 깐다 — 알갱이가 눈에 잡히면 그때부터는
+     결이 아니라 지저분함으로 읽힌다. 띠를 흩는 데는 이 정도로 충분하다.
+     stitchTiles 로 타일 이음매를 없애고
      140px 씩 반복시킨다 — 배경 레이어 중 이것만 제 크기가 있고 나머지
      그라데이션은 상자에 맞춰 늘어난다.
 
@@ -304,7 +306,7 @@
   .bnav-wrap.is-fixed{position:fixed;top:var(--bar-top);left:0;width:100%;
     height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E"),
       radial-gradient(34% 190% at 4% 118%,rgba(14,22,30,.55),transparent 62%),
       radial-gradient(26% 170% at 96% 108%,rgba(14,22,30,.42),transparent 58%),
       radial-gradient(32% 200% at 38% 128%,rgba(44,87,144,.85),transparent 60%),
