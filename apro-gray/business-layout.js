@@ -344,18 +344,33 @@
   }
   function kick(st){active=st;if(!raf)raf=requestAnimationFrame(loop);}
 
+  /* ── 트랙 맨 위의 "카드 아닌 한 칸" ───────────────────────────────────────
+     소분류를 통틀어 설명하는 도입 띠를 트랙 첫 자식으로 놓은 섹션이 있다
+     (business-energy.html 의 .hintro — ESS). 그러면 첫 카드가 0 이 아니라 그
+     띠 높이만큼 내려가 앉아, 아래 두 함수가 기대던 "카드 i 의 위치 = i × 간격"
+     이 깨진다. 실제로 띠를 조금만 지나도 raw 가 THRESH 를 넘어 두 번째 카드로
+     건너뛰고, 반대로 위로는 목표값이 0 까지 내려가지 못해 섹션을 못 벗어난다.
+     첫 카드 위치(c0)를 원점으로 삼아 그 가정을 되살리고, 띠가 보이는 구간
+     (0 ~ c0)은 -1 이라는 한 칸을 더 둬서 거기서도 멈출 수 있게 한다.
+     c0 이 0 인 나머지 페이지에서는 -1 과 0 이 같은 자리이고 식도 종전과 똑같다 */
   function goTo(st,i){
-    st.idx=Math.max(0,Math.min(st.cards.length-1,i));
+    var lo=st.cards[0].offsetTop>0?-1:0;
+    st.idx=Math.max(lo,Math.min(st.cards.length-1,i));
     paint(st);
     st.pos=st.track.scrollTop;
-    st.target=st.cards[st.idx].offsetTop;
+    st.target=st.idx<0?0:st.cards[st.idx].offsetTop;
     kick(st);
   }
 
   /* 휠이 멎으면 카드 경계로 정렬. 진행 방향으로 카드 간격의 THRESH 이상 왔으면 다음 장으로 */
   function settle(st){
-    var step=st.cards[1].offsetTop-st.cards[0].offsetTop;
-    var raw=st.target/step,base=Math.floor(raw),frac=raw-base;
+    var c0=st.cards[0].offsetTop;
+    if(c0>0&&st.target<c0){                      // 띠 구간 — 띠(-1)와 첫 카드(0) 사이
+      goTo(st, st.dir>0 ? (st.target>c0*THRESH?0:-1) : (st.target<c0*(1-THRESH)?-1:0));
+      return;
+    }
+    var step=st.cards[1].offsetTop-c0;
+    var raw=(st.target-c0)/step,base=Math.floor(raw),frac=raw-base;
     goTo(st, st.dir>0 ? (frac>THRESH?base+1:base) : (frac<1-THRESH?base:base+1));
   }
 

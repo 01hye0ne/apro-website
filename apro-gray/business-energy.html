@@ -375,58 +375,66 @@
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
   }
 
-  /* ══ 소분류 도입 띠 (.hintro) — 2026-08-25 요청 ══════════════════
+  /* ══ 소분류 도입 띠 (.hintro) — 2026-08-25 요청 ══════════════════════════
      소분류 하나(ESS)를 통틀어 설명하는 줄글이다. 카드는 Grid · Renewable Energy ·
      C&I 로 갈라져 각자 제 이야기를 하므로, 그 셋을 묶는 말은 카드 안에 들어갈
      자리가 없다. 섹션 맨 위에 한 칸 더 두는 이유다.
 
-     자리 — .hsec 격자의 첫 행을 새로 만들어 두 칸(레일 + 트랙)을 통으로 가로질러
-     앉힌다. 레일·트랙은 둘째 행으로 밀려나며, 둘 다 :has() 로 걸어 .hintro 가
-     없는 섹션(#s2 UPS)은 종전 그대로 한 행이다.
-     ⚠ .hsec 은 height:100dvh 이고 .hcard 가 flex:0 0 100% 라 카드 한 장이 트랙
-       높이를 그대로 받는다 — 이 띠가 높아지는 만큼 카드가 낮아진다.
+     자리 — 트랙(.htrack) 안, 첫 카드 앞이다. 섹션 격자의 한 행으로 두었다가
+     옮겼다. 격자 행은 늘 거기 있어서 카드 높이를 영영 깎아먹지만, 트랙 안에
+     있으면 트랙의 스크롤 차례 하나를 차지한다 — 섹션에 처음 닿았을 때 보이고,
+     한 번 더 굴리면 위로 걷히면서 카드가 원래 자리(바 바로 밑)로 올라붙는다.
+     걷힌 띠는 고정 탭 바(z-index 90) 뒤로 들어가 가려진다.
+     ⚠ 트랙 맨 위에 카드 아닌 것이 놓이면서 "카드 i 의 위치 = i × 간격" 이라는
+       가정이 깨진다. business-layout.js 의 goTo()·settle() 을 첫 카드 위치를
+       원점으로 삼도록 고쳤다 — 그 조각이 없는 나머지 페이지에서는 종전과 같은
+       식이 된다.
+
+     흰 띠는 왜 따로 있나 — .htrack 은 세로로 스크롤되는 상자라 가로도 함께
+     잘린다(overflow-x:hidden). 그 안에서는 배경이 화면 폭으로 못 번진다.
+     그래서 색만 트랙 밖으로 꺼내 .hintro-bg 한 장으로 깔고, 위치는 JS 가
+     트랙의 스크롤 값에 맞춰 준다(아래 <script>). .hintro 자체는 투명하다.
+     번지는 방법은 음수 마진이다 — 화면 폭에서 판 폭을 뺀 절반. 격자 아이템의
+     퍼센트는 격자 칸 폭(=.wrap)으로 풀리고 .wrap 은 화면 정중앙에 있어서
+     좌우가 정확히 화면 변에 닿는다(섹션 구분선이 쓰는 것과 같은 식).
+     body 에 overflow-x:clip 이 걸려 있어 이 삐져나감은 스크롤을 만들지 않는다.
 
      위로 붙인다 — 섹션 위 여백을 12px 줄여 띠가 고정 탭 바 밑변에 바로 닿게
-     한다. 사이에 흰 틈이 남으면 띠가 바에서 떨어져 떠 다른 데서 온 조각처럼
-     보인다 — 같은 리본이 진한 남색에서 한 단 연해졌다는 것으로 읽혀야 한다.
+     한다. 사이에 회색 틈이 남으면 띠가 바에서 떨어져 떠 다른 데서 온 조각처럼
+     보인다.
 
-     화면 폭으로 번진다 — box-shadow 의 번짐(100vmax)으로 양쪽을 메우고 clip-path 로
-     위아래를 오린다. 그림자는 스크롤 영역을 늘리지 않아서, 음수 마진이나 100vw 와
-     달리 가로 스크롤이 생길 여지가 없다(지속가능경영 페이지의 판과 같은 방식).
-
-     글은 카드 열(4열)에 맞춰 시작한다. 띠는 화면을 가로지르지만 그 안의 말은 아래
-     카드에 관한 것이라, 카드 제목과 시작선이 같아야 그게 읽힌다.
-     ⚠ 왜 padding-left 가 격자 식과 똑같은가 — .hintro 는 1/-1 로 편 격자 아이템이라
-       포함 블록이 .hsec 의 내용 상자와 같다. 그래서 여기서의 100% 가 격자
-       정의에서의 100% 와 같은 값으로 풀린다. 다른 자리에 옮기면 조용히 어긋난다.
-
-     색 — --brand-2(#4077b7) 다. 시안보다 한 단 진한데, 흰 글자 때문이다:
-       #6b94cd 시안색   흰 글자 대비 3.1:1  — 본문 기준(4.5:1) 미달
-       #4077b7 --brand-2   흰 글자 대비 4.6:1  — 통과
-     더 밝게 가려면 글자를 남색으로 뒤집어야 한다(#6b94cd 위 --g900 은 4.9:1).
+     글은 트랙 왼쪽 끝(4열)에서 시작한다 — 카드 제목과 같은 선이다. 띠는 화면을
+     가로지르지만 그 안의 말은 아래 카드에 관한 것이라, 시작선이 같아야 그게
+     읽힌다. 트랙 안에 있으니 따로 들여쓸 것이 없다.
 
      두 문장은 무게를 나누지 않고 간격도 0 이다 — 한 단락이 두 줄로 흘러간
      것처럼 보여야 띠 하나가 한 마디로 읽힌다.
      본문 불릿 점(.hcard>p::before)은 안 붙는다 — 카드 밖이기도 하고, 두 줄짜리
      도입문은 점을 달면 목록처럼 보인다 */
-  .hintro{background:var(--brand-2);
-    box-shadow:0 0 0 100vmax var(--brand-2);clip-path:inset(0 -100vmax);
-    padding:clamp(36px,3.4vw,64px) 0;
+  .hintro{flex:0 0 auto;padding:clamp(36px,3.4vw,64px) 0;
     display:flex;flex-direction:column;gap:0}
   .hintro p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
-    letter-spacing:-.34px;color:#fff;word-break:keep-all}
+    letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   @media(min-width:901px){
-    .hintro{grid-column:1 / -1;grid-row:1;
-      padding-left:calc((100% - 9 * var(--gcg)) / 5 + 2 * var(--gcg))}
-    .hsec:has(.hintro){grid-template-rows:auto minmax(0,1fr);row-gap:24px;
-      padding-top:calc(var(--bar-rise) + var(--bar-h))}
-    .hsec:has(.hintro)>.hrail,
-    .hsec:has(.hintro)>.htrack{grid-row:2}
+    .hsec:has(.hintro){padding-top:calc(var(--bar-rise) + var(--bar-h))}
+    /* 흰 띠 — 트랙과 같은 칸·같은 행에 겹쳐 놓고 위에 붙인다. 높이와 밀린 거리는
+       JS 가 세 변수로 넘긴다. z-index 를 명시하면 자리잡기(static)여도 층이
+       생기는데, 값이 0 이라 포지션드인 트랙(z-index:auto)·레일(4) 아래에 남는다 */
+    .hintro-bg{grid-column:1 / -1;grid-row:1;align-self:start;z-index:0;
+      height:var(--intro-h,0px);
+      margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+      background:#fff;pointer-events:none;
+      transform:translateY(calc(-1 * var(--intro-shift,0px)))}
+    /* 인덱스도 띠만큼 내려간다 — 안 내리면 첫 줄이 흰 띠 위에 얹히고, 무엇보다
+       인덱스 첫 줄과 첫 카드 제목이 한 선에 서야 한다는 규칙(③)이 깨진다 */
+    .hsec:has(.hintro)>.hrail{transform:translateY(var(--rail-push,0px))}
   }
+  /* 좁은 화면 — 트랙이 스크롤 상자가 아니라(overflow:visible) 띠가 스스로 번질 수
+     있다. 바닥도 흰색으로 돌아가므로 흰 띠는 안 보인다 → 회색으로 뒤집는다 */
   @media(max-width:900px){
-    .hintro{grid-column:1;grid-row:1}
-    .hsec:has(.hintro)>.hrail{grid-row:2}
-    .hsec:has(.hintro)>.htrack{grid-row:3}
+    .hintro-bg{display:none}
+    .hintro{background:var(--secondary-bg);padding:32px 0;
+      box-shadow:0 0 0 100vmax var(--secondary-bg);clip-path:inset(0 -100vmax)}
   }
   /* ════════════════════════════════════════
      히어로 소분류 탭 — A-1 홈(index-a1.html) 히어로 밑단 탭과 같은 디자인
@@ -677,16 +685,21 @@
 
   <!-- 01 -->
   <section class="hsec" id="s1">
-    <!-- ESS 도입 줄글 — 세 카드(Grid · Renewable Energy · C&amp;I)를 묶는 말이라
-         카드 안이 아니라 섹션 맨 위에 둔다. 받는 규칙은 위 <style> 의 .hintro 묶음이고,
-         거기서 격자 첫 행을 통으로 차지한다 — 마크업 순서만 앞서면 되고 grid-row 는
-         CSS 가 잡는다. UPS(#s2)는 아직 문안이 없어 이 판을 두지 않는다 -->
-    <div class="hintro">
-      <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
-      <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
-    </div>
+    <!-- 흰 띠의 색만 트랙 밖으로 꺼낸 판. 글은 트랙 안(.hintro)에 있고 이건 배경뿐이라
+         읽을 것이 없다. 트랙이 세로 스크롤 상자라 가로도 함께 잘려서, 그 안에서는
+         배경을 화면 폭으로 못 번지기 때문이다. 높이·위치는 맨 아래 <script> 가
+         트랙 스크롤에 맞춰 넘긴다 -->
+    <span class="hintro-bg" aria-hidden="true"></span>
     <div class="hrail"></div>
     <div class="htrack">
+      <!-- ESS 도입 줄글 — 세 카드(Grid · Renewable Energy · C&amp;I)를 묶는 말이라
+           카드 안이 아니라 트랙 맨 위, 첫 카드 앞에 둔다. 트랙의 스크롤 차례 하나를
+           차지하므로 섹션에 닿았을 때 보이고 한 번 더 굴리면 걷힌다.
+           UPS(#s2)는 아직 문안이 없어 이 띠를 두지 않는다 -->
+      <div class="hintro">
+        <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
+        <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
+      </div>
       <article class="hcard hcard--tbd" data-tab="Grid">
         <div class="hleft">
           <h3>Grid</h3>
@@ -953,6 +966,52 @@
   btn.addEventListener('click', function(){
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+})();
+</script>
+<script>
+/* ── ESS 도입 띠 — 흰 판과 인덱스를 트랙 스크롤에 맞춰 옮긴다 ─────────────
+   띠 자체(.hintro)는 트랙 안에 있어 저절로 밀려 올라간다. 여기서 손보는 것은
+   트랙 밖에 있어 같이 못 움직이는 둘이다 —
+     .hintro-bg  화면 폭 흰 판 (트랙이 가로로 잘리는 상자라 색만 밖에 뒀다)
+     .hrail      왼쪽 인덱스 (섹션 격자의 옆 칸이라 트랙과 따로 논다)
+   넘기는 값은 CSS 변수 셋이고, 자리 계산은 전부 CSS 쪽에 있다.
+     --intro-h      띠 높이
+     --intro-shift  흰 판이 위로 밀린 거리 (띠 높이에서 멈춘다 — 그 위는 고정 탭
+                    바 뒤라 더 올려도 보이지 않는다)
+     --rail-push    인덱스가 아래로 밀린 거리 (첫 카드 위치 - 스크롤)
+   첫 카드 위치(lead)는 띠 높이 + 트랙 gap 이다. 그 값을 그대로 쓰면 인덱스 첫
+   줄과 첫 카드 제목이 저절로 한 선에 선다 — 둘 다 위 여백이 40px 이라서다.
+   높이는 글이 몇 줄로 접히느냐에 따라 달라지므로 화면 크기가 바뀔 때만 다시 잰다 */
+(function(){
+  var sec=document.getElementById('s1');
+  if(!sec)return;
+  var track=sec.querySelector('.htrack'),
+      intro=sec.querySelector('.hintro'),
+      card=track&&track.querySelector('.hcard');
+  if(!track||!intro||!card)return;
+
+  var narrow=window.matchMedia('(max-width:900px)'),h=0,lead=0;
+
+  function measure(){h=intro.offsetHeight;lead=card.offsetTop;}
+  function sync(){
+    if(narrow.matches){
+      sec.style.removeProperty('--intro-h');
+      sec.style.removeProperty('--intro-shift');
+      sec.style.removeProperty('--rail-push');
+      return;
+    }
+    var top=track.scrollTop;
+    sec.style.setProperty('--intro-h',h+'px');
+    sec.style.setProperty('--intro-shift',Math.min(top,h)+'px');
+    sec.style.setProperty('--rail-push',Math.max(0,lead-top)+'px');
+  }
+  function remeasure(){measure();sync();}
+
+  track.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',remeasure);
+  window.addEventListener('load',remeasure);
+  if(narrow.addEventListener)narrow.addEventListener('change',remeasure);
+  remeasure();
 })();
 </script>
 </body>
