@@ -1979,9 +1979,18 @@
   .st-sky--dusk{opacity:var(--p);
     background:linear-gradient(180deg,
       #6f92c6 0%,#9c9dc4 26%,#d79e79 52%,#f2bd8a 74%,#c9b0ae 88%,#93a6c6 100%)}
-  /* 아트 — 오른쪽에 붙인 80% 폭이 왼쪽으로 미끄러진다.
-     ⚠ 퍼센트는 아트 제 폭 기준이다. 화면이 바뀌어도 사옥이 같은 비율 자리에 선다 */
-  .st-art{left:auto;right:0;width:80%;translate:calc(-78% * var(--p)) 0}
+  /* 아트 — 왼쪽 끝을 글줄에 맞춘 80% 폭이 왼쪽으로 미끄러진다.
+     --st-x 는 .cwrap 안쪽 왼쪽 선이다. 그 값은 .cwrap 이 제 폭(100vw − 168)에서
+     다시 계산하는 padding-inline 과 같은 식인데, 여기서는 100% 가 다른 상자를 가리키니
+     vw 로 풀어 적는다 : 84(바깥 여백 절반) + (100vw − 168 − 300)/12 + 12.
+     ⚠ 선택자를 .st-scene>.st-art 로 적는 이유 — 위 .st-scene>span 이 (0,1,1)이라
+       클래스 하나짜리(.st-art, (0,1,0))보다 세다. 클래스만으로 적으면 left:0 이 이겨
+       그림이 화면 왼쪽 끝에 붙는다(2026-08-25 에 실제로 그랬다).
+     ⚠ 미끄러지는 퍼센트는 아트 제 폭 기준이다. 화면이 바뀌어도 사옥이 같은 비율
+       자리에 선다 */
+  .story{--st-x:calc(84px + (100vw - 468px) / 12 + 12px)}
+  .st-scene>.st-art{left:var(--st-x);right:auto;width:80%;
+    translate:calc(-78% * var(--p)) 0}
   .st-art img{display:block;width:100%;height:auto}
 
   /* ── 글은 장면 위에 앉는다 ─────────────────────────────────────────── */
@@ -2043,7 +2052,7 @@
     .story{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px)}
     .st-scene{position:absolute;left:0;right:0;top:auto;bottom:0;
       height:auto;margin-bottom:0;aspect-ratio:1857 / 603}
-    .st-art{right:auto;left:0;width:100%;translate:none}
+    .st-scene>.st-art{left:0;right:auto;width:100%;translate:none}
     .st-sky--dusk{opacity:0}
     .story-vision,.story-aaa{min-height:0;display:block}
     .story-aaa{padding-bottom:calc(var(--art-h) * .5)}
