@@ -278,33 +278,30 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    방침 줄 (.cpolicy) — 한 줄에 방침 하나. 번호 · 제목 · 설명이 왼쪽에서
    오른쪽으로 선다. 환경 페이지의 환경 방침이 쓴다.
 
-   칸은 넷인데 글이 드는 것은 셋이다 — 번호 · 제목(160px) · 설명(330px), 그리고
+   칸은 넷인데 글이 드는 것은 셋이다 — 번호 · 제목(170px) · 설명(520px), 그리고
    남는 1fr 은 비워 둔다. 그 빈 칸이 사진 자리다.
 
+   설명 칸을 넓게 잡는다. 좁히면 줄 수가 늘어 카드가 높아지기 때문이다 —
+   가장 긴 설명(127자)이 330px 에서는 여섯 줄이지만 520px 에서는 네 줄이다.
+   글자도 15px 로 줄였던 것을 16px 로 되돌렸다. 줄을 길게 뽑는 편이 글자를
+   줄이는 편보다 카드를 더 낮춘다.
+
    글이 끝나는 지점이 색이 덮어야 할 폭을 정한다. 1440px 화면에서 왼쪽 여백
-   30 + 번호 58 + 제목 160 + 설명 330 + 사이 22 씩 = 622px, 곧 줄 폭(1196px)의
-   52% 다. 아래 색은 55% 까지 꽉 채우고 68% 에서 0 이 되므로 글은 늘 진한 색
-   위에 있고, 오른쪽 32% 는 사진만 남는다.
+   30 + 번호 58 + 제목 170 + 설명 520 + 사이 22 씩 = 822px, 곧 줄 폭(1196px)의
+   69% 다. 아래 색은 70% 까지 .74 를 지킨 뒤 92% 에서 0 이 된다.
 
-   설명 글자를 15px 로 한 단 줄인 것은 칸이 좁아진 탓이다. 330px 에 16px 로
-   흘리면 가장 긴 설명(127자)이 일곱 줄이 되어 카드가 도로 높아진다.
-
-   ⚠ 색을 여기서 더 줄이려면 글이 더 좁아져야 하고, 좁아지면 줄 수가 늘어
-     카드가 다시 높아진다. 지금은 설명 길이가 그 한계를 정하고 있다 —
-     더 줄이고 싶으면 색이 아니라 글을 줄여야 한다.
-
-   줄 키는 160~220px 이다. 사진이 띠 전체를 덮던 때에는 크롭을 살리려고 300px
-   까지 올렸지만, 이제 사진이 드러나는 곳은 오른쪽 32% 뿐이라 그만한 키가 필요
-   없다. 220px 이면 설명 여섯 줄(15px x 1.7 = 153px)이 안쪽 여백 60px 과 함께
-   딱 들어간다 — 글이 정하는 최소치에 맞춘 값이다.
+   줄 키는 150~175px 이다. 설명이 네 줄(16px x 1.7 = 109px)이고 안쪽 여백이
+   60px 이라 169px 이면 들어간다 — 글이 정하는 최소치에 맞춘 값이다.
+   사진이 띠 전체를 덮던 때에는 크롭을 살리려고 300px 까지 올렸지만, 이제
+   색이 사진 위에 옅게 물드는 방식이라 그만한 키가 필요 없다.
    남는 세로는 글을 가운데로 모아 메운다(align-items:center) — 위로 붙이면
    아래가 비어 보인다.
 
    ===================================================================== */
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
-  min-height:clamp(160px,15vw,220px);
-  display:grid;grid-template-columns:auto 160px minmax(0,330px) 1fr;
+  min-height:clamp(150px,13vw,175px);
+  display:grid;grid-template-columns:auto 170px minmax(0,520px) 1fr;
   align-items:center;gap:clamp(16px,1.8vw,22px);
   padding:clamp(20px,2.2vw,30px);
   background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
@@ -316,8 +313,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   line-height:1;letter-spacing:-.01em;color:var(--brand-2)}
 .cpolicy h3{font-family:var(--suit);font-weight:700;font-size:19px;line-height:1.4;
   letter-spacing:-.38px;color:var(--g900);word-break:keep-all}
-.cpolicy p{font-family:var(--pre);font-size:15px;line-height:1.7;
-  letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
+.cpolicy p{font-family:var(--pre);font-size:16px;line-height:1.7;
+  letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
 
 /* 사진이 깔린 줄 — <li data-bg style="--bg:… ; --c1:… ; --c2:…">
    점선을 걷고 사진을 깔고 글을 흰색으로 뒤집는다. 사진은 z-index:-2 층에,
@@ -336,17 +333,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    갈아 끼워야 해서 hex 로는 안 된다.
 
    덮는 방식 — 꽉 채우지 않는다. 가장 진한 왼쪽 끝이 .8 이고 글이 끝나는
-   52% 까지 .74 를 지킨 뒤, 84% 에서 0 이 된다.
+   70% 까지 .74 를 지킨 뒤, 92% 에서 0 이 된다.
 
-     이전  .97 로 시작해 55% 까지 .95, 68% 에서 0   사진 5% 비침
-     지금  .8  로 시작해 52% 까지 .74, 84% 에서 0   사진 26% 비침
+     처음  .97 로 시작해 55% 까지 .95, 68% 에서 0   사진  5% 비침
+     지금  .8  로 시작해 70% 까지 .74, 92% 에서 0   사진 26% 비침
 
-   색이 사진을 덮는 것이 아니라 사진 위에 물든 것처럼 보이는 지점이다.
+   불투명한 구간이 아예 없다는 것이 요점이다. 예전에는 왼쪽 절반이 색으로
+   막혀 있고 오른쪽만 사진이었다면, 지금은 띠 전체에서 사진이 비치고 그 위에
+   색이 물들어 있다.
 
    ⚠ .74 가 바닥이다. 여섯 장의 사진에서 가장 밝은 20% 화소를 기준으로 재면
      .74 에서 최저 5.1:1, .68 에서 4.4:1 이 나온다 — 한 단만 더 내려도 본문
-     기준(4.5:1)이 깨진다. 글이 52% 까지 오기 때문이므로, 더 투명하게 하려면
-     알파가 아니라 글을 줄여 글 끝나는 지점을 왼쪽으로 당겨야 한다.
+     기준(4.5:1)이 깨진다.
 
    사라지는 구간은 13% 에서 32% 로 넓혔다(52->84%). 사라질 때 transparent 가
    아니라 같은 색의 알파 0 으로 가는 것은, sRGB 에서 transparent(=검정 알파0)로
@@ -376,15 +374,15 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
   background:
     /* 오른쪽 아래 — 사진과 섞이는 자리라 가장 진하게 얹는다 */
-    radial-gradient(34% 170% at 44% 126%,rgb(var(--c2) / .4),rgb(var(--c2) / 0) 60%),
+    radial-gradient(40% 170% at 56% 126%,rgb(var(--c2) / .4),rgb(var(--c2) / 0) 60%),
     /* 왼쪽 위 — 글 위라서 옅게. 색조만 살짝 다르게 만드는 정도 */
-    radial-gradient(26% 160% at 14% -34%,rgb(var(--c2) / .22),rgb(var(--c2) / 0) 58%),
+    radial-gradient(32% 160% at 18% -34%,rgb(var(--c2) / .22),rgb(var(--c2) / 0) 58%),
     linear-gradient(96deg,
       rgb(var(--c1) / .8) 0%,
-      rgb(var(--c1) / .74) 52%,
-      rgb(var(--c1) / .46) 66%,
-      rgb(var(--c1) / .18) 76%,
-      rgb(var(--c1) / 0) 84%)}
+      rgb(var(--c1) / .74) 70%,
+      rgb(var(--c1) / .44) 80%,
+      rgb(var(--c1) / .16) 87%,
+      rgb(var(--c1) / 0) 92%)}
 .cpolicy>li[data-bg] h3{color:#fff}
 /* 번호는 흰색까지 가지 않는다 — 제목과 같은 무게가 되면 눈금이 아니라 제목의
    일부로 읽힌다. 줄마다 바탕색이 다르므로 색을 지정하지 않고 흰색을 묽혀 쓴다 —
