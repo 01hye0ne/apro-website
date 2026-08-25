@@ -375,39 +375,51 @@
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
   }
 
-  /* ══ 소분류 도입 판 (.hintro) — 2026-08-25 요청 ══════════════════
+  /* ══ 소분류 도입 띠 (.hintro) — 2026-08-25 요청 ══════════════════
      소분류 하나(ESS)를 통틀어 설명하는 줄글이다. 카드는 Grid · Renewable Energy ·
      C&I 로 갈라져 각자 제 이야기를 하므로, 그 셋을 묶는 말은 카드 안에 들어갈
-     자리가 없다. 섹션 맨 위에 한 줄 더 두는 이유다.
+     자리가 없다. 섹션 맨 위에 한 칸 더 두는 이유다.
 
      자리 — .hsec 격자의 첫 행을 새로 만들어 두 칸(레일 + 트랙)을 통으로 가로질러
-     앉힌다. 레일·트랙은 둘째 행으로 밀려나며, 둔 것은 :has() 로 걸어 .hintro 가
+     앉힌다. 레일·트랙은 둘째 행으로 밀려나며, 둘 다 :has() 로 걸어 .hintro 가
      없는 섹션(#s2 UPS)은 종전 그대로 한 행이다.
      ⚠ .hsec 은 height:100dvh 이고 .hcard 가 flex:0 0 100% 라 카드 한 장이 트랙
-       높이를 그대로 받는다 — 이 판이 높아지는 만큼 카드가 낮아진다. 줄글 두
-       줄 분량(약 130px)을 기준으로 안쪽 여백을 잡았다.
+       높이를 그대로 받는다 — 이 띠가 높아지는 만큼 카드가 낮아진다.
 
-     색 — 이 페이지는 바닥이 회색(--secondary-bg)이다(개편 블록 ⑤). 그 위에서
-     "배경색을 깔아 묶어 보이게" 하는 색은 흰색 쪽이다. 테두리와 반경은 오른쪽
-     비주얼 판(.hright)과 같은 값을 쓴다 — 새 재료가 아니라 같은 판을 흰색으로
-     채운 것으로 읽힌다.
-     ⚠ 좁은 화면은 바닥이 다시 흰색이라(⑤ 가 min-width:901px 안에 있다) 판을
-       흰색으로 두면 사라진다 — 거기서는 회색으로 뒤집는다.
+     위로 붙인다 — 섹션 위 여백을 12px 줄여 띠가 고정 탭 바 밑변에 바로 닿게
+     한다. 사이에 흰 틈이 남으면 띠가 바에서 떨어져 떠 다른 데서 온 조각처럼
+     보인다 — 같은 리본이 진한 남색에서 한 단 연해졌다는 것으로 읽혀야 한다.
 
-     글 — 두 문장을 무게로 가른다. 앞은 "무엇을 준다"는 주장이고 뒤는 그 범위를
-     적는 설명이라, 한 덩어리로 두면 둘 다 읽히지 않고 미끄러진다.
+     화면 폭으로 번진다 — box-shadow 의 번짐(100vmax)으로 양쪽을 메우고 clip-path 로
+     위아래를 오린다. 그림자는 스크롤 영역을 늘리지 않아서, 음수 마진이나 100vw 와
+     달리 가로 스크롤이 생길 여지가 없다(지속가능경영 페이지의 판과 같은 방식).
+
+     글은 카드 열(4열)에 맞춰 시작한다. 띠는 화면을 가로지르지만 그 안의 말은 아래
+     카드에 관한 것이라, 카드 제목과 시작선이 같아야 그게 읽힌다.
+     ⚠ 왜 padding-left 가 격자 식과 똑같은가 — .hintro 는 1/-1 로 편 격자 아이템이라
+       포함 블록이 .hsec 의 내용 상자와 같다. 그래서 여기서의 100% 가 격자
+       정의에서의 100% 와 같은 값으로 풀린다. 다른 자리에 옮기면 조용히 어긋난다.
+
+     색 — --brand-2(#4077b7) 다. 시안보다 한 단 진한데, 흰 글자 때문이다:
+       #6b94cd 시안색   흰 글자 대비 3.1:1  — 본문 기준(4.5:1) 미달
+       #4077b7 --brand-2   흰 글자 대비 4.6:1  — 통과
+     더 밝게 가려면 글자를 남색으로 뒤집어야 한다(#6b94cd 위 --g900 은 4.9:1).
+
+     두 문장은 무게를 나누지 않고 간격도 0 이다 — 한 단락이 두 줄로 흘러간
+     것처럼 보여야 띠 하나가 한 마디로 읽힌다.
      본문 불릿 점(.hcard>p::before)은 안 붙는다 — 카드 밖이기도 하고, 두 줄짜리
      도입문은 점을 달면 목록처럼 보인다 */
-  .hintro{background:var(--secondary-bg);border:1px solid var(--line);border-radius:var(--r);
-    padding:clamp(24px,2.2vw,32px) clamp(24px,2.4vw,36px);
-    display:flex;flex-direction:column;gap:12px}
+  .hintro{background:var(--brand-2);
+    box-shadow:0 0 0 100vmax var(--brand-2);clip-path:inset(0 -100vmax);
+    padding:clamp(36px,3.4vw,64px) 0;
+    display:flex;flex-direction:column;gap:0}
   .hintro p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
-    letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hintro p:first-child{font-family:var(--suit);font-weight:700;font-size:20px;
-    line-height:1.5;letter-spacing:-.4px;color:var(--g900)}
+    letter-spacing:-.34px;color:#fff;word-break:keep-all}
   @media(min-width:901px){
-    .hintro{background:#fff;grid-column:1 / -1;grid-row:1}
-    .hsec:has(.hintro){grid-template-rows:auto minmax(0,1fr);row-gap:clamp(20px,1.8vw,26px)}
+    .hintro{grid-column:1 / -1;grid-row:1;
+      padding-left:calc((100% - 9 * var(--gcg)) / 5 + 2 * var(--gcg))}
+    .hsec:has(.hintro){grid-template-rows:auto minmax(0,1fr);row-gap:24px;
+      padding-top:calc(var(--bar-rise) + var(--bar-h))}
     .hsec:has(.hintro)>.hrail,
     .hsec:has(.hintro)>.htrack{grid-row:2}
   }
