@@ -1963,7 +1963,13 @@
      아트는 화면 폭으로 번진다 — .cwrap 이 화면 정중앙이라 left:50% + 음수 마진으로
      양끝이 화면 변에 닿는다. overflow:clip 이 밀려 나간 구간을 잘라 준다.
      ===================================================================== */
+  /* ⚠ 두 판은 화면 한 장짜리 무대여야 한다. 장면(.st-scene)이 무대의 밑변에 붙으므로,
+     무대가 내용 높이대로 흐르면 장면이 글 높이까지 올라와 글 위에 겹친다.
+     글은 위에서부터 앉힌다(flex-start) — 가운데로 모으면 아래로 내려가 하늘 띠에 물린다 */
   .story-vision,.story-aaa{position:relative;isolation:isolate;
+    min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;justify-content:flex-start;
+    padding-bottom:0;
     --art-h:25.98vw;                         /* 80vw × 603/1857 */
     --sky-rise:clamp(90px,9vw,180px);        /* 사옥이 하늘 위로 솟는 높이 */
     --sky-h:calc(var(--art-h) - var(--sky-rise))}
@@ -2007,21 +2013,34 @@
   /* ── AAA — 사옥 오른쪽에 키워드 셋 ─────────────────────────────────── */
   /* 아트를 왼쪽으로 민 만큼 왼쪽 40% 가 사옥 자리다. 세 줄을 그 오른쪽에 나란히 편다 —
      예전 [핵심가치 두 낱말 | 전략] 두 칸 격자에서 한 칸 석 줄로 바뀐다 */
+  /* 세로로 흐르던 격자를 가로로 세운다. grid-auto-flow:column 이면 마크업 순서
+     (dt·dd·dt·dd·dt·dd)가 그대로 [1칸 위·아래][2칸 위·아래][3칸 위·아래] 로 앉는다 —
+     줄마다 dt/dd 를 묶지 않아도 짝이 맞는다.
+     ⚠ 위쪽 @supports subgrid 블록이 .st-src 에 grid-column:1/4, .st-out 에 4 를
+       박아 두었다. 칸이 셋뿐인 여기서 4칸은 격자 밖이라 암시 칸이 생기며 셋이 한자리에
+       겹친다 — 그래서 두 값을 auto 로 되돌린다.
+     ⚠ 같은 이유로 display 도 다시 적어야 한다. 두 요소 모두 위에서 display:grid 라,
+       flex-direction 만 주면 아무 일도 일어나지 않는다 */
   .story-aaa .st-rows{--st-panel:0px;
-    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-auto-flow:column;
+    grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto;
     column-gap:clamp(16px,2.2vw,40px);row-gap:0;
     align-items:start;
-    width:60%;margin-left:auto;margin-top:clamp(40px,10vh,140px)}
+    width:60%;margin-left:auto;margin-top:clamp(32px,7vh,96px)}
   /* 핵심가치 두 낱말(진보+개척 …)은 전략 이름 위에 작게 얹는다 — 칸이 좁아져
      옆에 나란히 두면 두 낱말이 각각 두 줄로 접힌다 */
-  .story-aaa .st-src{grid-row:1;flex-direction:column;align-items:flex-start;
+  .story-aaa .st-src{grid-column:auto;grid-row:auto;
+    display:flex;flex-direction:column;align-items:flex-start;
     gap:clamp(2px,.4vh,6px);margin-bottom:clamp(8px,1.4vh,16px)}
   .story-aaa .st-src .st-plus{display:none}
   .story-aaa .st-src .st-word b{font-size:clamp(13px,1.05vw,17px)}
   .story-aaa .st-src .st-word i{display:none}
-  .story-aaa .st-out{grid-row:2;flex-direction:column;align-items:flex-start;
+  .story-aaa .st-out{grid-column:auto;grid-row:auto;
+    display:flex;flex-direction:column;align-items:flex-start;
+    gap:clamp(6px,1vh,12px);
     background:none;box-shadow:none;padding:0}
   .story-aaa .st-out .st-word b{font-size:clamp(20px,1.9vw,32px)}
+  .story-aaa .st-out .st-desc p{font-size:clamp(13px,.95vw,16px);line-height:1.6}
 
   @media(prefers-reduced-motion:reduce){
     .st-art,.story-aaa .st-art{transition:none}
@@ -2029,15 +2048,16 @@
   /* 좁은 화면 — 무대를 화면 한 장으로 못 박지 않는다(글이 길어 넘친다). 장면은 글 아래
      띠로 남고, 가로 미끄러짐도 없앤다 — 폭이 좁아 사옥만 커다랗게 잘려 보인다 */
   @media(max-width:900px){
-    .story-vision,.story-aaa{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px)}
+    .story-vision,.story-aaa{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px);
+      min-height:0;display:block;padding-bottom:calc(var(--art-h) * .5)}
     .story-vision .st-head{max-width:none}
     .st-scene{height:auto;top:auto;aspect-ratio:1857 / 603}
     .st-art{right:auto;left:0;width:100%}
     .story-aaa .st-art{translate:none}
     .story-aaa .st-rows{width:auto;margin-left:0;
-      grid-template-columns:minmax(0,1fr);row-gap:clamp(20px,4vh,36px)}
-    .story-aaa .st-src{grid-row:auto}
-    .story-aaa .st-out{grid-row:auto}
+      grid-auto-flow:row;
+      grid-template-columns:minmax(0,1fr);grid-template-rows:none;
+      row-gap:clamp(20px,4vh,36px)}
   }
 
   /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
