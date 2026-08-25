@@ -416,12 +416,23 @@
   .hintro p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
     letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
   @media(min-width:901px){
-    .hsec:has(.hintro){padding-top:calc(var(--bar-rise) + var(--bar-h))}
+    .hsec:has(.hintro){--intro-lift:calc(var(--bar-rise) + var(--bar-h));
+      padding-top:var(--intro-lift)}
     /* 흰 띠 — 트랙과 같은 칸·같은 행에 겹쳐 놓고 위에 붙인다. 높이와 밀린 거리는
        JS 가 세 변수로 넘긴다. z-index 를 명시하면 자리잡기(static)여도 층이
-       생기는데, 값이 0 이라 포지션드인 트랙(z-index:auto)·레일(4) 아래에 남는다 */
+       생기는데, 값이 0 이라 포지션드인 트랙(z-index:auto)·레일(4) 아래에 남는다.
+
+       판을 섹션 위 여백(--intro-lift)만큼 위로 끌어올려 섹션 맨 윗변까지 채운다.
+       그 여백은 고정 바가 덮으라고 비워 둔 자리라, 섹션이 화면 위에 딱 물렸을
+       때는 어차피 안 보인다. 문제는 그 밖의 순간이다 —
+         히어로에 있을 때   섹션이 히어로 바로 밑에서 시작하는데 위 128px 이
+                          회색이라, 탭 판과 띠 사이에 회색 칸이 하나 뜬다
+         덜 물렸을 때       스크롤바를 끌거나 넘어가는 도중이면 그만큼 비어 보인다
+       판을 윗변까지 올려 두면 세 경우 다 바 밑에서 곧바로 흰색이 이어진다.
+       끌어올린 만큼 높이도 같이 더해야 아랫변이 제자리에 남는다 */
     .hintro-bg{grid-column:1 / -1;grid-row:1;align-self:start;z-index:0;
-      height:var(--intro-h,0px);
+      margin-top:calc(-1 * var(--intro-lift));
+      height:calc(var(--intro-h,0px) + var(--intro-lift));
       margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
       background:#fff;pointer-events:none;
       transform:translateY(calc(-1 * var(--intro-shift,0px)))}
@@ -989,6 +1000,11 @@
      --intro-shift  흰 판이 위로 밀린 거리 (띠 높이에서 멈춘다 — 그 위는 고정 탭
                     바 뒤라 더 올려도 보이지 않는다)
      --rail-push    인덱스가 아래로 밀린 거리 (첫 카드 위치 - 스크롤)
+   띠가 다 걷히면 판을 아예 숨긴다. 판은 섹션 윗변까지 올라와 있어서 다 밀리면
+   섹션 위로 삐져나가는데, 대개는 그 자리가 화면 밖이라 상관없다. "맨 위로"
+   단추처럼 트랙 위치를 그대로 둔 채 히어로로 뛰는 길이 있어, 그때 히어로 밑단에
+   흰 판이 얹히는 것을 막는다. 다 걷힌 시점에는 판이 이미 바 뒤라 숨겨도 티가 안 난다.
+
    첫 카드 위치(lead)는 띠 높이 + 트랙 gap 이다. 그 값을 그대로 쓰면 인덱스 첫
    줄과 첫 카드 제목이 저절로 한 선에 선다 — 둘 다 위 여백이 40px 이라서다.
    높이는 글이 몇 줄로 접히느냐에 따라 달라지므로 화면 크기가 바뀔 때만 다시 잰다.
@@ -1004,6 +1020,7 @@
   if(!sec)return;
   var track=sec.querySelector('.htrack'),
       intro=sec.querySelector('.hintro'),
+      bg=sec.querySelector('.hintro-bg'),
       card=track&&track.querySelector('.hcard');
   if(!track||!intro||!card)return;
 
@@ -1021,12 +1038,14 @@
       sec.style.removeProperty('--intro-shift');
       sec.style.removeProperty('--rail-push');
       document.body.classList.remove('intro-flush');
+      if(bg)bg.style.visibility='';
       return;
     }
     var top=track.scrollTop;
     sec.style.setProperty('--intro-h',h+'px');
     sec.style.setProperty('--intro-shift',Math.min(top,h)+'px');
     sec.style.setProperty('--rail-push',Math.max(0,lead-top)+'px');
+    if(bg)bg.style.visibility=top>=h-0.5?'hidden':'';
     flush();
   }
   function remeasure(){measure();sync();}
