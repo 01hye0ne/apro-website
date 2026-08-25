@@ -287,12 +287,24 @@
      주머니 둘을 맨 앞에 두어 밝은 구름보다 위에 오게 했다 — 왼쪽 아래(사업명칭
      자리)와 오른쪽 끝을 눌러 흰 글자와 흰 탭 판을 지킨다.
 
+     맨 위에 노이즈 한 겹을 얹는다. 두 가지 일을 한다 —
+       ① 결      매끈한 그라데이션이 화면으로 인쇄된 면처럼 보이지 않게 한다
+       ② 띠 없애기 이 바탕은 밝기 폭이 좁아(#192840 ~ #21395d) 8비트 화면에서
+                  계단(banding)이 드러나기 쉬운 조건이다. 알갱이가 그 경계를
+                  흩어 준다 — 값을 더 벌리지 않고 매끄러움을 얻는 방법이다
+     SVG feTurbulence 를 data URI 로 넣어 파일을 만들지 않았다. 색은
+     feColorMatrix saturate 0 으로 빼고(색 있는 알갱이는 파랑 위에서 얼룩이
+     된다) 불투명도 .22 로 아주 얇게 깐다. stitchTiles 로 타일 이음매를 없애고
+     140px 씩 반복시킨다 — 배경 레이어 중 이것만 제 크기가 있고 나머지
+     그라데이션은 상자에 맞춰 늘어난다.
+
      ⚠ 예전에는 이 자리가 히어로 밑단과 같은 색이라 고정 전환이 이음매 없이
        넘어갔다. 그 전제는 히어로 탭이 유리로 바뀌면서 이미 깨져 있었다
        (.dhero::after 주석 참고) */
   .bnav-wrap.is-fixed{position:fixed;top:var(--bar-top);left:0;width:100%;
     height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;
     background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"),
       radial-gradient(34% 190% at 4% 118%,rgba(14,22,30,.55),transparent 62%),
       radial-gradient(26% 170% at 96% 108%,rgba(14,22,30,.42),transparent 58%),
       radial-gradient(32% 200% at 38% 128%,rgba(44,87,144,.85),transparent 60%),
