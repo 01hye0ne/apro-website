@@ -3255,15 +3255,20 @@
 
 /* 랜드스케이프 모핑 구동기 (⑨-c) — 되돌리려면 이 덩이 하나만 지우면 된다.
 
-   하는 일은 값 하나를 내주는 것뿐이다. 두 판의 문서 좌표를 재고, 지금 스크롤이
-   그 사이 어디쯤인지를 0~1 로 적어 .story 에 --p 로 건다. 아트가 얼마나 미끄러지고
-   노을이 얼마나 짙은지는 전부 CSS 가 그 값 하나를 보고 정한다.
+   하는 일은 값 하나를 내주는 것뿐이다. AAA 판이 화면 아래에서 얼마나 올라왔는지를
+   0~1 로 적어 .story 에 --p 로 건다. 아트가 얼마나 미끄러지고 노을이 얼마나 짙은지는
+   전부 CSS 가 그 값 하나를 보고 정한다.
 
-     p = 0   Vision 판이 화면 맨 위        낮 하늘, 아트 제자리
-     p = 1   AAA 판이 화면 맨 위           노을, 아트 왼쪽 78%
+     p = 0   AAA 판 윗변이 화면 밑변에      낮 하늘, 아트 제자리 (사옥 오른쪽)
+     p = 1   AAA 판 윗변이 화면 윗변에      노을, 아트 왼쪽 78% (사옥 왼쪽)
 
+   ⚠ 기준을 "Vision 판 윗변에서 AAA 판 윗변까지" 로 잡으면 안 된다 (2026-08-25).
+     Vision 판은 위 여백이 300px 쯤 되므로, 글이 제자리에 앉아 보이는 순간에는 이미
+     그 구간의 3분의 1을 지나 있다 — 사옥이 화면 한가운데까지 끌려와 있었다.
+     AAA 판이 올라오는 것을 기준으로 삼으면 Vision 을 읽는 동안은 p 가 0 이고,
+     떠날 때 비로소 미끄러진다.
    ⚠ 좌표를 미리 재 두지 않고 매번 다시 잰다 — 앞 장(About)의 키가 단계에 따라
-     자라므로 한 번 재 둔 값은 곧 어긋난다. getBoundingClientRect 두 번은 프레임당
+     자라므로 한 번 재 둔 값은 곧 어긋난다. getBoundingClientRect 한 번은 프레임당
      비용이 거의 없다.
    ⚠ requestAnimationFrame 으로 한 프레임에 한 번만 그린다. scroll 은 프레임보다
      자주 온다.
@@ -3271,17 +3276,14 @@
      브라우저가 다시 계산한다. */
 (function(){
   var st=document.querySelector('.story');if(!st)return;
-  var v=st.querySelector('.story-vision'),a=st.querySelector('.story-aaa');
-  if(!v||!a)return;
+  var a=st.querySelector('.story-aaa');
+  if(!a)return;
   var last=-1,tick=false;
   function paint(){
     tick=false;
-    var y=window.pageYOffset||document.documentElement.scrollTop;
-    var v0=v.getBoundingClientRect().top+y,
-        a0=a.getBoundingClientRect().top+y,
-        d=a0-v0;
-    if(d<=0)return;
-    var p=(y-v0)/d;
+    var vh=window.innerHeight||document.documentElement.clientHeight;
+    if(!vh)return;
+    var p=(vh-a.getBoundingClientRect().top)/vh;
     p=p<0?0:(p>1?1:p);
     if(Math.abs(p-last)<0.0015)return;
     last=p;
