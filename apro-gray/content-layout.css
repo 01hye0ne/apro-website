@@ -278,10 +278,14 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    방침 줄 (.cpolicy) — 한 줄에 방침 하나. 번호 · 제목 · 설명이 왼쪽에서
    오른쪽으로 선다. 환경 페이지의 환경 방침이 쓴다.
 
-   석 줄로 나눈 이유 — 줄 폭이 2~11열(1196px)이라 설명을 통으로 흘리면 한 줄이
-   1000px 을 넘는다. 제목에 260px 을 떼어 주면 설명이 760px 안으로 들어와
-   읽을 만한 길이가 된다. 제목 칸을 고정 폭으로 둔 것은 여섯 줄의 설명 시작점을
-   맞추기 위해서다 — 제목 길이를 따라가면 줄마다 들쭉날쭉해진다.
+   칸은 넷인데 글이 드는 것은 셋이다 — 번호 · 제목(220px) · 설명(430px), 그리고
+   남는 1fr 은 비워 둔다. 그 빈 칸이 사진 자리다.
+
+   글에 폭 상한을 둔 이유. 줄 폭이 2~11열(1196px)이라 설명을 통으로 흘리면 한
+   줄이 1000px 을 넘어 읽기 힘들고, 무엇보다 글이 띠를 가로질러 버려 사진이
+   설 자리가 없어진다. 글을 왼쪽 3분의 2에 모아 두면 오른쪽 3분의 1이 온전히
+   사진 몫이 된다. 제목 칸을 고정 폭으로 둔 것은 여섯 줄의 설명 시작점을 맞추기
+   위해서다 — 제목 길이를 따라가면 줄마다 들쭉날쭉해진다.
 
    줄 키는 240~300px 이다. 글만 놓고 보면 절반이면 되지만 이 키는 사진이 정한다.
    받은 사진이 2.5:1 인데 cover 는 폭을 맞추고 남는 세로를 버리므로, 줄이 낮을수록
@@ -296,7 +300,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy{margin-top:32px;list-style:none;display:flex;flex-direction:column;gap:12px}
 .cpolicy>li{position:relative;isolation:isolate;overflow:clip;
   min-height:clamp(240px,21vw,300px);
-  display:grid;grid-template-columns:auto 260px minmax(0,1fr);
+  display:grid;grid-template-columns:auto 220px minmax(0,430px) 1fr;
   align-items:center;gap:clamp(20px,2.2vw,32px);
   padding:clamp(28px,3vw,44px);
   background:#fff;border:1px dashed var(--border-g);border-radius:var(--r)}
@@ -311,12 +315,25 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy p{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
   letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
 
-/* 사진이 깔린 줄 — <li data-bg style="--bg:url('../assets/….jpg')">
+/* 사진이 깔린 줄 — <li data-bg style="--bg:… ; --c1:… ; --c2:…">
    점선을 걷고 사진을 깔고 글을 흰색으로 뒤집는다. 사진은 z-index:-2 층에,
-   글을 읽히게 하는 어둠은 -1 층에 둔다 — 상자에 isolation:isolate 가 걸려
-   있어 음수 층이 바깥으로 새지 않는다.
-   어둠은 왼쪽이 짙고 오른쪽이 옅다. 글이 왼쪽에 몰려 있어서, 오른쪽까지 같은
-   농도로 덮으면 사진이 사진 구실을 못 한다.
+   글을 받치는 색은 -1 층에 둔다 — 상자에 isolation:isolate 가 걸려 있어
+   음수 층이 바깥으로 새지 않는다.
+
+   -1 층은 원래 검정 스크림이었다. 글은 읽혔지만 사진이 20% 만 남아 '환경' 의
+   화사함이 사라졌다. 그래서 검정을 걷고 줄마다 다른 색을 깐다.
+
+     --c1  깊은 색. 글이 앉는 왼쪽을 거의 불투명하게 덮는다. 흰 글자 대비가
+           사진 밝기와 무관하게 결정되므로 사진을 고르는 데 제약이 없어진다.
+     --c2  한 단 밝은 이웃 색. 큰 타원 둘로 부분 알파만 얹어 색조에 차이를 준다 —
+           단색 한 겹이면 색종이처럼 납작해 보인다.
+
+   둘 다 세 숫자(예: 14 74 85)로 적는다. rgb(var(--c1) / .28) 처럼 알파를
+   갈아 끼워야 해서 hex 로는 안 된다.
+
+   가로로는 왼쪽 52% 까지 색을 꽉 채우고 96% 에서 0 이 된다. 사라질 때
+   transparent 가 아니라 같은 색의 알파 0 으로 가는 것은, sRGB 에서
+   transparent(=검정 알파0)로 보간하면 중간에 거뭇한 띠가 지기 때문이다.
 
    --bgpos 는 크롭 위치다. 띠가 6:1 인데 사진은 2.5:1 이라(한 장은 3:2) 세로로
    절반 넘게 잘린다 — cover 는 폭을 맞추고 남는 세로를 버리기 때문이다. 기본은
@@ -327,11 +344,22 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   background-image:var(--bg);background-size:cover;
   background-position:var(--bgpos,center)}
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(90deg,rgba(14,22,30,.8) 34%,rgba(14,22,30,.36))}
+  background:
+    /* 오른쪽 아래 — 사진과 섞이는 자리라 가장 진하게 얹는다 */
+    radial-gradient(50% 170% at 62% 126%,rgb(var(--c2) / .55),rgb(var(--c2) / 0) 60%),
+    /* 왼쪽 위 — 글 위라서 옅게. 색조만 살짝 다르게 만드는 정도 */
+    radial-gradient(38% 160% at 20% -34%,rgb(var(--c2) / .3),rgb(var(--c2) / 0) 58%),
+    linear-gradient(96deg,
+      rgb(var(--c1) / .97) 0%,
+      rgb(var(--c1) / .95) 52%,
+      rgb(var(--c1) / .72) 70%,
+      rgb(var(--c1) / .28) 85%,
+      rgb(var(--c1) / 0) 96%)}
 .cpolicy>li[data-bg] h3{color:#fff}
 /* 번호는 흰색까지 가지 않는다 — 제목과 같은 무게가 되면 눈금이 아니라 제목의
-   일부로 읽힌다. 어두운 사진 위에서 브랜드색으로 읽히는 밝은 값을 쓴다 */
-.cpolicy>li[data-bg] .no{color:var(--point-300)}
+   일부로 읽힌다. 줄마다 바탕색이 다르므로 색을 지정하지 않고 흰색을 묽혀 쓴다 —
+   --point-300(하늘색)을 그대로 두면 초록 줄에서 혼자 파랗게 뜬다 */
+.cpolicy>li[data-bg] .no{color:rgba(255,255,255,.6)}
 .cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
 
 /* 좁은 화면 — 석 줄을 세울 자리가 없다. 아이콘과 제목을 한 줄에 두고 설명을
