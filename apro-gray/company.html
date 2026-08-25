@@ -1928,77 +1928,116 @@
   }
 
   /* =====================================================================
-     ⑨-c · Vision 판 = 랜드스케이프 한 장면 (2026-08-25)
+     ⑨-c · 랜드스케이프 장면 — Vision 은 낮, AAA 는 노을 (2026-08-25)
      =====================================================================
-     ⚠ 되돌리기 : 이 블록 · 마크업의 .st-scene 덩이 셋만 지우면 된다. 구동기는 없다 —
+     ⚠ 되돌리기 : 이 블록 · 마크업의 .st-scene 덩이 둘만 지우면 된다. 구동기는 없다 —
        움직임은 전부 .crv 가 붙이는 .is-in 한 클래스가 몬다.
 
      여기 있던 ⑨-b(사진 두 장이 맞물려 하늘이 되던 장치)를 통째로 걷고 그 자리에
      일러스트 한 장을 놓는다. 걷어낸 것 : .st-sky 붙박이 레이어 · 카메라 하강 이음 ·
-     267줄짜리 구동기 · 사진 둘(vision-solar-farm · hq-sunset). 그 장치는 사진 두 장이
-     픽셀 단위로 맞물려 있다는 전제 위에 서 있었고(솔라팜 191행 = 사옥 0행), 그림이
-     일러스트로 갈리면 그 전제 자체가 없어진다.
+     267줄짜리 구동기 · 사진 둘(vision-solar-farm · hq-sunset).
 
-     장면은 두 단계다. 신호는 .crv 의 .is-in 하나 —
-       들어오기 전   노을 하늘. 아트는 왼쪽으로 55% 나가 있어 사옥만 화면에 남는다
-                    (풍력·공장·태양광은 화면 밖 왼쪽)
-       들어온 뒤     노을이 걷히며 낮 하늘. 아트가 제자리로 미끄러져 들어와
-                    랜드스케이프 전체가 드러나고 사옥은 오른쪽에 선다
+     장면은 두 판에 한 벌씩 있다. 한 장면을 두 판에 걸쳐 몰지 않는 이유 —
+     그러려면 붙박이 무대와 스크롤 구동기가 다시 필요해진다. 판마다 제 장면을
+     두면 CSS 만으로 끝나고, 스크롤이 판을 넘는 동안 하늘색이 갈리는 것은 두 판이
+     이어져 있으니 저절로 읽힌다.
 
-     55% 는 시안에서 잰 값이다 — 두 단계에서 사옥의 크기와 높이가 같고 가로로만
-     옮겨져 있었다(1903px 화면에서 1051px = 55.2%). 그래서 확대가 아니라 가로 미끄러짐이다.
+       Vision  낮 하늘 + 랜드스케이프 제자리 (사옥이 오른쪽)
+       AAA     노을 하늘 + 아트를 왼쪽으로 55% 밀어 사옥을 왼쪽에 세운다
+               (풍력·공장·태양광은 화면 밖 왼쪽) — 그 오른쪽이 키워드 자리다
+
+     55% 는 시안에서 잰 값이다. 두 시안에서 사옥의 크기와 높이가 같고 가로로만
+     옮겨져 있었다 — 확대가 아니라 미끄러짐이다.
+
+     크기 — 아트는 화면 폭의 80% 다(2026-08-25 요청). 100% 였을 때는 사옥이 탭 바
+     밑까지 치솟아 큰 두 줄과 부딪혔다.
+       --art-h  아트 높이 = 80vw × 603/1857 = 25.98vw
+       --sky-h  하늘 띠 = 그보다 낮게 잡는다. 차이만큼 사옥이 하늘 윗변 위로 솟는다
+     하늘을 아트보다 높이면 그림이 하늘 안에 갇혀 시안의 그림이 안 나온다.
 
      하늘 색은 SVG 팔레트에서 그대로 뽑았다(#BCDDFF · #95BDEE · #59ACFF) — 그림과
      하늘이 다른 데서 온 것처럼 보이지 않게 하려면 색을 새로 만들면 안 된다.
-     노을은 이 그림에 없는 색이라(SVG 는 파랑 계열뿐이다) 따로 지었고, 위쪽에 파랑을
-     남겨 두 단계가 같은 하늘의 다른 시각으로 읽히게 했다.
+     노을은 이 그림에 없는 색이라 따로 지었고, 위쪽에 파랑을 남겨 두 판이 같은 하늘의
+     다른 시각으로 읽히게 했다.
 
-     키 — 아트를 화면 폭으로 깔면 높이가 화면폭 × 603/1857 = 32.5% 다(1903px 에서
-     618px). 하늘 띠는 그보다 낮은 42vh 라, 사옥이 하늘 윗변 위로 솟는다.
-     시안에서 그 솟은 높이가 176px 이었고 이 값이면 165px 이다.
-     ⚠ 하늘을 아트보다 높이면 그림이 하늘 안에 갇혀 시안의 그림이 안 나온다.
-
-     아트는 화면 폭으로 번진다 — .cwrap 이 화면 정중앙이라 left:50% + 음수 이동으로
-     양끝이 화면 변에 닿는다. overflow:clip 이 왼쪽으로 나간 구간을 잘라 준다.
+     아트는 화면 폭으로 번진다 — .cwrap 이 화면 정중앙이라 left:50% + 음수 마진으로
+     양끝이 화면 변에 닿는다. overflow:clip 이 밀려 나간 구간을 잘라 준다.
      ===================================================================== */
-  .story-vision{position:relative;isolation:isolate;
-    min-height:100vh;min-height:100dvh;
-    display:flex;flex-direction:column;justify-content:center;
-    padding-bottom:0;
-    --sky-h:clamp(260px,42vh,470px)}
-  /* 글은 장면 위에 앉는다 */
-  .story-vision .st-head{position:relative;z-index:1;
-    text-align:left;max-width:min(64%,900px)}
+  .story-vision,.story-aaa{position:relative;isolation:isolate;
+    --art-h:25.98vw;                         /* 80vw × 603/1857 */
+    --sky-rise:clamp(90px,9vw,180px);        /* 사옥이 하늘 위로 솟는 높이 */
+    --sky-h:calc(var(--art-h) - var(--sky-rise))}
   .st-scene{position:absolute;left:50%;bottom:0;width:100vw;height:100%;
     margin-left:-50vw;overflow:clip;z-index:0;pointer-events:none}
-  /* .crv 의 기본 등장(떠오름)은 끈다 — 이 덩이는 뜨는 것이 아니라 안에서 움직인다.
-     .is-in 은 그대로 붙으므로 신호로만 쓴다 */
-  [data-crv] .st-scene.crv{opacity:1;translate:none}
-  .st-scene>span{position:absolute;left:0;right:0;bottom:0}
-  .st-sky-day{height:var(--sky-h);
-    background:linear-gradient(180deg,#bcddff 0%,#95bdee 46%,#59acff 100%)}
-  /* 노을 — 위는 파랑을 남기고 가운데를 주황으로 태운다. 맨 아래를 다시 푸르게 두는
-     것은 그림의 바닥(도로·건물 밑동)이 파랑 계열이라 거기서 색이 끊기지 않게 하려는 것 */
-  .st-sky-dusk{height:var(--sky-h);
-    background:linear-gradient(180deg,
-      #6f92c6 0%,#9c9dc4 26%,#d79e79 52%,#f2bd8a 74%,#c9b0ae 88%,#93a6c6 100%);
-    transition:opacity 1.5s var(--ease)}
-  .st-scene.is-in .st-sky-dusk{opacity:0}
-  .st-art img{display:block;width:100%;height:auto;
-    translate:-55% 0;transition:translate 1.7s var(--ease)}
-  .st-scene.is-in .st-art img{translate:none}
+  .st-scene>span{position:absolute;bottom:0;left:0;right:0}
+  .st-sky{height:var(--sky-h)}
+  .story-vision .st-sky{background:linear-gradient(180deg,#bcddff 0%,#95bdee 46%,#59acff 100%)}
+  /* 노을 — 위는 파랑을 남기고 가운데를 주황으로 태운다. 맨 아래를 다시 푸르게 두는 것은
+     그림의 바닥(도로·건물 밑동)이 파랑 계열이라 거기서 색이 끊기지 않게 하려는 것 */
+  .story-aaa .st-sky{background:linear-gradient(180deg,
+    #6f92c6 0%,#9c9dc4 26%,#d79e79 52%,#f2bd8a 74%,#c9b0ae 88%,#93a6c6 100%)}
+  /* 아트 — 오른쪽에 붙인 80% 폭. Vision 은 제자리, AAA 는 왼쪽으로 밀어 사옥만 남긴다 */
+  .st-art{left:auto;right:0;width:80%}
+  .st-art img{display:block;width:100%;height:auto}
+  /* 78% — 사옥의 왼쪽 끝이 시안 자리(화면 195px)에 오는 값이다. 55% 였던 것을 올렸다 :
+     그 값은 아트가 화면 폭이던 때 재 둔 것이고(화면 1051px), 아트가 80% 로 줄면서
+     같은 퍼센트가 실제로는 더 짧은 거리가 됐다. 퍼센트로 두는 것은 화면이 바뀌어도
+     사옥이 같은 비율 자리에 서게 하려는 것 */
+  .story-aaa .st-art{translate:-78% 0}
+
+  /* ── 글은 장면 위에 앉는다 ─────────────────────────────────────────── */
+  .story-vision .st-head,.story-aaa .st-head,.story-aaa .st-rows{position:relative;z-index:1}
+  /* Vision 머리글은 왼쪽 정렬이다. 큰 두 줄의 span 은 채움(--fill) 경계를 글자에
+     붙이려고 width:fit-content 인데, 그 상태로 margin-inline:auto 가 남아 있으면
+     왼쪽 정렬을 걸어도 가운데에 선다 — 그래서 여기서 마진을 푼다 */
+  .story-vision .st-head{text-align:left;max-width:min(56%,880px)}
+  .story-vision .st-big span{margin-inline:0}
+  /* 크기를 한 단 내린다. 4.7vw(1900px 화면에서 82px)는 이 판에서 석 줄로 접히며
+     랜드스케이프를 파고들었다 — 두 줄로 앉는 값이 시안의 그림이다 */
+  .story-vision .st-big{font-size:clamp(24px,2.9vw,54px);margin-top:clamp(16px,2.6vh,32px)}
+  /* 색 — 시안이 브랜드 파랑이다. 채움 장치는 그대로 두고 끝 색만 갈아 끼운다
+     (--g900 먹빛 → --brand). 비어 있는 쪽(--st-hollow)은 공용값 그대로다 */
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .story-vision .st-big span{background-image:linear-gradient(90deg,
+      var(--brand) var(--fill),var(--st-hollow) var(--fill))}
+  }
+  .story-vision .st-eye{color:var(--brand)}
+  .story-vision .st-lead p{color:var(--brand)}
+
+  /* ── AAA — 사옥 오른쪽에 키워드 셋 ─────────────────────────────────── */
+  /* 아트를 왼쪽으로 민 만큼 왼쪽 40% 가 사옥 자리다. 세 줄을 그 오른쪽에 나란히 편다 —
+     예전 [핵심가치 두 낱말 | 전략] 두 칸 격자에서 한 칸 석 줄로 바뀐다 */
+  .story-aaa .st-rows{--st-panel:0px;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:clamp(16px,2.2vw,40px);row-gap:0;
+    align-items:start;
+    width:60%;margin-left:auto;margin-top:clamp(40px,10vh,140px)}
+  /* 핵심가치 두 낱말(진보+개척 …)은 전략 이름 위에 작게 얹는다 — 칸이 좁아져
+     옆에 나란히 두면 두 낱말이 각각 두 줄로 접힌다 */
+  .story-aaa .st-src{grid-row:1;flex-direction:column;align-items:flex-start;
+    gap:clamp(2px,.4vh,6px);margin-bottom:clamp(8px,1.4vh,16px)}
+  .story-aaa .st-src .st-plus{display:none}
+  .story-aaa .st-src .st-word b{font-size:clamp(13px,1.05vw,17px)}
+  .story-aaa .st-src .st-word i{display:none}
+  .story-aaa .st-out{grid-row:2;flex-direction:column;align-items:flex-start;
+    background:none;box-shadow:none;padding:0}
+  .story-aaa .st-out .st-word b{font-size:clamp(20px,1.9vw,32px)}
+
   @media(prefers-reduced-motion:reduce){
-    .st-sky-dusk{display:none}
-    .st-art img,.st-scene.is-in .st-art img{translate:none;transition:none}
+    .st-art,.story-aaa .st-art{transition:none}
   }
   /* 좁은 화면 — 무대를 화면 한 장으로 못 박지 않는다(글이 길어 넘친다). 장면은 글 아래
      띠로 남고, 가로 미끄러짐도 없앤다 — 폭이 좁아 사옥만 커다랗게 잘려 보인다 */
   @media(max-width:900px){
-    .story-vision{min-height:0;display:block;
-      padding-bottom:calc(var(--sky-h) * .6);--sky-h:clamp(180px,34vh,280px)}
+    .story-vision,.story-aaa{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px)}
     .story-vision .st-head{max-width:none}
     .st-scene{height:auto;top:auto;aspect-ratio:1857 / 603}
-    .st-art img,.st-scene.is-in .st-art img{translate:none;transition:none}
+    .st-art{right:auto;left:0;width:100%}
+    .story-aaa .st-art{translate:none}
+    .story-aaa .st-rows{width:auto;margin-left:0;
+      grid-template-columns:minmax(0,1fr);row-gap:clamp(20px,4vh,36px)}
+    .story-aaa .st-src{grid-row:auto}
+    .story-aaa .st-out{grid-row:auto}
   }
 
   /* 갈래 스위치 — 이 장은 A-1 에만 산다. A 는 앞의 Vision(⑥) · AAA(⑦) 두 장을 그대로
@@ -2549,9 +2588,8 @@
       <!-- 랜드스케이프 한 장면 (⑨-c) — 노을에서 낮으로, 아트가 왼쪽에서 제자리로.
            읽을 것이 없는 그림이라 aria-hidden 이고, 움직임은 .crv 가 붙이는 .is-in
            한 클래스가 몬다(구동기 없음). 받는 규칙은 위 <style> 의 ⑨-c 묶음 -->
-      <div class="st-scene crv" aria-hidden="true">
-        <span class="st-sky-day"></span>
-        <span class="st-sky-dusk"></span>
+      <div class="st-scene" aria-hidden="true">
+        <span class="st-sky"></span>
         <span class="st-art"><img src="../assets/landscape-buildings.svg"
               width="1857" height="603" alt="" /></span>
       </div>
@@ -2568,6 +2606,14 @@
     </div>
 
     <div class="story-aaa">
+      <!-- 랜드스케이프 한 장면 (⑨-c) — Vision 과 같은 그림, 다른 시각이다. 하늘은
+           노을이고 아트는 왼쪽으로 밀려 사옥만 화면에 남는다. 그 오른쪽이 키워드 자리다.
+           읽을 것이 없는 그림이라 aria-hidden. 받는 규칙은 위 <style> 의 ⑨-c 묶음 -->
+      <div class="st-scene" aria-hidden="true">
+        <span class="st-sky"></span>
+        <span class="st-art"><img src="../assets/landscape-buildings.svg"
+              width="1857" height="603" loading="lazy" alt="" /></span>
+      </div>
       <div class="st-head">
         <h2 class="st-ttl crv">AAA Strategy</h2>
         <div class="st-note crv">
