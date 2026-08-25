@@ -343,11 +343,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    갈아 끼워야 해서 hex 로는 안 된다.
 
    덮는 방식 — 꽉 채우지 않는다. 색은 rgb(var(--c1) / .78) 단색이고, 왼쪽에서
-   오른쪽으로 옅어지는 일은 mask 가 맡는다. 글이 끝나는 52% 까지 그대로 있다가
-   82% 에서 사라진다.
+   오른쪽으로 옅어지는 일은 mask 가 맡는다. 글이 끝나는 53% 까지 그대로 있다가
+   68% 에서 사라진다. 흐림 1단은 74% 까지 가 색보다 조금 늦게 끝난다 —
+   색이 걷힌 뒤 흐림만 남는 6% 구간이 둘 사이를 잇는다.
 
-     처음  .97 로 시작해 55% 까지 .95, 68% 에서 0   사진  5% 비침
-     지금  .78 로 52% 까지, 82% 에서 0             사진 22% 비침
+     처음   .97 로 시작해 55% 까지 .95, 68% 에서 0   사진  5% 비침 · 맑은 곳 32%
+     한때   .78 로 52% 까지, 82% 에서 0             사진 22% 비침 · 맑은 곳 10%
+     지금   .78 로 53% 까지, 68% 에서 0             사진 22% 비침 · 맑은 곳 26%
+
+   글 자리의 농도는 건드리지 않았다. 거기를 낮추면 흰 글자가 밝은 하늘에서
+   깨진다(.78 에서 5.7:1, .5 에서 2.8:1). 어두운 글자로 뒤집어도 마찬가지다 —
+   사진마다 어두운 설비가 있어 그쪽에서 2.2:1 까지 떨어진다. 사진 위에 글을
+   두는 한 이 구간은 지금 농도가 바닥이고, 대신 글이 없는 오른쪽을 넓혔다.
 
    농도를 그라데이션이 아니라 mask 로 옮긴 것은 뒤 흐림(backdrop-filter) 때문이다.
    흐림은 요소 전체에 한꺼번에 걸려 농도를 따라 약해지지 않는다 — 배경만 옅게
@@ -399,18 +406,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    변해 그라데이션처럼 읽힌다 — backdrop-filter 하나로는 세기를 나눌 수 없어
    층을 둘로 나눈 것이다 */
 .cpolicy>li[data-bg]::before{content:"";position:absolute;inset:0;z-index:-2;
-  --f1:linear-gradient(96deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 62%,
-    rgba(0,0,0,.45) 76%,rgba(0,0,0,0) 90%);
+  --f1:linear-gradient(96deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 56%,
+    rgba(0,0,0,.45) 65%,rgba(0,0,0,0) 74%);
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   -webkit-mask:var(--f1);mask:var(--f1)}
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
   /* 왼쪽에서 오른쪽으로 옅어지는 꼴. 색과 흐림을 함께 깎으려고 mask 로 둔다 */
   --fade:linear-gradient(96deg,
     rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 52%,
-    rgba(0,0,0,.55) 66%,
-    rgba(0,0,0,.2) 75%,
-    rgba(0,0,0,0) 82%);
+    rgba(0,0,0,1) 53%,
+    rgba(0,0,0,.5) 59%,
+    rgba(0,0,0,.16) 64%,
+    rgba(0,0,0,0) 68%);
   background:
     /* 오른쪽 아래 — 사진과 섞이는 자리라 가장 진하게 얹는다 */
     radial-gradient(36% 170% at 46% 126%,rgb(var(--c2) / .4),rgb(var(--c2) / 0) 60%),
