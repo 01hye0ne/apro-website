@@ -262,26 +262,7 @@
   .bnav-wrap{position:relative;z-index:90;height:var(--bar-h);margin-top:calc(-1 * var(--bar-h));
     --bw:min(calc(var(--maxw) - 48px),calc(100% - 48px));
     --bcol:calc((var(--bw) - 11 * var(--grid-gutter)) / 12);
-    --bx4:calc((100% - var(--bw)) / 2 + 3 * var(--bcol) + 3 * var(--grid-gutter));
-    /* 밑단을 흰색으로 풀어 아래 흰 본문과 잇는다 (히어로 위에 있을 때만 —
-       고정되면 .is-fixed 가 이 자리를 --g950 단색으로 덮는다).
-
-       바 자신의 배경이라 두 pseudo(::after 흰 탭 판, ::before S커브)보다 아래에
-       깔린다. 그래서 실제로 보이는 자리는 그 둘이 비켜 준 곳뿐이다 —
-         4열 왼쪽(사업명칭 자리)  바 높이 64px 을 통으로 타고 내려가 흰 본문에 닿는다.
-                                 여기가 지금까지 사진과 흰 본문이 맞부딪던 자리다.
-         4열 오른쪽              위 24px 만. 그 아래 40px 은 흰 탭 판이 이미 흰색이라
-                                 그라데이션이 깔려도 보이지 않는다.
-
-       중간이 회색 안개처럼 보이지 않도록 멈춤점을 앞은 눕히고 뒤는 세운다 —
-       고르게 0->1 로 가면 절반 지점의 반투명 흰색이 사진을 뿌옇게만 만든다 */
-    background:linear-gradient(180deg,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,.05) 32%,
-      rgba(255,255,255,.22) 54%,
-      rgba(255,255,255,.55) 76%,
-      rgba(255,255,255,.86) 92%,
-      #fff 100%)}
+    --bx4:calc((100% - var(--bw)) / 2 + 3 * var(--bcol) + 3 * var(--grid-gutter))}
   .bnav-wrap::after{content:"";position:absolute;left:var(--bx4);right:0;bottom:0;height:40px;background:#fff}
   .bnav-wrap::before{content:"";position:absolute;bottom:0;height:40px;
     left:calc(var(--bx4) - var(--grid-gutter));width:var(--grid-gutter);

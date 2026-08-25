@@ -353,7 +353,19 @@
     .bnav-wrap:not(.is-fixed){--bh:60px;--cw:calc(var(--bh) * 24 / 40);--bpad:40px;
       --tab-x:calc(var(--gm) + var(--gx));--tab-w:calc(100% - 2 * var(--tab-x));
       --tab-xp:calc(var(--gm) + (100% + var(--cw) - 2 * var(--gm) + var(--gcg)) / 12);
-      --edge-col:rgba(255,255,255,.32);--floor:rgba(255,255,255,.05);
+      --edge-col:rgba(255,255,255,.32);
+      /* 유리 안쪽 칠. 위 60px(판)은 그대로 유리로 두고, 아래 40px(바닥 띠)만
+         흰색으로 풀어 히어로 밑변에서 흰 본문과 이어 붙인다 — 상자 키가
+         --bh + --bpad = 100px 이라 60% 지점이 곧 판과 띠의 경계다.
+         멈춤점을 뒤로 몰아 세운 것은, 고르게 풀면 띠 한가운데의 반투명 흰색이
+         뒤 사진을 뿌옇게만 만들어 회색 안개처럼 보이기 때문이다 */
+      --floor:linear-gradient(180deg,
+        rgba(255,255,255,.05) 0%,
+        rgba(255,255,255,.05) 58%,
+        rgba(255,255,255,.16) 70%,
+        rgba(255,255,255,.42) 82%,
+        rgba(255,255,255,.78) 93%,
+        #fff 100%);
       --floor-shape:linear-gradient(#000,#000) left 0 bottom 0/100% var(--bpad) no-repeat,
         linear-gradient(#000,#000) center top 0/var(--tab-w) var(--bh) no-repeat,
         var(--tab-curve) left calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
