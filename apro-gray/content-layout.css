@@ -144,6 +144,10 @@
 /* 접이식 제목줄까지 흰색이 되면 본문과의 경계를 긋던 색 차이가 사라진다 —
    열렸을 때만 가는 선을 그어 그 일을 대신한다 */
 .cblock--plate .cdetails[open] summary{border-bottom:1px solid var(--border-g)}
+/* 뒤집기가 한 겹 더 안쪽에서 되풀이된다. 카드 안의 낱말(.cvalues)은 회색 카드
+   위에서 흰색이었는데, 판 위에서는 카드가 흰색이 되므로 낱말은 반대로 회색이
+   되어야 떨어져 보인다 — 안 그러면 흰 낱말이 흰 카드에 묻힌다 */
+.cblock--plate .ccard>.cvalues>li{background:var(--secondary-bg)}
 
 /* 제목 줄 — 왼쪽 짧은 브랜드 선 + 제목. 페이지 안에서 장을 가르는 유일한 장치다 */
 .cblock>h2{font-family:var(--suit);font-weight:800;
