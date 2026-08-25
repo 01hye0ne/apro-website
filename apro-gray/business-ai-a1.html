@@ -363,39 +363,6 @@
     .hidx li::before{font-size:16px}
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
   }
-  /* ══ 히어로 밑 흰 판 (.hintro-bg) — 2026-08-25 요청 ══════════════════════
-     에너지 솔루션 히어로와 같은 관계를 이 페이지에도 준다. 거기서는 소분류 도입
-     줄글(.hintro)이 깔고 앉은 흰 판이 유리 탭 바로 밑까지 올라와 있어, 탭의
-     바닥 띠(--floor, 흰색 10 → 50% 로 풀리는 구간)가 그 흰색으로 자연스럽게
-     넘어간다. 이 페이지는 도입 줄글이 없으므로 글 없이 색만 그 자리에 놓는다.
-
-     키는 섹션 위 여백 하나다. 그 여백은 고정 탭 바가 덮으라고 비워 둔 자리라
-     (--bar-rise + --bar-h + 12px) 섹션이 화면 위에 물리면 통째로 바 뒤에 숨고,
-     히어로에 있을 때만 드러난다 — 판을 딱 그만큼만 두면 히어로에서는 유리 밑이
-     흰색으로 이어지고, 본문에 들어서면 흔적 없이 사라진다. 카드가 앉는 자리는
-     조금도 건드리지 않는다.
-     위에서 --intro-gap 만큼은 비운다 — 유리 탭 밑단과 판 사이의 숨(에너지와 같은 값).
-
-     화면 폭으로 번지는 방법은 음수 마진이다 — 화면 폭에서 판 폭을 뺀 절반.
-     격자 아이템의 퍼센트는 격자 칸 폭(=.wrap)으로 풀리고 .wrap 은 화면 정중앙에
-     있어서 좌우가 정확히 화면 변에 닿는다(섹션 구분선이 쓰는 것과 같은 식).
-     body 에 overflow-x:clip 이 걸려 있어 이 삐져나감은 스크롤을 만들지 않는다.
-     ⚠ 양끝을 흐려 없애지 않는다 — 에너지에서 해 봤더니 옅어지는 구간이 밑의
-       회색과 섞여 양끝만 얼룩진 띠로 보였다. 어디를 잘라도 같은 흰색이어야 한다.
-
-     z-index 를 명시하면 자리잡기(static)여도 층이 생기는데, 값이 0 이라
-     포지션드인 트랙(z-index:auto)·레일(4) 아래에 남는다 */
-  @media(min-width:901px){
-    .hintro-bg{grid-column:1 / -1;grid-row:1;align-self:start;z-index:0;
-      --intro-lift:calc(var(--bar-rise) + var(--bar-h) + 12px);
-      --intro-gap:16px;
-      margin-top:calc(var(--intro-gap) - var(--intro-lift));
-      height:calc(var(--intro-lift) - var(--intro-gap));
-      margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
-      background:#fff;pointer-events:none}
-  }
-  /* 좁은 화면은 바가 GNB 밑(72px)에 붙고 섹션도 세로로 풀려 이 관계가 없다 */
-  @media(max-width:900px){.hintro-bg{display:none}}
   /* ════════════════════════════════════════
      히어로 소분류 탭 — A-1 홈(index-a1.html) 히어로 밑단 탭과 같은 디자인
      (2026-08-11 요청). 가져온 것은 "디자인만"이다 — 홈의 게이지(칸이 차오르는
@@ -661,11 +628,6 @@
 
   <!-- 01 -->
   <section class="hsec" id="s1">
-    <!-- 히어로 밑 흰 판 — 유리 탭 바로 밑까지 흰색을 올려 탭의 바닥 띠가
-         그 흰색으로 넘어가게 한다(에너지 솔루션 히어로와 같은 관계). 읽을 것이
-         없는 색만의 판이다 — 받는 규칙은 위 <style> 의 .hintro-bg 묶음이고,
-         키는 섹션 위 여백만큼이라 본문에 들어서면 바 뒤로 숨는다 -->
-    <span class="hintro-bg" aria-hidden="true"></span>
     <!-- 소분류 타이틀(.httl)은 v3.1에서 삭제 — 고정 탭 바의 활성 탭이 이미 같은
          이름을 보여준다. JS가 카드 data-tab 으로 가로 인덱스(.hidx)를 채운다 -->
     <div class="hrail"></div>
