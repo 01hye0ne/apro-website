@@ -267,13 +267,34 @@
   .bnav-wrap::before{content:"";position:absolute;bottom:0;height:40px;
     left:calc(var(--bx4) - var(--grid-gutter));width:var(--grid-gutter);
     background:var(--tab-curve) center/100% 100% no-repeat}
-  /* 히어로 배경과 같은 색·같은 자리를 이어받는다. 히어로에 배경 이미지가 들어가면
-     여기 background도 그 이미지의 밑단으로 맞춰야 이음선이 안 보인다 */
+  /* 고정된 바의 바탕 — 파랑 그라데이션.
+     --g950(#0e161e) 단색이던 것을 브랜드 파랑으로 바꾼다. 검정에 가까운 띠가
+     화면 위에 남아 있으면 사이트에 없는 색이 하나 끼어든 것처럼 튄다.
+
+     세 멈춤점은 전부 이미 쓰던 값이다 — 새 색을 만들지 않는다.
+       --point-900 #223858  왼쪽 끝. 사업명칭(흰 20px)이 앉는 자리라 가장 어둡게
+       --brand     #2c5790  가운데. 사이트의 메인 파랑
+       --brand-2   #4077b7  오른쪽 끝. 한 단 화사한 파랑
+     100deg 는 가로에 가깝게 살짝 기울인 값이다. 세로로 128px 뿐인 띠라 수직
+     성분을 크게 주면 위아래 색이 갈려 두 겹으로 보인다.
+
+     오른쪽으로 갈수록 밝아지는 방향인 것은, 그쪽 아래를 흰 탭 판이 덮고 있어
+     실제로 보이는 밝은 구간이 위 68px 띠뿐이기 때문이다 — 밝은 쪽이 넓게 깔리지
+     않아 무게가 유지된다. 반대로 두면 흰 판 옆이 가장 밝아져 판이 묻힌다.
+
+     ⚠ 예전에는 이 자리가 히어로 밑단과 같은 색이라 고정 전환이 이음매 없이
+       넘어갔다. 그 전제는 히어로 탭이 유리로 바뀌면서 이미 깨져 있었고
+       (.dhero::after 주석 참고) 파랑으로 가면 완전히 다른 색이 된다 */
   .bnav-wrap.is-fixed{position:fixed;top:var(--bar-top);left:0;width:100%;
-    height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;background:var(--g950);
+    height:calc(var(--bar-rise) + var(--bar-h));margin-top:0;
+    background:linear-gradient(100deg,
+      var(--point-900) 0%,
+      var(--brand) 52%,
+      var(--brand-2) 100%);
     transition:transform .34s var(--ease),opacity .34s var(--ease)}
   /* 푸터가 바 밑변까지 올라오면 위로 접어 넣는다 (JS가 .is-away 토글).
-     푸터도 같은 --g950 이라 어두운 부분은 이어져 보이지만 흰 탭 패널만 띠로 남아 어색하다.
+     푸터가 --g950 이라 예전에는 어두운 부분끼리 이어져 보였고 흰 탭 패널만 띠로 남아
+     어색했다. 바가 파랑이 된 지금은 색까지 갈리므로 접어 넣을 이유가 더 분명하다.
      --bar-top 을 같이 빼야 GNB 아래에 붙는 좁은 화면에서도 화면 밖까지 나간다.
      transition 은 .is-fixed 에 걸려 있지만 고정 전환 때는 transform·opacity 가
      바뀌지 않으므로 그 순간에는 애니메이션이 일어나지 않는다 */
