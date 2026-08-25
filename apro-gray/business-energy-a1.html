@@ -374,6 +374,48 @@
     .hidx li::before{font-size:16px}
     .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
   }
+
+  /* ══ 소분류 도입 판 (.hintro) — 2026-08-25 요청 ══════════════════
+     소분류 하나(ESS)를 통틀어 설명하는 줄글이다. 카드는 Grid · Renewable Energy ·
+     C&I 로 갈라져 각자 제 이야기를 하므로, 그 셋을 묶는 말은 카드 안에 들어갈
+     자리가 없다. 섹션 맨 위에 한 줄 더 두는 이유다.
+
+     자리 — .hsec 격자의 첫 행을 새로 만들어 두 칸(레일 + 트랙)을 통으로 가로질러
+     앉힌다. 레일·트랙은 둘째 행으로 밀려나며, 둔 것은 :has() 로 걸어 .hintro 가
+     없는 섹션(#s2 UPS)은 종전 그대로 한 행이다.
+     ⚠ .hsec 은 height:100dvh 이고 .hcard 가 flex:0 0 100% 라 카드 한 장이 트랙
+       높이를 그대로 받는다 — 이 판이 높아지는 만큼 카드가 낮아진다. 줄글 두
+       줄 분량(약 130px)을 기준으로 안쪽 여백을 잡았다.
+
+     색 — 이 페이지는 바닥이 회색(--secondary-bg)이다(개편 블록 ⑤). 그 위에서
+     "배경색을 깔아 묶어 보이게" 하는 색은 흰색 쪽이다. 테두리와 반경은 오른쪽
+     비주얼 판(.hright)과 같은 값을 쓴다 — 새 재료가 아니라 같은 판을 흰색으로
+     채운 것으로 읽힌다.
+     ⚠ 좁은 화면은 바닥이 다시 흰색이라(⑤ 가 min-width:901px 안에 있다) 판을
+       흰색으로 두면 사라진다 — 거기서는 회색으로 뒤집는다.
+
+     글 — 두 문장을 무게로 가른다. 앞은 "무엇을 준다"는 주장이고 뒤는 그 범위를
+     적는 설명이라, 한 덩어리로 두면 둘 다 읽히지 않고 미끄러진다.
+     본문 불릿 점(.hcard>p::before)은 안 붙는다 — 카드 밖이기도 하고, 두 줄짜리
+     도입문은 점을 달면 목록처럼 보인다 */
+  .hintro{background:var(--secondary-bg);border:1px solid var(--line);border-radius:var(--r);
+    padding:clamp(24px,2.2vw,32px) clamp(24px,2.4vw,36px);
+    display:flex;flex-direction:column;gap:12px}
+  .hintro p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
+    letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .hintro p:first-child{font-family:var(--suit);font-weight:700;font-size:20px;
+    line-height:1.5;letter-spacing:-.4px;color:var(--g900)}
+  @media(min-width:901px){
+    .hintro{background:#fff;grid-column:1 / -1;grid-row:1}
+    .hsec:has(.hintro){grid-template-rows:auto minmax(0,1fr);row-gap:clamp(20px,1.8vw,26px)}
+    .hsec:has(.hintro)>.hrail,
+    .hsec:has(.hintro)>.htrack{grid-row:2}
+  }
+  @media(max-width:900px){
+    .hintro{grid-column:1;grid-row:1}
+    .hsec:has(.hintro)>.hrail{grid-row:2}
+    .hsec:has(.hintro)>.htrack{grid-row:3}
+  }
   /* ════════════════════════════════════════
      히어로 소분류 탭 — A-1 홈(index-a1.html) 히어로 밑단 탭과 같은 디자인
      (2026-08-11 요청). 가져온 것은 "디자인만"이다 — 홈의 게이지(칸이 차오르는
@@ -623,6 +665,14 @@
 
   <!-- 01 -->
   <section class="hsec" id="s1">
+    <!-- ESS 도입 줄글 — 세 카드(Grid · Renewable Energy · C&amp;I)를 묶는 말이라
+         카드 안이 아니라 섹션 맨 위에 둔다. 받는 규칙은 위 <style> 의 .hintro 묶음이고,
+         거기서 격자 첫 행을 통으로 차지한다 — 마크업 순서만 앞서면 되고 grid-row 는
+         CSS 가 잡는다. UPS(#s2)는 아직 문안이 없어 이 판을 두지 않는다 -->
+    <div class="hintro">
+      <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
+      <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
+    </div>
     <div class="hrail"></div>
     <div class="htrack">
       <article class="hcard hcard--tbd" data-tab="Grid">
