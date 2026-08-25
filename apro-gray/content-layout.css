@@ -411,8 +411,16 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy>li[data-bg]{border:0;background:var(--g950)}
 .cpolicy>li[data-bg]::before{content:"";position:absolute;inset:0;z-index:-2;
   background:var(--bg) var(--bgpos,center)/cover no-repeat;
-  transition:transform .7s var(--ease)}
-/* 호버 — 사진만 살짝 밀어 넣는다. 위에 얹힌 색과 글은 그대로 있어서, 카드가
+  /* 사이트 공용 --ease(cubic-bezier(.22,1,.36,1))를 쓰지 않는다. 그 곡선은
+     처음 0.2초에 절반을 가고 나머지를 길게 끄는 꼴이라, 눌러서 '도착하는'
+     것에는 맞지만 호버 확대에서는 튕겼다가 미끄러지는 느낌이 난다.
+     여기서는 처음도 끝도 완만한 곡선으로 1.1초에 걸쳐 밀어 준다.
+
+     will-change 로 층을 미리 띄워 둔다. 사진이 1983px 짜리라 첫 호버에
+     그때부터 층을 만들면 한 박자 걸린다 */
+  will-change:transform;
+  transition:transform 1.1s cubic-bezier(.4,0,.2,1)}
+/* 호버 — 사진만 밀어 넣는다. 위에 얹힌 색과 글은 그대로 있어서, 카드가
    커지는 것이 아니라 창 너머 풍경이 다가오는 것처럼 읽힌다 */
 .cpolicy>li[data-bg]:hover::before{transform:scale(1.05)}
 @media(prefers-reduced-motion:reduce){
