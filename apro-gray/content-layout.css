@@ -165,6 +165,14 @@ ul.cul li{position:relative;padding-left:16px;font-family:var(--pre);font-size:1
 ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width:4px;height:4px;
   border-radius:50%;background:var(--brand-2)}
 
+/* 장 머리 밑에 긋는 굵은 선 (.crule)
+   .cboard(게시판 표)의 윗변과 같은 것이다 — 굵기 2px, 색 --g900, 제목에서 28px.
+   표가 있는 장은 그 선을 표가 스스로 긋지만, 표가 없는 장에서도 같은 자리에
+   같은 선이 있어야 두 장이 나란히 읽힌다. 값을 여기 다시 적은 것은 .cboard 의
+   테두리가 표의 격자에 딸린 값이라 떼어 쓸 수 없기 때문이다 —
+   ⚠ 한쪽을 바꾸면 다른 쪽도 같이 바꿔야 한다 */
+.crule{margin:28px 0 0;height:0;border:0;border-top:2px solid var(--g900)}
+
 /* 한 줄 문구 (.ctagline)
    설명글(.lead)이 아니라 내거는 말이다 — IR Contact 의 "Partnership for Future"
    같은 것. 같은 자리에 .lead 로 두면 17px 회색이라 안내문처럼 읽혀 힘이 빠진다 */
