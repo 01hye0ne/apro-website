@@ -138,6 +138,7 @@
   clip-path:inset(0 -100vmax)}
 /* 판 위에 놓이는 것은 흰색으로 뒤집는다 — 같은 색이면 판에 묻혀 낱낱이 안 보인다 */
 .cblock--plate .ccard,
+.cblock--plate .ccreed>li,
 .cblock--plate .cdetails,
 .cblock--plate .cdetails summary{background:#fff}
 /* 접이식 제목줄까지 흰색이 되면 본문과의 경계를 긋던 색 차이가 사라진다 —
@@ -232,6 +233,38 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   .ccard>.cvalues{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){.ccard>.cvalues{grid-template-columns:minmax(0,1fr)}}
+
+/* 헌장 낱장 (.ccreed) — 다짐 하나가 낱장 하나다. 지배구조 페이지의 윤리헌장
+   넉 줄이 쓴다.
+
+   점 찍힌 목록(.cul)에서 낱장으로 바꾼 이유 — 넉 줄이 각각 법령 · 고객 · 시장 ·
+   사회라는 다른 곳을 향하는 다짐인데, 점으로 이어 놓으면 한 문단을 넷으로 끊어
+   놓은 것처럼 읽힌다. 낱장으로 떼면 넷이 나란히 서서, 헌장이 조문 넷을 가진
+   하나의 문서라는 것이 형태로 드러난다.
+
+   두 칸으로 세운 것은 문장 길이가 정했다 — 본문 열이 1196px 이라 한 줄에 하나씩
+   놓으면 문장이 한 줄로 끝나 상자 안이 텅 빈다. 절반(590px)이면 두세 줄이 차
+   낱장의 꼴이 선다. 넉 줄이 2×2 로 떨어지는 것도 여기서는 맞아떨어진다.
+
+   번호는 세는 눈금이다 — 넉 줄 사이에 순서나 경중은 없다. 그래서 .cpolicy 처럼
+   크게 세우지 않고 카드의 눈금(.ccard .no)과 같은 14px 로 얹는다.
+
+   낱장에 min-height 를 주지 않는다 — 그리드가 한 줄의 키를 이미 긴 쪽에 맞춰
+   늘려 주므로(stretch) 두 장의 아래가 저절로 떨어진다 */
+.ccreed{margin-top:24px;list-style:none;display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ccreed>li{display:flex;flex-direction:column;gap:14px;
+  padding:clamp(28px,2.6vw,36px);
+  background:var(--secondary-bg);border:1px solid var(--border-g);
+  border-radius:var(--r)}
+.ccreed .no{font-family:var(--suit);font-weight:800;font-size:14px;
+  line-height:1;letter-spacing:.12em;color:var(--brand-2)}
+/* 본문 회색(--sec)이 아니라 --g900 을 쓴다 — 장을 받치는 설명이 아니라 헌장의
+   조문 그 자체라서, 위의 .lead 와 같은 색이면 무게가 서지 않는다 */
+.ccreed p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
+  letter-spacing:-.34px;color:var(--g900);word-break:keep-all}
+/* 좁은 화면 — 두 칸을 세우면 한 줄에 열 몇 자밖에 안 들어간다. 한 칸으로 편다 */
+@media(max-width:720px){.ccreed{grid-template-columns:minmax(0,1fr)}}
 
 /* =====================================================================
    방침 줄 (.cpolicy) — 한 줄에 방침 하나. 번호 · 제목 · 설명이 왼쪽에서
