@@ -313,7 +313,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    그 자리는 색이 거의 걷힌 곳이라 사진이 밝으면 흰 글자가 묻히므로, 아주 옅은
    그림자를 깔아 가장자리를 잡아 준다 */
 .cpolicy .no{position:absolute;right:clamp(20px,2.2vw,30px);bottom:clamp(12px,1.4vw,18px);
-  font-family:var(--suit);font-weight:800;font-size:clamp(40px,4.4vw,62px);
+  font-family:var(--suit);font-weight:800;font-size:clamp(56px,6.2vw,88px);
   line-height:1;letter-spacing:-.02em;color:rgba(255,255,255,.72);
   text-shadow:0 2px 12px rgba(14,22,30,.28);pointer-events:none}
 
@@ -340,11 +340,20 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    둘 다 세 숫자(예: 14 74 85)로 적는다. rgb(var(--c1) / .28) 처럼 알파를
    갈아 끼워야 해서 hex 로는 안 된다.
 
-   덮는 방식 — 꽉 채우지 않는다. 가장 진한 왼쪽 끝이 .8 이고 글이 끝나는
-   52% 까지 .74 를 지킨 뒤, 82% 에서 0 이 된다.
+   덮는 방식 — 꽉 채우지 않는다. 색은 rgb(var(--c1) / .78) 단색이고, 왼쪽에서
+   오른쪽으로 옅어지는 일은 mask 가 맡는다. 글이 끝나는 52% 까지 그대로 있다가
+   82% 에서 사라진다.
 
      처음  .97 로 시작해 55% 까지 .95, 68% 에서 0   사진  5% 비침
-     지금  .8  로 시작해 52% 까지 .74, 82% 에서 0   사진 26% 비침
+     지금  .78 로 52% 까지, 82% 에서 0             사진 22% 비침
+
+   농도를 그라데이션이 아니라 mask 로 옮긴 것은 뒤 흐림(backdrop-filter) 때문이다.
+   흐림은 요소 전체에 한꺼번에 걸려 농도를 따라 약해지지 않는다 — 배경만 옅게
+   하면 오른쪽 사진까지 통째로 흐려진다. mask 는 흐림까지 함께 깎아 내므로,
+   색이 사라지는 자리에서 흐림도 같이 사라진다.
+
+   ⚠ mask 로 backdrop-filter 를 깎는 것은 브라우저마다 손보는 시기가 달랐다.
+     안 먹으면 오른쪽 사진까지 흐려질 뿐 깨지지는 않는다.
 
    불투명한 구간이 아예 없다는 것이 요점이다. 예전에는 왼쪽 절반이 색으로
    막혀 있고 오른쪽만 사진이었다면, 지금은 띠 전체에서 사진이 비치고 그 위에
@@ -383,17 +392,23 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   background-image:var(--bg);background-size:cover;
   background-position:var(--bgpos,center)}
 .cpolicy>li[data-bg]::after{content:"";position:absolute;inset:0;z-index:-1;
+  /* 왼쪽에서 오른쪽으로 옅어지는 꼴. 색과 흐림을 함께 깎으려고 mask 로 둔다 */
+  --fade:linear-gradient(96deg,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 52%,
+    rgba(0,0,0,.55) 66%,
+    rgba(0,0,0,.2) 75%,
+    rgba(0,0,0,0) 82%);
   background:
     /* 오른쪽 아래 — 사진과 섞이는 자리라 가장 진하게 얹는다 */
     radial-gradient(36% 170% at 46% 126%,rgb(var(--c2) / .4),rgb(var(--c2) / 0) 60%),
     /* 왼쪽 위 — 글 위라서 옅게. 색조만 살짝 다르게 만드는 정도 */
     radial-gradient(28% 160% at 14% -34%,rgb(var(--c2) / .22),rgb(var(--c2) / 0) 58%),
-    linear-gradient(96deg,
-      rgb(var(--c1) / .8) 0%,
-      rgb(var(--c1) / .74) 52%,
-      rgb(var(--c1) / .44) 66%,
-      rgb(var(--c1) / .16) 75%,
-      rgb(var(--c1) / 0) 82%)}
+    rgb(var(--c1) / .78);
+  /* saturate 를 조금 올린 것은 흐리면 색이 같이 죽기 때문이다 */
+  -webkit-backdrop-filter:blur(16px) saturate(1.15);
+  backdrop-filter:blur(16px) saturate(1.15);
+  -webkit-mask:var(--fade);mask:var(--fade)}
 .cpolicy>li[data-bg] h3{color:#fff}
 .cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
 
