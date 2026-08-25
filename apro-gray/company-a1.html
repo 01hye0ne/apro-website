@@ -1928,71 +1928,68 @@
   }
 
   /* =====================================================================
-     ⑨-c · 랜드스케이프 장면 — Vision 은 낮, AAA 는 노을 (2026-08-25)
+     ⑨-c · 랜드스케이프 — 두 판에 걸친 한 장면 (2026-08-25)
      =====================================================================
-     ⚠ 되돌리기 : 이 블록 · 마크업의 .st-scene 덩이 둘만 지우면 된다. 구동기는 없다 —
-       움직임은 전부 .crv 가 붙이는 .is-in 한 클래스가 몬다.
+     ⚠ 되돌리기 : 이 블록 · 마크업의 .st-scene 덩이 하나 · 문서 끝 "랜드스케이프
+       모핑 구동기" 셋만 지우면 된다.
 
      여기 있던 ⑨-b(사진 두 장이 맞물려 하늘이 되던 장치)를 통째로 걷고 그 자리에
      일러스트 한 장을 놓는다. 걷어낸 것 : .st-sky 붙박이 레이어 · 카메라 하강 이음 ·
      267줄짜리 구동기 · 사진 둘(vision-solar-farm · hq-sunset).
 
-     장면은 두 판에 한 벌씩 있다. 한 장면을 두 판에 걸쳐 몰지 않는 이유 —
-     그러려면 붙박이 무대와 스크롤 구동기가 다시 필요해진다. 판마다 제 장면을
-     두면 CSS 만으로 끝나고, 스크롤이 판을 넘는 동안 하늘색이 갈리는 것은 두 판이
-     이어져 있으니 저절로 읽힌다.
+     장면은 판마다가 아니라 .story 전체에 한 장이다. 한동안 판마다 한 벌씩 두었는데,
+     그러면 두 판 사이에서 그림이 한 번 끊겼다 다시 시작한다 — 같은 랜드스케이프를
+     카메라가 훑고 지나가는 것으로 읽히려면 장면이 하나여야 한다.
 
-       Vision  낮 하늘 + 랜드스케이프 제자리 (사옥이 오른쪽)
-       AAA     노을 하늘 + 아트를 왼쪽으로 55% 밀어 사옥을 왼쪽에 세운다
-               (풍력·공장·태양광은 화면 밖 왼쪽) — 그 오른쪽이 키워드 자리다
+     붙박이는 position:sticky 다. 키가 화면 한 장이고 그만큼 음수 마진으로 흐름에서
+     빠지므로, 뒤따르는 글은 .story 맨 위에서 그대로 시작한다. sticky 는 제 부모
+     상자를 벗어나지 못하니 About 이나 푸터로 새지도 않는다 — 예전 position:fixed
+     레이어가 스크롤 좌표를 일일이 재야 했던 것이 이래서 필요 없어졌다.
 
-     55% 는 시안에서 잰 값이다. 두 시안에서 사옥의 크기와 높이가 같고 가로로만
-     옮겨져 있었다 — 확대가 아니라 미끄러짐이다.
+     움직임은 값 하나다. 구동기가 --p(0~1)만 내주고 나머지는 여기서 한다 —
+       p = 0   Vision 판이 화면 맨 위      낮 하늘, 아트 제자리 (사옥 오른쪽)
+       p = 1   AAA 판이 화면 맨 위         노을, 아트 왼쪽 78% (사옥 왼쪽)
+     그 사이는 스크롤에 그대로 붙어 미끄러진다. 78% 는 사옥의 왼쪽 끝이 시안 자리
+     (화면 195px)에 오는 값이다.
 
-     크기 — 아트는 화면 폭의 80% 다(2026-08-25 요청). 100% 였을 때는 사옥이 탭 바
-     밑까지 치솟아 큰 두 줄과 부딪혔다.
+     크기 — 아트는 화면 폭의 80% 다. 100% 였을 때는 사옥이 탭 바 밑까지 치솟아
+     큰 두 줄과 부딪혔다.
        --art-h  아트 높이 = 80vw × 603/1857 = 25.98vw
-       --sky-h  하늘 띠 = 그보다 낮게 잡는다. 차이만큼 사옥이 하늘 윗변 위로 솟는다
+       --sky-h  하늘 띠 = 그보다 --sky-rise 만큼 낮게. 그 차이가 사옥이 솟는 높이다
      하늘을 아트보다 높이면 그림이 하늘 안에 갇혀 시안의 그림이 안 나온다.
 
      하늘 색은 SVG 팔레트에서 그대로 뽑았다(#BCDDFF · #95BDEE · #59ACFF) — 그림과
      하늘이 다른 데서 온 것처럼 보이지 않게 하려면 색을 새로 만들면 안 된다.
-     노을은 이 그림에 없는 색이라 따로 지었고, 위쪽에 파랑을 남겨 두 판이 같은 하늘의
-     다른 시각으로 읽히게 했다.
-
-     아트는 화면 폭으로 번진다 — .cwrap 이 화면 정중앙이라 left:50% + 음수 마진으로
-     양끝이 화면 변에 닿는다. overflow:clip 이 밀려 나간 구간을 잘라 준다.
+     노을은 이 그림에 없는 색이라 따로 지었고, 위쪽에 파랑을 남겨 두 시각이 같은
+     하늘로 읽히게 했다.
      ===================================================================== */
-  /* ⚠ 두 판은 화면 한 장짜리 무대여야 한다. 장면(.st-scene)이 무대의 밑변에 붙으므로,
-     무대가 내용 높이대로 흐르면 장면이 글 높이까지 올라와 글 위에 겹친다.
-     글은 위에서부터 앉힌다(flex-start) — 가운데로 모으면 아래로 내려가 하늘 띠에 물린다 */
-  .story-vision,.story-aaa{position:relative;isolation:isolate;
-    min-height:100vh;min-height:100dvh;
-    display:flex;flex-direction:column;justify-content:flex-start;
-    padding-bottom:0;
+  .story{position:relative;--p:0;
     --art-h:25.98vw;                         /* 80vw × 603/1857 */
     --sky-rise:clamp(90px,9vw,180px);        /* 사옥이 하늘 위로 솟는 높이 */
     --sky-h:calc(var(--art-h) - var(--sky-rise))}
-  .st-scene{position:absolute;left:50%;bottom:0;width:100vw;height:100%;
-    margin-left:-50vw;overflow:clip;z-index:0;pointer-events:none}
+  /* 붙박이 무대. 음수 마진이 제 키를 흐름에서 도로 빼므로 글은 .story 맨 위에서 시작한다 */
+  .st-scene{position:sticky;top:0;z-index:0;
+    height:100vh;height:100dvh;margin-bottom:-100vh;margin-bottom:-100dvh;
+    overflow:clip;pointer-events:none}
   .st-scene>span{position:absolute;bottom:0;left:0;right:0}
-  .st-sky{height:var(--sky-h)}
-  .story-vision .st-sky{background:linear-gradient(180deg,#bcddff 0%,#95bdee 46%,#59acff 100%)}
+  .st-sky{height:var(--sky-h);
+    background:linear-gradient(180deg,#bcddff 0%,#95bdee 46%,#59acff 100%)}
   /* 노을 — 위는 파랑을 남기고 가운데를 주황으로 태운다. 맨 아래를 다시 푸르게 두는 것은
      그림의 바닥(도로·건물 밑동)이 파랑 계열이라 거기서 색이 끊기지 않게 하려는 것 */
-  .story-aaa .st-sky{background:linear-gradient(180deg,
-    #6f92c6 0%,#9c9dc4 26%,#d79e79 52%,#f2bd8a 74%,#c9b0ae 88%,#93a6c6 100%)}
-  /* 아트 — 오른쪽에 붙인 80% 폭. Vision 은 제자리, AAA 는 왼쪽으로 밀어 사옥만 남긴다 */
-  .st-art{left:auto;right:0;width:80%}
+  .st-sky--dusk{opacity:var(--p);
+    background:linear-gradient(180deg,
+      #6f92c6 0%,#9c9dc4 26%,#d79e79 52%,#f2bd8a 74%,#c9b0ae 88%,#93a6c6 100%)}
+  /* 아트 — 오른쪽에 붙인 80% 폭이 왼쪽으로 미끄러진다.
+     ⚠ 퍼센트는 아트 제 폭 기준이다. 화면이 바뀌어도 사옥이 같은 비율 자리에 선다 */
+  .st-art{left:auto;right:0;width:80%;translate:calc(-78% * var(--p)) 0}
   .st-art img{display:block;width:100%;height:auto}
-  /* 78% — 사옥의 왼쪽 끝이 시안 자리(화면 195px)에 오는 값이다. 55% 였던 것을 올렸다 :
-     그 값은 아트가 화면 폭이던 때 재 둔 것이고(화면 1051px), 아트가 80% 로 줄면서
-     같은 퍼센트가 실제로는 더 짧은 거리가 됐다. 퍼센트로 두는 것은 화면이 바뀌어도
-     사옥이 같은 비율 자리에 서게 하려는 것 */
-  .story-aaa .st-art{translate:-78% 0}
 
   /* ── 글은 장면 위에 앉는다 ─────────────────────────────────────────── */
-  .story-vision .st-head,.story-aaa .st-head,.story-aaa .st-rows{position:relative;z-index:1}
+  .story>.cwrap{position:relative;z-index:1}
+  /* 두 판은 화면 한 장짜리 무대다. 글은 위에서부터 앉힌다 — 가운데로 모으면 아래로
+     내려가 하늘 띠에 물린다 */
+  .story-vision,.story-aaa{min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;justify-content:flex-start;padding-bottom:0}
   /* Vision 머리글은 왼쪽 정렬이다. 큰 두 줄의 span 은 채움(--fill) 경계를 글자에
      붙이려고 width:fit-content 인데, 그 상태로 margin-inline:auto 가 남아 있으면
      왼쪽 정렬을 걸어도 가운데에 선다 — 그래서 여기서 마진을 푼다 */
@@ -2011,11 +2008,9 @@
   .story-vision .st-lead p{color:var(--brand)}
 
   /* ── AAA — 사옥 오른쪽에 키워드 셋 ─────────────────────────────────── */
-  /* 아트를 왼쪽으로 민 만큼 왼쪽 40% 가 사옥 자리다. 세 줄을 그 오른쪽에 나란히 편다 —
-     예전 [핵심가치 두 낱말 | 전략] 두 칸 격자에서 한 칸 석 줄로 바뀐다 */
-  /* 세로로 흐르던 격자를 가로로 세운다. grid-auto-flow:column 이면 마크업 순서
-     (dt·dd·dt·dd·dt·dd)가 그대로 [1칸 위·아래][2칸 위·아래][3칸 위·아래] 로 앉는다 —
-     줄마다 dt/dd 를 묶지 않아도 짝이 맞는다.
+  /* 아트가 왼쪽으로 밀리면 왼쪽 40% 가 사옥 자리다. 세 줄을 그 오른쪽에 나란히 편다 —
+     세로로 흐르던 격자를 가로로 세운다. grid-auto-flow:column 이면 마크업 순서
+     (dt·dd·dt·dd·dt·dd)가 그대로 [1칸 위·아래][2칸 위·아래][3칸 위·아래] 로 앉는다.
      ⚠ 위쪽 @supports subgrid 블록이 .st-src 에 grid-column:1/4, .st-out 에 4 를
        박아 두었다. 칸이 셋뿐인 여기서 4칸은 격자 밖이라 암시 칸이 생기며 셋이 한자리에
        겹친다 — 그래서 두 값을 auto 로 되돌린다.
@@ -2042,18 +2037,17 @@
   .story-aaa .st-out .st-word b{font-size:clamp(20px,1.9vw,32px)}
   .story-aaa .st-out .st-desc p{font-size:clamp(13px,.95vw,16px);line-height:1.6}
 
-  @media(prefers-reduced-motion:reduce){
-    .st-art,.story-aaa .st-art{transition:none}
-  }
-  /* 좁은 화면 — 무대를 화면 한 장으로 못 박지 않는다(글이 길어 넘친다). 장면은 글 아래
-     띠로 남고, 가로 미끄러짐도 없앤다 — 폭이 좁아 사옥만 커다랗게 잘려 보인다 */
+  /* 좁은 화면 — 무대를 화면 한 장으로 못 박지 않는다(글이 길어 넘친다). 장면은 붙박이를
+     풀고 글 아래 띠로 남으며, 가로 미끄러짐도 없앤다 — 폭이 좁아 사옥만 커다랗게 잘린다 */
   @media(max-width:900px){
-    .story-vision,.story-aaa{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px);
-      min-height:0;display:block;padding-bottom:calc(var(--art-h) * .5)}
+    .story{--art-h:32.5vw;--sky-rise:clamp(40px,6vw,90px)}
+    .st-scene{position:absolute;left:0;right:0;top:auto;bottom:0;
+      height:auto;margin-bottom:0;aspect-ratio:1857 / 603}
+    .st-art{right:auto;left:0;width:100%;translate:none}
+    .st-sky--dusk{opacity:0}
+    .story-vision,.story-aaa{min-height:0;display:block}
+    .story-aaa{padding-bottom:calc(var(--art-h) * .5)}
     .story-vision .st-head{max-width:none}
-    .st-scene{height:auto;top:auto;aspect-ratio:1857 / 603}
-    .st-art{right:auto;left:0;width:100%}
-    .story-aaa .st-art{translate:none}
     .story-aaa .st-rows{width:auto;margin-left:0;
       grid-auto-flow:row;
       grid-template-columns:minmax(0,1fr);grid-template-rows:none;
@@ -2602,17 +2596,21 @@
        A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장의 두 덩이로 옮긴다 -->
 <section class="story">
 
+  <!-- ===== 랜드스케이프 한 장면 (⑨-c) — 되돌리려면 이 덩이 하나만 지우면 된다 =====
+       두 판(Vision · AAA)에 걸친 붙박이 무대 한 장이다. 스크롤이 두 판 사이를 지나는
+       동안 아트가 왼쪽으로 미끄러지고 하늘이 낮에서 노을로 갈린다 — 같은 랜드스케이프를
+       카메라가 훑고 지나가는 그림이다.
+       읽을 것이 없어 aria-hidden. 움직임은 문서 끝 구동기가 내주는 값 하나(--p)가 몬다 -->
+  <div class="st-scene" aria-hidden="true">
+    <span class="st-sky"></span>
+    <span class="st-sky st-sky--dusk"></span>
+    <span class="st-art"><img src="../assets/landscape-buildings.svg"
+          width="1857" height="603" alt="" /></span>
+  </div>
+
   <div class="cwrap">
 
     <div class="story-vision">
-      <!-- 랜드스케이프 한 장면 (⑨-c) — 노을에서 낮으로, 아트가 왼쪽에서 제자리로.
-           읽을 것이 없는 그림이라 aria-hidden 이고, 움직임은 .crv 가 붙이는 .is-in
-           한 클래스가 몬다(구동기 없음). 받는 규칙은 위 <style> 의 ⑨-c 묶음 -->
-      <div class="st-scene" aria-hidden="true">
-        <span class="st-sky"></span>
-        <span class="st-art"><img src="../assets/landscape-buildings.svg"
-              width="1857" height="603" alt="" /></span>
-      </div>
       <div class="st-head">
         <p class="st-eye crv">VISION 2030</p>
         <!-- ⚠ 이 두 줄의 글을 고치면 위 CSS 의 크기 계산(아랫줄 폭 = 글자 크기 × 13.55)도
@@ -2626,14 +2624,6 @@
     </div>
 
     <div class="story-aaa">
-      <!-- 랜드스케이프 한 장면 (⑨-c) — Vision 과 같은 그림, 다른 시각이다. 하늘은
-           노을이고 아트는 왼쪽으로 밀려 사옥만 화면에 남는다. 그 오른쪽이 키워드 자리다.
-           읽을 것이 없는 그림이라 aria-hidden. 받는 규칙은 위 <style> 의 ⑨-c 묶음 -->
-      <div class="st-scene" aria-hidden="true">
-        <span class="st-sky"></span>
-        <span class="st-art"><img src="../assets/landscape-buildings.svg"
-              width="1857" height="603" loading="lazy" alt="" /></span>
-      </div>
       <div class="st-head">
         <h2 class="st-ttl crv">AAA Strategy</h2>
         <div class="st-note crv">
@@ -3263,6 +3253,46 @@
   if(+sec.getAttribute('data-step')>=STEP){stepped=true;maybe();}
 })();
 
+/* 랜드스케이프 모핑 구동기 (⑨-c) — 되돌리려면 이 덩이 하나만 지우면 된다.
+
+   하는 일은 값 하나를 내주는 것뿐이다. 두 판의 문서 좌표를 재고, 지금 스크롤이
+   그 사이 어디쯤인지를 0~1 로 적어 .story 에 --p 로 건다. 아트가 얼마나 미끄러지고
+   노을이 얼마나 짙은지는 전부 CSS 가 그 값 하나를 보고 정한다.
+
+     p = 0   Vision 판이 화면 맨 위        낮 하늘, 아트 제자리
+     p = 1   AAA 판이 화면 맨 위           노을, 아트 왼쪽 78%
+
+   ⚠ 좌표를 미리 재 두지 않고 매번 다시 잰다 — 앞 장(About)의 키가 단계에 따라
+     자라므로 한 번 재 둔 값은 곧 어긋난다. getBoundingClientRect 두 번은 프레임당
+     비용이 거의 없다.
+   ⚠ requestAnimationFrame 으로 한 프레임에 한 번만 그린다. scroll 은 프레임보다
+     자주 온다.
+   ⚠ 값이 거의 안 바뀌면 손대지 않는다 — 매 프레임 style 을 쓰면 그때마다 새 값이라
+     브라우저가 다시 계산한다. */
+(function(){
+  var st=document.querySelector('.story');if(!st)return;
+  var v=st.querySelector('.story-vision'),a=st.querySelector('.story-aaa');
+  if(!v||!a)return;
+  var last=-1,tick=false;
+  function paint(){
+    tick=false;
+    var y=window.pageYOffset||document.documentElement.scrollTop;
+    var v0=v.getBoundingClientRect().top+y,
+        a0=a.getBoundingClientRect().top+y,
+        d=a0-v0;
+    if(d<=0)return;
+    var p=(y-v0)/d;
+    p=p<0?0:(p>1?1:p);
+    if(Math.abs(p-last)<0.0015)return;
+    last=p;
+    st.style.setProperty('--p',p.toFixed(4));
+  }
+  function onScroll(){if(!tick){tick=true;requestAnimationFrame(paint);}}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  window.addEventListener('load',onScroll);
+  paint();
+})();
 /* 이음 ⑫ (CSS ⑫) — A-1 에서 AAA 가 About 이 된다.
    되돌리려면 이 덩이와 CSS ⑫, 그리고 바로 위 하늘 구동기에 심어 둔 네 곳
    (paint 첫 줄의 손 떼기 · paint 끝의 값 내주기 · wheel/scroll 의 빗장)을 걷으면 된다.
