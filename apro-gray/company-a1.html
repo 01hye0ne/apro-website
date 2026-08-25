@@ -3275,8 +3275,13 @@
    0~1 로 적어 .story 에 --p 로 건다. 아트가 얼마나 미끄러지고 노을이 얼마나 짙은지는
    전부 CSS 가 그 값 하나를 보고 정한다.
 
-     p = 0   AAA 판 윗변이 화면 밑변에      낮 하늘, 아트 제자리 (사옥 오른쪽)
-     p = 1   AAA 판 윗변이 화면 윗변에      노을, 아트 왼쪽 65.48% (사옥이 글줄에)
+     p = 0   AAA 판 윗변이 화면 밑변에            낮 하늘, 아트 제자리 (사옥 오른쪽)
+     p = 1   AAA 판 윗변이 화면 30% 지점에        노을, 아트 왼쪽 65.48% (사옥이 글줄에)
+
+   ⚠ 끝점을 화면 윗변이 아니라 30% 지점에 둔다 (2026-08-25). 윗변에 두면 그림이
+     멈추는 순간이 곧 AAA 판이 제자리에 앉는 순간이라, 조금만 더 굴려도 제목이
+     바 뒤로 사라진다 — 그림이 다 멎은 화면에는 글이 없다. 끝점을 앞당기면 남은
+     30% 를 굴리는 동안 그림은 멎은 채로 있고 글만 제자리로 올라온다.
 
    ⚠ 기준을 "Vision 판 윗변에서 AAA 판 윗변까지" 로 잡으면 안 된다 (2026-08-25).
      Vision 판은 위 여백이 300px 쯤 되므로, 글이 제자리에 앉아 보이는 순간에는 이미
@@ -3294,12 +3299,13 @@
   var st=document.querySelector('.story');if(!st)return;
   var a=st.querySelector('.story-aaa');
   if(!a)return;
-  var last=-1,tick=false;
+  var LEAD=0.7,last=-1,tick=false;
   function paint(){
     tick=false;
     var vh=window.innerHeight||document.documentElement.clientHeight;
     if(!vh)return;
-    var p=(vh-a.getBoundingClientRect().top)/vh;
+    /* LEAD — 굴림의 몇 할을 그림에 쓰는가. 나머지는 그림이 멎은 채로 글이 앉는 시간이다 */
+    var p=(vh-a.getBoundingClientRect().top)/(vh*LEAD);
     p=p<0?0:(p>1?1:p);
     if(Math.abs(p-last)<0.0015)return;
     last=p;
