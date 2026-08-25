@@ -415,6 +415,13 @@
     display:flex;flex-direction:column;gap:0}
   .hintro p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
     letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  /* 약칭을 풀어 쓴 이름 한 줄(UPS = Uninterruptible Power Supply). 문장이 아니라
+     이름이라 본문과 같은 무게로 두면 첫 문장처럼 읽힌다. 카드 안 소제목(.hblock .lbl)이
+     쓰는 값을 그대로 가져오되 한 단(13px) 키운다 — 거기는 카드 속이고 여기는 화면을
+     가로지르는 띠라, 같은 12px 이면 판 크기에 눌려 부스러기로 보인다.
+     색은 --brand — 고정 탭 바의 활성 탭과 같은 색이라 "지금 이 소분류"로 읽힌다 */
+  .hintro .lbl{margin-bottom:8px;font-family:var(--suit);font-weight:700;font-size:13px;
+    line-height:1.3;letter-spacing:.06em;color:var(--brand)}
   @media(min-width:901px){
     .hsec:has(.hintro){--intro-lift:calc(var(--bar-rise) + var(--bar-h));
       padding-top:var(--intro-lift);
@@ -728,7 +735,7 @@
       <!-- ESS 도입 줄글 — 세 카드(Grid · Renewable Energy · C&amp;I)를 묶는 말이라
            카드 안이 아니라 트랙 맨 위, 첫 카드 앞에 둔다. 트랙의 스크롤 차례 하나를
            차지하므로 섹션에 닿았을 때 보이고 한 번 더 굴리면 걷힌다.
-           UPS(#s2)는 아직 문안이 없어 이 띠를 두지 않는다 -->
+           UPS(#s2)도 같은 자리에 같은 띠를 둔다 -->
       <div class="hintro">
         <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
         <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
@@ -785,8 +792,16 @@
 
   <!-- 02 -->
   <section class="hsec" id="s2">
+    <span class="hintro-bg" aria-hidden="true"></span>
     <div class="hrail"></div>
     <div class="htrack">
+      <!-- UPS 도입 줄글 — ESS(#s1)와 같은 자리·같은 규칙이다. 다른 것은 첫 줄뿐 —
+           약칭을 풀어 쓴 이름이라 문장이 아니고, 그래서 문장 둘과 무게를 나눈다 -->
+      <div class="hintro">
+        <p class="lbl">Uninterruptible Power Supply</p>
+        <p>고출력과 높은 신뢰성이 요구되는 Data Center 및 Critical Infrastructure를 위한 배터리 시스템 솔루션을 제공합니다.</p>
+        <p>빠른 전력 응답과 안정적인 시스템 운영을 고려하여 Application에 최적화된 UPS Battery System을 설계합니다.</p>
+      </div>
       <article class="hcard hcard--tbd" data-tab="Data Center">
         <div class="hleft">
           <h3>Data Center</h3>
@@ -1002,7 +1017,7 @@
 })();
 </script>
 <script>
-/* ── ESS 도입 띠 — 흰 판과 인덱스를 트랙 스크롤에 맞춰 옮긴다 ─────────────
+/* ── 도입 띠 — 흰 판과 인덱스를 트랙 스크롤에 맞춰 옮긴다 ─────────────────
    띠 자체(.hintro)는 트랙 안에 있어 저절로 밀려 올라간다. 여기서 손보는 것은
    트랙 밖에 있어 같이 못 움직이는 둘이다 —
      .hintro-bg  화면 폭 흰 판 (트랙이 가로로 잘리는 상자라 색만 밖에 뒀다)
@@ -1021,48 +1036,58 @@
    줄과 첫 카드 제목이 저절로 한 선에 선다 — 둘 다 위 여백이 40px 이라서다.
    높이는 글이 몇 줄로 접히느냐에 따라 달라지므로 화면 크기가 바뀔 때만 다시 잰다.
 
+   띠를 가진 섹션을 전부 훑는다 — ESS(#s1)와 UPS(#s2) 둘이다. 띠가 없는 섹션은
+   건너뛴다.
+
    그리고 하나 더 — 띠가 바 밑에 닿아 있는 동안 body 에 .intro-flush 를 단다.
    바의 흰 입술(12px) 밑선을 지워 바에서 띠까지 흰색이 끊기지 않게 하는 스위치다
    (위 <style> 의 body.intro-flush 규칙). 조건은 둘 —
-     ① 섹션이 화면 맨 위에 물려 있다 (히어로에서 넘어오는 도중에는 아래가 아직
-        회색 바닥이라 밑선이 있어야 한다)
-     ② 띠가 아직 덜 걷혔다 (다 걷히면 바 밑은 다시 회색 바닥이다) */
+     ① 섹션이 화면 맨 위에 물려 있다 (넘어가는 도중에는 바 밑이 아직 회색 바닥이라
+        밑선이 있어야 한다)
+     ② 띠가 아직 덜 걷혔다 (다 걷히면 바 밑은 다시 회색 바닥이다)
+   스위치는 body 하나라 섹션마다 따로 켜고 끄면 서로 지운다 — 한 곳이라도 조건을
+   채우면 켜는 것으로 모아 둔다(어차피 화면 맨 위에 물리는 섹션은 한 번에 하나다) */
 (function(){
-  var sec=document.getElementById('s1');
-  if(!sec)return;
-  var track=sec.querySelector('.htrack'),
-      intro=sec.querySelector('.hintro'),
-      bg=sec.querySelector('.hintro-bg'),
-      card=track&&track.querySelector('.hcard');
-  if(!track||!intro||!card)return;
+  var narrow=window.matchMedia('(max-width:900px)'),items=[];
 
-  var narrow=window.matchMedia('(max-width:900px)'),h=0,lead=0;
+  [].forEach.call(document.querySelectorAll('.hsec'),function(sec){
+    var track=sec.querySelector('.htrack'),
+        intro=sec.querySelector('.hintro'),
+        card=track&&track.querySelector('.hcard');
+    if(!track||!intro||!card)return;
+    var it={sec:sec,track:track,intro:intro,card:card,
+            bg:sec.querySelector('.hintro-bg'),h:0,lead:0};
+    track.addEventListener('scroll',function(){sync(it);flush();},{passive:true});
+    items.push(it);
+  });
+  if(!items.length)return;
 
-  function measure(){h=intro.offsetHeight;lead=card.offsetTop;}
-  function flush(){
-    var r=sec.getBoundingClientRect();
-    document.body.classList.toggle('intro-flush',
-      !narrow.matches && r.top<=1 && r.bottom>0 && track.scrollTop<h-0.5);
-  }
-  function sync(){
+  function measure(it){it.h=it.intro.offsetHeight;it.lead=it.card.offsetTop;}
+  function sync(it){
+    var s=it.sec.style;
     if(narrow.matches){
-      sec.style.removeProperty('--intro-h');
-      sec.style.removeProperty('--intro-shift');
-      sec.style.removeProperty('--rail-push');
-      document.body.classList.remove('intro-flush');
-      if(bg)bg.style.visibility='';
+      s.removeProperty('--intro-h');
+      s.removeProperty('--intro-shift');
+      s.removeProperty('--rail-push');
+      if(it.bg)it.bg.style.visibility='';
       return;
     }
-    var top=track.scrollTop;
-    sec.style.setProperty('--intro-h',h+'px');
-    sec.style.setProperty('--intro-shift',Math.min(top,h)+'px');
-    sec.style.setProperty('--rail-push',Math.max(0,lead-top)+'px');
-    if(bg)bg.style.visibility=top>=h-0.5?'hidden':'';
-    flush();
+    var top=it.track.scrollTop;
+    s.setProperty('--intro-h',it.h+'px');
+    s.setProperty('--intro-shift',Math.min(top,it.h)+'px');
+    s.setProperty('--rail-push',Math.max(0,it.lead-top)+'px');
+    if(it.bg)it.bg.style.visibility=top>=it.h-0.5?'hidden':'';
   }
-  function remeasure(){measure();sync();}
+  function flush(){
+    var on=false;
+    if(!narrow.matches)items.forEach(function(it){
+      var r=it.sec.getBoundingClientRect();
+      if(r.top<=1&&r.bottom>0&&it.track.scrollTop<it.h-0.5)on=true;
+    });
+    document.body.classList.toggle('intro-flush',on);
+  }
+  function remeasure(){items.forEach(function(it){measure(it);sync(it);});flush();}
 
-  track.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('scroll',flush,{passive:true});
   window.addEventListener('resize',remeasure);
   window.addEventListener('load',remeasure);
