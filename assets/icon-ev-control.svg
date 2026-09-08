@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 전기자동차 제어 플랫폼 — 차량 + 원격 신호 -->
+  <path d="M5 20v-4l2-3.5h12l2 3.5h2v4"/>
+  <circle cx="9.5" cy="20" r="2"/>
+  <circle cx="18.5" cy="20" r="2"/>
+  <path d="M12.5 9.5a2.2 2.2 0 0 1 3 0M10.8 7.6a4.6 4.6 0 0 1 6.4 0M9.1 5.7a7 7 0 0 1 9.8 0"/>
+</svg>

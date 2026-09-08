@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 배터리 진단 플랫폼 — 배터리 + 파형(상태 진단) -->
+  <rect x="3" y="8.5" width="19" height="11" rx="2"/>
+  <path d="M23.5 11.5v5"/>
+  <path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/>
+</svg>
