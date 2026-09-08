@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ESS — 컨테이너형 저장 장치 + 충전 셀 + 계통 인입 -->
+  <rect x="6" y="8.5" width="19" height="11" rx="2"/>
+  <path d="M10.5 12v4M15.5 12v4M20.5 12v4"/>
+  <path d="M3 14h3"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 에이프로 세미콘 — 톱니 지붕 공장 + 굴뚝 + 웨이퍼 -->
+  <path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/>
+  <path d="M21 23.5v-16h3v16"/>
+  <circle cx="11" cy="20.5" r="2"/>
+</svg>

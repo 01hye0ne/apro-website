@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 신뢰성 검사 장비 — 셀 + 합격 체크 (01 과 같은 셀 형태) -->
+  <rect x="7" y="7" width="14" height="18" rx="2"/>
+  <path d="M11.5 7V4.5h5V7"/>
+  <path d="M10.5 16 13 18.5 17.5 13"/>
+</svg>
