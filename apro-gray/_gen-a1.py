@@ -77,8 +77,15 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #   A 를 고쳐도 A-1 로 넘어가지 않는다 — 두 장을 따로 손봐야 한다.
 #   PAGES 에는 그대로 남겨 둔다: 다른 A-1 페이지의 "스마트 제조" 링크가
 #   business-smart-a1.html 로 이어져야 하기 때문이다(빼면 A 로 샌다).
+#
+# ⚠ business-ai.html 도 2026-09-09 부터 여기 없다 — 같은 이유다. 인공지능 플랫폼
+#   A-1 을 스마트 제조 A-1 과 같은 레이아웃(Figma 994:321 와이어프레임)으로 새로
+#   짰기 때문에 A 와 갈라졌다. business-ai-a1.html 도 손으로 고치는 파일이고,
+#   PAGES 에는 남겨 두어 다른 A-1 페이지의 "인공지능 플랫폼" 링크가 그대로 온다.
+#   두 A-1 페이지는 <style>·<script> 를 각자 갖고 있다(공용 파일로 뽑지 않았다) →
+#   골격을 고칠 일이 생기면 business-smart-a1.html 과 함께 고쳐야 한다.
 SOURCES = ['business-energy.html',
-           'business-ai.html', 'business-semicon.html',
+           'business-semicon.html',
            'business.html', 'company.html', 'network.html', 'index.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
