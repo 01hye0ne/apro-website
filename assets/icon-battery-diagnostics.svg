@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 배터리 진단 플랫폼 — 배터리 + 파형(상태 진단) -->
-  <rect x="3" y="8.5" width="19" height="11" rx="2"/>
-  <path d="M23.5 11.5v5"/>
-  <path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M17.1429 7.28571H4.28573C3.33895 7.28571 2.57144 8.05322 2.57144 8.99999V15C2.57144 15.9468 3.33895 16.7143 4.28573 16.7143H17.1429C18.0896 16.7143 18.8572 15.9468 18.8572 15V8.99999C18.8572 8.05322 18.0896 7.28571 17.1429 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1429 9.85715V14.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.14285 12H7.71428L9.42857 9L11.5714 15L13.2857 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

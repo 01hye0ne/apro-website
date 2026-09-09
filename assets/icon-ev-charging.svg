@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 전기자동차 충전 플랫폼 — 충전기 + 케이블 + 커넥터 -->
-  <rect x="4.5" y="4" width="10" height="20" rx="2"/>
-  <rect x="7" y="7" width="5" height="4.5" rx="1"/>
-  <path d="M14.5 10c3.5 0 5.5 2 5.5 5v2.5"/>
-  <rect x="17.5" y="17.5" width="5" height="5" rx="1.5"/>
-  <path d="M19 22.5V24M21 22.5V24"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M10.7143 3.42856H5.57143C4.62466 3.42856 3.85715 4.19607 3.85715 5.14284V18.8571C3.85715 19.8039 4.62466 20.5714 5.57143 20.5714H10.7143C11.6611 20.5714 12.4286 19.8039 12.4286 18.8571V5.14284C12.4286 4.19607 11.6611 3.42856 10.7143 3.42856Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42857 6H6.85714C6.38376 6 6 6.38376 6 6.85714V9C6 9.47339 6.38376 9.85714 6.85714 9.85714H9.42857C9.90196 9.85714 10.2857 9.47339 10.2857 9V6.85714C10.2857 6.38376 9.90196 6 9.42857 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.4286 8.57144C15.4286 8.57144 17.1428 10.2857 17.1428 12.8572V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 15H16.2857C15.5756 15 15 15.5756 15 16.2857V18C15 18.7101 15.5756 19.2857 16.2857 19.2857H18C18.7101 19.2857 19.2857 18.7101 19.2857 18V16.2857C19.2857 15.5756 18.7101 15 18 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.2857 19.2857V20.5714M18 19.2857V20.5714" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

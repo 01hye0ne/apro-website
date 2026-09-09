@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 에이프로 세미콘 — 톱니 지붕 공장 + 굴뚝 + 웨이퍼 -->
-  <path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/>
-  <path d="M21 23.5v-16h3v16"/>
-  <circle cx="11" cy="20.5" r="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M3 20.1429V11.1429L7.88571 14.5714V11.1429L12.7714 14.5714V11.1429L17.5714 14.5714V20.1429H3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 20.1428V6.42856H20.5714V20.1428" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42856 19.2857C10.3753 19.2857 11.1429 18.5182 11.1429 17.5714C11.1429 16.6247 10.3753 15.8571 9.42856 15.8571C8.48179 15.8571 7.71428 16.6247 7.71428 17.5714C7.71428 18.5182 8.48179 19.2857 9.42856 19.2857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

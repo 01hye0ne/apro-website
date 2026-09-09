@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- ESS — 컨테이너형 저장 장치 + 충전 셀 + 계통 인입 -->
-  <rect x="6" y="8.5" width="19" height="11" rx="2"/>
-  <path d="M10.5 12v4M15.5 12v4M20.5 12v4"/>
-  <path d="M3 14h3"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M19.7143 7.28571H6.85715C5.91037 7.28571 5.14286 8.05322 5.14286 8.99999V15C5.14286 15.9468 5.91037 16.7143 6.85715 16.7143H19.7143C20.6611 16.7143 21.4286 15.9468 21.4286 15V8.99999C21.4286 8.05322 20.6611 7.28571 19.7143 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10.2857V13.7143M13.2857 10.2857V13.7143M17.5714 10.2857V13.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.57143 12H5.14285" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

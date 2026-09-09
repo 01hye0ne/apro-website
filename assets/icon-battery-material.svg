@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 이차전지 소재 — 육각 격자 + 꼭짓점 원자 -->
-  <path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/>
-  <path d="M14 11.5v5"/>
-  <circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/>
-  <circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/>
-  <circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/>
 </svg>

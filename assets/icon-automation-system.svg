@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 자동화 시스템 — 갠트리 레일 + 집게 + 반송물 -->
-  <path d="M3.5 5h21"/>
-  <path d="M14 5v3.5"/>
-  <path d="M10 12V8.5h8V12"/>
-  <rect x="6" y="17" width="6" height="5" rx="1"/>
-  <rect x="16" y="17" width="6" height="5" rx="1"/>
-  <path d="M3 24h22"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/>
 </svg>
