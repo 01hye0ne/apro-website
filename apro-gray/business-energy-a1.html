@@ -92,6 +92,9 @@
     --body-fixed:267px;
     /* 내용 오른쪽 여백 */
     --body-pad-r:120px;
+    /* 제품 카드의 정사각 사진 폭(Figma 332). Certification 띠의 왼쪽 칸도 같은
+       값을 써서 두 줄의 세로 경계가 맞는다 */
+    --prod-shot:332px;
     /* 장 하나가 쓰는 띠와 그 위아래로 비워 두는 자리. 한 화면을 다 쓰지 않고
        위아래를 남기는 이유는 형제 페이지와 같다 — 남긴 만큼 다음 장의 머리 줄이
        화면 밑에 걸쳐 보여서 "아래에 더 있다"가 그림 없이 전해진다.
@@ -314,66 +317,84 @@
   .sf-rail a:hover{color:var(--brand)}
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
 
-  .sf-body{flex:1 1 0;min-width:0}
+  .sf-body{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
 
-  /* 장의 머리 줄 — 장마다 달려 장과 함께 흐른다. 글자를 갈아 끼울 일이 없어
-     숫자도 이름도 마크업에 그대로 있고 스크립트가 손대지 않는다.
-     모양이 둘이다.
-       · 두 기둥 장(01 ESS · 02 UPS) — 그림 열 [태그][가는 선][눈금],
-         글 열 [눈금][짧은 선][소분류 이름][가는 선]. 두 줄이 한 줄로 이어 보인다
-       · 한 기둥 장(03 솔루션)       — [태그][소분류 이름][가는 선][눈금]
+  /* 01 ESS · 02 UPS 묶음 — 가운데 그림이 화면에 붙고 오른쪽 글만 흐른다.
+     형제 페이지(스마트 제조)와 같은 방식이다. 붙박이를 이 묶음 안에 두었으므로
+     여섯 장이 끝나면 그림도 함께 흘러 나간다 — 그 아래 03 솔루션은 한 기둥이라
+     그림 열이 남아 있으면 안 된다 */
+  .sf-fix{display:flex;align-items:flex-start;gap:8px}
+  .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+              flex:1 1 0;min-width:0;display:flex;align-items:center}
+  /* 안쪽 기둥이 장의 띠와 같은 높이다 → 장이 제자리에 서면 그림 열과 글 열의
+     눈금 줄이 한 줄로 맞는다 */
+  .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
+             display:flex;flex-direction:column;gap:24px}
+  .sf-figstack{position:relative;flex:1;min-height:0}
+  /* 여섯 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다. visibility 를 같이 껐다 켜야
+     안 보이는 다섯 장이 읽기 순서에 끼지 않는다 */
+  .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
+         opacity:0;visibility:hidden;
+         transition:opacity .45s var(--ease),visibility .45s}
+  .sf-ph.is-on{opacity:1;visibility:visible}
+  .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
+              color:var(--sf-ph-tx)}
+
+  /* 눈금 줄 — 모양이 셋이다.
+       · 붙박이 그림 열 [태그][가는 선][눈금]       한 벌만 두고 숫자만 굴린다
+       · 01·02 글 열    [눈금][짧은 선][이름][선]   장마다 하나
+       · 03 솔루션      [태그][가는 선]             장마다 하나, 화면 끝까지 나간다
      색은 장의 쿨그레이 토큰을 따라간다(지금 장만 진해진다) */
-  .sf-line,.sf-headin{flex-shrink:0;display:flex;align-items:center;gap:8px}
-  .sf-line{height:16px}
-  .sf-headin{height:24px;margin-bottom:24px}
-  .sf-line .rule,.sf-headin .rule{flex:1;min-width:0;height:1px;background:var(--c-bd-s)}
+  .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center;gap:8px}
+  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-bd-s,var(--sf-line-s))}
   /* 이름 앞의 짧은 선(Figma 30). 눈금에 딱 붙는다 */
   .sf-line .rule.s{flex:0 0 30px}
   .sf-line .tick+.rule.s{margin-left:-8px}
-  .sf-line .tick,.sf-headin .tick{width:2px;height:12px;flex-shrink:0;
-                                  background:var(--c-tick)}
-  .sf-line .ttl,.sf-headin .ttl{font-family:var(--suit);font-weight:800;font-size:16px;
-                                line-height:1.2;letter-spacing:-.32px;color:var(--c-ttl);
-                                white-space:nowrap}
-  /* 숫자 태그 — 폭을 고정한다(Figma 실측 32). 자릿수가 같아도 글자에 맞춰 늘었다
-     줄었다 하면 장을 옮길 때 오른쪽 눈금 줄의 시작점이 흔들린다 */
+  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
+  .sf-line .ttl{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;
+                letter-spacing:-.32px;color:var(--c-ttl,var(--sf-txt));white-space:nowrap}
+  /* 숫자 태그 — 폭을 고정한다(Figma 실측 32). 글자에 맞춰 늘었다 줄었다 하면
+     장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
+     붙박이 그림 열에서는 자리마다 0~9 를 세로로 이어 둔 띠(.r)를 지금 숫자만큼
+     끌어올려, 글자가 갈리는 대신 계기판처럼 굴러가게 한다 */
   .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
-          justify-content:center;padding:2px 4px 0;background:var(--c-tick);color:#fff;
+          justify-content:center;padding:2px 4px 0;background:var(--c-tick,var(--sf-ter));
+          color:#fff;
           font-family:var(--ald);font-size:11px;line-height:11px;letter-spacing:1px}
+  /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
+     가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
+  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
+  .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
+  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
+  .sf-tag .s{display:block;width:5px;text-align:center}
+  @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
 
-  /* 장 — 띠 하나가 한 장이고 그 안에서 세로 가운데에 선다. 띠 위아래로 남긴
-     --sec-pad 덕분에 다음 장의 머리 줄이 화면 밑에 걸쳐 보인다.
-     03 솔루션처럼 내용이 띠보다 긴 장은 띠를 넘겨 그냥 자란다.
+  /* 장 — 띠 하나가 한 장이다. 띠 위아래로 남긴 --sec-pad 덕분에 다음 장의 눈금
+     줄이 화면 밑에 걸쳐 보인다. 03 솔루션처럼 내용이 띠보다 긴 장은 그냥 자란다.
      앞뒤 장이 이어 보이므로 지금 장만 진하게 둔다 */
-  .sf-secs{display:flex;flex-direction:column;gap:16px;
+  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
            padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
+  /* 03 묶음은 앞 묶음이 아래로 비워 둔 자리를 그대로 쓴다 */
+  .sf-secs.is-prods{flex:none;padding-top:0}
   .sf-sec{min-height:var(--band-h);
           display:flex;flex-direction:column;justify-content:center;
           scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
-          --c-ttl:var(--sf-txt);     /* 900 제목      */
-          --c-body:var(--sf-sec);    /* 600 줄글      */
-          --c-num:var(--brand);      /* 목록 번호     */
-          --c-tick:var(--sf-ter);    /* 태그 · 눈금   */
-          --c-bd:var(--sf-line);     /* 200 칸선      */
-          --c-bd-s:var(--sf-line-s)} /* 300 굵은 선   */
+          --c-ttl:var(--sf-txt);     /* 900 제목        */
+          --c-body:var(--sf-sec);    /* 600 줄글        */
+          --c-num:var(--brand);      /* 목록 번호       */
+          --c-tick:var(--sf-ter);    /* 태그 · 눈금     */
+          --c-lbl:#4077b7;           /* Certification 띠 */
+          --c-bd:var(--sf-line);     /* 200 칸선        */
+          --c-bd-s:var(--sf-line-s)} /* 300 굵은 선     */
 
-  /* ── 01·02 장 : 왼쪽 그림 · 오른쪽 글 (Figma 1031:8920 Type=Wide) ────────
-     두 기둥이 띠를 세로로 꽉 채운다. 그래서 오른쪽 목록의 아랫변이 왼쪽 그림의
-     아랫변과 저절로 맞는다 — 와이어프레임이 목록을 바닥에 붙여 둔 이유다.
-     기둥 폭은 반반(Figma 586.5 + 8 + 586.5) */
-  .sf-cols{flex:1;min-height:0;display:flex;gap:8px}
-  .sf-figcol,.sf-txt{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:24px}
-  /* 그림 자리 — 머리 줄 아래를 다 먹는다 */
-  .sf-shot{flex:1;min-height:280px;display:flex;align-items:center;
-           justify-content:center;background:var(--sf-ph-bg);
-           border:1px dashed var(--sf-ph-bd)}
-  .sf-shot span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
-                color:var(--sf-ph-tx)}
-  /* 글은 기둥 안에서 왼쪽 40 을 띄우고 오른쪽 여백을 비운다(Figma pl-40 · pr-122).
-     머리 줄은 그 여백 밖에 있어 가는 선이 화면 오른쪽 끝까지 나간다 */
+  /* ── 01·02 장 : 글 기둥만 흐른다 (Figma 1031:8920 Type=Wide) ─────────────
+     글은 기둥 안에서 왼쪽 40 을 띄우고 오른쪽 여백을 비운다(Figma pl-40 · pr-122).
+     눈금 줄은 그 여백 밖에 있어 가는 선이 화면 오른쪽 끝까지 나간다 */
+  .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:var(--txt-pad-l);padding-right:var(--body-pad-r)}
-  /* 제목+리드 덩어리가 남는 세로를 먹어서 목록이 바닥에 앉는다 */
+  /* 제목+리드 덩어리가 남는 세로를 먹어서 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(26px,2.7vw,38px);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
@@ -388,47 +409,57 @@
   .sf-apps span{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.35;
                 letter-spacing:-.32px;color:var(--c-body)}
 
-  /* ── 03 장 : 리드 + 제품 카드 + Certification ───────────────────────────
-     오른쪽 여백은 이 장만 갖는다 — 두 기둥 장은 머리 줄의 가는 선을 화면 끝까지
-     내보내야 해서 여백을 글 기둥 안쪽으로 옮겼다 */
-  .sf-sec.is-prod{padding-right:var(--body-pad-r)}
-  .sf-lead18{padding-bottom:20px;font-family:var(--pre);font-weight:400;font-size:18px;
-             line-height:1.6;letter-spacing:-.36px;color:var(--c-ttl)}
-  .sf-prods{display:flex;gap:8px;align-items:stretch}
-  .sf-prod{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
-  .sf-prod>.shot{aspect-ratio:16/9;background:var(--sf-ph-bg);
+  /* ── 03 장 : 큰 제목 + 리드 + Certification 띠 + 세로로 쌓는 제품 ─────────
+     Figma 1032:2689(Type=Product). 눈금 줄만 화면 끝까지 나가고 나머지는
+     오른쪽 120 을 비운다 */
+  .sf-sec.is-prod{justify-content:flex-start}
+  .sf-sec.is-prod>.sf-line{margin-bottom:24px}
+  .sf-prodin{display:flex;flex-direction:column;gap:4px;
+             padding-right:var(--body-pad-r)}
+  .sf-ptexts{display:flex;flex-direction:column;gap:16px}
+  .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:clamp(26px,2.7vw,38px);
+                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
+  .sf-ptexts .lead{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
+                   letter-spacing:-.3px;color:var(--c-ttl)}
+  /* Certification — 제품 목록 머리에 앉는 파란 띠. 왼쪽 칸을 제품 사진 폭(332)에
+     맞춰 두면 아래 카드의 세로 경계와 한 줄로 선다 */
+  .sf-cert{display:flex;align-items:center;padding:8px 0;background:var(--c-lbl)}
+  .sf-cert .hd{flex-shrink:0;width:var(--prod-shot);padding:0 12px;font-family:var(--suit);
+               font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;
+               color:#fff}
+  .sf-cert .lb{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:8px;
+               padding:0 12px;font-family:var(--suit);font-weight:500;font-size:14px;
+               line-height:1.35;letter-spacing:-.28px;color:#fff}
+  .sf-cert .lb::before{content:"";width:4px;height:4px;flex-shrink:0;background:#fff}
+  /* 제품 — 한 줄에 하나. 왼쪽 정사각 사진, 오른쪽 이름 · 특징 넷 · 주요 적용 분야 */
+  .sf-prods{display:flex;flex-direction:column;gap:16px}
+  .sf-prod{display:flex;align-items:stretch;border:1px solid var(--c-bd)}
+  .sf-prod>.shot{flex-shrink:0;width:var(--prod-shot);aspect-ratio:1;
+                 background:var(--sf-ph-bg);
                  border:1px dashed var(--sf-ph-bd)}
-  /* flex:1 이어야 아래 '주요 적용 분야' 띠의 margin-top:auto 가 카드 바닥까지
-     밀린다 — 특징 글이 한 줄 더 접히는 카드가 있어도 띠의 윗변이 서로 맞는다 */
-  .sf-prod>.info{flex:1;display:flex;flex-direction:column;gap:12px;padding-top:12px}
-  /* 제품 이름 — 파란 띠. 앞의 흰 네모가 Figma 의 dot 이다 */
-  .sf-prod .lbl{display:flex;align-items:center;gap:8px;padding:8px;background:#4077b7}
-  .sf-prod .lbl::before{content:"";width:4px;height:4px;flex-shrink:0;background:#fff}
+  .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
+  .sf-prod .lbl{display:flex;align-items:center;padding:12px;background:var(--sf-gray100)}
   .sf-prod .lbl b{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
-                  letter-spacing:-.4px;color:#fff}
-  .sf-feat{list-style:none}
-  .sf-feat li{display:flex;flex-direction:column;gap:4px;padding:8px 4px}
+                  letter-spacing:-.4px;color:var(--c-ttl)}
+  .sf-prod .info{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;
+                 padding:12px}
+  /* 특징 넷이 가로로 나란히 선다. flex:1 이라 아래 '주요 적용 분야' 띠가 카드
+     바닥에 붙는다 — 글이 한 줄 더 접히는 카드가 있어도 띠의 윗변이 서로 맞는다 */
+  .sf-feat{flex:1;min-height:0;display:flex;gap:12px;list-style:none}
+  .sf-feat li{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
+              padding:16px 0}
+  .sf-feat .ic{width:44px;height:44px;flex-shrink:0;background:var(--sf-ph-bg);
+               border:1px dashed var(--sf-ph-bd)}
+  .sf-feat .t{display:flex;flex-direction:column;gap:4px}
   .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:14px;line-height:1.35;
               letter-spacing:-.28px;color:var(--c-ttl)}
   .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;
               letter-spacing:-.28px;color:var(--c-body)}
-  /* 주요 적용 분야 띠 — 카드 바닥에 붙는다(카드 높이가 달라도 아랫변이 맞는다) */
-  .sf-prod .use{margin-top:auto;display:flex;gap:10px;padding:4px 8px;border-radius:2px;
+  .sf-prod .use{display:flex;gap:10px;padding:4px 8px;border-radius:2px;
                 background:var(--sf-gray100);font-family:var(--noto);font-size:13px;
                 line-height:1.6;letter-spacing:-.26px}
   .sf-prod .use b{flex-shrink:0;font-weight:700;color:var(--sf-sec)}
   .sf-prod .use span{min-width:0;color:var(--sf-ter)}
-  /* Certification — 오른쪽 좁은 표. Figma 폭 235 */
-  .sf-cert{flex-shrink:0;width:235px}
-  .sf-cert .hd{padding:8px;text-align:center;font-family:var(--suit);font-weight:800;
-               font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl);
-               border-top:2px solid var(--c-bd-s);border-bottom:2px solid var(--c-bd-s)}
-  .sf-cert ul{list-style:none}
-  .sf-cert li{display:flex;align-items:center;gap:8px;padding:8px;
-              border-bottom:1px solid var(--c-bd);font-family:var(--suit);font-weight:500;
-              font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
-  .sf-cert li::before{content:"";width:4px;height:4px;flex-shrink:0;
-                      background:var(--c-num)}
 
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
      좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
@@ -436,26 +467,25 @@
   @media(min-width:901px){
     .js .sf-sec:not(.is-on){
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
-      --c-tick:var(--sf-line);
+      --c-tick:var(--sf-line);--c-lbl:var(--sf-line);
       --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
-    .js .sf-sec:not(.is-on) .sf-prod .lbl{background:var(--sf-line)}
+    .js .sf-sec:not(.is-on) .sf-prod .lbl{background:transparent}
     .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
     .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
   }
-  .sf-line .ttl,.sf-headin .ttl,
-  .sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,.sf-lead18,
-  .sf-feat .k,.sf-feat .d,.sf-cert .hd,.sf-cert li,
+  .sf-line .ttl,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
+  .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
+  .sf-feat .k,.sf-feat .d,
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
-  .sf-apps,.sf-apps li,.sf-cert .hd,.sf-cert li{transition:border-color .5s var(--ease)}
-  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-headin .rule,.sf-headin .tick,
-  .sf-prod .lbl,.sf-cert li::before{transition:background-color .5s var(--ease)}
+  .sf-apps,.sf-apps li,.sf-prod{transition:border-color .5s var(--ease)}
+  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert,
+  .sf-prod .lbl{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
-    .sf-line .ttl,.sf-headin .ttl,.sf-texts h2,.sf-texts p,
-    .sf-apps b,.sf-apps span,.sf-lead18,
-    .sf-feat .k,.sf-feat .d,.sf-cert .hd,.sf-cert li,
-    .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,
-    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-headin .rule,.sf-headin .tick,
-    .sf-prod .lbl,.sf-cert li::before{transition:none}
+    .sf-line .ttl,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
+    .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,.sf-feat .k,.sf-feat .d,
+    .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,
+    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert,.sf-ph,
+    .sf-prod .lbl{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -467,6 +497,13 @@
     .sf-introtop{padding-left:clamp(24px,6.7vw,96px);
                  padding-right:clamp(24px,6.7vw,96px)}
     .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
+  }
+  /* 카드가 좁아지면 특징 넷을 2×2 로 접는다 — 한 줄에 넷이면 1280 아래에서
+     한 칸이 130 밑으로 떨어져 글이 서너 자씩 끊긴다 */
+  @media(max-width:1280px){
+    :root{--prod-shot:clamp(220px,26vw,332px)}
+    .sf-feat{flex-wrap:wrap;gap:0}
+    .sf-feat li{flex:1 1 50%;padding:12px 8px}
   }
   @media(max-width:1180px){
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
@@ -499,20 +536,30 @@
                                     box-shadow:inset 0 -2px 0 var(--brand)}
     /* 장 높이를 화면에 매지 않는다 — 내용만큼만 쓰고 이어서 흐른다 */
     .sf-body{padding-right:0}
-    .sf-headin{margin-bottom:20px}
-    .sf-headin .ttl{font-size:15px}
+    .sf-line .ttl{font-size:15px}
+    .sf-sec.is-prod>.sf-line{margin-bottom:20px}
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-sec{min-height:0;display:block;padding:28px 16px 48px;
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h))}
-    /* 두 기둥과 제품 카드를 모두 한 줄로 세운다. 그림이 글 아래로 내려간다 —
-       제목 없는 그림 자리로 장이 시작하지 않게 순서를 뒤집었다 */
-    .sf-sec.is-prod{padding-right:0}
-    .sf-cols{flex-direction:column;gap:24px}
-    .sf-figcol{order:2}
+    /* 그림 띠 — 인덱스 띠 바로 밑에 붙는다. 화면의 30% 를 넘지 않게 묶어야
+       밑으로 흐르는 글이 읽을 만큼 남는다(형제 페이지와 같다) */
+    .sf-fix{display:block}
+    .sf-figwrap{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h));z-index:15;
+                height:auto;padding:12px 16px;background:#fff;
+                border-bottom:1px solid var(--sf-line)}
+    .sf-figcol{height:auto;min-height:0;gap:12px}
+    .sf-figstack{aspect-ratio:16/9;max-height:30svh}
     .sf-txtin{padding-left:0;padding-right:0}
-    .sf-shot{flex:none;min-height:0;aspect-ratio:16/9}
-    .sf-prods{flex-direction:column;gap:24px}
-    .sf-cert{width:100%}
+    /* 제품은 사진이 위로 올라오고 특징 넷이 두 줄로 접힌다 */
+    .sf-prodin{padding-right:0}
+    .sf-prod{flex-direction:column}
+    .sf-prod>.shot{width:100%;aspect-ratio:16/9}
+    .sf-cert .hd{width:100%}
+    .sf-feat{flex-wrap:wrap;gap:0}
+    .sf-feat li{flex:1 1 50%;padding:12px 8px}
+    .sf-cert{flex-wrap:wrap;padding:8px 4px}
+    .sf-cert .hd{width:100%;padding:0 8px 4px}
+    .sf-cert .lb{flex:1 1 40%;padding:0 8px}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
     .sf-herocap{gap:20px;padding-top:28px}
     .sf-herocap h1{gap:12px}
@@ -703,330 +750,347 @@
   </div>
 
   <div class="sf-body">
-    <div class="sf-secs">
+
+    <!-- 01 ESS · 02 UPS — 그림은 붙박이, 오른쪽 글만 흐른다 -->
+    <div class="sf-fix">
+      <div class="sf-figwrap">
+        <div class="sf-figcol">
+          <!-- 눈금 줄은 여섯 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
+          <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
+          <div class="sf-figstack">
+          <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph" data-for="sf01-2"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph" data-for="sf01-3"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph" data-for="sf02-1"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph" data-for="sf02-3"><span>도표 or 이미지</span></figure>
+          </div>
+        </div>
+      </div>
+      <div class="sf-secs">
 
       <!-- 01-1 GRID ESS -->
       <section class="sf-sec sf-step is-fig" id="sf01-1" aria-labelledby="sf01-1-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">01-1</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">GRID ESS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf01-1-t">Power Grid Stability</h2>
-                <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Grid Stabilization</span></li>
-              <li><b>02</b><span>Frequency Regulation</span></li>
-              <li><b>03</b><span>Peak Shaving</span></li>
-              <li><b>04</b><span>Load Shifting</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">GRID ESS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf01-1-t">Power Grid Stability</h2>
+              <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Grid Stabilization</span></li>
+            <li><b>02</b><span>Frequency Regulation</span></li>
+            <li><b>03</b><span>Peak Shaving</span></li>
+            <li><b>04</b><span>Load Shifting</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- 01-2 Renewable ESS -->
       <section class="sf-sec sf-step is-fig" id="sf01-2" aria-labelledby="sf01-2-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">01-2</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">Renewable ESS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf01-2-t">Renewable Energy Integration</h2>
-                <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Solar Energy</span></li>
-              <li><b>02</b><span>Wind Energy</span></li>
-              <li><b>03</b><span>Renewable Energy Integration</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">Renewable ESS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf01-2-t">Renewable Energy Integration</h2>
+              <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Solar Energy</span></li>
+            <li><b>02</b><span>Wind Energy</span></li>
+            <li><b>03</b><span>Renewable Energy Integration</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- 01-3 C&amp;I ESS -->
       <section class="sf-sec sf-step is-fig" id="sf01-3" aria-labelledby="sf01-3-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">01-3</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">C&amp;I ESS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf01-3-t">Commercial &amp;<br />Industrial Energy Storage</h2>
-                <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Factory</span></li>
-              <li><b>02</b><span>Commercial Building</span></li>
-              <li><b>03</b><span>Industrial Facility</span></li>
-              <li><b>04</b><span>Microgrid</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">C&amp;I ESS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf01-3-t">Commercial &amp;<br />Industrial Energy Storage</h2>
+              <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Factory</span></li>
+            <li><b>02</b><span>Commercial Building</span></li>
+            <li><b>03</b><span>Industrial Facility</span></li>
+            <li><b>04</b><span>Microgrid</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- 02-1 데이터 센터 전용 UPS -->
       <section class="sf-sec sf-step is-fig" id="sf02-1" aria-labelledby="sf02-1-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">02-1</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">데이터 센터 전용 UPS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf02-1-t">Reliable Power<br />for Data Infrastructure</h2>
-                <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Data Center</span></li>
-              <li><b>02</b><span>AI Data Center</span></li>
-              <li><b>03</b><span>Cloud &amp; Hyperscale Data Center</span></li>
-              <li><b>04</b><span>Colocation Data Center</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">데이터 센터 전용 UPS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf02-1-t">Reliable Power<br />for Data Infrastructure</h2>
+              <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Data Center</span></li>
+            <li><b>02</b><span>AI Data Center</span></li>
+            <li><b>03</b><span>Cloud &amp; Hyperscale Data Center</span></li>
+            <li><b>04</b><span>Colocation Data Center</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- 02-2 산업용 UPS -->
       <section class="sf-sec sf-step is-fig" id="sf02-2" aria-labelledby="sf02-2-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">02-2</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">산업용 UPS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf02-2-t">Reliable Power<br />for Data Infrastructure</h2>
-                <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Manufacturing Facility</span></li>
-              <li><b>02</b><span>Semiconductor &amp; Display Facility</span></li>
-              <li><b>03</b><span>Process Industry</span></li>
-              <li><b>04</b><span>Industrial Automation</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">산업용 UPS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf02-2-t">Reliable Power<br />for Data Infrastructure</h2>
+              <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Manufacturing Facility</span></li>
+            <li><b>02</b><span>Semiconductor &amp; Display Facility</span></li>
+            <li><b>03</b><span>Process Industry</span></li>
+            <li><b>04</b><span>Industrial Automation</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- 02-3 주요 전력망 UPS -->
       <section class="sf-sec sf-step is-fig" id="sf02-3" aria-labelledby="sf02-3-t">
-        <div class="sf-cols">
-          <div class="sf-figcol">
-            <p class="sf-line"><span class="sf-tag">02-3</span><i class="rule"></i><i class="tick"></i></p>
-            <div class="sf-shot"><span>도표 or 이미지</span></div>
-          </div>
-          <div class="sf-txt">
-            <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">주요 전력망 UPS</span><i class="rule"></i></p>
-            <div class="sf-txtin">
-              <div class="sf-texts">
-                <h2 id="sf02-3-t">Continuous Power<br />for Critical Infrastructure</h2>
-                <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
-              </div>
-              <ol class="sf-apps" aria-label="주요 적용 분야">
-              <li><b>01</b><span>Hospital &amp; Healthcare</span></li>
-              <li><b>02</b><span>Telecommunication</span></li>
-              <li><b>03</b><span>Transportation Infrastructure</span></li>
-              <li><b>04</b><span>Emergency &amp; Critical Facilities</span></li>
-              </ol>
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule s"></i><span class="ttl">주요 전력망 UPS</span><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf02-3-t">Continuous Power<br />for Critical Infrastructure</h2>
+              <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
             </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Hospital &amp; Healthcare</span></li>
+            <li><b>02</b><span>Telecommunication</span></li>
+            <li><b>03</b><span>Transportation Infrastructure</span></li>
+            <li><b>04</b><span>Emergency &amp; Critical Facilities</span></li>
+            </ol>
           </div>
         </div>
       </section>
 
+      </div>
+    </div>
+
+    <!-- 03 솔루션 — 한 기둥. 그림 붙박이가 없다 -->
+    <div class="sf-secs is-prods">
+
       <!-- 03-1 Module -->
       <section class="sf-sec sf-step is-prod" id="sf03-1" aria-labelledby="sf03-1-t">
-        <p class="sf-headin"><span class="sf-tag">03-1</span><span class="ttl">Module</span><i class="rule"></i><i class="tick"></i></p>
-        <p class="sf-lead18" id="sf03-1-t">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
-        <div class="sf-prods">
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">자연 공기 또는 강제 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 모듈 내부의 열을 외부로 배출합니다.</span></li>
-                <li><span class="k">구조가 단순하고 설치가 용이</span><span class="d">쿨링 시스템이 단순하여 설치와 유지보수가 용이합니다.</span></li>
-                <li><span class="k">다양한 환경에서의 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있습니다.</span></li>
-                <li><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 시스템 전체 비용 절감이 가능합니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+        <p class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i></p>
+        <div class="sf-prodin">
+          <div class="sf-ptexts">
+            <h2 id="sf03-1-t">Module</h2>
+            <p class="lead">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
+            <div class="sf-cert">
+              <p class="hd">Certification</p>
+              <p class="lb">KC / IEC / UL</p>
+              <p class="lb">KC / IEC / UL</p>
             </div>
           </div>
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 모듈 내부의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></li>
-                <li><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 모듈 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></li>
-                <li><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></li>
-                <li><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          <div class="sf-prods">
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">자연 공기 또는 강제 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 모듈 내부의 열을 외부로 배출합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 설치가 용이</span><span class="d">쿨링 시스템이 단순하여 설치와 유지보수가 용이합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서의 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있습니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 시스템 전체 비용 절감이 가능합니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sf-cert">
-            <p class="hd">Certification</p>
-            <ul>
-              <li>KC / IEC / UL</li>
-              <li>KC / IEC / UL</li>
-            </ul>
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 모듈 내부의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 모듈 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- 03-2 Rack -->
       <section class="sf-sec sf-step is-prod" id="sf03-2" aria-labelledby="sf03-2-t">
-        <p class="sf-headin"><span class="sf-tag">03-2</span><span class="ttl">Rack</span><i class="rule"></i><i class="tick"></i></p>
-        <p class="sf-lead18" id="sf03-2-t">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
-        <div class="sf-prods">
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>High Energy Type Rack</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">높은 에너지 밀도</span><span class="d">대용량 셀과 최적화된 시스템 설계로 높은 에너지 밀도를 구현합니다.</span></li>
-                <li><span class="k">장시간 에너지 저장</span><span class="d">장시간 에너지 저장이 필요한 ESS, C&amp;I 시스템 등에 최적화되어 있습니다.</span></li>
-                <li><span class="k">안정적인 시스템 운영</span><span class="d">통합 BMS와 다중 보호 기능으로 안정적이고 안전한 시스템 운영을 보장합니다.</span></li>
-                <li><span class="k">확장성 및 유연성</span><span class="d">다양한 용량 구성과 병렬 확장을 통해 고객 요구에 유연하게 대응합니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+        <p class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i></p>
+        <div class="sf-prodin">
+          <div class="sf-ptexts">
+            <h2 id="sf03-2-t">Rack</h2>
+            <p class="lead">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
+            <div class="sf-cert">
+              <p class="hd">Certification</p>
+              <p class="lb">KC / IEC / UL</p>
+              <p class="lb">KC / IEC / UL</p>
             </div>
           </div>
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>High Power Type Rack</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">높은 출력 성능</span><span class="d">저내부저항 설계와 고출력 셀 적용으로 순간 고출력 성능을 제공합니다.</span></li>
-                <li><span class="k">빠른 응답 성능</span><span class="d">높은 출력 밀도와 최적화된 전력 설계로 빠른 응답과 안정적인 전력 공급이 가능합니다.</span></li>
-                <li><span class="k">우수한 열 관리 성능</span><span class="d">고출력 환경에서도 안정적인 온도 제어와 열 확산 구조를 적용하였습니다.</span></li>
-                <li><span class="k">안정성 및 신뢰성</span><span class="d">통합 BMS와 다중 보호 기능으로 고출력 환경에서도 안전한 운영을 보장합니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          <div class="sf-prods">
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>High Energy Type Rack</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">높은 에너지 밀도</span><span class="d">대용량 셀과 최적화된 시스템 설계로 높은 에너지 밀도를 구현합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">장시간 에너지 저장</span><span class="d">장시간 에너지 저장이 필요한 ESS, C&amp;I 시스템 등에 최적화되어 있습니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">안정적인 시스템 운영</span><span class="d">통합 BMS와 다중 보호 기능으로 안정적이고 안전한 시스템 운영을 보장합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">확장성 및 유연성</span><span class="d">다양한 용량 구성과 병렬 확장을 통해 고객 요구에 유연하게 대응합니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sf-cert">
-            <p class="hd">Certification</p>
-            <ul>
-              <li>KC / IEC / UL</li>
-              <li>KC / IEC / UL</li>
-            </ul>
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>High Power Type Rack</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">높은 출력 성능</span><span class="d">저내부저항 설계와 고출력 셀 적용으로 순간 고출력 성능을 제공합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">빠른 응답 성능</span><span class="d">높은 출력 밀도와 최적화된 전력 설계로 빠른 응답과 안정적인 전력 공급이 가능합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">고출력 환경에서도 안정적인 온도 제어와 열 확산 구조를 적용하였습니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">안정성 및 신뢰성</span><span class="d">통합 BMS와 다중 보호 기능으로 고출력 환경에서도 안전한 운영을 보장합니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- 03-3 Container -->
       <section class="sf-sec sf-step is-prod" id="sf03-3" aria-labelledby="sf03-3-t">
-        <p class="sf-headin"><span class="sf-tag">03-3</span><span class="ttl">Container</span><i class="rule"></i><i class="tick"></i></p>
-        <p class="sf-lead18" id="sf03-3-t">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
-        <div class="sf-prods">
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>Container Air Cooling Type</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">자연 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 컨테이너 내부의 열을 외부로 배출합니다.</span></li>
-                <li><span class="k">구조가 단순하고 유지보수가 용이</span><span class="d">냉각 시스템이 단순하여 설치와 유지보수가 용이하고 운영 비용이 낮습니다.</span></li>
-                <li><span class="k">다양한 환경에서 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있어 다양한 설치 환경에 적합합니다.</span></li>
-                <li><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 초기 투자 비용과 운영 비용이 절감됩니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+        <p class="sf-line"><span class="sf-tag">03-3</span><i class="rule"></i></p>
+        <div class="sf-prodin">
+          <div class="sf-ptexts">
+            <h2 id="sf03-3-t">Container</h2>
+            <p class="lead">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
+            <div class="sf-cert">
+              <p class="hd">Certification</p>
+              <p class="lb">KC / IEC / UL</p>
+              <p class="lb">KC / IEC / UL</p>
             </div>
           </div>
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>Container Liquid Cooling Type</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 배터리 모듈 및 주요 부품의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></li>
-                <li><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 컨테이너 내부 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></li>
-                <li><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></li>
-                <li><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          <div class="sf-prods">
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>Container Air Cooling Type</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">자연 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 컨테이너 내부의 열을 외부로 배출합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 유지보수가 용이</span><span class="d">냉각 시스템이 단순하여 설치와 유지보수가 용이하고 운영 비용이 낮습니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있어 다양한 설치 환경에 적합합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 초기 투자 비용과 운영 비용이 절감됩니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sf-cert">
-            <p class="hd">Certification</p>
-            <ul>
-              <li>KC / IEC / UL</li>
-              <li>KC / IEC / UL</li>
-            </ul>
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>Container Liquid Cooling Type</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 배터리 모듈 및 주요 부품의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 컨테이너 내부 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- 03-4 BMS -->
       <section class="sf-sec sf-step is-prod" id="sf03-4" aria-labelledby="sf03-4-t">
-        <p class="sf-headin"><span class="sf-tag">03-4</span><span class="ttl">BMS</span><i class="rule"></i><i class="tick"></i></p>
-        <p class="sf-lead18" id="sf03-4-t">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
-        <div class="sf-prods">
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>Module BMS(CMU)</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">정밀한 셀 모니터링</span><span class="d">셀 전압, 온도, 밸런싱 상태 등 다양한 데이터를 고정밀로 실시간 측정 및 전송합니다.</span></li>
-                <li><span class="k">높은 신뢰성과 안정성</span><span class="d">산업용 등급의 설계와 검증을 통해 장기간 안정적인 모니터링 성능을 제공합니다.</span></li>
-                <li><span class="k">Rack BMS와 완벽 연동</span><span class="d">CMU는 Rack BMS와 안정적인 통신을 통해 셀 정보를 정확하게 전달하고, 제어 명령을 신속하게 수행합니다.</span></li>
-                <li><span class="k">높은 확장성</span><span class="d">다양한 셀 구성과 모듈 구조를 지원하여 유연한 시스템 확장과 호환성을 제공합니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+        <p class="sf-line"><span class="sf-tag">03-4</span><i class="rule"></i></p>
+        <div class="sf-prodin">
+          <div class="sf-ptexts">
+            <h2 id="sf03-4-t">BMS</h2>
+            <p class="lead">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
+            <div class="sf-cert">
+              <p class="hd">Certification</p>
+              <p class="lb">KC / IEC / UL</p>
+              <p class="lb">KC / IEC / UL</p>
             </div>
           </div>
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>Rack BMS(BPU)</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">Rack 상태 통합 모니터링</span><span class="d">Rack 내 모듈의 전압, 전류, 온도 및 SOC/SOH 등 주요 상태 정보를 통합 관리합니다.</span></li>
-                <li><span class="k">보호 및 제어 기능</span><span class="d">과전압/과전류/과온도 등 이상 상황을 실시간 감지하고 보호 동작과 제어를 수행합니다.</span></li>
-                <li><span class="k">BPU 하드웨어 통합 보호</span><span class="d">차단기, 퓨즈, 접촉기 등 보호 장치와 연계하여 안전한 배터리 시스템을 구성합니다.</span></li>
-                <li><span class="k">기능안전 인증 취득</span><span class="d">IEC 60730 국제 표준에 기반한 기능안전 인증을 취득하여 안정성과 신뢰성을 검증받았습니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          <div class="sf-prods">
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>Module BMS(CMU)</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">정밀한 셀 모니터링</span><span class="d">셀 전압, 온도, 밸런싱 상태 등 다양한 데이터를 고정밀로 실시간 측정 및 전송합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">높은 신뢰성과 안정성</span><span class="d">산업용 등급의 설계와 검증을 통해 장기간 안정적인 모니터링 성능을 제공합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">Rack BMS와 완벽 연동</span><span class="d">CMU는 Rack BMS와 안정적인 통신을 통해 셀 정보를 정확하게 전달하고, 제어 명령을 신속하게 수행합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">높은 확장성</span><span class="d">다양한 셀 구성과 모듈 구조를 지원하여 유연한 시스템 확장과 호환성을 제공합니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sf-prod">
-            <div class="shot"></div>
-            <div class="info">
-              <p class="lbl"><b>System BMS(BCP)</b></p>
-              <ul class="sf-feat">
-                <li><span class="k">전체 시스템 통합 관리</span><span class="d">다수의 Rack 상태를 통합 모니터링하고, 시스템 레벨의 운영 및 보호 기능을 수행합니다.</span></li>
-                <li><span class="k">상위 시스템 연계</span><span class="d">EMS, PCS, SCADA 등 상위 시스템과 연동하여 효율적인 에너지 운영을 지원합니다.</span></li>
-                <li><span class="k">시스템 보호 및 제어</span><span class="d">시스템 차단, 절연 감시, 고장 진단 등 다양한 보호 및 제어 기능으로 안전성을 극대화합니다.</span></li>
-                <li><span class="k">사이버 보안 솔루션 제공</span><span class="d">IEC 62443 기반의 사이버 보안 솔루션을 제공하여 네트워크 보안, 데이터 암호화, 접근 제어, 침입 탐지 등 다계층 보안 체계를 지원합니다.</span></li>
-              </ul>
-              <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>Rack BMS(BPU)</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">Rack 상태 통합 모니터링</span><span class="d">Rack 내 모듈의 전압, 전류, 온도 및 SOC/SOH 등 주요 상태 정보를 통합 관리합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">보호 및 제어 기능</span><span class="d">과전압/과전류/과온도 등 이상 상황을 실시간 감지하고 보호 동작과 제어를 수행합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">BPU 하드웨어 통합 보호</span><span class="d">차단기, 퓨즈, 접촉기 등 보호 장치와 연계하여 안전한 배터리 시스템을 구성합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">기능안전 인증 취득</span><span class="d">IEC 60730 국제 표준에 기반한 기능안전 인증을 취득하여 안정성과 신뢰성을 검증받았습니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sf-cert">
-            <p class="hd">Certification</p>
-            <ul>
-              <li>KC / IEC / UL</li>
-              <li>KC / IEC / UL</li>
-            </ul>
+            <div class="sf-prod">
+              <div class="shot"></div>
+              <div class="side">
+                <p class="lbl"><b>System BMS(BCP)</b></p>
+                <div class="info">
+                  <ul class="sf-feat">
+                    <li><i class="ic"></i><span class="t"><span class="k">전체 시스템 통합 관리</span><span class="d">다수의 Rack 상태를 통합 모니터링하고, 시스템 레벨의 운영 및 보호 기능을 수행합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">상위 시스템 연계</span><span class="d">EMS, PCS, SCADA 등 상위 시스템과 연동하여 효율적인 에너지 운영을 지원합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">시스템 보호 및 제어</span><span class="d">시스템 차단, 절연 감시, 고장 진단 등 다양한 보호 및 제어 기능으로 안전성을 극대화합니다.</span></span></li>
+                    <li><i class="ic"></i><span class="t"><span class="k">사이버 보안 솔루션 제공</span><span class="d">IEC 62443 기반의 사이버 보안 솔루션을 제공하여 네트워크 보안, 데이터 암호화, 접근 제어, 침입 탐지 등 다계층 보안 체계를 지원합니다.</span></span></li>
+                  </ul>
+                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1190,6 +1254,9 @@
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
   var secsEl = document.querySelector('.sf-secs');
+  var figs   = [].slice.call(document.querySelectorAll('.sf-figstack .sf-ph'));
+  var tag    = document.getElementById('sfTag');
+  var reels  = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
   if(!secs.length) return;
 
   /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
@@ -1221,6 +1288,31 @@
       else           links[j].removeAttribute('aria-current');
     }
     for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
+    show(secs[best].id);
+  }
+
+  /* 붙박이 그림과 숫자 태그 — 01·02 장에만 짝이 있다. 03 솔루션으로 넘어가면
+     짝이 없으므로 마지막 그림을 그대로 둔다(묶음이 이미 화면 밖으로 흐른 뒤다).
+     여기서 지우면 그림 열이 사라지는 순간이 눈에 걸린다 */
+  function show(id){
+    var hit = false, i;
+    for(i=0;i<figs.length;i++)
+      if(figs[i].getAttribute('data-for') === id){ hit = true; break; }
+    if(!hit) return;
+    for(i=0;i<figs.length;i++)
+      figs[i].classList.toggle('is-on', figs[i].getAttribute('data-for') === id);
+    setTag(id);
+  }
+  /* "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다. 띠 한 칸이 11px 이라
+     숫자 d 는 -11×d 만큼 올리면 창에 걸린다 */
+  function setTag(id){
+    var m = /sf(\d)(\d)-(\d)/.exec(id || '');
+    if(!m || !reels.length) return;
+    for(var i=0;i<3;i++){
+      var b = reels[i].firstElementChild;
+      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
+    }
+    tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
   }
   function onScroll(){ if(!raf) raf = requestAnimationFrame(spy); }
   window.addEventListener('scroll', onScroll, { passive:true });
