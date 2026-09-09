@@ -257,16 +257,16 @@
      → 장이 화면 가운데에 왔을 때 그림과 글의 눈금 줄이 한 줄로 맞는다 */
   .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
               flex:1 1 0;min-width:0;display:flex;align-items:center}
-  .sf-figstack{position:relative;width:100%;height:calc(100% - var(--sec-pad) * 2);
-               min-height:420px}
+  .sf-figcol{width:100%;height:calc(100% - var(--sec-pad) * 2);min-height:420px;
+             display:flex;flex-direction:column;gap:24px}
+  .sf-figstack{position:relative;flex:1;min-height:0}
   /* 열한 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다.
      visibility 를 같이 껐다 켜야 안 보이는 열 장이 읽기 순서에 끼지 않는다 */
-  .sf-fig{position:absolute;inset:0;display:flex;flex-direction:column;gap:24px;
-          opacity:0;visibility:hidden;
-          transition:opacity .45s var(--ease),visibility .45s}
-  .sf-fig.is-on{opacity:1;visibility:visible}
-  .sf-ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
-         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
+  .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
+         opacity:0;visibility:hidden;
+         transition:opacity .45s var(--ease),visibility .45s}
+  .sf-ph.is-on{opacity:1;visibility:visible}
 
   .sf-secs{flex:1 1 0;min-width:0}
   /* 장 위아래 여백은 --sec-pad (설계값 176, 낮은 화면에서 조인다) */
@@ -281,9 +281,20 @@
   .sf-line i{display:block}
   .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--sf-line-s)}
   .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--sf-ter)}
-  .sf-tag{height:16px;flex-shrink:0;display:inline-flex;align-items:center;
+  /* 숫자 태그 — 폭을 32 로 고정한다(Figma 실측). 글자에 맞춰 늘었다 줄었다 하면
+     장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
+     자리마다 0~9 를 세로로 이어 둔 띠(.r)를 두고, 지금 숫자만큼 끌어올려 보여 준다
+     — 바뀔 때 글자가 갈리는 대신 계기판처럼 굴러간다 */
+  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
           justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
-          font-family:var(--ald);font-size:11px;line-height:1;letter-spacing:1px}
+          font-family:var(--ald);font-size:11px;line-height:11px;letter-spacing:1px}
+  /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
+     가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
+  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
+  .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
+  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
+  .sf-tag .s{display:block;width:5px;text-align:center}
+  @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
 
   /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
      맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
@@ -296,8 +307,8 @@
                line-height:1.2;letter-spacing:-.04em;color:var(--sf-txt)}
   .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:20px;
                 line-height:1.2;letter-spacing:-.4px;color:var(--sf-sec)}
-  .sf-body p{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;
-             letter-spacing:-.28px;color:var(--sf-sec)}
+  .sf-body p{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.6;
+             letter-spacing:-.32px;color:var(--sf-sec)}
   .sf-body p+p{margin-top:8px}
 
   /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
@@ -316,8 +327,8 @@
             font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;
             color:var(--sf-txt)}
   .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--brand)}
-  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;
-            letter-spacing:-.28px;color:var(--sf-sec)}
+  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.6;
+            letter-spacing:-.32px;color:var(--sf-sec)}
 
   /* ── 진입 모션 — 들어올 때 한 번, 아주 얕게 ──────────────────────────
      글이 6px 떠 있다가 앉는다(그림 기둥은 붙박이라 크로스페이드가 대신한다).
@@ -328,7 +339,7 @@
   .js .is-in .sf-rv{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){
     .js .sf-rv{opacity:1;transform:none;transition:none}
-    .sf-fig{transition:none}
+    .sf-ph{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -378,9 +389,8 @@
     .sf-figwrap{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h));z-index:15;
                 height:auto;padding:12px 16px;background:#fff;
                 border-bottom:1px solid var(--sf-line)}
-    .sf-figstack{height:auto;min-height:0;aspect-ratio:16/9;max-height:30svh;
-                 margin-inline:auto}
-    .sf-fig{gap:12px}
+    .sf-figcol{height:auto;min-height:0;gap:12px}
+    .sf-figstack{aspect-ratio:16/9;max-height:30svh}
     .sf-sec{min-height:0;padding:32px 16px 56px;
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
     .sf-txt{min-height:0}
@@ -574,50 +584,21 @@
   </div>
 
   <div class="sf-figwrap">
-    <div class="sf-figstack">
-      <div class="sf-fig is-on" data-for="sf01-1">
-        <div class="sf-line"><span class="sf-tag">01-1</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf01-2">
-        <div class="sf-line"><span class="sf-tag">01-2</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf02-1">
-        <div class="sf-line"><span class="sf-tag">02-1</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf02-2">
-        <div class="sf-line"><span class="sf-tag">02-2</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf03-1">
-        <div class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf03-2">
-        <div class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf04-1">
-        <div class="sf-line"><span class="sf-tag">04-1</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf04-2">
-        <div class="sf-line"><span class="sf-tag">04-2</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf04-3">
-        <div class="sf-line"><span class="sf-tag">04-3</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf04-4">
-        <div class="sf-line"><span class="sf-tag">04-4</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-      </div>
-      <div class="sf-fig" data-for="sf04-5">
-        <div class="sf-line"><span class="sf-tag">04-5</span><i class="rule"></i><i class="tick"></i></div>
-        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+    <div class="sf-figcol">
+      <!-- 눈금 줄은 열한 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
+      <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
+      <div class="sf-figstack">
+        <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf01-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf02-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf03-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf03-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf04-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf04-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf04-3"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf04-4"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph" data-for="sf04-5"><span>도표 or 이미지</span></figure>
       </div>
     </div>
   </div>
@@ -984,7 +965,9 @@
 (function(){
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
-  var figs  = [].slice.call(document.querySelectorAll('.sf-figstack .sf-fig'));
+  var figs  = [].slice.call(document.querySelectorAll('.sf-figstack .sf-ph'));
+  var tag   = document.getElementById('sfTag');
+  var reels = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
   if(!secs.length) return;
 
   /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
@@ -1010,6 +993,19 @@
     }
     /* 붙박이 그림도 같은 판정을 쓴다 — 인덱스가 칠해지는 장의 그림이 떠오른다 */
     for(var k=0;k<figs.length;k++) figs[k].classList.toggle('is-on', k === best);
+    setTag(secs[best].id);
+  }
+
+  /* 숫자 태그 — "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다.
+     띠 한 칸이 11px 이라 숫자 d 는 -11×d 만큼 올리면 창에 걸린다 */
+  function setTag(id){
+    var m = /sf(\d)(\d)-(\d)/.exec(id || '');
+    if(!m || !reels.length) return;
+    for(var i=0;i<3;i++){
+      var b = reels[i].firstElementChild;
+      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
+    }
+    tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
   }
   function onScroll(){ if(!raf) raf = requestAnimationFrame(spy); }
   window.addEventListener('scroll', onScroll, { passive:true });
