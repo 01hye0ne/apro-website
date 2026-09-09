@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- 진입 모션은 이 클래스가 붙어 있을 때만 요소를 숨긴다 (아래 .js .sf-rv 참고) -->
+<!-- 흐리기는 이 클래스가 붙어 있을 때만 건다 (아래 html:not(.js) .sf-txt 참고) -->
 <script>document.documentElement.className += ' js';</script>
 <title>APRO | 에이프로 — 스마트 제조 (A-1)</title>
 <meta name="description" content="에이프로(APRO) 스마트 제조 — 이차전지 활성화, 신뢰성 검사 장비, 자동화 시스템, 이차전지 소재." />
@@ -78,6 +78,9 @@
     /* 그림 칸 높이. 그림은 칸 바닥에 붙어 있고 리드는 칸 위에 얹히므로, 이 값이
        곧 "리드가 얼마나 내려오는가"다 — 줄이면 설비 그림은 그대로 있고 리드만
        내려온다. Figma 값은 449 였는데 리드가 너무 높이 붙어 100 을 덜었다 */
+    /* 본문 띠 — 눈금 줄 + 그림이 앉는 높이. 붙박이 그림 기둥과 글 한 장이
+       이 값을 같이 쓴다(그래서 두 눈금 줄이 한 줄로 맞는다) */
+    --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
     --intro-fig:350px;
     /* 위 여백의 상한은 설계값 120. 리드(90) + 24 + 그림칸 + 네 칸 띠(128) +
        아래 흰 띠(20) = 262 + 그림칸 을 먼저 세우고 남는 만큼만 준다 */
@@ -293,7 +296,7 @@
      → 장이 화면 가운데에 왔을 때 그림과 글의 눈금 줄이 한 줄로 맞는다 */
   .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
               flex:1 1 0;min-width:0;display:flex;align-items:center}
-  .sf-figcol{width:100%;height:calc(100% - var(--sec-pad) * 2);min-height:420px;
+  .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
              display:flex;flex-direction:column;gap:24px}
   .sf-figstack{position:relative;flex:1;min-height:0}
   /* 열한 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다.
@@ -304,10 +307,16 @@
          transition:opacity .45s var(--ease),visibility .45s}
   .sf-ph.is-on{opacity:1;visibility:visible}
 
-  .sf-secs{flex:1 1 0;min-width:0}
-  /* 장 위아래 여백은 --sec-pad (설계값 176, 낮은 화면에서 조인다) */
-  .sf-sec{min-height:calc(100svh - var(--gnb-h));scroll-margin-top:var(--gnb-h);
-          display:flex;flex-direction:column;padding:var(--sec-pad) 0}
+  /* 오른쪽 글 기둥은 한 장씩 끊기지 않고 이어 흐른다 — 지금 장 바로 밑에 다음
+     장이 붙어 있고, 지금 장만 진하고 앞뒤는 옅게 남는다.
+     맨 위 --sec-pad 는 첫 장의 눈금 줄을 붙박이 그림의 눈금 줄에 맞추는 자리다
+     (그림 기둥이 화면 가운데에 서면서 위로 딱 그만큼 비운다) */
+  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
+           padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
+  /* 장 높이는 본문 띠와 같다 — 글이 짧아도 다음 장이 그림 위로 올라오지 않는다 */
+  .sf-sec{min-height:var(--band-h);
+          scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
+          display:flex;flex-direction:column}
   .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
               color:var(--sf-ph-tx)}
 
@@ -334,7 +343,9 @@
 
   /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
      맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
-  .sf-txt{flex:1;min-height:420px;display:flex;flex-direction:column;gap:24px}
+  .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+          opacity:.22;transition:opacity .5s var(--ease)}
+  .sf-sec.is-on .sf-txt{opacity:1}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:var(--txt-pad-l);padding-right:122px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
@@ -366,16 +377,11 @@
   .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.6;
             letter-spacing:-.3px;color:var(--sf-sec)}
 
-  /* ── 진입 모션 — 들어올 때 한 번, 아주 얕게 ──────────────────────────
-     글이 6px 떠 있다가 앉는다(그림 기둥은 붙박이라 크로스페이드가 대신한다).
-     .js 가 붙어 있을 때만 숨긴다 — 스크립트가 죽으면 아무것도 안 보이는 페이지가
-     되므로, 숨기는 쪽에 스위치를 건다(<head> 첫 줄에서 붙인다) */
-  .js .sf-rv{opacity:0;transform:translateY(6px);
-             transition:opacity .7s var(--ease),transform .7s var(--ease)}
-  .js .is-in .sf-rv{opacity:1;transform:none}
+  /* 스크립트가 죽으면 옅은 글만 남는 페이지가 되므로, 흐리기는 .js 가 붙어
+     있을 때만 건다 */
+  html:not(.js) .sf-txt{opacity:1}
   @media(prefers-reduced-motion:reduce){
-    .js .sf-rv{opacity:1;transform:none;transition:none}
-    .sf-ph{transition:none}
+    .sf-txt,.sf-ph{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -426,9 +432,11 @@
                 border-bottom:1px solid var(--sf-line)}
     .sf-figcol{height:auto;min-height:0;gap:12px}
     .sf-figstack{aspect-ratio:16/9;max-height:30svh}
+    .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-sec{min-height:0;padding:32px 16px 56px;
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
-    .sf-txt{min-height:0}
+    /* 눕혀 놓으면 앞뒤 장이 겹쳐 보이지 않으므로 흐리지 않는다 */
+    .sf-txt{min-height:0;opacity:1}
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
@@ -649,7 +657,7 @@
 
     <!-- 01-1 -->
     <section class="sf-sec sf-step" id="sf01-1" aria-labelledby="sf01-1-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -674,7 +682,7 @@
 
     <!-- 01-2 -->
     <section class="sf-sec sf-step" id="sf01-2" aria-labelledby="sf01-2-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -691,7 +699,7 @@
 
     <!-- 02-1 -->
     <section class="sf-sec sf-step" id="sf02-1" aria-labelledby="sf02-1-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -709,7 +717,7 @@
 
     <!-- 02-2 -->
     <section class="sf-sec sf-step" id="sf02-2" aria-labelledby="sf02-2-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -732,7 +740,7 @@
 
     <!-- 03-1 -->
     <section class="sf-sec sf-step" id="sf03-1" aria-labelledby="sf03-1-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -753,7 +761,7 @@
 
     <!-- 03-2 -->
     <section class="sf-sec sf-step" id="sf03-2" aria-labelledby="sf03-2-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -771,7 +779,7 @@
 
     <!-- 04-1 -->
     <section class="sf-sec sf-step" id="sf04-1" aria-labelledby="sf04-1-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -787,7 +795,7 @@
 
     <!-- 04-2 -->
     <section class="sf-sec sf-step" id="sf04-2" aria-labelledby="sf04-2-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -803,7 +811,7 @@
 
     <!-- 04-3 -->
     <section class="sf-sec sf-step" id="sf04-3" aria-labelledby="sf04-3-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -819,7 +827,7 @@
 
     <!-- 04-4 -->
     <section class="sf-sec sf-step" id="sf04-4" aria-labelledby="sf04-4-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -835,7 +843,7 @@
 
     <!-- 04-5 -->
     <section class="sf-sec sf-step" id="sf04-5" aria-labelledby="sf04-5-t">
-      <div class="sf-txt sf-rv">
+      <div class="sf-txt">
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
@@ -1016,15 +1024,23 @@
      화면 세로 중앙에 가장 가까운 장을 현재 소분류로 친다. 장이 화면보다 길어도
      (좁은 화면에서 글이 늘어난 경우) 한 장은 반드시 뽑히므로 인덱스가 비지 않는다 */
   var raf = 0, cur = -1;
-  function spy(){
-    raf = 0;
-    /* 화면 가운데 = 고정 GNB 아래로 남은 자리의 가운데다 */
+  /* 장이 제자리에 섰을 때 그 윗변이 놓이는 높이 = 고정 GNB 밑변 + 본문 띠가
+     위로 비워 둔 만큼(--sec-pad). 그 여백은 붙박이 그림 기둥 안에서 그대로 재 온다
+     — CSS 의 clamp 를 JS 로 다시 풀 필요가 없고 값이 바뀌어도 따라온다.
+     ⚠ 기둥의 화면 좌표를 그냥 쓰면 안 된다 — 아직 화면에 붙기 전(배너·인트로를
+       보는 동안)에는 한참 아래에 있어서 판정이 어긋난다. 두 상자의 차이만 쓴다 */
+  function alignTop(){
+    var w = document.querySelector('.sf-figwrap'), c = document.querySelector('.sf-figcol');
     var top = parseFloat(getComputedStyle(document.documentElement)
                          .getPropertyValue('--gnb-h')) || 0;
-    var mid = top + (window.innerHeight - top) / 2, best = 0, bd = Infinity;
+    if(!w || !c) return top;
+    return top + (c.getBoundingClientRect().top - w.getBoundingClientRect().top);
+  }
+  function spy(){
+    raf = 0;
+    var line = alignTop(), best = 0, bd = Infinity;
     for(var i=0;i<secs.length;i++){
-      var r = secs[i].getBoundingClientRect();
-      var d = Math.abs(r.top + r.height / 2 - mid);
+      var d = Math.abs(secs[i].getBoundingClientRect().top - line);
       if(d < bd){ bd = d; best = i; }
     }
     if(best === cur) return;
@@ -1033,8 +1049,9 @@
       if(j === best) links[j].setAttribute('aria-current','true');
       else           links[j].removeAttribute('aria-current');
     }
-    /* 붙박이 그림도 같은 판정을 쓴다 — 인덱스가 칠해지는 장의 그림이 떠오른다 */
+    /* 붙박이 그림과 지금 장의 진하기도 같은 판정을 쓴다 */
     for(var k=0;k<figs.length;k++) figs[k].classList.toggle('is-on', k === best);
+    for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
     setTag(secs[best].id);
   }
 
@@ -1054,19 +1071,6 @@
   window.addEventListener('resize', onScroll);
   spy();
 
-  /* ── 진입 모션 — 장이 화면에 들어오면 한 번만 ────────────────────────── */
-  if(!('IntersectionObserver' in window)){
-    secs.forEach(function(s){ s.classList.add('is-in'); });
-    return;
-  }
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      e.target.classList.add('is-in');
-      io.unobserve(e.target);
-    });
-  }, { rootMargin:'0px 0px -18% 0px' });
-  secs.forEach(function(s){ io.observe(s); });
 })();
 </script>
 <script>
@@ -1102,16 +1106,27 @@
     return parseFloat(getComputedStyle(document.documentElement)
                       .getPropertyValue('--gnb-h')) || 0;
   }
-  /* 장의 윗변이 고정 GNB 밑변에 닿는 스크롤 위치 */
-  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - gnb(); }
-  /* 지금 보고 있는 장 = GNB 아래 남은 자리의 세로 중앙을 차지한 장 */
+  /* 소분류 장은 붙박이 그림의 눈금 줄에 맞춰 서고(GNB 밑변에서 --sec-pad 만큼
+     아래), 배너·인트로는 GNB 밑변에 바로 붙는다.
+     여백은 그림 기둥 안 두 상자의 차이로 잰다 — 기둥이 아직 화면에 붙기 전에도
+     같은 값이 나와야 한다(화면 좌표를 그냥 쓰면 인트로에서 판정이 어긋난다) */
+  function secOffset(){
+    var w = document.querySelector('.sf-figwrap'), c = document.querySelector('.sf-figcol');
+    if(!w || !c) return 0;
+    return c.getBoundingClientRect().top - w.getBoundingClientRect().top;
+  }
+  function lineOf(el){
+    return gnb() + (el.classList.contains('sf-sec') ? secOffset() : 0);
+  }
+  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - lineOf(el); }
+  /* 지금 보고 있는 장 = 제자리에서 가장 덜 벗어난 장 */
   function current(){
-    var top = gnb(), mid = top + (window.innerHeight - top) / 2;
+    var best = -1, bd = Infinity;
     for(var i=0;i<steps.length;i++){
-      var r = steps[i].getBoundingClientRect();
-      if(r.top <= mid && r.bottom >= mid) return i;
+      var d = Math.abs(steps[i].getBoundingClientRect().top - lineOf(steps[i]));
+      if(d < bd){ bd = d; best = i; }
     }
-    return -1;
+    return best;
   }
 
   function ease(p){ return .5 - .5 * Math.cos(Math.PI * p); }
@@ -1142,18 +1157,9 @@
 
     var dir = e.deltaY > 0 ? 1 : -1;
     var i = current();
+    if(i < 0) return;
 
-    /* 장 밖 = 마지막 장 아래(마을·푸터). 위로 굴리면 마지막 장으로 되돌리고,
-       아래로는 그냥 흐르게 둔다 */
-    if(i < 0){
-      if(dir > 0) return;
-      e.preventDefault();
-      if(!armed) return;
-      armed = false; pageTo(topOf(steps[steps.length - 1]));
-      return;
-    }
-
-    var off = steps[i].getBoundingClientRect().top - gnb();
+    var off = steps[i].getBoundingClientRect().top - lineOf(steps[i]);
     /* 마지막 장이 제자리에 선 뒤 아래로 = 마을·푸터로 나가는 길 */
     if(i === steps.length - 1 && dir > 0 && off <= 1) return;
 
@@ -1175,6 +1181,7 @@
       if(!el) return;
       e.preventDefault();
       pageTo(topOf(el));
+      return;
     });
   });
 })();
