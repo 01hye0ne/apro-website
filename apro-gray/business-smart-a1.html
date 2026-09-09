@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- 흐리기는 이 클래스가 붙어 있을 때만 건다 (아래 html:not(.js) .sf-txt 참고) -->
+<!-- 옅은 장 칠하기는 이 클래스가 붙어 있을 때만 건다 (아래 .js .sf-sec:not(.is-on) 참고) -->
 <script>document.documentElement.className += ' js';</script>
 <title>APRO | 에이프로 — 스마트 제조 (A-1)</title>
 <meta name="description" content="에이프로(APRO) 스마트 제조 — 이차전지 활성화, 신뢰성 검사 장비, 자동화 시스템, 이차전지 소재." />
@@ -324,8 +324,8 @@
      오른쪽 선은 화면 오른쪽 끝까지 나간다(.sf-main 에 오른쪽 여백이 없다) */
   .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center}
   .sf-line i{display:block}
-  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--sf-line-s)}
-  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--sf-ter)}
+  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-rule,var(--sf-line-s))}
+  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
   /* 숫자 태그 — 폭을 32 로 고정한다(Figma 실측). 글자에 맞춰 늘었다 줄었다 하면
      장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
      자리마다 0~9 를 세로로 이어 둔 띠(.r)를 두고, 지금 숫자만큼 끌어올려 보여 준다
@@ -343,45 +343,69 @@
 
   /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
      맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
+  /* 글 열의 색을 토큰으로 빼 둔다. 옅은 장은 이 토큰만 쿨그레이 계단 아래쪽으로
+     갈아 끼운다 — 투명도를 내리는 대신 색을 직접 칠하므로, 배경이 흰색이 아닌
+     곳에 놓여도 같은 회색이 나온다 */
   .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
-          opacity:.22;transition:opacity .5s var(--ease)}
-  .sf-sec.is-on .sf-txt{opacity:1}
+          --c-ttl:var(--sf-txt);     /* 900 제목        */
+          --c-body:var(--sf-sec);    /* 600 줄글        */
+          --c-num:var(--brand);      /* 목록 번호·점    */
+          --c-rule:var(--sf-line-s); /* 300 눈금 가로선 */
+          --c-tick:var(--sf-ter);    /* 500 눈금 세로   */
+          --c-bd-s:var(--sf-line-s); /* 300 목록 윗선   */
+          --c-bd:var(--sf-line)}     /* 200 목록 칸선   */
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:var(--txt-pad-l);padding-right:122px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,38px);
-               line-height:1.2;letter-spacing:-.04em;color:var(--sf-txt)}
+               line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
   .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:20px;
-                line-height:1.2;letter-spacing:-.4px;color:var(--sf-sec)}
+                line-height:1.2;letter-spacing:-.4px;color:var(--c-body)}
   .sf-body p{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.6;
-             letter-spacing:-.3px;color:var(--sf-sec)}
+             letter-spacing:-.3px;color:var(--c-body)}
   .sf-body p+p{margin-top:8px}
 
   /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
-  .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--sf-line-s)}
+  .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--c-bd-s)}
   .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
-             border-bottom:1px solid var(--sf-line)}
+             border-bottom:1px solid var(--c-bd)}
   .sf-num b{width:18px;flex-shrink:0;font-family:var(--cal);font-weight:400;
-            font-size:12px;line-height:1;color:var(--brand)}
+            font-size:12px;line-height:1;color:var(--c-num)}
   .sf-num span{font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.35;
-               letter-spacing:-.32px;color:var(--sf-sec)}
+               letter-spacing:-.32px;color:var(--c-body)}
 
   /* 점 목록 (03-1 PLC · 03-2 충방전 공정 관리시스템) */
   .sf-dl li{display:flex;flex-direction:column;gap:8px;padding:8px;
-            border-bottom:1px solid var(--sf-line)}
+            border-bottom:1px solid var(--c-bd)}
   .sf-dl .k{display:flex;align-items:center;gap:4px;font-family:var(--suit);
             font-weight:800;font-size:16px;line-height:1.35;letter-spacing:-.32px;
-            color:var(--sf-txt)}
-  .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--brand)}
+            color:var(--c-ttl)}
+  .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--c-num)}
   .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.6;
-            letter-spacing:-.3px;color:var(--sf-sec)}
+            letter-spacing:-.3px;color:var(--c-body)}
 
-  /* 스크립트가 죽으면 옅은 글만 남는 페이지가 되므로, 흐리기는 .js 가 붙어
-     있을 때만 건다 */
-  html:not(.js) .sf-txt{opacity:1}
+  /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
+       제목 900 → 300 · 줄글 600 → 200 · 번호/점 파랑 → 300
+       눈금 가로 300 → 200 · 세로 500 → 300 · 목록 윗선 300 → 200 · 칸선 200 → 100
+     좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
+     .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
+  @media(min-width:901px){
+    .js .sf-sec:not(.is-on) .sf-txt{
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
+      --c-bd-s:var(--sf-line);--c-bd:var(--sf-gray100)}
+  }
+  /* 색이 갈리는 대신 넘어가도록 — 토큰 자체는 전환되지 않으므로 쓰는 자리에 건다 */
+  .sf-texts h2,.sf-texts .en,.sf-body p,
+  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d{transition:color .5s var(--ease)}
+  .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
+  .sf-dl .k::before,.sf-line .rule,.sf-line .tick{
+    transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
-    .sf-txt,.sf-ph{transition:none}
+    .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,
+    .sf-num,.sf-dl,.sf-num li,.sf-dl li,
+    .sf-dl .k::before,.sf-line .rule,.sf-line .tick,.sf-ph{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -436,7 +460,7 @@
     .sf-sec{min-height:0;padding:32px 16px 56px;
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
     /* 눕혀 놓으면 앞뒤 장이 겹쳐 보이지 않으므로 흐리지 않는다 */
-    .sf-txt{min-height:0;opacity:1}
+    .sf-txt{min-height:0}
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
