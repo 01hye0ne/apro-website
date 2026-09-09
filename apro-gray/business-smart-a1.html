@@ -3,1837 +3,591 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 진입 모션은 이 클래스가 붙어 있을 때만 요소를 숨긴다 (아래 .js .sf-rv 참고) -->
+<script>document.documentElement.className += ' js';</script>
 <title>APRO | 에이프로 — 스마트 제조 (A-1)</title>
 <meta name="description" content="에이프로(APRO) 스마트 제조 — 이차전지 활성화, 신뢰성 검사 장비, 자동화 시스템, 이차전지 소재." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <!-- ============================================================
-     v3.1 레이아웃 — business-smart-v3.1.html 목업에서 검증을 마치고 이 페이지에
-     그대로 옮겨 적용했다. business-layout.css / .js 는 그대로 두고 이 문서에만
-     얹는 관례를 유지한다 (.tray/.v-a1 처럼, 굳어지면 base로 옮기고 이 블록은 지운다).
+     스마트 제조 A-1 — Figma 993:130 "03 · 스마트 제조" 와이어프레임 구현
+     (26.09.07 v5.0 와이어프레임 페이지, fileKey 5lJIj3AmCr20ZdgBLldb3f)
 
-     바뀐 세 가지:
-     ① 화면 좌우 여백을 24px → 16px 로 좁힌다 (GNB·히어로·탭 바·본문이 같은 값을 공유)
-     ② 좌측 레일(소분류 타이틀 + 세로 인덱스)을 없앴다. 소분류 타이틀(.httl)은
-        완전히 삭제 — 탭 바의 활성 탭이 이미 같은 이름을 보여준다.
-        세로 인덱스는 그 자리 대신 상단 소분류 탭 바 바로 아래, 가로 인덱스
-        바로 옮긴다 (JS가 만드는 .hidx 는 그대로 두고 CSS로만 자리를 바꾼다).
-     ③ 카드 내부를 [좌: 타이틀(=인덱스 타이틀) + 줄글, 필요하면 하단에 픽토그램]
-        [우: 비주얼] 두 열로 다시 짰다. 기존 .hph/.hthumbs 클래스는 절대배치와
-        :has() 규칙이 줄줄이 딸려 나와 이 레이아웃과 부딪히므로 새 카드에는
-        아예 쓰지 않고, 새 클래스(.hleft/.hright)로 새로 짰다. 픽토그램(.pict)·
-        지도(.gmap)·공정 순서(.fsteps)는 그 자체로 독립적인 컴포넌트라 그대로
-        옮겨 썼다 ── 자리만 .hleft/.hright 안으로 바뀐다. -->
+     ⚠ 이 페이지는 더 이상 _gen-a1.py 가 만들지 않는다.
+        A(business-smart.html)와 디자인이 갈라졌기 때문이다 — 생성기의 SOURCES 에서
+        business-smart.html 을 뺐고, PAGES 에는 남겨 두어 다른 A-1 페이지의 링크는
+        그대로 이 파일로 들어온다. 여기는 손으로 고치는 파일이다.
+
+     이 갈래에서 걷어낸 것 : GNB(+메가메뉴·언어 메뉴)·전체메뉴 오버레이·
+        히어로 밑 소분류 탭 바·본문 카드 캐러셀·맨 위로 버튼.
+     남긴 것 : 하단 "다른 사업영역" 마을(.bhop)과 푸터(.footer) — 둘 다
+        business-layout.css / .js 의 규칙을 그대로 쓴다.
+
+     레이아웃(1440 기준, Figma 실측)
+       · 히어로 1440×900 — 사진 위 하단 225px 유리 띠에 국문/영문 타이틀
+       · 인트로 900 — 리드 2줄 + 설비 라인 그림 + 소분류 4칸 띠
+       · 본문 11장 900 — [좌측 188 인덱스] 52 [고정 550 그림] 8 [글]
+         좌측 인덱스는 장마다 다시 그려진 와이어프레임과 달리 sticky 로 한 벌만 두고
+         스크롤스파이로 현재 소분류를 칠한다 — 화면에 보이는 결과는 같다.
+     ============================================================ -->
 <style>
-  /* ① 그리드 재정의 — 12열 / 좌우 마진 --gm / 거터 12px.
-     마진과 거터만 고정이고 컬럼 폭은 화면을 따라 늘고 준다. 1728px 에서는
-     컬럼 119px · 한 칸(컬럼+거터) 131px · 3열=346 · 11열 끝=1513 으로,
-     종전에 손으로 박아 두었던 고정값과 정확히 같은 자리가 나온다.
-     (마진은 원래 60이었다가 "조금만 더 넓혀보자"는 요청으로 84 — 12px 거터
-     단위로 딱 떨어지는 값 중 하나를 골랐다)
-     GNB·소분류 탭 바·인덱스·본문이 전부 이 그리드 하나 위에 선다.
-
-     계산은 "한 칸(컬럼+거터)" 변수 두 개로만 한다 —
-       --gx : 뷰포트 기준.  n열 시작 x = --gm + (n-1) × --gx
-              100% 가 화면 폭인 자리에서만 쓴다(body 직계, .bnav-wrap 과 그 가상요소).
-       --bx : .bnav 기준.   n열 시작 = (n-1) × --bx
-              .bnav 는 좌우 마진이 이미 빠진 폭이라 공식이 다르다. 탭 띠·
-              페이지네이션처럼 .bnav 안에 절대배치되는 것들만 이 쪽을 쓴다.
-     ⚠ 두 변수 모두 안에 100% 가 들어 있고, CSS 변수는 선언한 자리가 아니라
-       "쓰는 자리"에서 계산된다 — 기준이 다른 곳에 쓰면 조용히 어긋난다.
-
-     ⚠ business-layout.css 의 공용 --grid-gutter(24px)는 소분류 탭 바의 S커브
-     배경(--tab-curve, 24×40 SVG)이 그 폭에 맞춰 그려진 것이라 손대면 안 된다.
-     지난 시도에서 이 값을 12로 바꿨더니 커브가 가로로 눌려 찌그러졌다. 그래서
-     --grid-gutter 는 그대로 두고 이 그리드의 12px 거터는 --gcg 로 따로 둔다 */
-    /* 소분류 개수 — 히어로 탭 띠와 고정 탭 바가 이 값으로 칸을 나누고 칸 경계에
-     구분선을 긋는다(네 곳). 소분류를 늘리거나 줄일 때 고칠 자리는 여기 하나다.
-     ⚠ 마크업(.bnav-tabs 안 <a> 개수)과 반드시 같아야 한다 */
-:root{--tabs:4;--gm:84px;--gcg:12px;
-    --gx:calc((100% - 2 * var(--gm) + var(--gcg)) / 12);
-    --bx:calc((100% + var(--gcg)) / 12)}
-  /* 화면이 좁아지면 좌우 마진을 단계로 줄여 본문에 폭을 돌려준다. 마진 하나만
-     바꾸면 위 두 공식을 타고 GNB·탭 바·본문이 한꺼번에 따라온다.
-
-     같은 자리에서 GNB 메뉴 한 칸(--mm-col, 공용 CSS 기본 176px)도 같이 줄인다 —
-     .gnb .menus a 는 폭이 고정이라 좁아져도 줄지 않는다(플렉스 항목의 최소 크기가
-     지정 폭 그대로라 min-content 가 176px 로 잡힌다). 그래서 좁은 화면에서
-     메뉴 줄이 로고·언어·전체메뉴 버튼을 화면 밖으로 밀어냈다.
-     필요한 값 — 한 칸 ≤ (GNB 폭 − 로고78 − 언어78 − 메뉴버튼78 − 칸사이 gap) ÷ 5.
-     900px 이하는 공용 CSS 가 메뉴 자체를 감추므로 이 값이 쓰이지 않는다 */
-  @media(max-width:1600px){:root{--gm:64px}  .gnb-group{--mm-col:150px}}
-  @media(max-width:1280px){:root{--gm:40px}  .gnb-group{--mm-col:112px} .gnb{gap:20px}}
-  @media(max-width:1000px){.gnb-group{--mm-col:96px}}
-  @media(max-width:600px){:root{--gm:24px}}
-
-  /* 상단 GNB — 본문과 같은 좌우 마진 */
-  .gnb-group{--gutter:var(--gm)}
-  .gnb{width:calc(100% - 2 * var(--gm))}
-  .gnb-mega .inner{width:calc(100% - 2 * var(--gm))}
-  .dhero{padding-left:var(--gm);padding-right:var(--gm)}
-  /* 히어로가 기본 min-height:480px 뿐이라, 뷰포트가 그보다 훨씬 크면(제보 스크린샷처럼
-     세로가 넉넉한 화면) 히어로 밑에 있는 s1 섹션의 윗부분(인덱스 네비·카드 이미지
-     일부)이 로드 직후부터 화면 아래쪽에 그대로 삐져나와 보인다 — 아무 맥락 없는
-     색색의 이미지 조각이라 지저분해 보인다("빨간 부분"). 이 사이트는 섹션 하나 =
-     화면 한 판(.hsec{height:100vh})으로 스크롤(휠 한 번 = 섹션 하나, business-layout.js
-     의 pageTo)하는 구조이므로, 히어로도 같은 규칙을 따라 처음엔 화면을 꽉 채우고
-     스크롤해야 s1이 드러나는 게 자연스럽다 — 좁은 화면(모바일)은 원래도 이 페이징이
-     꺼져 있어 그대로 두고, 데스크톱에서만 적용한다 */
-  @media(min-width:901px){
-    /* 히어로 높이는 공용 규칙(business-layout.css)의 88vh 를 그대로 쓴다 */
+  /* ── 이 페이지 전용 토큰 ───────────────────────────────────────────────
+     값은 Figma 변수(text/·border/·primitive/) 이름 그대로 옮겼다. 사이트 공용
+     토큰(business-layout.css :root)과 겹치지 않게 --sf- 접두사를 붙인다 */
+  :root{
+    --sf-txt:#1b2733;        /* text/primary       */
+    --sf-sec:#5a6675;        /* text/secondary     */
+    --sf-ter:#96a3b3;        /* text/tertiary      */
+    --sf-line:#e4e8ed;       /* border/default     */
+    --sf-line-s:#cbd2da;     /* border/strong      */
+    --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
+    --sf-ph-bg:#e5e6e8;
+    --sf-ph-bd:#c7c9cc;
+    --sf-ph-tx:#73757a;
+    --ald:"Aldrich",var(--rc),sans-serif;
+    --cal:"Cal Sans",var(--rc),sans-serif;
   }
-
-  /* 타이틀(.in) y 위치 — GNB 밑변과 흰 네비 탭 윗변 사이의 중앙에 오도록 옮긴다.
-     탭 밴드 크기를 20px 기준(65px 높이)으로 다시 낮추면서 흰 네비 탭 윗변도
-     다시 바뀌었다. 목표 이동량 = −(패널 높이/2) − 8(.in 자체의 치우침, 이전
-     실측으로 확인한 translateY 값과 무관한 상수) = −(65/2) − 8 = −40.5px */
-  @media(min-width:901px){
-    .dhero .in{transform:translateY(-38px)}
-  }
-
-  /* 히어로 타이틀 확대 + 영문 서브타이틀 + 하단 좌측 픽토그램 장식.
-     스크롤해서 탭 바가 고정되면 히어로 자체가 화면 밖으로 나가므로 "sticky일 땐
-     원래대로"는 저절로 이뤄진다 — 고정 탭 바의 "스마트 제조"(.bnav-ttl, 20px)는
-     이 히어로 타이틀과 완전히 별개의 엘리먼트라 여기서 크기를 키워도 영향이 없다 */
-  .dhero h1{font-size:60px;line-height:1.22}   /* 반투명 칩 배경은 삭제 — 순수 텍스트만 */
-  /* 히어로는 A / A-1 이 같다(2026-08-10) — .v-a1 분기 규칙을 두지 않는다.
-     구성은 국문 h1 + 설명글 2줄(.dhero-lead) 두 덩어리다 — 영문 한 줄
-     (.dhero-en "Smart Factory")은 2026-08-11 요청으로 마크업째 뺐다.
-     .dhero-lead 의 위 여백 22px 이 이제 h1 바로 밑에 붙는다 */
-
-  /* 탭 바를 60px 끌어올려 생긴 여백 — 지금까지는 히어로 배경(사진+그늘)이 그대로
-     비쳐서 어두운 색이었다. 흰 배경으로 채운다. .dhero::after 는 이미 어두운
-     그라데이션 오버레이가 쓰고 있어서 ::before 를 대신 쓴다 — z-index 를 명시해
-     (::after 는 auto 라 암묵적으로 0 레벨) 그 위, 사진 위로 확실히 올라오게 한다.
-     탭 바(.bnav-wrap)는 이 흰 사각형보다 더 나중 DOM·z-index:90 이라 그 위에 그대로
-     겹쳐 뜬다 — 흰 배경이 탭 바를 가리지 않는다 */
-  @media(min-width:901px){
-    .dhero::before{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;
-      height:60px;background:#fff}
-  }
-
-  /* 소분류 탭 바 — --bw 는 GNB 와 같은 공식이라 뷰포트 폭과 무관하게 좌우 마진이 같다.
-
-     --bx4(커브·탭 시작점)는 12열 그리드의 3열 시작점(1728px 에서 346px)에 맞춘다.
-     .wrap(본문 카드 컨테이너)과 아래 .bnav-tabs 의 고정 상태 left 값도 같은 3열
-     기준으로 맞춘다(안 그러면 셋이 서로 어긋난다).
-
-     .bnav 자체의 컬럼 트랙은 12등분(1fr)이다 — 고정 119px 로 두면 화면 폭이
-     바뀌었을 때 트랙 합계가 .bnav 폭과 안 맞아 grid-column 으로 앉힌 대분류
-     명칭만 제자리를 벗어난다. 커브 자체의 폭(24px, var(--grid-gutter))은 원본
-     그대로 두고 그 오른쪽 끝만 3열 시작점에 맞추므로 커브 모양은 안 바뀐다 */
-  .bnav-wrap{--bw:calc(100% - 2 * var(--gm));--bx4:calc(var(--gm) + 2 * var(--gx));
-    /* 11열 오른쪽 끝 = 11칸 − 거터 하나. .bnav 왼쪽 끝 기준값이고(그래서 --bx),
-       .wrap 오른쪽 끝과 같은 선이다 — 1728px 에서 .bnav 기준 1429 / 뷰포트 1513.
-       소분류 네모 페이지네이션(.bnav-pager)이 이 선에 오른쪽을 맞춘다.
-       ⚠ 이 변수는 .bnav-pager 에서 쓰이므로 100% 의 기준은 .bnav 다 */
-    --bx11:calc(11 * var(--bx) - var(--gcg))}
-  .bnav{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gcg)}
-  /* line-height:1.15 — .bnav-tabs a 에는 기본으로 있는 값인데 .bnav-ttl(<p>)에는
-     없어서 브라우저 기본 line-height(폰트 자체 메트릭)를 썼다. 같은 밴드 안에서
-     align-items:center 로 세로 중앙 정렬하는 기준 줄 높이가 다르면 실제 글자(잉크)
-     위치가 미묘하게 어긋나므로 같은 값을 줘서 통일한다 */
-  .bnav-ttl{grid-column:1 / span 2;line-height:1.15;margin-bottom:12px}
-  /* 소분류 글자 크기는 원래 16px(=GNB 메뉴 글자 크기)로 되돌렸다 — UX 점검 결과:
-     대분류(20px)는 "지금 보고 있는 사업영역" 타이틀 역할이라 커도 되지만, 탭(소분류)은
-     여러 항목이 늘어선 내비게이션이라 GNB 메뉴(16px)와 같은 무게를 갖는 편이 위계상
-     맞다. 20px로 맞췄더니 위계가 뒤집혀 보였다. */
-  /* 활성 탭 글자색을 파란 브랜드컬러로 — 기본(business-layout.css)은 굵기(700)와
-     진한 회색(--g900)만으로 구분했는데, 색으로도 확실히 표시되게 한다. 모바일은
-     (900px 이하) 어두운 배경 위에서 흰색으로 구분하는 별도 규칙이 있어 그대로
-     두고, 데스크톱에서도 sticky(.is-fixed) 상태에만 건다 — 히어로는 바로 아래
-     별도 규칙으로 전부 검정 통일 + 호버만 파랑으로 다르게 처리한다 */
-  @media(min-width:901px){
-    .bnav-wrap.is-fixed .bnav-tabs a[aria-current]{color:var(--brand)}
-  }
-  /* 히어로 상태 — 활성/비활성 구분 없이 탭 글자를 전부 검정(--g900)·같은 굵기
-     (500, 기본 CSS 의 비활성 탭 굵기)로 통일하고, 호버했을 때만 파란
-     브랜드컬러로 바뀌게 한다. 처음엔 색만 통일했는데 활성 탭만 기본 CSS 의
-     굵기(700)가 남아 있어 여전히 튀어 보인다는 피드백으로 굵기도 맞춘다 */
-  @media(min-width:901px){
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a,
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a[aria-current]{color:var(--g900);font-weight:500}
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a:hover{color:var(--brand)}
-  }
-
-  /* ── 히어로 위(비고정) : 가운데 정렬 / 스크롤로 고정된 뒤 : 3열(x=330)에서 시작 ──
-     둘 다 "정지 상태"는 CSS로 쉽게 만들 수 있지만(justify-content:center vs
-     grid-column:3), 이 두 레이아웃 모드 사이를 전환할 땐 grid-column 같은 이산
-     속성은 트랜지션이 안 걸려 뚝 끊겨 보인다. 그래서 두 상태 모두 같은 방식
-     (position:absolute + left/transform)으로 표현하고, 그 사이만 애니메이션한다.
-
-     .bnav-tabs 를 그리드 흐름에서 완전히 빼고(grid-column:1/-1 로 컨테이닝 블록을
-     .bnav 전체 폭으로 고정) 절대 위치로 둔다.
-       비고정: left:50% + translateX(-50%) — 내용 폭이 몇 px 이든 항상 정중앙에 온다
-       고정  : left:262px(= --bx4 346px − .bnav 자신의 왼쪽 마진 84px) + translateX(0)
-               — 3열 시작점과 정확히 같은 자리. .bnav 마진이 GNB와 같은 "항상 84px"
-               공식이라 뷰포트 폭이 달라져도 이 값은 안 흔들린다.
-     left 와 transform 모두 애니메이션 가능한 속성이라 %→px 전환도 매끄럽게 보간된다.
-     세로 위치는 기존 margin-bottom(12px) 대신 bottom(12px)으로 직접 잡는다 —
-     absolute 가 되면 align-self/margin 조합이 아니라 inset 으로 다뤄야 한다 */
-  @media(min-width:901px){
-    .bnav-tabs{grid-column:1 / -1;position:absolute;bottom:12px;height:40px;
-      left:50%;transform:translateX(-50%);
-      transition:left .4s var(--ease),transform .4s var(--ease)}
-    /* sticky 흰 탭의 좌측 여백을 인덱스 네비 바(.hidx)의 좌측 padding(10px)만큼
-       더 밀어, 아래 인덱스 네비의 첫 항목 텍스트 시작점과 나란히 맞춘다 —
-       3열(.bnav 기준 2칸)+10px. A 는 아래 개편 블록이 이 값을 4열 기준으로 덮는다 */
-    .bnav-wrap.is-fixed .bnav-tabs{left:calc(2 * var(--bx) + 10px);transform:translateX(0)}
-  }
-
-  /* sticky 소분류 탭 텍스트를 4px 더 내린다 — 대분류(.bnav-ttl, "스마트 제조",
-     20px)와 탭(16px)은 폰트 크기가 달라 line-height 배율(1.15)을 맞춰도 실제
-     줄상자 안 글자 위치(내부 여백 비율)가 달라, 같은 40px 밴드 안에서
-     세로중앙 정렬해도 밑변이 살짝 어긋나 보인다. 탭 텍스트만 아래로 옮겨
-     대분류 텍스트의 밑선과 맞춘다 */
-  @media(min-width:901px){
-    .bnav-wrap.is-fixed .bnav-tabs a{transform:translateY(4px)}
-  }
-
-  /* sticky 탭 바 — 세로 구분선은 없애고, 가로 구분선만 남긴다(요청). .bnav-wrap 은
-     이미 ::before(커브)·::after(흰 패널)를 다 쓰고 있어 세 번째 선을 위해 새
-     엘리먼트(.bnav-rule, 빈 <span>)를 둔다. .bnav-wrap 자신이 위치 기준(fixed,
-     폭 100%)이라 left:0;right:0 만으로 화면 끝까지 그어진다.
-
-     흰 패널(.bnav-wrap::after, 높이 60px) 밑변과 이 선 사이 12px 틈은 원래
-     투명이라, .bnav-wrap 이 fixed 라 그 틈으로 스크롤되는 본문 카드가 그대로
-     비쳐 보였다. .bnav-rule 자체를 1px 선이 아니라 그 틈을 정확히 덮는 12px
-     높이의 흰 사각형으로 늘리고, 선은 그 사각형 맨 아래 테두리(border-bottom)로
-     그린다 — 틈을 흰 배경으로 막으면서 선 위치는 그대로 유지된다.
-     top:100% 는 .bnav-wrap(포지셔닝 기준) 자신의 밑변에 사각형의 윗변을 붙이는
-     것이라, 흰 패널 밑변부터 빈틈없이 이어진다 */
-  .bnav-rule{display:none}
-  @media(min-width:901px){
-    .bnav-wrap.is-fixed .bnav-rule{display:block;position:absolute;left:0;right:0;
-      top:100%;height:12px;background:#fff;border-bottom:1px solid var(--border-g)}
-  }
-
-  /* 히어로 탭 바 — 화면 전체 폭 가로선 + 소분류 개수(4, 현재 스마트 제조 기준 —
-     페이지마다 개수가 다르면 이 숫자를 맞춰 고쳐야 한다)로 4등분한 세로 구분선.
-
-     .bnav-tabs 를 4열 그리드로 바꿔 흰 패널의 가로 길이(3열 시작점 --bx4=262px
-     부터 .bnav 그리드 끝까지, .bnav-tabs 의 컨테이닝 블록이 .bnav 이므로
-     width:calc(100% - 262px) 하나로 정확히 채워진다)를 4등분한다. 히어로는
-     원래 가운데 정렬(left:50%)이었지만, 흰 패널 전체 폭 기준으로 4등분하려면
-     탭 컨테이너 자체가 그 폭(--bx4~그리드 끝)과 정확히 같아야 하므로 sticky와
-     같은 left:262px 로 고정한다.
-
-     가로선: sticky용 .bnav-rule 과 같은 엘리먼트를 히어로에서도 재사용한다.
-     흰 패널(아래 블록에서 65px 로 낮춘다) 밑변에서 12px 아래 — sticky와 같은
-     간격(절반으로 줄인 값)을 그대로 써서 리듬을 맞췄다.
-
-     세로 구분선: 흰 패널 위쪽 끝에서 시작해(탭 텍스트 상하 여백 없이) 방금 그은
-     가로선까지 끊김 없이 이어져야 한다. .bnav-tabs 자신의 박스(아래 블록에서
-     height:50px, bottom:15px 로 낮춘다)가 흰 패널(65px)과 위쪽 끝이 정확히
-     같아(65-15-50=0) 위로는 늘릴 필요가 없고(top:0), 아래로는 박스 밑변→흰패널
-     밑변 15px + 흰패널 밑변→가로선 12px = 27px 늘린다. 선 3개(4등분 경계)를
-     background 그라디언트로 한 번에 그린다 — 몇 개든 위치만 바꾸면 되는
-     방식이라 소분류 개수가 바뀌어도 유지보수가 쉽다.
-
-     텍스트는 그리드 칸 안에서 가운데 정렬한다. 세로선이 원래 탭 박스보다 아래로
-     길게 튀어나오면서, 탭 박스 중심이 아니라 "흰 패널 위~가로선" 전체를 하나의
-     시각적 덩어리로 보면 텍스트가 그 중심보다 위쪽에 있는 것처럼 보인다 — 12px
-     아래로 옮겨 그 전체 높이 기준 중앙처럼 보이게 한다 */
-  @media(min-width:901px){
-    /* overflow:visible — business-layout.css 기본 .bnav-tabs 는 overflow-x:auto 라
-       (좁은 화면에서 탭이 넘칠 때 가로 스크롤하기 위함) CSS 스펙상 세로축도 덩달아
-       auto 로 계산되어, 박스 아래로 튀어나오는 ::after(세로 구분선)가 그 경계에서
-       잘려 가로선까지 안 이어져 보이는 버그가 있었다. 히어로는 4등분 그리드가
-       패널 폭에 정확히 맞아 가로 스크롤이 필요 없으므로 visible 로 되돌려도 안전하다 */
-    /* 4등분 구분선의 기준폭을 흰 패널 자체 폭(262px~그리드 끝)이 아니라 본문
-       카드(.wrap)와 같은 폭으로 좁힌다 — .wrap 이 3열~11열(9열분, 119px 열 +
-       12px 거터, 1167px)을 쓰므로 이 박스도 그대로 1167px. 흰 패널은 여전히 더
-       오른쪽까지 이어지므로, 이 박스의 오른쪽 끝(11열 우측선, 카드 오른쪽 끝과
-       동일)은 더 이상 "박스 경계라 안 그려도 되는 선"이 아니라 흰 패널 중간에
-       뜬 실제 선이 되어, 그라디언트에 마지막 선을 하나 더 넣는다.
-
-       화면 정중앙 기준으로 옮기면 중앙 구분선은 화면 중앙과 맞아떨어지지만 탭
-       박스 좌우 끝이 카드 좌우 끝과 어긋나 버려(그리고 흰 패널·커브까지 같이
-       옮겨야 첫 글자가 패널 밖으로 안 잘린다) 되돌린다 — 카드와 나란한 쪽을
-       택해 3열 시작점(262px)에 그대로 맞춘다 */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs{width:calc(9 * var(--bx) - var(--gcg));
-      left:calc(2 * var(--bx));transform:translateX(0);
-      display:grid;grid-template-columns:repeat(var(--tabs),1fr);column-gap:0;justify-items:center;overflow:visible}
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a{transform:translateY(12px)}
-    /* 선 4개(4등분 경계 3 + 오른쪽 끝)를 "칸 하나짜리 타일"로 그린다 —
-       칸 폭(=100%/4)만 한 그라디언트를 가로로 반복하고, 타일마다 오른쪽 끝
-       1px 에만 색을 준다. 그라디언트 안의 100% 는 타일 폭이다.
-       전체 폭에 25/50/75% 하드 스톱을 찍는 방식은 폭이 넓어지면 1px 이
-       보간에 묻혀 사라진다 — 고정 탭 바에서 실제로 두 줄이 안 그려졌다.
-       ⚠ 4 는 소분류 개수다. 개수가 다른 페이지로 옮길 땐 이 값과 위
-       grid-template-columns 를 함께 고쳐야 한다 */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs::after{content:"";position:absolute;left:0;right:0;
-      top:0;bottom:-27px;pointer-events:none;
-      background-image:linear-gradient(to right,
-        transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
-      background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}
-    .bnav-wrap:not(.is-fixed) .bnav-rule{display:block;position:absolute;left:0;right:0;
-      bottom:-12px;height:1px;background:var(--border-g)}
-  }
-
-  /* 탭 바를 화면 맨 아래(스크린 바닥)에 딱 붙이지 않고 60px 띄운다 — 히어로 밑에
-     음수 margin-top 으로 얹히는 방식(margin-top:-64px, business-layout.css 기본)을
-     그대로 쓰되 60px 를 더 끌어올린다. 히어로는 여전히 100vh 라 그 밑에 생기는
-     자리는 다음 섹션이 아니라 히어로 자신의 배경(흰 인덱스 네비 패딩)이 그대로
-     보이는 흰 여백이다 — 지저분한 이미지 조각이 아니라 깔끔한 여백이라 문제없다 */
-  @media(min-width:901px){
-    .bnav-wrap{margin-top:calc(-1 * (var(--bar-h) + 60px))}
-  }
-
-  /* "흰 패널 위쪽 여백을 2배로" — 지난번엔 이걸 margin-bottom(텍스트를 패널 안에서
-     들어올리는 값)으로 잘못 읽었다. margin-bottom 은 흰 패널 자체 크기(40px, bottom:0
-     고정)는 그대로 두고 텍스트만 그 안에서(또는 밖으로) 미끄러뜨릴 뿐이라, 키워봤자
-     텍스트가 어두운 쪽으로 더 넘어갈 뿐 흰 면적 자체는 안 늘어난다 — 그래서 오히려
-     줄어든 것처럼 보였다.
-
-     진짜 "흰 패널의 위쪽 여백"은 패널 자신의 높이다 — 40px 인 패널을 위로 늘려서
-     (bottom:0 는 그대로라 아래쪽은 안 움직이고 위로만 자란다) 텍스트 위로 실제
-     흰 여백이 생기게 한다. 커브는 이미지라 높이만 늘리면 또 찌그러지므로 24:40
-     원본 비율대로 폭도 같이 키우고, 늘어난 폭만큼 왼쪽으로 물려 오른쪽 끝(--bx4)은
-     그대로 둔다 — 지난번 단차 버그 때와 같은 방식이다.
-
-     80px(2배)까지 키웠더니 흰 영역이 탭 바 전체(128px)의 62%를 차지해 균형이
-     깨졌다 — 원본(40px, 31%)과 80px(62%)의 중간인 60px(47%)로 낮춘다. 어두운
-     쪽이 여전히 더 넓어 "탭 바"의 기본 무게(어두운 배경)는 유지하면서, 원본보다는
-     확실히 여유 있는 흰 여백이 남는다. margin-bottom(12px)은 그대로 둬서 텍스트는
-     패널 바닥 쪽에 붙어 있고, 텍스트 위로 8px 정도 흰 여백이 보인다 */
-  .bnav-wrap::after{height:60px}
-  .bnav-wrap::before{height:60px;width:calc(60px * 24 / 40);
-    left:calc(var(--bx4) - 60px * 24 / 40);background-size:100% 100%}
-
-  /* 히어로 상태(:not(.is-fixed))에서만 소분류 탭 글자를 키우고, 탭이 앉는
-     밴드 높이도 같이 키운다 — sticky(.is-fixed)가 되면 위에서 정한 원래 값(16px,
-     40px 밴드, 60px 패널)으로 그냥 돌아간다(별도로 되돌리는 규칙이 필요 없다 —
-     :not(.is-fixed) 조건이 꺼지면 그만이다).
-
-     24px 였던 걸 4pt 더 줄여 20px 로 — 밴드 높이·bottom 여백도 16px 기준 비율
-     (높이 2.5배, bottom 0.75배)을 그대로 유지해 20px 에 맞게 다시 잡는다 —
-     높이 60→50px, bottom 18→15px. 밴드(50px)+bottom(15px)=65px 를 담는
-     .bnav-wrap 자신의 높이도 65px 로 키워야 글자가 위로 넘쳐 어두운 배경에
-     걸치지 않는다(예전에 겪은 "글자 겹침" 버그와 같은 원인). 흰 패널/커브
-     높이도 같이 65px 로 키워 밴드 전체를 덮는다 — 커브 폭은 24:40 비율 유지,
-     왼쪽으로 그만큼 더 물려 오른쪽 끝(--bx4)은 그대로 둔다. 60px 여백을 만들던
-     margin-top 공식(-(밴드높이 + 60px))도 새 높이(65px) 기준으로 다시 계산한다.
-     타이틀 센터링(.dhero .in)도 이 65px 를 기준으로 다시 계산했다(위 참고).
-     4등분 세로 구분선의 아래쪽 연장값(bottom 오프셋)도 bottom여백+가로선간격
-     (15+12=27px) 기준으로 다시 계산한다(아래 4등분 그리드 블록 참고) */
-  @media(min-width:901px){
-    /* 판 65 + 띠 60 이었다. 2026-08-11 요청으로 A-1 홈 히어로와 같은 값
-       (판 60 + 띠 40)으로 내린다 — 아래 --bh/--bpad 와 반드시 같이 움직인다 */
-    .bnav-wrap:not(.is-fixed){height:60px;margin-top:calc(-1 * (60px + 40px))}
-    .bnav-wrap:not(.is-fixed)::after{height:65px}
-    .bnav-wrap:not(.is-fixed)::before{height:65px;width:calc(65px * 24 / 40);
-      left:calc(var(--bx4) - 65px * 24 / 40)}
-    /* 판이 65 → 60 으로 내려온 만큼 다시 잡는다. 판 [0,60] 안에서 글자 중심이
-       판 중심보다 5px 아래에 놓이던 관계(=홈과 같은 관계)를 그대로 유지하는 값 —
-       상자 [-2,48] + 글자 translateY(12) → 글자 중심 35, 판 중심 30 */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs{height:50px;bottom:12px}
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:20px}
-  }
-
-  /* 인덱스 네비 + 본문 카드 — 폭은 9개 컬럼(3열~11열 = 9칸 − 거터 하나),
-     시작점은 3열 — 탭·인덱스 네비·카드가 전부 같은 x 에서 시작해야 한다.
-     (1728px 에서 1167px / 왼쪽 346px)
-     ⚠ 아래 "2026-08-10 레이아웃 개편" 블록(@media min-width:901px)이 이 골격을
-        통째로 덮어쓴다. 여기 남은 값이 쓰이는 곳은 좁은 화면(≤900px) 뿐이다 */
-  .wrap{width:calc(9 * var(--gx) - var(--gcg));margin:0 0 0 calc(var(--gm) + 2 * var(--gx))}
-
-  /* ② 섹션 골격 — 레일(row1, 가로 인덱스)이 트랙(row2) 위에 얹힌 세로 2행 구조로 바뀐다.
-     기본값(12열 그리드, 좌 레일 3열 / 우 트랙 9열)을 완전히 대체한다.
-
-     좁은 화면(900px 이하)은 건드리지 않는다 — 그쪽은 이미 원본이 --bar-top(72px, GNB
-     높이)만 반영한 별도의 padding-top(72px 0)과 .hidx{display:none} 규칙(감춤)을 쓰고
-     있는데, 여기서 무조건 덮어쓰면 좁은 화면의 고정 탭 바 자리 계산이 어긋나 인덱스
-     줄이 탭 바 밑에 깔려 버린다. 이 블록의 존재 이유가 바로 .tray 훅과 같다 —
-     이 코드베이스의 관례를 그대로 따른다 */
-  @media(min-width:901px){
-    /* 고정 탭 바 밑변과 인덱스 네비 사이 숨 — 새로 그은 가로 구분선(.bnav-rule,
-       흰 패널 밑변에서 12px 아래)에 본문 카드가 딱 붙도록, 이 여백도 24px에서
-       12px로 맞춘다. 안 그러면 선 밑에 12px 틈이 남아 어긋나 보인다 */
-    .hsec{grid-template-columns:1fr;grid-template-rows:auto 1fr;column-gap:0;
-      padding:calc(var(--bar-rise) + var(--bar-h) + 12px) 0 24px}
-    .hsec::before{display:none}
-    .hsec::after{grid-column:1;grid-row:2}   /* 카드 미리보기 하단 페이드 — 이제 전체 폭 */
-    .hrail{grid-column:1;grid-row:1;display:block;padding:0}
-    .hrail:empty{display:none}   /* 카드가 하나뿐인 섹션은 JS가 인덱스를 만들지 않는다 */
-    .htrack{grid-column:1;grid-row:2}
-
-    /* 여기 있던 "파란 가로 인덱스 바"(.hidx 를 --brand 배경 + 흰 글자 + 점 구분자로
-       칠하던 규칙 열 줄)는 2026-08-11 에 걷어냈다. 아래 개편 블록 ③ 이 인덱스를
-       본문 왼쪽 세로 목록으로 바꿨고, 그 개편이 A-1 까지 넓어지면서(같은 날) 이
-       가로 바를 쓰는 시안이 하나도 남지 않았다.
-       ⚠ 단순히 죽은 코드라 지운 게 아니다 — 그 중 .hidx li:not(:first-child)::before
-         는 클래스 두 개짜리라, 개편 블록이 body:not(.v-a1) 접두사를 떼면서 한 단
-         낮아진 순간 오히려 이쪽이 이겨 두 번째 항목만 점이 되살아난다. 남겨 두면
-         특정도만으로 싸워야 하는 자리라 아예 없앤다 */
-  }
-
-  /* ③ 카드 내부 2열 — [좌: 타이틀+줄글(+픽토그램)] [우: 비주얼] */
-  .hcard{flex-direction:row;align-items:stretch;gap:0;padding:0;min-height:0;overflow:hidden}
-  /* 기존 가독폭 제한(.hcard>*:not(...){max-width:820px})을 새 두 열에서는 무력화한다 —
-     그 선택자는 :not() 여섯 개라 특정도가 아주 높아 !important 없이는 못 이긴다 */
-  .hcard>.hleft,.hcard>.hright{max-width:none!important}
-  .hcard>.hleft{flex:1 1 50%;min-width:0;min-height:0;padding:48px 48px 48px 0;margin-left:48px;
-    display:flex;flex-direction:column;gap:var(--stack-gap);overflow-y:auto;overflow-x:hidden;
-    scrollbar-width:none;-ms-overflow-style:none}
-  .hcard>.hleft::-webkit-scrollbar{display:none}
-  .hcard>.hright{flex:1 1 50%;min-width:0;min-height:0;position:relative;
-    border-left:1px solid var(--border-g);background:var(--secondary-bg);
-    display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .hcard>.hright img{width:100%;height:100%;object-fit:cover;display:block}
-  /* 배경이 뚫린 PNG·초광각 구성도는 잘라내면 안 되므로 통째로 담는다(letterbox) */
-  .hcard>.hright.is-plate img{object-fit:contain}
-  /* h3 가 곧 "인덱스 타이틀" — 예전 좌측 레일의 소분류 타이틀 자리를 이어받으므로
-     기존 카드 제목(24px)보다 크게 잡는다. 반드시 한 줄로 — word-break:keep-all 만으로는
-     긴 제목이 열 폭(1:1 정렬 이후 더 좁아졌다)에서 둘째 줄로 접힐 수 있어
-     white-space:nowrap 으로 막는다. 대신 vw 상한을 낮춰 (36→30px) 가장 긴 제목도
-     그 폭 안에서 실제로 한 줄에 들어오게 한다 */
-  .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
-    line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
-  /* 이 카드 제목만 두 줄을 허용한다 — 위 nowrap 은 열 폭 안에서 제목을 한 줄로
-     붙잡아 두려는 규칙인데, 이 카드 제목("고객사 해외 생산기지 지원을 위한 법인
-     운용 및 해외 거점 확보(*수정 예정)", 공백 빼고 33자)은 좁은 데스크톱 구간
-     (901~1200px, 제목이 clamp 하한 22px)에서 열 폭을 넘는다. .hleft 가
-     overflow-x:hidden 이라 넘친 만큼은 스크롤도 없이 그냥 잘려 나간다.
-     한동안 임시 제목("수정 필요")이 앉아 있어 이 규칙이 하는 일이 없었는데,
-     2026-08-14 에 원래 문구가 돌아오면서 다시 살아 있는 규칙이 됐다.
-     word-break:keep-all 로 어절 중간에서 끊기는 것만 막고 줄바꿈은 허용한다.
-     ⚠ 이 카드는 위아래 2단이라(아래 flex-direction:column 블록) 제목이 두 줄이
-       되면 그만큼 지도 칸이 낮아진다 — 문구를 더 늘릴 때는 지도 쪽도 같이 볼 것 */
-  .hcard[data-tab="해외 거점"] .hleft h3{white-space:normal;word-break:keep-all}
-  .hleft>.pict{margin-top:auto}   /* 픽토그램은 "필요에 따라" 본문 아래, 열 바닥에 붙인다 */
-  /* 아이콘+키워드 박스 — 기본(business-layout.css)은 4칸을 가로로 한 줄에 늘어놓고
-     칸마다 흰 카드+그림자+모서리 점 장식을 넣는 방식인데, 카드 폭이 이제 열 하나
-     (전체 폭의 절반 정도)로 좁아져 4칸이 다닥다닥 붙어 보인다. 스케치 참고해
-     2열×2행 그리드로 바꾸고, 칸 안에서도 아이콘-위/글자-아래가 아니라
-     아이콘-왼쪽/글자-오른쪽으로 눕힌다. 장식(그림자·모서리 점)은 빼고 격자
-     칸 사이에 옅은 선(var(--border-g))만 남겨 표(table) 같은 인상을 준다.
-
-     li 를 flex 대신 grid(auto 1fr / auto auto)로 짜서 아이콘(.ic)이 두 행에
-     걸쳐(grid-row:1/span 2) 세로 중앙에 오고, 그 옆에 한글(.k)·영문(.en)이
-     위아래로 쌓인다 — HTML(.ic/.k/.en 이 li의 형제로 나란히 있는 구조)을 안
-     건드리고 grid-template만으로 배치를 바꿀 수 있다.
-     칸 사이 구분선은 2열 기준 홀수번째(왼쪽 칸)에 오른쪽 테두리, 앞 2개(윗줄)에
-     아래쪽 테두리를 줘서 만든다 — 4칸(2×2) 전제라 항목 수가 바뀌면 다시 봐야 한다.
-
-     영문(.en)은 기본 CSS에서 display:none 인데, 칸이 넓어져 여유가 생겼으니
-     한글 키워드 아래 작게 보여준다 */
-  /* 선택자를 .hcard .hleft .pict 로 — 클래스 3개라 기존 .hcard ul.pict(클래스 2개
-     +태그 ul 1개)보다 특정도가 높아(클래스 개수가 우선 비교되고 3>2) 확실히 이긴다.
-     .hleft .pict 만 썼더니 클래스 개수가 같고(2=2) 기존 쪽에 태그(ul)가 하나 더
-     있어 오히려 기존이 이겨버려 4칸 가로 배치가 그대로 남아있었다 */
-  /* 영문 키워드(.en)는 다시 뺀다 — 오버라이드를 아예 안 주면 기본(business-layout.css
-     .pict .en{display:none})이 그대로 적용된다. 영문이 빠지면서 칸 안 텍스트가
-     한 줄(.k)뿐이라, 위아래로 쌓던 grid(auto/auto 행)는 더 이상 필요 없어 다시
-     flex 한 줄(아이콘+글자, 세로 중앙 정렬)로 단순화한다.
-
-     박스를 카드 좌우·하단까지 꽉 채운다 — .hleft 자신의 패딩(48px 48px 48px 0,
-     왼쪽만 0)이 .pict 에도 그대로 적용되어 오른쪽·아래쪽에 48px 여백이 남아있었다.
-     오른쪽·아래쪽은 음수 마진(-48px)으로 그 패딩만큼 밀어내 카드 테두리(오른쪽은
-     .hright 와의 경계, 아래는 카드 밑변)까지 닿게 한다.
-
-     왼쪽은 패딩이 이미 0이라 .hleft 안에서는 이미 꽉 차 있었지만, .hleft 자신이
-     .hcard 안에서 margin-left:48px 로 밀려나 있어(카드 좌측 여백) 카드 전체
-     기준으로는 여전히 48px 비어 있었다. 이것까지 없애려면 .pict 를 margin-left
-     -48px 만큼 더 왼쪽으로 밀어야 하는데, .hleft 에 overflow-x:hidden 이 걸려
-     있어(폭이 좁을 때 white-space:nowrap 인 h3 제목이 넘치는 걸 막는 안전장치)
-     그대로는 넘친 부분이 잘려 안 보인다. .pict 가 있는 카드에 한해서만(:has(.pict),
-     다른 카드의 안전장치는 그대로 둔다) overflow-x 를 visible 로 풀어준다 —
-     1728px 기준에서는 어차피 제목이 넘치지 않게 폰트 상한을 맞췄으니(위 h3
-     주석 참고) 실질적인 위험은 없다.
-
-     실제로 확인해보니 왼쪽이 여전히 잘려 있었다 — 원인은 overflow 축 상호작용
-     규칙 때문이었다. .hleft 는 overflow-y:auto(세로 스크롤용) 를 그대로 쓰는데,
-     "한쪽 축만 visible, 다른 축은 visible이 아님" 인 상태에서는 스펙상 그
-     visible 이 auto 로 강제 승격된다 — 그래서 overflow-x:visible 을 줘도
-     실제 계산값은 auto 가 되어 여전히 hleft 자기 경계(카드 좌측 여백이 시작되는
-     지점)에서 잘렸다(overflow:hidden 과 마찬가지로 auto 도 넘치는 부분을
-     감추는 건 똑같다) — getComputedStyle 로 직접 확인해서 잡은 원인이다.
-     .pict 가 있는 카드는 세로 스크롤이 실제로 필요 없다는 것도 같이 확인했으므로
-     (overflow-y:auto 는 지금 이 오버슈트 트릭 때문에 12px 만 "넘치는" 것처럼
-     잡힐 뿐, 진짜 콘텐츠가 넘쳐서가 아니다), 아예 overflow 전체를 visible 로
-     풀어 이 상호작용 규칙 자체를 피한다. 그러면 .pict 가 .hleft 를 그대로
-     통과해 나가고, 그 바깥의 .hcard(overflow:hidden, 카드 경계와 정확히 일치)
-     에서 최종적으로 깔끔하게 잘린다 — 왼쪽·아래쪽을 얼마나 오버슈트하든 항상
-     카드 경계에서 잘리므로 서브픽셀 오차에도 안전하다. 오른쪽은 이미 .hright
-     왼쪽 경계와 정확히 일치했으므로 그대로 -48px 둔다 — 여기를 오버슈트하면
-     .hright 안쪽까지 침범해 버린다.
-
-     오른쪽 테두리(border-right)는 아예 없앤다 — 지금 .hright 자신의
-     border-left 와 .pict 의 border-right 가 같은 자리에 겹쳐 그어져서, 위쪽
-     (텍스트만 있는 구간)은 가는 선인데 박스가 있는 구간만 유독 두꺼운 선처럼
-     보였다. .hright 의 border-left 하나만 남기면 두께가 통일된다 */
-  /* → 되돌림: 박스 자체는 다시 카드 좌우·하단에 꽉 차게(이전 상태). "본문 카드
-     좌우 값과 맞춘다"는 요청은 박스 폭을 좁히라는 게 아니라, 박스 안 아이콘의
-     왼쪽 라인을 본문 텍스트(h3·문단)의 왼쪽 라인과 맞춰달라는 것이었다 — 박스
-     테두리(배경)는 카드 끝까지 그대로 두고, 왼쪽 칸(li:nth-child(odd))의
-     padding-left 만 28px에서 48px 로 늘려 그 안의 아이콘 시작점을 텍스트
-     시작점과 나란히 맞춘다. 오른쪽 칸은 그대로 28px 둔다 */
-  /* 상하 여백이 안 맞아 보였던 원인 — business-layout.css 기본 .pict 규칙이 이
-     그리드 컨테이너 자체에 padding:var(--pict-gut)(12px)와 gap:var(--pict-gut)
-     (12px, 행 사이)을 걸어 두고 있는데, 여기서 grid-template-columns 등만
-     새로 정의하고 padding·gap 은 안 건드려서 그 12px가 그대로 남아있었다 —
-     li 자신의 padding(24px)과 겹쳐 위쪽은 "컨테이너 padding 12 + li padding
-     24"=36px, 두 행 사이는 거기에 행 gap 12px가 더 끼어 있었다. padding·gap을
-     0으로 지워 li 패딩(24px)만 남긴다 — 위·아래·행 사이 전부 24px로 정확히
-     맞아떨어진다 */
-  /* 2행 아래쪽 여백이 1행과 안 맞아 보였던 원인 — margin-bottom:-60px 는 정확한
-     상쇄값(-48px, .hleft 의 padding-bottom)보다 12px 더 오버슈트한 값이었다.
-     왼쪽은 이렇게 넉넉히 오버슈트해도 안전하다(그 자리엔 박스 테두리·배경만
-     있고 실제 텍스트·아이콘은 padding-left 48px 만큼 안쪽에서 시작해 잘려도
-     안 보인다). 하지만 아래쪽은 다르다 — 2행 li 의 padding-bottom(24px) 이
-     바로 그 자리에 있어서, 카드 경계(overflow:hidden)에 잘려나가는 12px가
-     고스란히 2행의 "보이는" 아래 여백에서 깎여나갔다(24px 중 12px만 남음) —
-     1행은 구분선 위에 있어 전혀 안 잘리니 둘이 달라 보인 것이다.
-     상쇄값에 아주 작은 여유(1px, 서브픽셀 반올림 대비용)만 남긴 -49px 로
-     줄인다 — 이 정도는 24px 패딩에서 티가 안 난다 */
-  @media(min-width:901px){
-    .hcard:has(.pict) .hleft{overflow:visible}
-    .hcard .hleft .pict{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-      padding:0;gap:0;
-      background:#fff;border:1px solid var(--border-g);border-right:0;border-radius:0;
-      margin-left:-60px;margin-right:-48px;margin-bottom:-49px}
-    .hcard .hleft .pict li{display:flex;flex-direction:row;align-items:center;gap:16px;
-      padding:24px 28px;background:none;border-radius:0;box-shadow:none}
-    .hcard .hleft .pict li::before,.hcard .hleft .pict li::after{content:none;display:none}
-    .hcard .hleft .pict li:nth-child(odd){border-right:1px solid var(--border-g);padding-left:48px}
-    /* 2행이 1행보다 1px 낮아 보였다 — grid 의 auto 행 높이는 각 행에서 가장 큰
-       아이템의 "박스" 크기로 정해지는데, border-bottom 을 li 자체에 주면 그
-       1px가 li 의 박스 높이에 그대로 더해져 1행 트랙만 96px→97px 로 커졌다(2행은
-       테두리가 없어 96px 그대로). border 대신 레이아웃에 전혀 관여하지 않는
-       box-shadow 로 선을 그리면 두 행의 실제 박스 높이가 완전히 같아진다.
-       2행(nth-child(n+3)) 위쪽에 위(-1px) 그림자를 얹는 방식으로 바꿨다 —
-       1행 쪽에 그리면 다음 형제(2행)가 나중에 그려지며 그 위를 덮어버린다 */
-    .hcard .hleft .pict li:nth-child(n+3){box-shadow:0 -1px 0 0 var(--border-g)}
-    .hcard .hleft .pict .ic{flex:none;width:48px;height:48px;display:grid;place-content:center;
-      background:var(--secondary-bg);border-radius:8px}
-    .hcard .hleft .pict .ic svg{width:26px;height:26px}
-  }
-  /* 7단계 공정 순서 — 카드 폭 전체(옛 레이아웃)가 아니라 이제 열 하나(약 54%) 안에서
-     펼쳐지므로 7열은 너무 좁다. 기존 반응형 4열 규칙(1240px 이하)을 이 열 안에서는 항상 쓴다 */
-  .hleft .fsteps{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .hleft .fsteps li:nth-child(4n+1)::before{display:none}
-
-  /* ── 공정 프로세스 맵 — 시간차 자동 재생 (2026-08-21 개편, 설비 호버
-     방식에서 변경) ──────────────────────────────────────────────────
-     업데이트된 SVG(activation-process-map.svg)에 진행 라인이 추가돼, 호버로
-     하나씩 짚어보는 대신 01~06 단계를 그림 위에서 2초마다 자동으로 넘겨가며
-     보여준다. 탭 박스(.pmap-tab)·스펙 목록(.pmap-spec)은 카드 폭 안의
-     평범한 문서 흐름 요소라 그림처럼 화면 끝까지 번질 필요가 없어
-     position:fixed 클론 없이 그대로 둔다.
-     진행 라인(옅은 파랑→진한 파랑)은 처음엔 rig 겹 위에 진한 파랑 <path>를
-     따로 그려 얹었는데, 그러면 설비 건물을 가로지르는 구간에서 라인이 건물
-     "위로" 떠 보였다(2026-08-21 지적) — 원본 SVG는 라인을 설비보다 먼저
-     그려 건물 밑에 자연히 숨긴다. <img> 래스터라 그 쌓임 순서를 그대로
-     흉내낼 수 없어, 대신 라인만 진한 파랑으로 바꾼 SVG 사본을 통째로 하나
-     더 만들었다(assets/activation-process-line-dark.svg — 건물은 완전히
-     같고 라인 색만 다르다). rig 겹 위에 이 사본을 그대로 포개고
-     clip-path(inset 오른쪽)로 왼쪽부터 조금씩 더 드러낸다 — 두 그림이
-     픽셀 단위로 똑같으니 어디를 드러내도 건물이 라인을 가리는 자리는 항상
-     원본과 똑같이 맞는다(좌표는 이 파일 맨 아래 스크립트 참고) */
-  /* 탭 6칸 + 스펙 목록이 한 grid(.pmap-panel)를 같이 쓴다 — 탭은 1행의 6칸,
-     스펙은 2행이고 grid-column을 이 파일 맨 아래 스크립트가 활성 탭 번호로
-     맞춰(활성 칸 → 오른쪽 끝까지 걸치게) "그 탭 아래에서 시작"하게 만든다
-     (2026-08-21 요청). min-height로 스펙 칸 높이를 고정한다 — 안 그러면
-     단계마다 줄 수가 달라져(품질검사 3항목 vs 디개싱 1항목) 이 블록 아래
-     그림이 계속 오르락내리락한다(2026-08-21 지적).
-     탭 안쪽 패딩도 빠듯하게 잡아 이 블록 자체가 세로를 많이 먹지 않게 한다 */
-  /* z-index 2 — 아래 그래픽이 단계탭을 덮는 것을 막는다(2026-08-24 지적).
-     그림들은 .pmap-mask 안에 들어 있는데 그 마스크가 <body> 직속에 position:fixed
-     z-index:1 로 붙는다(화면 끝까지 번지려고 조상 클리핑을 일부러 피한 구조라
-     카드 안으로 되돌릴 수 없다). 탭은 카드 안 평범한 흐름 요소라 z-index 를 갖지
-     않으면 그 뒤로 깔린다 — 위치를 잡아(position:relative) 마스크보다 높은 층에
-     올린다. .htrack·.hcard·.hright 는 셋 다 position:relative 에 z-index 가
-     없어(=쌓임 맥락을 만들지 않아) 이 값이 루트 기준으로 그대로 먹는다 */
-  .pmap-panel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
-    row-gap:0;column-gap:4px;width:100%;position:relative;z-index:2}
-  .pmap-tab{grid-row:1;display:flex;align-items:center;justify-content:flex-start;gap:8px;
-    padding:8px 6px 8px 8px;border-radius:0;background:var(--secondary-bg);
-    border:1px solid var(--border-g);cursor:pointer;
-    transition:background .3s var(--ease),border-color .3s var(--ease)}
-  .pmap-tab b{font-family:var(--pre);font-weight:500;font-size:14px;
-    letter-spacing:-.3px;color:var(--teritary);
-    padding-right:8px;border-right:1px solid var(--border-g);
-    transition:color .3s var(--ease),border-color .3s var(--ease)}
-  .pmap-tab span{font-family:var(--pre);font-weight:700;font-size:15px;
-    letter-spacing:-.3px;color:var(--teritary);white-space:nowrap;
-    transition:color .3s var(--ease)}
-  .pmap-tab.is-active{background:var(--brand);border-color:var(--brand)}
-  .pmap-tab.is-active b,.pmap-tab.is-active span{color:#fff}
-  .pmap-tab.is-active b{border-right-color:rgba(255,255,255,.4)}
-  .pmap-spec{grid-row:2;grid-column:1/2;min-height:156px;
-    list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
-    align-items:stretch;gap:0}
-  .pmap-spec li{font-family:var(--pre)}
-  /* 칩 스타일 재조정(2026-08-22 요청) — "단계별 너비"는 스펙 목록 전체가
-     오른쪽 끝까지 넓어진 폭이 아니라, 활성 탭 "한 칸"의 폭을 말한 것이었다
-     ("6번 단계처럼", 드롭다운 메뉴 UI) — renderStep() 의 grid-column 을
-     활성 탭 한 칸으로만 고정했다(위 참고). 그 탭과 폭이 똑같이 겹치므로
-     양쪽 정렬을 위해 따로 두던 왼쪽 여백(9px)도 필요 없어져 뺐다.
-     align-items:stretch(부모, flex 기본값)로 각 li 가 그 한 칸의 가로폭
-     100%로 늘어난다. 간격은 0, 모서리는 각지게(border-radius 없음) —
-     칩끼리 위아래로 맞닿아 하나의 판처럼 보인다. 위아래 테두리가 겹쳐
-     두 배로 굵어지지 않도록 li+li 에서만 위 테두리를 뺀다.
-     .pmap-spec 자체의 gap:0(위)도 business-layout.css 의 공용 규칙
-     (.hcard ul{gap:var(--para-gap)}, 8px)이 특정도가 더 높아(.hcard 클래스
-     +ul 타입 vs .pmap-spec 클래스 하나) 그대로 씹혔다(2026-08-22 확인,
-     계산된 gap 이 8px 그대로였다) — 여기서도 같은 특정도로 다시 0 을 준다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:0}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li{
-    font-weight:500;font-size:13px;line-height:1.4;
-    letter-spacing:-.2px;color:var(--g900);background:var(--secondary-bg);
-    border:1px solid var(--border-g);border-radius:0;padding:6px 10px}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li+li{border-top:none}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li::before{content:none}
-  /* 마스크(2026-08-21 요청) — 그림이 이따금 카드 밑변을 넘어 다음 카드(예:
-     "해외 거점" 제목)까지 침범해 보이는 문제가 있었다. rig 겹의 높이는
-     본문 열 폭(RIG_SCALE) 기준으로만 정해져 카드에 실제로 남은 세로 공간과
-     무관하다 — 그래서 설비가 넓고 낮은 화면에서는 원래 .hright 의
-     overflow:hidden 이 잘라 줬을 몫까지 넘어섰다. 그런데 이 그림들은 전부
-     position:fixed 로 조상 클리핑을 일부러 피해 화면 끝까지 번지게 만든
-     것들이라(맨 위 큰 주석 참고) hright 의 overflow:hidden 이 더는 안 먹는다.
-     그래서 .hright 의 실측 세로 범위(top~bottom)만큼만 잘라내는 마스크를
-     따로 두고, 실제 그림들(grad·floor·rig·line)은 이제 fixed 대신 이
-     마스크 기준 absolute 로 그 안에 넣는다 — 가로는 여전히 마스크 자체가
-     100vw 라 화면 끝까지 번지고, 세로만 카드 밑변에서 정확히 끊긴다 */
-  .pmap-mask{position:fixed;left:0;width:100vw;overflow:hidden;
-    pointer-events:none;z-index:1;display:none}
-  .pmap-grad-fill,.pmap-floor-fill,.pmap-rig-clone,.pmap-line-edge,
-  .pmap-line-vedge{
-    position:absolute;left:0;top:0;margin:0;pointer-events:none;display:none}
-  /* rig(.pmap-rig-clone) 은 이제 <svg viewBox> 라 그 안의 <image> 두 장
-     (설비 원본 + 라인만 진한 색 사본, 후자는 SVG 네이티브 mask 속성으로
-     trim path 만큼만 드러낸다)이 함께 스케일된다 — 2026-08-22 재작업.
-     예전엔 <img> 두 장을 겹치고 CSS mask-image 로 후자를 잘랐는데, 실제
-     크롬에서 그 CSS mask 가 전혀 반영되지 않는 걸 픽셀로 확인했다
-     ("채워지는 선이 안 보여" 지적) — SVG 안에서 이미지·마스크가 같은
-     좌표계를 쓰는 네이티브 방식으로 바꿔 크기 불일치 여지 자체를 없앴다 */
-  /* 연장선(화면 가장자리) 진행 겹 — 예전엔 옅은 색 막대(트랙)와 진한 색
-     막대(채움)를 별개의 두 엘리먼트로 두고 자리·두께를 매번 JS로 각각
-     맞췄는데(2026-08-21), "두 라인이 따로 논다"는 구조적 불안 지적
-     (2026-08-22)에 채움을 의사요소(::after)로 바꿨다 — 의사요소는 부모
-     (.pmap-line-edge) 자리를 CSS 상속으로 그대로 따라가므로(top:0 left:0
-     height:100%) 자리·두께가 어긋날 방법 자체가 없다. JS 가 매번 새로
-     맞춰야 하는 값은 이제 채워진 비율(--fill) 하나뿐이다.
-     rig 안 라인 사본의 mask(stroke-dashoffset) 와 이 ::after 의 width 는
-     CSS transition 을 걸지 않는다(2026-08-22 재지적 — "연장선과 기존선이
-     따로 움직인다") — 매 프레임(sync(), rAF) 흐른 시간으로 직접 계산한
-     값을 즉시 그대로 그리므로, 트랙 전체가 항상 같은 순간 같은 값을
-     반영해 하나의 선처럼 보인다. CSS transition 을 얹으면 오히려 그
-     프레임 값을 다시 뒤늦게 뒤쫓아가며 지연(랙)이 생겨 어긋나 보였다 */
-  .pmap-line-edge{--fill:0%}
-  .pmap-line-edge::after{content:'';position:absolute;left:0;top:0;height:100%;
-    width:var(--fill);background:var(--fill-color)}
-
-  /* 활성화 카드는 이제(요청으로) 상|하 레이아웃이라 .hright 가 카드 전체 폭을
-     쓴다 — 7칸이 한 줄에 다 들어가므로 위 4열 규칙을 적용하지 않고 기본값
-     (business-layout.css 의 repeat(7,1fr))을 그대로 둔다. 순서(.fsteps)를
-     이미지 위로, 구성도 이미지를 그 아래로 놓는다 — .hright 를 세로로 쌓아
-     (flex-direction:column) DOM 순서(순서→이미지)가 곧 화면 순서가 되게 한다 */
-  /* justify-content:flex-start — 기본 .hright(business-layout.css)는 세로
-     중앙 정렬(justify-content:center)인데, 카드 높이가 본문(.hleft) 텍스트
-     줄 수에 따라 달라지다 보니 hright 가 순서+이미지 내용물보다 짧아지는
-     경우가 있었다. 그러면 가운데 정렬된 내용물의 위쪽이 박스 위로 넘쳐
-     overflow:hidden 에 잘려나가, 순서 줄이 위쪽 구분선에 거의 딱 붙어(패딩이
-     안 보이게) 잘려 보였다. 위쪽부터 채우도록 고정하면 padding-top(40px)이
-     항상 그대로 여백으로 보인다 */
-  /* gap 을 28px→16px 로 줄인다(2026-08-21) — 탭·스펙 두 줄이 추가되면서 이 여백이
-     겹쳐(탭↔스펙, 스펙↔이미지) 그림이 필요 이상으로 아래로 밀려 보였다.
-     그림 쪽이 흡수해야 하는 압박을 그만큼 던다.
-     좌우 패딩은 0 — .hcard 자체가 이미 40px 좌우 패딩을 갖고 있어(공용 규칙)
-     여기 또 40px를 얹으면 이 칸(탭·이미지)만 본문(.hleft, 좌우 패딩이 hcard
-     것 하나뿐)보다 양쪽 40px씩 더 안으로 들어가 보였다(2026-08-21 지적 — 단계
-     탭 줄 폭이 본문 폭과 안 맞음). 위아래 패딩만 남긴다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright{flex-direction:column;
-    /* padding-top 5px — 이 칸의 테두리 1px 과 더해 본문 밑변에서 단계탭까지
-       6px 이 된다(2026-08-24 요청, 종전 12px 의 절반). 아래 낮은 화면용
-       규칙도 같은 값을 쓴다 — 두 곳이 갈리면 화면 높이에 따라 간격이 튄다 */
-    justify-content:flex-start;gap:16px;padding:5px 0 40px}
-  /* 패딩을 걷어 탭 줄까지 위로 당겼더니(2026-08-21) 설비는 커졌지만 탭
-     위치 자체가 옮겨져 버렸다(2026-08-21 재지적 — "탭 위치는 옮기지
-     말아줘"). 패딩은 원래대로 되돌리고, 대신 (보이지 않는) 원본 <img> 에만
-     음수 margin-top 을 줘 그 실측 자리(r.top, rig 크기 계산의 기준)만
-     끌어올린다 — 탭·스펙 패널은 원래 자리 그대로, 설비만 커진 상태를
-     유지한다(아래 img 규칙 참고) */
-  /* flex:0 1 auto + min-height:0 — 남는 높이만큼만 차지하고 모자라면 줄어든다.
-     예전엔 flex:none 이었다. 그때 그림은 3096×651(4.76:1)이라 폭에 맞추면 높이가
-     200px 남짓이었고, 그 위 순서 띠(.fsteps)까지 얹어도 칸에 들어왔다.
-     2026-08-14 임시 캡처(1118×508, 2.2:1)로 바뀌면서 같은 폭에서 높이가 두 배가
-     됐다 — 순서 띠를 내렸어도 칸을 넘긴다. .hright 가 overflow:hidden 이라 넘친
-     만큼은 스크롤도 없이 잘린다.
-     아래 max-height:820px 블록이 낮은 화면에서만 쓰던 값을 그대로 올린 것이고,
-     이유도 같다 — 작아질지언정 순서·구역이 다 보이는 편이 낫다.
-     .is-plate(object-fit:contain)라 줄어들어도 잘리지 않고 통째로 축소된다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright img{width:100%;height:auto;
-    flex:0 1 auto;min-height:0}
-  .hcard[data-tab*="프로세스 맵"]>.hright .fsteps{width:100%;margin:0}
-
-  /* 우측이 사진이 아니라 자리표시 그리드인 카드들 (제품 카탈로그·아이콘) */
-  .hgal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%;padding:40px}
-  .hgal span{display:block;aspect-ratio:1/1;background:#fff;border:1px dashed var(--border-g)}
-  .hright .hgrid2{width:100%;padding:40px;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
-  .hright .hgrid2 .ico{width:100%;aspect-ratio:1/1;background:#fff}
-  /* 폭·여백 모두 건드리지 않는다 — business-layout.css 가 칸 높이에 맞춰 크기를 잡고,
-     여백은 .gmap 이 아니라 바깥 .hright 이 든다(패딩을 상자에 주면 종횡비가 어긋나
-     지도 그림 위아래가 잘린다. 그쪽 ⚠ 주석 참고) */
-  .hright .gmap{margin:0}
-
-  /* ── 카드 3종 개별 레이아웃 — [좌:본문/우:비주얼] 2열 대신 [상:본문/하:비주얼]
-     2행으로 바꾼다. data-tab 값으로 이 카드만 콕 집어 오버라이드한다(마크업
-     구조는 다른 카드와 동일 — .hleft/.hright 순서 그대로, flex 방향만 바꾼다).
-     "공정 프로세스 맵"은 원래 좌|우였는데 상|하 요청으로 추가됐다 —
-     .hright 안(구성도+순서, 위에서 이미 세로로 쌓아둔 부분)은 그대로 두고
-     .hcard/.hleft/.hright 3단 배치만 이 목록에 얹는다 */
-  /* 아래 카드 선택자를 완전일치(=)가 아니라 부분·접두 일치(*= / ^=)로 둔 이유 —
-     data-tab 은 좌측 레일 인덱스에 그대로 찍히는 "글"이라(business-layout.js
-     buildIndex) 문구가 다듬어질 때마다 값이 바뀐다. 완전일치로 걸어 두면 인덱스
-     문구를 한 글자 고칠 때마다 이 파일의 선택자 열몇 줄이 같이 조용히 풀린다.
-     특정도는 연산자와 무관하게 같으므로 규칙 순서는 종전 그대로다.
-     PLC/MES 는 data-tab 이 약어만 남은 뒤에도 ^= 로 그대로 걸린다 */
-  @media(min-width:901px){
-    .hcard[data-tab="해외 거점"],
-    .hcard[data-tab^="PLC"],
-    .hcard[data-tab^="MES"],
-    .hcard[data-tab*="프로세스 맵"]{flex-direction:column}
-
-    .hcard[data-tab="해외 거점"]>.hleft,
-    .hcard[data-tab^="PLC"]>.hleft,
-    .hcard[data-tab^="MES"]>.hleft,
-    .hcard[data-tab*="프로세스 맵"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
-      padding:40px 48px 24px;overflow:visible}
-
-    .hcard[data-tab="해외 거점"]>.hright,
-    .hcard[data-tab^="PLC"]>.hright,
-    .hcard[data-tab^="MES"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{flex:1 1 auto;width:100%;border-left:0}
-
-    /* 지도 카드(해외 거점)·프로세스 맵 카드만 상단(본문)-하단(비주얼)
-       사이 구분선을 남긴다 — 둘 다 비주얼이 통짜 이미지(지도/구성도)라 그 경계가
-       곧 콘텐츠 전환점이다 */
-    .hcard[data-tab="해외 거점"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{border-top:1px solid var(--border-g)}
-
-    /* PLC·MES 그리드 박스 — 본문 카드가 다른 곳에서 쓰는
-       좌우하단 여백(48px, 세 값 모두 동일)만큼 안쪽으로 줄어들게 한다. .hright
-       자체에 패딩을 주고 그리드는 width/height:100%로 그 패딩 박스를 그대로
-       채우게 한다 — 위쪽은 여백 없이 구분선(border-top)에 바로 붙는다(요청이
-       "좌우하단"만 해당). 상단(타이틀)-하단(그리드) 사이 가로 구분선은
-       요청대로 없앤다 — .hright 의 border-top 을 아예 안 준다(위 지도 카드만
-       남겨 뒀다). 배경도 없앤다 — .hcard>.hright 기본값
-       (business-layout.css, 사진이 로드되기 전 자리표시용 회색
-       background:var(--secondary-bg))이 그리드 칸 사이 간격과 둘레 여백에
-       그대로 비쳐서 옅은 회색으로 보였다 */
-    .hcard[data-tab^="PLC"]>.hright,
-    .hcard[data-tab^="MES"]>.hright{padding:0 48px 48px;background:none}
-
-    /* 두 카드 모두 그리드 높이가 auto(정사각형 칸 크기에 따라 결정)라 .hright
-       의 align-items:center 로 위아래 가운데 정렬되어 있었는데, 그러면 박스
-       밑변이 하단 패딩과 안 맞닿아 보인다 — flex-end 로 바꿔 박스가 바닥
-       여백에 바로 이어지게 내린다 */
-    .hcard[data-tab^="PLC"]>.hright,
-    .hcard[data-tab^="MES"]>.hright{align-items:flex-end}
-
-    /* 지도 카드(해외 거점) — 지도 위쪽이 가위로 자른 듯 잘렸던 원인: .gmap 은 원래
-       "폭만으로" 크기를 정하고 높이는 aspect-ratio(1000/387.78)가 스스로
-       계산하게 만든 컴포넌트다(business-layout.css 주석 — 마커 %좌표가 이
-       비율에 고정돼 있어, 높이를 직접 정하면 비율이 깨진다). height:100% 를
-       주는 순간 폭·높이가 둘 다 확정돼 aspect-ratio 가 무력화되고, 카드에
-       맞는 임의 비율(세로로 짧고 가로로 긴 상자)이 되어 버렸다 — 그 상자를
-       .hright 의 img{object-fit:cover} 규칙이 꽉 채우려고 이미지를 확대해
-       위아래를 잘라낸 것이다(마커 %좌표는 이미지가 아니라 상자 기준이라
-       실제로는 지도 그림과 마커 위치까지 어긋나 있었다).
-       height 를 지정하지 않고 폭만 100%로 두면 aspect-ratio 가 정확한 높이를
-       계산해 잘림·마커 어긋남이 둘 다 없어진다. .hright 는 이미
-       align-items/justify-content:center 라 남는 위아래 공간은 자동으로
-       가운데 정렬된다 */
-    .hcard[data-tab="해외 거점"]>.hright{padding:32px}
-  }
-
-  /* PLC·MES — 4개 기능을 2열×2행 아이콘+국문+줄글 그리드로(요청으로 4×1 에서 바꿨다.
-     한 줄에 넷을 늘어놓으면 칸 하나가 좁아 줄글이 다섯 줄까지 접혔다).
-     칸 사이 다시 4px gap(개별 박스, 공유 테두리 아님)으로 되돌린다.
-     박스 높이는 height:100% 대신 auto 로 — 아래쪽에 남는 빈 여백이 넓어 보였는데,
-     내용 높이만큼만 잡는다. 세로 위치는 .hright(align-items:flex-end, 위에서
-     오버라이드)가 하단에 붙여 준다 */
-  .descgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:4px;width:100%;height:auto}
-  .descitem{display:flex;flex-direction:column;gap:14px;padding:32px 28px;
-    background:#fff;border:1px solid var(--border-g)}
-  /* 아이콘을 기존(44px)의 약 2배(88px)로 키운다 — 박스 자체가 커진 만큼
-     모서리 둥글기도 8→12px 로 살짝 키워 비례를 맞춘다 */
-  .descitem .ic{width:88px;height:88px;flex:none;display:grid;place-content:center;
-    background:var(--secondary-bg);border-radius:12px;color:var(--brand)}
-  .descitem .ic svg{width:48px;height:48px}
-  /* 줄글은 다른 카드 본문(.hcard p / .hcard ul li, business-layout.css)과 같은
-     값으로 맞춘다 — font-family·size·line-height·letter-spacing·color 전부 동일 */
-  .descitem .txt{font-family:var(--pre);font-weight:400;font-size:17px;
-    line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec)}
-
-  /* 본문 카드 안 "키워드" 텍스트 스타일 통일 — 세 곳이 대상이다.
-       .fsteps li span   공정 순서 칩("초기 충전" 등, business-layout.css 기본 15px)
-       .pict .k          픽토그램 행 키워드("이온 전도도 향상" 등)
-       .descitem .k      PLC·MES 칸 제목("설비 제어" 등)
-     크기는 줄글(.hcard p / .descitem .txt, 17px)과 같은 값으로 키운다(요청).
-     굵기·서체·색은 그대로 — 같은 크기에서 SUIT 700 / --g900 이 Pretendard 400 /
-     --sec 줄글과 구분되므로 위계는 굵기와 색이 맡는다.
-     행간은 줄글(--body-lh 1.6)이 아니라 1.35 를 유지한다 — 한두 낱말짜리 라벨이라
-     1.6 을 주면 두 줄로 접혔을 때 사이가 벌어져 한 덩어리로 안 읽힌다.
-     자간만 줄글과 같은 -.34px 로 맞춘다(크기가 같아졌으니 -.3 을 따로 둘 이유가 없다) */
-  .hcard .hleft .pict .k,
-  .hcard .fsteps li span,
-  .descitem .k{font-family:var(--suit);font-weight:700;font-size:17px;
-    line-height:1.35;letter-spacing:-.34px;color:var(--g900);word-break:keep-all}
-
-  @media(max-width:900px){
-    .hcard{flex-direction:column}
-    .hcard>.hleft{margin-left:0;padding:32px}
-    .hcard>.hright{border-left:0;border-top:1px solid var(--border-g);min-height:260px}
-    .descgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  }
-
-  /* ④ 하단 진입점(다른 사업영역, .bhop) 좌우 여백 — GNB·히어로·탭 바·본문(.wrap)은
-     전부 84px 고정 여백(calc(100% - 168px))으로 맞췄는데, 여기만 아직
-     business-layout.css 기본값(--maxw:1440px 기준 max-width로 가운데 정렬)을
-     그대로 쓰고 있어 본문과 여백 폭이 안 맞았다. 같은 84px 로 통일한다.
-     부모(.bhop)가 이미 justify-content:center 로 가운데 정렬하고 있으므로
-     폭 공식만 GNB와 같은 값으로 바꾸면 된다.
-     (푸터도 같은 이유로 여기서 84px 로 덮어썼었지만, 지금은 본문선에서 한 열 더
-      안으로 들어간 2~11열 폭을 business-layout.css 가 직접 잡는다) */
-  @media(min-width:901px){
-    .bhop-town{width:calc(100% - 2 * var(--gm))}
-  }
-
-  /* 하단 진입점(다른 사업영역) 픽토그램을 0.8배로 축소 — business-layout.css
-     기본은 img{width:100%;height:auto;aspect-ratio:var(--ar)}로 칸(.bhlot) 폭에
-     꽉 채우는 방식이라, width 를 80%로 줄이면 flex 칼럼 안에서 왼쪽으로 붙어버려
-     보기 어색하다. 대신 transform:scale(.8)로 시각적 크기만 줄인다.
-     기준점(transform-origin)을 가운데-아래(50% 100%)로 잡는 게 중요하다 —
-     기본값(중앙)으로 줄이면 그림 밑변이 위로 떠서, 넷을 같은 배율로 그려
-     "바닥선이 딱 맞게" 정렬해 둔 원래 설계(위 .bhlot 관련 주석 참고)가 깨진다.
-     바닥을 기준으로 줄이면 밑변은 그대로 두고 위쪽만 줄어들어 정렬이 유지된다 */
-  .bhlot img{transform:scale(.8);transform-origin:50% 100%}
-
-  /* 맨 위로 가기 버튼 — 이 사이트는 섹션 하나=화면 한 판 휠 페이징(business-layout.js
-     의 pageTo)이라 화면 위치를 스크롤로 되짚어 올라가기 번거로워, 우측 하단에
-     고정 CTA를 둔다. business-layout.js 는 건드리지 않고(공용 파일) 이 페이지
-     안에서만 완결되게 별도 엘리먼트·스크립트로 추가한다.
-     z-index:150 — .bnav-wrap(90)보다는 위, 전체 메뉴 오버레이 .navover(300)보다는
-     아래로 둬서, 오버레이가 열리면 자연히 그 밑에 가려진다(따로 JS로 숨길 필요 없음).
-     처음엔 숨겨두고(.totop, opacity:0) 히어로를 벗어나 스크롤했을 때만
-     JS(.is-visible 토글)로 보이게 한다 — 맨 위 화면에서는 누를 이유가 없어서다 */
-  .totop{position:fixed;right:32px;bottom:32px;z-index:150;width:52px;height:52px;
-    border-radius:50%;background:var(--g950);border:none;cursor:pointer;
-    display:grid;place-content:center;color:#fff;
-    box-shadow:0 12px 32px rgba(14,22,30,.22);
-    opacity:0;visibility:hidden;transform:translateY(8px);
-    transition:opacity .3s var(--ease),transform .3s var(--ease),
-      visibility 0s linear .3s,background .2s var(--ease)}
-  .totop.is-visible{opacity:1;visibility:visible;transform:none;
-    transition:opacity .3s var(--ease),transform .3s var(--ease),background .2s var(--ease)}
-  .totop:hover{background:var(--brand)}
-  .totop svg{width:22px;height:22px}
-  @media(max-width:900px){
-    .totop{right:20px;bottom:20px;width:44px;height:44px}
-    .totop svg{width:18px;height:18px}
-  }
-
-  /* ══════════════════════════════════════════════════════════════════════
-     2026-08-10 레이아웃 개편 (스마트 제조 선행 적용)
-
-     위 v3.1 골격(가로 파란 인덱스 바 + 흰 카드 상자, 3열~11열)을 통째로 덮는다.
-     세 가지가 바뀐다 —
-       ① 소분류 탭 바 : 사업영역 명칭이 1열 → 2열, 커브(라운드 시작점)와 소분류 탭이
-                        3열 → 4열. 한 칸(131px = 컬럼 119 + 거터 12)씩 오른쪽이다.
-       ② 인덱스       : 상단 가로 바를 걷고 본문 왼쪽 열(2~3열)의 세로 목록으로.
-                        "이 소분류 안에서 어디인가"가 본문 옆에 늘 붙어 있고,
-                        탭 바는 소분류 이동만 맡는다.
-       ③ 본문         : 카드 상자(흰 배경·1px 테두리·안쪽 여백)를 걷어 4열~11열을
-                        그대로 쓰는 "섹션"으로. 글이 페이지 바탕 위에 바로 놓인다.
-
-     블록을 파일 맨 끝에 두는 이유 — 위 카드 규칙들(data-tab 별 개별 레이아웃 포함)
-     보다 뒤에 와야 같은 특정도끼리도 이긴다. 되돌리거나 다른 페이지로 옮길 때도
-     이 덩어리 하나만 다루면 된다.
-
-     ── 2026-08-12 : A / A-1 이 같아졌다 ─────────────────────────────────
-     처음에는 모든 선택자에 body:not(.v-a1) 이 걸려 있었다. A 만 먼저 확인하는
-     단계라 A-1 은 종전 레이아웃(파란 가로 인덱스 바 + 흰 카드 상자)에 묶어 두려던
-     것이고, "시안이 확정되면 접두사를 뗀다"고 적어 두었던 자리다. 본문 골격
-     (②③ 과 그 아래 ④~⑨)에서 먼저 뗐고(2026-08-11), 마지막까지 남아 있던 차이
-     — A-1 의 하단 플로팅 알약 탭 바 — 도 A 로 통일하면서 .v-a1 규칙을 전부
-     걷어냈다. 이제 여덟 페이지가 같은 디자인이다.
-
-     아래 남아 있는 body:not(.v-a1) 접두사는 전부 "상단 고정 바" 것이다. 지금은
-     그 클래스를 다는 세부 페이지가 없어 항상 참이고(_gen-a1.py 의 A1_BODY 가
-     회사소개 한 곳에만 붙인다), 특정도를 건드리지 않으려고 접두사만 남겨 두었다 —
-     다시 갈래를 만들 일이 있으면 그대로 스위치가 된다.
-     본문 쪽 규칙에 이 접두사가 새로 붙는 일은 없어야 한다.
-
-     ⚠ 접두사를 떼면 선택자 특정도가 클래스 하나만큼 낮아진다. 위 v3.1 블록에서
-       .hidx li:not(:first-child)::before 를 아예 지운 것이 그 때문이다(그쪽 주석) */
-  @media(min-width:901px){
-    /* ① 고정 탭 바 */
-    body:not(.v-a1) .bnav-ttl{grid-column:2 / span 2}
-    /* 커브·흰 패널의 시작점. ::before(커브)는 --bx4 왼쪽 거터 자리에 그려지므로
-       패널이 4열(1728px 에서 477px)에서 시작하고 커브는 그 앞 24px 을 잇는다 */
-    body:not(.v-a1) .bnav-wrap.is-fixed{--bx4:calc(var(--gm) + 3 * var(--gx))}
-    /* 탭 띠 — 4열 시작점(.bnav 기준 3칸)에서 11열 끝(11칸 − 거터)까지 8칸 − 거터.
-       1728px 에서 left 393 · width 1036 이고, 아래 본문과 정확히 같은 자리다.
-       그 안을 소분류 수(4)만큼 균등 분할하고 경계에 세로선을 긋는다 — 히어로 상태가
-       쓰는 방식(그라디언트 한 장으로 25/50/75/100% 에 1px 선)을 그대로 옮겼다.
-       글자 크기는 sticky 값(16px) 그대로 둔다 — 히어로의 20px 을 따라가지 않는다.
-       ⚠ 균등 분할이라 글자는 칸 가운데 정렬된다(히어로와 같은 규칙). 종전처럼
-       왼쪽부터 붙어 서지 않는다.
-       선의 세로 범위 — 탭 글자 높이에 맞춘다. 탭 상자는 [76,116](바 높이 128 기준
-       bottom:12 + height:40)이고 그 안에서 18px/1.15 글자가 세로 중앙 + translateY(4px)
-       자리에 앉으므로, 상자 기준 [12,36] 이 곧 글자가 차지하는 띠다 — 선의 가운데(24)가
-       글자 가운데와 맞는다. 한동안은 흰 패널 윗변(68)부터 가로 구분선(140)까지 통으로
-       그었는데, 칸을 나누는 선이 아니라 바를 세로로 가르는 금으로 읽혔다
-       (홈 히어로 밑단 탭 띠의 구분선도 같은 이유로 inset:14px 0 이다).
-       width 를 트랜지션에 넣은 이유 — 히어로(1167px)와 sticky(1036px)의 띠 폭이
-       달라져서, 안 넣으면 고정되는 순간 칸 너비만 뚝 끊겨 보인다 */
-    body:not(.v-a1) .bnav-tabs{transition:left .4s var(--ease),transform .4s var(--ease),
-      width .4s var(--ease)}
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs{left:calc(3 * var(--bx));
-      width:calc(8 * var(--bx) - var(--gcg));
-      display:grid;grid-template-columns:repeat(var(--tabs),1fr);column-gap:0;
-      justify-items:center;overflow:visible}
-    /* 히어로 상태와 같은 "칸 하나짜리 타일" 방식(위 히어로 블록 주석 참고).
-       ⚠ 4 는 소분류 개수다 */
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs::after{content:"";position:absolute;
-      left:0;right:0;top:12px;bottom:4px;pointer-events:none;
-      background-image:linear-gradient(to right,
-        transparent 0 calc(100% - 1px),var(--border-g) calc(100% - 1px) 100%);
-      background-size:calc(100% / var(--tabs)) 100%;background-repeat:repeat-x}
-
-    /* 페이지네이션(소분류 네모 4개)은 걷어낸다 — 지금 어느 소분류인지는 탭 자체가
-       색과 굵기로, 그 안 어디인지는 왼쪽 인덱스가 말하고 있어 셋째 표시가 겹친다.
-       (12열은 이제 비워 둔다 — 본문은 원래 11열까지만 쓴다)
-       두 시안 공통이다 — A-1 의 하단 알약에는 네모가 설 자리 자체가 없다 */
-    .bnav-pager{display:none}
-
-    /* 소분류 탭 글자 16 → 18px (2026-08-10). 기본값(business-layout.css 16px)을
-       sticky 에서만 덮는다 — 히어로 상태는 이 페이지가 따로 20px 로 쓰고 있다 */
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a{font-size:18px}
-
-    /* ② 본문 자리 — 2열 시작에서 11열 끝까지, 10칸 − 거터 하나.
-       (1728px 에서 215 ~ 1513, 폭 1298)
-       grid-template-rows 를 한 줄로 되돌리는 게 중요하다 — 위 v3.1 골격이
-       [row1 인덱스 / row2 트랙] 2행이라 그대로 두면 두 열이 서로 다른 행에 앉는다 */
-    .wrap{width:calc(10 * var(--gx) - var(--gcg));
-      margin-left:calc(var(--gm) + var(--gx))}
-    /* 상단 여백은 위 ② 블록 값(고정 탭 바 밑변 128 + 가로 구분선까지 12 = 140)을
-       그대로 쓴다 — 섹션이 제자리에 서면(sec.top = 0) 본문 첫 글자가 그 구분선에
-       딱 붙는다. 한때 여기에 40px 을 더 얹었다가 되돌린 자리다: 그만큼 본문이
-       내려가니 sticky 로 넘어온 직후 "한 번 더 굴려야 본문이 시작되는" 느낌이 났다 */
-    /* --card-peek:0 — 카드 상자가 있을 땐 다음 카드를 80px 남겨 "더 있다"를 알렸는데,
-       상자를 걷은 뒤로는 그 조각이 다음 카드의 큰 제목만 잘려 보여 본문이 두 번
-       시작하는 것처럼 읽힌다. 0 으로 두면 카드가 트랙 높이를 꽉 채워 다음 카드는
-       화면 밖에 선다 — "더 있다"는 왼쪽 인덱스 목록이 이미 말해 준다.
-       미리보기가 없어졌으니 그 조각을 흐리게 덮던 하단 페이드(.hsec::after)도 끈다 */
-    /* 레일 2열 | 거터 | 트랙 8열. 여기서 100% 는 .wrap 폭(10칸 − 거터)이라 위
-       --gx 를 그대로 쓸 수 없다 — 레일 = (.wrap − 거터 9개) ÷ 5 + 거터 로 푼다.
-       나머지(트랙)는 1fr 이 알아서 가져간다 */
-    .hsec{
-      grid-template-columns:calc((100% - 9 * var(--gcg)) / 5 + var(--gcg)) minmax(0,1fr);
-      grid-template-rows:minmax(0,1fr);column-gap:var(--gcg);--card-peek:0px}
-    .hsec::after{display:none}
-    .hrail{grid-column:1;grid-row:1;display:flex;padding-top:40px}
-    .htrack{grid-column:2;grid-row:1}
-
-    /* ③ 인덱스 — 파란 가로 바를 걷고 왼쪽 열의 세로 목록으로. 글머리 점을 달아
-       "이 소분류에 담긴 것들"의 목록으로 읽히게 하고, 점은 항목 상태를 따라 같이
-       진해진다(활성 --g900 / 비활성 --teritary).
-       글자는 고정 탭 바의 소분류 탭(.bnav-tabs a)과 완전히 같은 값으로 맞춘다 —
-       SUIT 500 / 18px / line-height 1.15 / letter-spacing -.32px, 비활성 --teritary,
-       호버 --sec, 활성 700 + --brand(파랑). 위(탭)와 옆(인덱스)이 같은 종류의
-       내비게이션이라 두 곳의 글자가 서로 다르면 위계가 흔들린다.
-       (2026-08-10 요청으로 둘 다 16 → 18px. 히어로 상태 탭 20px 은 그대로 둔다)
-       글머리는 원이 아니라 대쉬(–). 그림(네모/원)이 아니라 글자로 찍는 이유 —
-       옆 항목과 같은 서체·크기·행간·패딩을 주면 첫 줄 baseline 에 저절로 맞아서,
-       항목이 두 줄로 접히든 글자 크기가 바뀌든 위치를 다시 계산할 일이 없다 */
-    .hidx{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
-    .hidx li{display:flex;align-items:flex-start;gap:12px;padding-left:0}
-    .hidx li::before{content:"–";flex:none;padding:9px 0;
-      font-family:var(--suit);font-weight:500;font-size:18px;line-height:1.15;
-      letter-spacing:-.32px;color:var(--teritary);transition:color .22s var(--ease)}
-    .hidx li:has(button[aria-current])::before{color:var(--brand)}
-    .hidx button{padding:9px 0;font-weight:500;font-size:18px;
-      line-height:1.15;letter-spacing:-.32px;color:var(--teritary)}
-    .hidx button:hover{color:var(--sec)}
-    .hidx button[aria-current]{font-weight:700;color:var(--brand)}
-
-    /* ④ 카드 상자를 걷어 "섹션"으로 — 흰 배경·테두리를 지우고, 테두리에서 글을
-       띄우려던 .hleft 의 왼쪽 마진 48 + 안쪽 여백 48 도 같이 지운다. 글 첫 글자가
-       4열 선에 정확히 선다. 오른쪽 48px 만 남긴다(우측 비주얼 열과의 숨).
-       [상:본문/하:비주얼] 카드들은 위 개별 규칙이 좌우 48px 을 따로 주고 있어
-       (특정도가 더 높다) 여기서 다시 0 으로 되돌린다.
-
-       위쪽 40px 은 "제목 위 숨" — 상자를 걷으면서 제목이 앞의 것(첫 카드는 고정
-       탭 바 밑 구분선, 둘째부터는 앞 카드의 비주얼)에 바싹 붙었다. 카드마다 같은
-       값을 줘야 카드끼리도 같은 간격으로 떨어진다. 레일(.hrail)에도 같은 40px 을
-       줘서 인덱스 첫 줄이 첫 카드 제목과 한 줄에 선다 */
-    /* 제목 ~ 본문 사이를 16 → 20px (2026-08-11 요청). 이 값 하나가 .hcard>.hleft
-       의 flex gap 이라 카드마다 제목 밑 첫 줄글이 같이 내려간다.
-       토큰으로 두는 이유 — PLC·MES 카드만은 제목이 .hleft, 본문(판)이 .hright 라
-       flex gap 이 닿지 않아 .hleft 의 padding-bottom 으로 같은 간격을 만든다(⑧).
-       두 곳이 같은 토큰을 보고 있어야 한쪽만 어긋나지 않는다 */
-    body{--stack-gap:20px}
-    .hcard{background:none;border:0}
-    .hcard>.hleft{margin-left:0;padding:40px 48px 0 0}
-    .hcard[data-tab="해외 거점"]>.hleft,
-    .hcard[data-tab^="PLC"]>.hleft,
-    .hcard[data-tab^="MES"]>.hleft,
-    .hcard[data-tab*="프로세스 맵"]>.hleft{padding:40px 0 24px}
-
-    /* ⑤ 바탕색 — 비주얼 칸(.hright)에 깔려 있던 회색(--secondary-bg, #f4f6f8)을
-       걷고 그 색을 페이지 바탕으로 올린다. ④ 에서 카드 상자를 이미 걷어낸 뒤라
-       "흰 종이 위 회색 판"이라는 대비가 할 일이 없어졌다 — 바탕이 회색이면
-       사진·구성도가 판 없이도 제자리에 앉고, 흰 것(.hgal span / .hgrid2 .ico)만
-       바탕 위로 떠오른다.
-       (여기서 흰 면으로 남겨 뒀던 .pict 와 .descitem 은 그 뒤 ⑥·⑧ 에서 각각
-        선만 남기고 배경을 걷었다)
-       회색 판 안에서 아이콘 타일로 쓰이던 --secondary-bg(.pict .ic, .descitem .ic)는
-       그대로 둔다 — 그 둘은 흰 상자 안에 있어 바탕색과 겹치지 않는다.
-
-       소분류 탭 패널(.bnav-wrap::after)과 그 왼쪽 S커브(--tab-curve)는 요청대로
-       흰색 그대로 둔다 — 회색 바탕 위에 흰 탭 하나가 얹힌 모양이 되고, 고정
-       상태에서 어두운 바 밑에 흰 띠가 서는 모습과도 같아진다.
-       히어로 밑단 띠(.dhero::before, 탭 바를 60px 끌어올려 생긴 60px 자리)는
-       위 12px 만 흰색이고 그 아래는 회색이다 — 경계가 곧 소분류 탭의 가로선
-       (.bnav-rule)이다. 실측 좌표(뷰포트 1920×1000 기준):
-         흰 패널(.bnav-wrap::after)  780 ~ 845
-         밑단 띠(.dhero::before)     845 ~ 905  ← 이 띠의 845~857 만 흰색
-         가로선(.bnav-rule)          856 ~ 857  = 패널 밑변에서 12px 아래
-       "탭은 흰색, 그 라인 아래는 회색"이 되려면 흰 면이 패널 밑변이 아니라
-       가로선까지 내려와야 한다. 띠를 통째로 회색으로 두면 선 위 12px 이 회색이
-       되어 탭 밑에 회색이 물린 것처럼 보이고, 통째로 흰색이면 본문 시작 전에
-       흰 띠가 60px 남는다. 그래서 두 칸짜리 그라디언트 한 장으로 나눈다 —
-       패널·커브의 높이(65px)와 가로선 위치(bottom:-12px)를 건드리지 않아도 된다 */
-    body{background:var(--secondary-bg)}
-    .dhero::before{background:linear-gradient(to bottom,
-      #fff 0 12px,var(--secondary-bg) 12px 100%)}
-
-    /* 본문(.hleft)과 비주얼(.hright) 사이 구분선을 없앤다. 좌|우 카드는 세로선
-       (.hright 의 border-left), 상|하 카드는 가로선(border-top)이 그 역할이었다.
-       회색 판이 사라지기 전에는 [흰 글 면 | 회색 그림 면]의 경계에 선이 얹혀
-       면을 갈랐지만, 두 면이 같은 바탕색이 된 지금은 선 하나만 덩그러니 남는다 */
-    .hcard>.hright{background:none;border-left:0}
-    .hcard[data-tab="해외 거점"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{border-top:0}
-
-    /* ⑥ 픽토그램 판(.pict) — 2열 2행 흰 판에서 1열 4행 목록으로.
-       판(흰 배경 + 테두리)을 걷고 행 사이에만 가로선을 긋는다. ④·⑤ 와 같은
-       방향이다 — 면이 아니라 선으로 나눈다.
-
-       음수 마진(왼쪽 -60 / 오른쪽 -48 / 아래 -49)도 전부 되돌린다. 저 값들은
-       카드 상자 시절 "판을 카드 테두리 자리까지 물리는" 값이라, 상자가 없어진
-       지금은 판이 글줄 시작선(4열)보다 왼쪽으로 삐져나오고 아래로는 카드 밖으로
-       49px 넘쳐 잘렸다. 0 으로 두면 판 폭이 곧 본문 글 폭이다.
-
-       아이콘 뒤 회색 타일(--secondary-bg)도 없앤다 — ⑤ 에서 바탕이 그 색이 된
-       뒤로 타일이 바탕에 묻혀 보이지 않는다. 아이콘 글리프만 브랜드 색으로 남는다.
-
-       ⚠ 되돌리는 건 좌·우·아래 셋뿐이다. margin-top 은 auto 로 남겨야 한다 —
-       위 .hleft>.pict{margin-top:auto} 가 판을 열 바닥에 붙여 주는 값이라,
-       margin:0 으로 한 번에 지웠더니 판이 줄글 바로 밑으로 딸려 올라와 아래 ⑦ 의
-       "마지막 행 밑선 = 카드 밑변" 전제가 깨졌다 */
-    .hcard .hleft .pict{grid-template-columns:minmax(0,1fr);
-      margin:auto 0 0;background:none;border:0;border-bottom:1px solid var(--border-g)}
-    .hcard .hleft .pict li{padding:18px 0;
-      border-top:1px solid var(--border-g)}
-    /* 2열 시절의 세로 칸막이(홀수 칸 border-right)와 2행 윗선(box-shadow)을 끈다 */
-    .hcard .hleft .pict li:nth-child(odd){border-right:0;padding-left:0}
-    .hcard .hleft .pict li:nth-child(n+3){box-shadow:none}
-    /* 타일이 없어졌으니 상자도 글리프 크기로 줄인다 — 48px 상자 안에 26px 글리프는
-       타일이 있을 때의 여백이라, 타일을 걷으면 아이콘이 혼자 안쪽으로 11px 들어가
-       왼쪽 세로줄(제목·줄글·행 시작선)에서 어긋나 보인다 */
-    .hcard .hleft .pict .ic{width:32px;height:32px;
-      background:none;border-radius:0}
-    .hcard .hleft .pict .ic svg{width:100%;height:100%}
-
-    /* ⑦ 비주얼 칸 — 제목 윗선에서 시작해 마지막 행 밑선까지.
-       위: 제목 위 숨(40px, ④)과 같은 값을 얹으면 이미지 윗변이 제목 윗변에 선다.
-       아래: 판의 아래 음수 마진을 0 으로 되돌린 덕에 마지막 행 밑선 = .hleft
-             밑변 = 카드 밑변이라, 따로 맞출 것 없이 저절로 같은 선에 선다.
-       테두리 1px 로 이미지 영역을 하나의 면으로 묶는다 — ⑤ 에서 회색 판을 걷어
-       이미지가 바탕 위에 그냥 놓이게 된 자리를 선으로 대신 잡아 준다.
-       ⚠ 이 페이지에서 좌|우 2열 카드는 .pict 를 가진 카드와 정확히 같은 집합이다
-         (나머지는 전부 상|하 카드). 그래서 :has(.pict) 하나로 건다 */
-    .hcard:has(.pict)>.hright{margin-top:40px;
-      border:1px solid var(--border-g)}
-
-    /* 비주얼 칸 모서리를 4px 굴린다 (2026-08-11 요청) — A-1 하단 탭 바(⑪)에
-       넣은 값과 같다. 본문에서 각진 채로 남는 것은 선으로만 짜인 것들
-       (픽토그램 행 · PLC/MES 판 · 공정 순서 칩)이고, "그림이 놓이는 면"은
-       전부 이 값을 쓴다.
-       두 가지 경우를 따로 건다 —
-         · 테두리로 묶인 판(위 :has(.pict) 카드) : 판에 반경을 준다. .hright 는
-           overflow:hidden 이라(위 .hcard>.hright) 안의 사진이 저절로 함께 오려진다.
-         · 판 없이 바탕에 바로 놓이는 그림(상|하 카드의 구성도·지도) : 오려낼
-           테두리가 없으므로 그림 자신에게 준다. 판이 있는 카드의 사진에까지
-           같이 걸면 판 반경(안쪽 실효 3px)과 어긋나 모서리에 흰 실선이 비쳐서,
-           :not(:has(.pict)) 로 갈라 둔다 */
-    .hcard>.hright{border-radius:4px}
-    .hcard:not(:has(.pict))>.hright img{border-radius:4px}
-
-    /* ── 임시 이미지 영역 (2026-08-14 요청) ──────────────────────────────
-       공정 프로세스 맵 카드의 그림이 아직 확정 전 시안 캡처다. 상|하 카드라
-       ⑦ 의 테두리(:has(.pict) = 좌|우 카드)가 걸리지 않아 그림이 바탕 위에 그냥
-       놓여 있었는데, "여기까지가 손볼 자리"가 눈에 잡히도록 같은 1px 선으로
-       영역을 묶고 "*수정예정" 표시를 붙인다.
-       선은 다른 카드의 이미지 판과 같은 solid --border-g 다 — 점선(자리표시 관례,
-       .hph)이 아닌 이유는 이 칸이 빈 자리가 아니라 실제 그림이 든 칸이고,
-       "임시"라는 말은 아래 글자가 이미 하고 있기 때문이다.
-       ⚠ 위 "본문/비주얼 구분선 없애기"가 이 카드의 border-top 을 0 으로 두었다 —
-         특정도가 같으므로 이 규칙은 반드시 그보다 뒤에 있어야 윗변이 살아난다.
-         살아난 윗변은 이제 '두 면을 가르는 금'이 아니라 '상자의 윗변'으로 읽힌다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright{border:1px solid var(--border-g)}
-    /* 그림이 화면 끝까지 번지는 동안(is-pmap-bled, 아래 스크립트가 토글)은 이 선이
-       "임시 영역"이 아니라 화면 밖으로 빠져나간 그림 밑에 남은 상자 테두리처럼
-       보인다(2026-08-21 지적) — 두께는 그대로 두고 색만 지운다. border:0 으로
-       걷으면 테두리 두께만큼 패딩 상자가 흔들리므로 border-color 만 바꾼다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright.is-pmap-bled{border-color:transparent}
-
-    /* ⑧ PLC·MES 그리드 — 칸 사이 간격을 없애 네 칸을 한 판으로 묶고, 좌우 여백도
-       걷어 판의 좌우 끝이 제목 줄(4열)과 소분류 탭 오른쪽 끝(11열)에 맞게 한다.
-
-       gap 을 0 으로 두는 것만으로는 안 된다 — 이웃한 두 칸의 테두리가 맞닿아
-       그 자리만 2px 로 굵어진다. 칸에는 위·왼쪽 테두리만 주고, 판의 오른쪽·아래
-       테두리는 컨테이너(.descgrid)가 맡는다. 안쪽 선은 한 번씩만 그어지고 바깥
-       둘레도 닫힌다.
-       공용 리셋이 box-sizing:border-box 라 컨테이너의 1px 테두리는 width:100%
-       '안쪽'에 그려진다 — 판의 바깥 변이 정확히 4열·11열 선 위에 선다.
-       제목과 판 사이는 다른 카드의 "제목 ~ 첫 줄글" 간격과 같은 값(--stack-gap
-       16px, .hcard>.hleft 의 flex gap)으로 맞춘다. 종전에는 96px 이 벌어져
-       있었다 — .hleft 의 아래 여백 24 + 판을 바닥에 붙이던 align-items:flex-end
-       가 만든 빈 공간(약 72)이 겹친 값이다.
-
-       아래는 카드 밑변까지 판을 늘린다(align-items:stretch, 아래 여백 0) —
-       판 높이를 auto 로 두면 위 간격을 16px 로 당긴 만큼이 고스란히 아래
-       빈자리로 몰려 밑단이 휑해 보인다. 이 레이아웃의 다른 카드도 비주얼이
-       전부 카드 밑변까지 내려오므로(픽토그램 판·이미지) 같은 선에 맞춘다.
-       남아 있던 아래 여백 48px 은 카드 상자 시절 테두리에서 띄우려던 값이라,
-       앞서 걷어낸 좌우 48px·픽토그램 음수 마진과 같은 자리에서 같이 없앤다 */
-    .hcard[data-tab^="PLC"]>.hleft,
-    .hcard[data-tab^="MES"]>.hleft{padding-bottom:var(--stack-gap)}
-    .hcard[data-tab^="PLC"]>.hright,
-    .hcard[data-tab^="MES"]>.hright{align-items:stretch;padding:0}
-    .descgrid{gap:0;
-      border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-    /* 흰 배경도 뺀다 — 판이 카드 폭·높이를 꽉 채우게 된 뒤로는 흰 면이 "떠 있는
-       상자"가 아니라 본문 절반을 덮는 큰 색면이 되어 버린다. ⑤·⑥ 과 같은
-       방향으로 면 대신 선만 남긴다.
-       아이콘 뒤 회색 타일(--secondary-bg)도 함께 없앤다(⑥ 의 픽토그램과 같은
-       이유 — 바탕이 그 색이라 묻힌다). 88px 타일 안 48px 글리프였으므로 상자를
-       글리프 크기(48px)로 줄여야 아이콘 왼쪽이 제목·줄글 시작선에 맞는다 */
-    /* 칸 안 내용은 세로 가운데로 — 판이 카드 밑변까지 늘어나면서(⑦) 칸 높이가
-       내용보다 훨씬 커졌는데, 내용이 위에 붙어 있으니 아래로만 빈자리가 몰렸다.
-       .descitem 은 세로 flex 라 justify-content 가 곧 세로 정렬이다.
-       ⚠ 같은 행의 두 칸은 줄글 줄 수가 같아야 아이콘 줄이 서로 맞는다. 지금은
-         네 칸 모두 두 줄이라 맞지만, 한 칸만 세 줄이 되면 그 행의 아이콘이
-         반 줄쯤 어긋난다 — 그때는 위 정렬(flex-start)로 되돌리는 편이 낫다 */
-    .descitem{border:0;
-      border-top:1px solid var(--line);border-left:1px solid var(--line);
-      background:none;justify-content:center}
-    .descitem .ic{width:48px;height:48px;
-      background:none;border-radius:0}
-  }
-
-  /* ⑨ 선 색 — 밝은 바닥 위에 그어지는 1px 선을 전부 이 값 하나로 모은다.
-     기본값(--border-g #e4e8ed)은 흰 종이 위를 기준으로 잡힌 값이라, ⑤ 에서 바탕이
-     회색(#f4f6f8)이 된 뒤로는 거의 묻혀 보이지 않았다. --teritary(#96a3b3) 쪽으로
-     2할쯤 옮겨 한 단 진하게 잡는다(3할이 #cbd2da — 더 진하게 하려면 그쪽).
-
-     --border-g 하나만 덮으면 소분류 탭 4등분 세로선 · 그 밑 가로선(.bnav-rule) ·
-     픽토그램 행 구분선 · 이미지 테두리 · PLC/MES 칸 테두리 · 자리표시 격자가
-     한꺼번에 따라온다. 딱 하나 어긋나 있던 게 공정 순서 칩(.fsteps li)으로,
-     저기만 파란 기가 도는 --point-200(#c9d9ee)을 쓰고 있었다 — 같은 값으로 맞춘다.
-     ⚠ --point-200 자체는 건드리지 않는다. 선 색이 아니라 ::selection 과 인덱스
-       뱃지 호버에도 쓰는 파란 톤이라, 덮으면 그쪽이 회색이 된다.
-     ⚠ 어두운 바닥 위 흰 반투명 선(푸터 · 전체메뉴 오버레이)은 별개다 — 그대로 둔다.
-     단계 사이 ▶ 커넥터(#c2cad4)도 선이 아니라 방향 표시라 그대로 둔다 */
-  body{--line:#d4dae1;--border-g:var(--line)}
-  .fsteps li{border-color:var(--line)}
-
-  /* ⑩ 좁은 화면 글자 한 단 낮추기. 왼쪽 인덱스 레일은 늘 2열이라 화면과 같이
-     좁아진다 — 1728px 에서 250px 이던 것이 1280px 에서 187px, 1024px 에서
-     145px 이다. 18px 로는 "에이프로 머티리얼즈" 같은 항목이 두 줄로 접힌다.
-     ⚠ 고정 탭과 인덱스는 같은 글자여야 한다(위 ③) — 반드시 함께 내린다.
-     히어로 탭(20px)도 한 단 낮춰 둘 사이 위계를 그대로 둔다.
-     A-1 하단 알약(⑪)의 탭은 처음부터 16px 이라 여기 낄 것이 없다 — 알약은 폭이
-     내용에 맞춰 줄고 본문 열을 나눠 쓰지 않으므로 화면이 좁아져도 압박이 없다 */
-  @media(min-width:901px) and (max-width:1280px){
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a,
-    .hidx button,
-    .hidx li::before{font-size:16px}
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a{font-size:18px}
-  }
-  /* ══ 히어로 밑 판 (.hintro-bg) — 2026-08-25 요청 ══════════════════════════
-     에너지 솔루션 히어로와 같은 관계를 이 페이지에도 준다. 거기서는 소분류 도입
-     줄글(.hintro)이 깔고 앉은 판이 유리 탭 바로 밑까지 올라와 있어, 탭의 바닥
-     띠(--floor)가 그 색으로 자연스럽게 넘어간다. 이 페이지는 도입 줄글이 없으므로
-     글 없이 색만 그 자리에 놓는다.
-
-     색은 --secondary-bg 다 — 본문 바닥과 같은 값이다. 처음엔 에너지처럼 흰색을
-     썼는데, 섹션이 바 밑으로 물려 들어갈 때 판(흰색)과 본문 바닥(회색)의 경계가
-     가로줄로 남았다. 여기는 판 위에 얹을 글이 없어 색을 달리할 근거도 없다.
-     ⚠ 본문 바닥과 같은 색이라 화면에서는 판이 따로 보이지 않는다 — 히어로 밑을
-       "본문과 같은 색"으로 못박아 두는 자리 표시에 가깝다. 나중에 이 자리만
-       다른 톤으로 가고 싶으면 아래 background 한 줄만 고치면 된다.
-
-     키는 섹션 위 여백 하나다. 그 여백은 고정 탭 바가 덮으라고 비워 둔 자리라
-     (--bar-rise + --bar-h + 12px) 섹션이 화면 위에 물리면 통째로 바 뒤에 숨고,
-     히어로에 있을 때만 드러난다 — 판을 딱 그만큼만 두면 히어로에서는 유리 밑이
-     흰색으로 이어지고, 본문에 들어서면 흔적 없이 사라진다. 카드가 앉는 자리는
-     조금도 건드리지 않는다.
-     위에서 --intro-gap 만큼은 비운다 — 유리 탭 밑단과 판 사이의 숨(에너지와 같은 값).
-
-     화면 폭으로 번지는 방법은 음수 마진이다 — 화면 폭에서 판 폭을 뺀 절반.
-     격자 아이템의 퍼센트는 격자 칸 폭(=.wrap)으로 풀리고 .wrap 은 화면 정중앙에
-     있어서 좌우가 정확히 화면 변에 닿는다(섹션 구분선이 쓰는 것과 같은 식).
-     body 에 overflow-x:clip 이 걸려 있어 이 삐져나감은 스크롤을 만들지 않는다.
-     ⚠ 양끝을 흐려 없애지 않는다 — 에너지에서 해 봤더니 옅어지는 구간이 밑의
-       회색과 섞여 양끝만 얼룩진 띠로 보였다. 어디를 잘라도 같은 색이어야 한다.
-
-     z-index 를 명시하면 자리잡기(static)여도 층이 생기는데, 값이 0 이라
-     포지션드인 트랙(z-index:auto)·레일(4) 아래에 남는다 */
-  @media(min-width:901px){
-    .hintro-bg{grid-column:1 / -1;grid-row:1;align-self:start;z-index:0;
-      --intro-lift:calc(var(--bar-rise) + var(--bar-h) + 12px);
-      --intro-gap:16px;
-      margin-top:calc(var(--intro-gap) - var(--intro-lift));
-      height:calc(var(--intro-lift) - var(--intro-gap));
-      margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
-      background:var(--secondary-bg);pointer-events:none}
-  }
-  /* 좁은 화면은 바가 GNB 밑(72px)에 붙고 섹션도 세로로 풀려 이 관계가 없다 */
-  @media(max-width:900px){.hintro-bg{display:none}}
-  /* ════════════════════════════════════════
-     히어로 소분류 탭 — A-1 홈(index-a1.html) 히어로 밑단 탭과 같은 디자인
-     (2026-08-11 요청). 가져온 것은 "디자인만"이다 — 홈의 게이지(칸이 차오르는
-     틴트와 윗변 눈금선)는 가져오지 않는다.
-
-     달라지는 것 셋 —
-       ① 흰 판 → 유리 : 반투명 흰 10~50%(--floor) + 뒤 흐림(3px), 실루엣은 흰 32% 빛선으로
-       ② 중앙 정렬     : 판이 2열 시작 ~ 11열 끝. 좌우 여백이 같은 값이라
-                        (둘 다 --gm + --gx) 화면 정중앙에 선다
-       ③ 양끝 커브     : 왼쪽만 있던 커브를 오른쪽에도 — 판이 양쪽으로 닫힌다
-
-     판·커브·아래 띠를 한 요소(::after)가 함께 그린다. backdrop-filter 는 요소
-     경계에서 끊기므로 둘로 나누면 맞닿은 선에 이음매가 비친다(홈에서 겪은 문제).
-     모양은 mask 네 겹의 합집합이고, 그 위에 테두리 다섯 겹 + 채움을 얹는다.
-     고정(.is-fixed) 상태는 건드리지 않는다 — 거기는 어두운 바 + 흰 판 그대로다 */
-  @media(min-width:901px){
-    /* --bh 판 높이 / --cw 커브 폭(판 높이 × 24:40, 커브 원본 비율) / --bpad 판 아래 띠
-       --tab-x 판의 평평한 부분이 시작하는 x (= 2열 시작점, 뷰포트 기준이라 --gx) */
-    /* ⚠ 배경 레이어에서 100% 의 뜻이 두 가지다 —
-         background-size   : 100% = 상자 폭
-         background-position 의 오프셋(left <값>) : 100% = 상자 폭 − 그 레이어 폭
-       --tab-x 안에 --gx(100% 포함)가 들어 있어서, 같은 식을 크기에 쓸 때와 위치에
-       쓸 때 값이 달라진다. 실제로 커브가 판보다 약 4px 왼쪽에 놓여 이음매에 틈이
-       생겼다(1905px 폭 기준 커브 오른쪽 끝 226 vs 판 왼쪽 끝 230).
-       그래서 위치용으로 커브 폭을 더해 보정한 --tab-xp 를 따로 둔다 —
-       위치 문맥의 100% 에 --cw 를 더하면 크기 문맥의 100% 와 같아진다.
-       ⚠ --tab-xp 는 폭이 --cw 인 레이어(커브 넉 장)의 위치에만 쓴다 */
-    .bnav-wrap:not(.is-fixed){--bh:60px;--cw:calc(var(--bh) * 24 / 40);--bpad:40px;
-      --tab-x:calc(var(--gm) + var(--gx));--tab-w:calc(100% - 2 * var(--tab-x));
-      --tab-xp:calc(var(--gm) + (100% + var(--cw) - 2 * var(--gm) + var(--gcg)) / 12);
-      --edge-col:rgba(255,255,255,.32);
-      /* 유리 안쪽 칠. 판(위 60px)에 얇게 깔고, 띠(아래 40px)에서 그 위로 흰색을
-         풀어 아래 흰 본문 쪽으로 넘긴다 — 상자 키가 --bh + --bpad = 100px 이라
-         58~60% 지점이 곧 판과 띠의 경계다.
-         2026-08-25 요청으로 여섯 멈춤점을 통째로 10%p 올렸다(0~40% → 10~50%).
-         판은 아예 칠하지 않던 것을 10% 깔아, 뒤 사진이 여전히 비치되 유리 전체가
-         한 단 불투명해진다.
-         끝까지 채우지 않는 것은 그대로다 — 100% 로 가면 띠가 흰 종이가 되어
-         유리라는 성질을 잃는다.
-         멈춤점을 뒤로 몰아 세운 것도 그대로다. 고르게 풀면 띠 한가운데의 반투명
-         흰색이 뒤 사진을 뿌옇게만 만들어 회색 안개처럼 보인다 */
-      --floor:linear-gradient(180deg,
-        rgba(255,255,255,.1) 0%,
-        rgba(255,255,255,.1) 58%,
-        rgba(255,255,255,.15) 70%,
-        rgba(255,255,255,.25) 82%,
-        rgba(255,255,255,.41) 93%,
-        rgba(255,255,255,.5) 100%);
-      --floor-shape:linear-gradient(#000,#000) left 0 bottom 0/100% var(--bpad) no-repeat,
-        linear-gradient(#000,#000) center top 0/var(--tab-w) var(--bh) no-repeat,
-        var(--tab-curve) left calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
-        var(--tab-curve-r) right calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat}
-
-    /* 상자 = 화면 폭 × (판 높이 + 띠 높이). 바 밑변에서 --bpad 만큼 더 내려가
-       히어로 밑변에 딱 닿는다. 테두리는 띠 윗변 좌·우 + 판 윗변 + 커브 두 장이다 —
-       띠 윗변 선을 판 아래로는 긋지 않는다(거기는 도형 안쪽이라 유리를 가로지르는
-       금이 된다). 그래서 한쪽 구간 길이가 --tab-x − --cw 다 */
-    .bnav-wrap:not(.is-fixed)::after{left:0;right:0;bottom:calc(-1 * var(--bpad));
-      height:calc(var(--bh) + var(--bpad));
-      background:
-        linear-gradient(var(--edge-col),var(--edge-col)) left 0 top var(--bh)/calc(var(--tab-x) - var(--cw)) 1px no-repeat,
-        linear-gradient(var(--edge-col),var(--edge-col)) right 0 top var(--bh)/calc(var(--tab-x) - var(--cw)) 1px no-repeat,
-        linear-gradient(var(--edge-col),var(--edge-col)) center top 0/var(--tab-w) 1px no-repeat,
-        var(--tab-edge) left calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
-        var(--tab-edge-r) right calc(var(--tab-xp) - var(--cw)) top 0/var(--cw) var(--bh) no-repeat,
-        var(--floor);
-      -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
-      -webkit-mask:var(--floor-shape);mask:var(--floor-shape)}
-    /* 왼쪽 커브만 그리던 ::before 는 걷는다 — 이제 위 ::after 가 두 장 다 그린다 */
-    .bnav-wrap:not(.is-fixed)::before{display:none}
-    /* 판 밑 가로선도 걷는다 — 유리 띠의 윗변(--edge-col)이 그 자리를 대신한다 */
-    .bnav-wrap:not(.is-fixed) .bnav-rule{display:none}
-    /* 히어로 밑단 흰 띠도 걷는다 — 그 60px 이 이제 유리 띠다.
-       ⚠ 이 한 줄이 앞서 넣은 "탭 라인 아래는 회색" 처리를 대신한다. 유리로 가면
-         판 아래가 회색 종이가 아니라 흐린 사진이 된다 — 홈 히어로와 같은 방식이다 */
-    .dhero::before{display:none}
-
-    /* 탭 줄을 판의 평평한 부분에 맞춘다. ⚠ 여기 100% 는 .bnav 폭이라 --gx 가 아니라
-       --bx 를 쓴다(뷰포트 기준 변수를 쓰면 조용히 어긋난다) */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs{left:var(--bx);width:calc(100% - 2 * var(--bx))}
-    /* 세로 구분선 — 바닥이 흰 판이 아니라 어두운 사진이 됐으므로 회색(--border-g)
-       대신 옅은 흰 선. 위아래를 들여 판 테두리에 닿지 않게 한다(홈과 같은 14px).
-       칸 나누는 방식(타일 반복)과 칸 수는 위 규칙 값을 그대로 쓴다 */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs::after{top:16px;bottom:2px;
-      --bnav-line:rgba(255,255,255,.2);
-      background-image:linear-gradient(var(--bnav-line),var(--bnav-line)),
-        linear-gradient(var(--bnav-line),var(--bnav-line)),
-        linear-gradient(var(--bnav-line),var(--bnav-line));
-      background-size:1px 100%,1px 100%,1px 100%;
-      background-position:calc((100% + 1px) * 1 / 4) 0,
-        calc((100% + 1px) * 2 / 4) 0,
-        calc((100% + 1px) * 3 / 4) 0;
-      background-repeat:no-repeat}
-    /* 글자 — 유리 위라 흰 계열. 홈과 같은 값(600 / 흰 72%, 활성·호버는 흰색) */
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a,
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a[aria-current]{font-weight:600;
-      color:rgba(255,255,255,.72)}
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a:hover,
-    .bnav-wrap:not(.is-fixed) .bnav-tabs a[aria-current]{color:#fff}
-  }
-  /* ── 섹션 사이 구분선을 화면 폭 끝까지 (2026-08-11 요청) ────────────────────
-     원래는 .hsec 의 border-top 이라 본문 컨테이너(.wrap, 2열~11열) 폭에서
-     끊겼다. 그 선은 "여기서 소분류가 바뀐다"는 판 갈림이라 본문 폭이 아니라
-     화면 폭이 맞다.
-
-     border 를 걷고 .hsec::before 로 다시 긋는다 — 그 가상요소는 위 ② 블록에서
-     display:none 으로 꺼 둔 것이라 비어 있다(하단 페이드는 ::after 쪽이다).
-     빠져나가는 값은 calc(50% - 50vw) 다. .wrap(=이 섹션)은 2열~11열이고 11열
-     오른쪽 여백도 정확히 같은 값이라 화면 정중앙에 있으므로, 좌우로 같은 값을
-     빼면 양끝이 화면 변에 닿는다.
-     ⚠ --gm + --gx 로 쓰면 안 된다 — --gx 안의 100% 가 여기서는 뷰포트가 아니라
-       이 요소의 컨테이닝 블록(=섹션 자신, 1433px) 폭으로 풀려 값이 190px 로
-       작아진다(실측 확인). 50% 는 요소 폭의 절반이라 그 함정이 없다.
-     ⚠ 100vw 는 스크롤바를 포함해 좌우로 15px 쯤 더 나가지만, body 에
-       overflow-x:clip 이 걸려 있어 그만큼은 잘린다 — 가로 스크롤은 생기지 않는다 */
-  @media(min-width:901px){
-    .hsec{position:relative}
-    .hsec + .hsec{border-top:0}
-    .hsec + .hsec::before{display:block;content:"";position:absolute;
-      z-index:1;top:0;height:1px;pointer-events:none;background:var(--line);
-      left:calc(50% - 50vw);right:calc(50% - 50vw)}
-  }
-  /* ── sticky 활성 소분류를 밑줄로도 표시 (A, 2026-08-11 요청) ────────────────
-     색(--brand)과 굵기만으로 구분하던 것을, 세로 구분선이 이미 나눠 놓은 "칸"
-     전체가 켜지도록 바꾼다. 밑줄은 가로 구분선(.bnav-rule 의 밑테두리, y=139~140)
-     자리에 겹쳐 그린다 — 새 선이 하나 더 생기는 게 아니라 그 선의 한 구간이
-     파랗게 바뀐 것처럼 읽힌다.
-
-     칸 폭을 다 쓰려면 <a> 가 칸을 채워야 한다(지금은 justify-items:center 라
-     글자 폭만큼이다). 늘리는 대신 글자는 flex 로 가운데 두므로 보이는 결과는
-     같고, 클릭 영역만 칸 전체로 넓어진다. align-self:stretch 까지 줘야 세로도
-     탭 상자(40px)를 꽉 채워, 밑줄 기준점이 글자 크기(18/16px)에 안 흔들린다.
-
-     세로 좌표 — 바 128 안에서 탭 상자는 bottom:12 + height:40 = [76,116] 이고
-     글자 정렬용 translateY(4px) 가 걸려 [80,120] 이다. 가로 구분선은 140 이므로
-     밑줄 밑변을 120 + 20 = 140 에 맞춘다.
-     ⚠ 위 ① 블록의 bottom:12px / height:40px / translateY(4px) 중 하나라도
-       고치면 이 20px 도 같이 움직여야 한다.
-
-     막대는 칸을 꽉 채우지 않고 좌우 16px 씩 비운다 — 칸 경계의 세로 구분선과
-     떨어져 있어야 "칸이 통째로 칠해졌다"가 아니라 "밑줄"로 읽힌다.
-     윗모서리 둘은 둥글리지 않고 빗면(chamfer)으로 깎는다 — 아랫변은 가로
-     구분선에 붙어 있어야 하므로 그대로 두고 윗변만 좌우 8px 씩 좁힌 사다리꼴을
-     clip-path 로 오려낸다. 곡선이 아니라 직선 빗면이라 이 바의 다른 각진
-     요소(대분류 판 오른쪽 빗변)와 결이 맞는다.
-     ⚠ 8px 은 가로 방향 깎임이고 세로는 막대 두께(4px)다 — 두께를 바꾸면 기울기가
-       같이 변하므로 각도를 유지하려면 8px 도 함께 손봐야 한다.
-     z-index:1 — 세로 구분선(.bnav-tabs::after)은 자식들보다 뒤에 그려진다.
-     지금은 16px 을 비워 겹칠 일이 없지만, 그 값을 0 으로 줄이면 회색선이 막대
-     끝을 가로지르므로 한 겹 올려 둔다 */
-  @media(min-width:901px){
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs{justify-items:stretch}
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a{position:relative;z-index:1;
-      display:flex;align-items:center;justify-content:center;align-self:stretch}
-    /* 밑줄은 모든 칸에 깔아 두고 활성 칸만 켠다 — 켜질 땐 가운데서 좌우로 자라고
-       떠나는 칸은 옅어지며 접힌다. 칸이 바뀔 때 뚝 끊기지 않게 하는 값만 준다 */
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a::after{content:"";position:absolute;
-      left:16px;right:16px;bottom:-20px;height:4px;background:var(--brand);
-      -webkit-clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 100%,0 100%);
-      clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 100%,0 100%);
-      opacity:0;transform:scaleX(.35);
-      transition:opacity .3s var(--ease),transform .3s var(--ease)}
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a[aria-current]::after{opacity:1;
-      transform:none}
-  }
+  /* 이 페이지에는 스크롤을 가로채는 스크립트가 없다 — 공용 CSS 가 꺼 둔
+     smooth 를 여기서만 되살린다(좌측 인덱스 클릭 이동에 쓴다) */
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* ===================== 히어로 ===================== */
+  .sf-hero{position:relative;height:100svh;min-height:520px;max-height:900px;
+           background:var(--sf-ph-bg);overflow:hidden}
+  .sf-hero>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
+               object-fit:cover;object-position:50% 46%}
+  /* 하단 유리 띠 — 아래로 갈수록 어두워지는 그라디언트 + 5px 블러.
+     사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다 */
+  .sf-hero h1{position:absolute;left:0;right:0;bottom:0;margin:0;
+              display:flex;flex-direction:column;align-items:center;gap:20px;
+              padding:40px 88px;color:#fff;
+              background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.2));
+              -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  .sf-hero .ko{font-family:var(--suit);font-weight:800;font-size:24px;
+               line-height:1.2;letter-spacing:-.48px}
+  .sf-hero .en{font-family:var(--ald);font-weight:400;
+               font-size:clamp(40px,6.7vw,96px);line-height:1;
+               letter-spacing:-.0625em;text-align:center;white-space:nowrap}
+
+  /* ===================== 인트로 ===================== */
+  .sf-intro{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+            padding:56px 0}
+  .sf-lead{padding:0 96px;text-align:center;font-family:var(--suit);
+           font-size:clamp(20px,2vw,28px);line-height:1.6;letter-spacing:-.02em;
+           color:var(--sf-sec)}
+  .sf-lead .a{font-weight:700}
+  .sf-lead .b{display:block;font-weight:800;color:var(--brand)}
+  .sf-introfig{padding:24px 96px 0}
+  .sf-introfig img{width:75%;max-width:936px;height:auto;margin-inline:auto}
+  /* 소분류 4칸 띠 — 위아래 선은 화면 끝까지, 세로 선은 본문 폭 안에서만 */
+  .sf-band{margin-top:24px;padding:0 96px;
+           border-top:1px solid var(--sf-line-s);border-bottom:1px solid var(--sf-line-s)}
+  .sf-cards{list-style:none;width:100%;max-width:1248px;margin-inline:auto;
+            display:flex;gap:4px;height:126px;
+            border-left:1px solid var(--sf-line-s);border-right:1px solid var(--sf-line-s)}
+  .sf-cards li{flex:1;min-width:0;display:flex;flex-direction:column;
+               align-items:flex-start;gap:8px;padding:24px;
+               border-right:1px solid var(--sf-line-s)}
+  .sf-cards li:last-child{border-right:0}
+  .sf-cards .ic{width:44px;height:44px;flex-shrink:0;color:var(--brand)}
+  .sf-cards .ic svg{display:block;width:100%;height:100%}
+  .sf-cards p{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
+              letter-spacing:-.4px;color:var(--brand);white-space:nowrap}
+
+  /* ===================== 본문 — 인덱스 + 열한 장 ===================== */
+  .sf-main{display:flex;align-items:flex-start;gap:52px;padding-left:24px}
+
+  /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
+     sticky 요소를 100svh 로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
+     그린 와이어프레임과 같은 자리에 선다 */
+  .sf-railwrap{position:sticky;top:0;height:100svh;flex-shrink:0;width:188px;
+               display:flex;align-items:center}
+  .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
+  .sf-grp{display:flex;flex-direction:column}
+  .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
+              background:var(--sf-gray100);font-family:var(--pre);font-weight:500;
+              font-size:12px;line-height:1.4;letter-spacing:-.24px;color:var(--sf-ter);
+              white-space:nowrap}
+  .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
+             border-bottom:1px solid var(--sf-line);font-family:var(--suit);
+             font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;
+             color:var(--sf-ter);white-space:nowrap;
+             transition:background .3s var(--ease),color .3s var(--ease)}
+  .sf-rail a:hover{color:var(--brand)}
+  .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
+
+  .sf-secs{flex:1;min-width:0}
+  .sf-sec{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+          padding:112px 0}
+  .sf-row{display:flex;align-items:stretch;gap:8px;
+          min-height:min(535px,calc(100svh - 224px))}
+
+  /* 그림 열 — 폭 550 고정, 남는 세로를 자리표시자가 다 먹는다 */
+  .sf-fig{width:550px;flex-shrink:0;display:flex;flex-direction:column;gap:24px}
+  .sf-ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
+  .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
+              color:var(--sf-ph-tx)}
+
+  /* 눈금 줄 — 그림 열은 [태그][가는 선][짧은 세로 눈금], 글 열은 [눈금][가는 선].
+     오른쪽 선은 화면 오른쪽 끝까지 나간다(.sf-main 에 오른쪽 여백이 없다) */
+  .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center}
+  .sf-line i{display:block}
+  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--sf-line-s)}
+  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--sf-ter)}
+  .sf-tag{height:16px;flex-shrink:0;display:inline-flex;align-items:center;
+          justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
+          font-family:var(--ald);font-size:11px;line-height:1;letter-spacing:1px}
+
+  /* 글 열 */
+  .sf-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+  .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+            padding-left:52px;padding-right:120px}
+  /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
+  .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
+  .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,38px);
+               line-height:1.2;letter-spacing:-.04em;color:var(--sf-txt)}
+  .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:20px;
+                line-height:1.2;letter-spacing:-.4px;color:var(--sf-sec)}
+  .sf-body p{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;
+             letter-spacing:-.28px;color:var(--sf-sec)}
+  .sf-body p+p{margin-top:8px}
+
+  /* 번호 목록 (01-1 공정 프로세스 맵) */
+  .sf-num,.sf-dl{list-style:none;width:430px;max-width:100%;
+                 border-top:2px solid var(--sf-line-s)}
+  .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
+             border-bottom:1px solid var(--sf-line)}
+  .sf-num b{width:18px;flex-shrink:0;font-family:var(--cal);font-weight:400;
+            font-size:12px;line-height:1;color:var(--brand)}
+  .sf-num span{font-family:var(--suit);font-weight:500;font-size:14px;line-height:1.35;
+               letter-spacing:-.28px;color:var(--sf-sec)}
+
+  /* 점 목록 (03-1 PLC · 03-2 충방전 공정 관리시스템) */
+  .sf-dl li{display:flex;flex-direction:column;gap:8px;padding:8px;
+            border-bottom:1px solid var(--sf-line)}
+  .sf-dl .k{display:flex;align-items:center;gap:4px;font-family:var(--suit);
+            font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;
+            color:var(--sf-txt)}
+  .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--brand)}
+  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.6;
+            letter-spacing:-.28px;color:var(--sf-sec)}
+
+  /* ── 진입 모션 — 들어올 때 한 번, 아주 얕게 ──────────────────────────
+     그림과 글이 6px 떠 있다가 앉는다. 그림이 먼저 멎고 글이 뒤따른다.
+     .js 가 붙어 있을 때만 숨긴다 — 스크립트가 죽으면 아무것도 안 보이는 페이지가
+     되므로, 숨기는 쪽에 스위치를 건다(<head> 첫 줄에서 붙인다) */
+  .js .sf-rv{opacity:0;transform:translateY(6px);
+             transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .js .sf-rv+.sf-rv{transition-delay:.09s}
+  .js .is-in .sf-rv{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){
-    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a::after{transition:none}
+    .js .sf-rv{opacity:1;transform:none;transition:none}
   }
 
-
-  /* ══════════════════════════════════════════════════════════════════════
-     낮은 화면 — 세로 값을 한 단 줄인다 (2026-08-11)
-
-     이 레이아웃은 섹션 하나 = 화면 한 판이고 카드는 overflow:hidden 이라, 세로가
-     모자라면 스크롤바도 없이 그냥 잘린다. 1366×768 노트북(실제 뷰포트 768)에서
-     실측해 보니 스마트 제조 첫 카드의 비주얼 칸이 필요 418px / 가능 251px 로
-     40%가 잘려 있었다(그때 실측은 하단 알약을 쓰던 A-1 기준이고, A 는 271px 로
-     조금 나았을 뿐 같은 문제였다).
-
-     820px 을 경계로 잡은 이유 — 1000px 창의 실제 뷰포트가 908px 이고 거기서는
-     남는 여유가 있었다. 768 과 908 사이에서 끊으면 두 흔한 노트북 해상도가
-     각각 다른 쪽에 들어간다.
-
-     (A-1 시절에는 여기서 하단 알약도 한 치수 줄였다 — 그 갈래를 걷으면서 함께 뺐다) */
-  @media(min-width:901px) and (max-height:820px){
-    body{--stack-gap:14px}
-    .hrail{padding-top:24px}
-    .hcard>.hleft{padding-top:24px}
-    .hcard:has(.pict)>.hright{margin-top:24px}
-    .hsec{padding-bottom:12px}
-
-    /* 공정 프로세스 맵 — 구성도(3096×651)가 폭에 맞춰 높이를 정하므로 남는 세로가
-       모자라면 통째로 잘렸다. flex:none 을 풀고 min-height:0 을 줘 남는 높이만큼만
-       차지하게 한다. object-fit:contain(.is-plate) 이라 줄어들어도 잘리지 않는다 —
-       작아질지언정 순서·구역이 다 보이는 편이 낫다 */
-    /* 위 여백은 기본 규칙과 같은 5px — 종전에는 24px 이라 낮은 화면에서만
-       본문·탭 간격이 25px 로 벌어졌다. 아래 24px 은 세로를 아끼려고 줄여 둔
-       값이라 그대로 둔다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright{padding:5px 0 24px;gap:10px}
-    .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
-    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-tab{padding:6px 6px 6px 8px}
-    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:2px}
-    .hcard[data-tab*="프로세스 맵"]>.hleft,
-    .hcard[data-tab="해외 거점"]>.hleft,
-    .hcard[data-tab^="PLC"]>.hleft,
-    .hcard[data-tab^="MES"]>.hleft{padding:24px 0 12px}
+  /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
+  @media(max-width:1400px){
+    .sf-fig{width:clamp(320px,40vw,550px)}
+    .sf-txtin{padding-right:clamp(24px,6vw,120px)}
+    .sf-lead,.sf-introfig,.sf-band{padding-left:clamp(24px,6.7vw,96px);
+                                   padding-right:clamp(24px,6.7vw,96px)}
+    .sf-hero h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
+  }
+  @media(max-width:1180px){
+    .sf-main{gap:32px}
+    .sf-railwrap{width:172px}
+    .sf-cards li{padding:20px 16px}
+    .sf-cards p{font-size:17px}
+    .sf-introfig img{width:88%}
+  }
+  @media(max-width:900px){
+    /* 인덱스를 왼쪽 기둥에서 화면 위 가로 띠로 옮긴다 — 열한 칸을 세로로 세워 둘
+       자리가 없다. 활성 칸은 파란 판 대신 밑줄로 표시한다 */
+    .sf-main{display:block;padding-left:0}
+    .sf-railwrap{position:sticky;top:0;z-index:20;width:100%;height:auto;display:block;
+                 background:rgba(255,255,255,.94);
+                 -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+                 border-bottom:1px solid var(--sf-line)}
+    .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 16px;
+             scrollbar-width:none;-ms-overflow-style:none}
+    .sf-rail::-webkit-scrollbar{display:none}
+    .sf-grp{flex-direction:row;flex-shrink:0}
+    .sf-grp>.hd{display:none}
+    .sf-rail a{border-bottom:0;padding:14px 12px;font-size:13px}
+    .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
+                                    box-shadow:inset 0 -2px 0 var(--brand)}
+    .sf-sec{min-height:0;padding:56px 16px;scroll-margin-top:50px}
+    .sf-row{flex-direction:column;gap:24px;min-height:0}
+    .sf-fig{width:100%}
+    .sf-ph{aspect-ratio:550/420}
+    .sf-txtin{padding:0}
+    .sf-num,.sf-dl{width:100%}
+    .sf-hero{height:76svh;min-height:420px}
+    .sf-hero h1{gap:12px;padding-top:28px;padding-bottom:28px}
+    .sf-hero .ko{font-size:18px}
+    .sf-hero .en{white-space:normal}
+    .sf-intro{min-height:0;padding:72px 0}
+    .sf-lead{font-size:18px}
+    .sf-band{padding-left:16px;padding-right:16px}
+    .sf-cards{height:auto;flex-wrap:wrap;gap:0}
+    .sf-cards li{flex:1 1 50%;min-width:0;padding:16px;
+                 border-bottom:1px solid var(--sf-line-s)}
+    .sf-cards li:nth-child(2n){border-right:0}
+    .sf-cards li:nth-last-child(-n+2){border-bottom:0}
+    .sf-cards .ic{width:34px;height:34px}
+    .sf-cards p{font-size:15px;white-space:normal}
   }
 </style>
-<!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
-     큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
-<script>if('IntersectionObserver' in window)document.documentElement.setAttribute('data-reveal','')</script>
 </head>
 <body>
 
-<!-- ===================== GNB ===================== -->
-<div class="gnb-group">
-  <nav class="gnb">
-    <a class="logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
-    <div class="menus">
-      <a href="business-a1.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance-a1.html" data-i="2">투자정보</a><a href="esg-environment-a1.html" data-i="3">지속가능경영</a><a href="community-notice-a1.html" data-i="4">커뮤니티</a>
-    </div>
-    <div class="tools">
-      <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
-      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
-    </div>
-  </nav>
-  <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
-    <div class="m-col" data-i="0"><a href="business-smart-a1.html" aria-current="page">스마트 제조</a><a href="business-energy-a1.html">에너지 솔루션</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
-    <div class="m-col" data-i="2"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
-    <div class="m-col" data-i="3"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
-    <div class="m-col" data-i="4"><a href="community-notice-a1.html">공지사항</a><a href="community-press-a1.html">보도자료</a></div>
-  </div><span class="m-globe"></span></div></div>
-  <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
-</div>
-
 <!-- ===================== HERO ===================== -->
-<section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 46%"><img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" /></span>
-  <div class="in">
-    <h1>스마트 제조</h1>
-    <p class="dhero-lead">이차전지 활성화 공정의 9가지 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.</p>
+<section class="sf-hero">
+  <img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" />
+  <h1><span class="ko">스마트제조</span><span class="en">Smart Factory</span></h1>
+</section>
+
+<!-- ===================== INTRO ===================== -->
+<section class="sf-intro" aria-label="스마트 제조 개요">
+  <p class="sf-lead">
+    <span class="a">이차전지 활성화 공정의 9가지 설비를 자체 기술로 만듭니다.</span>
+    <span class="b">셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.</span>
+  </p>
+  <div class="sf-introfig">
+    <img src="../assets/formation-line-equipment.png"
+         alt="이차전지 활성화 공정 설비 라인 — 충방전기 여섯 대와 상부 갠트리, 하부 반송 컨베이어" />
+  </div>
+  <div class="sf-band">
+    <ul class="sf-cards">
+      <li>
+        <span class="ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg></span>
+        <p>이차전지 활성화</p>
+      </li>
+      <li>
+        <span class="ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M10.5 16 13 18.5 17.5 13"/></svg></span>
+        <p>신뢰성 검사 장비</p>
+      </li>
+      <li>
+        <span class="ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 5h21"/><path d="M14 5v3.5"/><path d="M10 12V8.5h8V12"/><rect x="6" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M3 24h22"/></svg></span>
+        <p>자동화 시스템</p>
+      </li>
+      <li>
+        <span class="ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/><path d="M14 11.5v5"/><circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg></span>
+        <p>이차전지 소재</p>
+      </li>
+    </ul>
   </div>
 </section>
 
-<!-- ==== 소분류 탭 바 — 위치·구성은 기존과 동일 (사업명칭 + 소분류 탭) ==== -->
-<div class="bnav-wrap">
-  <nav class="bnav" aria-label="스마트 제조 소분류">
-    <p class="bnav-ttl">스마트 제조</p>
-    <div class="bnav-tabs">
-      <a href="#s1" aria-current="true">이차전지 활성화</a>
-      <a href="#s2">신뢰성 검사 장비</a>
-      <a href="#s3">자동화 시스템</a>
-      <a href="#s4">이차전지 소재</a>
-    </div>
-  </nav>
-  <span class="bnav-rule" aria-hidden="true"></span>
-</div>
+<!-- ===================== 본문 ===================== -->
+<div class="sf-main">
 
-<!-- ===================== BODY ===================== -->
-<div class="wrap">
+  <div class="sf-railwrap">
+    <nav class="sf-rail" id="sfRail" aria-label="스마트 제조 소분류">
+      <div class="sf-grp">
+        <p class="hd"><span>01</span><span>이차전지 활성화</span></p>
+        <a href="#sf01-1">공정 프로세스 맵</a>
+        <a href="#sf01-2">해외 생산거점 확보</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>02</span><span>신뢰성 검사 장비</span></p>
+        <a href="#sf02-1">신뢰성 검사 장비</a>
+        <a href="#sf02-2">MES</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>03</span><span>자동화 시스템</span></p>
+        <a href="#sf03-1">PLC</a>
+        <a href="#sf03-2">충방전 공정 관리 시스템</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>04</span><span>이차전지 소재</span></p>
+        <a href="#sf04-1">탄소 나노 튜브</a>
+        <a href="#sf04-2">LiFSI 전해염</a>
+        <a href="#sf04-3">HNBR 바인더</a>
+        <a href="#sf04-4">파우치셀 제조</a>
+        <a href="#sf04-5">차세대 기술 개발 / 파트너</a>
+      </div>
+    </nav>
+  </div>
 
-  <!-- 01 -->
-  <section class="hsec" id="s1">
-    <!-- 히어로 밑 판 — 유리 탭 바로 밑까지 본문 바닥색을 올려 탭의 바닥 띠가
-         그 색으로 넘어가게 한다(에너지 솔루션 히어로와 같은 관계). 읽을 것이
-         없는 색만의 판이다 — 받는 규칙은 위 <style> 의 .hintro-bg 묶음이고,
-         키는 섹션 위 여백만큼이라 본문에 들어서면 바 뒤로 숨는다 -->
-    <span class="hintro-bg" aria-hidden="true"></span>
-    <!-- 소분류 타이틀은 없앴다 — JS가 카드 제목으로 이 자리에 가로 인덱스(.hidx)만 채운다.
-         카드가 하나뿐인 섹션(s2)에서는 이 div가 비어 있어 CSS가 통째로 감춘다 -->
-    <div class="hrail"></div>
-    <div class="htrack">
+  <div class="sf-secs">
 
-      <article class="hcard" data-tab="공정 프로세스 맵">
-        <div class="hleft">
-          <h3>공정 프로세스 맵</h3>
-          <ul>
-            <li>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며, 활성화 공정에 필요한 9가지 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</li>
-            <li>배터리 셀 활성화 공정은 셀 제조의 마지막 단계로, 배터리의 성능과 품질을 최종적으로 결정하는 핵심 공정입니다.</li>
-            <li>에이프로는 정밀 충·방전 기술과 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 통합 자동화 솔루션을 제공합니다.</li>
-            <li>각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</li>
-          </ul>
+    <!-- 01-1 -->
+    <section class="sf-sec" id="sf01-1" aria-labelledby="sf01-1-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">01-1</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
         </div>
-        <div class="hright is-plate">
-          <!-- 시간차 자동 재생(2026-08-21 개편, 설비 호버 방식에서 변경) — 새
-               SVG(activation-process-map.svg)에 진행 라인이 추가되면서, 01~06
-               단계를 2초마다 자동으로 넘겨가며 탭·스펙·진행 라인을 함께 보여
-               준다. 탭·스펙 목록은 카드 폭 안의 평범한 문서 흐름 요소라(그림처럼
-               화면 끝까지 번질 필요가 없다) 위치 계산이 필요 없고, 내용만 이 파일
-               맨 아래 스크립트가 타이머로 갱신한다. 자동으로 바뀌는 내용이라
-               스크린리더에는 굳이 안 읽는다(요약은 위 본문 4줄이 이미 담당).
-               탭·스펙이 한 grid(.pmap-panel)를 같이 쓴다 — 스펙 목록(.pmap-spec)
-               도 탭과 같은 6열에 걸쳐 있는 grid item이라, 그 grid-column을
-               활성 탭 번호로 맞추면 스펙이 "그 탭 바로 아래"에서 시작한다
-               (2026-08-21 요청). 스펙 칸엔 min-height를 줘 단계마다 줄 수가
-               달라져도 높이가 고정되게 한다 — 안 그러면 이 블록 아래 그림이
-               스펙 길이에 따라 계속 오르락내리락한다(2026-08-21 지적) -->
-          <div class="pmap-panel" aria-hidden="true">
-            <div class="pmap-tab"><b>01</b><span>1차 충전</span></div>
-            <div class="pmap-tab"><b>02</b><span>디개싱 공정</span></div>
-            <div class="pmap-tab"><b>03</b><span>에이징 공정</span></div>
-            <div class="pmap-tab"><b>04</b><span>충·방전</span></div>
-            <div class="pmap-tab"><b>05</b><span>품질 검사</span></div>
-            <div class="pmap-tab"><b>06</b><span>불량 선별</span></div>
-            <ul class="pmap-spec"></ul>
-          </div>
-          <img src="../assets/activation-process-map.svg" width="2246" height="653" loading="lazy"
-               alt="이차전지 활성화 공정 프로세스 맵 — 1차 충전 · 디개싱 공정 · 에이징 공정 · 충·방전 · 품질 검사 · 불량 선별 6단계와 전공정 라인 구성도" />
-        </div>
-      </article>
-
-      <!-- 2026-08-14 : 임시 제목 "수정 필요"를 걷고 원래 문구를 되살린다. 끝에 붙은
-           (*수정 예정)은 아직 확정 전이라는 표시이므로 문구가 굳으면 그 괄호만 뗀다.
-           data-tab 은 제목이 아니라 "이 카드가 무엇에 대한 카드인가"로 둔다 — 왼쪽
-           인덱스에 서는 글이라 형제 카드(공정 프로세스 맵)와 길이가 비슷해야 하고,
-           <style> 의 선택자 아홉 줄이 이 값을 훅으로 쓰기 때문이다. 제목처럼 문구가
-           흔들리는 값을 훅으로 두면 한 글자 고칠 때마다 그 아홉 줄이 조용히 풀린다
-           (PLC/MES 가 약어만 남긴 것과 같은 이유) -->
-      <article class="hcard" data-tab="해외 거점">
-        <div class="hleft">
-          <h3>고객사 해외 생산기지 지원을 위한 법인 운용 및 해외 거점 확보(*수정 예정)</h3>
-          <div class="hlead">
-            <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
-            <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
-            <p>고객사의 생산기지 지원을 위해 미시간과 폴란드, 남경, 인도네시아에 현지 법인을 운용 중이며, 현지 Setup 및 Maintenance를 위한 엔지니어 50명이 상주하여 해외 거점을 확보하고 있습니다.</p>
-          </div>
-        </div>
-        <div class="hright">
-          <div class="gmap" role="img" aria-label="에이프로 해외 거점 — 캐나다 온타리오, 미시간(북미법인), 오하이오, 테네시, 조지아, 독일, 폴란드(유럽법인), 중국 남경(중국법인), 인도네시아 카라왕(인도네시아법인)">
-            <!-- 태평양 중심 지도 (2026-08-11 요청). world-map-pacific.svg 는
-                 world-map.svg 와 같은 path 를 두 벌 그려 11°W 에서 이어 붙인 것이라
-                 좌표계가 바뀌었다 — 원본은 lon −180..180, 이 파일은 lon −11..349.
-                 그래서 모든 %좌표의 x 가 −46.944 만큼 이동한다(mod 100).
-                   x_new = (x_old − 46.944) mod 100        (169° = 46.944%)
-                 y(위도)는 그대로다. 대륙이 좌→우로 [유럽·아프리카 | 아시아 |
-                 태평양 | 아메리카] 순이 되면서 라벨이 붙을 쪽도 뒤집혔다 —
-                 북미 5곳은 이제 지도 오른쪽 끝이라 라벨을 전부 왼쪽(태평양 위)
-                 한 줄(78%)에 세로로 세우고, 유럽 2곳은 왼쪽 끝이라 오른쪽으로 뺀다 -->
-            <img src="../assets/world-map-pacific.svg" alt="" aria-hidden="true" />
-            <svg class="gleads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <polyline points="81.01,28.62 71,14 65,14" />
-              <polyline points="79.99,29.56 71,22 65,22" />
-              <polyline points="80.01,31.26 71,30 65,30" />
-              <polyline points="78.95,33.98 71,42 65,42" />
-              <polyline points="79.62,35.71 71,50 65,50" />
-              <polyline points="4.99,23.40 9.50,12 13,12" />
-              <polyline points="7.79,23.27 15.00,16 21,16" />
-              <polyline points="36.06,36.92 40.00,47 42,47" />
-              <polyline points="32.87,64.41 27.50,79 25,79" />
-            </svg>
-
-            <span class="gdot" style="left:81.01%;top:28.62%"></span>
-            <span class="gdot gdot--corp" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:79.99%;top:29.56%;--pd:0s"></span>
-            <span class="gdot" style="left:80.01%;top:31.26%"></span>
-            <span class="gdot" style="left:78.95%;top:33.98%"></span>
-            <span class="gdot" data-pop="ga" tabindex="0" role="button" aria-describedby="gpop-ga" style="left:79.62%;top:35.71%"></span>
-            <span class="gdot" style="left:4.99%;top:23.40%"></span>
-            <span class="gdot gdot--corp" style="left:7.79%;top:23.27%;--pd:-.7s"></span>
-            <span class="gdot gdot--corp" style="left:36.06%;top:36.92%;--pd:-1.4s"></span>
-            <span class="gdot gdot--corp" style="left:32.87%;top:64.41%;--pd:-2.1s"></span>
-
-            <span class="glab glab--r" style="left:65%;top:14%">캐나다 온타리오</span>
-            <span class="glab glab--r" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:65%;top:22%">미시간<em>(북미법인)</em></span>
-            <span class="glab glab--r" style="left:65%;top:30%">오하이오</span>
-            <span class="glab glab--r" style="left:65%;top:42%">테네시</span>
-            <span class="glab glab--r" data-pop="ga" tabindex="0" role="button" aria-describedby="gpop-ga" style="left:65%;top:50%">조지아</span>
-            <span class="glab" style="left:13%;top:12%">독일</span>
-            <span class="glab" style="left:21%;top:16%">폴란드<em>(유럽법인)</em></span>
-            <span class="glab" style="left:42%;top:47%">중국 남경<em>(중국법인)</em></span>
-            <span class="glab glab--r" style="left:25%;top:79%">인도네시아 카라왕<em>(인도네시아법인)</em></span>
-
-            <figure class="gpop" id="gpop-mi" style="left:55%;top:27.1%;max-height:70.4%">
-              <img src="../assets/site-michigan-lges.jpg" width="353" height="235" loading="lazy"
-                   alt="LG에너지솔루션 미시간 공장 전경" />
-              <figcaption>LG에너지솔루션 미시간 공장</figcaption>
-            </figure>
-            <figure class="gpop" id="gpop-ga" style="left:55%;top:51.2%;max-height:46.3%">
-              <img src="../assets/site-georgia-hyundai.png" width="353" height="235" loading="lazy"
-                   alt="현대자동차 조지아 공장 전경" />
-              <figcaption>현대자동차 조지아 공장</figcaption>
-            </figure>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- 02 -->
-  <section class="hsec" id="s2">
-    <!-- 카드가 둘이 되어(Cell & Module / Pack) JS(buildIndex)가 인덱스를 만든다 —
-         손으로 적어 둔 한 줄짜리 목록은 지웠다(그대로 두면 목록이 두 벌이 된다) -->
-    <div class="hrail"></div>
-    <div class="htrack">
-
-      <article class="hcard hcard--tbd" data-tab="Cell">
-        <div class="hleft">
-          <h3>Cell</h3>
-          <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
-          </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
-          </ul>
-        </div>
-        <div class="hright"></div>
-      </article>
-
-      <!-- 내용 미정 — 다른 카드와 같은 [좌: 제목·줄글·키워드 | 우: 비주얼] 골격만
-           세워 둔다. 자리표시 규칙은 business-layout.css 의 .hcard--tbd 블록 참고 -->
-      <article class="hcard hcard--tbd" data-tab="Module(&amp;Pack)">
-        <div class="hleft">
-          <h3>Module(&amp;Pack)</h3>
-          <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
-          </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
-          </ul>
-        </div>
-        <div class="hright"></div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- 03 -->
-  <section class="hsec" id="s3">
-    <div class="hrail"></div>
-    <div class="htrack">
-
-      <!-- data-tab 은 인덱스에 찍히는 글 — 괄호 안 원어는 카드 제목(h3)에만 두고
-           인덱스에는 약어만 남긴다 -->
-      <article class="hcard hcard--tbd" data-tab="자동화 설비">
-        <div class="hleft">
-          <h3>자동화 설비</h3>
-        </div>
-        <div class="hright">
-          <div class="descgrid" role="img" aria-label="자동화 설비 기능 4종">
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 1</span>
-              <span class="txt">설명 추가 예정</span>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf01-1-t">공정 프로세스 맵</h2>
+              <div class="sf-body">
+                <p>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며,활성화 공정에 필요한 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</p>
+                <p>정밀 충·방전 기술과 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 통합 자동화 솔루션을 제공합니다.</p>
+                <p>또한 각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</p>
+              </div>
             </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 2</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 3</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 4</span>
-              <span class="txt">설명 추가 예정</span>
+            <ol class="sf-num">
+              <li><b>01</b><span>1차 충전</span></li>
+              <li><b>02</b><span>디개싱 공정</span></li>
+              <li><b>03</b><span>에이징 공정</span></li>
+              <li><b>04</b><span>충·방전</span></li>
+              <li><b>05</b><span>품질 검사</span></li>
+              <li><b>06</b><span>불량 선별</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01-2 -->
+    <section class="sf-sec" id="sf01-2" aria-labelledby="sf01-2-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">01-2</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf01-2-t">해외 생산거점 확보</h2>
+              <div class="sf-body">
+                <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
+                <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
+                <p>고객사의 생산기지 지원을 위해 미시간과 폴란드, 남경, 인도네시아에 현지 법인을 운용 중이며, 현지 Setup 및 Maintenance를 위한 엔지니어 50명이 상주하여 해외 거점을 확보하고 있습니다.</p>
+              </div>
             </div>
           </div>
         </div>
-      </article>
+      </div>
+    </section>
 
-      <article class="hcard hcard--tbd" data-tab="MES">
-        <div class="hleft">
-          <h3>MES</h3>
+    <!-- 02-1 -->
+    <section class="sf-sec" id="sf02-1" aria-labelledby="sf02-1-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">02-1</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
         </div>
-        <div class="hright">
-          <div class="descgrid" role="img" aria-label="MES 기능 4종">
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 1</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 2</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 3</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 4</span>
-              <span class="txt">설명 추가 예정</span>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf02-1-t">신뢰성 검사 장비</h2>
+              <div class="sf-body">
+                <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
+                <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+                <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
+                <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
+              </div>
             </div>
           </div>
         </div>
-      </article>
+      </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- 04 -->
-  <section class="hsec" id="s4">
-    <div class="hrail"></div>
-    <div class="htrack">
-
-      <article class="hcard" data-tab="탄소나노튜브">
-        <div class="hleft">
-          <h3>탄소나노튜브</h3>
-          <div class="hlead">
-            <p>고성능 단일벽(SW) 및 소수벽(FW) 탄소나노튜브의 견고한 전도성 네트워크가 활물질 간의 전자 이동을 극대화합니다.</p>
-            <p>배터리 내부 저항을 효과적으로 낮추어 전체 수명을 연장하고 충전 시간을 크게 단축합니다. 실리콘 음극재 도입 시 발생하는 고질적인 부피 팽창과 입자 붕괴 현상을 구조적으로 단단하게 억제합니다.</p>
+    <!-- 02-2 -->
+    <section class="sf-sec" id="sf02-2" aria-labelledby="sf02-2-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">02-2</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <div>
+                <h2 id="sf02-2-t">MES</h2>
+                <p class="en">Module Inspection Equipment</p>
+              </div>
+              <!-- 와이어프레임의 02-2 본문에는 02-1 과 같은 글이 들어 있다(문안 확정 전
+                   자리글). 원본대로 옮겨 둔다 — 문안이 나오면 이 네 단락만 갈아 끼운다 -->
+              <div class="sf-body">
+                <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
+                <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+                <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
+                <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
+              </div>
+            </div>
           </div>
-          <ul class="pict">
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 8 11 16 16 11 25 20"/>
-                <polyline points="25 14 25 20 19 20"/>
-              </svg></span>
-              <span class="k">내부 저항 저감</span>
-              <span class="en">Low Resistance</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23.5 12A10 10 0 0 0 6 7.5"/><path d="M4 4v5h5"/>
-                <path d="M4.5 16A10 10 0 0 0 22 20.5"/><path d="M24 24v-5h-5"/>
-              </svg></span>
-              <span class="k">전체 수명 연장</span>
-              <span class="en">Cycle Life</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15.5 3L6.5 15.5H13l-.5 9.5L21.5 12.5H15L15.5 3z"/>
-              </svg></span>
-              <span class="k">충전 시간 단축</span>
-              <span class="en">Fast Charge</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4v20"/>
-                <path d="M3 14h8"/><path d="M8 10.5L11.5 14 8 17.5"/>
-                <path d="M25 14h-8"/><path d="M20 10.5L16.5 14 20 17.5"/>
-              </svg></span>
-              <span class="k">부피 팽창 / 입자 붕괴 현상 억제</span>
-              <span class="en">Volume Control</span>
-            </li>
-          </ul>
         </div>
-        <!-- 투명 픽셀 없는 실사(SEM 촬영본) — 슬롯을 cover 로 꽉 채운다 -->
-        <div class="hright">
-          <img src="../assets/carbon-nanotube-sem.png" width="433" height="325" loading="lazy"
-               alt="탄소나노튜브 나노입자 주사전자현미경(SEM) 사진 — 입자 지름 20.4~40.3nm 실측 표기" />
-        </div>
-      </article>
+      </div>
+    </section>
 
-      <article class="hcard" data-tab="LiFSI 전해염">
-        <div class="hleft">
-          <h3>LiFSI 전해염</h3>
-          <div class="hlead">
-            <p>기존 LiPF6 대비 탁월한 이온 이동 속도를 구현하여 배터리 내부의 이온 전도도를 크게 향상시킵니다. 고온 및 고전압의 거친 구동 환경에서도 전해액의 열분해를 막고 변함없는 화학적 안정성을 발휘합니다.</p>
-            <p>에이프로 머티리얼즈의 핵심 소재 기술력으로 완성된 전해염이 고성능 배터리의 안전성과 효율을 동시에 보장합니다.</p>
+    <!-- 03-1 -->
+    <section class="sf-sec" id="sf03-1" aria-labelledby="sf03-1-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <div>
+                <h2 id="sf03-1-t">PLC</h2>
+                <p class="en">Programmable Logic Controller</p>
+              </div>
+            </div>
+            <ul class="sf-dl">
+              <li><p class="k">설비 제어</p><p class="d">충방전기, 디개싱(Degassing), 에이징 룸 등 활성화 공정 내 개별 물류 및 제조 설비의 하드웨어를 실시간으로 직접 제어합니다.</p></li>
+              <li><p class="k">데이터 수집</p><p class="d">센서로부터 온도, 압력, 전압, 전류 등 공정 중 발생하는 실시간 물리적 데이터를 실시간으로 정밀하게 측정하고 감지합니다.</p></li>
+              <li><p class="k">안전 인터록</p><p class="d">가스 누출, 과전압, 이상 고온 등 위험 상황이 감지되면 설비를 즉시 정지시키는 비상 인터록 시스템을 작동합니다.</p></li>
+              <li><p class="k">상위 연동</p><p class="d">상위 제어 시스템인 PC나 MES와 통신하며 수집한 공정 데이터를 전송하고, 하향된 공정 레시피 명령을 받아 수행합니다</p></li>
+            </ul>
           </div>
-          <ul class="pict">
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 8.5h22"/><path d="M3 19.5h22"/>
-                <path d="M6 14h11"/><path d="M14 10.5l3.5 3.5-3.5 3.5"/>
-              </svg></span>
-              <span class="k">이온 전도도 향상</span>
-              <span class="en">Ionic Conductivity</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
-                <path d="M3 3l18 18"/>
-              </svg></span>
-              <span class="k">전해액 열분해 억제</span>
-              <span class="en">Thermal Stability</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4l10 5-10 5-10-5 10-5z"/><path d="M4 15l10 5 10-5"/>
-              </svg></span>
-              <span class="k">SEI 피막 형성 &amp; 계면 저항 저감</span>
-              <span class="en">Stable SEI</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15.5 3L6.5 15.5H13l-.5 9.5L21.5 12.5H15L15.5 3z"/>
-              </svg></span>
-              <span class="k">고속 충전 성능 극대화</span>
-              <span class="en">Fast Charge</span>
-            </li>
-          </ul>
         </div>
-        <div class="hright">
-          <img src="../assets/lifsi-salt.jpg" width="498" height="438" loading="lazy"
-               alt="유리 용기 두 개에 담긴 백색 분말 형태의 LiFSI 전해염" />
-        </div>
-      </article>
+      </div>
+    </section>
 
-      <!-- 내용 미정 -->
-      <article class="hcard hcard--tbd" data-tab="에이프로 머티리얼즈">
-        <div class="hleft">
-          <h3>에이프로 머티리얼즈</h3>
-          <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+    <!-- 03-2 -->
+    <section class="sf-sec" id="sf03-2" aria-labelledby="sf03-2-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf03-2-t">충방전 공정 관리시스템</h2>
+            </div>
+            <ul class="sf-dl">
+              <li><p class="k">생산 추적</p><p class="d">배터리 셀의 바코드를 스캔하여 활성화 공정의 시작부터 끝까지 전 제조 이력을 실시간으로 추적 및 관리합니다.</p></li>
+              <li><p class="k">레시피 하향</p><p class="d">배터리 모델별로 정해진 충방전 조건, 에이징 시간 등의 세부 공정 레시피를 각 설비(PLC)에 자동으로 전달합니다.</p></li>
+              <li><p class="k">품질 판정</p><p class="d">충방전 결과 데이터(용량, 저항 등)를 분석하여 해당 배터리 셀의 합격/불합격(Pass/Fail) 및 등급(Grading)을 판정합니다.</p></li>
+              <li><p class="k">데이터 통합</p><p class="d">전체 공정의 생산량, 설비 가동률, 불량률 등의 통계 데이터를 시각화하여 공장 전반의 생산 효율성을 최적화합니다.</p></li>
+            </ul>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
-          </ul>
         </div>
-        <div class="hright"></div>
-      </article>
+      </div>
+    </section>
 
-    </div>
-  </section>
+    <!-- 04-1 -->
+    <section class="sf-sec" id="sf04-1" aria-labelledby="sf04-1-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">04-1</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf04-1-t">탄소 나노 튜브</h2>
+              <div class="sf-body">
+                <p>A-PRO Materials의 생산 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
+                <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- 04-2 -->
+    <section class="sf-sec" id="sf04-2" aria-labelledby="sf04-2-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">04-2</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf04-2-t">LiFSI 전해염</h2>
+              <div class="sf-body">
+                <p>A-PRO Materials는 고순도 정제 기술과 엄격한 품질 관리를 통해 최고 수준의 전해염 소재를 제공합니다.</p>
+                <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04-3 -->
+    <section class="sf-sec" id="sf04-3" aria-labelledby="sf04-3-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">04-3</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf04-3-t">HNBR 바인더</h2>
+              <div class="sf-body">
+                <p>PVDF 바인더 대체 및 CNT 분산 성능을 극대화하는 고성능 HNBR 바인더 소재입니다.</p>
+                <p>우수한 결합력과 유연성, 전극 저항 감소 효과를 통해 배터리의 고율 충·방전 성능과 안정성을 향상시킵니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04-4 -->
+    <section class="sf-sec" id="sf04-4" aria-labelledby="sf04-4-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">04-4</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf04-4-t">파우치셀 제조</h2>
+              <div class="sf-body">
+                <p>A-PRO Materials는 고객사가 요구하는 규격과 성능 스펙에 맞춰 정밀 파우치셀 제조 및 위탁생산 서비스를 제공합니다.</p>
+                <p>셀 설계부터 제반 공정, 엄격한 품질 검사까지 통합 프로세스를 통해 최적의 파우치셀 솔루션을 지원합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04-5 -->
+    <section class="sf-sec" id="sf04-5" aria-labelledby="sf04-5-t">
+      <div class="sf-row">
+        <div class="sf-fig sf-rv">
+          <div class="sf-line"><span class="sf-tag">04-5</span><i class="rule"></i><i class="tick"></i></div>
+          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+        </div>
+        <div class="sf-txt sf-rv">
+          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <h2 id="sf04-5-t">차세대 기술 개발 / 파트너</h2>
+              <div class="sf-body">
+                <p>A-PRO Materials는 차세대 배터리 핵심 기술에 대한 지속적인 연구개발을 통해 미래 이차전지 시장을 선도합니다.</p>
+                <p>끊임없는 R&amp;D 혁신으로 기존 배터리의 한계를 극복하고, 고성능·고안정성 소재 및 셀 기술을 선제적으로 구현해 나갑니다.</p>
+                <p>A-PRO Materials는 국내외 우수한 글로벌 파트너사들과 협력하며 최상의 이차전지 소재 솔루션을 함께 만들어가고 있습니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
 </div>
 
 <!-- ===================== 다른 사업영역 — 마을 ===================== -->
@@ -1929,602 +683,51 @@
   </div>
 </footer>
 
-<!-- ===================== OVERLAY MENU ===================== -->
-<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
-  <div class="navover-hd">
-    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
-    <div class="ov-tools">
-      <a class="ov-lang" href="#">ENG</a>
-      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
-    </div>
-  </div>
-  <nav class="navover-body">
-    <div class="ov-row">
-      <div class="ov-cat">사업영역</div>
-      <div class="ov-links">
-        <a href="business-smart-a1.html" aria-current="page">스마트 제조</a>
-        <a href="business-energy-a1.html">에너지 솔루션</a>
-        <a href="business-ai-a1.html">인공지능 플랫폼</a>
-        <a href="business-semicon-a1.html">화합물 전력 반도체</a>
-      </div>
-    </div>
-    <div class="ov-row">
-      <div class="ov-cat">회사 정보</div>
-      <div class="ov-links"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
-    </div>
-    <div class="ov-row">
-      <div class="ov-cat">투자정보</div>
-      <div class="ov-links"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html">내부규정</a></div>
-    </div>
-    <div class="ov-row">
-      <div class="ov-cat">지속가능경영</div>
-      <div class="ov-links"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
-    </div>
-    <div class="ov-row">
-      <div class="ov-cat">커뮤니티</div>
-      <div class="ov-links"><a href="community-notice-a1.html">공지사항</a><a href="community-press-a1.html">보도자료</a></div>
-    </div>
-  </nav>
-</div>
-
-<!-- ===================== 맨 위로 가기 ===================== -->
-<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M12 19V5" />
-    <path d="M5 12l7-7 7 7" />
-  </svg>
-</button>
-
+<!-- 공용 스크립트 — 이 페이지에서 실제로 도는 것은 두 가지뿐이다.
+     ① 푸터 FAMILY SITE 드롭다운 ② 마을(.bhop) 그림 지연 로드 + 태그 점등.
+     GNB·탭 바·카드 캐러셀 담당 블록은 해당 요소를 못 찾고 곧바로 빠져나간다 -->
 <script src="business-layout.js"></script>
 <script>
 (function(){
-  var btn = document.getElementById('totop');
-  if (!btn) return;
-  var onScroll = function(){
-    btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-  btn.addEventListener('click', function(){
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-})();
-</script>
-<script>
-(function(){
-  // 공정 프로세스 맵 그림 — 바닥은 화면 좌우 끝까지, 설비(오브젝트)는 본문 열
-  // 폭에 맞춘다(2026-08-21 요청). 실제 <img>는 .htrack(overflow-x:hidden —
-  // 카드 사이 세로 스크롤용, overflow-y:auto 와 짝이라 x만 visible 로 못 푼다:
-  // 페어가 non-visible 이면 visible 쪽이 auto 로 강제되는 CSS 규칙이 있어
-  // 결국 다시 잘린다)와 .hright(overflow:hidden) 안에 갇혀 있어 마진만으로는
-  // 화면 끝까지 못 나간다. 그래서 실제 그림은 숨기고(레이아웃 자리는 그대로
-  // 차지) 화면(position:fixed)에 붙는 복제본 두 장을 만들어 원본의 위치를
-  // 따라가게 한다 — 클리핑 조상을 아예 안 거치므로 위 문제를 건드릴 필요가
-  // 없다.
-  // 그림에서 두 가지를 화면에 따로 깐다:
-  //   · rig 겹: 그림 자체(설비)를 본문 열(.hleft) 폭으로 줄여서 그대로 복제
-  //   · floor/grad: 그림 속 바닥·배경 그라데이션은 이제 CSS 평면으로 새로
-  //     그린다(원본 바닥 띠는 SVG에서 지웠다 — 2026-08-21 요청, 이 스크립트가
-  //     만드는 화면 끝까지 바닥과 겹쳐 보였다)
-  // fetch/inline SVG 없이 <img> 복제 + clip-path 만으로 되는 이유 — 로컬
-  // file:// 미리보기는 CORS 때문에 fetch 로 SVG를 파싱해 넣는 방식을 못 쓴다.
-  // SVG 쪽 바닥·배경 그라데이션(Rectangle 332/333)은 이제 둘 다 삭제됐다 —
-  // rig 겹(설비)엔 더 이상 바닥 관련 내용이 없으므로, 아래 두 상수는 SVG
-  // 원본 좌표를 따라갈 필요 없이 순전히 이 CSS 레이어들만의 비율이다.
-  // GRAD_TOP_FRAC 을 낮췄다(2026-08-21 지적 — "연그레이 바닥"이 설비 키
-  // 대부분을 덮을 만큼 위에서부터 시작해 너무 높았다. 표시해 준 선만큼
-  // 아래로 내려 바닥 근처에서만 은은하게 밝아지도록 줄인다)
-  var FLOOR_COLOR = '#CDD4DC';   // 옛 바닥 띠(Rectangle 332)와 같은 색
-  var GRAD_TOP_FRAC = 0.65;   // 연그레이(그라데이션) 밴드 시작 — 예전 0.424 에서 내림
-  var GRAD_BOT_FRAC = 616 / 653;   // 연그레이 밴드 끝(=진그레이 바닥 쪽으로 이어지는 기준선)
-  var GRAD_TOP_COLOR = '#E4E8ED', GRAD_BOT_COLOR = '#F4F6F8';
-  // 바닥(.pmap-floor-fill)을 뺀 뒤로는 이 그라데이션판이 사실상 바닥 역할을
-  // 한다(2026-08-21 — "이게 바닥이 되는거지"). 카드 밑변에 붙인 채로 높이만
-  // 고정값으로 키운다 — 위 GRAD_TOP_FRAC/GRAD_BOT_FRAC 은 여전히 설비(rig)
-  // 위치를 잡는 기준으로만 쓰고, 이 판 자체의 높이는 건드리지 않는다
-  var PLATE_H = 180;   // 350 → 240(2026-08-21 재요청) → 60px 더 줄여 180(2026-08-22 재요청)
-  // 바닥 높이를 고정값으로 우선 확보하는 방식은 화면이 좁으면 설비를 아예
-  // 안 보이게(폭 0) 만들 정도로 대가가 컸다(2026-08-21 확인). 바닥을 아예
-  // 빼고, 설비는 본문 열(.hleft) 좌우 너비에 정확히 맞춘다(2026-08-21
-  // 재요청) — RIG_SCALE 을 1로 되돌려 더는 본문 폭보다 키우지 않는다. 바닥
-  // 자리를 더는 예약하지 않으니 rig 겹의 실측 밑변부터 카드 밑변까지 남는
-  // 자리가 있으면 그게 곧 바닥이고, 없으면 안 보인다(그걸로 충분하다)
-  var RIG_SCALE = 1.15 * 1.20 * 0.9 * 0.9 * 1.2;   // 본문 열 폭 그대로(1)에서 15%(2026-08-21) → 20%(2026-08-21 재요청) 키운 뒤, 너무 커져서 90%(2026-08-21 재요청) → 다시 90%(2026-08-22 재요청, 첫 설비가 본문 좌측 정렬과 맞도록) → 감 맞추기 어려워 다시 20%(2026-08-22 재요청)
-  var SVG_W = 2246, SVG_H = 653;
-  // 탭 패널과 겹쳐도 좋으니 목표 크기(100%)에 도달하게 해달라는 요청
-  // (2026-08-21) — 이제 설비 크기를 탭 패널 자리에 맞춰 줄이지 않는다.
-  // 유일한 제약은 이 카드(.hright) 자체의 실측 세로 범위(마스크 범위와
-  // 동일) 밖으로는 넘어가지 않는 것 — 그래야 다음 카드(예: "해외 거점")를
-  // 침범하는, 세션 초반에 고쳤던 문제가 다시 생기지 않는다
-  // 진행 라인 — rig 그림 안에서 끝나 화면 끝까지 닿지 않는다(2026-08-21
-  // 재지적 — "양 끝 라인이 스크린 끝까지"). 라인 양 끝(수평 구간)의 세로
-  // 위치·두께는 원본 SVG path 좌표 그대로(이 파일 상단 큰 주석의 좌표 참고)
-  var LINE_Y_FRAC = 584.5 / 653;
-  var LINE_STROKE = 12;
-  var LINE_LIGHT_COLOR = '#C9D9EE';
-  // line-dark.svg 안 "Progress line" 자체의 stroke 값 그대로 — 연장선
-  // 채움(--fill-color) 색을 rig 안쪽 진행 라인과 픽셀 단위로 맞춘다.
-  // 원래 #2c5790 이 너무 눈에 띈다는 지적(2026-08-22)에 명도를 올렸다
-  // (HSL L 37% → 50%) — svg 파일 쪽 stroke 값도 같이 바꿔야 rig 안쪽과
-  // 색이 어긋나지 않는다
-  var LINE_DARK_COLOR = '#3c76c3';
+  var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
+  var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
+  if(!secs.length) return;
 
-  // 시간차 자동 재생(2026-08-21 개편, 설비 호버 방식에서 변경) — 새
-  // SVG(activation-process-map.svg)에 진행 라인이 추가되면서, 01~06 단계를
-  // 2초마다 자동으로 넘겨가며 탭·스펙·진행 라인을 함께 갱신한다
-  var STEP_INFO = [
-    { label: '01 1차 충전', spec: ['Pre-formation', '고온가압 충방전기 (High Temperature, Pressure, Formation)', 'Selector'] },
-    { label: '02 디개싱 공정', spec: ['Degas'] },
-    { label: '03 에이징 공정', spec: ['High Temp Aging', 'Normal Temp Aging', 'Shipping Temp Aging'] },
-    { label: '04 충·방전', spec: ['충방전기 (Formation)', 'Selector'] },
-    { label: '05 품질 검사', spec: ['DCIR (DC Internal Resistance Tester)', 'IR-OCV (Internal Resistance & Open Circuit Voltage Tester)', 'OCV (Open Circuit Voltage Tester)'] },
-    { label: '06 불량 선별', spec: ['DSF/EOL (Double Side Folding / End Of Line)'] }
-  ];
-  var STEP_DWELL = 2000;   // 단계당 재생 시간(ms)
-
-  // 진행 라인 겹(2026-08-21 재작업) — assets/activation-process-line-dark.svg
-  // 는 원본과 완전히 같은 그림에 "Progress line"만 진한 파랑(--brand)으로
-  // 바꾼 사본이다(건물 등 나머지는 전부 동일 — 원본 SVG에서 라인이 설비
-  // 그룹보다 먼저 그려져 건물 밑에 깔리는 쌓임 순서까지 그대로 살아 있다).
-  // rig 겹 위에 이 사본을 통째로 포개고, 어디를 드러내도 건물이 라인을
-  // 가리는 자리가 원본과 어긋나지 않는다 — 얇은 <path> 하나를 rig 겹 위에
-  // 따로 그렸던 첫 버전은 라인이 항상 최상단에 있어 건물을 가로지르는
-  // 구간에서 라인이 건물 "위로" 떠 보이는 문제가 있었다(2026-08-21 지적)
-  var LINE_DARK_SRC = '../assets/activation-process-line-dark.svg';
-
-  // 드러내는 방식(2026-08-22 재작업) — clip-path:inset() 은 사각형이라
-  // 왼쪽→오른쪽 한 방향으로만 진행된다. 그런데 실제 라인은 설비를 피해
-  // 위아래로 꺾이는 구간이 있어(건물 옆을 타고 올라갔다 내려오는 loop),
-  // 그 구간에서는 "실제 라인을 따라 그려지는" 진행이 아니라 "화면 왼쪽
-  // 몇 %까지 보이는" 진행이 되어 방향이 라인과 어긋나 보인다("구불구불한
-  // 선에서 코너가 있을 때 방향이 달라질 수 있다"는 지적). 원본과 똑같은
-  // path 좌표(LINE_PATH_D)로 SVG <mask> 를 만들고, 그 안의 <path> 에
-  // stroke-dasharray/dashoffset(trim path)을 걸어 라인 진행 사본에 씌운다.
-  // (처음엔 HTML <img> 에 CSS mask-image 로 이 mask 를 씌우려 했는데
-  // 실제 크롬에서 전혀 반영되지 않았다 — 2026-08-22 확인, "채워지는 선이
-  // 안 보여" 지적. 그래서 rig 자체를 <svg> 로 바꿔 SVG 네이티브 mask
-  // 속성을 쓴다 — ensureRigClone() 참고)
-  var LINE_PATH_D = 'M0.5 584.5H117.551C120.292 584.5 122.523 582.293 122.551 579.551L124.593 379.449C124.621 376.708 126.851 374.5 129.593 374.5H283.092C285.874 374.5 288.12 376.77 288.092 379.551L286.052 579.449C286.023 582.23 288.27 584.5 291.051 584.5H463.051C465.792 584.5 468.023 582.293 468.051 579.551L470.093 379.449C470.121 376.708 472.351 374.5 475.093 374.5H484.592C487.374 374.5 489.62 376.77 489.592 379.551L487.552 579.449C487.523 582.23 489.77 584.5 492.551 584.5H644.551C647.292 584.5 649.523 582.293 649.551 579.551L651.593 379.449C651.621 376.708 653.851 374.5 656.593 374.5L1096.59 374.5C1099.37 374.5 1101.62 376.77 1101.59 379.551L1099.55 579.449C1099.52 582.23 1101.77 584.5 1104.55 584.5H1161.25C1164.01 584.5 1166.25 582.262 1166.25 579.5V379.5C1166.25 376.739 1168.49 374.5 1171.25 374.5H2136.87C2139.64 374.5 2141.88 376.739 2141.88 379.5V462C2141.88 464.762 2139.64 467 2136.87 467H1214C1211.24 467 1209 469.239 1209 472V579.5C1209 582.262 1211.24 584.5 1214 584.5H2245.88';
-
-  var img = document.querySelector('.hcard[data-tab*="프로세스 맵"]>.hright img');
-  if (!img) return;
-  var track = img.closest('.htrack');
-  var hright = img.closest('.hright');
-  var hcard = img.closest('.hcard');
-  var hleft = hcard.querySelector('.hleft');
-  var tabEls = [].slice.call(hright.querySelectorAll('.pmap-tab'));
-  var specEl = hright.querySelector('.pmap-spec');
-  var rigClone = null, floorFill = null, gradFill = null, pmapMask = null;
-  var lineMaskPath = null, lineTotalLen = 0;
-  var lineEdgeR = null;
-  var lineVEdgeL = null;
-  var visible = false, raf = null, activeStep = 0;
-  // 재생 상태(2026-08-22 재작업) — setInterval 로 2초마다 activeStep 만 계단식
-  // 으로 바꾸고 게이지는 그 변화를 CSS transition(1.6s)이 뒤늦게 뒤쫓아가던
-  // 예전 방식 대신, "언제부터(playStartTime) 몇 번째 단계(playStartStep)에서
-  // 재생을 시작했는지"만 기록해 두고 sync() 가 매 프레임 흐른 시간으로
-  // 진행 위치를 직접 계산한다 — 연장선·설비 안쪽 라인이 항상 같은 순간 같은
-  // 값을 참조하니 "따로 논다"는 문제도, 무한 반복도(마지막 단계 dwell 이
-  // 끝나면 playing 을 꺼서 멈춘다) 여기서 함께 해결된다
-  var playing = false, playStartTime = 0, playStartStep = 0, lastRenderedStep = -1;
-  var revealFrac = 0;
-
-  // 탭 활성 표시·스펙 목록을 activeStep 에 맞춰 갱신한다 — activeStep 이
-  // 실제로 바뀐 프레임에서만 sync() 가 불러 준다(매 프레임 innerHTML 을
-  // 다시 쓰지 않도록)
-  function renderStep(){
-    tabEls.forEach(function(el, i){ el.classList.toggle('is-active', i === activeStep); });
-    var info = STEP_INFO[activeStep];
-    if (specEl){
-      specEl.innerHTML = info.spec.map(function(s){ return '<li>' + s + '</li>'; }).join('');
-      // 활성 탭 칸 하나에만 정확히 맞춘다(2026-08-22 재요청 — "6번 단계
-      // 처럼", 드롭다운 메뉴 UI) — 오른쪽 끝까지 넓히던 이전 방식(칩 스타일
-      // 실험 중 한 번 그렇게 바꿨었다)을 되돌린다. 그 탭 바로 아래, 그
-      // 탭과 같은 폭으로만 뜬다
-      specEl.style.gridColumn = (activeStep + 1) + ' / ' + (activeStep + 2);
+  /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
+     화면 세로 중앙에 가장 가까운 장을 현재 소분류로 친다. 장이 화면보다 길어도
+     (좁은 화면에서 글이 늘어난 경우) 한 장은 반드시 뽑히므로 인덱스가 비지 않는다 */
+  var raf = 0;
+  function spy(){
+    raf = 0;
+    var mid = window.innerHeight / 2, best = 0, bd = Infinity;
+    for(var i=0;i<secs.length;i++){
+      var r = secs[i].getBoundingClientRect();
+      var d = Math.abs(r.top + r.height / 2 - mid);
+      if(d < bd){ bd = d; best = i; }
+    }
+    for(var j=0;j<links.length;j++){
+      if(j === best) links[j].setAttribute('aria-current','true');
+      else           links[j].removeAttribute('aria-current');
     }
   }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(spy); }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  spy();
 
-  // fromStep 번째 단계부터 시간차 재생을 시작한다 — 카드가 화면에 들어올
-  // 때는 항상 0(처음)부터, 탭을 클릭하면 그 탭부터 이어서 흘러간다
-  // (2026-08-22 요청 — "단계를 클릭하면 그 부분부터 시간차순으로")
-  function startPlay(fromStep){
-    playStartStep = fromStep || 0;
-    playStartTime = performance.now();
-    playing = true;
-    lastRenderedStep = -1;   // 같은 단계에서 다시 시작해도 renderStep() 이 한 번은 돌게
+  /* ── 진입 모션 — 장이 화면에 들어오면 한 번만 ────────────────────────── */
+  if(!('IntersectionObserver' in window)){
+    secs.forEach(function(s){ s.classList.add('is-in'); });
+    return;
   }
-
-  function stopPlay(){
-    playing = false;
-  }
-
-  tabEls.forEach(function(el, i){
-    el.addEventListener('click', function(){ startPlay(i); });
-  });
-
-  // 마스크 — .hright 의 실측 세로 범위만큼만 오려내는 fixed 상자(가로는
-  // 100vw 그대로). grad·floor·rig·line 은 전부 이 안의 absolute 자식이라,
-  // 계산상 카드 밑변을 넘는 값이 나와도 여기서 잘려 다음 카드를 침범하지
-  // 않는다(2026-08-21 지적). 자식들을 body 가 아니라 이 마스크에 붙인다
-  function ensureMask(){
-    if (pmapMask) return pmapMask;
-    pmapMask = document.createElement('div');
-    pmapMask.setAttribute('aria-hidden', 'true');
-    pmapMask.className = 'pmap-mask';
-    document.body.appendChild(pmapMask);
-    return pmapMask;
-  }
-
-  function ensureGradFill(){
-    if (gradFill) return gradFill;
-    gradFill = document.createElement('div');
-    gradFill.setAttribute('aria-hidden', 'true');
-    gradFill.className = 'pmap-grad-fill';
-    gradFill.style.width = '100vw';
-    gradFill.style.background = 'linear-gradient(' + GRAD_TOP_COLOR + ',' + GRAD_BOT_COLOR + ')';
-    ensureMask().appendChild(gradFill);
-    return gradFill;
-  }
-
-  function ensureFloorFill(){
-    if (floorFill) return floorFill;
-    floorFill = document.createElement('div');
-    floorFill.setAttribute('aria-hidden', 'true');
-    floorFill.className = 'pmap-floor-fill';
-    floorFill.style.width = '100vw';
-    floorFill.style.background = FLOOR_COLOR;
-    ensureMask().appendChild(floorFill);
-    return floorFill;
-  }
-
-  // 라인 오른쪽 끝 연장 막대 — rig 그림 밖(화면 오른쪽 가장자리 쪽)으로
-  // 라인이 계속 이어지는 것처럼 보이게 하는 옅은 색(트랙) 막대. 왼쪽은
-  // 더 없다(2026-08-22 요청 — "왼쪽 연장선은 그냥 없애줘") — rig 겹의
-  // 라인이 곧 왼쪽 끝이다. 진행분(진한 색)은 이 엘리먼트의 ::after
-  // 의사요소가 맡는다(CSS 참고) — 트랙과 채움을 별개 엘리먼트 두 장으로
-  // 두고 자리를 매번 각각 맞추던 예전 방식(2026-08-21)을 "두 라인이 따로
-  // 논다"는 지적(2026-08-22)에 이렇게 하나로 합쳤다. JS 가 신경 쓸 값은
-  // 트랙 자체의 자리·두께(el)와 채움 비율(--fill) 뿐이고, 채움의 자리·
-  // 두께는 CSS 상속으로 트랙과 항상 같다
-  function ensureLineEdgeR(){
-    if (lineEdgeR) return lineEdgeR;
-    lineEdgeR = document.createElement('div');
-    lineEdgeR.setAttribute('aria-hidden', 'true');
-    lineEdgeR.className = 'pmap-line-edge';
-    lineEdgeR.style.background = LINE_LIGHT_COLOR;
-    lineEdgeR.style.setProperty('--fill-color', LINE_DARK_COLOR);
-    ensureMask().appendChild(lineEdgeR);
-    return lineEdgeR;
-  }
-
-  // 왼쪽 세로 연장 — 가로 연장선을 없앤 뒤(2026-08-22) 라인이 설비 왼쪽
-  // 끝에서 뚝 끊긴 채로 남는데, 그 지점에서 바닥판(.pmap-grad-fill)
-  // 윗변까지 짧게 위로 이어 준다(2026-08-22 재요청). 진행에 따라 채워지는
-  // 게이지가 아니라 옅은 색 고정 막대라 ::after 없이 단색으로 그린다
-  function ensureLineVEdgeL(){
-    if (lineVEdgeL) return lineVEdgeL;
-    lineVEdgeL = document.createElement('div');
-    lineVEdgeL.setAttribute('aria-hidden', 'true');
-    lineVEdgeL.className = 'pmap-line-vedge';
-    lineVEdgeL.style.background = LINE_LIGHT_COLOR;
-    ensureMask().appendChild(lineVEdgeL);
-    return lineVEdgeL;
-  }
-
-  // rig 겹 — 예전엔 <img> 두 장(원본 사본 + 라인만 진한 색 사본)을 겹치고
-  // CSS mask-image 로 후자를 잘라내는 방식이었는데, 실제 크롬에서 확인하니
-  // 그 CSS mask(HTML <img> 에 SVG <mask> 를 mask-size 로 늘려 씌우는 조합)가
-  // 전혀 반영되지 않았다(2026-08-22 확인 — 픽셀을 직접 찍어 보니 100%
-  // 진행되어도 시작색 그대로였다. "채워지는 선이 안 보여" 지적이 맞았다).
-  // 대신 인라인 <svg viewBox="0 0 2246 653"> 하나 안에 두 <image> 를 넣고,
-  // SVG 네이티브 mask 속성(HTML mask-image 아님)으로 라인 사본만 잘라낸다
-  // — 같은 좌표계 안에서 이미지·마스크가 전부 SVG 자체 스케일링으로
-  // 처리되니 CSS 쪽 크기 불일치 문제 자체가 생기지 않는다. 이 svg 하나가
-  // 곧 rig(설비) 겹이자 라인 겹이라 위치·크기는 이 svg 하나에만 잡으면
-  // 된다(둘을 따로 맞출 필요가 없어졌다)
-  function ensureRigClone(){
-    if (rigClone) return rigClone;
-    var svgNS = 'http://www.w3.org/2000/svg';
-    rigClone = document.createElementNS(svgNS, 'svg');
-    rigClone.setAttribute('aria-hidden', 'true');
-    rigClone.setAttribute('viewBox', '0 0 ' + SVG_W + ' ' + SVG_H);
-    rigClone.setAttribute('preserveAspectRatio', 'none');
-    rigClone.setAttribute('class', 'pmap-rig-clone');
-
-    var defs = document.createElementNS(svgNS, 'defs');
-    var mask = document.createElementNS(svgNS, 'mask');
-    mask.setAttribute('id', 'pmap-line-mask');
-    mask.setAttribute('maskUnits', 'userSpaceOnUse');
-    mask.setAttribute('x', '0');
-    mask.setAttribute('y', '0');
-    mask.setAttribute('width', String(SVG_W));
-    mask.setAttribute('height', String(SVG_H));
-    var maskPath = document.createElementNS(svgNS, 'path');
-    maskPath.setAttribute('d', LINE_PATH_D);
-    maskPath.setAttribute('fill', 'none');
-    maskPath.setAttribute('stroke', '#fff');
-    maskPath.setAttribute('stroke-width', String(LINE_STROKE));
-    mask.appendChild(maskPath);
-    defs.appendChild(mask);
-    rigClone.appendChild(defs);
-
-    var baseImg = document.createElementNS(svgNS, 'image');
-    baseImg.setAttribute('href', img.currentSrc || img.getAttribute('src'));
-    baseImg.setAttribute('x', '0');
-    baseImg.setAttribute('y', '0');
-    baseImg.setAttribute('width', String(SVG_W));
-    baseImg.setAttribute('height', String(SVG_H));
-    rigClone.appendChild(baseImg);
-
-    var darkImg = document.createElementNS(svgNS, 'image');
-    darkImg.setAttribute('href', LINE_DARK_SRC);
-    darkImg.setAttribute('x', '0');
-    darkImg.setAttribute('y', '0');
-    darkImg.setAttribute('width', String(SVG_W));
-    darkImg.setAttribute('height', String(SVG_H));
-    darkImg.setAttribute('mask', 'url(#pmap-line-mask)');
-    rigClone.appendChild(darkImg);
-
-    ensureMask().appendChild(rigClone);
-
-    // 실측 길이 — 원본 path 그대로라 화면 크기와 무관하게 고정값이다.
-    // dasharray 를 그 길이만큼 잡아 실선으로 만들고, dashoffset 을 같은
-    // 값으로 시작해 0%(아무것도 안 보임) 상태로 둔다
-    lineTotalLen = maskPath.getTotalLength();
-    maskPath.setAttribute('stroke-dasharray', lineTotalLen);
-    maskPath.setAttribute('stroke-dashoffset', lineTotalLen);
-    lineMaskPath = maskPath;
-    return rigClone;
-  }
-
-  function sync(){
-    // raf 는 "예약된 프레임이 있다"는 표시로도 쓰는데, loop() 밖(queue() 를
-    // 통한 1회성 호출)에서 실행된 sync() 는 이 값을 정리하지 않아 오래된
-    // (이미 실행된) id 가 그대로 남는다 — 그러면 나중에 visible 이 true 로
-    // 바뀌어도 아래 IO 콜백의 if(!raf) 가 항상 거짓이라 loop() 가 영영
-    // 시작되지 못한다. 매번 sync() 시작 시 비워 두고, loop() 가 필요하면
-    // 자기 호출 뒤에 다시 채운다
-    raf = null;
-    if (window.innerWidth < 901 || !visible){
-      if (pmapMask) pmapMask.style.display = 'none';
-      img.style.visibility = '';
-      hright.classList.remove('is-pmap-bled');
-      return;
-    }
-
-    // 진행 위치 계산(2026-08-22 재작업) — playing 인 동안 매 프레임 흐른
-    // 시간으로 activeStep(정수, 탭 강조용)과 revealFrac(연속값, 게이지
-    // 채움용)을 함께 다시 잰다. 마지막 단계 dwell 이 끝나면(posInSteps 가
-    // 전체 단계 수에 닿으면) playing 을 꺼서 멈춘다 — 무한 반복하지 않고
-    // 마지막 단계에 그대로 머문다("단계가 다 끝나면 그대로 있게" 요청)
-    if (playing){
-      var posInSteps = playStartStep + (performance.now() - playStartTime) / STEP_DWELL;
-      if (posInSteps >= STEP_INFO.length){
-        posInSteps = STEP_INFO.length;
-        playing = false;
-      }
-      activeStep = Math.min(STEP_INFO.length - 1, Math.floor(posInSteps));
-      revealFrac = posInSteps / STEP_INFO.length;
-      if (activeStep !== lastRenderedStep){
-        lastRenderedStep = activeStep;
-        renderStep();
-      }
-    }
-
-    // 셋(grad·floor·rig) 이 z-index 가 같아 DOM 순서가 곧 쌓임 순서다
-    // (먼저 붙을수록 아래) — grad·floor(배경) → rig(설비 + 라인, 그 안에서
-    // 라인 진행 사본이 mask 로 다시 한 번 겹쳐 그려진다)
-    var mask = ensureMask();
-    var grad = ensureGradFill();
-    var fill = ensureFloorFill();
-    var edgeR = ensureLineEdgeR();
-    var vedgeL = ensureLineVEdgeL();
-    var rig = ensureRigClone();
-    var r = img.getBoundingClientRect();
-    var col = hleft.getBoundingClientRect();
-    var hrightRect = hright.getBoundingClientRect();
-    var aspect = (img.naturalWidth && img.naturalHeight)
-      ? img.naturalHeight / img.naturalWidth : r.height / r.width;
-    img.style.visibility = 'hidden';
-    hright.classList.add('is-pmap-bled');
-
-    // 마스크 — .hright 의 실측 세로 범위 그대로. 아래 grad·fill·rig·line 의
-    // top 은 전부 뷰포트 기준값에서 이 mtop 을 뺀 "마스크 안쪽 좌표"로 넣는다
-    // (마스크 자체가 이미 뷰포트의 mtop 지점에 옮겨져 있으므로)
-    mask.style.display = 'block';
-    var mtop = hrightRect.top;
-    mask.style.top = mtop + 'px';
-    mask.style.height = hrightRect.height + 'px';
-
-    // 그림 전체를 뷰포트 폭으로 늘렸다면 가졌을 높이·위치 — grad·바닥 시작선
-    // 계산의 공통 스케일 기준이다(원본 img 와 같은 세로 중심에 맞춘 채로)
-    var floorH = window.innerWidth * aspect;
-    var floorTop = r.top + r.height / 2 - floorH / 2;
-
-    // 배경 그라데이션판(Rectangle 333) 시작선·옛 바닥 자리(=그라데이션이
-    // 끝나던 지점) 스케일 — 아래 바닥·rig 계산에 쓰는 기준값
-    var gradTop = floorTop + floorH * GRAD_TOP_FRAC;
-    var gradBottom = floorTop + floorH * GRAD_BOT_FRAC;
-
-    // rig 겹 — 본문 열(.hleft) 폭 기준으로 RIG_SCALE 배 키운다. 바닥 시작선
-    // (옛 바닥 띠가 시작하던 gradBottom)에 rig 겹의 같은 지점이 겹치도록
-    // top 을 역산한다 — 설비는 원래 그림에서 서 있던 자리 그대로, 바닥판만
-    // 짧아진다
-    var rigW = col.width * RIG_SCALE;
-    var rigH = rigW * aspect;
-    var vw = window.innerWidth;
-
-    // 탭 패널과 겹쳐도 된다는 확인을 받았다(2026-08-21 재요청) — 더는 탭
-    // 자리를 피해 줄이지 않는다. 유일한 제약은 이 카드 자체의 실측 세로
-    // 범위(hrightRect.top ~ hrightRect.bottom, 마스크 범위와 동일) 밖으로
-    // 넘어가지 않는 것 — 다음 카드를 침범하는 일만은 없어야 한다
-    var availH = Math.max(0, hrightRect.bottom - hrightRect.top);
-    if (rigH > availH){
-      var shrinkH = availH / rigH;
-      rigW *= shrinkH;
-      rigH = availH;
-    }
-
-    // 좌우 가운데 기준으로 고르게 번지게 하면(예전 방식) 첫 설비가 본문
-    // 좌측 정렬보다 왼쪽으로 밀려나 보였다(2026-08-22 지적) — 본문 열
-    // 왼쪽에 그대로 붙이고 늘어난 만큼은 오른쪽으로만 번지게 한다. 그래서
-    // 세로뿐 아니라 가로도 한 번 더 가둬야 한다 — 왼쪽이 col.left 에
-    // 고정된 채로 커지기만 하면 화면 오른쪽 끝(vw)을 넘어간 만큼은
-    // .pmap-mask 의 overflow:hidden 에 그대로 잘려 마지막 설비가 화면
-    // 밖으로 사라진다(2026-08-22 확인 — 크기를 키우다 발견)
-    var availW = Math.max(0, vw - col.left);
-    if (rigW > availW){
-      var shrinkW = availW / rigW;
-      rigW *= shrinkW;
-      rigH *= shrinkW;
-    }
-
-    // 본문 좌측에 딱 붙이니 오히려 오른쪽으로 치우쳐 보인다는 지적
-    // (2026-08-22 재요청) — 왼쪽으로 40px 옮긴다. 가로 넘침 계산(availW)은
-    // col.left 기준 그대로 두고 자리만 옮기므로, 오른쪽 끝이 화면을
-    // 넘어가는 일은 없고(오히려 40px 여유가 더 생긴다)
-    var rigLeft = col.left - 40;
-    var rigTop = gradBottom - rigH * GRAD_BOT_FRAC;
-    // 위에서 크기를 이미 남는 자리에 맞췄지만, gradBottom 기준 역산이라 위치가
-    // 그 범위를 살짝 벗어날 수 있다 — 밑변을 카드 밑변 안으로, 그다음 윗변을
-    // 카드 자체의 실측 위쪽(hrightRect.top) 밑으로 다시 한번 눌러 확실히
-    // 가둔다 — 탭 패널과는 겹쳐도 되지만, 이 카드 밖(다음 카드 등)으로는
-    // 넘어가면 안 된다
-    var rigBottom = rigTop + rigH;
-    if (rigBottom > hrightRect.bottom) rigTop -= (rigBottom - hrightRect.bottom);
-    if (rigTop < hrightRect.top) rigTop = hrightRect.top;
-    rigBottom = rigTop + rigH;
-    // rig 는 이제 <svg viewBox> 라 <img> 때와 달리 height 가 폭만으로
-    // 자동 계산되지 않는다 — width·height 를 둘 다 명시한다(rigH 는 이미
-    // 위에서 aspect 로 계산해 둔 값 그대로)
-    rig.style.display = 'block';
-    rig.style.left = rigLeft + 'px';
-    rig.style.width = rigW + 'px';
-    rig.style.height = rigH + 'px';
-    rig.style.top = (rigTop - mtop) + 'px';
-
-    // 라인 오른쪽 끝 연장 — rig 오른쪽 끝에서 라인이 지나는 세로 위치
-    // (LINE_Y_FRAC)에 맞춰 같은 굵기(LINE_STROKE, rig 스케일만큼 곱해서)의
-    // 옅은 색 막대를 화면 오른쪽 가장자리까지 그린다. 왼쪽은 더 없다
-    // (2026-08-22 요청) — rig 겹의 라인이 곧 왼쪽 끝이다
-    var lineScale = rigW / SVG_W;
-    var lineY = rigTop + LINE_Y_FRAC * rigH;
-    var lineThick = LINE_STROKE * lineScale;
-    var edgeRW = Math.max(0, vw - (rigLeft + rigW));
-    edgeR.style.display = 'block';
-    edgeR.style.left = (rigLeft + rigW) + 'px';
-    edgeR.style.width = edgeRW + 'px';
-    edgeR.style.top = (lineY - lineThick / 2 - mtop) + 'px';
-    edgeR.style.height = lineThick + 'px';
-
-    // 진행 게이지 — rig 안쪽 라인 → 오른쪽 연장선을 하나로 이은 전체
-    // 길이를 기준으로, revealFrac(위에서 이미 계산한 연속값) 만큼 왼쪽부터
-    // 진한 색으로 채운다. 연장선 쪽 채움은 트랙(edgeR)의 --fill 비율
-    // 하나로, rig 안쪽은 위 mask 의 stroke-dashoffset 으로 표현한다 —
-    // 자리·두께 값은 위에서 트랙에 이미 맞춰 놓았으므로 여기서 다시 셀
-    // 필요가 없다(2026-08-22, "따로 논다"는 지적에 트랙+채움 두 엘리먼트
-    // 구조를 하나로 합치며 정리)
-    var totalLen = rigW + edgeRW;
-    var revealedLen = totalLen * revealFrac;
-
-    var rigRevealLen = Math.max(0, Math.min(rigW, revealedLen));
-    var rigRevealPct = rigW > 0 ? (rigRevealLen / rigW * 100) : 0;
-    if (lineMaskPath) lineMaskPath.setAttribute('stroke-dashoffset', lineTotalLen * (1 - rigRevealPct / 100));
-
-    var fillR = Math.max(0, Math.min(edgeRW, revealedLen - rigW));
-    edgeR.style.setProperty('--fill', (edgeRW > 0 ? (fillR / edgeRW * 100) : 0) + '%');
-
-    // 바닥(CSS 평면) — rig 겹의 실측 밑변부터 카드 밑변까지 채운다. rig 그림
-    // 자체에 이미 포함된 바닥(옛 바닥 띠)과 이어져 어디서 봐도 남는 틈이
-    // 그대로 채워진다. 설비 크기를 먼저 정하고 남는 자리만 쓰므로(위 참고),
-    // 화면이 좁아 설비가 카드 밑변까지 꽉 채우면 이 바닥은 0이 될 수 있다
-    var fillBottom = hrightRect.bottom;
-    var fillTop = Math.min(fillBottom, rigBottom);
-    var fillH = Math.max(0, fillBottom - fillTop);
-    fill.style.display = fillH > 0 ? 'block' : 'none';
-    fill.style.top = (fillTop - mtop) + 'px';
-    fill.style.height = fillH + 'px';
-
-    // 배경 그라데이션판 — rig 겹(본문 열 폭)에만 그려지면 그 폭 밖은
-    // 그라데이션 없이 뚝 끊겨 상자처럼 보인다(2026-08-21 지적). 이 구간엔
-    // 설비가 걸쳐 있지만 grad 는 DOM 에 제일 먼저 붙어 맨 뒤(배경)에 깔리고,
-    // rig 겹은 그 뒤(나중)에 붙어 맨 앞이라 설비가 가려질 일은 없다.
-    // 바닥(.pmap-floor-fill) 을 뺀 뒤로 이 판이 사실상 바닥 역할이라
-    // (2026-08-21), 카드 밑변에 붙인 채로 높이를 PLATE_H 고정값으로 잡는다
-    // — 탭·스펙 패널(mtop 기준) 위로는 넘어가지 않게 막는다
-    var plateBottom = hrightRect.bottom;
-    var plateTop = Math.max(mtop, plateBottom - PLATE_H);
-    grad.style.display = 'block';
-    grad.style.top = (plateTop - mtop) + 'px';
-    grad.style.height = (plateBottom - plateTop) + 'px';
-
-    // 왼쪽 세로 연장 — 라인이 끊긴 지점(rigLeft, lineY)에서 바닥판 윗변
-    // (plateTop)까지만 짧게 잇는다(2026-08-22 요청). 라인이 이미 바닥판
-    // 안쪽에 있으면(lineY 가 plateTop 보다 아래) 이을 게 없으니 감춘다
-    var vedgeH = Math.max(0, lineY - plateTop);
-    vedgeL.style.display = vedgeH > 0 ? 'block' : 'none';
-    vedgeL.style.left = rigLeft + 'px';
-    vedgeL.style.top = (plateTop - mtop) + 'px';
-    vedgeL.style.width = lineThick + 'px';
-    vedgeL.style.height = vedgeH + 'px';
-  }
-
-  // 스크롤 이벤트만 믿으면 놓치는 경우가 있다(2026-08-21 지적) — 상단 탭이
-  // sticky 로 바뀌는 순간 .hsec 의 padding-top 이 CSS 변수(--bar-rise 등)로
-  // 다시 계산되는데, 이건 'scroll' 이벤트가 아니라 그 변수를 갱신하는 별도
-  // 로직이 트리거라 우리 스크롤 리스너가 그 타이밍을 못 잡을 수 있다.
-  // 그래서 이 카드가 보이는 동안은 매 프레임 다시 계산한다 — 원인이 스크롤이든
-  // 아니든 상관없이 항상 최신 위치로 맞는다(다른 원인 하나하나 찾아 리스너를
-  // 늘리는 대신, 안전하게 매 프레임 검증한다)
-  function loop(){
-    sync();
-    if (visible) raf = requestAnimationFrame(loop);
-    else raf = null;
-  }
-
-  function queue(){
-    // 보이는 동안은 반드시 loop() 로 이어야 한다 — 여기서 sync() 를 한 번만
-    // 예약하면(옛 버전) 그 프레임이 스스로를 다시 예약하지 않으므로, scroll·
-    // resize 이벤트가 (섹션 전환 애니메이션처럼) 연달아 이 함수를 부르는 동안
-    // loop() 가 걸어 둔 "다음 프레임" 예약이 매번 취소되고 1회성 sync() 로
-    // 바뀐다 — 마지막 이벤트가 지나가고 나면 그 1회성 프레임이 끝으로,
-    // 이후로는 아무도 다시 예약하지 않아 루프가 영영 멈춘다(2026-08-21 확인 —
-    // 카드에 두 번째로 진입했을 때, 또는 스크롤로 벗어났다 되돌아왔을 때
-    // 호버가 안 먹던 원인. 위치는 마지막으로 찍힌 값 그대로라 눈으로는
-    // 멀쩡해 보이지만, hoverIdx 가 바뀌어도 다시 그려줄 프레임이 없어 반영이
-    // 안 됐다)
-    if (raf) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(visible ? loop : sync);
-  }
-
-  new IntersectionObserver(function(entries){
-    visible = entries[0].isIntersecting;
-    if (visible){
-      if (!raf) raf = requestAnimationFrame(loop);
-      startPlay(0);
-    } else {
-      queue();   // 사라질 때도 한 번 더 sync 해서 클론들을 확실히 감춘다
-      stopPlay();
-    }
-  }, { threshold: 0 }).observe(img);
-
-  window.addEventListener('resize', queue);
-  window.addEventListener('scroll', queue, { passive: true });
-  if (track) track.addEventListener('scroll', queue, { passive: true });
-
-  // 실사용 크롬에서 새로고침 직후 텍스트·탭 패널 밑과 설비 사이에 빈 틈이
-  // 보이는데, 개발자도구를 여는 것만으로(=resize 이벤트 한 번) 고쳐지는
-  // 현상이 확인됐다(2026-08-21). 즉 sync() 가 라이브 값으로 매 프레임
-  // 다시 그리는 루프 자체는 정상인데, 그 루프가 스크롤·리사이즈 같은
-  // 트리거 없이는 시작되지 않는 시점(웹폰트가 늦게 적용돼 패널 높이가
-  // 사후에 바뀌거나, 탭이 백그라운드에 있어 requestAnimationFrame 이
-  // 쉬는 동안 레이아웃이 바뀐 경우)에 취약하다 — 그 두 트리거를 각각
-  // 명시적으로 추가해 스스로 다시 맞추게 한다
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queue);
-  document.addEventListener('visibilitychange', function(){
-    if (!document.hidden) queue();
-  });
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin:'0px 0px -18% 0px' });
+  secs.forEach(function(s){ io.observe(s); });
 })();
 </script>
 </body>

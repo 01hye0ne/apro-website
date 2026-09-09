@@ -69,7 +69,15 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # 이 SOURCES 에서 빼 두었다. 2026-08-24 그 비교가 끝나 A 쪽으로 합쳤다 —
 # 이제 열여덟 장 모두 A 에서 나오고, A-1 은 타이틀과 링크만 다르다.
 # A-1 쪽에만 있던 content-export 판 글은 이 커밋 직전 이력에 그대로 남아 있다.
-SOURCES = ['business-smart.html', 'business-energy.html',
+#
+# ⚠ business-smart.html 은 2026-09-09 부터 여기 없다 — 스마트 제조만 A / A-1 의
+#   디자인이 갈라졌기 때문이다(A-1 = Figma 993:130 와이어프레임: GNB·탭 바·카드
+#   캐러셀을 걷어내고 히어로+인트로+세로 인덱스 열한 장으로 새로 짰다. 마을과
+#   푸터만 A 와 같다). 그래서 business-smart-a1.html 은 손으로 고치는 파일이고,
+#   A 를 고쳐도 A-1 로 넘어가지 않는다 — 두 장을 따로 손봐야 한다.
+#   PAGES 에는 그대로 남겨 둔다: 다른 A-1 페이지의 "스마트 제조" 링크가
+#   business-smart-a1.html 로 이어져야 하기 때문이다(빼면 A 로 샌다).
+SOURCES = ['business-energy.html',
            'business-ai.html', 'business-semicon.html',
            'business.html', 'company.html', 'network.html', 'index.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
