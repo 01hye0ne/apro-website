@@ -141,17 +141,39 @@
   .sf-hero>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
                object-fit:cover;object-position:50% 46%}
   /* 하단 유리 띠 — 아래로 갈수록 어두워지는 그라디언트 + 5px 블러.
-     사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다 */
-  .sf-hero h1{position:absolute;left:0;right:0;bottom:0;margin:0;
-              display:flex;flex-direction:column;align-items:center;gap:20px;
-              padding:40px 88px;color:#fff;
+     사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다.
+     세 덩이(국문 · 영문 · 소분류 띠지)가 32 간격으로 쌓이고, 띠지는 바닥에
+     딱 붙는다(아래 여백 0) */
+  .sf-herocap{position:absolute;left:0;right:0;bottom:0;
+              display:flex;flex-direction:column;gap:32px;padding-top:40px;color:#fff;
               background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.2));
               -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  .sf-herocap h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:32px;
+                 padding:0 88px}
   .sf-hero .ko{font-family:var(--suit);font-weight:800;font-size:24px;
                line-height:1.2;letter-spacing:-.48px}
   .sf-hero .en{font-family:var(--ald);font-weight:400;
                font-size:clamp(40px,6.7vw,96px);line-height:1;
                letter-spacing:-.0625em;text-align:center;white-space:nowrap}
+
+  /* 소분류 띠지 — 열한 개가 한 줄에 못 들어가고 잘린다. 잘린 채 세워 두는 대신
+     천천히 흘려 보낸다(같은 줄 두 벌을 이어 붙여 끊김 없이 돈다).
+     읽을 거리가 아니라 분위기라서 aria-hidden 이고, 커서를 얹으면 멈춘다 */
+  .sf-ticker{overflow:hidden;border-top:1px solid rgba(255,255,255,.2)}
+  .sf-tickrow{display:flex;width:max-content}
+  .sf-tickrow>div{display:flex;align-items:center;gap:30px;padding:12px 20px;
+                  flex-shrink:0;animation:sfTick 46s linear infinite}
+  .sf-tickrow:hover>div{animation-play-state:paused}
+  .sf-tickrow b{font-family:var(--suit);font-weight:800;font-size:14px;line-height:1.35;
+                letter-spacing:-.28px;color:rgba(255,255,255,.7);white-space:nowrap}
+  /* 이름 사이 구분 — 1px 세로선 두 개 */
+  .sf-tickrow i{display:flex;align-items:center;gap:8px;height:10px;flex-shrink:0}
+  .sf-tickrow i::before,.sf-tickrow i::after{content:"";width:1px;height:100%;
+                                             background:rgba(255,255,255,.7)}
+  @keyframes sfTick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+  @media(prefers-reduced-motion:reduce){
+    .sf-tickrow>div{animation:none}
+  }
 
   /* ===================== 인트로 ===================== */
   .sf-intro{min-height:calc(100svh - var(--gnb-h));
@@ -183,15 +205,20 @@
      흐른다. 가운데 그림은 장마다 다른 그림이 들어올 자리라 열한 장을 같은 칸에
      겹쳐 두고 지금 장의 것만 띄운다 — 스크롤스파이가 인덱스를 칠하는 것과 같은
      판정을 쓴다.
-     기둥 사이 간격이 다르다(인덱스—52—그림—8—글). flex 의 gap 은 한 값뿐이라
-     8 을 gap 으로 두고 인덱스에만 오른쪽 여백 44 를 더해 52 를 만든다 */
+     12컬럼 그리드(여백 24 · 거터 20) 위에 인덱스 2컬럼 · 그림 5컬럼 · 글 5컬럼으로
+     앉는다. 1440 에서 실측한 값이 아래 셋이다.
+       · 왼쪽 여백 24, 오른쪽 여백 0 — 눈금 줄이 화면 오른쪽 끝까지 나가야 한다
+       · 인덱스 기둥 215(= 2컬럼 + 거터). 그중 오른쪽 20 은 여백이라 칸은 195
+       · 그림/글은 남는 1181 을 8 간격으로 반씩(각 586.5)
+     기둥 사이 간격이 달라서(인덱스—20—내용, 그림—8—글) gap 은 8 로 두고
+     인덱스에만 오른쪽 여백 12 를 더해 20 을 만든다 */
   .sf-main{display:flex;align-items:flex-start;gap:8px;padding-left:24px}
 
   /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
      sticky 요소를 화면 높이로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
      그린 와이어프레임과 같은 자리에 선다 */
   .sf-railwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
-               flex-shrink:0;width:188px;margin-right:44px;
+               flex-shrink:0;width:215px;padding-right:20px;margin-right:12px;
                display:flex;align-items:center}
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
@@ -243,7 +270,7 @@
      맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
   .sf-txt{flex:1;min-height:420px;display:flex;flex-direction:column;gap:24px}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
-            padding-left:52px;padding-right:120px}
+            padding-left:40px;padding-right:122px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,38px);
@@ -254,9 +281,8 @@
              letter-spacing:-.28px;color:var(--sf-sec)}
   .sf-body p+p{margin-top:8px}
 
-  /* 번호 목록 (01-1 공정 프로세스 맵) */
-  .sf-num,.sf-dl{list-style:none;width:430px;max-width:100%;
-                 border-top:2px solid var(--sf-line-s)}
+  /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
+  .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--sf-line-s)}
   .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
              border-bottom:1px solid var(--sf-line)}
   .sf-num b{width:18px;flex-shrink:0;font-family:var(--cal);font-weight:400;
@@ -288,13 +314,13 @@
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
   @media(max-width:1400px){
-    .sf-txtin{padding-left:clamp(24px,3.6vw,52px);padding-right:clamp(24px,6vw,120px)}
+    .sf-txtin{padding-left:clamp(20px,2.8vw,40px);padding-right:clamp(24px,8.5vw,122px)}
     .sf-lead,.sf-introfig,.sf-band{padding-left:clamp(24px,6.7vw,96px);
                                    padding-right:clamp(24px,6.7vw,96px)}
-    .sf-hero h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
+    .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
   }
   @media(max-width:1180px){
-    .sf-railwrap{width:172px;margin-right:24px}
+    .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
     .sf-sec{padding:120px 0}
     .sf-figstack{height:calc(100% - 240px)}
     .sf-cards li{padding:20px 16px}
@@ -312,6 +338,7 @@
     :root{--subnav-h:47px}
     .sf-main{display:block;padding-left:0}
     .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
+                 padding-right:0;margin-right:0;
                  display:block;background:rgba(255,255,255,.94);
                  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
                  border-bottom:1px solid var(--sf-line)}
@@ -337,9 +364,12 @@
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
-    .sf-hero h1{gap:12px;padding-top:28px;padding-bottom:28px}
+    .sf-herocap{gap:20px;padding-top:28px}
+    .sf-herocap h1{gap:12px}
     .sf-hero .ko{font-size:18px}
     .sf-hero .en{white-space:normal}
+    .sf-tickrow>div{gap:20px;padding:10px 16px}
+    .sf-tickrow b{font-size:13px}
     .sf-intro{min-height:0;padding:72px 0}
     .sf-gnb{padding:8px 16px}
     /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
@@ -427,7 +457,16 @@
 <!-- ===================== HERO ===================== -->
 <section class="sf-hero">
   <img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" />
-  <h1><span class="ko">스마트제조</span><span class="en">Smart Factory</span></h1>
+  <div class="sf-herocap">
+    <h1><span class="ko">스마트제조</span><span class="en">Smart Factory</span></h1>
+    <!-- 소분류 띠지 — 같은 줄 두 벌이라 끝이 이어진다. 읽을 거리가 아니라 분위기다 -->
+    <div class="sf-ticker" aria-hidden="true">
+      <div class="sf-tickrow">
+        <div><b>공정 프로세스 맵</b><i></i><b>해외 생산거점 확보</b><i></i><b>신뢰성 검사 장비</b><i></i><b>MES</b><i></i><b>PLC</b><i></i><b>충방전 공정 관리 시스템</b><i></i><b>탄소 나노 튜브</b><i></i><b>LiFSI 전해염</b><i></i><b>HNBR 바인더</b><i></i><b>파우치셀 제조</b><i></i><b>차세대 기술 개발 / 파트너</b><i></i></div>
+        <div><b>공정 프로세스 맵</b><i></i><b>해외 생산거점 확보</b><i></i><b>신뢰성 검사 장비</b><i></i><b>MES</b><i></i><b>PLC</b><i></i><b>충방전 공정 관리 시스템</b><i></i><b>탄소 나노 튜브</b><i></i><b>LiFSI 전해염</b><i></i><b>HNBR 바인더</b><i></i><b>파우치셀 제조</b><i></i><b>차세대 기술 개발 / 파트너</b><i></i></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ===================== INTRO ===================== -->
