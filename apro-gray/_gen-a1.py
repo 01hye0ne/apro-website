@@ -82,10 +82,13 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #   A-1 을 스마트 제조 A-1 과 같은 레이아웃(Figma 994:321 와이어프레임)으로 새로
 #   짰기 때문에 A 와 갈라졌다. business-ai-a1.html 도 손으로 고치는 파일이고,
 #   PAGES 에는 남겨 두어 다른 A-1 페이지의 "인공지능 플랫폼" 링크가 그대로 온다.
-#   두 A-1 페이지는 <style>·<script> 를 각자 갖고 있다(공용 파일로 뽑지 않았다) →
-#   골격을 고칠 일이 생기면 business-smart-a1.html 과 함께 고쳐야 한다.
+#
+# ⚠ business-semicon.html 도 2026-09-09 부터 여기 없다 — 역시 같은 이유다
+#   (Figma 994:544 와이어프레임). 이제 A-1 을 손으로 고치는 페이지는 스마트 제조 ·
+#   인공지능 플랫폼 · 화합물 전력 반도체 셋이고, 세 파일이 <style>·<script> 를
+#   각자 갖고 있다(공용 파일로 뽑지 않았다) → 골격을 고칠 일이 생기면 셋을 함께
+#   고쳐야 한다. 남은 세부 페이지는 에너지 솔루션 하나뿐이다.
 SOURCES = ['business-energy.html',
-           'business-semicon.html',
            'business.html', 'company.html', 'network.html', 'index.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
