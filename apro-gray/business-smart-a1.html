@@ -72,6 +72,13 @@
        영영 안 보인다. 그래서 본문 자리 560 을 먼저 떼고 남는 만큼을 위아래로 나누되,
        설계값 176 을 넘지는 않게 한다. 화면이 넉넉하면(1140 이상) 그대로 176 이다 */
     --sec-pad:clamp(16px,calc((100svh - var(--gnb-h) - 560px) / 2),176px);
+    /* 본문 세 기둥이 먹는 고정분 = 왼쪽 여백 24 + 인덱스 215 + 그 오른쪽 여백 12
+       + 기둥 사이 8 두 번. 남는 폭을 그림/글이 반씩 가져가므로 5컬럼 한 칸이
+       (100% - 267) / 2 다 — GNB 우측 메뉴도 이 폭을 그대로 쓴다 */
+    --body-fixed:267px;
+    --col5:calc((100% - var(--body-fixed)) / 2);
+    /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
+    --txt-pad-l:40px;
   }
   /* 넓은 화면에서는 휠을 가로채 한 번에 한 장씩 옮긴다(맨 아래 스크립트).
      scroll-behavior:smooth 를 켜 두면 그 rAF 애니메이션이 브라우저 이징과 겹쳐
@@ -85,11 +92,18 @@
   /* ===================== 고정 GNB ===================== */
   .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-h);
           display:flex;align-items:center;justify-content:space-between;gap:24px;
-          padding:8px 40px;background:#fff;border-bottom:1px solid var(--sf-ph-bd)}
-  .sf-gnb .logo{flex-shrink:0;width:78px}
+          padding:8px 0;background:#fff;border-bottom:1px solid var(--sf-ph-bd)}
+  .sf-gnb .logo{flex-shrink:0;width:78px;margin-left:40px}
   .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
-  .sf-gnb .right{display:flex;align-items:center;justify-content:flex-end;gap:16px}
-  .sf-menus{list-style:none;display:flex;align-items:center;gap:16px}
+  /* 우측 묶음은 본문 글 기둥과 같은 5컬럼 한 칸이다 — 그래서 첫 메뉴 "사업영역"이
+     소분류 제목과 같은 세로선에 선다(아래 .sf-menus 의 margin-left 가 --txt-pad-l
+     에서 메뉴 자체 padding 8 을 뺀 값이다).
+     min-width 로 바닥을 잡아 둔다 — 화면이 좁아 5컬럼이 메뉴보다 작아지면
+     격자를 포기하고 글자를 지킨다(대신 그 구간에서는 제목과 어긋난다) */
+  .sf-gnb .right{width:var(--col5);min-width:max-content;padding-right:40px;
+                 display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .sf-menus{list-style:none;display:flex;align-items:center;gap:16px;
+            margin-left:calc(var(--txt-pad-l) - 8px)}
   .sf-menus>li{position:relative}
   .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
                  font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.5;
@@ -275,7 +289,7 @@
      맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
   .sf-txt{flex:1;min-height:420px;display:flex;flex-direction:column;gap:24px}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
-            padding-left:40px;padding-right:122px}
+            padding-left:var(--txt-pad-l);padding-right:122px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,38px);
@@ -318,8 +332,12 @@
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
+  /* 1440 창이라도 스크롤바가 보이면 쓸 폭이 1409 라 메뉴가 5컬럼 칸에 5px 모자란다.
+     간격을 8 로 좁혀 그 구간까지는 격자를 지킨다 */
+  @media(max-width:1500px){.sf-menus{gap:8px}}
   @media(max-width:1400px){
-    .sf-txtin{padding-left:clamp(20px,2.8vw,40px);padding-right:clamp(24px,8.5vw,122px)}
+    :root{--txt-pad-l:clamp(20px,2.8vw,40px)}
+    .sf-txtin{padding-right:clamp(24px,8.5vw,122px)}
     .sf-lead,.sf-introfig,.sf-band{padding-left:clamp(24px,6.7vw,96px);
                                    padding-right:clamp(24px,6.7vw,96px)}
     .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
@@ -330,7 +348,8 @@
     .sf-cards li{padding:20px 16px}
     .sf-cards p{font-size:17px}
     .sf-introfig img{width:88%}
-    .sf-gnb{padding:8px 24px}
+    .sf-gnb .logo{margin-left:24px}
+    .sf-gnb .right{padding-right:24px}
     .sf-menus{gap:4px}
     .sf-nav{padding:40px 24px}
     .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
@@ -375,7 +394,8 @@
     .sf-tickrow>div{gap:20px;padding:10px 16px}
     .sf-tickrow b{font-size:13px}
     .sf-intro{min-height:0;padding:72px 0}
-    .sf-gnb{padding:8px 16px}
+    .sf-gnb .logo{margin-left:16px}
+    .sf-gnb .right{width:auto;min-width:0;padding-right:16px}
     /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
     .sf-menus{display:none}
     .sf-nav{padding:32px 16px}
