@@ -23,15 +23,26 @@
         business-smart.html 을 뺐고, PAGES 에는 남겨 두어 다른 A-1 페이지의 링크는
         그대로 이 파일로 들어온다. 여기는 손으로 고치는 파일이다.
 
-     이 갈래에서 걷어낸 것 : GNB(+메가메뉴·언어 메뉴)·전체메뉴 오버레이·
-        히어로 밑 소분류 탭 바·본문 카드 캐러셀·맨 위로 버튼.
+     이 갈래에서 걷어낸 것 : 사이트 공용 GNB(.gnb-group — 사진 위에 떠 있는 흰 글자
+        바 + 메가메뉴 + 언어 메뉴)·전체메뉴 오버레이·히어로 밑 소분류 탭 바·
+        본문 카드 캐러셀·맨 위로 버튼.
      남긴 것 : 하단 "다른 사업영역" 마을(.bhop)과 푸터(.footer) — 둘 다
         business-layout.css / .js 의 규칙을 그대로 쓴다.
 
+     2026-09-09 (2차) — 와이어프레임이 두 군데 바뀌어 따라 고쳤다.
+       ① WF/GNB 가 "Scroll" 프레임 위에 따로 얹혔다 = 화면 맨 위 고정 바.
+          와이어프레임 것을 그대로 새로 그렸다(.sf-gnb, 53px 흰 바). 본문은
+          그만큼 밀린다(body padding-top) — 히어로를 덮지 않는다.
+       ② 늘어나는 자리가 바뀌었다. 카드가 장 높이를 꽉 채우고(flex:1),
+          그림 열이 550px 고정에서 글 열과 같은 반쪽으로 늘어난다.
+          장 위아래 여백도 56 → 120 (+카드 자체 56 = 실질 176).
+
      레이아웃(1440 기준, Figma 실측)
+       · 고정 GNB 53
        · 히어로 1440×900 — 사진 위 하단 225px 유리 띠에 국문/영문 타이틀
        · 인트로 900 — 리드 2줄 + 설비 라인 그림 + 소분류 4칸 띠
-       · 본문 11장 900 — [좌측 188 인덱스] 52 [고정 550 그림] 8 [글]
+       · 본문 11장 900 — [좌측 188 인덱스] 52 [그림 584] 8 [글 584]
+         그림·글 두 열은 남는 폭을 반씩 나눠 갖는다(둘 다 flex:1).
          좌측 인덱스는 장마다 다시 그려진 와이어프레임과 달리 sticky 로 한 벌만 두고
          스크롤스파이로 현재 소분류를 칠한다 — 화면에 보이는 결과는 같다.
      ============================================================ -->
@@ -51,14 +62,81 @@
     --sf-ph-tx:#73757a;
     --ald:"Aldrich",var(--rc),sans-serif;
     --cal:"Cal Sans",var(--rc),sans-serif;
+    /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
+       (히어로·장 높이·sticky 인덱스·앵커 여백)이 함께 빼는 값이다.
+       한 군데서 바꾸면 전부 따라온다 */
+    --gnb-h:53px;
   }
   /* 이 페이지에는 스크롤을 가로채는 스크립트가 없다 — 공용 CSS 가 꺼 둔
      smooth 를 여기서만 되살린다(좌측 인덱스 클릭 이동에 쓴다) */
   html{scroll-behavior:smooth}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  /* 고정 바가 덮는 만큼 본문을 내린다 — 와이어프레임도 GNB 아래에서 Scroll 이 시작한다 */
+  body{padding-top:var(--gnb-h)}
+
+  /* ===================== 고정 GNB ===================== */
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px 40px;background:#fff;border-bottom:1px solid var(--sf-ph-bd)}
+  .sf-gnb .logo{flex-shrink:0;width:78px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  .sf-gnb .right{display:flex;align-items:center;justify-content:flex-end;gap:16px}
+  .sf-menus{list-style:none;display:flex;align-items:center;gap:16px}
+  .sf-menus>li{position:relative}
+  .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                 font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.5;
+                 color:var(--sf-sec);white-space:nowrap;transition:color .2s}
+  .sf-menus>li>a:hover{color:var(--brand)}
+  .sf-menus>li>a[aria-current]{color:var(--brand);font-weight:700}
+  .sf-menus .caret{width:16px;height:16px;flex-shrink:0;transition:transform .22s var(--ease)}
+  .sf-menus>li:hover .caret,.sf-menus>li:focus-within .caret{transform:rotate(180deg)}
+  /* 사업영역 하위 목록 — 와이어프레임에서 이 칸만 아래 화살표를 달고 있다 */
+  .sf-drop{position:absolute;top:100%;left:0;min-width:172px;padding:6px 0;background:#fff;
+           border:1px solid var(--sf-line);box-shadow:0 12px 28px rgba(14,22,30,.1);
+           opacity:0;visibility:hidden;transform:translateY(-6px);
+           transition:opacity .22s var(--ease),transform .22s var(--ease),visibility .22s}
+  .sf-menus>li:hover>.sf-drop,.sf-menus>li:focus-within>.sf-drop,
+  .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);font-weight:400;
+             font-size:13px;line-height:1.4;color:var(--sf-sec);white-space:nowrap;
+             transition:background .18s,color .18s}
+  .sf-drop a:hover{background:var(--sf-gray100);color:var(--brand)}
+  .sf-drop a[aria-current]{color:var(--brand);font-weight:700}
+  .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-lang{position:relative}
+  .sf-lang .sf-drop{left:auto;right:0;min-width:96px}
+  .sf-tools button{width:24px;height:24px;display:grid;place-content:center;padding:0;
+                   background:none;border:0;color:var(--sf-sec);cursor:pointer;
+                   transition:color .2s}
+  .sf-tools button:hover,.sf-tools button[aria-expanded="true"]{color:var(--brand)}
+  .sf-tools svg{display:block;width:24px;height:24px}
+  .sf-burger span{display:block;width:18px;height:1.6px;background:currentColor;
+                  transition:transform .25s var(--ease),opacity .2s}
+  .sf-burger span+span{margin-top:5px}
+  .sf-burger[aria-expanded="true"] span:first-child{transform:translateY(3.3px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] span:last-child{transform:translateY(-3.3px) rotate(-45deg)}
+
+  /* 전체 메뉴 — 와이어프레임에 화면이 없어 푸터 사이트맵을 그대로 흰 판에 편다 */
+  .sf-nav{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:55;background:#fff;
+          overflow-y:auto;padding:56px 40px;opacity:0;visibility:hidden;
+          transform:translateY(-8px);
+          transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s}
+  .sf-nav.open{opacity:1;visibility:visible;transform:none}
+  .sf-nav .cols{display:grid;grid-template-columns:repeat(5,1fr);gap:32px;
+                max-width:1360px;margin-inline:auto}
+  .sf-nav .head{margin-bottom:16px;padding-bottom:12px;
+                border-bottom:1px solid var(--sf-line-s);font-family:var(--suit);
+                font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+                color:var(--sf-txt)}
+  .sf-nav ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .sf-nav ul a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;
+               letter-spacing:-.28px;color:var(--sf-sec);transition:color .18s}
+  .sf-nav ul a:hover{color:var(--brand)}
+  .sf-nav ul a[aria-current]{color:var(--brand);font-weight:700}
 
   /* ===================== 히어로 ===================== */
-  .sf-hero{position:relative;height:100svh;min-height:520px;max-height:900px;
+  .sf-hero{position:relative;height:calc(100svh - var(--gnb-h));
+           min-height:480px;max-height:900px;
            background:var(--sf-ph-bg);overflow:hidden}
   .sf-hero>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
                object-fit:cover;object-position:50% 46%}
@@ -76,8 +154,8 @@
                letter-spacing:-.0625em;text-align:center;white-space:nowrap}
 
   /* ===================== 인트로 ===================== */
-  .sf-intro{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-            padding:56px 0}
+  .sf-intro{min-height:calc(100svh - var(--gnb-h));
+            display:flex;flex-direction:column;justify-content:center;padding:56px 0}
   .sf-lead{padding:0 96px;text-align:center;font-family:var(--suit);
            font-size:clamp(20px,2vw,28px);line-height:1.6;letter-spacing:-.02em;
            color:var(--sf-sec)}
@@ -106,8 +184,8 @@
   /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
      sticky 요소를 100svh 로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
      그린 와이어프레임과 같은 자리에 선다 */
-  .sf-railwrap{position:sticky;top:0;height:100svh;flex-shrink:0;width:188px;
-               display:flex;align-items:center}
+  .sf-railwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+               flex-shrink:0;width:188px;display:flex;align-items:center}
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
   .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
@@ -123,13 +201,15 @@
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
 
   .sf-secs{flex:1;min-width:0}
-  .sf-sec{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-          padding:112px 0}
-  .sf-row{display:flex;align-items:stretch;gap:8px;
-          min-height:min(535px,calc(100svh - 224px))}
+  /* 장 위아래 여백 176 = 바깥 120 + 카드 자체 56 (Figma 실측) */
+  .sf-sec{min-height:calc(100svh - var(--gnb-h));scroll-margin-top:var(--gnb-h);
+          display:flex;flex-direction:column;padding:176px 0}
+  /* 카드가 남는 세로를 다 먹는다 — 그래서 그림 자리가 화면 높이를 따라 늘어난다.
+     min-height 는 낮은 화면에서 그림이 납작해지지 않게 잡는 바닥값이다 */
+  .sf-row{flex:1;display:flex;align-items:stretch;gap:8px;min-height:420px}
 
-  /* 그림 열 — 폭 550 고정, 남는 세로를 자리표시자가 다 먹는다 */
-  .sf-fig{width:550px;flex-shrink:0;display:flex;flex-direction:column;gap:24px}
+  /* 그림 열 — 글 열과 남는 폭을 반씩 나눈다(1440 에서 각 584) */
+  .sf-fig{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:24px}
   .sf-ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
          background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
   .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
@@ -193,8 +273,7 @@
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
   @media(max-width:1400px){
-    .sf-fig{width:clamp(320px,40vw,550px)}
-    .sf-txtin{padding-right:clamp(24px,6vw,120px)}
+    .sf-txtin{padding-left:clamp(24px,3.6vw,52px);padding-right:clamp(24px,6vw,120px)}
     .sf-lead,.sf-introfig,.sf-band{padding-left:clamp(24px,6.7vw,96px);
                                    padding-right:clamp(24px,6.7vw,96px)}
     .sf-hero h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
@@ -202,16 +281,21 @@
   @media(max-width:1180px){
     .sf-main{gap:32px}
     .sf-railwrap{width:172px}
+    .sf-sec{padding:120px 0}
     .sf-cards li{padding:20px 16px}
     .sf-cards p{font-size:17px}
     .sf-introfig img{width:88%}
+    .sf-gnb{padding:8px 24px}
+    .sf-menus{gap:4px}
+    .sf-nav{padding:40px 24px}
+    .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
   }
   @media(max-width:900px){
     /* 인덱스를 왼쪽 기둥에서 화면 위 가로 띠로 옮긴다 — 열한 칸을 세로로 세워 둘
        자리가 없다. 활성 칸은 파란 판 대신 밑줄로 표시한다 */
     .sf-main{display:block;padding-left:0}
-    .sf-railwrap{position:sticky;top:0;z-index:20;width:100%;height:auto;display:block;
-                 background:rgba(255,255,255,.94);
+    .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
+                 display:block;background:rgba(255,255,255,.94);
                  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
                  border-bottom:1px solid var(--sf-line)}
     .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 16px;
@@ -222,17 +306,23 @@
     .sf-rail a{border-bottom:0;padding:14px 12px;font-size:13px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
-    .sf-sec{min-height:0;padding:56px 16px;scroll-margin-top:50px}
-    .sf-row{flex-direction:column;gap:24px;min-height:0}
-    .sf-fig{width:100%}
-    .sf-ph{aspect-ratio:550/420}
+    .sf-sec{min-height:0;padding:56px 16px;
+            scroll-margin-top:calc(var(--gnb-h) + 50px)}
+    .sf-row{flex:none;flex-direction:column;gap:24px;min-height:0}
+    .sf-fig{flex:none;width:100%}
+    .sf-ph{flex:none;aspect-ratio:550/420}
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
-    .sf-hero{height:76svh;min-height:420px}
+    .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
     .sf-hero h1{gap:12px;padding-top:28px;padding-bottom:28px}
     .sf-hero .ko{font-size:18px}
     .sf-hero .en{white-space:normal}
     .sf-intro{min-height:0;padding:72px 0}
+    .sf-gnb{padding:8px 16px}
+    /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
+    .sf-menus{display:none}
+    .sf-nav{padding:32px 16px}
+    .sf-nav .cols{grid-template-columns:1fr;gap:24px}
     .sf-lead{font-size:18px}
     .sf-band{padding-left:16px;padding-right:16px}
     .sf-cards{height:auto;flex-wrap:wrap;gap:0}
@@ -246,6 +336,70 @@
 </style>
 </head>
 <body>
+
+<!-- ===================== 고정 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-a1.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <div class="right">
+    <ul class="sf-menus">
+      <li>
+        <a href="business-a1.html" aria-current="true">사업영역<svg class="caret" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6.5 8 10l3.5-3.5"/></svg></a>
+        <div class="sf-drop">
+          <a href="business-smart-a1.html" aria-current="page">스마트 제조</a>
+          <a href="business-energy-a1.html">에너지 솔루션</a>
+          <a href="business-ai-a1.html">인공지능 플랫폼</a>
+          <a href="business-semicon-a1.html">화합물 전력 반도체</a>
+        </div>
+      </li>
+      <li><a href="company-a1.html">회사정보</a></li>
+      <li><a href="ir-finance-a1.html">투자정보</a></li>
+      <li><a href="esg-environment-a1.html">지속가능경영</a></li>
+      <li><a href="community-notice-a1.html">커뮤니티</a></li>
+    </ul>
+    <div class="sf-tools">
+      <div class="sf-lang" id="sfLang">
+        <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg>
+        </button>
+        <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+      </div>
+      <button type="button" class="sf-burger" id="sfBurger" aria-controls="sfNav" aria-expanded="false" aria-label="전체 메뉴 열기">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- 전체 메뉴 — 햄버거로 연다. 내용은 푸터 사이트맵과 같다 -->
+<div class="sf-nav" id="sfNav" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="cols">
+    <div>
+      <p class="head">사업영역</p>
+      <ul>
+        <li><a href="business-smart-a1.html" aria-current="page">스마트 제조</a></li>
+        <li><a href="business-energy-a1.html">에너지 솔루션</a></li>
+        <li><a href="business-ai-a1.html">인공지능 플랫폼</a></li>
+        <li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="head">회사정보</p>
+      <ul><li><a href="company-a1.html">회사 소개</a></li><li><a href="network-a1.html">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+    </div>
+    <div>
+      <p class="head">투자정보</p>
+      <ul><li><a href="ir-finance-a1.html">재무정보</a></li><li><a href="ir-disclosure-a1.html">공시정보</a></li><li><a href="ir-stock-a1.html">주식정보</a></li><li><a href="ir-policy-a1.html">내부규정</a></li></ul>
+    </div>
+    <div>
+      <p class="head">지속가능경영</p>
+      <ul><li><a href="esg-environment-a1.html">환경</a></li><li><a href="esg-social-a1.html">사회</a></li><li><a href="esg-governance-a1.html">지배구조</a></li><li><a href="esg-report-a1.html">내/외부 신고채널</a></li><li><a href="esg-board-a1.html">ESG 게시판</a></li></ul>
+    </div>
+    <div>
+      <p class="head">커뮤니티</p>
+      <ul><li><a href="community-notice-a1.html">공지사항</a></li><li><a href="community-press-a1.html">보도자료</a></li></ul>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== HERO ===================== -->
 <section class="sf-hero">
@@ -688,6 +842,59 @@
      GNB·탭 바·카드 캐러셀 담당 블록은 해당 요소를 못 찾고 곧바로 빠져나간다 -->
 <script src="business-layout.js"></script>
 <script>
+/* 고정 GNB — 언어 드롭다운과 전체 메뉴.
+   대분류 다섯 칸의 하위 목록은 CSS(:hover / :focus-within)로만 열린다 */
+(function(){
+  var lang = document.getElementById('sfLang'),
+      lbtn = document.getElementById('sfLangBtn'),
+      burg = document.getElementById('sfBurger'),
+      nav  = document.getElementById('sfNav');
+
+  function closeLang(){
+    if(!lang) return;
+    lang.classList.remove('open');
+    lbtn.setAttribute('aria-expanded','false');
+  }
+  function closeNav(){
+    if(!nav) return;
+    nav.classList.remove('open');
+    nav.setAttribute('aria-hidden','true');
+    burg.setAttribute('aria-expanded','false');
+    burg.setAttribute('aria-label','전체 메뉴 열기');
+    document.documentElement.style.overflow = '';
+  }
+
+  if(lbtn) lbtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = !lang.classList.contains('open');
+    closeNav();
+    lang.classList.toggle('open', open);
+    lbtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  if(burg) burg.addEventListener('click', function(e){
+    e.stopPropagation();
+    closeLang();
+    if(nav.classList.contains('open')){ closeNav(); return; }
+    nav.classList.add('open');
+    nav.setAttribute('aria-hidden','false');
+    burg.setAttribute('aria-expanded','true');
+    burg.setAttribute('aria-label','전체 메뉴 닫기');
+    /* 판이 화면을 다 덮으므로 뒤쪽 스크롤은 잠근다 */
+    document.documentElement.style.overflow = 'hidden';
+  });
+
+  document.addEventListener('click', function(e){
+    if(lang && !lang.contains(e.target)) closeLang();
+    if(nav && nav.classList.contains('open') && !nav.contains(e.target)) closeNav();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape') return;
+    closeLang(); closeNav();
+  });
+})();
+</script>
+<script>
 (function(){
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
@@ -699,7 +906,10 @@
   var raf = 0;
   function spy(){
     raf = 0;
-    var mid = window.innerHeight / 2, best = 0, bd = Infinity;
+    /* 화면 가운데 = 고정 GNB 아래로 남은 자리의 가운데다 */
+    var top = parseFloat(getComputedStyle(document.documentElement)
+                         .getPropertyValue('--gnb-h')) || 0;
+    var mid = top + (window.innerHeight - top) / 2, best = 0, bd = Infinity;
     for(var i=0;i<secs.length;i++){
       var r = secs[i].getBoundingClientRect();
       var d = Math.abs(r.top + r.height / 2 - mid);
