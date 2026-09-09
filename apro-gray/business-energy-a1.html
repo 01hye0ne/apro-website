@@ -90,9 +90,6 @@
        + 기둥 사이 8 두 번. 남는 폭을 그림/글이 반씩 가져가므로 5컬럼 한 칸이
        (100% - 267) / 2 다 — GNB 우측 메뉴도 이 폭을 그대로 쓴다 */
     --body-fixed:267px;
-    /* 붙박이 헤더 한 줄 높이(위아래 12 + 이름 24). 장이 제자리에 섰을 때
-       그 윗변이 놓이는 높이가 GNB 밑변 + 이 값이다 — 스크립트도 같은 값을 쓴다 */
-    --head-h:48px;
     /* 내용 오른쪽 여백 */
     --body-pad-r:120px;
     --col5:calc((100% - var(--body-fixed)) / 2);
@@ -281,9 +278,9 @@
               font-size:clamp(18px,1.39vw,20px);line-height:1.2;
               letter-spacing:-.4px;color:var(--brand);white-space:nowrap}
 
-  /* ===================== 본문 — 인덱스 + 붙박이 헤더 + 열 장 =====================
-     기둥이 둘이다. 왼쪽 인덱스와 오른쪽 위 헤더 줄만 화면에 붙고(sticky), 그 아래
-     내용은 통째로 흐른다 — 형제 세 장과 다른 점이 여기 하나뿐이다.
+  /* ===================== 본문 — 인덱스 + 열 장 =====================
+     붙박이는 왼쪽 인덱스 하나뿐이다. 오른쪽은 머리 줄까지 장에 딸려 통째로 흐르고,
+     장 하나가 한 화면을 채우며 그 안에서 세로 가운데에 선다.
      12컬럼 그리드(여백 24 · 거터 20) 위에 인덱스 2컬럼 · 내용 10컬럼으로 앉는다.
        · 왼쪽 여백 24. 인덱스 기둥 215(= 2컬럼 + 거터), 그중 오른쪽 20 은 여백
        · 내용은 남는 폭을 다 쓰고 오른쪽만 120 을 비운다(Figma pr-120) */
@@ -309,49 +306,35 @@
   .sf-rail a:hover{color:var(--brand)}
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
 
-  /* 가운데 붙박이 헤더 — [숫자 태그][소분류 이름][가는 선][짧은 세로 눈금].
-     형제 페이지에서 그림 기둥이 하던 "지금 어디를 보고 있는지" 역할을 이 한 줄이
-     혼자 한다. 이름은 장마다 갈리므로 스크립트가 글자만 갈아 끼우고, 갈리는 순간이
-     보이지 않게 잠깐 흐려졌다 돌아온다.
-     흰 바탕을 깔아야 밑에서 올라오는 글이 헤더에 비쳐 보이지 않는다. 아래로 짧게
-     흰 그라디언트를 흘려 글이 선에 닿는 순간을 부드럽게 지운다 */
-  .sf-body{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
-           padding-right:var(--body-pad-r)}
-  .sf-head{position:sticky;top:var(--gnb-h);z-index:10;
-           flex-shrink:0;padding:12px 0;background:#fff}
-  .sf-head::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;
-                  background:linear-gradient(#fff,rgba(255,255,255,0));
-                  pointer-events:none}
-  .sf-headin{display:flex;align-items:center;gap:8px;height:24px}
-  .sf-headin .ttl{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
-                  letter-spacing:-.4px;color:var(--sf-txt);white-space:nowrap;
-                  transition:opacity .18s var(--ease)}
-  .sf-headin.is-swap .ttl{opacity:0}
-  /* 숫자 태그 — 폭을 고정한다(Figma 실측 32). 글자에 맞춰 늘었다 줄었다 하면
-     장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
-     자리마다 0~9 를 세로로 이어 둔 띠(.r)를 두고, 지금 숫자만큼 끌어올려 보여 준다
-     — 바뀔 때 글자가 갈리는 대신 계기판처럼 굴러간다 */
-  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
-          justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
-          font-family:var(--ald);font-size:11px;line-height:11px;letter-spacing:1px}
-  /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
-     가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
-  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
-  .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
-  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
-  .sf-tag .s{display:block;width:5px;text-align:center}
-  @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
-  .sf-headin .rule{flex:1;min-width:0;height:1px;background:var(--sf-line-s)}
-  .sf-headin .tick{width:2px;height:12px;flex-shrink:0;background:var(--sf-ter)}
-  @media(prefers-reduced-motion:reduce){.sf-headin .ttl{transition:none}}
+  .sf-body{flex:1 1 0;min-width:0;padding-right:var(--body-pad-r)}
 
-  /* 장 — 헤더 밑으로 그냥 흐른다. 앞뒤 장이 이어 보이므로 지금 장만 진하게 둔다 */
+  /* 장의 머리 줄 — [숫자 태그][소분류 이름][가는 선][짧은 세로 눈금].
+     형제 페이지에서 그림 기둥이 하던 "지금 어디를 보고 있는지" 역할을 이 한 줄이
+     혼자 한다. 장마다 하나씩 달려 장과 함께 흐르므로 글자를 갈아 끼울 일이 없다 —
+     숫자도 이름도 마크업에 그대로 적혀 있고 스크립트가 손대지 않는다.
+     색은 장의 쿨그레이 토큰을 따라간다(지금 장만 진해진다) */
+  .sf-headin{display:flex;align-items:center;gap:8px;height:24px;margin-bottom:24px}
+  .sf-headin .ttl{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
+                  letter-spacing:-.4px;color:var(--c-ttl);white-space:nowrap}
+  /* 숫자 태그 — 폭을 고정한다(Figma 실측 32). 자릿수가 같아도 글자에 맞춰 늘었다
+     줄었다 하면 장을 옮길 때 오른쪽 눈금 줄의 시작점이 흔들린다 */
+  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
+          justify-content:center;padding:2px 4px 0;background:var(--c-tick);color:#fff;
+          font-family:var(--ald);font-size:11px;line-height:11px;letter-spacing:1px}
+  .sf-headin .rule{flex:1;min-width:0;height:1px;background:var(--c-bd-s)}
+  .sf-headin .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick)}
+
+  /* 장 — 한 장이 한 화면을 채우고 그 안에서 세로 가운데에 선다. 03 솔루션처럼
+     내용이 한 화면보다 긴 장은 min-height 를 넘겨 그냥 자란다.
+     앞뒤 장이 이어 보이므로 지금 장만 진하게 둔다 */
   .sf-secs{display:flex;flex-direction:column}
-  .sf-sec{padding:32px 0 72px;
-          scroll-margin-top:calc(var(--gnb-h) + var(--head-h));
+  .sf-sec{min-height:calc(100svh - var(--gnb-h));
+          display:flex;flex-direction:column;justify-content:center;
+          padding:40px 0;scroll-margin-top:var(--gnb-h);
           --c-ttl:var(--sf-txt);     /* 900 제목      */
           --c-body:var(--sf-sec);    /* 600 줄글      */
           --c-num:var(--brand);      /* 목록 번호     */
+          --c-tick:var(--sf-ter);    /* 태그 · 눈금   */
           --c-bd:var(--sf-line);     /* 200 칸선      */
           --c-bd-s:var(--sf-line-s)} /* 300 굵은 선   */
 
@@ -422,20 +405,25 @@
   @media(min-width:901px){
     .js .sf-sec:not(.is-on){
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-tick:var(--sf-line);
       --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
     .js .sf-sec:not(.is-on) .sf-prod .lbl{background:var(--sf-line)}
     .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
     .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
   }
+  .sf-headin .ttl,
   .sf-t h2,.sf-t p,.sf-apps b,.sf-apps span,.sf-lead18,
   .sf-feat .k,.sf-feat .d,.sf-cert .hd,.sf-cert li,
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
   .sf-apps li,.sf-cert .hd,.sf-cert li{transition:border-color .5s var(--ease)}
+  .sf-tag,.sf-headin .rule,.sf-headin .tick,
   .sf-prod .lbl,.sf-cert li::before{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
-    .sf-t h2,.sf-t p,.sf-apps b,.sf-apps span,.sf-lead18,.sf-feat .k,.sf-feat .d,
-    .sf-cert .hd,.sf-cert li,.sf-prod .use b,.sf-prod .use span,
-    .sf-apps li,.sf-prod .lbl,.sf-cert li::before{transition:none}
+    .sf-headin .ttl,.sf-t h2,.sf-t p,.sf-apps b,.sf-apps span,.sf-lead18,
+    .sf-feat .k,.sf-feat .d,.sf-cert .hd,.sf-cert li,
+    .sf-prod .use b,.sf-prod .use span,.sf-apps li,
+    .sf-tag,.sf-headin .rule,.sf-headin .tick,
+    .sf-prod .lbl,.sf-cert li::before{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -460,11 +448,10 @@
     .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
   }
   @media(max-width:900px){
-    /* 두 기둥을 세로로 눕힌다 — 인덱스가 화면 위 가로 띠, 그 아래 헤더 줄이
-       붙박이 띠, 그 밑으로 내용이 흐른다. 붙어 있는 것과 흐르는 것의 관계는
-       넓은 화면과 같다.
+    /* 두 기둥을 세로로 눕힌다 — 인덱스만 화면 위 가로 띠로 붙고 그 밑으로 장이
+       머리 줄째 흐른다. 붙어 있는 것과 흐르는 것의 관계는 넓은 화면과 같다.
        --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
-    :root{--subnav-h:47px;--head-h:45px}
+    :root{--subnav-h:47px}
     .sf-main{display:block;padding-left:0}
     .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
                  padding-right:0;margin-right:0;
@@ -479,14 +466,12 @@
     .sf-rail a{border-bottom:0;padding:14px 12px;font-size:13px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
-    /* 헤더 줄 — 인덱스 띠 바로 밑에 붙는다 */
+    /* 장 높이를 화면에 매지 않는다 — 내용만큼만 쓰고 이어서 흐른다 */
     .sf-body{padding-right:0}
-    .sf-head{top:calc(var(--gnb-h) + var(--subnav-h));z-index:15;
-             padding:10px 16px;border-bottom:1px solid var(--sf-line)}
-    .sf-head::after{display:none}
+    .sf-headin{margin-bottom:20px}
     .sf-headin .ttl{font-size:17px}
-    .sf-sec{padding:28px 16px 48px;
-            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + var(--head-h))}
+    .sf-sec{min-height:0;display:block;padding:28px 16px 48px;
+            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h))}
     /* 제목·리드와 Application 목록, 제품 카드를 모두 한 줄로 세운다 */
     .sf-titlerow{flex-direction:column;gap:24px;padding-bottom:24px}
     .sf-apps{width:100%}
@@ -683,21 +668,11 @@
   </div>
 
   <div class="sf-body">
-    <!-- 붙박이 헤더 — 열 장이 이 한 줄을 같이 쓴다. 숫자는 자리마다 굴러가고
-         이름은 스크립트가 갈아 끼운다(JS 가 죽으면 첫 장 이름이 그대로 남는다) -->
-    <div class="sf-head">
-      <div class="sf-headin" id="sfHead">
-        <span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span>
-        <span class="ttl">GRID ESS</span>
-        <i class="rule"></i><i class="tick"></i>
-      </div>
-    </div>
-
     <div class="sf-secs">
 
       <!-- 01-1 GRID ESS -->
-      <section class="sf-sec sf-step" id="sf01-1" aria-labelledby="sf01-1-t"
-               data-name="GRID ESS">
+      <section class="sf-sec sf-step" id="sf01-1" aria-labelledby="sf01-1-t">
+        <p class="sf-headin"><span class="sf-tag">01-1</span><span class="ttl">GRID ESS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf01-1-t">Power Grid Stability</h2>
@@ -714,8 +689,8 @@
       </section>
 
       <!-- 01-2 Renewable ESS -->
-      <section class="sf-sec sf-step" id="sf01-2" aria-labelledby="sf01-2-t"
-               data-name="Renewable ESS">
+      <section class="sf-sec sf-step" id="sf01-2" aria-labelledby="sf01-2-t">
+        <p class="sf-headin"><span class="sf-tag">01-2</span><span class="ttl">Renewable ESS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf01-2-t">Renewable Energy Integration</h2>
@@ -731,8 +706,8 @@
       </section>
 
       <!-- 01-3 C&amp;I ESS -->
-      <section class="sf-sec sf-step" id="sf01-3" aria-labelledby="sf01-3-t"
-               data-name="C&amp;I ESS">
+      <section class="sf-sec sf-step" id="sf01-3" aria-labelledby="sf01-3-t">
+        <p class="sf-headin"><span class="sf-tag">01-3</span><span class="ttl">C&amp;I ESS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf01-3-t">Commercial &amp;<br />Industrial Energy Storage</h2>
@@ -749,8 +724,8 @@
       </section>
 
       <!-- 02-1 데이터 센터 전용 UPS -->
-      <section class="sf-sec sf-step" id="sf02-1" aria-labelledby="sf02-1-t"
-               data-name="데이터 센터 전용 UPS">
+      <section class="sf-sec sf-step" id="sf02-1" aria-labelledby="sf02-1-t">
+        <p class="sf-headin"><span class="sf-tag">02-1</span><span class="ttl">데이터 센터 전용 UPS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf02-1-t">Reliable Power<br />for Data Infrastructure</h2>
@@ -767,8 +742,8 @@
       </section>
 
       <!-- 02-2 산업용 UPS -->
-      <section class="sf-sec sf-step" id="sf02-2" aria-labelledby="sf02-2-t"
-               data-name="산업용 UPS">
+      <section class="sf-sec sf-step" id="sf02-2" aria-labelledby="sf02-2-t">
+        <p class="sf-headin"><span class="sf-tag">02-2</span><span class="ttl">산업용 UPS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf02-2-t">Reliable Power<br />for Data Infrastructure</h2>
@@ -785,8 +760,8 @@
       </section>
 
       <!-- 02-3 주요 전력망 UPS -->
-      <section class="sf-sec sf-step" id="sf02-3" aria-labelledby="sf02-3-t"
-               data-name="주요 전력망 UPS">
+      <section class="sf-sec sf-step" id="sf02-3" aria-labelledby="sf02-3-t">
+        <p class="sf-headin"><span class="sf-tag">02-3</span><span class="ttl">주요 전력망 UPS</span><i class="rule"></i><i class="tick"></i></p>
         <div class="sf-titlerow">
           <div class="sf-t">
             <h2 id="sf02-3-t">Continuous Power<br />for Critical Infrastructure</h2>
@@ -803,8 +778,8 @@
       </section>
 
       <!-- 03-1 Module -->
-      <section class="sf-sec sf-step" id="sf03-1" aria-labelledby="sf03-1-t"
-               data-name="Module">
+      <section class="sf-sec sf-step" id="sf03-1" aria-labelledby="sf03-1-t">
+        <p class="sf-headin"><span class="sf-tag">03-1</span><span class="ttl">Module</span><i class="rule"></i><i class="tick"></i></p>
         <p class="sf-lead18" id="sf03-1-t">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
         <div class="sf-prods">
           <div class="sf-prod">
@@ -844,8 +819,8 @@
       </section>
 
       <!-- 03-2 Rack -->
-      <section class="sf-sec sf-step" id="sf03-2" aria-labelledby="sf03-2-t"
-               data-name="Rack">
+      <section class="sf-sec sf-step" id="sf03-2" aria-labelledby="sf03-2-t">
+        <p class="sf-headin"><span class="sf-tag">03-2</span><span class="ttl">Rack</span><i class="rule"></i><i class="tick"></i></p>
         <p class="sf-lead18" id="sf03-2-t">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
         <div class="sf-prods">
           <div class="sf-prod">
@@ -885,8 +860,8 @@
       </section>
 
       <!-- 03-3 Container -->
-      <section class="sf-sec sf-step" id="sf03-3" aria-labelledby="sf03-3-t"
-               data-name="Container">
+      <section class="sf-sec sf-step" id="sf03-3" aria-labelledby="sf03-3-t">
+        <p class="sf-headin"><span class="sf-tag">03-3</span><span class="ttl">Container</span><i class="rule"></i><i class="tick"></i></p>
         <p class="sf-lead18" id="sf03-3-t">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
         <div class="sf-prods">
           <div class="sf-prod">
@@ -926,8 +901,8 @@
       </section>
 
       <!-- 03-4 BMS -->
-      <section class="sf-sec sf-step" id="sf03-4" aria-labelledby="sf03-4-t"
-               data-name="BMS">
+      <section class="sf-sec sf-step" id="sf03-4" aria-labelledby="sf03-4-t">
+        <p class="sf-headin"><span class="sf-tag">03-4</span><span class="ttl">BMS</span><i class="rule"></i><i class="tick"></i></p>
         <p class="sf-lead18" id="sf03-4-t">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
         <div class="sf-prods">
           <div class="sf-prod">
@@ -1137,22 +1112,18 @@
 (function(){
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
-  var head  = document.getElementById('sfHead');
-  var tag   = document.getElementById('sfTag');
-  var ttl   = head ? head.querySelector('.ttl') : null;
-  var reels = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
   if(!secs.length) return;
 
-  /* ── 좌측 인덱스 + 붙박이 헤더 스크롤스파이 ───────────────────────────
-     장이 제자리에 섰을 때 그 윗변이 놓이는 높이 = 고정 GNB 밑변 + 헤더 한 줄.
-     그 줄에 가장 가까운 장을 지금 장으로 친다 — 장이 화면보다 길어도 한 장은
-     반드시 뽑히므로 인덱스와 헤더가 비지 않는다 */
+  /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
+     장이 제자리에 섰을 때 그 윗변이 놓이는 높이 = 고정 GNB 밑변. 그 줄에 가장
+     가까운 장을 지금 장으로 친다 — 장이 화면보다 길어도 한 장은 반드시 뽑히므로
+     인덱스가 비지 않는다. 이 결과로 장의 쿨그레이 칠(.is-on)도 함께 갈린다 */
   var raf = 0, cur = -1;
   function px(name){
     return parseFloat(getComputedStyle(document.documentElement)
                       .getPropertyValue(name)) || 0;
   }
-  function line(){ return px('--gnb-h') + px('--head-h'); }
+  function line(){ return px('--gnb-h'); }
   function spy(){
     raf = 0;
     var y = line(), best = 0, bd = Infinity;
@@ -1167,33 +1138,6 @@
       else           links[j].removeAttribute('aria-current');
     }
     for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
-    setTag(secs[best].id);
-    setTitle(secs[best].getAttribute('data-name') || '');
-  }
-
-  /* 숫자 태그 — "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다.
-     띠 한 칸이 11px 이라 숫자 d 는 -11×d 만큼 올리면 창에 걸린다 */
-  function setTag(id){
-    var m = /sf(\d)(\d)-(\d)/.exec(id || '');
-    if(!m || !reels.length) return;
-    for(var i=0;i<3;i++){
-      var b = reels[i].firstElementChild;
-      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
-    }
-    tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
-  }
-  /* 소분류 이름 — 글자가 갈리는 순간이 보이지 않게 잠깐 흐렸다 되돌린다.
-     숫자와 달리 길이가 제각각이라 굴릴 수 없다(오른쪽 눈금 줄의 시작점이 함께
-     움직여야 하므로 겹쳐 두고 페이드하는 방법도 못 쓴다) */
-  var swap = null;
-  function setTitle(name){
-    if(!ttl || ttl.textContent === name) return;
-    clearTimeout(swap);
-    head.classList.add('is-swap');
-    swap = setTimeout(function(){
-      ttl.textContent = name;
-      head.classList.remove('is-swap');
-    }, 180);
   }
   function onScroll(){ if(!raf) raf = requestAnimationFrame(spy); }
   window.addEventListener('scroll', onScroll, { passive:true });
@@ -1205,7 +1149,7 @@
 <script>
 /* ── 휠 한 번 = 한 장 ────────────────────────────────────────────────────
    히어로 · 인트로 · 소분류 열 장이 각각 한 자리라, 굴린 만큼 어중간하게 멈추는
-   대신 다음 장이 붙박이 헤더 바로 밑에 딱 붙게 옮긴다. 값(PAGE 820ms ·
+   대신 다음 장의 윗변이 GNB 밑변에 딱 붙게 옮긴다. 값(PAGE 820ms ·
    REARM 180ms · easeInOutSine)은 형제 페이지와 같다 — 사업영역을 옮겨 다닐 때
    손끝 느낌이 달라지면 안 된다.
 
@@ -1232,15 +1176,13 @@
     return parseFloat(getComputedStyle(document.documentElement)
                       .getPropertyValue(name)) || 0;
   }
-  /* 소분류 장은 붙박이 헤더 밑변에 서고, 배너·인트로는 GNB 밑변에 바로 붙는다 */
-  function lineOf(el){
-    return px('--gnb-h') + (el.classList.contains('sf-sec') ? px('--head-h') : 0);
-  }
-  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - lineOf(el); }
+  /* 배너 · 인트로 · 소분류 장 모두 GNB 밑변에 선다 */
+  function lineOf(){ return px('--gnb-h'); }
+  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - lineOf(); }
   function current(){
     var best = -1, bd = Infinity;
     for(var i=0;i<steps.length;i++){
-      var d = Math.abs(steps[i].getBoundingClientRect().top - lineOf(steps[i]));
+      var d = Math.abs(steps[i].getBoundingClientRect().top - lineOf());
       if(d < bd){ bd = d; best = i; }
     }
     return best;
@@ -1277,7 +1219,7 @@
     if(i < 0) return;
 
     var r = steps[i].getBoundingClientRect();
-    var off = r.top - lineOf(steps[i]);
+    var off = r.top - lineOf();
     /* 한 화면보다 긴 장(03 솔루션)은 남은 쪽으로 그냥 흐르게 둔다 */
     if(dir > 0 && r.bottom > window.innerHeight + 4) return;
     if(dir < 0 && off < -4) return;
