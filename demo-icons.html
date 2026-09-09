@@ -7,12 +7,13 @@
 <!--
   사업영역 소분류 아이콘 13개 확인용 페이지.
 
-  아이콘은 assets/icon-*.svg 에 낱개 파일로 있고, 규격은 사이트에 이미 들어가 있는
-  픽토그램(business-*.html 의 .pict .ic)과 같다 :
-      viewBox="0 0 28 28"  fill="none"  stroke="currentColor"
-      stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
-  stroke 가 currentColor 이므로 색은 쓰는 자리의 color 가 정한다 — 그래서 아래
-  어두운 판에서도 같은 파일이 그대로 흰 선으로 뒤집힌다.
+  아이콘은 assets/icon-*.svg 에 낱개 파일로 있다. 2026-09-09 에 직접 그린 새 세트로
+  통째로 갈아 끼웠고(Figma 1044:10959), 규격이 바뀌었다 :
+      viewBox="0 0 24 24"  fill="none"
+  선으로 그린 것과 면으로 딴 것이 섞여 있지만 stroke·fill 이 모두 currentColor 라
+  색은 여전히 쓰는 자리의 color 가 정한다 — 아래 어두운 판에서도 그대로 뒤집힌다.
+  UI 아이콘 넷(icon-menu · icon-global · icon-down · icon-up)이 같은 세트에 함께
+  들어왔다. 이 페이지는 사업영역 소분류 13개만 보여 준다.
 
   ⚠ <img> 로 부르면 currentColor 가 먹지 않는다(외부 문서라 상속이 끊긴다).
     실제 페이지에 넣을 때는 기존 픽토그램처럼 SVG 를 인라인으로 붙이거나,
@@ -66,42 +67,69 @@
   <h1>사업영역 소분류 아이콘 13</h1>
   <p class="lead">사이트에 이미 들어가 있는 픽토그램과 같은 규격으로 그렸다. 굵기·캡·그리드가 같아서
     기존 <code>.pict .ic</code> 자리에 그대로 섞인다. 색은 <code>currentColor</code> 라 쓰는 자리가 정한다.</p>
-  <div class="spec">viewBox="0 0 28 28"  fill="none"  stroke="currentColor"
-stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
-렌더 크기 44px (기존 픽토그램과 동일)</div>
+  <div class="spec">viewBox="0 0 24 24"  fill="none"
+색은 stroke / fill 어느 쪽이든 currentColor — 쓰는 자리의 color 가 정한다
+렌더 크기 44px</div>
 
   <!-- ─────────────── 스마트 제조 ─────────────── -->
   <h2>스마트 제조</h2>
   <div class="grid">
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M13 7V11H16V12H14.8438L12.3438 18.5H11V14H8V13H9.16602L11.5381 7.30762L11.667 7H13ZM10.25 13H12V16.6064L13.7715 12H12V8.80078L10.25 13Z" fill="currentColor"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M13 7V11H16V12H14.8438L12.3438 18.5H11V14H8V13H9.16602L11.5381 7.30762L11.667 7H13ZM10.25 13H12V16.6064L13.7715 12H12V8.80078L10.25 13Z" fill="currentColor"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M13 7V11H16V12H14.8438L12.3438 18.5H11V14H8V13H9.16602L11.5381 7.30762L11.667 7H13ZM10.25 13H12V16.6064L13.7715 12H12V8.80078L10.25 13Z" fill="currentColor"/></svg></span>
       </div>
       <p class="nm">이차전지 활성화</p><p class="fn">icon-battery-formation.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M10.5 16 13 18.5 17.5 13"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M10.5 16 13 18.5 17.5 13"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M10.5 16 13 18.5 17.5 13"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M15.9531 9.21191L11.5 17H10.6914L10.5527 16.7236L8.94141 13.5H8V12.5H9.55859L9.69727 12.7764L11.04 15.4619L15.0713 8.74316L15.9531 9.21191Z" fill="currentColor"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M15.9531 9.21191L11.5 17H10.6914L10.5527 16.7236L8.94141 13.5H8V12.5H9.55859L9.69727 12.7764L11.04 15.4619L15.0713 8.74316L15.9531 9.21191Z" fill="currentColor"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M15.9531 9.21191L11.5 17H10.6914L10.5527 16.7236L8.94141 13.5H8V12.5H9.55859L9.69727 12.7764L11.04 15.4619L15.0713 8.74316L15.9531 9.21191Z" fill="currentColor"/></svg></span>
       </div>
       <p class="nm">신뢰성 검사 장비</p><p class="fn">icon-reliability-testing.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h21"/><path d="M14 5v3.5"/><path d="M10 12V8.5h8V12"/><rect x="6" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M3 24h22"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h21"/><path d="M14 5v3.5"/><path d="M10 12V8.5h8V12"/><rect x="6" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M3 24h22"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h21"/><path d="M14 5v3.5"/><path d="M10 12V8.5h8V12"/><rect x="6" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M3 24h22"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/></svg></span>
       </div>
       <p class="nm">자동화 시스템</p><p class="fn">icon-automation-system.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/><path d="M14 11.5v5"/><circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/><path d="M14 11.5v5"/><circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/><path d="M14 11.5v5"/><circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/></svg></span>
       </div>
       <p class="nm">이차전지 소재</p><p class="fn">icon-battery-material.svg</p>
     </div>
@@ -112,17 +140,26 @@ stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
   <div class="grid">
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8.5" width="19" height="11" rx="2"/><path d="M10.5 12v4M15.5 12v4M20.5 12v4"/><path d="M3 14h3"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8.5" width="19" height="11" rx="2"/><path d="M10.5 12v4M15.5 12v4M20.5 12v4"/><path d="M3 14h3"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8.5" width="19" height="11" rx="2"/><path d="M10.5 12v4M15.5 12v4M20.5 12v4"/><path d="M3 14h3"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M19.7143 7.28571H6.85715C5.91037 7.28571 5.14286 8.05322 5.14286 8.99999V15C5.14286 15.9468 5.91037 16.7143 6.85715 16.7143H19.7143C20.6611 16.7143 21.4286 15.9468 21.4286 15V8.99999C21.4286 8.05322 20.6611 7.28571 19.7143 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10.2857V13.7143M13.2857 10.2857V13.7143M17.5714 10.2857V13.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.57143 12H5.14285" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M19.7143 7.28571H6.85715C5.91037 7.28571 5.14286 8.05322 5.14286 8.99999V15C5.14286 15.9468 5.91037 16.7143 6.85715 16.7143H19.7143C20.6611 16.7143 21.4286 15.9468 21.4286 15V8.99999C21.4286 8.05322 20.6611 7.28571 19.7143 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10.2857V13.7143M13.2857 10.2857V13.7143M17.5714 10.2857V13.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.57143 12H5.14285" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M19.7143 7.28571H6.85715C5.91037 7.28571 5.14286 8.05322 5.14286 8.99999V15C5.14286 15.9468 5.91037 16.7143 6.85715 16.7143H19.7143C20.6611 16.7143 21.4286 15.9468 21.4286 15V8.99999C21.4286 8.05322 20.6611 7.28571 19.7143 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10.2857V13.7143M13.2857 10.2857V13.7143M17.5714 10.2857V13.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.57143 12H5.14285" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">ESS <span style="color:var(--teritary);font-weight:400">· Grid 에너지 저장 장치</span></p><p class="fn">icon-ess.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5 22.5 6.5v7c0 5.2-3.4 8.9-8.5 10.5C8.9 22.4 5.5 18.7 5.5 13.5v-7z"/><path d="M14.7 9 10.5 14.7h3L13.3 19l4.2-5.7h-3z"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5 22.5 6.5v7c0 5.2-3.4 8.9-8.5 10.5C8.9 22.4 5.5 18.7 5.5 13.5v-7z"/><path d="M14.7 9 10.5 14.7h3L13.3 19l4.2-5.7h-3z"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5 22.5 6.5v7c0 5.2-3.4 8.9-8.5 10.5C8.9 22.4 5.5 18.7 5.5 13.5v-7z"/><path d="M14.7 9 10.5 14.7h3L13.3 19l4.2-5.7h-3z"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19.2857 5.57143V11.5714C19.2857 16.0286 16.3714 19.2 12 20.5714C7.62856 19.2 4.71428 16.0286 4.71428 11.5714V5.57143L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6 7.71429L9 12.6H11.5714L11.4 16.2857L15 11.4H12.4286L12.6 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19.2857 5.57143V11.5714C19.2857 16.0286 16.3714 19.2 12 20.5714C7.62856 19.2 4.71428 16.0286 4.71428 11.5714V5.57143L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6 7.71429L9 12.6H11.5714L11.4 16.2857L15 11.4H12.4286L12.6 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19.2857 5.57143V11.5714C19.2857 16.0286 16.3714 19.2 12 20.5714C7.62856 19.2 4.71428 16.0286 4.71428 11.5714V5.57143L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6 7.71429L9 12.6H11.5714L11.4 16.2857L15 11.4H12.4286L12.6 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">UPS <span style="color:var(--teritary);font-weight:400">· 애플리케이션</span></p><p class="fn">icon-ups.svg</p>
     </div>
@@ -133,33 +170,69 @@ stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
   <div class="grid">
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="19" height="14" rx="3.5"/><path d="M14 9V5.5"/><circle cx="14" cy="4.4" r="1.3"/><rect x="8.5" y="13.5" width="11" height="4" rx="2"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="19" height="14" rx="3.5"/><path d="M14 9V5.5"/><circle cx="14" cy="4.4" r="1.3"/><rect x="8.5" y="13.5" width="11" height="4" rx="2"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="19" height="14" rx="3.5"/><path d="M14 9V5.5"/><circle cx="14" cy="4.4" r="1.3"/><rect x="8.5" y="13.5" width="11" height="4" rx="2"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.71429L3.85715 7.71431L3.85715 16.7143C3.85715 18.3712 5.2003 19.7143 6.85715 19.7143H17.1429C18.7997 19.7143 20.1429 18.3712 20.1429 16.7143V10.7143C20.1429 9.05744 18.7997 7.71429 17.1429 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 7.71429V4.71429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 4.88571C12.6154 4.88571 13.1143 4.38682 13.1143 3.77142C13.1143 3.15602 12.6154 2.65714 12 2.65714C11.3846 2.65714 10.8857 3.15602 10.8857 3.77142C10.8857 4.38682 11.3846 4.88571 12 4.88571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 11.5714H8.99999C8.05322 11.5714 7.28571 12.339 7.28571 13.2857C7.28571 14.2325 8.05322 15 8.99999 15H15C15.9468 15 16.7143 14.2325 16.7143 13.2857C16.7143 12.339 15.9468 11.5714 15 11.5714Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.71429L3.85715 7.71431L3.85715 16.7143C3.85715 18.3712 5.2003 19.7143 6.85715 19.7143H17.1429C18.7997 19.7143 20.1429 18.3712 20.1429 16.7143V10.7143C20.1429 9.05744 18.7997 7.71429 17.1429 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 7.71429V4.71429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 4.88571C12.6154 4.88571 13.1143 4.38682 13.1143 3.77142C13.1143 3.15602 12.6154 2.65714 12 2.65714C11.3846 2.65714 10.8857 3.15602 10.8857 3.77142C10.8857 4.38682 11.3846 4.88571 12 4.88571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 11.5714H8.99999C8.05322 11.5714 7.28571 12.339 7.28571 13.2857C7.28571 14.2325 8.05322 15 8.99999 15H15C15.9468 15 16.7143 14.2325 16.7143 13.2857C16.7143 12.339 15.9468 11.5714 15 11.5714Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.71429L3.85715 7.71431L3.85715 16.7143C3.85715 18.3712 5.2003 19.7143 6.85715 19.7143H17.1429C18.7997 19.7143 20.1429 18.3712 20.1429 16.7143V10.7143C20.1429 9.05744 18.7997 7.71429 17.1429 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 7.71429V4.71429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 4.88571C12.6154 4.88571 13.1143 4.38682 13.1143 3.77142C13.1143 3.15602 12.6154 2.65714 12 2.65714C11.3846 2.65714 10.8857 3.15602 10.8857 3.77142C10.8857 4.38682 11.3846 4.88571 12 4.88571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 11.5714H8.99999C8.05322 11.5714 7.28571 12.339 7.28571 13.2857C7.28571 14.2325 8.05322 15 8.99999 15H15C15.9468 15 16.7143 14.2325 16.7143 13.2857C16.7143 12.339 15.9468 11.5714 15 11.5714Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">로봇 플랫폼</p><p class="fn">icon-robot-platform.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8.5" width="19" height="11" rx="2"/><path d="M23.5 11.5v5"/><path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8.5" width="19" height="11" rx="2"/><path d="M23.5 11.5v5"/><path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8.5" width="19" height="11" rx="2"/><path d="M23.5 11.5v5"/><path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.28571H4.28573C3.33895 7.28571 2.57144 8.05322 2.57144 8.99999V15C2.57144 15.9468 3.33895 16.7143 4.28573 16.7143H17.1429C18.0896 16.7143 18.8572 15.9468 18.8572 15V8.99999C18.8572 8.05322 18.0896 7.28571 17.1429 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1429 9.85715V14.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.14285 12H7.71428L9.42857 9L11.5714 15L13.2857 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.28571H4.28573C3.33895 7.28571 2.57144 8.05322 2.57144 8.99999V15C2.57144 15.9468 3.33895 16.7143 4.28573 16.7143H17.1429C18.0896 16.7143 18.8572 15.9468 18.8572 15V8.99999C18.8572 8.05322 18.0896 7.28571 17.1429 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1429 9.85715V14.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.14285 12H7.71428L9.42857 9L11.5714 15L13.2857 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.28571H4.28573C3.33895 7.28571 2.57144 8.05322 2.57144 8.99999V15C2.57144 15.9468 3.33895 16.7143 4.28573 16.7143H17.1429C18.0896 16.7143 18.8572 15.9468 18.8572 15V8.99999C18.8572 8.05322 18.0896 7.28571 17.1429 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1429 9.85715V14.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.14285 12H7.71428L9.42857 9L11.5714 15L13.2857 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">배터리 진단 플랫폼</p><p class="fn">icon-battery-diagnostics.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="10" height="20" rx="2"/><rect x="7" y="7" width="5" height="4.5" rx="1"/><path d="M14.5 10c3.5 0 5.5 2 5.5 5v2.5"/><rect x="17.5" y="17.5" width="5" height="5" rx="1.5"/><path d="M19 22.5V24M21 22.5V24"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="10" height="20" rx="2"/><rect x="7" y="7" width="5" height="4.5" rx="1"/><path d="M14.5 10c3.5 0 5.5 2 5.5 5v2.5"/><rect x="17.5" y="17.5" width="5" height="5" rx="1.5"/><path d="M19 22.5V24M21 22.5V24"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="10" height="20" rx="2"/><rect x="7" y="7" width="5" height="4.5" rx="1"/><path d="M14.5 10c3.5 0 5.5 2 5.5 5v2.5"/><rect x="17.5" y="17.5" width="5" height="5" rx="1.5"/><path d="M19 22.5V24M21 22.5V24"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M10.7143 3.42856H5.57143C4.62466 3.42856 3.85715 4.19607 3.85715 5.14284V18.8571C3.85715 19.8039 4.62466 20.5714 5.57143 20.5714H10.7143C11.6611 20.5714 12.4286 19.8039 12.4286 18.8571V5.14284C12.4286 4.19607 11.6611 3.42856 10.7143 3.42856Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42857 6H6.85714C6.38376 6 6 6.38376 6 6.85714V9C6 9.47339 6.38376 9.85714 6.85714 9.85714H9.42857C9.90196 9.85714 10.2857 9.47339 10.2857 9V6.85714C10.2857 6.38376 9.90196 6 9.42857 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.4286 8.57144C15.4286 8.57144 17.1428 10.2857 17.1428 12.8572V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 15H16.2857C15.5756 15 15 15.5756 15 16.2857V18C15 18.7101 15.5756 19.2857 16.2857 19.2857H18C18.7101 19.2857 19.2857 18.7101 19.2857 18V16.2857C19.2857 15.5756 18.7101 15 18 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.2857 19.2857V20.5714M18 19.2857V20.5714" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M10.7143 3.42856H5.57143C4.62466 3.42856 3.85715 4.19607 3.85715 5.14284V18.8571C3.85715 19.8039 4.62466 20.5714 5.57143 20.5714H10.7143C11.6611 20.5714 12.4286 19.8039 12.4286 18.8571V5.14284C12.4286 4.19607 11.6611 3.42856 10.7143 3.42856Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42857 6H6.85714C6.38376 6 6 6.38376 6 6.85714V9C6 9.47339 6.38376 9.85714 6.85714 9.85714H9.42857C9.90196 9.85714 10.2857 9.47339 10.2857 9V6.85714C10.2857 6.38376 9.90196 6 9.42857 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.4286 8.57144C15.4286 8.57144 17.1428 10.2857 17.1428 12.8572V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 15H16.2857C15.5756 15 15 15.5756 15 16.2857V18C15 18.7101 15.5756 19.2857 16.2857 19.2857H18C18.7101 19.2857 19.2857 18.7101 19.2857 18V16.2857C19.2857 15.5756 18.7101 15 18 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.2857 19.2857V20.5714M18 19.2857V20.5714" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M10.7143 3.42856H5.57143C4.62466 3.42856 3.85715 4.19607 3.85715 5.14284V18.8571C3.85715 19.8039 4.62466 20.5714 5.57143 20.5714H10.7143C11.6611 20.5714 12.4286 19.8039 12.4286 18.8571V5.14284C12.4286 4.19607 11.6611 3.42856 10.7143 3.42856Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42857 6H6.85714C6.38376 6 6 6.38376 6 6.85714V9C6 9.47339 6.38376 9.85714 6.85714 9.85714H9.42857C9.90196 9.85714 10.2857 9.47339 10.2857 9V6.85714C10.2857 6.38376 9.90196 6 9.42857 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.4286 8.57144C15.4286 8.57144 17.1428 10.2857 17.1428 12.8572V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 15H16.2857C15.5756 15 15 15.5756 15 16.2857V18C15 18.7101 15.5756 19.2857 16.2857 19.2857H18C18.7101 19.2857 19.2857 18.7101 19.2857 18V16.2857C19.2857 15.5756 18.7101 15 18 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.2857 19.2857V20.5714M18 19.2857V20.5714" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">전기자동차 충전 플랫폼</p><p class="fn">icon-ev-charging.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-4l2-3.5h12l2 3.5h2v4"/><circle cx="9.5" cy="20" r="2"/><circle cx="18.5" cy="20" r="2"/><path d="M12.5 9.5a2.2 2.2 0 0 1 3 0M10.8 7.6a4.6 4.6 0 0 1 6.4 0M9.1 5.7a7 7 0 0 1 9.8 0"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-4l2-3.5h12l2 3.5h2v4"/><circle cx="9.5" cy="20" r="2"/><circle cx="18.5" cy="20" r="2"/><path d="M12.5 9.5a2.2 2.2 0 0 1 3 0M10.8 7.6a4.6 4.6 0 0 1 6.4 0M9.1 5.7a7 7 0 0 1 9.8 0"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-4l2-3.5h12l2 3.5h2v4"/><circle cx="9.5" cy="20" r="2"/><circle cx="18.5" cy="20" r="2"/><path d="M12.5 9.5a2.2 2.2 0 0 1 3 0M10.8 7.6a4.6 4.6 0 0 1 6.4 0M9.1 5.7a7 7 0 0 1 9.8 0"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M4.28572 17.1429V13.7143L6.00001 10.7143H16.2857L18 13.7143H19.7143V17.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.14286 18.8571C9.08963 18.8571 9.85715 18.0896 9.85715 17.1428C9.85715 16.1961 9.08963 15.4286 8.14286 15.4286C7.19609 15.4286 6.42857 16.1961 6.42857 17.1428C6.42857 18.0896 7.19609 18.8571 8.14286 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.8571 18.8571C16.8039 18.8571 17.5714 18.0896 17.5714 17.1428C17.5714 16.1961 16.8039 15.4286 15.8571 15.4286C14.9104 15.4286 14.1429 16.1961 14.1429 17.1428C14.1429 18.0896 14.9104 18.8571 15.8571 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7143 8.14285C11.0634 7.81749 11.5228 7.63658 12 7.63658C12.4772 7.63658 12.9366 7.81749 13.2857 8.14285M9.25715 6.51428C9.9926 5.80209 10.9762 5.40389 12 5.40389C13.0238 5.40389 14.0074 5.80209 14.7429 6.51428M7.8 4.88571C8.92158 3.78634 10.4295 3.17056 12 3.17056C13.5705 3.17056 15.0784 3.78634 16.2 4.88571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M4.28572 17.1429V13.7143L6.00001 10.7143H16.2857L18 13.7143H19.7143V17.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.14286 18.8571C9.08963 18.8571 9.85715 18.0896 9.85715 17.1428C9.85715 16.1961 9.08963 15.4286 8.14286 15.4286C7.19609 15.4286 6.42857 16.1961 6.42857 17.1428C6.42857 18.0896 7.19609 18.8571 8.14286 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.8571 18.8571C16.8039 18.8571 17.5714 18.0896 17.5714 17.1428C17.5714 16.1961 16.8039 15.4286 15.8571 15.4286C14.9104 15.4286 14.1429 16.1961 14.1429 17.1428C14.1429 18.0896 14.9104 18.8571 15.8571 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7143 8.14285C11.0634 7.81749 11.5228 7.63658 12 7.63658C12.4772 7.63658 12.9366 7.81749 13.2857 8.14285M9.25715 6.51428C9.9926 5.80209 10.9762 5.40389 12 5.40389C13.0238 5.40389 14.0074 5.80209 14.7429 6.51428M7.8 4.88571C8.92158 3.78634 10.4295 3.17056 12 3.17056C13.5705 3.17056 15.0784 3.78634 16.2 4.88571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M4.28572 17.1429V13.7143L6.00001 10.7143H16.2857L18 13.7143H19.7143V17.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.14286 18.8571C9.08963 18.8571 9.85715 18.0896 9.85715 17.1428C9.85715 16.1961 9.08963 15.4286 8.14286 15.4286C7.19609 15.4286 6.42857 16.1961 6.42857 17.1428C6.42857 18.0896 7.19609 18.8571 8.14286 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.8571 18.8571C16.8039 18.8571 17.5714 18.0896 17.5714 17.1428C17.5714 16.1961 16.8039 15.4286 15.8571 15.4286C14.9104 15.4286 14.1429 16.1961 14.1429 17.1428C14.1429 18.0896 14.9104 18.8571 15.8571 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7143 8.14285C11.0634 7.81749 11.5228 7.63658 12 7.63658C12.4772 7.63658 12.9366 7.81749 13.2857 8.14285M9.25715 6.51428C9.9926 5.80209 10.9762 5.40389 12 5.40389C13.0238 5.40389 14.0074 5.80209 14.7429 6.51428M7.8 4.88571C8.92158 3.78634 10.4295 3.17056 12 3.17056C13.5705 3.17056 15.0784 3.78634 16.2 4.88571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">전기자동차 제어 플랫폼</p><p class="fn">icon-ev-control.svg</p>
     </div>
@@ -170,25 +243,43 @@ stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
   <div class="grid">
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/><rect x="9.5" y="9.5" width="9" height="9" rx="1"/><path d="M14 9.5v9M9.5 14h9"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/><rect x="9.5" y="9.5" width="9" height="9" rx="1"/><path d="M14 9.5v9M9.5 14h9"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/><rect x="9.5" y="9.5" width="9" height="9" rx="1"/><path d="M14 9.5v9M9.5 14h9"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M3.51428 15.0857C2.81763 13.1608 2.79802 11.0559 3.45868 9.11834C4.11933 7.18077 5.42079 5.52633 7.1483 4.42799C8.8758 3.32965 10.9261 2.85306 12.961 3.07684C14.9958 3.30063 16.8935 4.21142 18.3411 5.65894C19.7886 7.10646 20.6994 9.0042 20.9232 11.039C21.1469 13.0739 20.6703 15.1242 19.572 16.8517C18.4737 18.5792 16.8192 19.8807 14.8817 20.5413C12.9441 21.202 10.8392 21.1824 8.91428 20.4857L3.51428 15.0857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 8.14285H9C8.52661 8.14285 8.14285 8.52661 8.14285 9V15C8.14285 15.4734 8.52661 15.8571 9 15.8571H15C15.4734 15.8571 15.8571 15.4734 15.8571 15V9C15.8571 8.52661 15.4734 8.14285 15 8.14285Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8.14285V15.8571M8.14285 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M3.51428 15.0857C2.81763 13.1608 2.79802 11.0559 3.45868 9.11834C4.11933 7.18077 5.42079 5.52633 7.1483 4.42799C8.8758 3.32965 10.9261 2.85306 12.961 3.07684C14.9958 3.30063 16.8935 4.21142 18.3411 5.65894C19.7886 7.10646 20.6994 9.0042 20.9232 11.039C21.1469 13.0739 20.6703 15.1242 19.572 16.8517C18.4737 18.5792 16.8192 19.8807 14.8817 20.5413C12.9441 21.202 10.8392 21.1824 8.91428 20.4857L3.51428 15.0857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 8.14285H9C8.52661 8.14285 8.14285 8.52661 8.14285 9V15C8.14285 15.4734 8.52661 15.8571 9 15.8571H15C15.4734 15.8571 15.8571 15.4734 15.8571 15V9C15.8571 8.52661 15.4734 8.14285 15 8.14285Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8.14285V15.8571M8.14285 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M3.51428 15.0857C2.81763 13.1608 2.79802 11.0559 3.45868 9.11834C4.11933 7.18077 5.42079 5.52633 7.1483 4.42799C8.8758 3.32965 10.9261 2.85306 12.961 3.07684C14.9958 3.30063 16.8935 4.21142 18.3411 5.65894C19.7886 7.10646 20.6994 9.0042 20.9232 11.039C21.1469 13.0739 20.6703 15.1242 19.572 16.8517C18.4737 18.5792 16.8192 19.8807 14.8817 20.5413C12.9441 21.202 10.8392 21.1824 8.91428 20.4857L3.51428 15.0857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 8.14285H9C8.52661 8.14285 8.14285 8.52661 8.14285 9V15C8.14285 15.4734 8.52661 15.8571 9 15.8571H15C15.4734 15.8571 15.8571 15.4734 15.8571 15V9C15.8571 8.52661 15.4734 8.14285 15 8.14285Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8.14285V15.8571M8.14285 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">GaN Epi-Wafer</p><p class="fn">icon-gan-epi-wafer.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5.5" width="18" height="14" rx="2"/><path d="M9 19.5V23M14 19.5V23M19 19.5V23"/><path d="M8.5 15.5H11v-5h4.5v5h4v-5"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5.5" width="18" height="14" rx="2"/><path d="M9 19.5V23M14 19.5V23M19 19.5V23"/><path d="M8.5 15.5H11v-5h4.5v5h4v-5"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5.5" width="18" height="14" rx="2"/><path d="M9 19.5V23M14 19.5V23M19 19.5V23"/><path d="M8.5 15.5H11v-5h4.5v5h4v-5"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M18 4.71429H6C5.05323 4.71429 4.28571 5.48181 4.28571 6.42858V15C4.28571 15.9468 5.05323 16.7143 6 16.7143H18C18.9468 16.7143 19.7143 15.9468 19.7143 15V6.42858C19.7143 5.48181 18.9468 4.71429 18 4.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.71429 16.7143V19.7143M12 16.7143V19.7143M16.2857 16.7143V19.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.28571 13.2857H9.42857V9H13.2857V13.2857H16.7143V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M18 4.71429H6C5.05323 4.71429 4.28571 5.48181 4.28571 6.42858V15C4.28571 15.9468 5.05323 16.7143 6 16.7143H18C18.9468 16.7143 19.7143 15.9468 19.7143 15V6.42858C19.7143 5.48181 18.9468 4.71429 18 4.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.71429 16.7143V19.7143M12 16.7143V19.7143M16.2857 16.7143V19.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.28571 13.2857H9.42857V9H13.2857V13.2857H16.7143V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M18 4.71429H6C5.05323 4.71429 4.28571 5.48181 4.28571 6.42858V15C4.28571 15.9468 5.05323 16.7143 6 16.7143H18C18.9468 16.7143 19.7143 15.9468 19.7143 15V6.42858C19.7143 5.48181 18.9468 4.71429 18 4.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.71429 16.7143V19.7143M12 16.7143V19.7143M16.2857 16.7143V19.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.28571 13.2857H9.42857V9H13.2857V13.2857H16.7143V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">GaN Power Device</p><p class="fn">icon-gan-power-device.svg</p>
     </div>
     <div class="card">
       <div class="sizes">
-        <span class="s88"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/><path d="M21 23.5v-16h3v16"/><circle cx="11" cy="20.5" r="2"/></svg></span>
-        <span class="s44"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/><path d="M21 23.5v-16h3v16"/><circle cx="11" cy="20.5" r="2"/></svg></span>
-        <span class="s28"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/><path d="M21 23.5v-16h3v16"/><circle cx="11" cy="20.5" r="2"/></svg></span>
+        <span class="s88"><svg viewBox="0 0 24 24" fill="none"><path d="M3 20.1429V11.1429L7.88571 14.5714V11.1429L12.7714 14.5714V11.1429L17.5714 14.5714V20.1429H3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 20.1428V6.42856H20.5714V20.1428" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42856 19.2857C10.3753 19.2857 11.1429 18.5182 11.1429 17.5714C11.1429 16.6247 10.3753 15.8571 9.42856 15.8571C8.48179 15.8571 7.71428 16.6247 7.71428 17.5714C7.71428 18.5182 8.48179 19.2857 9.42856 19.2857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s44"><svg viewBox="0 0 24 24" fill="none"><path d="M3 20.1429V11.1429L7.88571 14.5714V11.1429L12.7714 14.5714V11.1429L17.5714 14.5714V20.1429H3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 20.1428V6.42856H20.5714V20.1428" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42856 19.2857C10.3753 19.2857 11.1429 18.5182 11.1429 17.5714C11.1429 16.6247 10.3753 15.8571 9.42856 15.8571C8.48179 15.8571 7.71428 16.6247 7.71428 17.5714C7.71428 18.5182 8.48179 19.2857 9.42856 19.2857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="s28"><svg viewBox="0 0 24 24" fill="none"><path d="M3 20.1429V11.1429L7.88571 14.5714V11.1429L12.7714 14.5714V11.1429L17.5714 14.5714V20.1429H3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 20.1428V6.42856H20.5714V20.1428" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42856 19.2857C10.3753 19.2857 11.1429 18.5182 11.1429 17.5714C11.1429 16.6247 10.3753 15.8571 9.42856 15.8571C8.48179 15.8571 7.71428 16.6247 7.71428 17.5714C7.71428 18.5182 8.48179 19.2857 9.42856 19.2857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
       <p class="nm">에이프로 세미콘</p><p class="fn">icon-apro-semicon.svg</p>
     </div>
@@ -198,28 +289,67 @@ stroke-width="1.6"   stroke-linecap="round"  stroke-linejoin="round"
   <div class="dark">
     <h2>어두운 판 — 같은 파일, color 만 흰색</h2>
     <div class="row">
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M10.5 16 13 18.5 17.5 13"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h21"/><path d="M14 5v3.5"/><path d="M10 12V8.5h8V12"/><rect x="6" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M3 24h22"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.7 9 5.4 11.5v5L9.7 19 14 16.5 18.3 19l4.3-2.5v-5L18.3 9 14 11.5z"/><path d="M14 11.5v5"/><circle cx="9.7" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="22.6" cy="16.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="9.7" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8.5" width="19" height="11" rx="2"/><path d="M10.5 12v4M15.5 12v4M20.5 12v4"/><path d="M3 14h3"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5 22.5 6.5v7c0 5.2-3.4 8.9-8.5 10.5C8.9 22.4 5.5 18.7 5.5 13.5v-7z"/><path d="M14.7 9 10.5 14.7h3L13.3 19l4.2-5.7h-3z"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="19" height="14" rx="3.5"/><path d="M14 9V5.5"/><circle cx="14" cy="4.4" r="1.3"/><rect x="8.5" y="13.5" width="11" height="4" rx="2"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8.5" width="19" height="11" rx="2"/><path d="M23.5 11.5v5"/><path d="M6 14h3l2-3.5 2.5 7 2-3.5h3"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="10" height="20" rx="2"/><rect x="7" y="7" width="5" height="4.5" rx="1"/><path d="M14.5 10c3.5 0 5.5 2 5.5 5v2.5"/><rect x="17.5" y="17.5" width="5" height="5" rx="1.5"/><path d="M19 22.5V24M21 22.5V24"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-4l2-3.5h12l2 3.5h2v4"/><circle cx="9.5" cy="20" r="2"/><circle cx="18.5" cy="20" r="2"/><path d="M12.5 9.5a2.2 2.2 0 0 1 3 0M10.8 7.6a4.6 4.6 0 0 1 6.4 0M9.1 5.7a7 7 0 0 1 9.8 0"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/><rect x="9.5" y="9.5" width="9" height="9" rx="1"/><path d="M14 9.5v9M9.5 14h9"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5.5" width="18" height="14" rx="2"/><path d="M9 19.5V23M14 19.5V23M19 19.5V23"/><path d="M8.5 15.5H11v-5h4.5v5h4v-5"/></svg>
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 23.5V13l5.7 4V13l5.7 4V13l5.6 4v6.5z"/><path d="M21 23.5v-16h3v16"/><circle cx="11" cy="20.5" r="2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M13 7V11H16V12H14.8438L12.3438 18.5H11V14H8V13H9.16602L11.5381 7.30762L11.667 7H13ZM10.25 13H12V16.6064L13.7715 12H12V8.80078L10.25 13Z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M15.9531 9.21191L11.5 17H10.6914L10.5527 16.7236L8.94141 13.5H8V12.5H9.55859L9.69727 12.7764L11.04 15.4619L15.0713 8.74316L15.9531 9.21191Z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M19.7143 7.28571H6.85715C5.91037 7.28571 5.14286 8.05322 5.14286 8.99999V15C5.14286 15.9468 5.91037 16.7143 6.85715 16.7143H19.7143C20.6611 16.7143 21.4286 15.9468 21.4286 15V8.99999C21.4286 8.05322 20.6611 7.28571 19.7143 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10.2857V13.7143M13.2857 10.2857V13.7143M17.5714 10.2857V13.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.57143 12H5.14285" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19.2857 5.57143V11.5714C19.2857 16.0286 16.3714 19.2 12 20.5714C7.62856 19.2 4.71428 16.0286 4.71428 11.5714V5.57143L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6 7.71429L9 12.6H11.5714L11.4 16.2857L15 11.4H12.4286L12.6 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.71429L3.85715 7.71431L3.85715 16.7143C3.85715 18.3712 5.2003 19.7143 6.85715 19.7143H17.1429C18.7997 19.7143 20.1429 18.3712 20.1429 16.7143V10.7143C20.1429 9.05744 18.7997 7.71429 17.1429 7.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 7.71429V4.71429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 4.88571C12.6154 4.88571 13.1143 4.38682 13.1143 3.77142C13.1143 3.15602 12.6154 2.65714 12 2.65714C11.3846 2.65714 10.8857 3.15602 10.8857 3.77142C10.8857 4.38682 11.3846 4.88571 12 4.88571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 11.5714H8.99999C8.05322 11.5714 7.28571 12.339 7.28571 13.2857C7.28571 14.2325 8.05322 15 8.99999 15H15C15.9468 15 16.7143 14.2325 16.7143 13.2857C16.7143 12.339 15.9468 11.5714 15 11.5714Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M17.1429 7.28571H4.28573C3.33895 7.28571 2.57144 8.05322 2.57144 8.99999V15C2.57144 15.9468 3.33895 16.7143 4.28573 16.7143H17.1429C18.0896 16.7143 18.8572 15.9468 18.8572 15V8.99999C18.8572 8.05322 18.0896 7.28571 17.1429 7.28571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1429 9.85715V14.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.14285 12H7.71428L9.42857 9L11.5714 15L13.2857 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M10.7143 3.42856H5.57143C4.62466 3.42856 3.85715 4.19607 3.85715 5.14284V18.8571C3.85715 19.8039 4.62466 20.5714 5.57143 20.5714H10.7143C11.6611 20.5714 12.4286 19.8039 12.4286 18.8571V5.14284C12.4286 4.19607 11.6611 3.42856 10.7143 3.42856Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42857 6H6.85714C6.38376 6 6 6.38376 6 6.85714V9C6 9.47339 6.38376 9.85714 6.85714 9.85714H9.42857C9.90196 9.85714 10.2857 9.47339 10.2857 9V6.85714C10.2857 6.38376 9.90196 6 9.42857 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.4286 8.57144C15.4286 8.57144 17.1428 10.2857 17.1428 12.8572V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 15H16.2857C15.5756 15 15 15.5756 15 16.2857V18C15 18.7101 15.5756 19.2857 16.2857 19.2857H18C18.7101 19.2857 19.2857 18.7101 19.2857 18V16.2857C19.2857 15.5756 18.7101 15 18 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.2857 19.2857V20.5714M18 19.2857V20.5714" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4.28572 17.1429V13.7143L6.00001 10.7143H16.2857L18 13.7143H19.7143V17.1429" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.14286 18.8571C9.08963 18.8571 9.85715 18.0896 9.85715 17.1428C9.85715 16.1961 9.08963 15.4286 8.14286 15.4286C7.19609 15.4286 6.42857 16.1961 6.42857 17.1428C6.42857 18.0896 7.19609 18.8571 8.14286 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.8571 18.8571C16.8039 18.8571 17.5714 18.0896 17.5714 17.1428C17.5714 16.1961 16.8039 15.4286 15.8571 15.4286C14.9104 15.4286 14.1429 16.1961 14.1429 17.1428C14.1429 18.0896 14.9104 18.8571 15.8571 18.8571Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7143 8.14285C11.0634 7.81749 11.5228 7.63658 12 7.63658C12.4772 7.63658 12.9366 7.81749 13.2857 8.14285M9.25715 6.51428C9.9926 5.80209 10.9762 5.40389 12 5.40389C13.0238 5.40389 14.0074 5.80209 14.7429 6.51428M7.8 4.88571C8.92158 3.78634 10.4295 3.17056 12 3.17056C13.5705 3.17056 15.0784 3.78634 16.2 4.88571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3.51428 15.0857C2.81763 13.1608 2.79802 11.0559 3.45868 9.11834C4.11933 7.18077 5.42079 5.52633 7.1483 4.42799C8.8758 3.32965 10.9261 2.85306 12.961 3.07684C14.9958 3.30063 16.8935 4.21142 18.3411 5.65894C19.7886 7.10646 20.6994 9.0042 20.9232 11.039C21.1469 13.0739 20.6703 15.1242 19.572 16.8517C18.4737 18.5792 16.8192 19.8807 14.8817 20.5413C12.9441 21.202 10.8392 21.1824 8.91428 20.4857L3.51428 15.0857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 8.14285H9C8.52661 8.14285 8.14285 8.52661 8.14285 9V15C8.14285 15.4734 8.52661 15.8571 9 15.8571H15C15.4734 15.8571 15.8571 15.4734 15.8571 15V9C15.8571 8.52661 15.4734 8.14285 15 8.14285Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8.14285V15.8571M8.14285 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 4.71429H6C5.05323 4.71429 4.28571 5.48181 4.28571 6.42858V15C4.28571 15.9468 5.05323 16.7143 6 16.7143H18C18.9468 16.7143 19.7143 15.9468 19.7143 15V6.42858C19.7143 5.48181 18.9468 4.71429 18 4.71429Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.71429 16.7143V19.7143M12 16.7143V19.7143M16.2857 16.7143V19.7143" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.28571 13.2857H9.42857V9H13.2857V13.2857H16.7143V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 20.1429V11.1429L7.88571 14.5714V11.1429L12.7714 14.5714V11.1429L17.5714 14.5714V20.1429H3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 20.1428V6.42856H20.5714V20.1428" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.42856 19.2857C10.3753 19.2857 11.1429 18.5182 11.1429 17.5714C11.1429 16.6247 10.3753 15.8571 9.42856 15.8571C8.48179 15.8571 7.71428 16.6247 7.71428 17.5714C7.71428 18.5182 8.48179 19.2857 9.42856 19.2857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
   </div>
 
   <h2>브랜드 파랑 — color:var(--brand)</h2>
   <div class="brandrow">
-    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="14" height="18" rx="2"/><path d="M11.5 7V4.5h5V7"/><path d="M14.8 10 10 16.8h3.5L13.2 22 18 15.2h-3.5z"/></svg>
-    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5 22.5 6.5v7c0 5.2-3.4 8.9-8.5 10.5C8.9 22.4 5.5 18.7 5.5 13.5v-7z"/><path d="M14.7 9 10.5 14.7h3L13.3 19l4.2-5.7h-3z"/></svg>
-    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="9" width="19" height="14" rx="3.5"/><path d="M14 9V5.5"/><circle cx="14" cy="4.4" r="1.3"/><rect x="8.5" y="13.5" width="11" height="4" rx="2"/></svg>
-    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/><rect x="9.5" y="9.5" width="9" height="9" rx="1"/><path d="M14 9.5v9M9.5 14h9"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M13 7V11H16V12H14.8438L12.3438 18.5H11V14H8V13H9.16602L11.5381 7.30762L11.667 7H13ZM10.25 13H12V16.6064L13.7715 12H12V8.80078L10.25 13Z" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M15 2V4H19V22H5V4H8V5H6V21H18V5H14V3H10V5H9V2H15Z" fill="currentColor"/>
+<path d="M15.9531 9.21191L11.5 17H10.6914L10.5527 16.7236L8.94141 13.5H8V12.5H9.55859L9.69727 12.7764L11.04 15.4619L15.0713 8.74316L15.9531 9.21191Z" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M21 3V4H3V3H21Z" fill="currentColor"/>
+<path d="M12.5 3.5V7H11.5V3.5H12.5Z" fill="currentColor"/>
+<path d="M16 6V9H17V10H14V9H15V7H9V9H10V10H7V9H8V6H16Z" fill="currentColor"/>
+<path d="M11 13V19H4V13H11ZM5 18H10V14H5V18Z" fill="currentColor"/>
+<path d="M20 13V19H13V13H20ZM14 18H19V14H14V18Z" fill="currentColor"/>
+<path d="M21 20V21H3V20H21Z" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M7.79102 6.09277L11.291 8.59277L10.709 9.40723L7.48926 7.10742L3.5 9.76758V14.2324L7.5 16.8984L12 13.8994L16.5 16.8984L20.5 14.2324V9.76758L16.5 7.10059L12.5 9.76758V13H11.5V9.23242L16.5 5.89941L21.5 9.23242V14H23V15H21.1514L16.5 18.1006L12 15.1006L7.5 18.1006L2.5 14.7676V10H1V9H2.84863L7.50977 5.89258L7.79102 6.09277Z" fill="currentColor"/>
+<path d="M7.5 8C8.32843 8 9 7.32843 9 6.5C9 5.67157 8.32843 5 7.5 5C6.67157 5 6 5.67157 6 6.5C6 7.32843 6.67157 8 7.5 8Z" fill="currentColor"/>
+<path d="M16.5 18.5C17.3284 18.5 18 17.8284 18 17C18 16.1716 17.3284 15.5 16.5 15.5C15.6716 15.5 15 16.1716 15 17C15 17.8284 15.6716 18.5 16.5 18.5Z" fill="currentColor"/></svg>
   </div>
 
 </div>

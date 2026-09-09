@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <!-- GaN Epi-Wafer — 노치 있는 웨이퍼 + 다이 격자 -->
-  <path d="M4.1 17.6A10.5 10.5 0 1 1 10.4 23.9z"/>
-  <rect x="9.5" y="9.5" width="9" height="9" rx="1"/>
-  <path d="M14 9.5v9M9.5 14h9"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M3.51428 15.0857C2.81763 13.1608 2.79802 11.0559 3.45868 9.11834C4.11933 7.18077 5.42079 5.52633 7.1483 4.42799C8.8758 3.32965 10.9261 2.85306 12.961 3.07684C14.9958 3.30063 16.8935 4.21142 18.3411 5.65894C19.7886 7.10646 20.6994 9.0042 20.9232 11.039C21.1469 13.0739 20.6703 15.1242 19.572 16.8517C18.4737 18.5792 16.8192 19.8807 14.8817 20.5413C12.9441 21.202 10.8392 21.1824 8.91428 20.4857L3.51428 15.0857Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 8.14285H9C8.52661 8.14285 8.14285 8.52661 8.14285 9V15C8.14285 15.4734 8.52661 15.8571 9 15.8571H15C15.4734 15.8571 15.8571 15.4734 15.8571 15V9C15.8571 8.52661 15.4734 8.14285 15 8.14285Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8.14285V15.8571M8.14285 12H15.8571" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
