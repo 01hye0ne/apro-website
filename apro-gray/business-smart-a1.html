@@ -178,14 +178,21 @@
   .sf-cards p{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
               letter-spacing:-.4px;color:var(--brand);white-space:nowrap}
 
-  /* ===================== 본문 — 인덱스 + 열한 장 ===================== */
-  .sf-main{display:flex;align-items:flex-start;gap:52px;padding-left:24px}
+  /* ===================== 본문 — 인덱스 + 그림 + 열한 장 =====================
+     세 기둥이다. 왼쪽 인덱스와 가운데 그림은 화면에 붙어 있고(sticky), 오른쪽 글만
+     흐른다. 가운데 그림은 장마다 다른 그림이 들어올 자리라 열한 장을 같은 칸에
+     겹쳐 두고 지금 장의 것만 띄운다 — 스크롤스파이가 인덱스를 칠하는 것과 같은
+     판정을 쓴다.
+     기둥 사이 간격이 다르다(인덱스—52—그림—8—글). flex 의 gap 은 한 값뿐이라
+     8 을 gap 으로 두고 인덱스에만 오른쪽 여백 44 를 더해 52 를 만든다 */
+  .sf-main{display:flex;align-items:flex-start;gap:8px;padding-left:24px}
 
   /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
-     sticky 요소를 100svh 로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
+     sticky 요소를 화면 높이로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
      그린 와이어프레임과 같은 자리에 선다 */
   .sf-railwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
-               flex-shrink:0;width:188px;display:flex;align-items:center}
+               flex-shrink:0;width:188px;margin-right:44px;
+               display:flex;align-items:center}
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
   .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
@@ -200,18 +207,25 @@
   .sf-rail a:hover{color:var(--brand)}
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
 
-  .sf-secs{flex:1;min-width:0}
+  /* 가운데 그림 기둥 — 인덱스와 똑같이 화면에 붙는다.
+     안쪽 .sf-figstack 이 장의 본문 띠(위아래 176 을 뺀 자리)와 같은 높이를 갖는다
+     → 장이 화면 가운데에 왔을 때 그림과 글의 눈금 줄이 한 줄로 맞는다 */
+  .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+              flex:1 1 0;min-width:0;display:flex;align-items:center}
+  .sf-figstack{position:relative;width:100%;height:calc(100% - 352px);min-height:420px}
+  /* 열한 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다.
+     visibility 를 같이 껐다 켜야 안 보이는 열 장이 읽기 순서에 끼지 않는다 */
+  .sf-fig{position:absolute;inset:0;display:flex;flex-direction:column;gap:24px;
+          opacity:0;visibility:hidden;
+          transition:opacity .45s var(--ease),visibility .45s}
+  .sf-fig.is-on{opacity:1;visibility:visible}
+  .sf-ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
+
+  .sf-secs{flex:1 1 0;min-width:0}
   /* 장 위아래 여백 176 = 바깥 120 + 카드 자체 56 (Figma 실측) */
   .sf-sec{min-height:calc(100svh - var(--gnb-h));scroll-margin-top:var(--gnb-h);
           display:flex;flex-direction:column;padding:176px 0}
-  /* 카드가 남는 세로를 다 먹는다 — 그래서 그림 자리가 화면 높이를 따라 늘어난다.
-     min-height 는 낮은 화면에서 그림이 납작해지지 않게 잡는 바닥값이다 */
-  .sf-row{flex:1;display:flex;align-items:stretch;gap:8px;min-height:420px}
-
-  /* 그림 열 — 글 열과 남는 폭을 반씩 나눈다(1440 에서 각 584) */
-  .sf-fig{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:24px}
-  .sf-ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
-         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
   .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
               color:var(--sf-ph-tx)}
 
@@ -225,8 +239,9 @@
           justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
           font-family:var(--ald);font-size:11px;line-height:1;letter-spacing:1px}
 
-  /* 글 열 */
-  .sf-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+  /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
+     맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
+  .sf-txt{flex:1;min-height:420px;display:flex;flex-direction:column;gap:24px}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:52px;padding-right:120px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
@@ -260,15 +275,15 @@
             letter-spacing:-.28px;color:var(--sf-sec)}
 
   /* ── 진입 모션 — 들어올 때 한 번, 아주 얕게 ──────────────────────────
-     그림과 글이 6px 떠 있다가 앉는다. 그림이 먼저 멎고 글이 뒤따른다.
+     글이 6px 떠 있다가 앉는다(그림 기둥은 붙박이라 크로스페이드가 대신한다).
      .js 가 붙어 있을 때만 숨긴다 — 스크립트가 죽으면 아무것도 안 보이는 페이지가
      되므로, 숨기는 쪽에 스위치를 건다(<head> 첫 줄에서 붙인다) */
   .js .sf-rv{opacity:0;transform:translateY(6px);
              transition:opacity .7s var(--ease),transform .7s var(--ease)}
-  .js .sf-rv+.sf-rv{transition-delay:.09s}
   .js .is-in .sf-rv{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){
     .js .sf-rv{opacity:1;transform:none;transition:none}
+    .sf-fig{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -279,9 +294,9 @@
     .sf-hero h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
   }
   @media(max-width:1180px){
-    .sf-main{gap:32px}
-    .sf-railwrap{width:172px}
+    .sf-railwrap{width:172px;margin-right:24px}
     .sf-sec{padding:120px 0}
+    .sf-figstack{height:calc(100% - 240px)}
     .sf-cards li{padding:20px 16px}
     .sf-cards p{font-size:17px}
     .sf-introfig img{width:88%}
@@ -291,8 +306,10 @@
     .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
   }
   @media(max-width:900px){
-    /* 인덱스를 왼쪽 기둥에서 화면 위 가로 띠로 옮긴다 — 열한 칸을 세로로 세워 둘
-       자리가 없다. 활성 칸은 파란 판 대신 밑줄로 표시한다 */
+    /* 세 기둥을 세로로 눕힌다 — 인덱스가 화면 위 가로 띠, 그 아래 그림이 붙박이 띠,
+       그 밑으로 글이 흐른다. 붙어 있는 것과 흐르는 것의 관계는 넓은 화면과 같다.
+       --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
+    :root{--subnav-h:47px}
     .sf-main{display:block;padding-left:0}
     .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
                  display:block;background:rgba(255,255,255,.94);
@@ -306,11 +323,17 @@
     .sf-rail a{border-bottom:0;padding:14px 12px;font-size:13px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
-    .sf-sec{min-height:0;padding:56px 16px;
-            scroll-margin-top:calc(var(--gnb-h) + 50px)}
-    .sf-row{flex:none;flex-direction:column;gap:24px;min-height:0}
-    .sf-fig{flex:none;width:100%}
-    .sf-ph{flex:none;aspect-ratio:550/420}
+    /* 그림 띠 — 인덱스 띠 바로 밑에 붙는다. 화면의 30% 를 넘지 않게 묶어야
+       밑으로 흐르는 글이 읽을 만큼 남는다 */
+    .sf-figwrap{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h));z-index:15;
+                height:auto;padding:12px 16px;background:#fff;
+                border-bottom:1px solid var(--sf-line)}
+    .sf-figstack{height:auto;min-height:0;aspect-ratio:16/9;max-height:30svh;
+                 margin-inline:auto}
+    .sf-fig{gap:12px}
+    .sf-sec{min-height:0;padding:32px 16px 56px;
+            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
+    .sf-txt{min-height:0}
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
@@ -470,56 +493,93 @@
     </nav>
   </div>
 
+  <div class="sf-figwrap">
+    <div class="sf-figstack">
+      <div class="sf-fig is-on" data-for="sf01-1">
+        <div class="sf-line"><span class="sf-tag">01-1</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf01-2">
+        <div class="sf-line"><span class="sf-tag">01-2</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf02-1">
+        <div class="sf-line"><span class="sf-tag">02-1</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf02-2">
+        <div class="sf-line"><span class="sf-tag">02-2</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf03-1">
+        <div class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf03-2">
+        <div class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf04-1">
+        <div class="sf-line"><span class="sf-tag">04-1</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf04-2">
+        <div class="sf-line"><span class="sf-tag">04-2</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf04-3">
+        <div class="sf-line"><span class="sf-tag">04-3</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf04-4">
+        <div class="sf-line"><span class="sf-tag">04-4</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+      <div class="sf-fig" data-for="sf04-5">
+        <div class="sf-line"><span class="sf-tag">04-5</span><i class="rule"></i><i class="tick"></i></div>
+        <figure class="sf-ph"><span>도표 or 이미지</span></figure>
+      </div>
+    </div>
+  </div>
+
   <div class="sf-secs">
 
     <!-- 01-1 -->
     <section class="sf-sec" id="sf01-1" aria-labelledby="sf01-1-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">01-1</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf01-1-t">공정 프로세스 맵</h2>
-              <div class="sf-body">
-                <p>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며,활성화 공정에 필요한 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</p>
-                <p>정밀 충·방전 기술과 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 통합 자동화 솔루션을 제공합니다.</p>
-                <p>또한 각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf01-1-t">공정 프로세스 맵</h2>
+            <div class="sf-body">
+              <p>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유하고 있으며,활성화 공정에 필요한 설비를 직접 생산하여 국내외 고객사에 납품하고 있습니다.</p>
+              <p>정밀 충·방전 기술과 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 통합 자동화 솔루션을 제공합니다.</p>
+              <p>또한 각 공정에서 발생하는 전압, 전류, 온도 등의 데이터를 정밀하게 측정·관리하여 배터리 셀의 품질과 생산 안정성을 향상시킵니다.</p>
             </div>
-            <ol class="sf-num">
-              <li><b>01</b><span>1차 충전</span></li>
-              <li><b>02</b><span>디개싱 공정</span></li>
-              <li><b>03</b><span>에이징 공정</span></li>
-              <li><b>04</b><span>충·방전</span></li>
-              <li><b>05</b><span>품질 검사</span></li>
-              <li><b>06</b><span>불량 선별</span></li>
-            </ol>
           </div>
+          <ol class="sf-num">
+            <li><b>01</b><span>1차 충전</span></li>
+            <li><b>02</b><span>디개싱 공정</span></li>
+            <li><b>03</b><span>에이징 공정</span></li>
+            <li><b>04</b><span>충·방전</span></li>
+            <li><b>05</b><span>품질 검사</span></li>
+            <li><b>06</b><span>불량 선별</span></li>
+          </ol>
         </div>
       </div>
     </section>
 
     <!-- 01-2 -->
     <section class="sf-sec" id="sf01-2" aria-labelledby="sf01-2-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">01-2</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf01-2-t">해외 생산거점 확보</h2>
-              <div class="sf-body">
-                <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
-                <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
-                <p>고객사의 생산기지 지원을 위해 미시간과 폴란드, 남경, 인도네시아에 현지 법인을 운용 중이며, 현지 Setup 및 Maintenance를 위한 엔지니어 50명이 상주하여 해외 거점을 확보하고 있습니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf01-2-t">해외 생산거점 확보</h2>
+            <div class="sf-body">
+              <p>에이프로는 글로벌 배터리 활성화를 이끌고 있습니다.</p>
+              <p>북미와 유럽, 중국, 인도네시아 배터리 생산기지 내 에이프로 활성화 장비를 이용하여 매일 배터리를 생산하고 있습니다.</p>
+              <p>고객사의 생산기지 지원을 위해 미시간과 폴란드, 남경, 인도네시아에 현지 법인을 운용 중이며, 현지 Setup 및 Maintenance를 위한 엔지니어 50명이 상주하여 해외 거점을 확보하고 있습니다.</p>
             </div>
           </div>
         </div>
@@ -528,22 +588,16 @@
 
     <!-- 02-1 -->
     <section class="sf-sec" id="sf02-1" aria-labelledby="sf02-1-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">02-1</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf02-1-t">신뢰성 검사 장비</h2>
-              <div class="sf-body">
-                <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
-                <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
-                <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
-                <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf02-1-t">신뢰성 검사 장비</h2>
+            <div class="sf-body">
+              <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
+              <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+              <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
+              <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
             </div>
           </div>
         </div>
@@ -552,27 +606,21 @@
 
     <!-- 02-2 -->
     <section class="sf-sec" id="sf02-2" aria-labelledby="sf02-2-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">02-2</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <div>
-                <h2 id="sf02-2-t">MES</h2>
-                <p class="en">Module Inspection Equipment</p>
-              </div>
-              <!-- 와이어프레임의 02-2 본문에는 02-1 과 같은 글이 들어 있다(문안 확정 전
-                   자리글). 원본대로 옮겨 둔다 — 문안이 나오면 이 네 단락만 갈아 끼운다 -->
-              <div class="sf-body">
-                <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
-                <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
-                <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
-                <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <div>
+              <h2 id="sf02-2-t">MES</h2>
+              <p class="en">Module Inspection Equipment</p>
+            </div>
+            <!-- 와이어프레임의 02-2 본문에는 02-1 과 같은 글이 들어 있다(문안 확정 전
+                 자리글). 원본대로 옮겨 둔다 — 문안이 나오면 이 네 단락만 갈아 끼운다 -->
+            <div class="sf-body">
+              <p>이차전지 사이클러(Battery Cycler)는 이차전지를 반복적으로 충전 및 방전하여 성능, 효율성, 수명을 평가하는 테스트 장비입니다.</p>
+              <p>용량, 수명 주기(Cycle Life), 내부 저항을 측정하여 실제 사용 환경을 시뮬레이션함으로써 연구 개발 및 제조 단계에서 열화 현상과 안전 문제를 검출합니다.</p>
+              <p>에이프로 이차전지 Cycler는 전류를 공급(충전)하고 흡수(방전)할 수 있는 양방향 시스템과 회생 제동(Regenerative) 기능을 갖추고 있습니다.</p>
+              <p>이 기술은 방전 시 발생하는 에너지를 회수하여 전력망으로 되돌려주기 때문에 전력 낭비와 냉각 부하를 저감합니다.</p>
             </div>
           </div>
         </div>
@@ -581,71 +629,53 @@
 
     <!-- 03-1 -->
     <section class="sf-sec" id="sf03-1" aria-labelledby="sf03-1-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <div>
-                <h2 id="sf03-1-t">PLC</h2>
-                <p class="en">Programmable Logic Controller</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <div>
+              <h2 id="sf03-1-t">PLC</h2>
+              <p class="en">Programmable Logic Controller</p>
             </div>
-            <ul class="sf-dl">
-              <li><p class="k">설비 제어</p><p class="d">충방전기, 디개싱(Degassing), 에이징 룸 등 활성화 공정 내 개별 물류 및 제조 설비의 하드웨어를 실시간으로 직접 제어합니다.</p></li>
-              <li><p class="k">데이터 수집</p><p class="d">센서로부터 온도, 압력, 전압, 전류 등 공정 중 발생하는 실시간 물리적 데이터를 실시간으로 정밀하게 측정하고 감지합니다.</p></li>
-              <li><p class="k">안전 인터록</p><p class="d">가스 누출, 과전압, 이상 고온 등 위험 상황이 감지되면 설비를 즉시 정지시키는 비상 인터록 시스템을 작동합니다.</p></li>
-              <li><p class="k">상위 연동</p><p class="d">상위 제어 시스템인 PC나 MES와 통신하며 수집한 공정 데이터를 전송하고, 하향된 공정 레시피 명령을 받아 수행합니다</p></li>
-            </ul>
           </div>
+          <ul class="sf-dl">
+            <li><p class="k">설비 제어</p><p class="d">충방전기, 디개싱(Degassing), 에이징 룸 등 활성화 공정 내 개별 물류 및 제조 설비의 하드웨어를 실시간으로 직접 제어합니다.</p></li>
+            <li><p class="k">데이터 수집</p><p class="d">센서로부터 온도, 압력, 전압, 전류 등 공정 중 발생하는 실시간 물리적 데이터를 실시간으로 정밀하게 측정하고 감지합니다.</p></li>
+            <li><p class="k">안전 인터록</p><p class="d">가스 누출, 과전압, 이상 고온 등 위험 상황이 감지되면 설비를 즉시 정지시키는 비상 인터록 시스템을 작동합니다.</p></li>
+            <li><p class="k">상위 연동</p><p class="d">상위 제어 시스템인 PC나 MES와 통신하며 수집한 공정 데이터를 전송하고, 하향된 공정 레시피 명령을 받아 수행합니다</p></li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- 03-2 -->
     <section class="sf-sec" id="sf03-2" aria-labelledby="sf03-2-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf03-2-t">충방전 공정 관리시스템</h2>
-            </div>
-            <ul class="sf-dl">
-              <li><p class="k">생산 추적</p><p class="d">배터리 셀의 바코드를 스캔하여 활성화 공정의 시작부터 끝까지 전 제조 이력을 실시간으로 추적 및 관리합니다.</p></li>
-              <li><p class="k">레시피 하향</p><p class="d">배터리 모델별로 정해진 충방전 조건, 에이징 시간 등의 세부 공정 레시피를 각 설비(PLC)에 자동으로 전달합니다.</p></li>
-              <li><p class="k">품질 판정</p><p class="d">충방전 결과 데이터(용량, 저항 등)를 분석하여 해당 배터리 셀의 합격/불합격(Pass/Fail) 및 등급(Grading)을 판정합니다.</p></li>
-              <li><p class="k">데이터 통합</p><p class="d">전체 공정의 생산량, 설비 가동률, 불량률 등의 통계 데이터를 시각화하여 공장 전반의 생산 효율성을 최적화합니다.</p></li>
-            </ul>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf03-2-t">충방전 공정 관리시스템</h2>
           </div>
+          <ul class="sf-dl">
+            <li><p class="k">생산 추적</p><p class="d">배터리 셀의 바코드를 스캔하여 활성화 공정의 시작부터 끝까지 전 제조 이력을 실시간으로 추적 및 관리합니다.</p></li>
+            <li><p class="k">레시피 하향</p><p class="d">배터리 모델별로 정해진 충방전 조건, 에이징 시간 등의 세부 공정 레시피를 각 설비(PLC)에 자동으로 전달합니다.</p></li>
+            <li><p class="k">품질 판정</p><p class="d">충방전 결과 데이터(용량, 저항 등)를 분석하여 해당 배터리 셀의 합격/불합격(Pass/Fail) 및 등급(Grading)을 판정합니다.</p></li>
+            <li><p class="k">데이터 통합</p><p class="d">전체 공정의 생산량, 설비 가동률, 불량률 등의 통계 데이터를 시각화하여 공장 전반의 생산 효율성을 최적화합니다.</p></li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- 04-1 -->
     <section class="sf-sec" id="sf04-1" aria-labelledby="sf04-1-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">04-1</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf04-1-t">탄소 나노 튜브</h2>
-              <div class="sf-body">
-                <p>A-PRO Materials의 생산 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
-                <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-1-t">탄소 나노 튜브</h2>
+            <div class="sf-body">
+              <p>A-PRO Materials의 생산 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
+              <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
             </div>
           </div>
         </div>
@@ -654,20 +684,14 @@
 
     <!-- 04-2 -->
     <section class="sf-sec" id="sf04-2" aria-labelledby="sf04-2-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">04-2</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf04-2-t">LiFSI 전해염</h2>
-              <div class="sf-body">
-                <p>A-PRO Materials는 고순도 정제 기술과 엄격한 품질 관리를 통해 최고 수준의 전해염 소재를 제공합니다.</p>
-                <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-2-t">LiFSI 전해염</h2>
+            <div class="sf-body">
+              <p>A-PRO Materials는 고순도 정제 기술과 엄격한 품질 관리를 통해 최고 수준의 전해염 소재를 제공합니다.</p>
+              <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
             </div>
           </div>
         </div>
@@ -676,20 +700,14 @@
 
     <!-- 04-3 -->
     <section class="sf-sec" id="sf04-3" aria-labelledby="sf04-3-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">04-3</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf04-3-t">HNBR 바인더</h2>
-              <div class="sf-body">
-                <p>PVDF 바인더 대체 및 CNT 분산 성능을 극대화하는 고성능 HNBR 바인더 소재입니다.</p>
-                <p>우수한 결합력과 유연성, 전극 저항 감소 효과를 통해 배터리의 고율 충·방전 성능과 안정성을 향상시킵니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-3-t">HNBR 바인더</h2>
+            <div class="sf-body">
+              <p>PVDF 바인더 대체 및 CNT 분산 성능을 극대화하는 고성능 HNBR 바인더 소재입니다.</p>
+              <p>우수한 결합력과 유연성, 전극 저항 감소 효과를 통해 배터리의 고율 충·방전 성능과 안정성을 향상시킵니다.</p>
             </div>
           </div>
         </div>
@@ -698,20 +716,14 @@
 
     <!-- 04-4 -->
     <section class="sf-sec" id="sf04-4" aria-labelledby="sf04-4-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">04-4</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf04-4-t">파우치셀 제조</h2>
-              <div class="sf-body">
-                <p>A-PRO Materials는 고객사가 요구하는 규격과 성능 스펙에 맞춰 정밀 파우치셀 제조 및 위탁생산 서비스를 제공합니다.</p>
-                <p>셀 설계부터 제반 공정, 엄격한 품질 검사까지 통합 프로세스를 통해 최적의 파우치셀 솔루션을 지원합니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-4-t">파우치셀 제조</h2>
+            <div class="sf-body">
+              <p>A-PRO Materials는 고객사가 요구하는 규격과 성능 스펙에 맞춰 정밀 파우치셀 제조 및 위탁생산 서비스를 제공합니다.</p>
+              <p>셀 설계부터 제반 공정, 엄격한 품질 검사까지 통합 프로세스를 통해 최적의 파우치셀 솔루션을 지원합니다.</p>
             </div>
           </div>
         </div>
@@ -720,21 +732,15 @@
 
     <!-- 04-5 -->
     <section class="sf-sec" id="sf04-5" aria-labelledby="sf04-5-t">
-      <div class="sf-row">
-        <div class="sf-fig sf-rv">
-          <div class="sf-line"><span class="sf-tag">04-5</span><i class="rule"></i><i class="tick"></i></div>
-          <figure class="sf-ph"><span>도표 or 이미지</span></figure>
-        </div>
-        <div class="sf-txt sf-rv">
-          <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
-          <div class="sf-txtin">
-            <div class="sf-texts">
-              <h2 id="sf04-5-t">차세대 기술 개발 / 파트너</h2>
-              <div class="sf-body">
-                <p>A-PRO Materials는 차세대 배터리 핵심 기술에 대한 지속적인 연구개발을 통해 미래 이차전지 시장을 선도합니다.</p>
-                <p>끊임없는 R&amp;D 혁신으로 기존 배터리의 한계를 극복하고, 고성능·고안정성 소재 및 셀 기술을 선제적으로 구현해 나갑니다.</p>
-                <p>A-PRO Materials는 국내외 우수한 글로벌 파트너사들과 협력하며 최상의 이차전지 소재 솔루션을 함께 만들어가고 있습니다.</p>
-              </div>
+      <div class="sf-txt sf-rv">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-5-t">차세대 기술 개발 / 파트너</h2>
+            <div class="sf-body">
+              <p>A-PRO Materials는 차세대 배터리 핵심 기술에 대한 지속적인 연구개발을 통해 미래 이차전지 시장을 선도합니다.</p>
+              <p>끊임없는 R&amp;D 혁신으로 기존 배터리의 한계를 극복하고, 고성능·고안정성 소재 및 셀 기술을 선제적으로 구현해 나갑니다.</p>
+              <p>A-PRO Materials는 국내외 우수한 글로벌 파트너사들과 협력하며 최상의 이차전지 소재 솔루션을 함께 만들어가고 있습니다.</p>
             </div>
           </div>
         </div>
@@ -898,12 +904,13 @@
 (function(){
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
+  var figs  = [].slice.call(document.querySelectorAll('.sf-figstack .sf-fig'));
   if(!secs.length) return;
 
   /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
      화면 세로 중앙에 가장 가까운 장을 현재 소분류로 친다. 장이 화면보다 길어도
      (좁은 화면에서 글이 늘어난 경우) 한 장은 반드시 뽑히므로 인덱스가 비지 않는다 */
-  var raf = 0;
+  var raf = 0, cur = -1;
   function spy(){
     raf = 0;
     /* 화면 가운데 = 고정 GNB 아래로 남은 자리의 가운데다 */
@@ -915,10 +922,14 @@
       var d = Math.abs(r.top + r.height / 2 - mid);
       if(d < bd){ bd = d; best = i; }
     }
+    if(best === cur) return;
+    cur = best;
     for(var j=0;j<links.length;j++){
       if(j === best) links[j].setAttribute('aria-current','true');
       else           links[j].removeAttribute('aria-current');
     }
+    /* 붙박이 그림도 같은 판정을 쓴다 — 인덱스가 칠해지는 장의 그림이 떠오른다 */
+    for(var k=0;k<figs.length;k++) figs[k].classList.toggle('is-on', k === best);
   }
   function onScroll(){ if(!raf) raf = requestAnimationFrame(spy); }
   window.addEventListener('scroll', onScroll, { passive:true });
