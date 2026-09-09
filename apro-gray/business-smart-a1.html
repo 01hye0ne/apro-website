@@ -75,7 +75,10 @@
     /* 인트로 위 여백. 설계값 120 이지만, 리드(90) + 24 + 그림칸(449) + 띠(128) =
        691 을 먼저 세우고 남는 만큼만 준다 — 안 그러면 900 높이 화면에서 인트로가
        한 화면을 59px 넘겨 휠 한 번에 아랫부분을 건너뛴다 */
-    --intro-pad:clamp(24px,calc(100svh - var(--gnb-h) - 691px),120px);
+    --intro-pad:clamp(24px,calc(100svh - var(--gnb-h) - 711px),120px);
+    /* 배너 위와 인트로 아래에 두는 흰 띠(Figma Intro 인스턴스의 위아래 20).
+       한 화면 = 한 장이라 이 띠도 그 안에 들어간다 — 사진과 띠를 합쳐 한 화면이다 */
+    --intro-gap:20px;
     /* 본문 세 기둥이 먹는 고정분 = 왼쪽 여백 24 + 인덱스 215 + 그 오른쪽 여백 12
        + 기둥 사이 8 두 번. 남는 폭을 그림/글이 반씩 가져가므로 5컬럼 한 칸이
        (100% - 267) / 2 다 — GNB 우측 메뉴도 이 폭을 그대로 쓴다 */
@@ -165,11 +168,11 @@
   .sf-nav ul a[aria-current]{color:var(--brand);font-weight:700}
 
   /* ===================== 히어로 ===================== */
-  .sf-hero{position:relative;height:calc(100svh - var(--gnb-h));
-           min-height:480px;max-height:900px;
-           background:var(--sf-ph-bg);overflow:hidden}
-  .sf-hero>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
-               object-fit:cover;object-position:50% 46%}
+  .sf-hero{height:calc(100svh - var(--gnb-h));min-height:480px;max-height:900px;
+           padding-top:var(--intro-gap);background:#fff}
+  .sf-heroin{position:relative;height:100%;overflow:hidden;background:var(--sf-ph-bg)}
+  .sf-heroin>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
+                 object-fit:cover;object-position:50% 46%}
   /* 하단 유리 띠 — 아래로 갈수록 어두워지는 그라디언트 + 5px 블러.
      사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다.
      세 덩이(국문 · 영문 · 소분류 띠지)가 32 간격으로 쌓이고, 띠지는 바닥에
@@ -210,7 +213,7 @@
      (Figma: Texts 가 flex-1 + justify-end + 위 여백 120). 남는 세로는 리드 위로
      간다 — 화면이 높아져도 그림과 띠의 관계가 흔들리지 않는다 */
   .sf-intro{height:calc(100svh - var(--gnb-h));min-height:520px;
-            display:flex;flex-direction:column}
+            padding-bottom:var(--intro-gap);display:flex;flex-direction:column}
   .sf-introtop{flex:1;min-height:0;display:flex;flex-direction:column;
                justify-content:flex-end;gap:24px;padding:var(--intro-pad) 96px 0}
   .sf-lead{text-align:center;font-family:var(--suit);
@@ -525,6 +528,7 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="sf-hero sf-step">
+  <div class="sf-heroin">
   <img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" />
   <div class="sf-herocap">
     <h1><span class="ko">스마트제조</span><span class="en">Smart Factory</span></h1>
@@ -535,6 +539,7 @@
         <div><b>공정 프로세스 맵</b><i></i><b>해외 생산거점 확보</b><i></i><b>신뢰성 검사 장비</b><i></i><b>MES</b><i></i><b>PLC</b><i></i><b>충방전 공정 관리 시스템</b><i></i><b>탄소 나노 튜브</b><i></i><b>LiFSI 전해염</b><i></i><b>HNBR 바인더</b><i></i><b>파우치셀 제조</b><i></i><b>차세대 기술 개발 / 파트너</b><i></i></div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
