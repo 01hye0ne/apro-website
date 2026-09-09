@@ -75,7 +75,15 @@
     /* 인트로 위 여백. 설계값 120 이지만, 리드(90) + 24 + 그림칸(449) + 띠(128) =
        691 을 먼저 세우고 남는 만큼만 준다 — 안 그러면 900 높이 화면에서 인트로가
        한 화면을 59px 넘겨 휠 한 번에 아랫부분을 건너뛴다 */
-    --intro-pad:clamp(24px,calc(100svh - var(--gnb-h) - 711px),120px);
+    /* 그림 칸 높이. 그림은 칸 바닥에 붙어 있고 리드는 칸 위에 얹히므로, 이 값이
+       곧 "리드가 얼마나 내려오는가"다 — 줄이면 설비 그림은 그대로 있고 리드만
+       내려온다. Figma 값은 449 였는데 리드가 너무 높이 붙어 100 을 덜었다 */
+    --intro-fig:350px;
+    /* 위 여백의 상한은 설계값 120. 리드(90) + 24 + 그림칸 + 네 칸 띠(128) +
+       아래 흰 띠(20) = 262 + 그림칸 을 먼저 세우고 남는 만큼만 준다 */
+    --intro-pad:clamp(24px,calc(100svh - var(--gnb-h) - 262px - var(--intro-fig)),120px);
+    /* 12컬럼 한 칸(여백 24 · 거터 20). 소분류 네 칸 띠가 2~11열을 차지한다 */
+    --gcol:calc((100% - 268px) / 12);
     /* 배너 위와 인트로 아래에 두는 흰 띠(Figma Intro 인스턴스의 위아래 20).
        한 화면 = 한 장이라 이 띠도 그 안에 들어간다 — 사진과 띠를 합쳐 한 화면이다 */
     --intro-gap:20px;
@@ -223,14 +231,17 @@
   .sf-lead .b{display:block;font-weight:800;color:var(--brand)}
   /* 그림 칸은 449 를 기본으로 하되 자리가 모자라면 줄어든다. 그림은 칸 바닥에
      붙어서(그래서 컨베이어 다리가 아래 띠 선에 맞물린다) 위쪽 빈 자리부터 잘린다 */
-  .sf-introfig{flex:0 1 449px;min-height:0;overflow:hidden;
+  .sf-introfig{flex:0 1 var(--intro-fig);min-height:0;overflow:hidden;
                display:flex;align-items:flex-end;justify-content:center}
   .sf-introfig img{width:86.5%;max-width:1079px;height:auto;max-height:100%;
                    object-fit:contain;object-position:center bottom}
-  /* 소분류 4칸 띠 — 위아래 선은 화면 끝까지, 세로 선은 본문 폭 안에서만 */
-  .sf-band{flex-shrink:0;padding:0 96px;
+  /* 소분류 4칸 띠 — 위아래 선은 화면 끝까지, 세로 선은 2~11열 안에서만.
+     띠에 좌우 여백을 두지 않아야 .sf-cards 의 100% 가 화면 폭이 되고, 그래야
+     아래 격자 계산이 본문과 같은 기준 위에 선다 */
+  .sf-band{flex-shrink:0;
            border-top:1px solid var(--sf-line-s);border-bottom:1px solid var(--sf-line-s)}
-  .sf-cards{list-style:none;width:100%;max-width:1248px;margin-inline:auto;
+  .sf-cards{list-style:none;margin-inline:auto;
+            width:calc(var(--gcol) * 10 + 180px);max-width:calc(100% - 48px);
             display:flex;gap:4px;height:126px;
             border-left:1px solid var(--sf-line-s);border-right:1px solid var(--sf-line-s)}
   .sf-cards li{flex:1;min-width:0;display:flex;flex-direction:column;
@@ -376,8 +387,8 @@
   @media(max-width:1400px){
     :root{--txt-pad-l:clamp(20px,2.8vw,40px)}
     .sf-txtin{padding-right:clamp(24px,8.5vw,122px)}
-    .sf-introtop,.sf-band{padding-left:clamp(24px,6.7vw,96px);
-                          padding-right:clamp(24px,6.7vw,96px)}
+    .sf-introtop{padding-left:clamp(24px,6.7vw,96px);
+                 padding-right:clamp(24px,6.7vw,96px)}
     .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
   }
   @media(max-width:1180px){
@@ -441,7 +452,7 @@
     .sf-nav{padding:32px 16px}
     .sf-nav .cols{grid-template-columns:1fr;gap:24px}
     .sf-lead{font-size:18px}
-    .sf-band{padding-left:16px;padding-right:16px}
+    .sf-cards{width:calc(100% - 32px);max-width:none}
     .sf-cards{height:auto;flex-wrap:wrap;gap:0}
     .sf-cards li{flex:1 1 50%;min-width:0;padding:16px;
                  border-bottom:1px solid var(--sf-line-s)}
