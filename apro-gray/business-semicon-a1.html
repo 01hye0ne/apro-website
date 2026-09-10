@@ -336,7 +336,9 @@
      장이 붙어 있고, 지금 장만 진하고 앞뒤는 옅게 남는다.
      맨 위 --sec-pad 는 첫 장의 눈금 줄을 붙박이 그림의 눈금 줄에 맞추는 자리다
      (그림 기둥이 화면 가운데에 서면서 위로 딱 그만큼 비운다) */
-  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
+  /* 장 사이를 벌리지 않는다 — 장 하나가 본문 띠와 같은 높이라, 간격이 0 이어야
+     다음 장의 머리 줄이 앞 장 그림의 아래 선과 한 줄로 맞는다 */
+  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:0;
            padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
   /* 장 높이는 본문 띠와 같다 — 글이 짧아도 다음 장이 그림 위로 올라오지 않는다 */
   .sf-sec{min-height:var(--band-h);
