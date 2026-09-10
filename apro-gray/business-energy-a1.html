@@ -177,6 +177,16 @@
                 color:var(--sf-sec);transition:color .18s var(--ease)}
   .sf-mega ul a:hover{color:var(--brand)}
 
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 — 판이 흰 종이라 본문이 또렷하면
+     둘이 같은 층에 있는 것처럼 보인다. GNB 밑변부터 깔고 판은 그 위에 뜬다.
+     커서가 여기 닿으면 판에서 벗어난 것이므로 곧 닫힌다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:57;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
   /* 언어 선택 목록 — 오른쪽 도구에만 남았다 */
   .sf-drop{position:absolute;top:100%;left:0;min-width:172px;padding:6px 0;background:#fff;
            border:1px solid var(--sf-line);box-shadow:0 12px 28px rgba(14,22,30,.1);
@@ -643,7 +653,7 @@
     .sf-introtop{padding-top:64px;padding-bottom:40px;gap:16px}
     .sf-introfig{flex:0 1 auto}
     .sf-gnb{padding-left:16px;padding-right:16px}
-    .sf-mega{display:none}
+    .sf-mega,.sf-scrim{display:none}
     /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
     .sf-menus{display:none}
     .sf-tools{border-left:0;margin-left:0;padding-left:0}
@@ -794,6 +804,8 @@
 </div>
 
 <!-- 전체 메뉴 — 햄버거로 연다. 내용은 푸터 사이트맵과 같다 -->
+<div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
+
 <div class="sf-nav" id="sfNav" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
   <div class="cols">
     <div>
@@ -1433,6 +1445,7 @@
   var items = [].slice.call(document.querySelectorAll('.sf-menus>li[data-mega]'));
   if(!items.length) return;
   var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
   function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
   function shut(){
     if(!cur) return;
@@ -1440,6 +1453,7 @@
     cur.classList.remove('is-open');
     cur.querySelector('a').setAttribute('aria-expanded','false');
     if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
     cur = null;
   }
   function show(li){
@@ -1450,6 +1464,7 @@
     li.classList.add('is-open');
     li.querySelector('a').setAttribute('aria-expanded','true');
     p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    if(scrim) scrim.classList.add('open');
     cur = li;
   }
   function hold(){ clearTimeout(t); }
@@ -1474,6 +1489,10 @@
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
   /* 전체 메뉴를 열면 판은 비켜 준다 */
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
   var burger = document.getElementById('sfBurger');
   if(burger) burger.addEventListener('click', shut);
 })();
