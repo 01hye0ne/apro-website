@@ -519,6 +519,9 @@
   .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;
                  aspect-ratio:1;background:var(--sf-ph-bg);
                  border:1px dashed var(--sf-ph-bd)}
+  /* 사진이 든 칸은 자리표시 점선을 걷는다 — 원본이 1:1 이라 그대로 들어맞는다 */
+  .sf-prod>.shot.has-img{background:none;border:0;overflow:hidden}
+  .sf-prod>.shot img{display:block;width:100%;height:100%;object-fit:cover}
   .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
   .sf-prod .lbl{display:flex;align-items:center;padding:12px 16px;
                 background:var(--sf-gray100)}
@@ -1083,7 +1086,7 @@
         </div>
         <div class="sf-prods">
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-module-air-cooling.jpg" alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 배터리 모듈" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
               <div class="info">
@@ -1098,7 +1101,7 @@
             </div>
           </div>
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-module-liquid-cooling.jpg" alt="냉각수 배관이 연결된 리퀴드 쿨링 타입 배터리 모듈" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
               <div class="info">
@@ -1135,7 +1138,7 @@
         </div>
         <div class="sf-prods">
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-rack-high-energy.jpg" alt="문을 연 High Energy Type 배터리 랙" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>High Energy Type Rack</b></p>
               <div class="info">
@@ -1150,7 +1153,7 @@
             </div>
           </div>
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-rack-high-power.jpg" alt="문을 연 High Power Type 배터리 랙" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>High Power Type Rack</b></p>
               <div class="info">
@@ -1187,7 +1190,7 @@
         </div>
         <div class="sf-prods">
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-container-air-cooling.jpg" alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 ESS 컨테이너" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>Container Air Cooling Type</b></p>
               <div class="info">
@@ -1202,7 +1205,7 @@
             </div>
           </div>
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-container-liquid-cooling.jpg" alt="냉각 유닛이 보이는 리퀴드 쿨링 타입 ESS 컨테이너" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>Container Liquid Cooling Type</b></p>
               <div class="info">
@@ -1239,7 +1242,7 @@
         </div>
         <div class="sf-prods">
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-bms-module.jpg" alt="모듈 BMS(CMU) 제어 보드" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>Module BMS(CMU)</b></p>
               <div class="info">
@@ -1269,7 +1272,7 @@
             </div>
           </div>
           <div class="sf-prod">
-            <div class="shot"></div>
+            <div class="shot has-img"><img src="../assets/ess-bms-system.jpg" alt="시스템 BMS(BCP) 제어반" decoding="async" /></div>
             <div class="side">
               <p class="lbl"><b>System BMS(BCP)</b></p>
               <div class="info">
