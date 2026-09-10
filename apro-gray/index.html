@@ -806,6 +806,107 @@
     .totop{right:20px;bottom:20px;width:44px;height:44px}
     .totop svg{width:18px;height:18px}
   }
+
+  /* ===================== 공통 GNB (Figma 1135:7128) =====================
+     흰 바 · 가운데 대분류 다섯 · 대분류마다 다른 메가 판.
+     사업영역 세부 A-1 네 장이 쓰던 것을 여기로 옮겨 열아홉 장이 함께 쓴다.
+     색과 치수는 이 블록 안에서만 정의한다 — 장마다 토큰 이름이 달라도 같은
+     모양이 나와야 하기 때문이다. (세부 A-1 네 장은 아직 자기 <style> 에 같은
+     규칙을 갖고 있어 그쪽이 이긴다 — 값은 같다) */
+  .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{
+    --gnb-h:53px;--gnb-m:44px;
+    --gnb-line:#e4e8ed;--gnb-sec:#5a6675;--gnb-brand:#2c5790;--gnb-g100:#f4f6f8;
+    --gnb-col:calc((100% - 308px) / 12)}
+  /* 바가 화면에 붙박이라 본문을 그 높이만큼 내려 준다 — body 를 건드리지 않고
+     머리 바로 뒤에 같은 높이의 빈 칸을 둔다 */
+  .sf-gnb-sp{height:var(--gnb-h)}
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px var(--gnb-m);background:#fff;
+          border-bottom:1px solid var(--gnb-line)}
+  .sf-gnb .logo{flex-shrink:0;width:78px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  /* 대분류 묶음은 화면 한가운데에 못 박는다 — 로고와 도구의 폭이 달라
+     space-between 만으로는 가운데가 어긋난다 */
+  .sf-gnb .sf-menus{position:absolute;left:50%;transform:translateX(-50%);
+                    list-style:none;margin:0;padding:0;
+                    display:flex;align-items:center;gap:16px}
+  .sf-gnb .sf-menus>li{display:flex}
+  .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                         font-family:var(--pre);font-weight:500;font-size:14px;
+                         line-height:1.5;color:var(--gnb-sec);white-space:nowrap;
+                         text-decoration:none;
+                         transition:background .2s var(--ease),color .2s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
+  .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
+                 transition:opacity .18s var(--ease),transform .22s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover .caret,
+  .sf-gnb .sf-menus>li.is-open .caret{opacity:1}
+  .sf-gnb .sf-menus>li.is-open .caret{transform:rotate(180deg)}
+  .sf-gnb .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-gnb .sf-lang{position:relative}
+  .sf-gnb .sf-tools button{width:24px;height:24px;display:grid;place-content:center;
+                           padding:0;background:none;border:0;color:var(--gnb-sec);
+                           cursor:pointer;transition:color .2s}
+  .sf-gnb .sf-tools button:hover,
+  .sf-gnb .sf-tools button[aria-expanded="true"]{color:var(--gnb-brand)}
+  .sf-gnb .sf-tools svg{display:block;width:24px;height:24px}
+  .sf-gnb .sf-drop{position:absolute;top:100%;right:0;min-width:96px;padding:6px 0;
+                   background:#fff;border:1px solid var(--gnb-line);
+                   box-shadow:0 12px 28px rgba(14,22,30,.1);
+                   opacity:0;visibility:hidden;transform:translateY(-6px);
+                   transition:opacity .22s var(--ease),transform .22s var(--ease),
+                              visibility .22s}
+  .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);
+                     font-weight:400;font-size:13px;line-height:1.4;
+                     color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
+                     transition:background .18s,color .18s}
+  .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
+
+  /* 메가 판 — 안쪽은 격자 2~11 열 띠에 앉는다. 칸은 넷을 기본으로 왼쪽부터 채워
+     판이 갈려도 세로 칸선이 같은 자리에 선다. 다섯 칸짜리만 .c5 로 나눈다 */
+  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:98;background:#fff;
+           box-shadow:0 12px 28px rgba(14,22,30,.08);
+           opacity:0;visibility:hidden;transform:translateY(-8px);
+           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
+  .sf-mega.open{opacity:1;visibility:visible;transform:none}
+  .sf-mega .cols{width:calc(var(--gnb-col) * 10 + 180px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
+  .sf-mega .cols.c5{grid-template-columns:repeat(5,1fr)}
+  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
+                padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
+  .sf-mega .col:last-child{border-right:0}
+  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
+               font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+               color:var(--gnb-sec);text-decoration:none;
+               transition:color .18s var(--ease)}
+  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
+  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
+  .sf-mega ul{list-style:none;margin:0;padding:0;
+              display:flex;flex-direction:column;gap:20px}
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:16px;
+                line-height:1.2;letter-spacing:-.32px;color:var(--gnb-sec);
+                text-decoration:none;transition:color .18s var(--ease)}
+  .sf-mega ul a:hover{color:var(--gnb-brand)}
+
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:97;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
+  @media(max-width:900px){
+    .sf-gnb{padding-left:16px;padding-right:16px}
+    .sf-gnb .sf-menus{display:none}
+    .sf-mega,.sf-scrim{display:none}
+  }
+
 </style>
 <script>document.documentElement.classList.add('js-anim');</script>
 </head>
@@ -816,63 +917,123 @@
   <!-- ===================== BANNER ===================== -->
   <section class="section v2banner">
     <video class="v2b-video" src="../assets/banner-gray.mp4" autoplay muted loop playsinline preload="auto"></video>
-    <div class="gnb-group">
-    <!-- GNB 뒤에 깔리는 유리 판 — 히어로를 벗어난 뒤에만 켜진다 (위 .gnb-bg 참고) -->
-    <div class="gnb-bg" aria-hidden="true"></div>
-    <nav class="gnb">
-      <span class="logo"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></span>
-      <div class="menus">
-        <a href="business.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance.html" data-i="2">투자정보</a>
-        <a href="esg-environment.html" data-i="3">지속가능경영</a><a href="community-notice.html" data-i="4">커뮤니티</a>
-      </div>
-      <div class="tools">
-      <div class="lang">
-        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg>
-          <i class="arw"></i>
-        </button>
-      </div>
-        <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
-      </div>
-    </nav>
-    <!-- GNB 호버 시 나타나는 메가 메뉴 (각 메뉴 아래 정렬) -->
-    <div class="gnb-mega" role="region" aria-label="전체 메뉴">
-      <div class="inner">
-        <span class="m-logo" aria-hidden="true"></span>
-        <div class="m-cols">
-          <div class="m-col" data-i="0">
-            <a href="business-smart.html">스마트 제조</a>
-            <a href="business-energy.html">에너지 솔루션</a>
-            <a href="business-ai.html">인공지능 플랫폼</a>
-            <a href="business-semicon.html">화합물 전력 반도체</a>
-          </div>
-          <div class="m-col" data-i="1">
-            <a href="company.html">회사 소개</a>
-            <a href="network.html">글로벌 네트워크</a>
-            <a href="#">사업장소재</a>
-          </div>
-          <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a><a href="ir-policy.html">내부규정</a></div>
-          <div class="m-col" data-i="3">
-            <a href="esg-environment.html">환경</a>
-            <a href="esg-social.html">사회</a>
-            <a href="esg-governance.html">지배구조</a>
-            <a href="esg-report.html">내/외부 신고채널</a>
-            <a href="esg-board.html">ESG 게시판</a>
-          </div>
-          <div class="m-col" data-i="4">
-            <a href="community-notice.html">공지사항</a>
-            <a href="community-press.html">보도자료</a>
-          </div>
-        </div>
-        <span class="m-globe" aria-hidden="true"></span>
-      </div>
+    <!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
     </div>
-    <!-- 언어 드롭다운 (exclusion 블렌드 영향을 피하려고 nav 형제로 배치) -->
-    <div class="lang-menu" id="langMenu" role="menu" aria-label="언어 선택">
-      <a href="#" class="on" role="menuitem">KOR</a>
-      <a href="#" role="menuitem">ENG</a>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14" stroke="currentColor" stroke-width="1"/></svg></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<div class="sf-mega" id="mega-biz" aria-hidden="true" aria-label="사업영역">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="business-smart.html">스마트 제조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-smart.html#sf01-1">이차전지 활성화</a></li>
+        <li><a href="business-smart.html#sf02-1">신뢰성 검사 장비</a></li>
+        <li><a href="business-smart.html#sf03-1">자동화 시스템</a></li>
+        <li><a href="business-smart.html#sf04-1">이차전지 소재</a></li>
+      </ul>
     </div>
+    <div class="col">
+      <a class="hd" href="business-energy.html">에너지 솔루션<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-energy.html#sf01-1">ESS</a></li>
+        <li><a href="business-energy.html#sf02-1">UPS</a></li>
+        <li><a href="business-energy.html#sf03-1">솔루션</a></li>
+      </ul>
     </div>
+    <div class="col">
+      <a class="hd" href="business-ai.html">인공지능 플랫폼<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-ai.html#sf01-1">로봇 플랫폼</a></li>
+        <li><a href="business-ai.html#sf02-1">배터리 진단 플랫폼</a></li>
+        <li><a href="business-ai.html#sf03-1">전기자동차 충전 플랫폼</a></li>
+        <li><a href="business-ai.html#sf04-1">전기자동차 제어 플랫폼</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-semicon.html">화합물 전력 반도체<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-semicon.html#sf01-1">GaN Epi-Wafer</a></li>
+        <li><a href="business-semicon.html#sf02-1">GaN Power Device</a></li>
+        <li><a href="business-semicon.html#sf03-1">에이프로 세미콘</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-com" aria-hidden="true" aria-label="회사정보">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="company.html">회사 소개<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="network.html">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="#">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-ir" aria-hidden="true" aria-label="투자정보">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="ir-finance.html">재무정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-disclosure.html">공시정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-stock.html">주식정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-policy.html">내부규정<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-esg" aria-hidden="true" aria-label="지속가능경영">
+  <div class="cols c5">
+    <div class="col">
+      <a class="hd" href="esg-environment.html">환경<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-social.html">사회<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-governance.html">지배구조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-report.html">내/외부 신고채널<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-board.html">ESG 게시판<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-cmm" aria-hidden="true" aria-label="커뮤니티">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="community-notice.html">공지사항<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="community-press.html">보도자료<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
     <div class="band">
       <div class="v2b-inner reveal-stagger">
@@ -1707,6 +1868,83 @@
   btn.addEventListener('click', function(){
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+})();
+</script>
+<script>
+/* -- 공통 GNB 메가 메뉴 -----------------------------------------------------
+   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
+   둘 다 벗어나면 짧게 기다렸다 닫는다 - 사이를 지나는 동안 깜빡이지 않게 하는
+   여유다. 새 머리를 안 쓰는 장에서는 조용히 지나간다 */
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.sf-gnb .sf-menus>li[data-mega]'));
+  if(!items.length) return;
+  var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
+  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
+  function shut(){
+    if(!cur) return;
+    var p = panel(cur);
+    cur.classList.remove('is-open');
+    cur.querySelector('a').setAttribute('aria-expanded','false');
+    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
+    cur = null;
+  }
+  function show(li){
+    if(cur === li) return;
+    var p = panel(li);
+    if(!p) return;
+    shut();
+    li.classList.add('is-open');
+    li.querySelector('a').setAttribute('aria-expanded','true');
+    p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    if(scrim) scrim.classList.add('open');
+    cur = li;
+  }
+  function hold(){ clearTimeout(t); }
+  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
+  items.forEach(function(li){
+    var p = panel(li);
+    li.addEventListener('mouseenter', function(){ hold(); show(li); });
+    li.addEventListener('mouseleave', leave);
+    li.addEventListener('focusin', function(){ hold(); show(li); });
+    if(p){
+      p.addEventListener('mouseenter', hold);
+      p.addEventListener('mouseleave', leave);
+      p.addEventListener('focusin', hold);
+    }
+  });
+  document.addEventListener('focusin', function(e){
+    if(!cur) return;
+    var p = panel(cur);
+    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
+    shut();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
+  var burger = document.querySelector('.sf-gnb .menu-toggle');
+  if(burger) burger.addEventListener('click', shut);
+
+  /* 언어 선택 - 세부 A-1 네 장의 스크립트와 같은 동작 */
+  var lang = document.getElementById('sfLang'), lb = document.getElementById('sfLangBtn');
+  if(lang && lb){
+    lb.addEventListener('click', function(e){
+      e.stopPropagation();
+      var on = lang.classList.toggle('open');
+      lb.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(lang.contains(e.target)) return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Escape') return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+  }
 })();
 </script>
 </body>
