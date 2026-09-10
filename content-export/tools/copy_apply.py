@@ -62,47 +62,98 @@ def apply_one(src, el, cur, new, kind):
     return src[:m.start(2)] + fill + src[m.end(2):], None
 
 
+def cell(s):
+    return str(s).replace("\r", "").strip() if norm(s) else ""
+
+
 def read_book(path=BOOK):
-    """엑셀을 줄 목록으로 읽고, 묶음이 하나만 채워졌으면 나머지에도 옮겨 준다"""
+    """엑셀을 줄 목록으로 읽는다.
+
+    열은 이름으로 찾는다 — 칸이 하나 늘어도 자리로 세다가 어긋나지 않게.
+    같은 묶음에서 채운 줄이 딱 하나면 그 글을 나머지에도 옮겨 준다(한글·영문 따로).
+    """
     wb = load_workbook(path)
     all_rows = []
     for sheet, key in SHEETS.items():
         if sheet not in wb.sheetnames:
             continue
-        for row in wb[sheet].iter_rows(min_row=2, values_only=True):
-            n, sec, role, kind, grp, cur, new, note, loc = (list(row) + [None] * 9)[:9]
+        ws = wb[sheet]
+        head = [str(c.value or "").strip() for c in ws[1]]
+
+        def col(name, *alts):
+            for cand in (name,) + alts:
+                for i, h in enumerate(head):
+                    if h.startswith(cand):
+                        return i
+            return None
+
+        ix = {k: col(*v) for k, v in {
+            "n": ("순번",), "role": ("자리",), "grp": ("묶음",),
+            "cur": ("현재 문구",), "new": ("변경 문구",), "en": ("영문 문구",),
+            "loc": ("자리표",)}.items()}
+        if ix["loc"] is None:
+            print("  ! %s — 자리표 열을 못 찾았다" % sheet)
+            continue
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            g = lambda k: row[ix[k]] if ix[k] is not None and ix[k] < len(row) else None
+            loc = g("loc")
             if not loc:
                 continue
             xp, _, nk = str(loc).partition("|")
             all_rows.append({
-                "key": key, "sheet": sheet, "n": n, "role": role, "grp": grp,
-                "cur": str(cur or "").replace("\r", "").strip(),
-                "new": str(new).replace("\r", "").strip() if norm(new) else "",
-                "xp": xp, "nk": nk or "text"})
+                "key": key, "sheet": sheet, "n": g("n"), "role": g("role"),
+                "grp": g("grp"), "cur": cell(g("cur")), "new": cell(g("new")),
+                "en": cell(g("en")), "xp": xp, "nk": nk or "text"})
 
-    # 같은 묶음에서 채운 줄이 딱 하나면 그 글을 나머지에도 얹는다
     box = {}
     for r in all_rows:
         if r["grp"]:
             box.setdefault(r["grp"], []).append(r)
     for g, rows in box.items():
-        filled = {x["new"] for x in rows if x["new"]}
-        if len(filled) != 1:
-            if len(filled) > 1:
-                print("  ~ 묶음 %s — 서로 다른 글이 %d 개라 각자 그대로 넣는다" % (g, len(filled)))
+        for field, tag in (("new", "한글"), ("en", "영문")):
+            filled = {x[field] for x in rows if x[field]}
+            if len(filled) != 1:
+                if len(filled) > 1:
+                    print("  ~ 묶음 %s %s — 서로 다른 글이 %d 개라 각자 그대로 넣는다"
+                          % (g, tag, len(filled)))
+                continue
+            word = filled.pop()
+            for x in rows:
+                if not x[field]:
+                    x[field] = word
+                    print("  + 묶음 %s %s — %s %s 에도 같이 넣는다"
+                          % (g, tag, x["sheet"], x["n"]))
+    return all_rows
+
+
+EN_OUT = "content-export/data/business-a1-en.json"
+
+
+def save_en(rows):
+    """영문은 붙일 장이 아직 없다 — 자리표와 함께 따로 모아 둔다"""
+    import json
+    keep = {}
+    for r in rows:
+        if not r["en"]:
             continue
-        word = filled.pop()
-        for x in rows:
-            if not x["new"]:
-                x["new"] = word
-                print("  + 묶음 %s — %s %s 에도 같이 넣는다" % (g, x["sheet"], x["n"]))
-    return [r for r in all_rows if r["new"]]
+        keep.setdefault(r["key"], []).append(
+            {"role": r["role"], "ko": r["new"] or r["cur"], "en": r["en"], "at": r["xp"]})
+    if not keep:
+        return
+    io.open(EN_OUT, "w", encoding="utf-8", newline="\n").write(
+        json.dumps(keep, ensure_ascii=False, indent=1))
+    print("영문 %d 줄을 %s 에 모았다" % (sum(len(v) for v in keep.values()), EN_OUT))
 
 
 def run(dry=True, only=None):
+    book = read_book()
+    if not dry:
+        save_en(book)
     jobs = {}
-    for r in read_book():
+    for r in book:
         if only and r["sheet"] != only:
+            continue
+        if not r["new"]:
             continue
         jobs.setdefault(r["key"], []).append(
             {"n": r["n"], "sheet": r["sheet"], "role": r["role"], "cur": r["cur"],
