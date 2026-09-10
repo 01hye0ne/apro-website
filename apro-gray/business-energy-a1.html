@@ -425,6 +425,9 @@
              font-size:var(--t-2xs);line-height:1;color:var(--c-num)}
   .sf-apps span{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.35;
                 letter-spacing:-.32px;color:var(--c-body)}
+  /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
+     표를 닫는 테두리가 아니다 */
+  .sf-apps li:last-child{border-bottom:0}
 
   /* ── 03 장 : 띠를 위아래 반으로 나눈다 (Figma 1032:2562) ──────────────
      위 절반은 제목 · 리드 · Certification, 아래 절반은 제품 카드 하나다.
