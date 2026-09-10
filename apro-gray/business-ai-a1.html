@@ -11,7 +11,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <!-- ============================================================
@@ -54,8 +53,18 @@
     --sf-ph-bg:#e5e6e8;
     --sf-ph-bd:#c7c9cc;
     --sf-ph-tx:#73757a;
+    /* ── 글자 사다리 ────────────────────────────────────────────────────
+       역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 일곱 칸과
+       굵기 세 단(800 제목·이름 / 600 줄글 / 500 메타)만으로 짜인다.
+       글꼴은 둘뿐이다 — 글은 전부 SUIT, 숫자와 히어로 영문만 Aldrich */
+    --t-xl:clamp(26px,2.7vw,38px); /* 장 제목                    */
+    --t-lg:clamp(18px,2vw,28px);   /* 인트로 리드                */
+    --t-md:clamp(17px,1.39vw,20px);/* 제품 이름 · 카드 라벨      */
+    --t-sm:16px;                   /* 소분류 이름 · 목록 항목    */
+    --t-xs:14px;                   /* 줄글 · 인덱스 · 특징 · 표  */
+    --t-2xs:12px;                  /* 번호 · 그룹 머리 · 꼬리    */
+    --t-tag:11px;                  /* 숫자 태그                  */
     --ald:"Aldrich",var(--rc),sans-serif;
-    --cal:"Cal Sans",var(--rc),sans-serif;
     /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
        (히어로·장 높이·sticky 인덱스·앵커 여백)이 함께 빼는 값이다.
        한 군데서 바꾸면 전부 따라온다 */
@@ -222,7 +231,7 @@
   .sf-tickrow>div{display:flex;align-items:center;gap:30px;padding:12px 20px;
                   flex-shrink:0;animation:sfTick 38s linear infinite}
   .sf-tickrow:hover>div{animation-play-state:paused}
-  .sf-tickrow b{font-family:var(--suit);font-weight:800;font-size:14px;line-height:1.35;
+  .sf-tickrow b{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);line-height:1.35;
                 letter-spacing:-.28px;color:rgba(255,255,255,.7);white-space:nowrap}
   /* 이름 사이 구분 — 1px 세로선 두 개 */
   .sf-tickrow i{display:flex;align-items:center;gap:8px;height:10px;flex-shrink:0}
@@ -242,7 +251,7 @@
   .sf-introtop{flex:1;min-height:0;display:flex;flex-direction:column;
                justify-content:flex-end;gap:24px;padding:var(--intro-pad) 96px 0}
   .sf-lead{text-align:center;font-family:var(--suit);
-           font-size:clamp(20px,2vw,28px);line-height:1.6;letter-spacing:-.02em;
+           font-size:var(--t-lg);line-height:1.6;letter-spacing:-.02em;
            color:var(--sf-sec)}
   .sf-lead .a{font-weight:500}
   .sf-lead .b{display:block;font-weight:800;color:var(--brand)}
@@ -271,7 +280,7 @@
      좁아지면 칸을 넘는다. 그래서 폭에 따라 글자를 줄이고(1440→20 · 1300 아래→18),
      1180 밑으로는 아래 규칙이 두 줄로 눕힌다 */
   .sf-cards p{font-family:var(--suit);font-weight:800;
-              font-size:clamp(18px,1.39vw,20px);line-height:1.2;
+              font-size:var(--t-md);line-height:1.2;
               letter-spacing:-.4px;color:var(--brand);white-space:nowrap}
 
   /* ===================== 본문 — 인덱스 + 그림 + 아홉 장 =====================
@@ -297,12 +306,12 @@
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
   .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
-              background:var(--sf-gray100);font-family:var(--pre);font-weight:500;
-              font-size:12px;line-height:1.4;letter-spacing:-.24px;color:var(--sf-ter);
+              background:var(--sf-gray100);font-family:var(--suit);font-weight:500;
+              font-size:var(--t-2xs);line-height:1.4;letter-spacing:-.24px;color:var(--sf-ter);
               white-space:nowrap}
   .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
              border-bottom:1px solid var(--sf-line);font-family:var(--suit);
-             font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;
+             font-weight:800;font-size:var(--t-xs);line-height:1.35;letter-spacing:-.28px;
              color:var(--sf-ter);white-space:nowrap;
              transition:background .3s var(--ease),color .3s var(--ease)}
   .sf-rail a:hover{color:var(--brand)}
@@ -334,7 +343,7 @@
   .sf-sec{min-height:var(--band-h);
           scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
           display:flex;flex-direction:column}
-  .sf-ph span{font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.5;
+  .sf-ph span{font-family:var(--suit);font-weight:500;font-size:var(--t-2xs);line-height:1.5;
               color:var(--sf-ph-tx)}
 
   /* 눈금 줄 — 그림 열은 [태그][가는 선][짧은 세로 눈금], 글 열은 [눈금][가는 선].
@@ -349,7 +358,7 @@
      — 바뀔 때 글자가 갈리는 대신 계기판처럼 굴러간다 */
   .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
           justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
-          font-family:var(--ald);font-size:11px;line-height:11px;letter-spacing:1px}
+          font-family:var(--ald);font-size:var(--t-tag);line-height:11px;letter-spacing:1px}
   /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
      가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
   .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
@@ -375,11 +384,11 @@
             padding-left:var(--txt-pad-l);padding-right:122px}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
-  .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:clamp(28px,2.7vw,38px);
+  .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:20px;
+  .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:var(--t-md);
                 line-height:1.2;letter-spacing:-.4px;color:var(--c-body)}
-  .sf-body p{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.6;
+  .sf-body p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
              letter-spacing:-.3px;color:var(--c-body)}
   .sf-body p+p{margin-top:8px}
   /* 와이어프레임에 본문이 비어 있는 장(03-2 · 04-2 · 04-3) */
@@ -391,18 +400,18 @@
   .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--c-bd-s)}
   .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
              border-bottom:1px solid var(--c-bd)}
-  .sf-num b{width:18px;flex-shrink:0;font-family:var(--cal);font-weight:400;
-            font-size:12px;line-height:1;color:var(--c-num)}
-  .sf-num span{font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.35;
+  .sf-num b{width:18px;flex-shrink:0;font-family:var(--ald);font-weight:400;
+            font-size:var(--t-2xs);line-height:1;color:var(--c-num)}
+  .sf-num span{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.35;
                letter-spacing:-.32px;color:var(--c-body)}
 
   .sf-dl li{display:flex;flex-direction:column;gap:8px;padding:8px;
             border-bottom:1px solid var(--c-bd)}
   .sf-dl .k{display:flex;align-items:center;gap:4px;font-family:var(--suit);
-            font-weight:800;font-size:16px;line-height:1.35;letter-spacing:-.32px;
+            font-weight:800;font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
             color:var(--c-ttl)}
   .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--c-num)}
-  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.6;
+  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
             letter-spacing:-.3px;color:var(--c-body)}
 
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
@@ -443,7 +452,7 @@
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
     :root{--sec-pad:clamp(16px,calc((100svh - var(--gnb-h) - 520px) / 2),120px)}
     .sf-cards li{padding:14px 16px}
-    .sf-cards p{font-size:16px;white-space:normal;text-align:center}
+    .sf-cards p{;white-space:normal;text-align:center}
     .sf-introfig img{width:94%}
     .sf-gnb .logo{margin-left:24px}
     .sf-gnb .right{padding-right:24px}
@@ -451,6 +460,7 @@
     .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
   }
   @media(max-width:900px){
+    :root{--t-sm:15px}
     /* 세 기둥을 세로로 눕힌다 — 인덱스가 화면 위 가로 띠, 그 아래 그림이 붙박이 띠,
        그 밑으로 글이 흐른다. 붙어 있는 것과 흐르는 것의 관계는 넓은 화면과 같다.
        --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
@@ -466,7 +476,7 @@
     .sf-rail::-webkit-scrollbar{display:none}
     .sf-grp{flex-direction:row;flex-shrink:0}
     .sf-grp>.hd{display:none}
-    .sf-rail a{border-bottom:0;padding:14px 12px;font-size:13px}
+    .sf-rail a{border-bottom:0;padding:14px 12px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
     /* 그림 띠 — 인덱스 띠 바로 밑에 붙는다. 화면의 30% 를 넘지 않게 묶어야
@@ -489,7 +499,7 @@
     .sf-hero .ko{font-size:18px}
     .sf-hero .en{white-space:normal}
     .sf-tickrow>div{gap:20px;padding:10px 16px}
-    .sf-tickrow b{font-size:13px}
+    .sf-tickrow b{}
     .sf-intro{height:auto;min-height:0}
     .sf-introtop{padding-top:64px;padding-bottom:40px;gap:16px}
     .sf-introfig{flex:0 1 auto}
@@ -500,7 +510,7 @@
     .sf-tools{border-left:0;margin-left:0;padding-left:0}
     .sf-nav{padding:32px 16px}
     .sf-nav .cols{grid-template-columns:1fr;gap:24px}
-    .sf-lead{font-size:18px}
+    .sf-lead{}
     .sf-cards{width:calc(100% - 32px);max-width:none}
     .sf-cards{height:auto;flex-wrap:wrap;gap:0}
     .sf-cards li{flex:1 1 50%;min-width:0;padding:16px;
@@ -508,7 +518,7 @@
     .sf-cards li:nth-child(2n){border-right:0}
     .sf-cards li:nth-last-child(-n+2){border-bottom:0}
     .sf-cards .ic{width:34px;height:34px}
-    .sf-cards p{font-size:15px;white-space:normal}
+    .sf-cards p{;white-space:normal}
   }
 </style>
 </head>
