@@ -335,8 +335,27 @@
      스크립트가 transform 을 직접 얹으므로 여기서는 전이를 걸지 않는다.
      .is-on 은 스크립트가 돌기 전 첫 그림의 자리다 */
   .sf-ph.is-on{transform:none;visibility:visible}
-  /* 사진이 든 칸은 자리표시 테두리를 걷는다 */
-  .sf-ph.has-img{background:none;border:0;overflow:hidden}
+  /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
+  .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
+  /* 04-1 은 한 칸 안에서 제품 셋을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
+     들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
+  .sf-cnt{position:absolute;inset:0;display:flex;flex-direction:column;
+          opacity:0;visibility:hidden;
+          transition:opacity .35s var(--ease),visibility .35s}
+  .sf-cnt.is-on{opacity:1;visibility:visible}
+  .sf-cnt>.shot{position:relative;flex:1;min-height:0;
+                display:flex;align-items:center;justify-content:center;
+                background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
+  .sf-cnt>.shot>span{font-family:var(--suit);font-weight:500;font-size:var(--t-2xs);
+                     line-height:1.5;color:var(--sf-ph-tx)}
+  /* 설명은 사진 아래 변에 흰 띠로 얹는다 — 사진이 들어와도 자리가 그대로다 */
+  .sf-cnt .cap{position:absolute;left:0;right:0;bottom:0;
+               display:flex;flex-direction:column;gap:4px;
+               padding:16px;background:rgba(255,255,255,.92);text-align:center}
+  .sf-cnt .cap b{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
+                 line-height:1.35;letter-spacing:-.32px;color:var(--sf-txt)}
+  .sf-cnt .cap span{font-family:var(--suit);font-weight:500;font-size:var(--t-xs);
+                    line-height:1.5;letter-spacing:-.28px;color:var(--sf-sec)}
   .sf-ph img{display:block;width:100%;height:100%;object-fit:cover}
 
   /* 오른쪽 글 기둥은 한 장씩 끊기지 않고 이어 흐른다 — 지금 장 바로 밑에 다음
@@ -424,6 +443,21 @@
   /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
      표를 닫는 테두리가 아니다 */
   .sf-num li:last-child,.sf-dl li:last-child{border-bottom:0}
+
+  /* 04-1 제품 고르기 — 단추는 글 기둥에, 사진은 붙박이 그림 기둥에 있다.
+     떨어져 있어도 한 짝으로 읽히도록 tab / tabpanel 로 묶었다 */
+  .sf-picks{display:flex;gap:8px}
+  .sf-picks button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;
+                   padding:4px;background:#fff;border:1px solid var(--c-bd);
+                   cursor:pointer;text-align:left;
+                   transition:border-color .3s var(--ease)}
+  .sf-picks button:hover{border-color:var(--c-bd-s)}
+  .sf-picks button[aria-selected="true"]{border-color:var(--c-num)}
+  .sf-picks .shot{aspect-ratio:160/120;background:var(--sf-ph-bg);
+                  border:1px solid var(--c-bd)}
+  .sf-picks .nm{padding:12px;font-family:var(--suit);font-weight:800;
+                font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
+                color:var(--c-ttl)}
 
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
        제목 900 → 300 · 줄글 600 → 200 · 번호/점 파랑 → 300
@@ -709,7 +743,20 @@
         <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
         <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/pressure-cycler-plc.jpg" alt="면압 충방전기 PLC 제어 화면" decoding="async" /></figure>
         <figure class="sf-ph" data-for="sf03-2"><span>도표 or 이미지</span></figure>
-        <figure class="sf-ph" data-for="sf04-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph has-panes" data-for="sf04-1">
+          <div class="sf-cnt is-on" role="tabpanel" id="cnt-pw" aria-labelledby="cnt-pw-t" tabindex="0">
+            <div class="shot"><span>제품 사진</span></div>
+            <p class="cap"><b>단일벽/소수벽 CNT 분말</b><span>비표면적 ≥ 300~1,000 m&sup2;/g</span></p>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="cnt-sl" aria-labelledby="cnt-sl-t" tabindex="0">
+            <div class="shot"><span>제품 사진</span></div>
+            <p class="cap"><b>단일벽/소수벽 CNT 분산액</b><span>CNT 함량 0.2 ~ 4.0 wt%</span></p>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="cnt-cb" aria-labelledby="cnt-cb-t" tabindex="0">
+            <div class="shot"><span>제품 사진</span></div>
+            <p class="cap"><b>전도성 카본블랙</b><span>비표면적 60 ~ 150 m&sup2;/g</span></p>
+          </div>
+        </figure>
         <figure class="sf-ph has-img" data-for="sf04-2"><img src="../assets/lifsi-electrolyte-salt.jpg" alt="플라스크에 담긴 LiFSI 전해염 분말" decoding="async" /></figure>
         <figure class="sf-ph has-img" data-for="sf04-3"><img src="../assets/hnbr-binder.jpg" alt="병에 담긴 HNBR 바인더 용액" decoding="async" /></figure>
         <figure class="sf-ph has-img" data-for="sf04-4"><img src="../assets/pouch-cell.jpg" alt="에이프로 머티리얼즈 파우치셀" decoding="async" /></figure>
@@ -854,6 +901,17 @@
               <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
             </div>
           </div>
+          <div class="sf-picks" role="tablist" aria-label="탄소 나노 튜브 제품">
+            <button type="button" role="tab" id="cnt-pw-t" aria-controls="cnt-pw" aria-selected="true">
+              <span class="shot"></span><span class="nm">SW/FW-<br />CNT Powder</span>
+            </button>
+            <button type="button" role="tab" id="cnt-sl-t" aria-controls="cnt-sl" aria-selected="false" tabindex="-1">
+              <span class="shot"></span><span class="nm">SW/FW-<br />CNT Slurry</span>
+            </button>
+            <button type="button" role="tab" id="cnt-cb-t" aria-controls="cnt-cb" aria-selected="false" tabindex="-1">
+              <span class="shot"></span><span class="nm">Carbon<br />Black</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -891,7 +949,7 @@
             <li><p class="k">고율 충방전 특성</p><p class="d">10C 고속 충전 조건에서도 우수한 용량 유지.</p></li>
             <li><p class="k">내부 저항 감소</p><p class="d">젖음성 개선으로 이온 전달 및 계면 저항 최소화.</p></li>
             <li><p class="k">높은 강도 및 유연성</p><p class="d">전극 활물질 부피 변화 흡수, 탈락 방지.</p></li>
-            <li><p class="k">SWCNT 분산 최적화</p><p class="d">탄력적 탄소나노튜브의 응집 해소, 점도 감소.</p></li>
+            <li><p class="k">SWCNT 분산 최적화</p><p class="d">단일벽 탄소나노튜브의 응집 해소, 점도 감소.</p></li>
           </ul>
         </div>
       </div>
@@ -1188,6 +1246,46 @@
   window.addEventListener('resize', function(){ readRuleOff(); onScroll(); });
   readRuleOff(); spy(); slide();
 
+})();
+</script>
+<script>
+/* ── 04-1 탄소 나노 튜브 : 제품 고르기 ─────────────────────────────────────
+   단추는 글 기둥에, 사진은 붙박이 그림 기둥에 있다. 둘이 멀리 떨어져 있어서
+   tab / tabpanel 로 묶었다 — 스크린리더에서도 한 짝으로 읽힌다.
+   고르는 일은 스크롤과 무관하므로 그림 밀기(slide)에는 손대지 않는다 */
+(function(){
+  var list = document.querySelector('.sf-picks');
+  if(!list) return;
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  if(!tabs.length) return;
+
+  function pick(i, move){
+    for(var k=0;k<tabs.length;k++){
+      var on = (k === i);
+      tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[k].tabIndex = on ? 0 : -1;
+      var pane = document.getElementById(tabs[k].getAttribute('aria-controls'));
+      if(pane) pane.classList.toggle('is-on', on);
+    }
+    if(move) tabs[i].focus();
+  }
+
+  for(var i=0;i<tabs.length;i++)(function(i){
+    tabs[i].addEventListener('click', function(){ pick(i); });
+    /* 화살표로 옮겨 다니는 건 tablist 의 약속이다 */
+    tabs[i].addEventListener('keydown', function(e){
+      var n;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End')  n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      pick(n, true);
+    });
+  })(i);
+
+  pick(0);
 })();
 </script>
 <script>
