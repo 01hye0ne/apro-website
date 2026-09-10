@@ -391,6 +391,18 @@
   .sf-globe.is-off{background:url(../assets/globe-overseas-bases.jpg) center top/cover no-repeat;
                    cursor:default}
   .sf-globe.is-off canvas{display:none}
+  /* 표시마다 이름표가 따라붙는다 — 구 뒤로 돌아가면 사라진다. 자리는
+     스크립트가 셈해서 transform 으로 얹는다(cobe 가 표시를 찍는 셈과 같은
+     식이라 점과 이름표가 어긋나지 않는다). 끌기를 막지 않게 손을 안 받는다 */
+  .sf-globe .tag{position:absolute;left:0;top:0;padding:5px 10px;
+                 background:#fff;border:1px solid var(--sf-line-s);
+                 font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+                 line-height:1.35;letter-spacing:-.24px;color:var(--sf-txt);
+                 white-space:nowrap;pointer-events:none;will-change:transform;
+                 opacity:0;transition:opacity .3s var(--ease)}
+  .sf-globe .tag.is-on{opacity:1}
+  .sf-globe.is-off .tag{display:none}
+  @media(prefers-reduced-motion:reduce){.sf-globe .tag{transition:none}}
   /* 04-1 은 한 칸 안에서 제품 셋을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
      들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
   .sf-cnt{position:absolute;inset:0;display:flex;flex-direction:column;
@@ -1682,11 +1694,13 @@
   }
   if(!mk || !canGL()){ wrap.classList.add('is-off'); return; }
 
-  var HUB  = [37.57, 126.98];        /* 본사 · 경기         */
-  var SITE = [[42.33, -83.05],       /* 미시간              */
-              [51.11,  17.04],       /* 폴란드              */
-              [32.06, 118.80],       /* 남경                */
-              [-6.32, 107.34]];      /* 인도네시아          */
+  /* 줄글이 말하는 다섯 곳. 이름표에 실을 글도 여기 함께 둔다 */
+  var HUB  = { at: [37.57, 126.98], nm: '한국 본사',   sz: .075 };
+  var SITE = [{ at: [42.33, -83.05], nm: '미국 미시간', sz: .055 },
+              { at: [51.11,  17.04], nm: '폴란드',      sz: .055 },
+              { at: [32.06, 118.80], nm: '중국 남경',   sz: .055 },
+              { at: [-6.32, 107.34], nm: '인도네시아',  sz: .055 }];
+  var SPOT = [HUB].concat(SITE);
   var BLUE = [.173, .341, .565];     /* #2c5790 브랜드 파랑 */
 
   /* 셰이더에서 구의 지름 = 0.8 · scale · 캔버스높이 다. 아래를 잘라 삼분의
@@ -1702,8 +1716,23 @@
   var globe = null, box = '', phi = 2.2, theta = .26;
   var raf = 0, live = false, grab = null;
   var slow = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  /* 이름표를 얹는 데 쓰는, 지금 판의 셈값 — 모두 CSS 픽셀 기준이다 */
+  var geo = null;
 
-  function paint(){ if(globe) globe.update({ phi: phi, theta: theta }); }
+  /* 이름표는 한 벌만 만들어 두고 자리만 갈아 준다 */
+  var tags = SPOT.map(function(o){
+    var el = document.createElement('span');
+    el.className = 'tag';
+    el.textContent = o.nm;
+    wrap.appendChild(el);
+    return el;
+  });
+
+  function paint(){
+    if(!globe) return;
+    globe.update({ phi: phi, theta: theta });
+    label();
+  }
 
   function build(){
     var r = wrap.getBoundingClientRect();
@@ -1711,17 +1740,18 @@
     if(!w || !h) return;
     var key = w + 'x' + h;
     if(key === box) return;
+    /* 크기는 CSS 픽셀로 넘긴다 — cobe 가 여기에 화면 배율을 곱해
+       캔버스 픽셀을 잡는다. 기기 픽셀을 넘기면 배율이 두 번 곱해져
+       2배 화면에서 캔버스가 네 배로 커진다 */
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width  = Math.round(w * dpr);
-    cv.height = Math.round(h * dpr);
-    var wd = cv.width, hd = cv.height;
-    var dia   = Math.min(hd * 1.5, wd * WIDE);     /* 구의 지름             */
-    var scale = dia / (.8 * hd);
-    var pad   = hd - dia * SHOW;                   /* 구 위에 남기는 바탕   */
-    var down  = pad + dia / 2 - hd / 2;            /* 기본 자리에서 내릴 몫 */
+    var dia   = Math.min(h * 1.5, w * WIDE);       /* 구의 지름             */
+    var scale = dia / (.8 * h);
+    var pad   = h - dia * SHOW;                    /* 구 위에 남기는 바탕   */
+    var down  = pad + dia / 2 - h / 2;             /* 기본 자리에서 내릴 몫 */
+    geo = { w: w, h: h, scale: scale, down: down, asp: w / h };
     if(globe) globe.destroy();
     globe = mk(cv, {
-      devicePixelRatio: dpr, width: wd, height: hd,
+      devicePixelRatio: dpr, width: w, height: h,
       phi: phi, theta: theta, dark: 0, diffuse: 1.2, scale: scale,
       mapSamples: 26000, mapBrightness: 6,
       baseColor: [1, 1, 1], markerColor: BLUE, glowColor: [.88, .89, .91],
@@ -1729,13 +1759,42 @@
       arcColor: BLUE, arcWidth: .45, arcHeight: .22, markerElevation: 0,
       /* 한 장만 그리고 멈추는 경우(동작 줄이기 · 끌기)에도 남아 있어야 한다 */
       context: { preserveDrawingBuffer: true },
-      markers: [{ location: HUB, size: .075 }].concat(SITE.map(function(p){
-        return { location: p, size: .055 };
-      })),
-      arcs: SITE.map(function(p){ return { from: HUB, to: p }; })
+      markers: SPOT.map(function(o){ return { location: o.at, size: o.sz }; }),
+      arcs: SITE.map(function(o){ return { from: HUB.at, to: o.at }; })
     });
     box = key;
     paint();
+  }
+
+  /* ── 이름표 자리 ───────────────────────────────────────────────────────
+     cobe 가 표시를 찍는 식을 그대로 옮겼다. 위도·경도를 구 위의 점으로
+     바꾸고, 지금 각도로 돌린 뒤, 배율과 내린 몫을 얹어 칸 안의 자리로 만든다.
+     z 가 앞을 보면 보이는 면이다 */
+  var RAD = Math.PI / 180;
+  function label(){
+    if(!geo) return;
+    var cx = Math.cos(theta), sx = Math.sin(theta);
+    var cyy = Math.cos(phi),  syy = Math.sin(phi);
+    for(var i = 0; i < SPOT.length; i++){
+      var a = SPOT[i].at;
+      var la = a[0] * RAD, lo = a[1] * RAD - Math.PI, cl = Math.cos(la);
+      /* 구 반지름 0.8 위의 점 */
+      var px = -cl * Math.cos(lo) * .8, py = Math.sin(la) * .8, pz = cl * Math.sin(lo) * .8;
+      var rx =  cyy * px + syy * pz;
+      var ry =  syy * sx * px + cx * py - cyy * sx * pz;
+      var rz = -syy * cx * px + sx * py + cyy * cx * pz;
+      var x = ((rx / geo.asp) * geo.scale + 1) / 2 * geo.w;
+      var y = (-ry * geo.scale + 2 * geo.down / geo.h + 1) / 2 * geo.h;
+      var el = tags[i], on = rz >= 0;
+      if(on){
+        el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) +
+                             'px) translate(-50%,-100%) translateY(-12px)';
+      }
+      if(el.dataset.on !== (on ? '1' : '0')){
+        el.dataset.on = on ? '1' : '0';
+        el.classList.toggle('is-on', on);
+      }
+    }
   }
 
   /* 한 바퀴에 마흔여덟 초쯤 — 눈에 걸리지 않을 만큼만 돈다 */
@@ -1802,11 +1861,16 @@
     run(true);
   }
 
+  /* 칸이 커지거나 줄면 다시 짠다. 창 크기만 보면 놓치는 경우가 있다 —
+     좁은 화면 규칙이 바뀌거나 화면 배율이 뒤늦게 붙으면 창은 그대로인데
+     칸만 달라지고, 그러면 이름표가 낡은 셈으로 떠 버린다 */
   var rt = 0;
-  window.addEventListener('resize', function(){
+  function again(){
     clearTimeout(rt);
     rt = setTimeout(function(){ box = ''; build(); }, 200);
-  });
+  }
+  if(window.ResizeObserver) new ResizeObserver(again).observe(wrap);
+  else window.addEventListener('resize', again);
 })();
 </script>
 </body>
