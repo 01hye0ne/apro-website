@@ -375,7 +375,16 @@
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
-  .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
+  .sf-ph.has-img,.sf-ph.has-panes,.sf-ph.has-globe{background:none;border:0;overflow:hidden}
+  /* 해외 생산거점 칸은 사진 대신 지구를 돌린다 — cobe(MIT)를 얹었다.
+     칸은 옆으로 넓지만 지구는 정사각이라 짧은 변에 맞춰 가운데에 세운다.
+     크기는 스크립트가 재서 캔버스에 픽셀로 박는다(화면 배율까지 곱한다) */
+  .sf-globe{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .sf-globe canvas{display:block;max-width:100%;max-height:100%}
+  /* WebGL 이 없는 브라우저에서는 같은 배치의 정지 그림으로 물러난다.
+     이 클래스가 붙을 때만 그림을 받으므로 보통은 내려받지 않는다 */
+  .sf-globe.is-off{background:url(../assets/globe-overseas-bases.png) center/contain no-repeat}
+  .sf-globe.is-off canvas{display:none}
   /* 04-1 은 한 칸 안에서 제품 셋을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
      들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
   .sf-cnt{position:absolute;inset:0;display:flex;flex-direction:column;
@@ -887,7 +896,9 @@
       <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
       <div class="sf-figstack">
         <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
-        <figure class="sf-ph" data-for="sf01-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph has-globe" data-for="sf01-2" role="img" aria-label="한국 본사에서 미시간·폴란드·남경·인도네시아 현지 법인으로 이어지는 지구 도식">
+          <div class="sf-globe" id="sfGlobe"><canvas aria-hidden="true"></canvas></div>
+        </figure>
         <figure class="sf-ph has-img" data-for="sf02-1"><img src="../assets/reliability-test-equipment.jpg" alt="신뢰성 검사 장비 외관" decoding="async" /></figure>
         <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
         <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/pressure-cycler-plc.jpg" alt="면압 충방전기 PLC 제어 화면" decoding="async" /></figure>
@@ -1636,6 +1647,96 @@
       pageTo(topOf(el));
       return;
     });
+  });
+})();
+</script>
+<script src="../assets/cobe.js"></script>
+<script>
+/* ── 해외 생산거점 — 도는 지구 ───────────────────────────────────────────
+   cobe 2 는 스스로 돌지 않는다. 프레임마다 update() 를 부르는 쪽이 우리라,
+   칸이 화면에 걸릴 때만 프레임을 돌리고 밀려 나가면 멈춘다.
+   WebGL 이 없으면 조용히 정지 그림으로 물러난다 */
+(function(){
+  var wrap = document.getElementById('sfGlobe');
+  if(!wrap) return;
+  var cv  = wrap.querySelector('canvas');
+  var fig = wrap.parentNode;
+  var mk  = window.COBE && window.COBE.default;
+  /* cobe 는 WebGL 이 없으면 조용히 아무것도 안 하는 껍데기를 돌려준다 —
+     빈 칸으로 남지 않게 우리가 먼저 물어보고 정지 그림으로 물러난다.
+     버리는 캔버스로 재는 건, 이 캔버스에 먼저 맥락을 만들면 cobe 가 원하는
+     속성(preserveDrawingBuffer)이 무시되기 때문이다 */
+  function canGL(){
+    try{
+      var c = document.createElement('canvas');
+      return !!(c.getContext('webgl2') || c.getContext('webgl'));
+    }catch(e){ return false; }
+  }
+  if(!mk || !canGL()){ wrap.classList.add('is-off'); return; }
+
+  var HUB  = [37.57, 126.98];        /* 본사 · 경기        */
+  var SITE = [[42.33, -83.05],       /* 미시간             */
+              [51.11,  17.04],       /* 폴란드             */
+              [32.06, 118.80],       /* 남경               */
+              [-6.32, 107.34]];      /* 인도네시아         */
+  var BLUE = [.173, .341, .565];     /* #2c5790 브랜드 파랑 */
+
+  var globe = null, side = 0, phi = 2.2, raf = 0, live = false;
+  var slow = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function build(){
+    var r = wrap.getBoundingClientRect();
+    var s = Math.round(Math.min(r.width, r.height));
+    if(!s || s === side) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = cv.height = Math.round(s * dpr);
+    cv.style.width = cv.style.height = s + 'px';
+    if(globe) globe.destroy();
+    globe = mk(cv, {
+      devicePixelRatio: dpr, width: cv.width, height: cv.height,
+      phi: phi, theta: .26, dark: .2, diffuse: 1.1, scale: 1,
+      mapSamples: 16000, mapBrightness: 4.6,
+      baseColor: [.80, .84, .90], markerColor: BLUE, glowColor: [1, 1, 1],
+      offset: [0, 0], arcColor: BLUE, arcWidth: .45, arcHeight: .22,
+      markerElevation: 0,
+      /* 한 장만 그리고 멈추는 경우(동작 줄이기)에도 화면에 남아 있어야 한다 */
+      context: { preserveDrawingBuffer: true },
+      markers: [{ location: HUB, size: .075 }].concat(SITE.map(function(p){
+        return { location: p, size: .055 };
+      })),
+      arcs: SITE.map(function(p){ return { from: HUB, to: p }; })
+    });
+    side = s;
+    globe.update({ phi: phi });
+  }
+
+  /* 한 바퀴에 마흔여덟 초쯤 — 눈에 걸리지 않을 만큼만 돈다 */
+  function frame(){
+    raf = 0;
+    if(!globe) return;
+    if(fig.style.visibility !== 'hidden'){
+      globe.update({ phi: phi });
+      phi += .0022;
+    }
+    if(live) raf = requestAnimationFrame(frame);
+  }
+  function run(on){
+    live = on && !slow;
+    if(live && !raf) raf = requestAnimationFrame(frame);
+  }
+
+  build();
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){ run(es[0].isIntersecting); },
+                             { rootMargin: '120px' }).observe(wrap);
+  } else {
+    run(true);
+  }
+
+  var rt = 0;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ side = 0; build(); }, 200);
   });
 })();
 </script>
