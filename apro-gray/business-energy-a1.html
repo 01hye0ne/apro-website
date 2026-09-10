@@ -101,9 +101,6 @@
     --body-fixed:267px;
     /* 내용 오른쪽 여백 */
     --body-pad-r:120px;
-    /* 제품 카드의 정사각 사진 폭(Figma 332). Certification 띠의 왼쪽 칸도 같은
-       값을 써서 두 줄의 세로 경계가 맞는다 */
-    --prod-shot:332px;
     /* 장 하나가 쓰는 띠와 그 위아래로 비워 두는 자리. 한 화면을 다 쓰지 않고
        위아래를 남기는 이유는 형제 페이지와 같다 — 남긴 만큼 다음 장의 머리 줄이
        화면 밑에 걸쳐 보여서 "아래에 더 있다"가 그림 없이 전해진다.
@@ -423,7 +420,16 @@
      장은 둘째부터 아래로 이어 흐른다. 눈금 줄만 화면 끝까지 나가고 나머지는
      오른쪽 120 을 비운다 */
   .sf-sec.is-prod{justify-content:flex-start}
-  .sf-sec.is-prod>.sf-line{margin-bottom:24px}
+  /* 눈금 줄만 화면에 붙고 그 아래는 다 흘러 지나간다. GNB 밑변에 바로 붙여야
+     줄 위로 글이 비어져 나오지 않는다 — 위쪽 여백을 안쪽(padding)으로 두고 같은
+     크기의 음수 바깥 여백으로 되돌려, 흰 바탕이 GNB 까지 닿으면서도 줄이 놓이는
+     자리는 그대로다. 아래로는 짧은 흰 그라디언트를 흘려 글이 줄에 닿는 순간을 지운다 */
+  .sf-sec.is-prod>.sf-line{position:sticky;top:var(--gnb-h);z-index:8;
+                           height:auto;padding:12px 0;margin:-12px 0 12px;
+                           background:#fff}
+  .sf-sec.is-prod>.sf-line::after{content:"";position:absolute;left:0;right:0;
+                                  top:100%;height:16px;pointer-events:none;
+                                  background:linear-gradient(#fff,rgba(255,255,255,0))}
   .sf-prodin{display:flex;flex-direction:column;gap:4px;
              padding-right:var(--body-pad-r)}
   /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
@@ -446,14 +452,17 @@
               white-space:nowrap}
   .sf-cert li::before{content:"";width:4px;height:4px;flex-shrink:0;
                       background:var(--c-num)}
-  /* 제품 — 한 줄에 하나. 사진 폭은 아래 절반의 높이와 같다 → 카드가 딱 절반일
-     때 정사각형이 된다. 폭을 높이에서 되돌려 받게(aspect-ratio + stretch) 두면
-     플렉스가 주축 크기를 먼저 정하느라 폭이 0 으로 주저앉는다 */
+  /* 제품 — 한 줄에 하나. 사진은 카드 폭의 26% 를 차지하는 정사각형이다.
+     폭을 높이에서 되돌려 받게(aspect-ratio + stretch) 두면 플렉스가 주축 크기를
+     먼저 정하느라 폭이 0 으로 주저앉는다 → 폭을 직접 주고 높이를 비율에서 받는다.
+     세로 가운데에 세운다 : 특징이 2×2 로 접히는 좁은 폭에서는 오른쪽이 더 길어지는데,
+     사진을 위에 붙여 두면 아래만 뚫린 것처럼 보인다 */
   .sf-prods{display:flex;flex-direction:column;gap:24px}
   .sf-prod{min-height:calc((var(--band-h) - 44px) / 2);
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
-  .sf-prod>.shot{flex:0 0 calc((var(--band-h) - 44px) / 2);align-self:stretch;
-                 background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
+  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;
+                 aspect-ratio:1;background:var(--sf-ph-bg);
+                 border:1px dashed var(--sf-ph-bd)}
   .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
   .sf-prod .lbl{display:flex;align-items:center;padding:12px 16px;
                 background:var(--sf-gray100)}
@@ -519,11 +528,13 @@
     .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
   }
   /* 카드가 좁아지면 특징 넷을 2×2 로 접는다 — 한 줄에 넷이면 1280 아래에서
-     한 칸이 130 밑으로 떨어져 글이 서너 자씩 끊긴다 */
+     한 칸이 130 밑으로 떨어져 글이 서너 자씩 끊긴다.
+     두 줄이 되면 오른쪽이 사진보다 훨씬 길어진다 → 이 구간에서만 사진이 1:1 을
+     놓고 카드 높이를 채운다. 가운데에 세워 두면 이름 띠 옆이 하얗게 파여 보인다 */
   @media(max-width:1280px){
-    :root{--prod-shot:clamp(220px,26vw,332px)}
     .sf-feat{flex-wrap:wrap;gap:0}
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
+    .sf-prod>.shot{align-self:stretch;aspect-ratio:auto}
   }
   @media(max-width:1180px){
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
@@ -575,6 +586,8 @@
     .sf-prodin{padding-right:0}
     .sf-ptexts{height:auto;min-height:0;gap:24px}
     .sf-prod{min-height:0;flex-direction:column}
+    .sf-sec.is-prod>.sf-line{position:static}
+    .sf-sec.is-prod>.sf-line::before,.sf-sec.is-prod>.sf-line::after{display:none}
     .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
     .sf-feat{flex-wrap:wrap;gap:0}
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
