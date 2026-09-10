@@ -420,21 +420,25 @@
      장은 둘째부터 아래로 이어 흐른다. 눈금 줄만 화면 끝까지 나가고 나머지는
      오른쪽 120 을 비운다 */
   .sf-sec.is-prod{justify-content:flex-start}
-  /* 눈금 줄만 화면에 붙고 그 아래는 다 흘러 지나간다. GNB 밑변에 바로 붙여야
-     줄 위로 글이 비어져 나오지 않는다 — 위쪽 여백을 안쪽(padding)으로 두고 같은
-     크기의 음수 바깥 여백으로 되돌려, 흰 바탕이 GNB 까지 닿으면서도 줄이 놓이는
-     자리는 그대로다. 아래로는 짧은 흰 그라디언트를 흘려 글이 줄에 닿는 순간을 지운다 */
-  .sf-sec.is-prod>.sf-line{position:sticky;top:var(--gnb-h);z-index:8;
-                           height:auto;padding:12px 0;margin:-12px 0 12px;
-                           background:#fff}
-  .sf-sec.is-prod>.sf-line::after{content:"";position:absolute;left:0;right:0;
-                                  top:100%;height:16px;pointer-events:none;
-                                  background:linear-gradient(#fff,rgba(255,255,255,0))}
-  .sf-prodin{display:flex;flex-direction:column;gap:4px;
-             padding-right:var(--body-pad-r)}
+  /* 윗단 — [눈금 줄 + 제목 + 리드 + Certification] 이 화면에 붙고 그 아래로
+     제품 카드만 흘러 지나간다. 다른 페이지가 그림 기둥을 붙여 두는 것과 같은
+     방식이다 : 장의 정체는 남고 세부만 움직인다. 사진까지 붙이지 않는 이유는
+     사진이 제품에 딸린 것이고(한 장에 제품이 둘·셋) 붙여 봐야 굴릴 거리가
+     162px 밖에 안 나오기 때문이다.
+     GNB 밑변에 바로 붙여야 윗단 위로 글이 비어져 나오지 않는다 — 위쪽 여백을
+     안쪽(padding)으로 두고 같은 크기의 음수 바깥 여백으로 되돌려, 흰 바탕이
+     GNB 까지 닿으면서도 눈금 줄이 놓이는 자리는 그대로다.
+     아래로는 짧은 흰 그라디언트를 흘려 카드가 윗단에 닿는 순간을 지운다 */
+  .sf-phead{position:sticky;top:var(--gnb-h);z-index:8;
+            padding-top:12px;margin-top:-12px;background:#fff}
+  .sf-phead::after{content:"";position:absolute;left:0;right:0;top:100%;height:16px;
+                   pointer-events:none;
+                   background:linear-gradient(#fff,rgba(255,255,255,0))}
+  .sf-phead>.sf-line{margin-bottom:24px}
   /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
   .sf-ptexts{height:calc((var(--band-h) - 44px) / 2);min-height:180px;
-             display:flex;flex-direction:column;justify-content:space-between}
+             display:flex;flex-direction:column;justify-content:space-between;
+             padding-right:var(--body-pad-r)}
   .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
   .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                 line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
@@ -457,7 +461,8 @@
      먼저 정하느라 폭이 0 으로 주저앉는다 → 폭을 직접 주고 높이를 비율에서 받는다.
      세로 가운데에 세운다 : 특징이 2×2 로 접히는 좁은 폭에서는 오른쪽이 더 길어지는데,
      사진을 위에 붙여 두면 아래만 뚫린 것처럼 보인다 */
-  .sf-prods{display:flex;flex-direction:column;gap:24px}
+  .sf-prods{display:flex;flex-direction:column;gap:24px;margin-top:4px;
+            padding-right:var(--body-pad-r)}
   .sf-prod{min-height:calc((var(--band-h) - 44px) / 2);
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
   .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;
@@ -583,11 +588,11 @@
     .sf-figstack{aspect-ratio:16/9;max-height:30svh}
     .sf-txtin{padding-left:0;padding-right:0}
     /* 제품은 사진이 위로 올라오고 특징 넷이 두 줄로 접힌다 */
-    .sf-prodin{padding-right:0}
-    .sf-ptexts{height:auto;min-height:0;gap:24px}
+    .sf-phead{position:static;padding-top:0;margin-top:0}
+    .sf-phead::after{display:none}
+    .sf-ptexts{height:auto;min-height:0;gap:24px;padding-right:0}
+    .sf-prods{padding-right:0}
     .sf-prod{min-height:0;flex-direction:column}
-    .sf-sec.is-prod>.sf-line{position:static}
-    .sf-sec.is-prod>.sf-line::before,.sf-sec.is-prod>.sf-line::after{display:none}
     .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
     .sf-feat{flex-wrap:wrap;gap:0}
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
@@ -924,8 +929,8 @@
 
       <!-- 03-1 Module -->
       <section class="sf-sec sf-step is-prod" id="sf03-1" aria-labelledby="sf03-1-t">
-        <p class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i></p>
-        <div class="sf-prodin">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i></p>
           <div class="sf-ptexts">
             <div class="txt">
               <h2 id="sf03-1-t">Module</h2>
@@ -939,35 +944,35 @@
               </ul>
             </div>
           </div>
-          <div class="sf-prods">
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">자연 공기 또는 강제 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 모듈 내부의 열을 외부로 배출합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 설치가 용이</span><span class="d">쿨링 시스템이 단순하여 설치와 유지보수가 용이합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서의 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있습니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 시스템 전체 비용 절감이 가능합니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">자연 공기 또는 강제 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 모듈 내부의 열을 외부로 배출합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 설치가 용이</span><span class="d">쿨링 시스템이 단순하여 설치와 유지보수가 용이합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서의 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있습니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 시스템 전체 비용 절감이 가능합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 모듈 내부의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 모듈 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 모듈 내부의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 모듈 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
           </div>
@@ -976,8 +981,8 @@
 
       <!-- 03-2 Rack -->
       <section class="sf-sec sf-step is-prod" id="sf03-2" aria-labelledby="sf03-2-t">
-        <p class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i></p>
-        <div class="sf-prodin">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i></p>
           <div class="sf-ptexts">
             <div class="txt">
               <h2 id="sf03-2-t">Rack</h2>
@@ -991,35 +996,35 @@
               </ul>
             </div>
           </div>
-          <div class="sf-prods">
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>High Energy Type Rack</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">높은 에너지 밀도</span><span class="d">대용량 셀과 최적화된 시스템 설계로 높은 에너지 밀도를 구현합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">장시간 에너지 저장</span><span class="d">장시간 에너지 저장이 필요한 ESS, C&amp;I 시스템 등에 최적화되어 있습니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">안정적인 시스템 운영</span><span class="d">통합 BMS와 다중 보호 기능으로 안정적이고 안전한 시스템 운영을 보장합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">확장성 및 유연성</span><span class="d">다양한 용량 구성과 병렬 확장을 통해 고객 요구에 유연하게 대응합니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>High Energy Type Rack</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">높은 에너지 밀도</span><span class="d">대용량 셀과 최적화된 시스템 설계로 높은 에너지 밀도를 구현합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">장시간 에너지 저장</span><span class="d">장시간 에너지 저장이 필요한 ESS, C&amp;I 시스템 등에 최적화되어 있습니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">안정적인 시스템 운영</span><span class="d">통합 BMS와 다중 보호 기능으로 안정적이고 안전한 시스템 운영을 보장합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">확장성 및 유연성</span><span class="d">다양한 용량 구성과 병렬 확장을 통해 고객 요구에 유연하게 대응합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>High Power Type Rack</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">높은 출력 성능</span><span class="d">저내부저항 설계와 고출력 셀 적용으로 순간 고출력 성능을 제공합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">빠른 응답 성능</span><span class="d">높은 출력 밀도와 최적화된 전력 설계로 빠른 응답과 안정적인 전력 공급이 가능합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">고출력 환경에서도 안정적인 온도 제어와 열 확산 구조를 적용하였습니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">안정성 및 신뢰성</span><span class="d">통합 BMS와 다중 보호 기능으로 고출력 환경에서도 안전한 운영을 보장합니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>High Power Type Rack</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">높은 출력 성능</span><span class="d">저내부저항 설계와 고출력 셀 적용으로 순간 고출력 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">빠른 응답 성능</span><span class="d">높은 출력 밀도와 최적화된 전력 설계로 빠른 응답과 안정적인 전력 공급이 가능합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">고출력 환경에서도 안정적인 온도 제어와 열 확산 구조를 적용하였습니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">안정성 및 신뢰성</span><span class="d">통합 BMS와 다중 보호 기능으로 고출력 환경에서도 안전한 운영을 보장합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
           </div>
@@ -1028,8 +1033,8 @@
 
       <!-- 03-3 Container -->
       <section class="sf-sec sf-step is-prod" id="sf03-3" aria-labelledby="sf03-3-t">
-        <p class="sf-line"><span class="sf-tag">03-3</span><i class="rule"></i></p>
-        <div class="sf-prodin">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-3</span><i class="rule"></i></p>
           <div class="sf-ptexts">
             <div class="txt">
               <h2 id="sf03-3-t">Container</h2>
@@ -1043,35 +1048,35 @@
               </ul>
             </div>
           </div>
-          <div class="sf-prods">
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>Container Air Cooling Type</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">자연 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 컨테이너 내부의 열을 외부로 배출합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 유지보수가 용이</span><span class="d">냉각 시스템이 단순하여 설치와 유지보수가 용이하고 운영 비용이 낮습니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있어 다양한 설치 환경에 적합합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 초기 투자 비용과 운영 비용이 절감됩니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>Container Air Cooling Type</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">자연 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 컨테이너 내부의 열을 외부로 배출합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">구조가 단순하고 유지보수가 용이</span><span class="d">냉각 시스템이 단순하여 설치와 유지보수가 용이하고 운영 비용이 낮습니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">다양한 환경에서 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있어 다양한 설치 환경에 적합합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 초기 투자 비용과 운영 비용이 절감됩니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>Container Liquid Cooling Type</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 배터리 모듈 및 주요 부품의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 컨테이너 내부 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>Container Liquid Cooling Type</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 배터리 모듈 및 주요 부품의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 컨테이너 내부 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
           </div>
@@ -1080,8 +1085,8 @@
 
       <!-- 03-4 BMS -->
       <section class="sf-sec sf-step is-prod" id="sf03-4" aria-labelledby="sf03-4-t">
-        <p class="sf-line"><span class="sf-tag">03-4</span><i class="rule"></i></p>
-        <div class="sf-prodin">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-4</span><i class="rule"></i></p>
           <div class="sf-ptexts">
             <div class="txt">
               <h2 id="sf03-4-t">BMS</h2>
@@ -1095,50 +1100,50 @@
               </ul>
             </div>
           </div>
-          <div class="sf-prods">
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>Module BMS(CMU)</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">정밀한 셀 모니터링</span><span class="d">셀 전압, 온도, 밸런싱 상태 등 다양한 데이터를 고정밀로 실시간 측정 및 전송합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">높은 신뢰성과 안정성</span><span class="d">산업용 등급의 설계와 검증을 통해 장기간 안정적인 모니터링 성능을 제공합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">Rack BMS와 완벽 연동</span><span class="d">CMU는 Rack BMS와 안정적인 통신을 통해 셀 정보를 정확하게 전달하고, 제어 명령을 신속하게 수행합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">높은 확장성</span><span class="d">다양한 셀 구성과 모듈 구조를 지원하여 유연한 시스템 확장과 호환성을 제공합니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>Module BMS(CMU)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">정밀한 셀 모니터링</span><span class="d">셀 전압, 온도, 밸런싱 상태 등 다양한 데이터를 고정밀로 실시간 측정 및 전송합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">높은 신뢰성과 안정성</span><span class="d">산업용 등급의 설계와 검증을 통해 장기간 안정적인 모니터링 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">Rack BMS와 완벽 연동</span><span class="d">CMU는 Rack BMS와 안정적인 통신을 통해 셀 정보를 정확하게 전달하고, 제어 명령을 신속하게 수행합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">높은 확장성</span><span class="d">다양한 셀 구성과 모듈 구조를 지원하여 유연한 시스템 확장과 호환성을 제공합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>Rack BMS(BPU)</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">Rack 상태 통합 모니터링</span><span class="d">Rack 내 모듈의 전압, 전류, 온도 및 SOC/SOH 등 주요 상태 정보를 통합 관리합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">보호 및 제어 기능</span><span class="d">과전압/과전류/과온도 등 이상 상황을 실시간 감지하고 보호 동작과 제어를 수행합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">BPU 하드웨어 통합 보호</span><span class="d">차단기, 퓨즈, 접촉기 등 보호 장치와 연계하여 안전한 배터리 시스템을 구성합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">기능안전 인증 취득</span><span class="d">IEC 60730 국제 표준에 기반한 기능안전 인증을 취득하여 안정성과 신뢰성을 검증받았습니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>Rack BMS(BPU)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">Rack 상태 통합 모니터링</span><span class="d">Rack 내 모듈의 전압, 전류, 온도 및 SOC/SOH 등 주요 상태 정보를 통합 관리합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">보호 및 제어 기능</span><span class="d">과전압/과전류/과온도 등 이상 상황을 실시간 감지하고 보호 동작과 제어를 수행합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">BPU 하드웨어 통합 보호</span><span class="d">차단기, 퓨즈, 접촉기 등 보호 장치와 연계하여 안전한 배터리 시스템을 구성합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">기능안전 인증 취득</span><span class="d">IEC 60730 국제 표준에 기반한 기능안전 인증을 취득하여 안정성과 신뢰성을 검증받았습니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
-            <div class="sf-prod">
-              <div class="shot"></div>
-              <div class="side">
-                <p class="lbl"><b>System BMS(BCP)</b></p>
-                <div class="info">
-                  <ul class="sf-feat">
-                    <li><i class="ic"></i><span class="t"><span class="k">전체 시스템 통합 관리</span><span class="d">다수의 Rack 상태를 통합 모니터링하고, 시스템 레벨의 운영 및 보호 기능을 수행합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">상위 시스템 연계</span><span class="d">EMS, PCS, SCADA 등 상위 시스템과 연동하여 효율적인 에너지 운영을 지원합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">시스템 보호 및 제어</span><span class="d">시스템 차단, 절연 감시, 고장 진단 등 다양한 보호 및 제어 기능으로 안전성을 극대화합니다.</span></span></li>
-                    <li><i class="ic"></i><span class="t"><span class="k">사이버 보안 솔루션 제공</span><span class="d">IEC 62443 기반의 사이버 보안 솔루션을 제공하여 네트워크 보안, 데이터 암호화, 접근 제어, 침입 탐지 등 다계층 보안 체계를 지원합니다.</span></span></li>
-                  </ul>
-                  <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
-                </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot"></div>
+            <div class="side">
+              <p class="lbl"><b>System BMS(BCP)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"></i><span class="t"><span class="k">전체 시스템 통합 관리</span><span class="d">다수의 Rack 상태를 통합 모니터링하고, 시스템 레벨의 운영 및 보호 기능을 수행합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">상위 시스템 연계</span><span class="d">EMS, PCS, SCADA 등 상위 시스템과 연동하여 효율적인 에너지 운영을 지원합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">시스템 보호 및 제어</span><span class="d">시스템 차단, 절연 감시, 고장 진단 등 다양한 보호 및 제어 기능으로 안전성을 극대화합니다.</span></span></li>
+                  <li><i class="ic"></i><span class="t"><span class="k">사이버 보안 솔루션 제공</span><span class="d">IEC 62443 기반의 사이버 보안 솔루션을 제공하여 네트워크 보안, 데이터 암호화, 접근 제어, 침입 탐지 등 다계층 보안 체계를 지원합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
               </div>
             </div>
           </div>
