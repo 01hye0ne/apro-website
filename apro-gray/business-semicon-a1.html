@@ -1051,7 +1051,10 @@
     if(!armed) return;
     armed = false;
     /* 어긋나 있으면(앵커 이동·리사이즈·키보드 스크롤 뒤) 지금 장을 먼저 맞춘다 */
-    if(Math.abs(off) > SLACK){ pageTo(window.scrollY + off); return; }
+    /* 아직 제자리에 서지 않았으면 먼저 세운다 — 단 '아래로 벗어난' 쪽만이다.
+       위로 벗어나 있는(off 가 음수인) 장은 이미 그 안을 굴러 내려온 긴 장이므로
+       여기서 되돌리면 다음 장으로 못 넘어가고 제자리로 튕겨 돌아온다 */
+    if(off > SLACK){ pageTo(window.scrollY + off); return; }
     var nx = i + dir;
     pageTo(nx < 0 ? 0 : topOf(steps[Math.min(steps.length - 1, nx)]));
   }, { passive:false });
