@@ -394,6 +394,8 @@
      오른쪽 선은 화면 오른쪽 끝까지 나간다(.sf-main 에 오른쪽 여백이 없다) */
   .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center}
   .sf-line i{display:block}
+  /* 그림 기둥의 줄은 기둥 사이 8 을 건너 글 기둥의 줄과 만난다 */
+  .sf-figcol>.sf-line{margin-right:-8px}
   .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-rule,var(--sf-line-s))}
   .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
   /* 숫자 태그 — 폭을 32 로 고정한다(Figma 실측). 글자에 맞춰 늘었다 줄었다 하면
