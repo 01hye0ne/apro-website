@@ -477,7 +477,7 @@
      .sf-prods 는 display:contents 로 껍데기만 지워 카드들을 장의 줄로 올린다 —
      마크업은 그대로 두고 격자에만 참여시키는 방법이다 */
   .sf-sec.is-prod{justify-content:flex-start;
-                  display:grid;grid-auto-rows:1fr;gap:24px;align-content:start}
+                  display:grid;grid-auto-rows:1fr;gap:0;align-content:start}
   /* 윗단 — [눈금 줄 + 제목 + 리드 + Certification] 이 화면에 붙고 그 아래로
      제품 카드만 흘러 지나간다. 다른 페이지가 그림 기둥을 붙여 두는 것과 같은
      방식이다 : 장의 정체는 남고 세부만 움직인다. 사진까지 붙이지 않는 이유는
@@ -531,7 +531,10 @@
   .sf-prods{display:contents}
   /* 오른쪽 여백은 .sf-prods 가 사라졌으니 카드가 직접 진다 — 테두리 바깥이라
      padding 이 아니라 margin 이다 */
-  .sf-prod{margin-right:var(--body-pad-r);
+  /* 윗단 아래 변(Certification 줄)에 첫 카드가 바로 붙고, 카드끼리도 붙는다 —
+     테두리가 겹치지 않게 1px 씩 끌어올린다. 붙어 있어야 휠 한 번에 다음 제품이
+     그 줄에 정확히 와서 선다 */
+  .sf-prod{margin-right:var(--body-pad-r);margin-top:-1px;
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
   .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;
                  aspect-ratio:1;background:var(--sf-ph-bg);
@@ -660,7 +663,7 @@
     .sf-sec.is-prod{display:block}
     .sf-ptexts{flex:none;min-height:0;gap:24px;padding-right:0}
     .sf-prods{display:flex;flex-direction:column;gap:24px}
-    .sf-prod{margin-right:0;flex-direction:column}
+    .sf-prod{margin-right:0;margin-top:0;flex-direction:column}
     .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
     .sf-feat{flex-wrap:wrap;gap:0}
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
@@ -1657,7 +1660,10 @@
      · 키보드(Space·PageDown·화살표) — 손대지 않는다. 어긋나면 다음 휠이 맞춘다 */
 (function(){
   var narrow = window.matchMedia('(max-width:900px)');
-  var steps  = [].slice.call(document.querySelectorAll('.sf-step'));
+  /* 제품 장은 통째로 한 장이 아니라 카드 하나가 한 장이다 — 붙박이 윗단은
+     그대로 서 있고 카드만 그 아래로 한 장씩 올라온다 */
+  var steps  = [].slice.call(
+    document.querySelectorAll('.sf-step:not(.is-prod), .sf-prod'));
   var nav    = document.getElementById('sfNav');
   if(steps.length < 2) return;
 
@@ -1671,7 +1677,15 @@
   /* 소분류 장은 띠가 위로 비워 둔 만큼(--sec-pad) 내려서 서고, 배너·인트로는
      GNB 밑변에 바로 붙는다. 여백은 띠 상자의 padding-top 에서 잰다 */
   var secsEl = document.querySelector('.sf-secs');
+  /* 제품 카드가 서는 자리는 붙박이 윗단의 아래 변이다 — 윗단 높이에는 위쪽
+     안쪽 여백(--grid-m)이 들어 있어서, 붙었을 때의 아래 변이 곧 이 값이다 */
+  function headH(el){
+    var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
+    var hd  = sec ? sec.querySelector('.sf-phead') : null;
+    return hd ? hd.getBoundingClientRect().height : 0;
+  }
   function lineOf(el){
+    if(el.classList.contains('sf-prod')) return px('--gnb-h') + headH(el);
     return px('--gnb-h') +
            (el.classList.contains('sf-sec') && secsEl
             ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0);
