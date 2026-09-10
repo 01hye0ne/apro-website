@@ -328,14 +328,21 @@
               flex:1 1 0;min-width:0;display:flex;align-items:center}
   .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
              display:flex;flex-direction:column;gap:24px}
-  .sf-figstack{position:relative;flex:1;min-height:0}
+  .sf-figstack{position:relative;flex:1;min-height:0;overflow:hidden}
   /* 세 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다.
      visibility 를 같이 껐다 켜야 안 보이는 열 장이 읽기 순서에 끼지 않는다 */
   .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
          background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
-         opacity:0;visibility:hidden;
-         transition:opacity .45s var(--ease),visibility .45s}
-  .sf-ph.is-on{opacity:1;visibility:visible}
+         transform:translateY(100%);visibility:hidden;
+         transition:transform .55s var(--ease),visibility 0s .55s}
+  /* 자리는 셋뿐이다 — 아래 대기(기본) · 제자리(.is-on) · 위 대기(.is-up).
+     대기 자리는 칸 밖이라 .sf-figstack 의 overflow 가 잘라 낸다. 제자리를 벗어난
+     그림은 미끄러짐이 끝난 뒤(0s .55s) 감춰 읽기 순서에서도 빠진다.
+     .no-tr 은 들어올 그림을 반대편에 소리 없이 세워 둘 때만 잠깐 붙인다 */
+  .sf-ph.is-up{transform:translateY(-100%)}
+  .sf-ph.is-on{transform:none;visibility:visible;
+               transition:transform .55s var(--ease)}
+  .sf-ph.no-tr{transition:none}
 
   /* 오른쪽 글 기둥은 한 장씩 끊기지 않고 이어 흐른다 — 지금 장 바로 밑에 다음
      장이 붙어 있고, 지금 장만 진하고 앞뒤는 옅게 남는다.
@@ -446,7 +453,8 @@
   @media(prefers-reduced-motion:reduce){
     .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,
     .sf-num,.sf-dl,.sf-num li,.sf-dl li,
-    .sf-dl .k::before,.sf-line .rule,.sf-line .tick,.sf-ph{transition:none}
+    .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
+    .sf-ph,.sf-ph.is-on{transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -932,6 +940,30 @@
     if(!w || !c) return top;
     return top + (c.getBoundingClientRect().top - w.getBoundingClientRect().top);
   }
+  /* 그림 바꾸기 — 다음 그림이 아래에서 올라와 지금 그림을 위로 밀어낸다.
+     인덱스를 거꾸로 짚어 올라갈 때는 반대로 위에서 내려와 아래로 민다.
+     둘 말고는 손대지 않는다 — 이미 칸 밖이고, 미끄러지는 중인 앞 그림을
+     제자리로 되돌리면 그 순간이 튄다 */
+  function slideTo(next){
+    if(!next) return;
+    var curFig = null, i;
+    for(i=0;i<figs.length;i++)
+      if(figs[i].classList.contains('is-on')){ curFig = figs[i]; break; }
+    if(next === curFig) return;
+    var back = curFig ? figs.indexOf(next) < figs.indexOf(curFig) : false;
+    /* 들어올 그림을 반대편 대기 자리에 세운다 — 여기까지는 안 움직인 것으로 친다 */
+    next.classList.add('no-tr');
+    next.classList.remove('is-on');
+    next.classList.toggle('is-up', back);
+    void next.offsetWidth;                  /* 세운 자리를 굳힌다 */
+    next.classList.remove('no-tr','is-up');
+    next.classList.add('is-on');
+    if(curFig){
+      curFig.classList.remove('is-on');
+      curFig.classList.toggle('is-up', !back);
+    }
+  }
+
   function spy(){
     raf = 0;
     var line = alignTop(), best = 0, bd = Infinity;
@@ -946,7 +978,7 @@
       else           links[j].removeAttribute('aria-current');
     }
     /* 붙박이 그림과 지금 장의 진하기도 같은 판정을 쓴다 */
-    for(var k=0;k<figs.length;k++) figs[k].classList.toggle('is-on', k === best);
+    slideTo(figs[best]);
     for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
     setTag(secs[best].id);
   }
