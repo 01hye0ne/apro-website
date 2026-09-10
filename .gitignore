@@ -24,3 +24,6 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 .vscode/
+
+# 파이썬 부산물
+__pycache__/
