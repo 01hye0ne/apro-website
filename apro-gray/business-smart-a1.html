@@ -366,10 +366,12 @@
      스크립트가 transform 을 직접 얹으므로 여기서는 전이를 걸지 않는다.
      .is-on 은 스크립트가 돌기 전 첫 그림의 자리다 */
   .sf-ph.is-on{transform:none;visibility:visible}
-  /* 밀려 들어오는 그림은 살짝 큰 채로 들어와 제자리에서 본디 크기로 돌아온다.
-     칸이 아니라 안쪽 사진만 키운다 — 그래야 두 그림의 이음매가 한 줄로 남는다.
-     배율도 자리와 같은 진행도를 쓴다(스크립트가 --zoom 을 얹는다) */
-  .sf-ph img{transform:scale(var(--zoom,1));transform-origin:50% 50%;
+  /* 들어오는 그림은 살짝 큰 채로 들어와 제자리 배율로 줄고, 밀려 나가는 그림은
+     제자리 배율에서 더 줄며 빠진다. 칸이 아니라 안쪽 사진만 키운다 — 그래야 두
+     그림의 이음매가 한 줄로 남는다. 배율도 자리와 같은 진행도를 쓴다.
+     제자리 배율이 1 이 아니라 1.04 인 건, 나가는 쪽이 1 아래로 내려가면 사진이
+     칸보다 작아져 가장자리에 흰 틈이 생기기 때문이다 — 그 틈을 메우는 몫이다 */
+  .sf-ph img{transform:scale(var(--zoom,1.04));transform-origin:50% 50%;
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
@@ -1387,7 +1389,9 @@
      그대로 끌고 간다. 시간이 정하는 전이가 아니라서 휠·드래그·인덱스 어느
      쪽으로 움직여도 오른쪽 줄과 어긋나지 않는다 */
   var figFor = [], figAt = [], seamA = null, seamB = null, rOff = 8;
-  var ZOOM = .06;   /* 들어올 때의 덤 배율 - 6% */
+  var REST = 1.04;  /* 제자리 배율 - 나가는 쪽이 줄어들 여유다 */
+  var Z_IN = .06;   /* 들어올 때 덤으로 얹는 몫 */
+  var Z_OUT = .04;  /* 나갈 때 덜어내는 몫 - REST 를 1 아래로 끌지 않는다 */
   (function(){
     for(var i=0;i<secs.length;i++){
       figFor[i] = null;
@@ -1421,21 +1425,22 @@
         figs[i].style.visibility = on ? 'visible' : 'hidden';
         if(!on){
           figs[i].style.transform = 'translateY(100%)';
-          figs[i].style.setProperty('--zoom', 1 + ZOOM);
+          figs[i].style.setProperty('--zoom', REST + Z_IN);
         }
       }
       seamA = a; seamB = b;
     }
-    /* 배율은 이음매가 간 만큼 따라간다 - 들어오는 쪽은 1+ZOOM 에서 1 로 줄고,
-       나가는 쪽은 1 에서 1+ZOOM 으로 커진다. 되감으면 그대로 뒤집힌다 */
+    /* 배율은 이음매가 간 만큼 따라간다 - 들어오는 쪽은 REST+Z_IN 에서 REST 로,
+       나가는 쪽은 REST 에서 REST-Z_OUT 으로. 둘 다 줄어드는 쪽이다.
+       되감으면 그대로 뒤집힌다 - 시간이 아니라 자리가 정하기 때문이다 */
     var p = H ? seam / H : 1;
     if(a){
       a.style.transform = 'translateY(' + (seam - H) + 'px)';
-      a.style.setProperty('--zoom', 1 + ZOOM * (1 - p));
+      a.style.setProperty('--zoom', REST - Z_OUT * (1 - p));
     }
     if(b){
       b.style.transform = 'translateY(' + seam + 'px)';
-      b.style.setProperty('--zoom', 1 + ZOOM * p);
+      b.style.setProperty('--zoom', REST + Z_IN * p);
     }
   }
 
