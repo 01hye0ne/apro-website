@@ -375,15 +375,21 @@
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
-  .sf-ph.has-img,.sf-ph.has-panes,.sf-ph.has-globe{background:none;border:0;overflow:hidden}
+  .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
   /* 해외 생산거점 칸은 사진 대신 지구를 돌린다 — cobe(MIT)를 얹었다.
-     칸은 옆으로 넓지만 지구는 정사각이라 짧은 변에 맞춰 가운데에 세운다.
-     크기는 스크립트가 재서 캔버스에 픽셀로 박는다(화면 배율까지 곱한다) */
-  .sf-globe{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .sf-globe canvas{display:block;max-width:100%;max-height:100%}
-  /* WebGL 이 없는 브라우저에서는 같은 배치의 정지 그림으로 물러난다.
-     이 클래스가 붙을 때만 그림을 받으므로 보통은 내려받지 않는다 */
-  .sf-globe.is-off{background:url(../assets/globe-overseas-bases.png) center/contain no-repeat}
+     사진 칸과 달리 바탕 회색을 그대로 두고 구를 하얗게 띄운다.
+     구의 지름은 칸 높이의 1.5 배라 아래가 잘린다 — 삼분의 이만 내놓고,
+     나머지는 끌어서 돌려 보는 자리다 */
+  .sf-ph.has-globe{border:0;overflow:hidden}
+  .sf-globe{position:absolute;inset:0;cursor:grab;touch-action:pan-y;
+            -webkit-user-select:none;user-select:none}
+  .sf-globe.is-grab{cursor:grabbing}
+  .sf-globe canvas{display:block;width:100%;height:100%}
+  /* WebGL 이 없는 브라우저에서는 같은 구도의 정지 그림으로 물러난다.
+     이 클래스가 붙을 때만 그림을 받으므로 보통은 내려받지 않는다.
+     바탕색(--sf-ph-bg)을 그림에 구워 넣었다 — 투명 PNG 는 500KB 였다 */
+  .sf-globe.is-off{background:url(../assets/globe-overseas-bases.jpg) center top/cover no-repeat;
+                   cursor:default}
   .sf-globe.is-off canvas{display:none}
   /* 04-1 은 한 칸 안에서 제품 셋을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
      들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
@@ -896,8 +902,11 @@
       <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
       <div class="sf-figstack">
         <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
-        <figure class="sf-ph has-globe" data-for="sf01-2" role="img" aria-label="한국 본사에서 미시간·폴란드·남경·인도네시아 현지 법인으로 이어지는 지구 도식">
-          <div class="sf-globe" id="sfGlobe"><canvas aria-hidden="true"></canvas></div>
+        <figure class="sf-ph has-globe" data-for="sf01-2">
+          <div class="sf-globe" id="sfGlobe" role="img" tabindex="0"
+               aria-label="한국 본사에서 미시간·폴란드·남경·인도네시아 현지 법인으로 이어지는 지구 도식 — 끌거나 화살표 키로 돌려 볼 수 있습니다">
+            <canvas aria-hidden="true"></canvas>
+          </div>
         </figure>
         <figure class="sf-ph has-img" data-for="sf02-1"><img src="../assets/reliability-test-equipment.jpg" alt="신뢰성 검사 장비 외관" decoding="async" /></figure>
         <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
@@ -1652,10 +1661,10 @@
 </script>
 <script src="../assets/cobe.js"></script>
 <script>
-/* ── 해외 생산거점 — 도는 지구 ───────────────────────────────────────────
+/* ── 해외 생산거점 — 삼분의 이만 내놓고 도는 지구 ────────────────────────
    cobe 2 는 스스로 돌지 않는다. 프레임마다 update() 를 부르는 쪽이 우리라,
-   칸이 화면에 걸릴 때만 프레임을 돌리고 밀려 나가면 멈춘다.
-   WebGL 이 없으면 조용히 정지 그림으로 물러난다 */
+   칸이 화면에 걸릴 때만 돌리고 밀려 나가면 멈춘다. 끌면 손이 간 만큼 돌고,
+   놓으면 그 자리에서 다시 천천히 돈다. WebGL 이 없으면 정지 그림으로 물러난다 */
 (function(){
   var wrap = document.getElementById('sfGlobe');
   if(!wrap) return;
@@ -1663,9 +1672,8 @@
   var fig = wrap.parentNode;
   var mk  = window.COBE && window.COBE.default;
   /* cobe 는 WebGL 이 없으면 조용히 아무것도 안 하는 껍데기를 돌려준다 —
-     빈 칸으로 남지 않게 우리가 먼저 물어보고 정지 그림으로 물러난다.
-     버리는 캔버스로 재는 건, 이 캔버스에 먼저 맥락을 만들면 cobe 가 원하는
-     속성(preserveDrawingBuffer)이 무시되기 때문이다 */
+     빈 칸으로 남지 않게 우리가 먼저 물어본다. 버리는 캔버스로 재는 건,
+     이 캔버스에 먼저 맥락을 만들면 cobe 가 원하는 속성이 무시되기 때문이다 */
   function canGL(){
     try{
       var c = document.createElement('canvas');
@@ -1674,40 +1682,60 @@
   }
   if(!mk || !canGL()){ wrap.classList.add('is-off'); return; }
 
-  var HUB  = [37.57, 126.98];        /* 본사 · 경기        */
-  var SITE = [[42.33, -83.05],       /* 미시간             */
-              [51.11,  17.04],       /* 폴란드             */
-              [32.06, 118.80],       /* 남경               */
-              [-6.32, 107.34]];      /* 인도네시아         */
+  var HUB  = [37.57, 126.98];        /* 본사 · 경기         */
+  var SITE = [[42.33, -83.05],       /* 미시간              */
+              [51.11,  17.04],       /* 폴란드              */
+              [32.06, 118.80],       /* 남경                */
+              [-6.32, 107.34]];      /* 인도네시아          */
   var BLUE = [.173, .341, .565];     /* #2c5790 브랜드 파랑 */
 
-  var globe = null, side = 0, phi = 2.2, raf = 0, live = false;
+  /* 셰이더에서 구의 지름 = 0.8 · scale · 캔버스높이 다. 아래를 잘라 삼분의
+     이만 남기려면 지름이 칸 높이의 1.5 배여야 하지만, 그러면 이 칸(3:2)에서는
+     지름이 칸 너비와 같아져 위아래 양옆에 숨 쉴 틈이 없다. 그래서 너비의
+     0.86 로도 한 번 더 묶는다 — 노출은 그대로 삼분의 이, 대신 구 위와 옆에
+     바탕이 남는다. 아래로 내리는 픽셀 d 는 offset = 2d / scale 로 준다
+     (셰이더에서 offset 은 scale 을 나눈 뒤에 빠지므로 배율을 되돌려 준다) */
+  var SHOW = 2 / 3;
+  var WIDE = .86;
+  var TILT = { lo: -.6, hi: .9 };
+
+  var globe = null, box = '', phi = 2.2, theta = .26;
+  var raf = 0, live = false, grab = null;
   var slow = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function paint(){ if(globe) globe.update({ phi: phi, theta: theta }); }
 
   function build(){
     var r = wrap.getBoundingClientRect();
-    var s = Math.round(Math.min(r.width, r.height));
-    if(!s || s === side) return;
+    var w = Math.round(r.width), h = Math.round(r.height);
+    if(!w || !h) return;
+    var key = w + 'x' + h;
+    if(key === box) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = cv.height = Math.round(s * dpr);
-    cv.style.width = cv.style.height = s + 'px';
+    cv.width  = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    var wd = cv.width, hd = cv.height;
+    var dia   = Math.min(hd * 1.5, wd * WIDE);     /* 구의 지름             */
+    var scale = dia / (.8 * hd);
+    var pad   = hd - dia * SHOW;                   /* 구 위에 남기는 바탕   */
+    var down  = pad + dia / 2 - hd / 2;            /* 기본 자리에서 내릴 몫 */
     if(globe) globe.destroy();
     globe = mk(cv, {
-      devicePixelRatio: dpr, width: cv.width, height: cv.height,
-      phi: phi, theta: .26, dark: .2, diffuse: 1.1, scale: 1,
-      mapSamples: 16000, mapBrightness: 4.6,
-      baseColor: [.80, .84, .90], markerColor: BLUE, glowColor: [1, 1, 1],
-      offset: [0, 0], arcColor: BLUE, arcWidth: .45, arcHeight: .22,
-      markerElevation: 0,
-      /* 한 장만 그리고 멈추는 경우(동작 줄이기)에도 화면에 남아 있어야 한다 */
+      devicePixelRatio: dpr, width: wd, height: hd,
+      phi: phi, theta: theta, dark: 0, diffuse: 1.2, scale: scale,
+      mapSamples: 26000, mapBrightness: 6,
+      baseColor: [1, 1, 1], markerColor: BLUE, glowColor: [.88, .89, .91],
+      offset: [0, 2 * down / scale],
+      arcColor: BLUE, arcWidth: .45, arcHeight: .22, markerElevation: 0,
+      /* 한 장만 그리고 멈추는 경우(동작 줄이기 · 끌기)에도 남아 있어야 한다 */
       context: { preserveDrawingBuffer: true },
       markers: [{ location: HUB, size: .075 }].concat(SITE.map(function(p){
         return { location: p, size: .055 };
       })),
       arcs: SITE.map(function(p){ return { from: HUB, to: p }; })
     });
-    side = s;
-    globe.update({ phi: phi });
+    box = key;
+    paint();
   }
 
   /* 한 바퀴에 마흔여덟 초쯤 — 눈에 걸리지 않을 만큼만 돈다 */
@@ -1715,8 +1743,8 @@
     raf = 0;
     if(!globe) return;
     if(fig.style.visibility !== 'hidden'){
-      globe.update({ phi: phi });
-      phi += .0022;
+      if(!grab) phi += .0022;
+      paint();
     }
     if(live) raf = requestAnimationFrame(frame);
   }
@@ -1724,6 +1752,47 @@
     live = on && !slow;
     if(live && !raf) raf = requestAnimationFrame(frame);
   }
+
+  /* ── 끌어서 돌리기 ─────────────────────────────────────────────────────
+     칸 너비를 한 번 훑으면 반 바퀴다. 세로로는 기울기만 조금 — 극을 넘기면
+     지도가 뒤집혀 보이므로 위아래를 막았다.
+     touch-action:pan-y 라 손가락으로 세로로 쓸면 페이지가 그대로 흐른다 */
+  function at(e){
+    var r = wrap.getBoundingClientRect();
+    phi   = grab.p + (e.clientX - grab.x) / r.width * Math.PI;
+    theta = Math.max(TILT.lo, Math.min(TILT.hi,
+            grab.t + (e.clientY - grab.y) / r.height * 1.2));
+    paint();
+  }
+  wrap.addEventListener('pointerdown', function(e){
+    if(e.button) return;
+    grab = { x: e.clientX, y: e.clientY, p: phi, t: theta };
+    wrap.classList.add('is-grab');
+    if(wrap.setPointerCapture) try{ wrap.setPointerCapture(e.pointerId); }catch(x){}
+  });
+  wrap.addEventListener('pointermove', function(e){ if(grab) at(e); });
+  function drop(){
+    if(!grab) return;
+    grab = null;
+    wrap.classList.remove('is-grab');
+  }
+  wrap.addEventListener('pointerup', drop);
+  wrap.addEventListener('pointercancel', drop);
+  wrap.addEventListener('lostpointercapture', drop);
+
+  /* 손 대신 화살표 키로도 돌린다 — 끌기만 두면 키보드로는 못 보는 면이 생긴다 */
+  wrap.addEventListener('keydown', function(e){
+    var h = 0, v = 0;
+    if(e.key === 'ArrowLeft')  h = -1;
+    else if(e.key === 'ArrowRight') h = 1;
+    else if(e.key === 'ArrowUp')    v = -1;
+    else if(e.key === 'ArrowDown')  v = 1;
+    else return;
+    e.preventDefault();
+    phi += h * .18;
+    theta = Math.max(TILT.lo, Math.min(TILT.hi, theta + v * .12));
+    paint();
+  });
 
   build();
   if(window.IntersectionObserver){
@@ -1736,7 +1805,7 @@
   var rt = 0;
   window.addEventListener('resize', function(){
     clearTimeout(rt);
-    rt = setTimeout(function(){ side = 0; build(); }, 200);
+    rt = setTimeout(function(){ box = ''; build(); }, 200);
   });
 })();
 </script>
