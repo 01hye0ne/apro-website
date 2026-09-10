@@ -146,7 +146,7 @@
   .sf-menus .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
                    transition:opacity .18s var(--ease),transform .22s var(--ease)}
   .sf-menus>li>a:hover .caret,.sf-menus>li.is-open .caret{opacity:1}
-  .sf-menus>li.is-open .caret{transform:rotate(180deg)}
+
 
   /* 메가 메뉴 — 대분류마다 다른 판이 GNB 밑으로 펼쳐진다. 칸은 넷을 기본으로
      삼아(사업영역 기준) 왼쪽부터 채운다 — 대분류가 바뀜도 세로 칸선이 같은
@@ -611,6 +611,21 @@
     .sf-cards .ic{width:34px;height:34px}
     .sf-cards p{;white-space:normal}
   }
+
+  /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
+     누르면 짧은 눈금은 사라지고 긴 두 줄이 가운데에서 엇갈려 X 가 된다 */
+  .sf-burger{position:relative;display:block;width:24px;height:24px}
+  .sf-burger .bar{position:absolute;height:1px;background:currentColor;
+                  transition:width .3s var(--ease),transform .3s var(--ease),
+                             opacity .2s var(--ease)}
+  .sf-burger .a{left:5px;top:7px;width:3px}
+  .sf-burger .b{left:5px;top:7px;width:10px;transform:translateX(4px)}
+  .sf-burger .c{left:5px;top:16px;width:14px}
+  .sf-burger[aria-expanded="true"] .a{opacity:0}
+  .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+  /* 대분류의 플러스도 판이 열리면 45도 돌아 X 가 된다 — 단추와 같은 신호다 */
+  .sf-gnb .sf-menus>li.is-open .caret{transform:rotate(45deg)}
 </style>
 </head>
 <body>
@@ -619,11 +634,11 @@
 <header class="sf-gnb">
   <a class="logo" href="index-a1.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
   <ul class="sf-menus">
-    <li data-mega="mega-biz"><a href="business-a1.html" aria-current="true" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
-    <li data-mega="mega-com"><a href="company-a1.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
-    <li data-mega="mega-ir"><a href="ir-finance-a1.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
-    <li data-mega="mega-esg"><a href="esg-environment-a1.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
-    <li data-mega="mega-cmm"><a href="community-notice-a1.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-biz"><a href="business-a1.html" aria-current="true" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-a1.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-a1.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-a1.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-a1.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
   </ul>
   <div class="sf-tools">
       <div class="sf-lang" id="sfLang">
@@ -635,14 +650,7 @@
         </button>
         <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
       </div>
-      <button type="button" class="sf-burger" id="sfBurger" aria-controls="sfNav" aria-expanded="false" aria-label="전체 메뉴 열기">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 17V18H10V17H19Z" fill="currentColor"/>
-<path d="M10 17V18H5V17H10Z" fill="currentColor"/>
-<path d="M9 11.5V12.5H5V11.5H9Z" fill="currentColor"/>
-<path d="M19 11.5V12.5H10V11.5H19Z" fill="currentColor"/>
-<path d="M19 6V7H10V6H19Z" fill="currentColor"/>
-<path d="M10 6V7H5V6H10Z" fill="currentColor"/></svg>
-      </button>
+      <button type="button" class="sf-burger" id="sfBurger" aria-controls="sfNav" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
   </div>
 </header>
 
