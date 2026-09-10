@@ -423,6 +423,9 @@
   .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--c-num)}
   .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
             letter-spacing:-.3px;color:var(--c-body)}
+  /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
+     표를 닫는 테두리가 아니다 */
+  .sf-num li:last-child,.sf-dl li:last-child{border-bottom:0}
 
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
        제목 900 → 300 · 줄글 600 → 200 · 번호/점 파랑 → 300
