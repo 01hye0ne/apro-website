@@ -341,14 +341,21 @@
      눈금 줄이 한 줄로 맞는다 */
   .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
              display:flex;flex-direction:column;gap:24px}
-  .sf-figstack{position:relative;flex:1;min-height:0}
+  .sf-figstack{position:relative;flex:1;min-height:0;overflow:hidden}
   /* 여섯 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다. visibility 를 같이 껐다 켜야
      안 보이는 다섯 장이 읽기 순서에 끼지 않는다 */
   .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
          background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
-         opacity:0;visibility:hidden;
-         transition:opacity .45s var(--ease),visibility .45s}
-  .sf-ph.is-on{opacity:1;visibility:visible}
+         transform:translateY(100%);visibility:hidden;
+         transition:transform .55s var(--ease),visibility 0s .55s}
+  /* 자리는 셋뿐이다 — 아래 대기(기본) · 제자리(.is-on) · 위 대기(.is-up).
+     대기 자리는 칸 밖이라 .sf-figstack 의 overflow 가 잘라 낸다. 제자리를 벗어난
+     그림은 미끄러짐이 끝난 뒤(0s .55s) 감춰 읽기 순서에서도 빠진다.
+     .no-tr 은 들어올 그림을 반대편에 소리 없이 세워 둘 때만 잠깐 붙인다 */
+  .sf-ph.is-up{transform:translateY(-100%)}
+  .sf-ph.is-on{transform:none;visibility:visible;
+               transition:transform .55s var(--ease)}
+  .sf-ph.no-tr{transition:none}
   /* 다음 장은 눈금 줄 절반만큼 올라앉는다 — 그래야 앞 장 그림의 아래 변과
      다음 장의 가는 선이 한 줄이 된다(세로 눈금은 그 선을 가로지른다) */
   .sf-secs>.sf-sec+.sf-sec{margin-top:calc(var(--rule-off) * -1)}
@@ -535,7 +542,7 @@
   .sf-cert .ttl,.sf-cert li,.sf-feat .k,.sf-feat .d,
     .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,
     .sf-cert .ttl,.sf-cert li,.sf-cert li::before,
-    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-phead::after,
+    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-ph.is-on,.sf-phead::after,
     .sf-prod .lbl{transition:none}
   }
 
@@ -1365,13 +1372,36 @@
   /* 붙박이 그림과 숫자 태그 — 01·02 장에만 짝이 있다. 03 솔루션으로 넘어가면
      짝이 없으므로 마지막 그림을 그대로 둔다(묶음이 이미 화면 밖으로 흐른 뒤다).
      여기서 지우면 그림 열이 사라지는 순간이 눈에 걸린다 */
+  /* 그림 바꾸기 — 다음 그림이 아래에서 올라와 지금 그림을 위로 밀어낸다.
+     인덱스를 거꾸로 짚어 올라갈 때는 반대로 위에서 내려와 아래로 민다.
+     둘 말고는 손대지 않는다 — 이미 칸 밖이고, 미끄러지는 중인 앞 그림을
+     제자리로 되돌리면 그 순간이 튄다 */
+  function slideTo(next){
+    if(!next) return;
+    var curFig = null, i;
+    for(i=0;i<figs.length;i++)
+      if(figs[i].classList.contains('is-on')){ curFig = figs[i]; break; }
+    if(next === curFig) return;
+    var back = curFig ? figs.indexOf(next) < figs.indexOf(curFig) : false;
+    /* 들어올 그림을 반대편 대기 자리에 세운다 — 여기까지는 안 움직인 것으로 친다 */
+    next.classList.add('no-tr');
+    next.classList.remove('is-on');
+    next.classList.toggle('is-up', back);
+    void next.offsetWidth;                  /* 세운 자리를 굳힌다 */
+    next.classList.remove('no-tr','is-up');
+    next.classList.add('is-on');
+    if(curFig){
+      curFig.classList.remove('is-on');
+      curFig.classList.toggle('is-up', !back);
+    }
+  }
+
   function show(id){
     var hit = false, i;
     for(i=0;i<figs.length;i++)
       if(figs[i].getAttribute('data-for') === id){ hit = true; break; }
     if(!hit) return;
-    for(i=0;i<figs.length;i++)
-      figs[i].classList.toggle('is-on', figs[i].getAttribute('data-for') === id);
+    slideTo(figs[i]);
     setTag(id);
   }
   /* "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다. 띠 한 칸이 11px 이라
