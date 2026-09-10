@@ -393,7 +393,6 @@
           --c-body:var(--sf-sec);    /* 600 줄글        */
           --c-num:var(--brand);      /* 목록 번호       */
           --c-tick:var(--sf-ter);    /* 태그 · 눈금     */
-          --c-lbl:#4077b7;           /* Certification 띠 */
           --c-bd:var(--sf-line);     /* 200 칸선        */
           --c-bd-s:var(--sf-line-s)} /* 300 굵은 선     */
 
@@ -418,55 +417,65 @@
   .sf-apps span{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.35;
                 letter-spacing:-.32px;color:var(--c-body)}
 
-  /* ── 03 장 : 큰 제목 + 리드 + Certification 띠 + 세로로 쌓는 제품 ─────────
-     Figma 1032:2689(Type=Product). 눈금 줄만 화면 끝까지 나가고 나머지는
+  /* ── 03 장 : 띠를 위아래 반으로 나눈다 (Figma 1032:2562) ──────────────
+     위 절반은 제목 · 리드 · Certification, 아래 절반은 제품 카드 하나다.
+     한 화면에 들어오는 양을 맞추려고 반으로 자른 것이고, 카드가 둘 이상인
+     장은 둘째부터 아래로 이어 흐른다. 눈금 줄만 화면 끝까지 나가고 나머지는
      오른쪽 120 을 비운다 */
   .sf-sec.is-prod{justify-content:flex-start}
   .sf-sec.is-prod>.sf-line{margin-bottom:24px}
   .sf-prodin{display:flex;flex-direction:column;gap:4px;
              padding-right:var(--body-pad-r)}
-  .sf-ptexts{display:flex;flex-direction:column;gap:16px}
+  /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
+  .sf-ptexts{height:calc((var(--band-h) - 44px) / 2);min-height:180px;
+             display:flex;flex-direction:column;justify-content:space-between}
+  .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
   .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                 line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
-                   letter-spacing:-.3px;color:var(--c-ttl)}
-  /* Certification — 제품 목록 머리에 앉는 파란 띠. 왼쪽 칸을 제품 사진 폭(332)에
-     맞춰 두면 아래 카드의 세로 경계와 한 줄로 선다 */
-  .sf-cert{display:flex;align-items:center;padding:8px 0;background:var(--c-lbl)}
-  .sf-cert .hd{flex-shrink:0;width:var(--prod-shot);padding:0 12px;font-family:var(--suit);
-               font-weight:800;font-size:var(--t-xs);line-height:1.35;letter-spacing:-.28px;
-               color:#fff}
-  .sf-cert .lb{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:8px;
-               padding:0 12px;font-family:var(--suit);font-weight:500;font-size:var(--t-xs);
-               line-height:1.35;letter-spacing:-.28px;color:#fff}
-  .sf-cert .lb::before{content:"";width:4px;height:4px;flex-shrink:0;background:#fff}
-  /* 제품 — 한 줄에 하나. 왼쪽 정사각 사진, 오른쪽 이름 · 특징 넷 · 주요 적용 분야 */
-  .sf-prods{display:flex;flex-direction:column;gap:16px}
-  .sf-prod{display:flex;align-items:stretch;border:1px solid var(--c-bd)}
-  .sf-prod>.shot{flex-shrink:0;width:var(--prod-shot);aspect-ratio:1;
-                 background:var(--sf-ph-bg);
-                 border:1px dashed var(--sf-ph-bd)}
+  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+                   line-height:1.6;letter-spacing:-.3px;color:var(--c-ttl)}
+  /* Certification — 왼쪽에 이름, 오른쪽 끝에 인증 표시. 파란 띠였던 것을
+     흰 바탕 한 줄로 바꿨다(와이어프레임 개정) */
+  .sf-cert{display:flex;align-items:center;gap:16px;padding:8px 0}
+  .sf-cert .ttl{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
+                line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
+  .sf-cert ul{margin-left:auto;display:flex;list-style:none}
+  .sf-cert li{display:flex;align-items:center;gap:8px;padding:0 12px;
+              font-family:var(--suit);font-weight:500;font-size:var(--t-xs);
+              line-height:1.35;letter-spacing:-.28px;color:var(--c-body);
+              white-space:nowrap}
+  .sf-cert li::before{content:"";width:4px;height:4px;flex-shrink:0;
+                      background:var(--c-num)}
+  /* 제품 — 한 줄에 하나. 사진 폭은 아래 절반의 높이와 같다 → 카드가 딱 절반일
+     때 정사각형이 된다. 폭을 높이에서 되돌려 받게(aspect-ratio + stretch) 두면
+     플렉스가 주축 크기를 먼저 정하느라 폭이 0 으로 주저앉는다 */
+  .sf-prods{display:flex;flex-direction:column;gap:24px}
+  .sf-prod{min-height:calc((var(--band-h) - 44px) / 2);
+           display:flex;align-items:stretch;border:1px solid var(--c-bd)}
+  .sf-prod>.shot{flex:0 0 calc((var(--band-h) - 44px) / 2);align-self:stretch;
+                 background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
   .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
-  .sf-prod .lbl{display:flex;align-items:center;padding:12px;background:var(--sf-gray100)}
-  .sf-prod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--t-md);line-height:1.2;
-                  letter-spacing:-.4px;color:var(--c-ttl)}
-  .sf-prod .info{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;
-                 padding:12px}
-  /* 특징 넷이 가로로 나란히 선다. flex:1 이라 아래 '주요 적용 분야' 띠가 카드
-     바닥에 붙는다 — 글이 한 줄 더 접히는 카드가 있어도 띠의 윗변이 서로 맞는다 */
+  .sf-prod .lbl{display:flex;align-items:center;padding:12px 16px;
+                background:var(--sf-gray100)}
+  .sf-prod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--t-md);
+                  line-height:1.2;letter-spacing:-.4px;color:var(--c-ttl)}
+  .sf-prod .info{flex:1;min-height:0;display:flex;flex-direction:column}
+  /* 특징 넷이 가로로 나란히 선다. flex:1 이라 아래 '주요 적용 분야' 줄이 카드
+     바닥에 붙는다 — 글이 한 줄 더 접히는 카드가 있어도 윗변이 서로 맞는다 */
   .sf-feat{flex:1;min-height:0;display:flex;gap:12px;list-style:none}
   .sf-feat li{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
-              padding:16px 0}
+              padding:16px}
   .sf-feat .ic{width:44px;height:44px;flex-shrink:0;background:var(--sf-ph-bg);
                border:1px dashed var(--sf-ph-bd)}
   .sf-feat .t{display:flex;flex-direction:column;gap:4px}
-  .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);line-height:1.35;
-              letter-spacing:-.28px;color:var(--c-ttl)}
-  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
-              letter-spacing:-.28px;color:var(--c-body)}
-  .sf-prod .use{display:flex;gap:10px;padding:4px 8px;border-radius:2px;
-                background:var(--sf-gray100);font-family:var(--suit);font-size:var(--t-2xs);
-                line-height:1.6;letter-spacing:-.26px}
+  .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
+              line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
+  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+              line-height:1.6;letter-spacing:-.28px;color:var(--c-body)}
+  /* 와이어프레임은 이 줄을 한 줄로 자르지만(말줄임) 글을 잘라 버리는 대신
+     접히게 둔다 — 카드가 그만큼 자란다 */
+  .sf-prod .use{display:flex;gap:10px;padding:12px 16px;font-family:var(--suit);
+                font-size:var(--t-2xs);line-height:1.6;letter-spacing:-.26px}
   .sf-prod .use b{flex-shrink:0;font-weight:800;color:var(--sf-sec)}
   .sf-prod .use span{min-width:0;font-weight:500;color:var(--sf-ter)}
 
@@ -476,24 +485,26 @@
   @media(min-width:901px){
     .js .sf-sec:not(.is-on){
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
-      --c-tick:var(--sf-line);--c-lbl:var(--sf-line);
+      --c-tick:var(--sf-line);
       --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
-    .js .sf-sec:not(.is-on) .sf-prod .lbl{background:transparent}
     .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
     .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
   }
   .sf-line .ttl,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
   .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
+  .sf-cert .ttl,.sf-cert li,
   .sf-feat .k,.sf-feat .d,
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
   .sf-apps,.sf-apps li,.sf-prod{transition:border-color .5s var(--ease)}
-  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert,
+  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,
   .sf-prod .lbl{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
     .sf-line .ttl,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
-    .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,.sf-feat .k,.sf-feat .d,
+    .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
+  .sf-cert .ttl,.sf-cert li,.sf-feat .k,.sf-feat .d,
     .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,
-    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert,.sf-ph,
+    .sf-cert .ttl,.sf-cert li,.sf-cert li::before,
+    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,
     .sf-prod .lbl{transition:none}
   }
 
@@ -562,14 +573,14 @@
     .sf-txtin{padding-left:0;padding-right:0}
     /* 제품은 사진이 위로 올라오고 특징 넷이 두 줄로 접힌다 */
     .sf-prodin{padding-right:0}
-    .sf-prod{flex-direction:column}
-    .sf-prod>.shot{width:100%;aspect-ratio:16/9}
-    .sf-cert .hd{width:100%}
+    .sf-ptexts{height:auto;min-height:0;gap:24px}
+    .sf-prod{min-height:0;flex-direction:column}
+    .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
     .sf-feat{flex-wrap:wrap;gap:0}
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
-    .sf-cert{flex-wrap:wrap;padding:8px 4px}
-    .sf-cert .hd{width:100%;padding:0 8px 4px}
-    .sf-cert .lb{flex:1 1 40%;padding:0 8px}
+    .sf-cert{flex-wrap:wrap;gap:8px}
+    .sf-cert ul{margin-left:0;flex-wrap:wrap}
+    .sf-cert li:first-child{padding-left:0}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
     .sf-herocap{gap:20px;padding-top:28px}
     .sf-herocap h1{gap:12px}
@@ -903,12 +914,16 @@
         <p class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i></p>
         <div class="sf-prodin">
           <div class="sf-ptexts">
-            <h2 id="sf03-1-t">Module</h2>
-            <p class="lead">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
+            <div class="txt">
+              <h2 id="sf03-1-t">Module</h2>
+              <p class="lead">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
+            </div>
             <div class="sf-cert">
-              <p class="hd">Certification</p>
-              <p class="lb">KC / IEC / UL</p>
-              <p class="lb">KC / IEC / UL</p>
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li>KC / IEC / UL</li>
+              </ul>
             </div>
           </div>
           <div class="sf-prods">
@@ -951,12 +966,16 @@
         <p class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i></p>
         <div class="sf-prodin">
           <div class="sf-ptexts">
-            <h2 id="sf03-2-t">Rack</h2>
-            <p class="lead">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
+            <div class="txt">
+              <h2 id="sf03-2-t">Rack</h2>
+              <p class="lead">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
+            </div>
             <div class="sf-cert">
-              <p class="hd">Certification</p>
-              <p class="lb">KC / IEC / UL</p>
-              <p class="lb">KC / IEC / UL</p>
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li>KC / IEC / UL</li>
+              </ul>
             </div>
           </div>
           <div class="sf-prods">
@@ -999,12 +1018,16 @@
         <p class="sf-line"><span class="sf-tag">03-3</span><i class="rule"></i></p>
         <div class="sf-prodin">
           <div class="sf-ptexts">
-            <h2 id="sf03-3-t">Container</h2>
-            <p class="lead">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
+            <div class="txt">
+              <h2 id="sf03-3-t">Container</h2>
+              <p class="lead">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
+            </div>
             <div class="sf-cert">
-              <p class="hd">Certification</p>
-              <p class="lb">KC / IEC / UL</p>
-              <p class="lb">KC / IEC / UL</p>
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li>KC / IEC / UL</li>
+              </ul>
             </div>
           </div>
           <div class="sf-prods">
@@ -1047,12 +1070,16 @@
         <p class="sf-line"><span class="sf-tag">03-4</span><i class="rule"></i></p>
         <div class="sf-prodin">
           <div class="sf-ptexts">
-            <h2 id="sf03-4-t">BMS</h2>
-            <p class="lead">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
+            <div class="txt">
+              <h2 id="sf03-4-t">BMS</h2>
+              <p class="lead">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
+            </div>
             <div class="sf-cert">
-              <p class="hd">Certification</p>
-              <p class="lb">KC / IEC / UL</p>
-              <p class="lb">KC / IEC / UL</p>
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li>KC / IEC / UL</li>
+              </ul>
             </div>
           </div>
           <div class="sf-prods">
