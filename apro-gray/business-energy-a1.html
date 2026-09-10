@@ -162,10 +162,14 @@
            opacity:0;visibility:hidden;transform:translateY(-8px);
            transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
   .sf-mega.open{opacity:1;visibility:visible;transform:none}
-  .sf-mega .cols{display:grid;grid-template-columns:repeat(4,1fr)}
+  /* 판 안쪽은 격자 2~11 열에 앉는다 — 인트로 네 칸 띠(.sf-cards)와 같은 자리다.
+     화면 끝까지 펼치면 칸이 너무 넓어 이름 사이가 벌어진다 */
+  .sf-mega .cols{width:calc(var(--gcol) * 10 + 180px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
   .sf-mega .cols.c5{grid-template-columns:repeat(5,1fr)}
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
-                padding:var(--grid-m);border-right:1px solid var(--sf-line)}
+                padding:var(--grid-m) 20px;border-right:1px solid var(--sf-line)}
+  .sf-mega .col:last-child{border-right:0}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
                font-weight:800;font-size:var(--t-sm);line-height:1.2;letter-spacing:-.32px;
                color:var(--sf-sec);transition:color .18s var(--ease)}
