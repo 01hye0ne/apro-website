@@ -428,12 +428,13 @@
      GNB 밑변에 바로 붙여야 윗단 위로 글이 비어져 나오지 않는다 — 위쪽 여백을
      안쪽(padding)으로 두고 같은 크기의 음수 바깥 여백으로 되돌려, 흰 바탕이
      GNB 까지 닿으면서도 눈금 줄이 놓이는 자리는 그대로다.
-     아래로는 짧은 흰 그라디언트를 흘려 카드가 윗단에 닿는 순간을 지운다 */
+     아랫변에는 파란 선 한 줄을 그어 붙박이와 흐르는 카드의 경계를 밝힌다.
+     흰 그라디언트로 흐리던 것을 선으로 바꿨다 — 카드가 선에서 딱 끊긴다.
+     선은 눈금 줄과 달리 글이 끝나는 자리(오른쪽 여백 앞)에서 멈춘다 */
   .sf-phead{position:sticky;top:var(--gnb-h);z-index:8;
             padding-top:12px;margin-top:-12px;background:#fff}
-  .sf-phead::after{content:"";position:absolute;left:0;right:0;top:100%;height:16px;
-                   pointer-events:none;
-                   background:linear-gradient(#fff,rgba(255,255,255,0))}
+  .sf-phead::after{content:"";position:absolute;left:0;right:var(--body-pad-r);
+                   top:100%;height:1px;pointer-events:none;background:var(--c-num)}
   .sf-phead>.sf-line{margin-bottom:24px}
   /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
   .sf-ptexts{height:calc((var(--band-h) - 44px) / 2);min-height:180px;
@@ -510,7 +511,7 @@
   .sf-feat .k,.sf-feat .d,
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
   .sf-apps,.sf-apps li,.sf-prod{transition:border-color .5s var(--ease)}
-  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,
+  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,.sf-phead::after,
   .sf-prod .lbl{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
     .sf-line .ttl,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
@@ -518,7 +519,7 @@
   .sf-cert .ttl,.sf-cert li,.sf-feat .k,.sf-feat .d,
     .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,
     .sf-cert .ttl,.sf-cert li,.sf-cert li::before,
-    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,
+    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-phead::after,
     .sf-prod .lbl{transition:none}
   }
 
