@@ -844,7 +844,7 @@
                  transition:opacity .18s var(--ease),transform .22s var(--ease)}
   .sf-gnb .sf-menus>li>a:hover .caret,
   .sf-gnb .sf-menus>li.is-open .caret{opacity:1}
-  .sf-gnb .sf-menus>li.is-open .caret{transform:rotate(180deg)}
+
   .sf-gnb .sf-tools{display:flex;align-items:center;gap:10px}
   .sf-gnb .sf-lang{position:relative}
   .sf-gnb .sf-tools button{width:24px;height:24px;display:grid;place-content:center;
@@ -907,6 +907,19 @@
     .sf-mega,.sf-scrim{display:none}
   }
 
+
+  /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
+     누르면 짧은 눈금은 사라지고 긴 두 줄이 가운데에서 엇갈려 X 가 된다 */
+  .sf-burger{position:relative;display:block;width:24px;height:24px}
+  .sf-burger .bar{position:absolute;height:1px;background:currentColor;
+                  transition:width .3s var(--ease),transform .3s var(--ease),
+                             opacity .2s var(--ease)}
+  .sf-burger .a{left:5px;top:7px;width:3px}
+  .sf-burger .b{left:5px;top:7px;width:10px;transform:translateX(4px)}
+  .sf-burger .c{left:5px;top:16px;width:14px}
+  .sf-burger[aria-expanded="true"] .a{opacity:0}
+  .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
 </style>
 <script>document.documentElement.classList.add('js-anim');</script>
 </head>
