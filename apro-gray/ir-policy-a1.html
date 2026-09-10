@@ -30,26 +30,123 @@
 <body>
 
 <!-- ===================== GNB ===================== -->
-<div class="gnb-group">
-  <nav class="gnb">
-    <a class="logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
-    <div class="menus">
-      <a href="business-a1.html" data-i="0">사업영역</a><a data-i="1">회사 정보</a><a href="ir-finance-a1.html" data-i="2">투자정보</a><a href="esg-environment-a1.html" data-i="3">지속가능경영</a><a href="community-notice-a1.html" data-i="4">커뮤니티</a>
+<!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-a1.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-a1.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-a1.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-a1.html" aria-current="true" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-a1.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-a1.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.3535 10.3535L12.3535 16.3535H11.6465L5.64648 10.3535L6.35352 9.64648L12 15.293L17.6465 9.64648L18.3535 10.3535Z" fill="currentColor"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
     </div>
-    <div class="tools">
-      <div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.7 5.7 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.7-3.7-9s1.3-6.5 3.7-9z"/></svg><i class="arw"></i></button></div>
-      <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14" stroke="currentColor" stroke-width="1"/></svg></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<div class="sf-mega" id="mega-biz" aria-hidden="true" aria-label="사업영역">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="business-smart-a1.html">스마트 제조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-smart.html#sf01-1">이차전지 활성화</a></li>
+        <li><a href="business-smart.html#sf02-1">신뢰성 검사 장비</a></li>
+        <li><a href="business-smart.html#sf03-1">자동화 시스템</a></li>
+        <li><a href="business-smart.html#sf04-1">이차전지 소재</a></li>
+      </ul>
     </div>
-  </nav>
-  <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
-    <div class="m-col" data-i="0"><a href="business-smart-a1.html">스마트 제조</a><a href="business-energy-a1.html">에너지 솔루션</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
-    <div class="m-col" data-i="2"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html">공시정보</a><a href="ir-stock-a1.html">주식정보</a><a href="ir-policy-a1.html" aria-current="page">내부규정</a></div>
-    <div class="m-col" data-i="3"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
-    <div class="m-col" data-i="4"><a href="community-notice-a1.html">공지사항</a><a href="community-press-a1.html">보도자료</a></div>
-  </div><span class="m-globe"></span></div></div>
-  <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
+    <div class="col">
+      <a class="hd" href="business-energy-a1.html">에너지 솔루션<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-energy.html#sf01-1">ESS</a></li>
+        <li><a href="business-energy.html#sf02-1">UPS</a></li>
+        <li><a href="business-energy.html#sf03-1">솔루션</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-ai-a1.html">인공지능 플랫폼<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-ai.html#sf01-1">로봇 플랫폼</a></li>
+        <li><a href="business-ai.html#sf02-1">배터리 진단 플랫폼</a></li>
+        <li><a href="business-ai.html#sf03-1">전기자동차 충전 플랫폼</a></li>
+        <li><a href="business-ai.html#sf04-1">전기자동차 제어 플랫폼</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-semicon-a1.html">화합물 전력 반도체<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-semicon.html#sf01-1">GaN Epi-Wafer</a></li>
+        <li><a href="business-semicon.html#sf02-1">GaN Power Device</a></li>
+        <li><a href="business-semicon.html#sf03-1">에이프로 세미콘</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
+<div class="sf-mega" id="mega-com" aria-hidden="true" aria-label="회사정보">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="company-a1.html">회사 소개<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="network-a1.html">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="#">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-ir" aria-hidden="true" aria-label="투자정보">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="ir-finance-a1.html">재무정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-disclosure-a1.html">공시정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-stock-a1.html">주식정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="ir-policy-a1.html" aria-current="page">내부규정<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-esg" aria-hidden="true" aria-label="지속가능경영">
+  <div class="cols c5">
+    <div class="col">
+      <a class="hd" href="esg-environment-a1.html">환경<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-social-a1.html">사회<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-governance-a1.html">지배구조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-report-a1.html">내/외부 신고채널<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="esg-board-a1.html">ESG 게시판<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-mega" id="mega-cmm" aria-hidden="true" aria-label="커뮤니티">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="community-notice-a1.html">공지사항<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+    <div class="col">
+      <a class="hd" href="community-press-a1.html">보도자료<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    </div>
+  </div>
+</div>
+<div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
 <!-- ===================== 히어로 ===================== -->
 <section class="dhero">

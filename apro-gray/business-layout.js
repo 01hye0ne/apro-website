@@ -747,3 +747,80 @@
     draw();
   });
 })();
+
+
+/* -- 공통 GNB 메가 메뉴 -----------------------------------------------------
+   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
+   둘 다 벗어나면 짧게 기다렸다 닫는다 - 사이를 지나는 동안 깜빡이지 않게 하는
+   여유다. 새 머리를 안 쓰는 장에서는 조용히 지나간다 */
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.sf-gnb .sf-menus>li[data-mega]'));
+  if(!items.length) return;
+  var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
+  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
+  function shut(){
+    if(!cur) return;
+    var p = panel(cur);
+    cur.classList.remove('is-open');
+    cur.querySelector('a').setAttribute('aria-expanded','false');
+    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
+    cur = null;
+  }
+  function show(li){
+    if(cur === li) return;
+    var p = panel(li);
+    if(!p) return;
+    shut();
+    li.classList.add('is-open');
+    li.querySelector('a').setAttribute('aria-expanded','true');
+    p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    if(scrim) scrim.classList.add('open');
+    cur = li;
+  }
+  function hold(){ clearTimeout(t); }
+  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
+  items.forEach(function(li){
+    var p = panel(li);
+    li.addEventListener('mouseenter', function(){ hold(); show(li); });
+    li.addEventListener('mouseleave', leave);
+    li.addEventListener('focusin', function(){ hold(); show(li); });
+    if(p){
+      p.addEventListener('mouseenter', hold);
+      p.addEventListener('mouseleave', leave);
+      p.addEventListener('focusin', hold);
+    }
+  });
+  document.addEventListener('focusin', function(e){
+    if(!cur) return;
+    var p = panel(cur);
+    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
+    shut();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
+  var burger = document.querySelector('.sf-gnb .menu-toggle');
+  if(burger) burger.addEventListener('click', shut);
+
+  /* 언어 선택 - 세부 A-1 네 장의 스크립트와 같은 동작 */
+  var lang = document.getElementById('sfLang'), lb = document.getElementById('sfLangBtn');
+  if(lang && lb){
+    lb.addEventListener('click', function(e){
+      e.stopPropagation();
+      var on = lang.classList.toggle('open');
+      lb.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(lang.contains(e.target)) return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Escape') return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+  }
+})();

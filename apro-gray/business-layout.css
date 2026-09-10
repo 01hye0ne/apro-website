@@ -1677,3 +1677,103 @@
   .ov-links a:hover{color:#fff}
   .ov-links a[aria-current]{color:#fff;font-weight:700}
   @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
+  /* ===================== 공통 GNB (Figma 1135:7128) =====================
+     흰 바 · 가운데 대분류 다섯 · 대분류마다 다른 메가 판.
+     사업영역 세부 A-1 네 장이 쓰던 것을 여기로 옮겨 열아홉 장이 함께 쓴다.
+     색과 치수는 이 블록 안에서만 정의한다 — 장마다 토큰 이름이 달라도 같은
+     모양이 나와야 하기 때문이다. (세부 A-1 네 장은 아직 자기 <style> 에 같은
+     규칙을 갖고 있어 그쪽이 이긴다 — 값은 같다) */
+  .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{
+    --gnb-h:53px;--gnb-m:44px;
+    --gnb-line:#e4e8ed;--gnb-sec:#5a6675;--gnb-brand:#2c5790;--gnb-g100:#f4f6f8;
+    --gnb-col:calc((100% - 308px) / 12)}
+  /* 바가 화면에 붙박이라 본문을 그 높이만큼 내려 준다 — body 를 건드리지 않고
+     머리 바로 뒤에 같은 높이의 빈 칸을 둔다 */
+  .sf-gnb-sp{height:var(--gnb-h)}
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px var(--gnb-m);background:#fff;
+          border-bottom:1px solid var(--gnb-line)}
+  .sf-gnb .logo{flex-shrink:0;width:78px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  /* 대분류 묶음은 화면 한가운데에 못 박는다 — 로고와 도구의 폭이 달라
+     space-between 만으로는 가운데가 어긋난다 */
+  .sf-gnb .sf-menus{position:absolute;left:50%;transform:translateX(-50%);
+                    list-style:none;margin:0;padding:0;
+                    display:flex;align-items:center;gap:16px}
+  .sf-gnb .sf-menus>li{display:flex}
+  .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                         font-family:var(--pre);font-weight:500;font-size:14px;
+                         line-height:1.5;color:var(--gnb-sec);white-space:nowrap;
+                         text-decoration:none;
+                         transition:background .2s var(--ease),color .2s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
+  .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
+                 transition:opacity .18s var(--ease),transform .22s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover .caret,
+  .sf-gnb .sf-menus>li.is-open .caret{opacity:1}
+  .sf-gnb .sf-menus>li.is-open .caret{transform:rotate(180deg)}
+  .sf-gnb .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-gnb .sf-lang{position:relative}
+  .sf-gnb .sf-tools button{width:24px;height:24px;display:grid;place-content:center;
+                           padding:0;background:none;border:0;color:var(--gnb-sec);
+                           cursor:pointer;transition:color .2s}
+  .sf-gnb .sf-tools button:hover,
+  .sf-gnb .sf-tools button[aria-expanded="true"]{color:var(--gnb-brand)}
+  .sf-gnb .sf-tools svg{display:block;width:24px;height:24px}
+  .sf-gnb .sf-drop{position:absolute;top:100%;right:0;min-width:96px;padding:6px 0;
+                   background:#fff;border:1px solid var(--gnb-line);
+                   box-shadow:0 12px 28px rgba(14,22,30,.1);
+                   opacity:0;visibility:hidden;transform:translateY(-6px);
+                   transition:opacity .22s var(--ease),transform .22s var(--ease),
+                              visibility .22s}
+  .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);
+                     font-weight:400;font-size:13px;line-height:1.4;
+                     color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
+                     transition:background .18s,color .18s}
+  .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
+
+  /* 메가 판 — 안쪽은 격자 2~11 열 띠에 앉는다. 칸은 넷을 기본으로 왼쪽부터 채워
+     판이 갈려도 세로 칸선이 같은 자리에 선다. 다섯 칸짜리만 .c5 로 나눈다 */
+  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:98;background:#fff;
+           box-shadow:0 12px 28px rgba(14,22,30,.08);
+           opacity:0;visibility:hidden;transform:translateY(-8px);
+           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
+  .sf-mega.open{opacity:1;visibility:visible;transform:none}
+  .sf-mega .cols{width:calc(var(--gnb-col) * 10 + 180px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
+  .sf-mega .cols.c5{grid-template-columns:repeat(5,1fr)}
+  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
+                padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
+  .sf-mega .col:last-child{border-right:0}
+  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
+               font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+               color:var(--gnb-sec);text-decoration:none;
+               transition:color .18s var(--ease)}
+  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
+  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
+  .sf-mega ul{list-style:none;margin:0;padding:0;
+              display:flex;flex-direction:column;gap:20px}
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:16px;
+                line-height:1.2;letter-spacing:-.32px;color:var(--gnb-sec);
+                text-decoration:none;transition:color .18s var(--ease)}
+  .sf-mega ul a:hover{color:var(--gnb-brand)}
+
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:97;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
+  @media(max-width:900px){
+    .sf-gnb{padding-left:16px;padding-right:16px}
+    .sf-gnb .sf-menus{display:none}
+    .sf-mega,.sf-scrim{display:none}
+  }
