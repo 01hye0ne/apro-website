@@ -477,6 +477,18 @@
   .sf-texts h2,.sf-texts .en,.sf-body p,
   .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d{transition:color .5s var(--ease)}
   .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
+  /* 공정 목록은 장이 제자리에 서면 위에서부터 한 줄씩 올라온다 — 원본 도식의
+     "공정 순서대로 텍스트가 등장" 을 옮긴 것이다. 한 번 보인 장은 다시 감추지
+     않는다(.is-seen) — 되감으며 지나갈 때 읽던 줄이 사라지면 눈에 걸린다 */
+  .js .sf-num li{opacity:0;transform:translateY(8px);
+                 transition:opacity .45s var(--ease),transform .45s var(--ease),
+                            border-color .5s var(--ease)}
+  .js .sf-sec.is-seen .sf-num li{opacity:1;transform:none}
+  .js .sf-sec.is-seen .sf-num li:nth-child(2){transition-delay:.07s}
+  .js .sf-sec.is-seen .sf-num li:nth-child(3){transition-delay:.14s}
+  .js .sf-sec.is-seen .sf-num li:nth-child(4){transition-delay:.21s}
+  .js .sf-sec.is-seen .sf-num li:nth-child(5){transition-delay:.28s}
+  .js .sf-sec.is-seen .sf-num li:nth-child(6){transition-delay:.35s}
   .sf-dl .k::before,.sf-line .rule,.sf-line .tick{
     transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
@@ -484,6 +496,7 @@
     .sf-num,.sf-dl,.sf-num li,.sf-dl li,
     .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
     .sf-ph,.sf-ph.is-on{transition:none}
+    .js .sf-num li{opacity:1;transform:none;transition:none}
   }
 
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
@@ -1235,6 +1248,8 @@
     }
     /* 붙박이 그림과 지금 장의 진하기도 같은 판정을 쓴다 */
     for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
+    /* 한 번 제자리에 선 장은 표를 남긴다 — 공정 목록이 그때 한 번만 올라온다 */
+    secs[best].classList.add('is-seen');
     setTag(secs[best].id);
   }
 
