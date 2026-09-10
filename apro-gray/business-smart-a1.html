@@ -348,6 +348,8 @@
                 background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd)}
   .sf-cnt>.shot>span{font-family:var(--suit);font-weight:500;font-size:var(--t-2xs);
                      line-height:1.5;color:var(--sf-ph-tx)}
+  .sf-cnt>.shot.has-img{background:none;border:0;overflow:hidden}
+  .sf-cnt>.shot img{display:block;width:100%;height:100%;object-fit:cover}
   /* 설명은 사진 아래 변에 흰 띠로 얹는다 — 사진이 들어와도 자리가 그대로다 */
   .sf-cnt .cap{position:absolute;left:0;right:0;bottom:0;
                display:flex;flex-direction:column;gap:4px;
@@ -453,8 +455,9 @@
                    transition:border-color .3s var(--ease)}
   .sf-picks button:hover{border-color:var(--c-bd-s)}
   .sf-picks button[aria-selected="true"]{border-color:var(--c-num)}
-  .sf-picks .shot{aspect-ratio:160/120;background:var(--sf-ph-bg);
+  .sf-picks .shot{aspect-ratio:160/120;overflow:hidden;background:var(--sf-ph-bg);
                   border:1px solid var(--c-bd)}
+  .sf-picks .shot img{display:block;width:100%;height:100%;object-fit:cover}
   .sf-picks .nm{padding:12px;font-family:var(--suit);font-weight:800;
                 font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
                 color:var(--c-ttl)}
@@ -745,15 +748,15 @@
         <figure class="sf-ph" data-for="sf03-2"><span>도표 or 이미지</span></figure>
         <figure class="sf-ph has-panes" data-for="sf04-1">
           <div class="sf-cnt is-on" role="tabpanel" id="cnt-pw" aria-labelledby="cnt-pw-t" tabindex="0">
-            <div class="shot"><span>제품 사진</span></div>
+            <div class="shot has-img"><img src="../assets/cnt-powder.jpg" alt="유리 접시에 담긴 단일벽·소수벽 CNT 분말" decoding="async" /></div>
             <p class="cap"><b>단일벽/소수벽 CNT 분말</b><span>비표면적 ≥ 300~1,000 m&sup2;/g</span></p>
           </div>
           <div class="sf-cnt" role="tabpanel" id="cnt-sl" aria-labelledby="cnt-sl-t" tabindex="0">
-            <div class="shot"><span>제품 사진</span></div>
+            <div class="shot has-img"><img src="../assets/cnt-slurry.jpg" alt="메스실린더에 담긴 단일벽·소수벽 CNT 분산액" decoding="async" /></div>
             <p class="cap"><b>단일벽/소수벽 CNT 분산액</b><span>CNT 함량 0.2 ~ 4.0 wt%</span></p>
           </div>
           <div class="sf-cnt" role="tabpanel" id="cnt-cb" aria-labelledby="cnt-cb-t" tabindex="0">
-            <div class="shot"><span>제품 사진</span></div>
+            <div class="shot has-img"><img src="../assets/cnt-carbon-black.jpg" alt="유리 접시에 담긴 전도성 카본블랙" decoding="async" /></div>
             <p class="cap"><b>전도성 카본블랙</b><span>비표면적 60 ~ 150 m&sup2;/g</span></p>
           </div>
         </figure>
@@ -903,13 +906,13 @@
           </div>
           <div class="sf-picks" role="tablist" aria-label="탄소 나노 튜브 제품">
             <button type="button" role="tab" id="cnt-pw-t" aria-controls="cnt-pw" aria-selected="true">
-              <span class="shot"></span><span class="nm">SW/FW-<br />CNT Powder</span>
+              <span class="shot"><img src="../assets/cnt-powder.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-<br />CNT Powder</span>
             </button>
             <button type="button" role="tab" id="cnt-sl-t" aria-controls="cnt-sl" aria-selected="false" tabindex="-1">
-              <span class="shot"></span><span class="nm">SW/FW-<br />CNT Slurry</span>
+              <span class="shot"><img src="../assets/cnt-slurry.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-<br />CNT Slurry</span>
             </button>
             <button type="button" role="tab" id="cnt-cb-t" aria-controls="cnt-cb" aria-selected="false" tabindex="-1">
-              <span class="shot"></span><span class="nm">Carbon<br />Black</span>
+              <span class="shot"><img src="../assets/cnt-carbon-black.jpg" alt="" decoding="async" /></span><span class="nm">Carbon<br />Black</span>
             </button>
           </div>
         </div>
