@@ -106,6 +106,11 @@
     --col5:calc((100% - var(--body-fixed)) / 2);
     /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
     --txt-pad-l:40px;
+    /* 눈금 줄 상자는 16 이고 가는 선은 그 한가운데에 놓인다. 다음 장을 이만큼
+       끌어올려야 앞 장 그림의 아래 변과 다음 장의 가는 선이 한 줄로 맞는다 */
+    --rule-off:8px;
+    /* 장 맨 아래에 비워 두는 자리 — 글이 다음 장의 머리 줄에 닿지 않게 한다 */
+    --sec-clear:20px;
   }
   /* 넓은 화면에서는 휠을 가로채 한 번에 한 장씩 옮긴다(맨 아래 스크립트).
      scroll-behavior:smooth 를 켜 두면 그 rAF 애니메이션이 브라우저 이징과 겹쳐
@@ -340,9 +345,12 @@
   .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:0;
            padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
   /* 장 높이는 본문 띠와 같다 — 글이 짧아도 다음 장이 그림 위로 올라오지 않는다 */
-  .sf-sec{min-height:var(--band-h);
+  .sf-sec{min-height:var(--band-h);padding-bottom:var(--sec-clear);
           scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
           display:flex;flex-direction:column}
+  /* 다음 장은 눈금 줄 절반만큼 올라앉는다 — 그래야 앞 장 그림의 아래 변과
+     다음 장의 가는 선이 한 줄이 된다(세로 눈금은 그 선을 가로지른다) */
+  .sf-secs>.sf-sec+.sf-sec{margin-top:calc(var(--rule-off) * -1)}
   .sf-ph span{font-family:var(--suit);font-weight:500;font-size:var(--t-2xs);line-height:1.5;
               color:var(--sf-ph-tx)}
 
@@ -484,6 +492,7 @@
     .sf-figcol{height:auto;min-height:0;gap:12px}
     .sf-figstack{aspect-ratio:16/9;max-height:30svh}
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
+    .sf-secs>.sf-sec+.sf-sec{margin-top:0}
     .sf-sec{min-height:0;padding:32px 16px 56px;
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
     /* 눕혀 놓으면 앞뒤 장이 겹쳐 보이지 않으므로 흐리지 않는다 */
