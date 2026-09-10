@@ -462,7 +462,8 @@
      먼저 정하느라 폭이 0 으로 주저앉는다 → 폭을 직접 주고 높이를 비율에서 받는다.
      세로 가운데에 세운다 : 특징이 2×2 로 접히는 좁은 폭에서는 오른쪽이 더 길어지는데,
      사진을 위에 붙여 두면 아래만 뚫린 것처럼 보인다 */
-  .sf-prods{display:flex;flex-direction:column;gap:24px;margin-top:4px;
+  /* 카드는 파란 선에 딱 붙는다 — 사이를 띄우면 선이 카드에서 떨어져 보인다 */
+  .sf-prods{display:flex;flex-direction:column;gap:24px;
             padding-right:var(--body-pad-r)}
   .sf-prod{min-height:calc((var(--band-h) - 44px) / 2);
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
