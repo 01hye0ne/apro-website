@@ -13,7 +13,7 @@ from lxml import html as LH
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-AREAS = [("smart", "스마트 제조"), ("energy", "에너지 솔루션"),
+AREAS = [("smart", "스마트 제조"), ("energy", "에너지 인프라"),
          ("ai", "인공지능 플랫폼"), ("semicon", "화합물 전력 반도체")]
 
 CHROME = ("sf-gnb", "sf-mega", "sf-scrim", "footer", "navover", "bhop", "sf-ticker")

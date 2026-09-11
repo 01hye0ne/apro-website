@@ -14,7 +14,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from copy_pull import chunk          # 뽑을 때와 똑같은 잣대로 견준다
 
-SHEETS = {"스마트 제조": "smart", "에너지 솔루션": "energy",
+SHEETS = {"스마트 제조": "smart", "에너지 인프라": "energy",
           "인공지능 플랫폼": "ai", "화합물 전력 반도체": "semicon"}
 BOOK = "content-export/04_사업영역_문구.xlsx"
 

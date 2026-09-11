@@ -91,7 +91,7 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # ⚠ business-energy.html 도 2026-09-09 부터 여기 없다 — 마지막 하나였다
 #   (Figma 994:141 와이어프레임). 이제 세부 페이지 넷이 모두 손으로 고치는 A-1 이고,
 #   생성기가 만드는 건 허브(business)·회사소개·네트워크·홈과 콘텐츠 페이지뿐이다.
-#   에너지 솔루션 A-1 은 본문 골격까지 형제 셋과 다르다 — 붙박이가 [좌측 인덱스 +
+#   에너지 인프라 A-1 은 본문 골격까지 형제 셋과 다르다 — 붙박이가 [좌측 인덱스 +
 #   가운데 헤더] 둘이고 나머지가 통째로 흐른다.
 SOURCES = ['business.html', 'company.html', 'network.html', 'index.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',

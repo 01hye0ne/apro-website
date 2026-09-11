@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- 옅은 장 칠하기는 이 클래스가 붙어 있을 때만 건다 (아래 .js .sf-sec:not(.is-on) 참고) -->
 <script>document.documentElement.className += ' js';</script>
-<title>APRO | 에이프로 — 에너지 솔루션 (A-1)</title>
-<meta name="description" content="에이프로(APRO) 에너지 솔루션 — ESS(GRID·Renewable·C&amp;I), UPS(데이터 센터·산업용·주요 전력망), 솔루션(Module·Rack·Container·BMS)." />
+<title>APRO | 에이프로 — 에너지 인프라 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 에너지 인프라 — ESS(GRID·Renewable·C&amp;I), UPS(데이터 센터·산업용·주요 전력망), 솔루션(Module·Rack·Container·BMS)." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -14,7 +14,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <!-- ============================================================
-     에너지 솔루션 A-1 — Figma 994:141 "04 · 에너지 솔루션" 와이어프레임 구현
+     에너지 인프라 A-1 — Figma 994:141 "04 · 에너지 인프라" 와이어프레임 구현
      (26.09.07 v5.0 와이어프레임 페이지, fileKey 5lJIj3AmCr20ZdgBLldb3f)
 
      ⚠ 본문 골격이 형제 세 장(스마트 제조 · 인공지능 플랫폼 · 화합물 전력 반도체)과
@@ -387,6 +387,9 @@
      스크립트가 transform 을 직접 얹으므로 여기서는 전이를 걸지 않는다.
      .is-on 은 스크립트가 돌기 전 첫 그림의 자리다 */
   .sf-ph.is-on{transform:none;visibility:visible}
+  /* 사진이 든 칸은 자리표시 테두리를 걷는다 */
+  .sf-ph.has-img{background:none;border:0;overflow:hidden}
+  .sf-ph img{display:block;width:100%;height:100%;object-fit:cover}
   /* 들어오는 그림은 살짝 큰 채로 들어와 제자리 배율로 줄고, 밀려 나가는 그림은
      제자리 배율에서 더 줄며 빠진다. 칸이 아니라 안쪽 사진만 키운다 — 그래야 두
      그림의 이음매가 한 줄로 남는다. 배율도 자리와 같은 진행도를 쓴다.
@@ -776,7 +779,7 @@
       </ul>
     </div>
     <div class="col">
-      <a class="hd" href="business-energy-a1.html" aria-current="page">에너지 솔루션<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <a class="hd" href="business-energy-a1.html" aria-current="page">에너지 인프라<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
       <ul>
         <li><a href="#sf01-1">ESS</a></li>
         <li><a href="#sf02-1">UPS</a></li>
@@ -870,7 +873,7 @@
       <p class="head">사업영역</p>
       <ul>
         <li><a href="business-smart-a1.html">스마트 제조</a></li>
-        <li><a href="business-energy-a1.html" aria-current="page">에너지 솔루션</a></li>
+        <li><a href="business-energy-a1.html" aria-current="page">에너지 인프라</a></li>
         <li><a href="business-ai-a1.html">인공지능 플랫폼</a></li>
         <li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li>
       </ul>
@@ -899,7 +902,7 @@
   <div class="sf-heroin">
   <img src="../assets/carousel-ess.jpg" alt="" aria-hidden="true" />
   <div class="sf-herocap">
-    <h1><span class="ko">에너지 솔루션</span><span class="en">Energy Solution</span></h1>
+    <h1><span class="ko">에너지 인프라</span><span class="en">Energy Infrastructure</span></h1>
     <!-- 소분류 띠지 — 이름 열 개면 한 벌로 화면이 차므로 두 벌만 잇는다 -->
     <div class="sf-ticker" aria-hidden="true">
       <div class="sf-tickrow">
@@ -912,7 +915,7 @@
 </section>
 
 <!-- ===================== INTRO ===================== -->
-<section class="sf-intro sf-step" aria-label="에너지 솔루션 개요">
+<section class="sf-intro sf-step" aria-label="에너지 인프라 개요">
   <div class="sf-introtop">
     <!-- 와이어프레임의 리드 두 줄은 스마트 제조 것이 그대로 남아 있었다(컴포넌트
          오버라이드 누락) → A 페이지(business-energy.html) 히어로 문안을 옮겨 왔다 -->
@@ -922,7 +925,7 @@
     </p>
     <div class="sf-introfig">
       <img src="../assets/ess-grid-overview.png"
-           alt="에너지 솔루션 한눈에 보기 — 태양광·풍력 발전과 ESS 컨테이너, 변전 설비, 수요처가 송전선으로 이어진 그림" />
+           alt="에너지 인프라 한눈에 보기 — 태양광·풍력 발전과 ESS 컨테이너, 변전 설비, 수요처가 송전선으로 이어진 그림" />
     </div>
   </div>
   <div class="sf-band">
@@ -955,7 +958,7 @@
 <div class="sf-main">
 
   <div class="sf-railwrap">
-    <nav class="sf-rail" id="sfRail" aria-label="에너지 솔루션 소분류">
+    <nav class="sf-rail" id="sfRail" aria-label="에너지 인프라 소분류">
       <div class="sf-grp">
         <p class="hd"><span>01</span><span>ESS</span></p>
         <a href="#sf01-1">GRID ESS</a>
@@ -987,12 +990,12 @@
           <!-- 눈금 줄은 여섯 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
           <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
           <div class="sf-figstack">
-          <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
-          <figure class="sf-ph" data-for="sf01-2"><span>도표 or 이미지</span></figure>
-          <figure class="sf-ph" data-for="sf01-3"><span>도표 or 이미지</span></figure>
-          <figure class="sf-ph" data-for="sf02-1"><span>도표 or 이미지</span></figure>
-          <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
-          <figure class="sf-ph" data-for="sf02-3"><span>도표 or 이미지</span></figure>
+          <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/ess-grid.jpg" alt="변전소와 송전탑을 배경으로 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf01-2"><img src="../assets/ess-renewable.jpg" alt="태양광 발전소와 풍력 발전기를 배경으로 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf01-3"><img src="../assets/ess-commercial-industrial.jpg" alt="산업단지 플랜트 앞에 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-1"><img src="../assets/ups-data-center.jpg" alt="도시와 통신 철탑을 배경으로 놓인 데이터 센터용 UPS 한 벌" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-2"><img src="../assets/ups-industrial.jpg" alt="생산 설비가 늘어선 공장 바닥에 놓인 산업용 UPS" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-3"><img src="../assets/ups-power-grid.jpg" alt="넓은 전력실에 줄지어 선 주요 전력망용 UPS 캐비닛" decoding="async" /></figure>
           </div>
         </div>
       </div>
@@ -1358,7 +1361,7 @@
       <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
     </a>
     <span class="bhlot is-here" data-a="energy" style="--ar:251/179">
-      <span class="bhnow"><span class="ko">에너지 솔루션</span><span class="en">Energy Solution</span></span>
+      <span class="bhnow"><span class="ko">에너지 인프라</span><span class="en">Energy Infrastructure</span></span>
       <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
     </span>
     <a class="bhlot" data-a="ai" href="business-ai-a1.html" style="--ar:267/176">
@@ -1380,7 +1383,7 @@
         <p class="head">사업영역</p>
         <ul>
           <li><a href="business-smart-a1.html">스마트 제조</a></li>
-          <li><a href="business-energy-a1.html" aria-current="page">에너지 솔루션</a></li>
+          <li><a href="business-energy-a1.html" aria-current="page">에너지 인프라</a></li>
           <li><a href="business-ai-a1.html">인공지능 플랫폼</a></li>
           <li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li>
         </ul>
