@@ -391,7 +391,7 @@
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){
     .sf-ph img{transform:none}
-    .sf-map .ring li,.sf-map .ring i{transition:none}
+    .sf-map .ring li,.sf-map .ring i,.sf-map .ring li::before{transition:none}
     .sf-map .row.is-on{animation:none}
   }
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
@@ -404,9 +404,11 @@
   .sf-map{position:relative;width:100%;height:100%}
   /* 고리 — 3×2 격자의 바깥 변만 굵게 둔다. 칸 사이를 4 벌려 두면 굵은 변이
      공정마다 끊겨, 여섯 도막이 고리를 도는 것으로 읽힌다 */
-  .sf-map .ring{width:100%;height:100%;display:grid;gap:4px;list-style:none;
+  .sf-map .ring{--bw:8px;--ir:12px;
+                width:100%;height:100%;display:grid;gap:4px;list-style:none;
                 grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
-  .sf-map .ring li{display:flex;flex-direction:column;gap:8px;padding:32px 20px;
+  .sf-map .ring li{position:relative;display:flex;flex-direction:column;gap:8px;
+                   padding:32px 20px;
                    overflow:hidden;font-family:var(--suit);color:var(--sf-ter)}
   .sf-map .ring b{font-family:var(--ald);font-weight:400;font-size:var(--t-xs);
                   line-height:1}
@@ -414,23 +416,44 @@
                   line-height:1.35;letter-spacing:-.28px}
   /* 윗줄은 왼쪽 위에 붙고 아랫줄은 오른쪽 아래에 붙는다 — 01→03 으로 갔다가
      04→06 으로 되돌아오는 흐름이 글의 자리만으로 읽힌다 */
-  .sf-map .ring li:nth-child(-n+3){border-top:8px solid var(--sf-line)}
-  .sf-map .ring li:nth-child(n+4){border-bottom:8px solid var(--sf-line);
+  .sf-map .ring li:nth-child(-n+3){border-top:var(--bw) solid var(--sf-line)}
+  .sf-map .ring li:nth-child(n+4){border-bottom:var(--bw) solid var(--sf-line);
                                   justify-content:flex-end;text-align:right}
-  .sf-map .ring li:nth-child(1){border-left:8px solid var(--sf-line);
-                                border-top-left-radius:20px}
-  .sf-map .ring li:nth-child(3){border-right:8px solid var(--sf-line);
-                                border-top-right-radius:20px}
-  .sf-map .ring li:nth-child(4){border-left:8px solid var(--sf-line);
-                                border-bottom-left-radius:20px}
-  .sf-map .ring li:nth-child(6){border-right:8px solid var(--sf-line);
-                                border-bottom-right-radius:20px}
+  .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4)
+    {border-left:var(--bw) solid var(--sf-line)}
+  .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6)
+    {border-right:var(--bw) solid var(--sf-line)}
+  /* 네 모서리 — 바깥은 모나고 안쪽만 둥글다. border-radius 는 바깥 변부터
+     깎아서 이 모양이 안 나온다. 그래서 테두리는 각지게 두고, 안쪽 모서리에
+     같은 색 조각(::before)을 채운 뒤 그 위에 바탕색 지우개(::after)로 호를
+     판다 — 지우개에만 라운드를 주면 남는 자리가 곧 안쪽 곡선이다 */
+  .sf-map .ring li::before,.sf-map .ring li::after{width:var(--ir);height:var(--ir)}
+  .sf-map .ring li::before{position:absolute;background:var(--sf-line);
+                           transition:background .45s var(--ease)}
+  .sf-map .ring li::after{position:absolute;background:#fff}
+  .sf-map .ring li:nth-child(1)::before,.sf-map .ring li:nth-child(1)::after,
+  .sf-map .ring li:nth-child(3)::before,.sf-map .ring li:nth-child(3)::after,
+  .sf-map .ring li:nth-child(4)::before,.sf-map .ring li:nth-child(4)::after,
+  .sf-map .ring li:nth-child(6)::before,.sf-map .ring li:nth-child(6)::after{content:""}
+  .sf-map .ring li:nth-child(1)::before,.sf-map .ring li:nth-child(1)::after
+    {left:0;top:0}
+  .sf-map .ring li:nth-child(3)::before,.sf-map .ring li:nth-child(3)::after
+    {right:0;top:0}
+  .sf-map .ring li:nth-child(4)::before,.sf-map .ring li:nth-child(4)::after
+    {left:0;bottom:0}
+  .sf-map .ring li:nth-child(6)::before,.sf-map .ring li:nth-child(6)::after
+    {right:0;bottom:0}
+  .sf-map .ring li:nth-child(1)::after{border-top-left-radius:var(--ir)}
+  .sf-map .ring li:nth-child(3)::after{border-top-right-radius:var(--ir)}
+  .sf-map .ring li:nth-child(4)::after{border-bottom-left-radius:var(--ir)}
+  .sf-map .ring li:nth-child(6)::after{border-bottom-right-radius:var(--ir)}
   /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
      굵기도 중간값으로 이어진다 */
   .sf-map .ring li{transition:color .45s var(--ease),border-color .45s var(--ease)}
   .sf-map .ring i{transition:font-size .45s var(--ease),font-weight .45s var(--ease),
                   letter-spacing .45s var(--ease)}
   .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
+  .sf-map .ring li.is-on::before{background:var(--brand-2)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
   /* 설비 카드 — 테두리를 세 겹으로 두른다(200 → 300 → 400). 고리 한가운데에 둔다 */
   .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -713,11 +736,8 @@
     .sf-figcol{height:auto;min-height:0;gap:12px}
     .sf-figstack{aspect-ratio:16/9;max-height:30svh}
     /* 공정 맵도 띠 안으로 줄인다 — 짜임은 그대로 두고 여백과 설비 카드만 줄인다 */
+    .sf-map .ring{--bw:5px;--ir:8px}
     .sf-map .ring li{padding:12px 10px;gap:4px}
-    .sf-map .ring li:nth-child(-n+3){border-top-width:5px}
-    .sf-map .ring li:nth-child(n+4){border-bottom-width:5px}
-    .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4){border-left-width:5px}
-    .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6){border-right-width:5px}
     .sf-map .it{flex-basis:92px;gap:8px;padding:10px 8px}
     .sf-map .it .ic{width:32px;height:32px;border-width:2.67px}
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:-.24px}
