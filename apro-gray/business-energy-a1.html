@@ -446,10 +446,10 @@
   .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:0;
            padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
   /* 03 묶음은 앞 묶음이 아래로 비워 둔 자리를 그대로 쓴다 */
-  /* 윗단이 --grid-m 만큼 위로 나와 있으므로 장 사이와 묶음 위도 그만큼 비운다 —
+  /* 윗단이 --sec-pad 만큼 위로 나와 있으므로 장 사이와 묶음 위도 그만큼 비운다 —
      안 그러면 다음 장의 흰 바탕이 앞 카드의 아래 변을 덮는다.
      제품 장은 아래 여백(--sec-clear)을 쓰지 않으므로 이 값이 전부다 */
-  .sf-secs.is-prods{flex:none;gap:var(--grid-m);padding-top:var(--grid-m)}
+  .sf-secs.is-prods{flex:none;gap:var(--sec-pad);padding-top:var(--sec-pad)}
   .sf-secs.is-prods>.sf-sec{padding-bottom:0}
   .sf-secs.is-prods>.sf-sec+.sf-sec{margin-top:0}
   .sf-sec{min-height:var(--band-h);padding-bottom:var(--sec-clear);
@@ -528,10 +528,12 @@
      선은 눈금 줄과 달리 글이 끝나는 자리(오른쪽 여백 앞)에서 멈춘다 */
   /* 위쪽 여백을 안쪽(padding)으로 두고 같은 크기의 음수 바깥 여백으로 되돌린다 —
      흰 바탕이 GNB 까지 닿으면서도 눈금 줄이 놓이는 자리는 그대로다. 붙었을 때
-     GNB 밑변에서 줄까지가 곧 이 값이라 격자 좌우 마진과 같은 44 를 쓴다 */
+     GNB 밑변에서 줄까지가 곧 이 값이라, 01·02 장이 띠 위로 비워 두는 --sec-pad 를
+     그대로 쓴다 — 그래야 03 의 띠도 화면 세로 가운데에 선다. 장 사이와 묶음 위도
+     같은 값이어야 다음 장의 흰 바탕이 앞 카드의 아래 변을 덮지 않는다 */
   .sf-phead{position:sticky;top:var(--gnb-h);z-index:8;
             display:flex;flex-direction:column;
-            padding-top:var(--grid-m);margin-top:calc(var(--grid-m) * -1);
+            padding-top:var(--sec-pad);margin-top:calc(var(--sec-pad) * -1);
             background:#fff}
   .sf-phead::after{content:"";position:absolute;left:0;right:var(--body-pad-r);
                    top:100%;height:1px;pointer-events:none;background:var(--c-num)}
@@ -1741,7 +1743,7 @@
      GNB 밑변에 바로 붙는다. 여백은 띠 상자의 padding-top 에서 잰다 */
   var secsEl = document.querySelector('.sf-secs');
   /* 제품 카드가 서는 자리는 붙박이 윗단의 아래 변이다 — 윗단 높이에는 위쪽
-     안쪽 여백(--grid-m)이 들어 있어서, 붙었을 때의 아래 변이 곧 이 값이다 */
+     안쪽 여백(--sec-pad)이 들어 있어서, 붙었을 때의 아래 변이 곧 이 값이다 */
   function headH(el){
     var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
     var hd  = sec ? sec.querySelector('.sf-phead') : null;
