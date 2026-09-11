@@ -573,6 +573,17 @@
                  white-space:nowrap;pointer-events:none;will-change:transform;
                  opacity:0;transition:opacity .3s var(--ease)}
   .sf-globe .tag.is-on{opacity:1}
+  /* 몰려 있는 자리는 이름표를 옆으로 펼치고 가는 선으로 점과 잇는다.
+     선은 점에서 비스듬히 나와 이름표 앞에서 수평으로 꺾인다 */
+  /* svg 는 대체 요소라 inset:0 만으로는 칸에 맞춰 늘어나지 않는다 —
+     크기를 주지 않으면 300×150 으로 남아 그 밖의 선이 잘린다 */
+  .sf-globe .lead{position:absolute;inset:0;width:100%;height:100%;
+                  z-index:1;pointer-events:none;overflow:visible}
+  .sf-globe .lead path{fill:none;stroke:var(--brand);stroke-width:1;
+                       opacity:0;transition:opacity .3s var(--ease)}
+  .sf-globe .lead path.is-on{opacity:1}
+  .sf-globe.is-off .lead{display:none}
+  @media(prefers-reduced-motion:reduce){.sf-globe .lead path{transition:none}}
   .sf-globe.is-off .tag{display:none}
   @media(prefers-reduced-motion:reduce){.sf-globe .tag{transition:none}}
   /* 04-1 은 한 칸 안에서 제품 셋을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
@@ -1121,7 +1132,7 @@
         </figure>
         <figure class="sf-ph has-globe" data-for="sf01-2">
           <div class="sf-globe" id="sfGlobe" role="img" tabindex="0"
-               aria-label="한국 본사에서 미시간·폴란드·남경·인도네시아 현지 법인으로 이어지는 지구 도식 — 끌거나 화살표 키로 돌려 볼 수 있습니다">
+               aria-label="한국 본사와 미국 미시간·폴란드·중국 남경·인도네시아 카라왕 현지 법인, 독일·캐나다 온타리오·오하이오·테네시·조지아 거점을 짚은 지구 도식 — 끌거나 화살표 키로 돌려 볼 수 있습니다">
             <canvas aria-hidden="true"></canvas>
           </div>
         </figure>
@@ -1946,12 +1957,22 @@
   }
   if(!mk || !canGL()){ wrap.classList.add('is-off'); return; }
 
-  /* 줄글이 말하는 다섯 곳. 이름표에 실을 글도 여기 함께 둔다 */
-  var HUB  = { at: [37.57, 126.98], nm: '한국 본사',   sz: .075 };
-  var SITE = [{ at: [42.33, -83.05], nm: '미국 미시간', sz: .055 },
-              { at: [51.11,  17.04], nm: '폴란드',      sz: .055 },
-              { at: [32.06, 118.80], nm: '중국 남경',   sz: .055 },
-              { at: [-6.32, 107.34], nm: '인도네시아',  sz: .055 }];
+  /* 지도가 짚는 열 곳. hq 가 붙은 넷은 현지 법인이라 본사와 선으로 잇고
+     점도 굵게 찍는다. 나머지 다섯은 거점이라 점만 작게 둔다.
+     이름표에 실을 글도 여기 함께 둔다.
+     off 는 점에서 이름표까지 펼칠 몫이다(화면 픽셀, 오른쪽·아래가 양수).
+     없으면 예전처럼 점 바로 위에 얹는다 — 한국 본사가 그렇다.
+     북미 다섯은 사다리가 되도록 위에서 아래로 값을 벌려 두었다 */
+  var HUB  = { at: [ 37.57, 126.98], nm: '한국 본사',         sz: .075 };
+  var SITE = [{ at: [ 42.33, -83.05], nm: '미국 미시간',       sz: .055, hq: 1, off: [ 120, -20] },
+              { at: [ 51.11,  17.04], nm: '폴란드',            sz: .055, hq: 1, off: [-110, -34] },
+              { at: [ 32.06, 118.80], nm: '중국 남경',         sz: .055, hq: 1, off: [ 110,  40] },
+              { at: [ -6.31, 107.30], nm: '인도네시아 카라왕',  sz: .055, hq: 1, off: [-110, -26] },
+              { at: [ 50.11,   8.68], nm: '독일',              sz: .04,         off: [-110,  26] },
+              { at: [ 43.65, -79.38], nm: '캐나다 온타리오',    sz: .04,         off: [  96, -60] },
+              { at: [ 39.96, -83.00], nm: '오하이오',          sz: .04,         off: [ 132,  16] },
+              { at: [ 36.16, -86.78], nm: '테네시',            sz: .04,         off: [ 120,  52] },
+              { at: [ 33.75, -84.39], nm: '조지아',            sz: .04,         off: [  96,  88] }];
   var SPOT = [HUB].concat(SITE);
   var BLUE = [.173, .341, .565];     /* #2c5790 브랜드 파랑 */
 
@@ -1973,6 +1994,20 @@
   /* 이름표를 얹는 데 쓰는, 지금 판의 셈값 — 모두 CSS 픽셀 기준이다 */
   var geo = null;
 
+  /* 지시선은 이름표보다 아래에 깔린다 — 먼저 붙인다. viewBox 를 두지 않아
+     사용자 단위가 곧 CSS 픽셀이라, 셈한 자리를 그대로 적어 넣으면 된다 */
+  var NS = 'http://www.w3.org/2000/svg';
+  var lead = document.createElementNS(NS, 'svg');
+  lead.setAttribute('class', 'lead');
+  lead.setAttribute('aria-hidden', 'true');
+  wrap.appendChild(lead);
+  var leads = SPOT.map(function(o){
+    if(!o.off) return null;
+    var p = document.createElementNS(NS, 'path');
+    lead.appendChild(p);
+    return p;
+  });
+
   /* 이름표는 한 벌만 만들어 두고 자리만 갈아 준다 */
   var tags = SPOT.map(function(o){
     var el = document.createElement('span');
@@ -1981,6 +2016,15 @@
     wrap.appendChild(el);
     return el;
   });
+
+  /* 이름표 크기는 좀처럼 바뀌지 않는다 — 한 번 재어 두고 겹침을 셀 때 쓴다.
+     프레임마다 offsetWidth 를 물으면 그때마다 판을 다시 짜게 되어 느리다 */
+  var tw = [];
+  function sizeTags(){
+    for(var i = 0; i < tags.length; i++)
+      tw[i] = { w: tags[i].offsetWidth, h: tags[i].offsetHeight };
+  }
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(sizeTags);
 
   function paint(){
     if(!globe) return;
@@ -2016,9 +2060,11 @@
       /* 한 장만 그리고 멈추는 경우(동작 줄이기 · 끌기)에도 남아 있어야 한다 */
       context: { preserveDrawingBuffer: true },
       markers: SPOT.map(function(o){ return { location: o.at, size: o.sz }; }),
-      arcs: SITE.map(function(o){ return { from: HUB.at, to: o.at }; })
+      arcs: SITE.filter(function(o){ return o.hq; })
+                .map(function(o){ return { from: HUB.at, to: o.at }; })
     });
     box = key;
+    sizeTags();
     paint();
   }
 
@@ -2031,6 +2077,7 @@
     if(!geo) return;
     var cx = Math.cos(theta), sx = Math.sin(theta);
     var cyy = Math.cos(phi),  syy = Math.sin(phi);
+    var put = [];
     for(var i = 0; i < SPOT.length; i++){
       var a = SPOT[i].at;
       var la = a[0] * RAD, lo = a[1] * RAD - Math.PI, cl = Math.cos(la);
@@ -2042,10 +2089,49 @@
       var x = ((rx / geo.asp) * geo.scale + 1) / 2 * geo.w;
       var y = (-ry * geo.scale + 2 * geo.down / geo.h + 1) / 2 * geo.h;
       var el = tags[i], on = rz >= 0;
+      var o = SPOT[i].off, ax = x, ay = y, dir = 1, L, R, T, B;
       if(on){
-        el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) +
-                             'px) translate(-50%,-100%) translateY(-12px)';
+        /* 앞엣것부터 자리를 잡는다 — SPOT 의 차례가 그대로 우선순위라
+           본사, 법인, 거점 순으로 남는다. 부딪히는 뒤엣것은 내놓지 않는다 */
+        var s = tw[i] || { w: 0, h: 0 };
+        if(!o){
+          R = x + s.w / 2 + 3; L = x - s.w / 2 - 3;
+          B = y - 9;           T = B - s.h - 6;
+        } else {
+          /* 칸 가장자리에 닿으면 더 밀지 않고 그 자리에 세운다 — 반대쪽으로
+             뒤집으면 이름표가 화면을 가로질러 튄다. 대신 지시선이 길어지며
+             점과의 연결은 그대로 남는다 */
+          dir = o[0] > 0 ? 1 : -1;
+          ay = Math.min(Math.max(y + o[1], s.h / 2 + 3), geo.h - s.h / 2 - 3);
+          ax = dir > 0 ? Math.min(x + o[0], geo.w - s.w - 3)
+                       : Math.max(x + o[0], s.w + 3);
+          T = ay - s.h / 2 - 3; B = ay + s.h / 2 + 3;
+          if(dir > 0){ L = ax - 3; R = ax + s.w + 3; }
+          else       { L = ax - s.w - 3; R = ax + 3; }
+        }
+        /* 칸을 벗어나면 내놓지 않는다 — 반쯤 잘린 이름표보다 없는 편이 낫다 */
+        if(L < 0 || R > geo.w || T < 0 || B > geo.h) on = false;
+        for(var j = 0; on && j < put.length; j++){
+          var q = put[j];
+          if(L < q.r && R > q.l && T < q.b && B > q.t){ on = false; break; }
+        }
       }
+      if(on){
+        put.push({ l: L, t: T, r: R, b: B });
+        el.style.transform = 'translate(' + Math.round(ax) + 'px,' + Math.round(ay) + 'px) ' +
+                             (!o        ? 'translate(-50%,-100%) translateY(-12px)'
+                              : dir > 0 ? 'translateY(-50%)'
+                                        : 'translate(-100%,-50%)');
+        if(leads[i]){
+          /* 점에서 비스듬히 나와, 이름표 열여덟 픽셀 앞에서 수평으로 꺾는다 */
+          var ex = ax - dir * 18;
+          leads[i].setAttribute('d', 'M' + Math.round(x) + ' ' + Math.round(y) +
+                                     'L' + Math.round(ex) + ' ' + Math.round(ay) +
+                                     'L' + Math.round(ax) + ' ' + Math.round(ay));
+        }
+      }
+      if(leads[i] && leads[i].classList.contains('is-on') !== on)
+        leads[i].classList.toggle('is-on', on);
       if(el.dataset.on !== (on ? '1' : '0')){
         el.dataset.on = on ? '1' : '0';
         el.classList.toggle('is-on', on);
