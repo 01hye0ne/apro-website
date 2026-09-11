@@ -62,6 +62,15 @@
     --sf-ph-bg:#e5e6e8;
     --sf-ph-bd:#c7c9cc;
     --sf-ph-tx:#73757a;
+    /* 지구가 뜨는 칸만 바탕이 하늘이다 — 아래가 깊고 위로 갈수록 화사해진다.
+       구는 하얀 채로 두므로 이 파랑은 뒤에서 하늘 노릇만 한다. 구가 칸의 가운데
+       아래를 거의 다 덮으니 눈에 드는 건 위쪽 띠와 양옆 · 아래 모서리뿐이다 —
+       그래서 밝은 쪽을 위로 길게 깔고 깊은 쪽을 아래에 몰아 두었다 */
+    --sf-sky-1:#dcecff;      /* 맨 위 — 환한 하늘        */
+    --sf-sky-2:#a8cdf5;
+    --sf-sky-3:#5794dd;
+    --sf-sky-4:#245ea6;
+    --sf-sky-5:#0f3160;      /* 맨 아래 — 브랜드보다 깊게 */
     /* ── 글자 사다리 ────────────────────────────────────────────────────
        역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 일곱 칸과
        굵기 세 단(800 제목·이름 / 600 줄글 / 500 메타)만으로 짜인다.
@@ -467,17 +476,22 @@
                 text-align:center;white-space:pre-line}
 
   /* 해외 생산거점 칸은 사진 대신 지구를 돌린다 — cobe(MIT)를 얹었다.
-     사진 칸과 달리 바탕 회색을 그대로 두고 구를 하얗게 띄운다.
+     사진 칸과 달리 바탕을 파란 하늘로 깔고 그 앞에 구를 하얗게 띄운다
+     (칸의 바탕값은 위 --sf-sky-* 다섯 칸이다).
      구의 지름은 칸 높이의 1.5 배라 아래가 잘린다 — 삼분의 이만 내놓고,
      나머지는 끌어서 돌려 보는 자리다 */
-  .sf-ph.has-globe{border:0;overflow:hidden}
+  .sf-ph.has-globe{border:0;overflow:hidden;
+                   background:linear-gradient(180deg,
+                     var(--sf-sky-1) 0%, var(--sf-sky-2) 18%, var(--sf-sky-3) 45%,
+                     var(--sf-sky-4) 72%, var(--sf-sky-5) 100%)}
   .sf-globe{position:absolute;inset:0;cursor:grab;touch-action:pan-y;
             -webkit-user-select:none;user-select:none}
   .sf-globe.is-grab{cursor:grabbing}
   .sf-globe canvas{display:block;width:100%;height:100%}
   /* WebGL 이 없는 브라우저에서는 같은 구도의 정지 그림으로 물러난다.
      이 클래스가 붙을 때만 그림을 받으므로 보통은 내려받지 않는다.
-     바탕색(--sf-ph-bg)을 그림에 구워 넣었다 — 투명 PNG 는 500KB 였다 */
+     바탕색을 그림에 구워 넣었다 — 투명 PNG 는 500KB 였다. 구워 넣은 건 아직
+     예전 회색이지만 그림이 칸을 통째로 덮으므로(cover) 하늘과 섞이지는 않는다 */
   .sf-globe.is-off{background:url(../assets/globe-overseas-bases.jpg) center top/cover no-repeat;
                    cursor:default}
   .sf-globe.is-off canvas{display:none}
@@ -1914,7 +1928,9 @@
       devicePixelRatio: dpr, width: w, height: h,
       phi: phi, theta: theta, dark: 0, diffuse: 1.2, scale: scale,
       mapSamples: 26000, mapBrightness: 6,
-      baseColor: [1, 1, 1], markerColor: BLUE, glowColor: [.88, .89, .91],
+      /* 구 둘레의 빛무리는 파란 하늘 위에 얹히므로 차가운 흰빛으로 둔다 —
+         중립 회색빛이면 하늘 위에서 안개처럼 뿌옇게 보인다 */
+      baseColor: [1, 1, 1], markerColor: BLUE, glowColor: [.85, .92, 1],
       offset: [0, 2 * down / scale],
       arcColor: BLUE, arcWidth: .45, arcHeight: .22, markerElevation: 0,
       /* 한 장만 그리고 멈추는 경우(동작 줄이기 · 끌기)에도 남아 있어야 한다 */
