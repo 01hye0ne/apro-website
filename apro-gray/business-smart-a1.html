@@ -106,6 +106,10 @@
     --col5:calc((100% - var(--body-fixed)) / 2);
     /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
     --txt-pad-l:40px;
+    /* 글 단 오른쪽 여백 — 넓은 화면에서는 122 를 지키고, 화면이 좁아질수록
+       물러난다. 줄글이 16px 이라 여백을 그대로 두면 한 줄이 스무 자로
+       잘게 끊긴다(한글은 서른에서 마흔 자가 편하다) */
+    --txt-pad-r:clamp(24px,calc(122px - (1600px - 100vw) * .4),122px);
     /* 눈금 줄 상자는 16 이고 가는 선은 그 한가운데에 놓인다. 다음 장을 이만큼
        끌어올려야 앞 장 그림의 아래 변과 다음 장의 가는 선이 한 줄로 맞는다 */
     /* 격자 좌우 마진 — 메가 메뉴 칸 안쪽 여백도 이 값이다 */
@@ -481,20 +485,21 @@
           --c-bd-s:var(--sf-line-s); /* 300 목록 윗선   */
           --c-bd:var(--sf-line)}     /* 200 목록 칸선   */
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
-            padding-left:var(--txt-pad-l);padding-right:122px}
+            padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
   .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:var(--t-md);
                 line-height:1.2;letter-spacing:-.4px;color:var(--c-body)}
-  .sf-body p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
+  .sf-body p{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.6;
              letter-spacing:-.3px;color:var(--c-body)}
   .sf-body p+p{margin-top:8px}
-  /* 줄글 위에 얹는 작은 제목 — 점 목록의 이름(.sf-dl .k)과 같은 단이다.
+  /* 줄글 위에 얹는 작은 제목 — 줄글보다 한 칸 위, 영문 제목과 같은 칸이다.
+     줄글이 16 으로 올라오면서 같은 칸에서는 굵기만 다른 글이 되어 버렸다.
      앞의 점은 달지 않는다: 목록 항목이 아니라 문단의 머리이기 때문이다 */
-  .sf-body .sub{font-weight:800;font-size:var(--t-sm);line-height:1.35;
-                letter-spacing:-.32px;color:var(--c-ttl)}
+  .sf-body .sub{font-weight:800;font-size:var(--t-md);line-height:1.25;
+                letter-spacing:-.4px;color:var(--c-ttl)}
 
   /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
   .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--c-bd-s)}
@@ -512,7 +517,7 @@
             font-weight:800;font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
             color:var(--c-ttl)}
   .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--c-num)}
-  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
+  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.6;
             letter-spacing:-.3px;color:var(--c-body)}
   /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
      표를 닫는 테두리가 아니다 */
@@ -574,7 +579,6 @@
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
   @media(max-width:1400px){
     :root{--txt-pad-l:clamp(20px,2.8vw,40px)}
-    .sf-txtin{padding-right:clamp(24px,8.5vw,122px)}
     .sf-introtop{padding-left:clamp(24px,6.7vw,96px);
                  padding-right:clamp(24px,6.7vw,96px)}
     .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}

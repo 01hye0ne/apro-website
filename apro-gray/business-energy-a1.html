@@ -112,6 +112,10 @@
     --col5:calc((100% - var(--body-fixed)) / 2);
     /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
     --txt-pad-l:40px;
+    /* 글 단 오른쪽 여백 — 넓은 화면에서는 122 를 지키고, 화면이 좁아질수록
+       물러난다. 줄글이 16px 이라 여백을 그대로 두면 한 줄이 스무 자로
+       잘게 끊긴다(한글은 서른에서 마흔 자가 편하다) */
+    --txt-pad-r:clamp(24px,calc(122px - (1600px - 100vw) * .4),122px);
     /* 눈금 줄 상자는 16 이고 가는 선은 그 한가운데에 놓인다. 다음 장을 이만큼
        끌어올려야 앞 장 그림의 아래 변과 다음 장의 가는 선이 한 줄로 맞는다 */
     /* 격자 좌우 마진 — 메가 메뉴 칸 안쪽 여백도 이 값이다 */
@@ -453,7 +457,7 @@
      눈금 줄은 그 여백 밖에 있어 가는 선이 화면 오른쪽 끝까지 나간다 */
   .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
-            padding-left:var(--txt-pad-l);padding-right:var(--body-pad-r)}
+            padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
   /* 제목+리드 덩어리가 남는 세로를 먹어서 목록이 그림 바닥에 맞춰 앉는다 */
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
   /* 소분류 이름 — 눈금 줄 안에 있던 것을 제목 위로 내렸다 */
@@ -462,7 +466,7 @@
                  color:var(--c-ttl,var(--sf-txt))}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-texts p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
+  .sf-texts p{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.6;
               letter-spacing:-.3px;color:var(--c-body)}
   /* 주요 적용 분야 — 윗선만 굵다 */
   .sf-apps{width:100%;list-style:none;border-top:2px solid var(--c-bd-s)}
@@ -518,7 +522,7 @@
   .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
   .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                 line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);
                    line-height:1.6;letter-spacing:-.3px;color:var(--c-ttl)}
   /* Certification — 왼쪽에 이름, 오른쪽 끝에 인증 표시. 파란 띠였던 것을
      흰 바탕 한 줄로 바꿨다(와이어프레임 개정) */
@@ -566,9 +570,9 @@
   .sf-feat .ic{width:44px;height:44px;flex-shrink:0;background:var(--sf-ph-bg);
                border:1px dashed var(--sf-ph-bd)}
   .sf-feat .t{display:flex;flex-direction:column;gap:4px}
-  .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
+  .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
               line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
-  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);
               line-height:1.6;letter-spacing:-.28px;color:var(--c-body)}
   /* 와이어프레임은 이 줄을 한 줄로 자르지만(말줄임) 글을 잘라 버리는 대신
      접히게 둔다 — 카드가 그만큼 자란다 */
