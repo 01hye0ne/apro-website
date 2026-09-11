@@ -575,6 +575,13 @@
               white-space:nowrap}
   .sf-cert li::before{content:"";width:4px;height:4px;flex-shrink:0;
                       background:var(--c-num)}
+  /* 이 장에 제품이 몇이고 지금 몇째인지 — 인증 표시가 있던 오른쪽 끝에 둔다.
+     인공지능 플랫폼의 캐러셀 표시와 같은 모양이다(모난 사각, 지금 것만 길쭉) */
+  .sf-cert .dots{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px}
+  .sf-cert .dots i{width:6px;height:6px;background:var(--sf-line-s);
+                   transition:width .3s var(--ease),background .3s var(--ease)}
+  .sf-cert .dots i.is-on{width:40px;background:var(--brand)}
+  @media(prefers-reduced-motion:reduce){.sf-cert .dots i{transition:none}}
   /* 제품 — 한 줄에 하나. 사진은 카드 폭의 26% 를 차지하는 정사각형이다.
      폭을 높이에서 되돌려 받게(aspect-ratio + stretch) 두면 플렉스가 주축 크기를
      먼저 정하느라 폭이 0 으로 주저앉는다 → 폭을 직접 주고 높이를 비율에서 받는다.
@@ -590,6 +597,9 @@
   /* 카드 키 = 띠 − 윗단. 이래야 윗단이 화면에 붙어 있는 동안 카드 하나가
      정확히 한 화면이 되고, ESS·UPS 한 장과 같은 높이로 읽힌다.
      글이 더 접히는 좁은 폭에서는 min- 이라 그만큼 자란다 */
+  /* 카드와 카드가 만나는 줄만 굵은 선으로 둔다 — 다음 카드가 흐려져 있어서
+     테두리도 같이 옅어지는 바람에, 어디서 다음 제품이 시작하는지 안 보였다 */
+  .sf-prod+.sf-prod{border-top-color:var(--sf-line-s)}
   .sf-prod{margin-right:var(--body-pad-r);margin-top:-1px;
            min-height:calc(var(--band-h) - var(--phead-h));
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
@@ -1177,6 +1187,7 @@
                 <li>KC / IEC / UL</li>
                 <li>UL 9540A</li>
               </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
             </div>
           </div>
         </div>
@@ -1229,6 +1240,7 @@
                 <li>KC / IEC / UL</li>
                 <li>UL 9540A</li>
               </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
             </div>
           </div>
         </div>
@@ -1280,6 +1292,7 @@
               <ul>
                 <li>KC / IEC / UL</li>
               </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
             </div>
           </div>
         </div>
@@ -1332,6 +1345,7 @@
                 <li>Functional Safety<br />(IEC 60730-1)</li>
                 <li>Cybersecurity solutions<br />(IEC 62443)</li>
               </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i></p>
             </div>
           </div>
         </div>
@@ -1691,6 +1705,22 @@
     if(best === curProd) return;
     curProd = best;
     for(var n=0;n<prods.length;n++) prods[n].classList.toggle('is-on', n === best);
+    markDots(prods[best]);
+  }
+  /* 점은 그 장 안에서 몇째인지를 가리킨다 — 장이 바뀌면 앞 장의 점은 첫째로
+     되돌려 둔다(다시 올라왔을 때 첫 카드부터 보이기 때문) */
+  function markDots(el){
+    var sec = el && el.closest ? el.closest('.sf-sec.is-prod') : null;
+    if(!sec) return;
+    var cards = [].slice.call(sec.querySelectorAll('.sf-prod'));
+    var at = cards.indexOf(el);
+    var all = document.querySelectorAll('.sf-cert .dots');
+    for(var i=0;i<all.length;i++){
+      var here = all[i].closest('.sf-sec') === sec;
+      var dots = all[i].children;
+      for(var j=0;j<dots.length;j++)
+        dots[j].classList.toggle('is-on', j === (here ? at : 0));
+    }
   }
   function spy(){
     prodSpy();
