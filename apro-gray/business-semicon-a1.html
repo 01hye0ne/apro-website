@@ -147,7 +147,8 @@
 
   /* 메가 메뉴 — 대분류마다 다른 판이 GNB 밑으로 펼쳐진다. 칸은 넷을 기본으로
      삼아(사업영역 기준) 왼쪽부터 채운다 — 대분류가 바뀜도 세로 칸선이 같은
-     자리에 서서 판이 갈릴 때 격자가 흔들리지 않는다. 다섯 칸짜리만 .c5 로 나눈다 */
+     자리에 서서 판이 갈릴 때 격자가 흔들리지 않는다. 사업영역만 네 칸을 다 쓰고,
+     나머지 넷은 첫 칸에 세로로 나열한 뒤 남은 세 칸을 .feat 로 비워 둔다 */
   .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:58;background:#fff;
            box-shadow:0 12px 28px rgba(14,22,30,.08);
            opacity:0;visibility:hidden;transform:translateY(-8px);
@@ -157,10 +158,12 @@
      화면 끝까지 펼치면 칸이 너무 넓어 이름 사이가 벌어진다 */
   .sf-mega .cols{width:calc(var(--gcol) * 10 + 180px);margin-inline:auto;
                  display:grid;grid-template-columns:repeat(4,1fr)}
-  .sf-mega .cols.c5{grid-template-columns:repeat(5,1fr)}
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
                 padding:var(--grid-m);border-right:1px solid var(--sf-line)}
   .sf-mega .col:last-child{border-right:0}
+  /* 사업영역을 뺀 나머지 판은 첫 칸에 세로로 쭉 나열하고,
+     오른쪽 세 칸은 강조 콘텐츠 자리로 비워 둔다 */
+  .sf-mega .col.feat{grid-column:span 3;padding:0;border-right:0}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
                font-weight:800;font-size:var(--t-sm);line-height:1.2;letter-spacing:-.32px;
                color:var(--sf-sec);transition:color .18s var(--ease)}
@@ -673,60 +676,48 @@
 </div>
 <div class="sf-mega" id="mega-com" aria-hidden="true" aria-label="회사정보">
   <div class="cols">
-    <div class="col">
+    <div class="col stack">
       <a class="hd" href="company-a1.html">회사 소개<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="network-a1.html">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="#">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
     </div>
+    <!-- 우측 빈 자리 — 강조 콘텐츠가 들어간다 -->
+    <div class="col feat"></div>
   </div>
 </div>
 <div class="sf-mega" id="mega-ir" aria-hidden="true" aria-label="투자정보">
   <div class="cols">
-    <div class="col">
+    <div class="col stack">
       <a class="hd" href="ir-finance-a1.html">재무정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="ir-disclosure-a1.html">공시정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="ir-stock-a1.html">주식정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="ir-policy-a1.html">내부규정<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
     </div>
+    <!-- 우측 빈 자리 — 강조 콘텐츠가 들어간다 -->
+    <div class="col feat"></div>
   </div>
 </div>
 <div class="sf-mega" id="mega-esg" aria-hidden="true" aria-label="지속가능경영">
-  <div class="cols c5">
-    <div class="col">
+  <div class="cols">
+    <div class="col stack">
       <a class="hd" href="esg-environment-a1.html">환경<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="esg-social-a1.html">사회<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="esg-governance-a1.html">지배구조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="esg-report-a1.html">내/외부 신고채널<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="esg-board-a1.html">ESG 게시판<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
     </div>
+    <!-- 우측 빈 자리 — 강조 콘텐츠가 들어간다 -->
+    <div class="col feat"></div>
   </div>
 </div>
 <div class="sf-mega" id="mega-cmm" aria-hidden="true" aria-label="커뮤니티">
   <div class="cols">
-    <div class="col">
+    <div class="col stack">
       <a class="hd" href="community-notice-a1.html">공지사항<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    </div>
-    <div class="col">
       <a class="hd" href="community-press-a1.html">보도자료<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
     </div>
+    <!-- 우측 빈 자리 — 강조 콘텐츠가 들어간다 -->
+    <div class="col feat"></div>
   </div>
 </div>
 

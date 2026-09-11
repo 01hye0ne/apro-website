@@ -1739,7 +1739,8 @@
   .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
 
   /* 메가 판 — 안쪽은 격자 2~11 열 띠에 앉는다. 칸은 넷을 기본으로 왼쪽부터 채워
-     판이 갈려도 세로 칸선이 같은 자리에 선다. 다섯 칸짜리만 .c5 로 나눈다 */
+     판이 갈려도 세로 칸선이 같은 자리에 선다. 사업영역만 네 칸을 다 쓰고, 나머지
+     넷은 첫 칸에 세로로 나열한 뒤 남은 세 칸을 .feat 로 비워 둔다 */
   .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:98;background:#fff;
            box-shadow:0 12px 28px rgba(14,22,30,.08);
            opacity:0;visibility:hidden;transform:translateY(-8px);
@@ -1747,10 +1748,12 @@
   .sf-mega.open{opacity:1;visibility:visible;transform:none}
   .sf-mega .cols{width:calc(var(--gnb-col) * 10 + 180px);margin-inline:auto;
                  display:grid;grid-template-columns:repeat(4,1fr)}
-  .sf-mega .cols.c5{grid-template-columns:repeat(5,1fr)}
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
                 padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
   .sf-mega .col:last-child{border-right:0}
+  /* 사업영역을 뺀 나머지 판은 첫 칸에 세로로 쭉 나열하고,
+     오른쪽 세 칸은 강조 콘텐츠 자리로 비워 둔다 */
+  .sf-mega .col.feat{grid-column:span 3;padding:0;border-right:0}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
                font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
                color:var(--gnb-sec);text-decoration:none;
