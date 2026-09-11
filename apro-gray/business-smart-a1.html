@@ -56,9 +56,8 @@
     --sf-line:#e4e8ed;       /* border/default     */
     --sf-line-s:#cbd2da;     /* border/strong      */
     --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
-    /* 공정 맵의 겹테두리에 쓰는 브랜드 음영. 400·text 는 공용 토큰
+    /* 공정 맵 바닥 띠의 브랜드 음영. 400·text 는 공용 토큰
        (--brand-2 · --brand)이 이미 같은 값이라 그대로 쓴다 */
-    --sf-brand300:#a3c5ef;   /* primitive/brand/300 */
     --sf-brand200:#d6e3f6;   /* primitive/brand/200 */
     --sf-ph-bg:#e5e6e8;
     --sf-ph-bd:#c7c9cc;
@@ -392,7 +391,7 @@
   @media(prefers-reduced-motion:reduce){
     .sf-ph img{transform:none}
     .sf-map .ring li,.sf-map .ring i{transition:none}
-    .sf-map .row.is-on{animation:none}
+    .sf-map .row.is-on,.sf-map .row.is-out{transition:none}
   }
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
   .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
@@ -430,27 +429,29 @@
                   letter-spacing .45s var(--ease)}
   .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
-  /* 설비 카드 — 테두리를 세 겹으로 두른다(200 → 300 → 400). 고리 한가운데에 둔다 */
+  /* 설비 — 겹테두리 카드를 걷고 바닥 띠 위에 세운다(Figma 1191:7574 Carousel).
+     이름이 그림 위에 오고, 그림 아랫변이 바닥 띠에 닿는다. 칸을 아래로 맞춰
+     두어 이름이 두 줄인 설비는 위로 자란다 */
   .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-               max-width:100%;padding:6px;border-radius:16px;
-               background:var(--sf-brand200)}
-  .sf-map .kit>div{padding:4px;border-radius:10px;background:var(--sf-brand300)}
-  /* display 는 여기서 정하지 않는다 — 지금 공정 한 벌만 내놓는 아래 규칙과
-     겹치면 이쪽이 더 좁아 이겨 버린다 */
-  .sf-map .kit .row{gap:2px;padding:2px;border-radius:6px;
-                    background:var(--brand-2)}
-  /* 설비 한 칸은 120 으로 고정한다(Figma) — 셋이면 카드가 388 이 되고,
-     하나·둘인 공정에서는 카드가 그만큼 좁아진다. 공정이 갈릴 때 스며든다 */
-  .sf-map .row{display:none}
-  .sf-map .row.is-on{display:flex;animation:sfKit .35s var(--ease) both}
-  @keyframes sfKit{from{opacity:0}to{opacity:1}}
-  .sf-map .it{flex:0 0 120px;min-width:0;display:flex;flex-direction:column;gap:16px;
-              align-items:center;padding:24px 16px;border-radius:4px;background:#fff;
-              box-shadow:inset 0 0 16px 4px #fff}
-  /* 아이콘 자리 — Figma 에서도 아직 빈 칸(icon-blank)이라 그대로 회색 네모다 */
-  .sf-map .it .ic{width:64px;height:64px;flex-shrink:0;display:block;
-                  border:5.33px solid transparent;background:#d9d9d9;
-                  background-clip:content-box}
+               width:529px;max-width:100%;padding:0 40px 40px;
+               display:flex;flex-direction:column;align-items:center}
+  /* 한 벌이 나가고 다음 벌이 들어오는 창. 여섯 벌을 같은 격자 칸에 겹쳐 두면
+     창 높이가 가장 큰 벌에 맞춰져, 공정이 바뀌어도 바닥 띠가 흔들리지 않는다 */
+  .sf-map .rail{width:100%;display:grid;overflow:hidden}
+  .sf-map .row{grid-area:1/1;display:flex;gap:12px;align-items:flex-end;
+               justify-content:center;
+               transform:translateX(100%);opacity:0;visibility:hidden}
+  /* 전이는 들고 나는 두 벌에만 건다 — 다 나간 벌이 오른쪽 대기 자리로 돌아갈
+     때는 전이가 없어야 되돌아가는 모습이 보이지 않는다 */
+  .sf-map .row.is-on,.sf-map .row.is-out{
+               transition:transform .6s var(--ease),opacity .6s var(--ease)}
+  .sf-map .row.is-on{transform:none;opacity:1;visibility:visible}
+  .sf-map .row.is-out{transform:translateX(-100%);opacity:0;visibility:visible}
+  .sf-map .it{width:120px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;
+              align-items:center;justify-content:flex-end}
+  /* 그림 자리 — Figma 에서도 아직 빈 칸이라 회색 네모다 */
+  .sf-map .it .gx{width:120px;height:90px;flex-shrink:0;display:block;background:#e6e6e6}
+  .sf-map .floor{width:100%;height:8px;flex-shrink:0;background:var(--sf-brand200)}
   /* 줄임말에는 풀어 쓴 이름을 달아 둔다 — 마우스를 올리면 뜬다 */
   .sf-map .it abbr{text-decoration:none}
   .sf-map .it b{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
@@ -713,8 +714,11 @@
     /* 공정 맵도 띠 안으로 줄인다 — 짜임은 그대로 두고 여백과 설비 카드만 줄인다 */
     .sf-map .ring{--bw:5px}
     .sf-map .ring li{padding:12px 10px;gap:4px}
-    .sf-map .it{flex-basis:92px;gap:8px;padding:10px 8px}
-    .sf-map .it .ic{width:32px;height:32px;border-width:2.67px}
+    .sf-map .kit{width:auto;padding:0 20px 16px}
+    .sf-map .row{gap:8px}
+    .sf-map .it{width:92px;gap:8px}
+    .sf-map .it .gx{width:92px;height:56px}
+    .sf-map .floor{height:6px}
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:-.24px}
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-secs>.sf-sec+.sf-sec{margin-top:0}
@@ -992,35 +996,36 @@
               <li data-step="4"><b>04</b><i>충&middot;방전</i></li>
             </ol>
             <div class="kit">
-              <div>
+              <div class="rail">
                   <div class="row is-on" data-step="1">
-                    <div class="it"><span class="ic"></span><b>Pre-Formation</b></div>
-                    <div class="it"><span class="ic"></span><b><abbr title="High-Temperature Pressurized Formation">고온가압
-충방전기</abbr></b></div>
-                    <div class="it"><span class="ic"></span><b>Selector</b></div>
+                    <div class="it"><b>Pre-Formation</b><span class="gx"></span></div>
+                    <div class="it"><b><abbr title="High-Temperature Pressurized Formation">고온가압
+충방전기</abbr></b><span class="gx"></span></div>
+                    <div class="it"><b>Selector</b><span class="gx"></span></div>
                   </div>
                   <div class="row" data-step="2">
-                    <div class="it"><span class="ic"></span><b>Degas</b></div>
+                    <div class="it"><b>Degas</b><span class="gx"></span></div>
                   </div>
                   <div class="row" data-step="3">
-                    <div class="it"><span class="ic"></span><b>High Temp</b></div>
-                    <div class="it"><span class="ic"></span><b>Normal Temp</b></div>
-                    <div class="it"><span class="ic"></span><b>Shipping Temp</b></div>
+                    <div class="it"><b>High Temp</b><span class="gx"></span></div>
+                    <div class="it"><b>Normal Temp</b><span class="gx"></span></div>
+                    <div class="it"><b>Shipping Temp</b><span class="gx"></span></div>
                   </div>
                   <div class="row" data-step="4">
-                    <div class="it"><span class="ic"></span><b>충방전기
-(Formation)</b></div>
-                    <div class="it"><span class="ic"></span><b>Selector</b></div>
+                    <div class="it"><b>충방전기
+(Formation)</b><span class="gx"></span></div>
+                    <div class="it"><b>Selector</b><span class="gx"></span></div>
                   </div>
                   <div class="row" data-step="5">
-                    <div class="it"><span class="ic"></span><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b></div>
-                    <div class="it"><span class="ic"></span><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b></div>
-                    <div class="it"><span class="ic"></span><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b></div>
+                    <div class="it"><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b><span class="gx"></span></div>
+                    <div class="it"><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b><span class="gx"></span></div>
+                    <div class="it"><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b><span class="gx"></span></div>
                   </div>
                   <div class="row" data-step="6">
-                    <div class="it"><span class="ic"></span><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b></div>
+                    <div class="it"><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b><span class="gx"></span></div>
                   </div>
               </div>
+              <span class="floor"></span>
             </div>
           </div>
         </figure>
@@ -1782,13 +1787,22 @@
   var LAST = cells.length, at = 1, timer = null;
   var slow = window.matchMedia('(prefers-reduced-motion:reduce)');
 
+  var OUT = 600;   /* 밀려 나가는 데 걸리는 시간 — CSS 의 전이와 같아야 한다 */
   function show(n){
     at = n;
     var i;
     for(i=0;i<cells.length;i++)
       cells[i].classList.toggle('is-on', +cells[i].getAttribute('data-step') === n);
-    for(i=0;i<rows.length;i++)
-      rows[i].classList.toggle('is-on', +rows[i].getAttribute('data-step') === n);
+    for(i=0;i<rows.length;i++){
+      var me = +rows[i].getAttribute('data-step') === n;
+      if(!me && rows[i].classList.contains('is-on')) leave(rows[i]);
+      rows[i].classList.toggle('is-on', me);
+    }
+  }
+  /* 나가는 벌은 왼쪽으로 밀려난 뒤, 전이를 끄고 오른쪽 대기 자리로 되돌아간다 */
+  function leave(row){
+    row.classList.add('is-out');
+    setTimeout(function(){ row.classList.remove('is-out'); }, OUT);
   }
   function tick(){ show(at % LAST + 1); }
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
