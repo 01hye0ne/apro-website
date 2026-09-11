@@ -56,6 +56,10 @@
     --sf-line:#e4e8ed;       /* border/default     */
     --sf-line-s:#cbd2da;     /* border/strong      */
     --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
+    /* 공정 맵의 겹테두리에 쓰는 브랜드 음영. 400·text 는 공용 토큰
+       (--brand-2 · --brand)이 이미 같은 값이라 그대로 쓴다 */
+    --sf-brand300:#a3c5ef;   /* primitive/brand/300 */
+    --sf-brand200:#d6e3f6;   /* primitive/brand/200 */
     --sf-ph-bg:#e5e6e8;
     --sf-ph-bd:#c7c9cc;
     --sf-ph-tx:#73757a;
@@ -388,6 +392,55 @@
   @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
   .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
+  /* 활성화 공정 칸은 사진 대신 공정 맵을 그린다 (Figma 1018:3472 · infographic).
+     여섯 공정이 칸 넷 모서리를 도는 고리로 서고, 가운데에 그 공정에 쓰는 설비
+     세 대가 겹테두리 카드로 얹힌다. 지금 공정(01)만 진하다 — 고리의 굵은 변이
+     그 칸의 위·왼쪽에서 브랜드 색으로 켜진다 */
+  .sf-ph.has-map{background:#fff;border:0;overflow:hidden}
+  .sf-map{position:relative;width:100%;height:100%}
+  /* 고리 — 3×2 격자의 바깥 변만 굵게 둔다. 칸 사이를 4 벌려 두면 굵은 변이
+     공정마다 끊겨, 여섯 도막이 고리를 도는 것으로 읽힌다 */
+  .sf-map .ring{width:100%;height:100%;display:grid;gap:4px;list-style:none;
+                grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
+  .sf-map .ring li{display:flex;flex-direction:column;gap:8px;padding:32px 20px;
+                   overflow:hidden;font-family:var(--suit);color:var(--sf-ter)}
+  .sf-map .ring b{font-family:var(--ald);font-weight:400;font-size:var(--t-xs);
+                  line-height:1}
+  .sf-map .ring i{font-style:normal;font-weight:500;font-size:var(--t-xs);
+                  line-height:1.35;letter-spacing:-.28px}
+  /* 윗줄은 왼쪽 위에 붙고 아랫줄은 오른쪽 아래에 붙는다 — 01→03 으로 갔다가
+     04→06 으로 되돌아오는 흐름이 글의 자리만으로 읽힌다 */
+  .sf-map .ring li:nth-child(-n+3){border-top:8px solid var(--sf-line)}
+  .sf-map .ring li:nth-child(n+4){border-bottom:8px solid var(--sf-line);
+                                  justify-content:flex-end;text-align:right}
+  .sf-map .ring li:nth-child(1){border-left:8px solid var(--sf-line);
+                                border-top-left-radius:20px}
+  .sf-map .ring li:nth-child(3){border-right:8px solid var(--sf-line);
+                                border-top-right-radius:20px}
+  .sf-map .ring li:nth-child(4){border-left:8px solid var(--sf-line);
+                                border-bottom-left-radius:20px}
+  .sf-map .ring li:nth-child(6){border-right:8px solid var(--sf-line);
+                                border-bottom-right-radius:20px}
+  .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
+  .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
+  /* 설비 카드 — 테두리를 세 겹으로 두른다(200 → 300 → 400). 고리 한가운데에 둔다 */
+  .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+               width:388px;max-width:100%;padding:6px;border-radius:16px;
+               background:var(--sf-brand200)}
+  .sf-map .kit>div{padding:4px;border-radius:10px;background:var(--sf-brand300)}
+  .sf-map .kit .row{display:flex;gap:2px;padding:2px;border-radius:6px;
+                    background:var(--brand-2)}
+  .sf-map .it{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
+              align-items:center;padding:24px 16px;border-radius:4px;background:#fff;
+              box-shadow:inset 0 0 16px 4px #fff}
+  /* 아이콘 자리 — Figma 에서도 아직 빈 칸(icon-blank)이라 그대로 회색 네모다 */
+  .sf-map .it .ic{width:64px;height:64px;flex-shrink:0;display:block;
+                  border:5.33px solid transparent;background:#d9d9d9;
+                  background-clip:content-box}
+  .sf-map .it b{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
+                line-height:1.2;letter-spacing:-.32px;color:var(--brand);
+                text-align:center;white-space:pre-line}
+
   /* 해외 생산거점 칸은 사진 대신 지구를 돌린다 — cobe(MIT)를 얹었다.
      사진 칸과 달리 바탕 회색을 그대로 두고 구를 하얗게 띄운다.
      구의 지름은 칸 높이의 1.5 배라 아래가 잘린다 — 삼분의 이만 내놓고,
@@ -641,6 +694,16 @@
                 border-bottom:1px solid var(--sf-line)}
     .sf-figcol{height:auto;min-height:0;gap:12px}
     .sf-figstack{aspect-ratio:16/9;max-height:30svh}
+    /* 공정 맵도 띠 안으로 줄인다 — 짜임은 그대로 두고 여백과 설비 카드만 줄인다 */
+    .sf-map .ring li{padding:12px 10px;gap:4px}
+    .sf-map .ring li:nth-child(-n+3){border-top-width:5px}
+    .sf-map .ring li:nth-child(n+4){border-bottom-width:5px}
+    .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4){border-left-width:5px}
+    .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6){border-right-width:5px}
+    .sf-map .kit{width:300px}
+    .sf-map .it{gap:8px;padding:10px 8px}
+    .sf-map .it .ic{width:32px;height:32px;border-width:2.67px}
+    .sf-map .it b{font-size:var(--t-2xs);letter-spacing:-.24px}
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-secs>.sf-sec+.sf-sec{margin-top:0}
     .sf-sec{min-height:0;padding:32px 16px 56px;
@@ -906,7 +969,28 @@
       <!-- 눈금 줄은 열한 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
       <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
       <div class="sf-figstack">
-        <figure class="sf-ph is-on" data-for="sf01-1"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph is-on has-map" data-for="sf01-1" aria-label="활성화 공정 여섯 단계와 각 단계에 쓰이는 설비">
+          <div class="sf-map">
+            <ol class="ring">
+              <li class="is-on"><b>01</b><i>1차 충전</i></li>
+              <li><b>02</b><i>디개싱 공정</i></li>
+              <li><b>03</b><i>에이징 공정</i></li>
+              <li><b>06</b><i>불량 선별</i></li>
+              <li><b>05</b><i>품질 검사</i></li>
+              <li><b>04</b><i>충&middot;방전</i></li>
+            </ol>
+            <div class="kit">
+              <div>
+                <div class="row">
+                  <div class="it"><span class="ic"></span><b>Pre-Formation</b></div>
+                  <div class="it"><span class="ic"></span><b>고온가압
+충방전기</b></div>
+                  <div class="it"><span class="ic"></span><b>Selector</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </figure>
         <figure class="sf-ph has-globe" data-for="sf01-2">
           <div class="sf-globe" id="sfGlobe" role="img" tabindex="0"
                aria-label="한국 본사에서 미시간·폴란드·남경·인도네시아 현지 법인으로 이어지는 지구 도식 — 끌거나 화살표 키로 돌려 볼 수 있습니다">
