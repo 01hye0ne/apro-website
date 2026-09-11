@@ -109,6 +109,10 @@
        줄면 장이 띠를 넘겨 그냥 자란다 */
     --sec-pad:clamp(16px,calc((100svh - var(--gnb-h) - 560px) / 2),176px);
     --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
+    /* 03 솔루션 윗단이 쓰는 높이 = 눈금 줄 16 + 그 아래 24 + 제목·Certification
+       칸 180. 카드는 띠에서 이만큼을 뺀 나머지를 쓴다 → 윗단 + 카드 하나가
+       ESS·UPS 한 장과 정확히 같은 띠(--band-h)가 된다 */
+    --phead-h:220px;
     --col5:calc((100% - var(--body-fixed)) / 2);
     /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
     --txt-pad-l:40px;
@@ -535,7 +539,7 @@
   /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
   /* 윗단 안에서 제목·리드는 위, Certification 은 아래 변에 붙는다.
      높이는 격자 줄이 정해 주므로 flex:1 로 그대로 받는다 */
-  .sf-ptexts{flex:1;min-height:180px;
+  .sf-ptexts{flex:1;min-height:calc(var(--phead-h) - 40px);
              display:flex;flex-direction:column;justify-content:space-between;
              padding-right:var(--body-pad-r)}
   .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
@@ -567,14 +571,23 @@
   /* 윗단 아래 변(Certification 줄)에 첫 카드가 바로 붙고, 카드끼리도 붙는다 —
      테두리가 겹치지 않게 1px 씩 끌어올린다. 붙어 있어야 휠 한 번에 다음 제품이
      그 줄에 정확히 와서 선다 */
+  /* 카드 키 = 띠 − 윗단. 이래야 윗단이 화면에 붙어 있는 동안 카드 하나가
+     정확히 한 화면이 되고, ESS·UPS 한 장과 같은 높이로 읽힌다.
+     글이 더 접히는 좁은 폭에서는 min- 이라 그만큼 자란다 */
   .sf-prod{margin-right:var(--body-pad-r);margin-top:-1px;
+           min-height:calc(var(--band-h) - var(--phead-h));
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
-  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;
-                 aspect-ratio:1;background:var(--sf-ph-bg);
+  /* 사진 칸은 폭만 받고 키는 카드에서 받는다. 정사각(aspect-ratio:1)으로 두었더니
+     넓은 화면에서 사진이 카드 키를 밀어 올려(1892 에서 382) 띠를 넘겼다 */
+  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:stretch;
+                 position:relative;overflow:hidden;background:var(--sf-ph-bg);
                  border:1px dashed var(--sf-ph-bd)}
   /* 사진이 든 칸은 자리표시 점선을 걷는다 — 원본이 1:1 이라 그대로 들어맞는다 */
   .sf-prod>.shot.has-img{background:none;border:0;overflow:hidden}
-  .sf-prod>.shot img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 사진은 칸에서 떼어 깔아 둔다 — 흐름에 남으면 height:100% 가 잡히지 않아
+     제 비율대로 자라서 카드 키를 다시 밀어 올린다 */
+  .sf-prod>.shot img{position:absolute;inset:0;display:block;
+                     width:100%;height:100%;object-fit:cover}
   /* 카드 안을 가르는 선 셋 — 특징 칸을 가르는 선과 같은 200 칸선이다.
      사진 옆(카드 높이 전부) · 이름 띠 아래 · 주요 적용 분야 위 */
   .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
