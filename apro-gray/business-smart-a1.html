@@ -389,7 +389,11 @@
      칸보다 작아져 가장자리에 흰 틈이 생기기 때문이다 — 그 틈을 메우는 몫이다 */
   .sf-ph img{transform:scale(var(--zoom,1.04));transform-origin:50% 50%;
              will-change:transform;backface-visibility:hidden}
-  @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    .sf-ph img{transform:none}
+    .sf-map .ring li,.sf-map .ring i{transition:none}
+    .sf-map .row.is-on{animation:none}
+  }
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
   .sf-ph.has-img,.sf-ph.has-panes{background:none;border:0;overflow:hidden}
   /* 활성화 공정 칸은 사진 대신 공정 맵을 그린다 (Figma 1018:3472 · infographic).
@@ -421,22 +425,36 @@
                                 border-bottom-left-radius:20px}
   .sf-map .ring li:nth-child(6){border-right:8px solid var(--sf-line);
                                 border-bottom-right-radius:20px}
+  /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
+     굵기도 중간값으로 이어진다 */
+  .sf-map .ring li{transition:color .45s var(--ease),border-color .45s var(--ease)}
+  .sf-map .ring i{transition:font-size .45s var(--ease),font-weight .45s var(--ease),
+                  letter-spacing .45s var(--ease)}
   .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
   /* 설비 카드 — 테두리를 세 겹으로 두른다(200 → 300 → 400). 고리 한가운데에 둔다 */
   .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-               width:388px;max-width:100%;padding:6px;border-radius:16px;
+               max-width:100%;padding:6px;border-radius:16px;
                background:var(--sf-brand200)}
   .sf-map .kit>div{padding:4px;border-radius:10px;background:var(--sf-brand300)}
-  .sf-map .kit .row{display:flex;gap:2px;padding:2px;border-radius:6px;
+  /* display 는 여기서 정하지 않는다 — 지금 공정 한 벌만 내놓는 아래 규칙과
+     겹치면 이쪽이 더 좁아 이겨 버린다 */
+  .sf-map .kit .row{gap:2px;padding:2px;border-radius:6px;
                     background:var(--brand-2)}
-  .sf-map .it{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
+  /* 설비 한 칸은 120 으로 고정한다(Figma) — 셋이면 카드가 388 이 되고,
+     하나·둘인 공정에서는 카드가 그만큼 좁아진다. 공정이 갈릴 때 스며든다 */
+  .sf-map .row{display:none}
+  .sf-map .row.is-on{display:flex;animation:sfKit .35s var(--ease) both}
+  @keyframes sfKit{from{opacity:0}to{opacity:1}}
+  .sf-map .it{flex:0 0 120px;min-width:0;display:flex;flex-direction:column;gap:16px;
               align-items:center;padding:24px 16px;border-radius:4px;background:#fff;
               box-shadow:inset 0 0 16px 4px #fff}
   /* 아이콘 자리 — Figma 에서도 아직 빈 칸(icon-blank)이라 그대로 회색 네모다 */
   .sf-map .it .ic{width:64px;height:64px;flex-shrink:0;display:block;
                   border:5.33px solid transparent;background:#d9d9d9;
                   background-clip:content-box}
+  /* 줄임말에는 풀어 쓴 이름을 달아 둔다 — 마우스를 올리면 뜬다 */
+  .sf-map .it abbr{text-decoration:none}
   .sf-map .it b{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
                 line-height:1.2;letter-spacing:-.32px;color:var(--brand);
                 text-align:center;white-space:pre-line}
@@ -700,8 +718,7 @@
     .sf-map .ring li:nth-child(n+4){border-bottom-width:5px}
     .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4){border-left-width:5px}
     .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6){border-right-width:5px}
-    .sf-map .kit{width:300px}
-    .sf-map .it{gap:8px;padding:10px 8px}
+    .sf-map .it{flex-basis:92px;gap:8px;padding:10px 8px}
     .sf-map .it .ic{width:32px;height:32px;border-width:2.67px}
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:-.24px}
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
@@ -972,21 +989,42 @@
         <figure class="sf-ph is-on has-map" data-for="sf01-1" aria-label="활성화 공정 여섯 단계와 각 단계에 쓰이는 설비">
           <div class="sf-map">
             <ol class="ring">
-              <li class="is-on"><b>01</b><i>1차 충전</i></li>
-              <li><b>02</b><i>디개싱 공정</i></li>
-              <li><b>03</b><i>에이징 공정</i></li>
-              <li><b>06</b><i>불량 선별</i></li>
-              <li><b>05</b><i>품질 검사</i></li>
-              <li><b>04</b><i>충&middot;방전</i></li>
+              <li class="is-on" data-step="1"><b>01</b><i>1차 충전</i></li>
+              <li data-step="2"><b>02</b><i>디개싱 공정</i></li>
+              <li data-step="3"><b>03</b><i>에이징 공정</i></li>
+              <li data-step="6"><b>06</b><i>불량 선별</i></li>
+              <li data-step="5"><b>05</b><i>품질 검사</i></li>
+              <li data-step="4"><b>04</b><i>충&middot;방전</i></li>
             </ol>
             <div class="kit">
               <div>
-                <div class="row">
-                  <div class="it"><span class="ic"></span><b>Pre-Formation</b></div>
-                  <div class="it"><span class="ic"></span><b>고온가압
-충방전기</b></div>
-                  <div class="it"><span class="ic"></span><b>Selector</b></div>
-                </div>
+                  <div class="row is-on" data-step="1">
+                    <div class="it"><span class="ic"></span><b>Pre-Formation</b></div>
+                    <div class="it"><span class="ic"></span><b><abbr title="High-Temperature Pressurized Formation">고온가압
+충방전기</abbr></b></div>
+                    <div class="it"><span class="ic"></span><b>Selector</b></div>
+                  </div>
+                  <div class="row" data-step="2">
+                    <div class="it"><span class="ic"></span><b>Degas</b></div>
+                  </div>
+                  <div class="row" data-step="3">
+                    <div class="it"><span class="ic"></span><b>High Temp</b></div>
+                    <div class="it"><span class="ic"></span><b>Normal Temp</b></div>
+                    <div class="it"><span class="ic"></span><b>Shipping Temp</b></div>
+                  </div>
+                  <div class="row" data-step="4">
+                    <div class="it"><span class="ic"></span><b>충방전기
+(Formation)</b></div>
+                    <div class="it"><span class="ic"></span><b>Selector</b></div>
+                  </div>
+                  <div class="row" data-step="5">
+                    <div class="it"><span class="ic"></span><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b></div>
+                    <div class="it"><span class="ic"></span><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b></div>
+                    <div class="it"><span class="ic"></span><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b></div>
+                  </div>
+                  <div class="row" data-step="6">
+                    <div class="it"><span class="ic"></span><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b></div>
+                  </div>
               </div>
             </div>
           </div>
@@ -1731,6 +1769,43 @@
       return;
     });
   });
+})();
+</script>
+<script>
+/* ── 공정 맵 — 여섯 공정이 2초씩 차례로 켜진다 ───────────────────────────
+   격자는 01·02·03 / 06·05·04 로 놓여 있어 자리 순서가 곧 차례는 아니다 —
+   칸마다 적어 둔 data-step 으로 돈다. 설비 카드도 그 공정의 설비로 갈린다.
+   다른 탭에 가 있는 동안에는 세지 않는다. 움직임을 줄인 설정에서는 첫 공정에
+   그대로 선다 */
+(function(){
+  var map = document.querySelector('.sf-map');
+  if(!map) return;
+  var cells = [].slice.call(map.querySelectorAll('.ring li'));
+  var rows  = [].slice.call(map.querySelectorAll('.row'));
+  if(!cells.length || !rows.length) return;
+
+  var LAST = cells.length, at = 1, timer = null;
+  var slow = window.matchMedia('(prefers-reduced-motion:reduce)');
+
+  function show(n){
+    at = n;
+    var i;
+    for(i=0;i<cells.length;i++)
+      cells[i].classList.toggle('is-on', +cells[i].getAttribute('data-step') === n);
+    for(i=0;i<rows.length;i++)
+      rows[i].classList.toggle('is-on', +rows[i].getAttribute('data-step') === n);
+  }
+  function tick(){ show(at % LAST + 1); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+  function run(){
+    stop();
+    if(slow.matches){ show(1); return; }
+    if(!document.hidden) timer = setInterval(tick, 2000);
+  }
+  document.addEventListener('visibilitychange', run);
+  if(slow.addEventListener) slow.addEventListener('change', run);
+  else if(slow.addListener) slow.addListener(run);
+  run();
 })();
 </script>
 <script src="../assets/cobe.js"></script>
