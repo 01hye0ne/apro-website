@@ -534,14 +534,28 @@
      그 앞에 구를 하얗게 띄운다(바탕값은 위 --sf-ph-bg · --sf-sky-* 다).
      구의 지름은 칸 높이의 1.5 배라 아래가 잘린다 — 삼분의 이만 내놓고,
      나머지는 끌어서 돌려 보는 자리다 */
-  .sf-ph.has-globe{border:0;overflow:hidden;
-                   background:linear-gradient(180deg,
+  .sf-ph.has-globe{--sf-sky:linear-gradient(180deg,
                      var(--sf-ph-bg) 0%, var(--sf-sky-1) 30%,
-                     var(--sf-sky-2) 62%, var(--sf-sky-3) 100%)}
+                     var(--sf-sky-2) 62%, var(--sf-sky-3) 100%);
+                   border:0;overflow:hidden;background:var(--sf-sky)}
   .sf-globe{position:absolute;inset:0;cursor:grab;touch-action:pan-y;
             -webkit-user-select:none;user-select:none}
   .sf-globe.is-grab{cursor:grabbing}
   .sf-globe canvas{display:block;width:100%;height:100%}
+  /* 구의 아랫도리는 바탕에 잠기게 둔다 — 칸 위로 바탕(--sf-sky)을 한 장 더
+     깔고, 위는 비워 두고 아래로 갈수록 드러나게 가림막을 씌운다. 덮개가 바탕과
+     같은 배열을 그대로 쓰므로 자리마다 색이 정확히 겹친다 — 맨 아래에서는 구가
+     흔적 없이 바탕이 된다(반투명 흰 막을 씌우는 식과 달리 색이 뜨지 않고,
+     바탕색을 고쳐도 따로 맞출 데가 없다).
+     짙어지는 결은 아래쪽에 몰려 있다 — 구가 위로는 오래 또렷하다가 밑동에서
+     빠르게 잠긴다. 끌기를 막지 않게 손은 받지 않는다 */
+  .sf-globe::after{content:"";position:absolute;inset:0;pointer-events:none;
+                   background:var(--sf-sky);
+                   -webkit-mask-image:var(--sf-sink);mask-image:var(--sf-sink);
+                   --sf-sink:linear-gradient(180deg,
+                     rgba(0,0,0,0) 38%, rgba(0,0,0,.10) 50%, rgba(0,0,0,.265) 62%,
+                     rgba(0,0,0,.431) 72%, rgba(0,0,0,.58) 80%, rgba(0,0,0,.74) 88%,
+                     rgba(0,0,0,.867) 94%, #000 100%)}
   /* WebGL 이 없는 브라우저에서는 같은 구도의 정지 그림으로 물러난다.
      이 클래스가 붙을 때만 그림을 받으므로 보통은 내려받지 않는다.
      바탕색을 그림에 구워 넣었다 — 투명 PNG 는 500KB 였다. 구워 넣은 건 아직
@@ -552,7 +566,7 @@
   /* 표시마다 이름표가 따라붙는다 — 구 뒤로 돌아가면 사라진다. 자리는
      스크립트가 셈해서 transform 으로 얹는다(cobe 가 표시를 찍는 셈과 같은
      식이라 점과 이름표가 어긋나지 않는다). 끌기를 막지 않게 손을 안 받는다 */
-  .sf-globe .tag{position:absolute;left:0;top:0;padding:5px 10px;
+  .sf-globe .tag{position:absolute;left:0;top:0;z-index:1;padding:5px 10px;
                  background:#fff;border:1px solid var(--sf-line-s);
                  font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
                  line-height:1.35;letter-spacing:-.24px;color:var(--sf-txt);
