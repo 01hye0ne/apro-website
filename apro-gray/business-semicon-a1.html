@@ -440,6 +440,17 @@
   .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
+  /* ── 줄바꿈 ────────────────────────────────────────────────────────────
+     한글은 낱말 가운데를 끊으면 읽기 나빠진다 — '제조 안 / 정성을' 처럼.
+     띄어쓰기에서만 끊고, 끊을 자리가 없는 긴 영문만 예외로 쪼갠다.
+     text-wrap:pretty 는 마지막 줄에 글자 하나가 남는 것을 막고,
+     balance 는 짧은 제목의 두 줄을 고르게 나눈다. 두 값 모두 모르는
+     브라우저는 그냥 지나간다 — 예전처럼 끊길 뿐 깨지지 않는다 */
+  .sf-sec,.sf-intro,.sf-herocap{word-break:keep-all;overflow-wrap:break-word;
+                                text-wrap:pretty}
+  .sf-texts h2,.sf-texts .en,.sf-body .sub,
+  .sf-ptexts h2,.sf-ptexts .lead,.sf-lead{text-wrap:balance}
+
   .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
