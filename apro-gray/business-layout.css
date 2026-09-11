@@ -1751,9 +1751,20 @@
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
                 padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
   .sf-mega .col:last-child{border-right:0}
-  /* 사업영역을 뺀 나머지 판은 첫 칸에 세로로 쭉 나열하고,
-     오른쪽 세 칸은 강조 콘텐츠 자리로 비워 둔다 */
-  .sf-mega .col.feat{grid-column:span 3;padding:0;border-right:0}
+  /* 사업영역을 뺀 나머지 판은 목록을 한 열로 세우고, 그 열을 자기 상단 메뉴 바로
+     아래에 맞춘다 — 커서가 가로로 건너가지 않고 세로로만 내려오면 된다. 띠 왼쪽에서
+     그 메뉴 글자까지가 --mm-a, 목록 열이 --mm-w, 오른쪽에 남는 자리가 --mm-b 이고
+     셋 다 sfMegaAlign 이 잰다. 스크립트가 안 돌면 기본값이 예전 [첫 칸 + 나머지]다.
+     강조 콘텐츠는 남는 쪽이 넓은 편에 둔다 — 오른쪽 메뉴 둘은 .feat-left 로 왼쪽 */
+  .sf-mega .cols.aligned{grid-template-columns:var(--mm-a,0px) var(--mm-w,25%) var(--mm-b,75%)}
+  /* 이름은 접지 않는다 — 접히면 화살촉 줄이 흐트러진다. 대신 sfMegaAlign 이
+     가장 긴 이름을 재어 열을 그만큼 넓힌다 */
+  .sf-mega .cols.aligned .stack{grid-column:2}
+  .sf-mega .cols.aligned .stack .hd{white-space:nowrap}
+  .sf-mega .cols.aligned .feat{grid-column:3;padding:0;border-right:0}
+  .sf-mega .cols.aligned.feat-left .feat{grid-column:1}
+  .sf-mega .cols.aligned.feat-left .stack{border-right:0;
+                                          border-left:1px solid var(--gnb-line)}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
                font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
                color:var(--gnb-sec);text-decoration:none;
