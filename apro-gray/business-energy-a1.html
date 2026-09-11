@@ -499,13 +499,15 @@
      한 화면에 들어오는 양을 맞추려고 반으로 자른 것이고, 카드가 둘 이상인
      장은 둘째부터 아래로 이어 흐른다. 눈금 줄만 화면 끝까지 나가고 나머지는
      오른쪽 120 을 비운다 */
-  /* 윗단과 제품 카드가 서로 키를 맞춘다 — 장을 격자로 두고 줄을 모두 1fr 로
-     주면 가장 큰 줄에 나머지가 맞춰진다. 카드 높이는 특징 넷이 정하므로 CSS 로는
-     미리 알 수 없는데, 이렇게 하면 윗단이 알아서 그만큼 자란다.
+  /* 윗단은 제 키를 쓰고, 남는 자리만 마저 먹는다 — 줄을 모두 1fr 로 두었더니
+     카드가 둘·셋인 장에서 윗단까지 카드 키로 늘어나, 리드와 Certification 사이가
+     100 넘게 비었다. 윗단만 1fr(첫 줄)로 두고 카드는 제 키(auto)로 흐르게 하면,
+     윗단은 ESS·UPS 한 장과 같은 띠(--band-h)를 채울 만큼만 늘어난다.
      .sf-prods 는 display:contents 로 껍데기만 지워 카드들을 장의 줄로 올린다 —
      마크업은 그대로 두고 격자에만 참여시키는 방법이다 */
   .sf-sec.is-prod{justify-content:flex-start;
-                  display:grid;grid-auto-rows:1fr;gap:0;align-content:start}
+                  display:grid;grid-template-rows:1fr;grid-auto-rows:auto;
+                  gap:0;align-content:start}
   /* 윗단 — [눈금 줄 + 제목 + 리드 + Certification] 이 화면에 붙고 그 아래로
      제품 카드만 흘러 지나간다. 다른 페이지가 그림 기둥을 붙여 두는 것과 같은
      방식이다 : 장의 정체는 남고 세부만 움직인다. 사진까지 붙이지 않는 이유는
@@ -570,9 +572,12 @@
   /* 사진이 든 칸은 자리표시 점선을 걷는다 — 원본이 1:1 이라 그대로 들어맞는다 */
   .sf-prod>.shot.has-img{background:none;border:0;overflow:hidden}
   .sf-prod>.shot img{display:block;width:100%;height:100%;object-fit:cover}
-  .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
+  /* 카드 안을 가르는 선 셋 — 특징 칸을 가르는 선과 같은 200 칸선이다.
+     사진 옆(카드 높이 전부) · 이름 띠 아래 · 주요 적용 분야 위 */
+  .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
+                 border-left:1px solid var(--c-bd)}
   .sf-prod .lbl{display:flex;align-items:center;padding:12px 16px;
-                background:var(--sf-gray100)}
+                border-bottom:1px solid var(--c-bd);background:var(--sf-gray100)}
   .sf-prod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--t-md);
                   line-height:1.2;letter-spacing:-.4px;color:var(--c-ttl)}
   .sf-prod .info{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -584,9 +589,8 @@
   /* 칸을 가르는 가는 선 — 좌측 인덱스의 밑줄과 같은 200 칸선이다.
      칸 사이를 벌리는 대신 그 자리에 선을 두었다(양옆 여백 16 으로 같다) */
   .sf-feat li+li{border-left:1px solid var(--c-bd,var(--sf-line))}
-  /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 원래 그려진 크기(24)로 둔다 —
-     인트로 카드(44)와 달리 여기는 이름 옆의 작은 표시다 */
-  .sf-feat .ic{width:24px;height:24px;flex-shrink:0;color:var(--brand)}
+  /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 인트로 카드와 같은 크기·색이다 */
+  .sf-feat .ic{width:44px;height:44px;flex-shrink:0;color:var(--brand)}
   .sf-feat .ic svg{display:block;width:100%;height:100%}
   .sf-feat .t{display:flex;flex-direction:column;gap:8px}
   .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
@@ -595,7 +599,8 @@
               line-height:1.6;letter-spacing:-.28px;color:var(--c-body)}
   /* 와이어프레임은 이 줄을 한 줄로 자르지만(말줄임) 글을 잘라 버리는 대신
      접히게 둔다 — 카드가 그만큼 자란다 */
-  .sf-prod .use{display:flex;gap:10px;padding:12px 16px;font-family:var(--suit);
+  .sf-prod .use{display:flex;gap:10px;padding:12px 16px;
+                border-top:1px solid var(--c-bd);font-family:var(--suit);
                 font-size:var(--t-2xs);line-height:1.6;letter-spacing:-.26px}
   .sf-prod .use b{flex-shrink:0;font-weight:800;color:var(--sf-sec)}
   .sf-prod .use span{min-width:0;font-weight:500;color:var(--sf-ter)}
@@ -616,7 +621,8 @@
   .sf-cert .ttl,.sf-cert li,
   .sf-feat .k,.sf-feat .d,
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
-  .sf-apps,.sf-apps li,.sf-prod,.sf-feat li{transition:border-color .5s var(--ease)}
+  .sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
+  .sf-prod>.side,.sf-prod .lbl,.sf-prod .use{transition:border-color .5s var(--ease)}
   .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,.sf-phead::after,
   .sf-prod .lbl{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
