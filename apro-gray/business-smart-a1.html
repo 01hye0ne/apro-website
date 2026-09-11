@@ -546,7 +546,10 @@
   .sf-picks .shot{aspect-ratio:160/120;overflow:hidden;background:var(--sf-ph-bg);
                   border:1px solid var(--c-bd)}
   .sf-picks .shot img{display:block;width:100%;height:100%;object-fit:cover}
-  .sf-picks .nm{padding:12px;font-family:var(--suit);font-weight:800;
+  /* 이름은 줄을 미리 나누지 않는다 — 자리가 되면 한 줄로 서고, 모자라면
+     저절로 나뉜다. 다만 한글 규칙(낱말 안에서 끊지 않기)을 여기서는 풀어
+     둔다: 'SW/FW-CNT Powder' 는 붙임표에서 끊기는 편이 자연스럽다 */
+  .sf-picks .nm{padding:12px;word-break:normal;font-family:var(--suit);font-weight:800;
                 font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
                 color:var(--c-ttl)}
 
@@ -1059,13 +1062,13 @@
           </div>
           <div class="sf-picks" role="tablist" aria-label="탄소 나노 튜브 제품">
             <button type="button" role="tab" id="cnt-pw-t" aria-controls="cnt-pw" aria-selected="true">
-              <span class="shot"><img src="../assets/cnt-powder.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-<br />CNT Powder</span>
+              <span class="shot"><img src="../assets/cnt-powder.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-CNT Powder</span>
             </button>
             <button type="button" role="tab" id="cnt-sl-t" aria-controls="cnt-sl" aria-selected="false" tabindex="-1">
-              <span class="shot"><img src="../assets/cnt-slurry.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-<br />CNT Slurry</span>
+              <span class="shot"><img src="../assets/cnt-slurry.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-CNT Slurry</span>
             </button>
             <button type="button" role="tab" id="cnt-cb-t" aria-controls="cnt-cb" aria-selected="false" tabindex="-1">
-              <span class="shot"><img src="../assets/cnt-carbon-black.jpg" alt="" decoding="async" /></span><span class="nm">Carbon<br />Black</span>
+              <span class="shot"><img src="../assets/cnt-carbon-black.jpg" alt="" decoding="async" /></span><span class="nm">Carbon Black</span>
             </button>
           </div>
         </div>
