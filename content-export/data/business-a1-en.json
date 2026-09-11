@@ -1,0 +1,1060 @@
+{
+ "smart": [
+  {
+   "role": "히어로 제목(영문)",
+   "ko": "Smart Factory",
+   "en": "Smart Factory",
+   "at": "/html/body/section[1]/div/div/h1/span[2]"
+  },
+  {
+   "role": "개요 리드 1",
+   "ko": "이차전지 활성화 중요 공정 설비를 자체 기술로 만듭니다.",
+   "en": "We manufacture nine pieces of equipment for the secondary battery activation process using our own technology.",
+   "at": "/html/body/section[2]/div[1]/p/span[1]"
+  },
+  {
+   "role": "개요 리드 2",
+   "ko": "셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.",
+   "en": "We are responsible for the final process that determines the performance and quality of the cells.",
+   "at": "/html/body/section[2]/div[1]/p/span[2]"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "Cycler(Cell&Module)",
+   "en": "Cycler(Cell&Module)",
+   "at": "/html/body/section[2]/div[2]/ul/li[2]/p"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "활성화 공정 & 설비",
+   "en": "Activation Process & Equipment",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "글로벌 에이프로 네트워크",
+   "en": "Global A-PRO Network",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[2]"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "Cycler(Cell&Module)",
+   "en": "Cycler(Cell&Module)",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "Cycler(Cell&Module)",
+   "en": "Cycler(Cell&Module)",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "자동화 설비",
+   "en": "Automation System",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "탄소 나노 튜브",
+   "en": "Carbon Nano Tube",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "LiFSI 전해염",
+   "en": "Electrolyte",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "HNBR 바인더",
+   "en": "HNBR Binder",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a[3]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "파우치셀 제조",
+   "en": "Pouch Cell Manufacturing",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a[4]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "활성화 공정 & 설비",
+   "en": "Activation Process & Equipment",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "독보적인 기술력으로 완성하는 이차전지 활성화 통합 솔루션\n에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유한 리딩 기업입니다. 공정에 필요한 모든 설비를 직접 생산하여 국내외 유수의 고객사에 안정적으로 공급하고 있습니다.",
+   "en": "An Integrated Formation Solution Built on Proprietary Battery Technology \nA-PRO is a leading enterprise with proprietary technology for manufacturing the entire spectrum of secondary battery formation process equipment. We directly produce and reliably supply essential equipment required for the formation process to premier domestic and international customers.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "당사는 독보적인 정밀 충·방전 기술과 고도화된 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 '통합 자동화 솔루션'을 제공합니다. 더불어 각 공정에서 발생하는 전압, 전류, 온도 등의 핵심 데이터를 정밀하게 측정하고 체계적으로 관리함으로써, 배터리 셀의 완성도 높은 품질과 생산 안정성을 극대화합니다.",
+   "en": "Based on our unrivaled precision charge-discharge technology and advanced automation capabilities, we deliver comprehensive 'integrated automation solutions' that encompass the entire battery cell formation process. Furthermore, we precisely measure and systematically manage critical data—such as voltage, current, and temperature generated during each stage—to maximize the seamless quality and production stability of battery cells.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "글로벌 에이프로 네트워크",
+   "en": "Global A-PRO Network",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "전 세계 배터리 생산의 중심, 에이프로 글로벌 네트워크",
+   "en": "At the Heart of Global Battery Production: A-PRO’s Global Network",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "글로벌 시장을 선도하는 고객사를 위해 미국 미시간, 폴란드, 중국 남경, 인도네시아에 현지 법인을 구축했습니다.",
+   "en": "To support our global market-leading customers, we have established local subsidiaries in Michigan (USA), Poland, Nanjing (China), and Indonesia.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "현지에 상주하는 전문 엔지니어들이 셋업부터 유지보수까지 원스톱(One-stop)으로 지원하며, 안정적인 해외 거점을 바탕으로 고객사의 성공을 함께합니다.",
+   "en": "Our on-site expert engineers provide one-stop service from setup to maintenance, ensuring customer success through our robust global network.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "Cycler(Cell&Module)",
+   "en": "Cycler(Cell&Module)",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "배터리의 미래를 검증하는 고효율 친환경 사이클러",
+   "en": "High-Efficiency Eco-Friendly Cyclers Validating the Future of Batteries",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로의 이차전지 사이클러(Battery Cycler)는 독보적인 양방향 전력 제어와 에너지 회생 기술을 통해 배터리의 성능 평가를 최적화하고, 완벽한 제조 안정성을 확보합니다.",
+   "en": "A-PRO’s Battery Cycler optimizes battery performance evaluation and ensures flawless manufacturing stability through unrivaled bidirectional power control and energy regeneration technology.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로의 이차전지 사이클러는 배터리를 반복적으로 충·방전하여 성능, 효율성, 수명을 정밀하게 평가하는 핵심 테스트 장비입니다. 용량, 수명 주기(Cycle Life), 내부 저항을 정밀 측정하고 실제 사용 환경을 완벽히 시뮬레이션하여, 연구 개발 및 제조 단계에서 발생할 수 있는 열화 현상과 안전 문제를 사전에 빈틈없이 검출합니다.",
+   "en": "A-PRO’s Battery Cycler is an essential testing solution that precisely evaluates battery performance, efficiency, and lifespan through continuous charge and discharge cycles. By accurately measuring capacity, cycle life, and internal resistance, our cyclers replicate real-world operating conditions to flawlessly detect degradation and safety issues during the R&D and manufacturing stages.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "본문",
+   "ko": "특히 에이프로의 Cycler는 전류 공급(충전)과 흡수(방전)가 모두 가능한 양방향 전력 시스템과 혁신적인 에너지 회생(Regenerative) 기능을 탑재하고 있습니다. 방전 시 버려지는 에너지를 회수하여 전력망으로 되돌려주는 이 기술은 공장의 전력 낭비를 획기적으로 줄이고 냉각 부하를 저감하여, 가장 경제적이고 친환경적인 생산 환경을 완성합니다.",
+   "en": "In particular, A-PRO’s Cycler features an advanced bidirectional system capable of both supplying (charging) and absorbing (discharging) current, integrated with innovative energy regeneration technology. By capturing energy released during discharge and feeding it back into the power grid, this technology drastically reduces power waste and cooling loads, enabling an exceptionally economical and eco-friendly production environment.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[4]"
+  },
+  {
+   "role": "장 영문 제목",
+   "ko": "삭제",
+   "en": "Module Inspection Equipment",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div[1]/p"
+  },
+  {
+   "role": "본문",
+   "ko": "삭제",
+   "en": "High-Efficiency Eco-Friendly Cyclers Validating the Future of Batteries",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div[2]/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "삭제",
+   "en": "A-PRO’s Battery Cycler optimizes battery performance evaluation and ensures flawless manufacturing stability through unrivaled bidirectional power control and energy regeneration technology.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div[2]/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "삭제",
+   "en": "A-PRO’s Battery Cycler is an essential testing solution that precisely evaluates battery performance, efficiency, and lifespan through continuous charge and discharge cycles. By accurately measuring capacity, cycle life, and internal resistance, our cyclers replicate real-world operating conditions to flawlessly detect degradation and safety issues during the R&D and manufacturing stages.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div[2]/p[3]"
+  },
+  {
+   "role": "본문",
+   "ko": "삭제",
+   "en": "In particular, A-PRO’s Cycler features an advanced bidirectional system capable of both supplying (charging) and absorbing (discharging) current, integrated with innovative energy regeneration technology. By capturing energy released during discharge and feeding it back into the power grid, this technology drastically reduces power waste and cooling loads, enabling an exceptionally economical and eco-friendly production environment.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div[2]/p[4]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "자동화 설비",
+   "en": "Automation System",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/h2"
+  },
+  {
+   "role": "장 영문 제목",
+   "ko": "스마트 팩토리를 완성하는 지능형 통합 제어 솔루션\n활성화 공정 전체 설비의 실시간 정밀 제어와 체계적인 데이터 관리를 통해 최고의 생산 가동 효율과 제조 안정성을 보장합니다.",
+   "en": "Intelligent Control Solutions Powering the Smart Factory\nWe maximize operational efficiency and production stability through real-time precision control and systematic data management across the entire formation process.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p"
+  },
+  {
+   "role": "표 왼쪽",
+   "ko": "스마트 설비 제어",
+   "en": "Smart Equipment Control",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[1]/p[1]"
+  },
+  {
+   "role": "표 오른쪽",
+   "ko": "충방전기, 디개싱, 에이징 룸 등 공정 내 모든 하드웨어를 실시간 직접 제어합니다.",
+   "en": "Direct, real-time hardware control of all production lines, including cyclers, degassing units, and aging rooms.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[1]/p[2]"
+  },
+  {
+   "role": "표 왼쪽",
+   "ko": "실시간 데이터 수집",
+   "en": "Real-Time Data Acquisition",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[2]/p[1]"
+  },
+  {
+   "role": "표 오른쪽",
+   "ko": "미세한 온도·압력·전압·전류 데이터를 정밀 측정하여 완벽한 품질 추적성을 확보합니다.",
+   "en": "Precision monitoring of voltage, current, temperature, and pressure for seamless quality traceability.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[2]/p[2]"
+  },
+  {
+   "role": "표 왼쪽",
+   "ko": "지능형 안전 인터록",
+   "en": "Intelligent Safety Interlock",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[3]/p[1]"
+  },
+  {
+   "role": "표 오른쪽",
+   "ko": "가스 누출, 과전압 등 이상 징후 감지 시 설비를 즉각 정지시켜 사고를 원천 차단합니다.",
+   "en": "Advanced emergency system that instantly halts operations upon detecting hazards like gas leaks or overvoltage.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[3]/p[2]"
+  },
+  {
+   "role": "표 왼쪽",
+   "ko": "유연한 상위 연동",
+   "en": "Seamless Integration",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[4]/p[1]"
+  },
+  {
+   "role": "표 오른쪽",
+   "ko": "PC 및 MES와의 고속 통신으로 공정 데이터를 실시간 전송하고 레시피 명령을 완벽히 수행합니다.",
+   "en": "High-speed communication with upper-level systems (PCs/MES) to transmit process data and execute recipe commands flawlessly.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/ul/li[4]/p[2]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "탄소 나노 튜브",
+   "en": "Carbon Nano Tube",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[1]/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "A-PRO Materials의 글로벌 소싱 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.",
+   "en": "We provide a stable supply of high-quality carbon nanotube (CNT) materials through A-PRO Materials' global sourcing network.",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[1]/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.",
+   "en": "Through rigorously quality-verified CNT materials, we support our customers in enhancing battery energy density and enabling high-speed charging performance.",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[1]/div/p[2]"
+  },
+  {
+   "role": "제품 단추 이름",
+   "ko": "SW/FW-\nCNT Powder",
+   "en": "SW/FW-\nCNT Powder",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[2]/button[1]/span[2]"
+  },
+  {
+   "role": "제품 단추 이름",
+   "ko": "SW/FW-\nCNT Slurry",
+   "en": "SW/FW-\nCNT Slurry",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[2]/button[2]/span[2]"
+  },
+  {
+   "role": "제품 단추 이름",
+   "ko": "Carbon\nBlack",
+   "en": "Carbon\nBlack",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div[2]/button[3]/span[2]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "LiFSI 전해염",
+   "en": "Electrolyte",
+   "at": "/html/body/div[8]/div[3]/section[8]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "A-PRO Materials는 엄선된 공급망을 통해 고순도 LiFSI 전해염 소재를 안정적으로 공급합니다.",
+   "en": "A-PRO Materials provides a stable supply of high-purity LiFSI electrolyte salt through a carefully selected global supply network.",
+   "at": "/html/body/div[8]/div[3]/section[8]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.",
+   "en": "Based on superior chemical stability, we support extended battery life, high-temperature stability, and improved output performance for our customers.",
+   "at": "/html/body/div[8]/div[3]/section[8]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "HNBR 바인더",
+   "en": "HNBR Binder",
+   "at": "/html/body/div[8]/div[3]/section[9]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "PVDF 바인더의 일부 대체 가능성을 검토할 수 있는 HNBR 바인더 소재입니다.",
+   "en": "HNBR is a binder material that can be evaluated as a partial alternative to PVDF binders.",
+   "at": "/html/body/div[8]/div[3]/section[9]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "우수한 결합력과 유연성, 전극 저항 감소 효과를 통해 배터리의 고율 충·방전 성능과 안정성 향상에 기여할 수 있습니다.",
+   "en": "With excellent bonding strength, flexibility, and reduced electrode resistance, it can contribute to improved high-rate charge/discharge performance and stability.",
+   "at": "/html/body/div[8]/div[3]/section[9]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "파우치셀 제조",
+   "en": "Pouch Cell Manufacturing",
+   "at": "/html/body/div[8]/div[3]/section[10]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "A-PRO Materials는 Lab-scale 파우치셀 제작 및 소재 적용성 검증 서비스를 제공합니다.",
+   "en": "A-PRO Materials provides lab-scale pouch cell fabrication and material validation services.",
+   "at": "/html/body/div[8]/div[3]/section[10]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "셀 설계부터 조립 공정, 품질 평가까지 통합 프로세스를 통해 고객사의 신소재 적용 가능성을 사전 검증합니다.",
+   "en": "Through an integrated process encompassing cell design, assembly, and quality evaluation, we help our clients pre-validate the applicability of new materials.",
+   "at": "/html/body/div[8]/div[3]/section[10]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "A-PRO Materials는 차세대 배터리 핵심 기술에 대한 지속적인 연구개발을 통해 미래 이차전지 시장에 대응해 나갑니다.",
+   "en": "A-PRO Materials is working to respond to the future secondary battery market through continuous research and development of core next-generation battery technologies.",
+   "at": "/html/body/div[8]/div[3]/section[11]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "끊임없는 R&D 혁신으로 기존 배터리의 한계를 극복하고, 고성능·고안정성 소재 및 셀 기술을 선제적으로 구현해 나갑니다.",
+   "en": "Through ongoing R&D innovation, we work to overcome the limitations of existing batteries and proactively develop high-performance, high-stability materials and cell technologies.",
+   "at": "/html/body/div[8]/div[3]/section[11]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "A-PRO Materials는 국내외 파트너들과의 협력을 통해 최적의 이차전지 소재 솔루션을 모색하고 있습니다.",
+   "en": "A-PRO Materials is exploring optimal secondary battery material solutions in collaboration with partners at home and abroad.",
+   "at": "/html/body/div[8]/div[3]/section[11]/div/div[2]/div/div/p[3]"
+  }
+ ],
+ "energy": [
+  {
+   "role": "히어로 제목(영문)",
+   "ko": "Energy Solution",
+   "en": "Energy Infrastructure",
+   "at": "/html/body/section[1]/div/div/h1/span[2]"
+  },
+  {
+   "role": "개요 리드 1",
+   "ko": "배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.",
+   "en": "It stores power using batteries and ensures uninterrupted operation.",
+   "at": "/html/body/section[2]/div[1]/p/span[1]"
+  },
+  {
+   "role": "개요 리드 2",
+   "ko": "그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.",
+   "en": "It covers everything from grid-scale ESS to power sources for space launch vehicles.",
+   "at": "/html/body/section[2]/div[1]/p/span[2]"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "ESS",
+   "en": "ESS(Energy Storage System)",
+   "at": "/html/body/section[2]/div[2]/ul/li[1]/p"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "UPS",
+   "en": "UPS(Uninterruptible Power Supply)",
+   "at": "/html/body/section[2]/div[2]/ul/li[2]/p"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "솔루션",
+   "en": "SOLUTION",
+   "at": "/html/body/section[2]/div[2]/ul/li[3]/p"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "ESS",
+   "en": "ESS(Energy Storage System)",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "GRID ESS",
+   "en": "GRID ESS",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "Renewable ESS",
+   "en": "Renewable ESS",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "C&I ESS",
+   "en": "C&I ESS",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[3]"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "UPS",
+   "en": "UPS(Uninterruptible Power Supply)",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "데이터 센터 전용 UPS",
+   "en": "Data Center UPS",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "산업용 UPS",
+   "en": "Industrial UPS",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/a[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "주요 전력망 UPS",
+   "en": "Critical Power UPS",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/a[3]"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "솔루션",
+   "en": "SOLUTION",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "Module",
+   "en": "Module",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "Rack",
+   "en": "Rack",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "Container",
+   "en": "Container",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a[3]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "BMS",
+   "en": "BMS",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a[4]"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "GRID ESS",
+   "en": "GRID ESS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/div/p[1]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "Power Grid Stability",
+   "en": "Power Grid Stability",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.",
+   "en": "A large-capacity battery energy storage solution for the stable operation of the power grid and efficient energy management.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Grid Stabilization",
+   "en": "Grid Stabilization",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Frequency Regulation",
+   "en": "Frequency Regulation",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Peak Shaving",
+   "en": "Peak Shaving",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/ol/li[3]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Load Shifting",
+   "en": "Load Shifting",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[1]/div/div/ol/li[4]/span"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "Renewable ESS",
+   "en": "Renewable ESS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[2]/div/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.",
+   "en": "This is a battery solution designed to stably store and utilize highly variable renewable energy sources such as solar and wind power.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[2]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Solar Energy",
+   "en": "Solar Energy",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[2]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Wind Energy",
+   "en": "Wind Energy",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[2]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "C&I ESS",
+   "en": "C&I ESS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/div/p[1]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "Commercial &\nIndustrial Energy Storage",
+   "en": "Commercial &\nIndustrial Energy Storage",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.",
+   "en": "Battery solutions for efficient energy management and stable power operation in industrial and commercial facilities.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Factory",
+   "en": "Factory",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Commercial Building",
+   "en": "Commercial Building",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Industrial Facility",
+   "en": "Industrial Facility",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/ol/li[3]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Microgrid",
+   "en": "Microgrid",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[3]/div/div/ol/li[4]/span"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "데이터 센터 전용 UPS",
+   "en": "Data Center UPS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.",
+   "en": "We provide high-output battery backup solutions for the stable operation of large-scale data centers and AI data centers.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Data Center",
+   "en": "Data Center",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "AI Data Center",
+   "en": "AI Data Center",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Cloud & Hyperscale Data Center",
+   "en": "Cloud & Hyperscale Data Center",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/ol/li[3]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Colocation Data Center",
+   "en": "Colocation Data Center",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[4]/div/div/ol/li[4]/span"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "산업용 UPS",
+   "en": "Industrial UPS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.",
+   "en": "This is a battery backup solution for industrial facilities and key production equipment that require stable operation even during momentary power outages.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Manufacturing Facility",
+   "en": "Manufacturing Facility",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Semiconductor & Display Facility",
+   "en": "Semiconductor & Display Facility",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Process Industry",
+   "en": "Process Industry",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/ol/li[3]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Industrial Automation",
+   "en": "Industrial Automation",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[5]/div/div/ol/li[4]/span"
+  },
+  {
+   "role": "소분류 이름",
+   "ko": "주요 전력망 UPS",
+   "en": "Critical Power UPS",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/div/p[1]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "Continuous Power\nfor Critical Infrastructure",
+   "en": "Continuous Power\nfor Critical Infrastructure",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.",
+   "en": "A battery backup solution for critical social and industrial infrastructure requiring power supply continuity and high reliability.",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/div/p[2]"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Hospital & Healthcare",
+   "en": "Hospital & Healthcare",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/ol/li[1]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Telecommunication",
+   "en": "Telecommunication",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/ol/li[2]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Transportation Infrastructure",
+   "en": "Transportation Infrastructure",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/ol/li[3]/span"
+  },
+  {
+   "role": "적용처 항목",
+   "ko": "Emergency & Critical Facilities",
+   "en": "Emergency & Critical Facilities",
+   "at": "/html/body/div[8]/div[2]/div[1]/div[2]/section[6]/div/div/ol/li[4]/span"
+  },
+  {
+   "role": "소분류 제목",
+   "ko": "Module",
+   "en": "Module",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[1]/div[1]/div/div[1]/h2"
+  },
+  {
+   "role": "소분류 리드",
+   "ko": "배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.",
+   "en": "As the basic unit constituting the battery system, it is designed to meet the required voltage, capacity, and output characteristics.",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[1]/div[1]/div/div[1]/p"
+  },
+  {
+   "role": "소분류 제목",
+   "ko": "Rack",
+   "en": "Rack",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[2]/div[1]/div/div[1]/h2"
+  },
+  {
+   "role": "소분류 리드",
+   "ko": "Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.",
+   "en": "We provide scalable battery rack solutions by integrating battery modules or packs, BMS, and electrical protection systems.",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[2]/div[1]/div/div[1]/p"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "High Energy Type Rack",
+   "en": "High Energy Type Rack",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[2]/div[2]/div[1]/div[2]/p/b"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "High Power Type Rack",
+   "en": "High Power Type Rack",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[2]/div[2]/div[2]/div[2]/p/b"
+  },
+  {
+   "role": "소분류 제목",
+   "ko": "Container",
+   "en": "Container",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[3]/div[1]/div/div[1]/h2"
+  },
+  {
+   "role": "소분류 리드",
+   "ko": "Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.",
+   "en": "We provide Containerized Battery Solutions suitable for building large-capacity ESS by integrating Battery Racks, electrical and control systems, etc.",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[3]/div[1]/div/div[1]/p"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "Container Air Cooling Type",
+   "en": "Container Air Cooling Type",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[3]/div[2]/div[1]/div[2]/p/b"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "Container Liquid Cooling Type",
+   "en": "Container Liquid Cooling Type",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[3]/div[2]/div[2]/div[2]/p/b"
+  },
+  {
+   "role": "소분류 제목",
+   "ko": "BMS",
+   "en": "BMS",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[4]/div[1]/div/div[1]/h2"
+  },
+  {
+   "role": "소분류 리드",
+   "ko": "Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.",
+   "en": "We provide a BMS solution that enables stable battery system operation by continuously monitoring the battery status and integrating information from each system level.",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[4]/div[1]/div/div[1]/p"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "Module BMS(CMU)",
+   "en": "Module BMS(CMU)",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[4]/div[2]/div[1]/div[2]/p/b"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "Rack BMS(BPU)",
+   "en": "Rack BMS(BPU)",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[4]/div[2]/div[2]/div[2]/p/b"
+  },
+  {
+   "role": "제품 이름",
+   "ko": "System BMS(BCP)",
+   "en": "System BMS(BCP)",
+   "at": "/html/body/div[8]/div[2]/div[2]/section[4]/div[2]/div[3]/div[2]/p/b"
+  }
+ ],
+ "ai": [
+  {
+   "role": "히어로 제목(영문)",
+   "ko": "AI platform",
+   "en": "AI Platform",
+   "at": "/html/body/section[1]/div/div/h1/span[2]"
+  },
+  {
+   "role": "개요 리드 1",
+   "ko": "AI로 배터리와 설비의 상태를 읽어냅니다.",
+   "en": "We use AI to read the status of batteries and equipment.",
+   "at": "/html/body/section[2]/div[1]/p/span[1]"
+  },
+  {
+   "role": "개요 리드 2",
+   "ko": "진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.",
+   "en": "From diagnosis to charging and control, we connect electric mobility data.",
+   "at": "/html/body/section[2]/div[1]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "산업 안전 진단 솔루션",
+   "en": "Industrial Safety Diagnosis Solution",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[1]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "산업 안전 AI(로봇) 플랫폼",
+   "en": "Industrial safety robot platform",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "소프트웨어",
+   "en": "Software",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a[3]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "산업 안전 진단 솔루션",
+   "en": "Industrial Safety Diagnosis Solution",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로의 산업 안전 진단 로봇 솔루션은 이동형 로봇과 AI, 원격 관제를 결합해 위험 구역의 안전 점검을 무인·지능화합니다.",
+   "en": "APRO's industrial safety diagnostic robot solution combines mobile robots, AI, and remote control to make safety inspections in hazardous areas unmanned and intelligent.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "안전장비 착용 진단, 설비 이상·누출 점검, 열화상·음향 분석 등 6대 핵심 점검을 자율적으로 수행하고 통합 관제로 실시간 모니터링합니다.",
+   "en": "It autonomously performs six key inspections, including safety equipment compliance checks, equipment anomaly and leak detection, and thermal imaging and acoustic analysis, while providing real-time monitoring through integrated control.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "작업자의 위험 노출을 줄이고 점검의 일관성을 높여 선제적이고 스마트한 산업 운영을 지원합니다.",
+   "en": "It supports proactive and smart industrial operations by reducing worker risk exposure and enhancing inspection consistency.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "산업 안전 AI(로봇) 플랫폼",
+   "en": "Industrial safety robot platform",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "별도의 조작 없이 자유로운 이동과, 좁은 공간이나 사람이 닿기 위험한 공간에도 접근해 정밀 점검을 수행할 수 있습니다.",
+   "en": "It allows for free movement without separate operation and enables precise inspections by accessing narrow spaces or areas dangerous for humans to reach.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로 산업안전 AI 플랫폼은 딥러닝 기반 이미지 분석 기술을 통해 이상 징후나 결함을 감지하고 데이터를 실시간으로 관리 시스템에 전송해 즉각적 대응이 가능합니다.",
+   "en": "The A-PRO Industrial Safety AI Platform detects abnormal signs or defects through deep learning-based image analysis technology and transmits data to the management system in real time, enabling immediate response.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "전기자동차 충전 중 배터리 데이터를 실시간으로 수집하고, 개별 셀 전압과 모듈 온도 정보를 AI 기반으로 분석하여 배터리의 이상 징후와 안전 상태를 진단하는 솔루션입니다.",
+   "en": "This is a solution that collects battery data in real time during electric vehicle charging and diagnoses signs of battery abnormalities and safety status by analyzing individual cell voltage and module temperature information using AI.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "이를 통해 배터리 사고 위험을 사전에 감지하고, 안전한 충전 환경 조성과 배터리 유지관리 효율 향상을 지원합니다.",
+   "en": "Through this, it detects the risk of battery accidents in advance and supports the creation of a safe charging environment and the improvement of battery maintenance efficiency.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.",
+   "en": "This is an AI-based diagnostic solution that rapidly evaluates the performance and residual value of used electric vehicle batteries.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "배터리의 부분 방전 데이터를 기존 배터리 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.",
+   "en": "Battery partial discharge data is compared and analyzed with existing battery training data to predict the maximum available capacity and state of health (SOH) of battery cells within 10 minutes.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "장 영문 제목",
+   "ko": "PICKLE Station",
+   "en": "PICKLE Station",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div[1]/p"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.",
+   "en": "APRO’s electric vehicle charging solution, PICKLE Station, is a stable charging infrastructure designed to support diverse operating environments, ranging from residential charging to public charging stations and commercial fleets.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div[2]/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.",
+   "en": "It supports remote monitoring and charger operation and maintenance functions, and integrates with charging operation platforms and energy management systems to enable efficient management and flexible expansion of charging infrastructure.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div[2]/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로가 축적해 온 전력전자와 배터리 시스템 기술을 기반으로 안전하고 지속 가능한 전기 모빌리티 충전 생태계를 구축합니다.",
+   "en": "Based on the power electronics and battery system technologies accumulated by APRO, it builds a safe and sustainable electric mobility charging ecosystem.",
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div[2]/p[3]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로는 ECOTRON 차량·자율주행 제어기의 국내 총판으로서 VCU, ZCU, EVCC, 자율주행 제어기 등 검증된 제어 솔루션을 공급합니다.",
+   "en": "As the exclusive domestic distributor for ECOTRON vehicle and autonomous driving controllers, APRO supplies proven control solutions, including VCUs, ZCUs, EVCCs, and autonomous driving controllers.",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "모든 제품은 ASIL-D 등급 반도체와 ISO 26262 기능안전, MATLAB/Simulink 모델 기반 개발을 지원해 높은 안전성과 개발 효율성을 제공합니다.",
+   "en": "All products utilize ASIL-D grade semiconductors and support ISO 26262 functional safety and MATLAB/Simulink model-based development, providing high safety and development efficiency.",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로는 국내 공급과 기술 지원을 통해 전기차·자율주행·무인 이동체·로봇 분야 고객의 제어기 도입을 지원합니다.",
+   "en": "Through domestic supply and technical support, APRO facilitates the adoption of controllers by customers in the fields of electric vehicles, autonomous driving, unmanned vehicles, and robotics.",
+   "at": "/html/body/div[8]/div[3]/section[7]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "소프트웨어",
+   "en": "Software",
+   "at": "/html/body/div[8]/div[3]/section[9]/div/div[2]/div/h2"
+  }
+ ],
+ "semicon": [
+  {
+   "role": "히어로 제목(영문)",
+   "ko": "GaN Power Semiconductors",
+   "en": "Compound GaN Semiconductors",
+   "at": "/html/body/section[1]/div/div/h1/span[2]"
+  },
+  {
+   "role": "개요 리드 1",
+   "ko": "질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.",
+   "en": "We design and manufacture power semiconductors and RF semiconductors based on Gallium Nitride (GaN).",
+   "at": "/html/body/section[2]/div[1]/p/span[1]"
+  },
+  {
+   "role": "개요 리드 2",
+   "ko": "국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다",
+   "en": "We are equipped with the largest 8-inch EPI mass production system and chip design capabilities in Korea.",
+   "at": "/html/body/section[2]/div[1]/p/span[2]"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "GaN Epi-Wafer",
+   "en": "GaN Epi-Wafer",
+   "at": "/html/body/section[2]/div[2]/ul/li[1]/p"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "GaN Power Device",
+   "en": "GaN Power Device",
+   "at": "/html/body/section[2]/div[2]/ul/li[2]/p"
+  },
+  {
+   "role": "개요 카드",
+   "ko": "에이프로세미콘",
+   "en": "APRO Semicon",
+   "at": "/html/body/section[2]/div[2]/ul/li[3]/p"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "GaN Epi-Wafer",
+   "en": "GaN Epi-Wafer",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "GaN Epi-Wafer",
+   "en": "GaN Epi-Wafer",
+   "at": "/html/body/div[8]/div[1]/nav/div[1]/a"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "GaN Power Device",
+   "en": "GaN Power Device",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "GaN Power Device",
+   "en": "GaN Power Device",
+   "at": "/html/body/div[8]/div[1]/nav/div[2]/a"
+  },
+  {
+   "role": "인덱스 그룹 이름",
+   "ko": "에이프로세미콘",
+   "en": "APRO Semicon",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/p/span[2]"
+  },
+  {
+   "role": "인덱스 항목",
+   "ko": "에이프로세미콘",
+   "en": "APRO Semicon",
+   "at": "/html/body/div[8]/div[1]/nav/div[3]/a"
+  },
+  {
+   "role": "장 제목",
+   "ko": "GaN Epi-Wafer",
+   "en": "GaN Epi-Wafer",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/h2"
+  },
+  {
+   "role": "장 제목",
+   "ko": "GaN Power Device",
+   "en": "GaN Power Device",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "고주파·고속 스위칭 특성이 우수한 질화갈륨(GaN) 전력반도체를 기반으로 전력변환 효율을 극대화하는 차세대 전력소자입니다.",
+   "en": "It is a next-generation power device that maximizes power conversion efficiency based on gallium nitride (GaN) power semiconductor with excellent high-frequency and high-speed switching characteristics.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "낮은 스위칭 손실과 우수한 전력밀도를 바탕으로 EV 충전기, 신재생에너지 인버터, 산업용 전원장치 등 고효율 전력변환 시스템에 최적화된 소자 라인업을 제공합니다.",
+   "en": "Based on low switching loss and excellent power density, we provide an optimized device lineup for high-efficiency power conversion systems such as EV chargers, renewable energy inverters, and industrial power supplies.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "GaN Power Device는 전력 손실과 발열을 줄이고 수동소자 및 냉각 시스템의 소형화를 가능하게 하여, 전력변환 시스템 전체의 크기와 무게를 절감하고 에너지 효율을 향상시킵니다.",
+   "en": "GaN Power Device reduces power loss and heat generation and enables miniaturization of passive elements and cooling systems, reducing the size and weight of the entire power conversion system and improving energy efficiency.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "장 제목",
+   "ko": "에이프로세미콘",
+   "en": "APRO Semicon",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/h2"
+  },
+  {
+   "role": "본문",
+   "ko": "질화갈륨(GaN) 기반의 차세대 화합물 전력반도체 및 핵심 소재(에피웨이퍼)를 개발·제조하는 전문 기업입니다.",
+   "en": "We are a specialized company that develops and manufactures next-generation compound power semiconductors and core materials (epiwafers) based on Gallium Nitride (GaN).",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "경북 구미 제5국가산업단지 공장에 독일 엑스트론(Aixtron)사의 최신 MOCVD(유기금속화학증착기) 장비를 도입하여 국내 최초로 8인치 양산 체계를 구축했습니다.",
+   "en": "We have established Korea's first 8-inch mass production system by introducing the latest MOCVD (Metal-Organic Chemical Vapor Deposition) equipment from Aixtron of Germany at our factory in the 5th National Industrial Complex in Gumi, North Gyeongsang Province.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "전력반도체 분야뿐만 아니라 무선주파수(RF) 반도체용인 'GaN on SiC' 에피웨이퍼 시제품 개발에도 성공해 방산, 6G 통신, 위성 시장 진입을 추진 중입니다.",
+   "en": "In addition to the power semiconductor sector, we have also successfully developed prototypes of 'GaN on SiC' epiwafers for radio frequency (RF) semiconductors and are pursuing entry into the defense, 6G communications, and satellite markets.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[3]"
+  }
+ ]
+}
