@@ -554,7 +554,10 @@
   .sf-cert{display:flex;align-items:center;gap:16px;padding:8px 0}
   .sf-cert .ttl{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
                 line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
-  .sf-cert ul{margin-left:auto;display:flex;list-style:none}
+  /* 인증 표시는 이름 바로 옆에 붙는다 — 오른쪽 끝으로 밀어 두었더니 넓은
+     화면에서 둘 사이가 1000 넘게 벌어져 한 줄로 읽히지 않았다 */
+  .sf-cert ul{display:flex;list-style:none}
+  .sf-cert li:first-child{padding-left:0}
   .sf-cert li{display:flex;align-items:center;gap:8px;padding:0 12px;
               font-family:var(--suit);font-weight:500;font-size:var(--t-xs);
               line-height:1.35;letter-spacing:-.28px;color:var(--c-body);
@@ -633,6 +636,15 @@
       --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
     .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
     .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
+    /* 카드 하나가 한 장이므로 카드도 장처럼 흐려진다 — 아직 줄에 오지 않은
+       카드를 옅게 두면 다음에 무엇이 올라오는지가 미리 보인다 */
+    .js .sf-prod:not(.is-on){
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
+    .js .sf-prod:not(.is-on) .use b{color:var(--sf-line-s)}
+    .js .sf-prod:not(.is-on) .use span{color:var(--sf-line)}
+    .js .sf-prod:not(.is-on) .sf-feat .ic{color:var(--sf-line-s)}
+    .js .sf-prod:not(.is-on)>.shot{opacity:.3}
   }
   .sf-texts .cat,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
   .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
@@ -641,6 +653,8 @@
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
   .sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
   .sf-prod>.side,.sf-prod .lbl,.sf-prod .use{transition:border-color .5s var(--ease)}
+  .sf-feat .ic{transition:color .5s var(--ease)}
+  .sf-prod>.shot{transition:opacity .5s var(--ease)}
   .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,.sf-phead::after,
   .sf-prod .lbl{transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
@@ -650,6 +664,7 @@
     .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
     .sf-cert .ttl,.sf-cert li,.sf-cert li::before,
     .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-ph.is-on,.sf-phead::after,
+    .sf-feat .ic,.sf-prod>.shot,
     .sf-prod .lbl{transition:none}
   }
 
@@ -726,8 +741,7 @@
     .sf-feat li{flex:1 1 50%;padding:12px 8px}
     .sf-feat li:nth-child(odd){border-left:0}
     .sf-cert{flex-wrap:wrap;gap:8px}
-    .sf-cert ul{margin-left:0;flex-wrap:wrap}
-    .sf-cert li:first-child{padding-left:0}
+    .sf-cert ul{flex-wrap:wrap}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
     .sf-herocap{gap:20px;padding-top:28px}
     .sf-herocap h1{gap:12px}
@@ -1599,7 +1613,28 @@
     return secsEl ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0;
   }
   function line(){ return px('--gnb-h') + secPad(); }
+  /* 카드도 장처럼 한 장씩 센다 — 카드가 서는 줄은 그 장 붙박이 윗단의 아래 변이다.
+     지금 카드에만 .is-on 을 두어, 아직 올라오지 않은 카드가 옅게 남는다 */
+  var prods = [].slice.call(document.querySelectorAll('.sf-prod'));
+  var curProd = -1;
+  function prodLine(el){
+    var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
+    var hd  = sec ? sec.querySelector('.sf-phead') : null;
+    return px('--gnb-h') + (hd ? hd.getBoundingClientRect().height : 0);
+  }
+  function prodSpy(){
+    if(!prods.length) return;
+    var best = 0, bd = Infinity;
+    for(var i=0;i<prods.length;i++){
+      var d = Math.abs(prods[i].getBoundingClientRect().top - prodLine(prods[i]));
+      if(d < bd){ bd = d; best = i; }
+    }
+    if(best === curProd) return;
+    curProd = best;
+    for(var n=0;n<prods.length;n++) prods[n].classList.toggle('is-on', n === best);
+  }
   function spy(){
+    prodSpy();
     var y = line(), best = 0, bd = Infinity;
     for(var i=0;i<secs.length;i++){
       var d = Math.abs(secs[i].getBoundingClientRect().top - y);
