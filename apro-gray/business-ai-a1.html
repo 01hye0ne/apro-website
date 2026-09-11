@@ -463,6 +463,11 @@
   .sf-body p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
              letter-spacing:-.3px;color:var(--c-body)}
   .sf-body p+p{margin-top:8px}
+  /* 줄글 위에 얹는 작은 제목 — 줄글보다 한 칸 위, 영문 제목과 같은 칸이다.
+     영문 제목 자리(.en)와 다른 점은 색과 자리다: 제목 바로 밑 8px 이 아니라
+     줄글 덩어리의 머리로 24px 떨어져 앉고, 색은 제목과 같은 진한 쪽이다 */
+  .sf-body .sub{font-weight:800;font-size:var(--t-md);line-height:1.25;
+                letter-spacing:-.4px;color:var(--c-ttl)}
   /* 와이어프레임에 본문이 비어 있는 장(03-2 · 04-2 · 04-3) */
   .sf-body .tbd{color:var(--c-tick,var(--sf-ter))}
 
@@ -1032,11 +1037,9 @@
         <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
         <div class="sf-txtin">
           <div class="sf-texts">
-            <div>
-              <h2 id="sf03-1-t">급속 충전기</h2>
-              <p class="en">PICKLE Station</p>
-            </div>
+            <h2 id="sf03-1-t">급속 충전기</h2>
             <div class="sf-body">
+              <p class="sub">PICKLE Station</p>
               <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
               <p>원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.</p>
               <p>에이프로가 축적해 온 전력전자와 배터리 시스템 기술을 기반으로 안전하고 지속 가능한 전기 모빌리티 충전 생태계를 구축합니다.</p>
