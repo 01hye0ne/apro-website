@@ -584,8 +584,9 @@
   /* 칸을 가르는 가는 선 — 좌측 인덱스의 밑줄과 같은 200 칸선이다.
      칸 사이를 벌리는 대신 그 자리에 선을 두었다(양옆 여백 16 으로 같다) */
   .sf-feat li+li{border-left:1px solid var(--c-bd,var(--sf-line))}
-  /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 인트로 카드와 같은 크기·색이다 */
-  .sf-feat .ic{width:44px;height:44px;flex-shrink:0;color:var(--brand)}
+  /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 원래 그려진 크기(24)로 둔다 —
+     인트로 카드(44)와 달리 여기는 이름 옆의 작은 표시다 */
+  .sf-feat .ic{width:24px;height:24px;flex-shrink:0;color:var(--brand)}
   .sf-feat .ic svg{display:block;width:100%;height:100%}
   .sf-feat .t{display:flex;flex-direction:column;gap:8px}
   .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
