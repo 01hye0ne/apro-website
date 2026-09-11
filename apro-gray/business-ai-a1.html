@@ -489,6 +489,40 @@
      표를 닫는 테두리가 아니다 */
   .sf-num li:last-child,.sf-dl li:last-child{border-bottom:0}
 
+  /* 화면 갈무리는 사진과 다르다 — 잘라 채우면 글자가 잘린다. 통째로 넣고
+     남는 자리를 옅은 바탕으로 둔다. 밀려 들어올 때의 배율도 여기서는 끈다:
+     1.10 까지 커지면 통째로 넣은 뜻이 없어진다 */
+  .sf-ph.is-shot{background:var(--sf-gray100);border:0;overflow:hidden;padding:16px}
+  .sf-ph.is-shot img{width:auto;height:auto;max-width:100%;max-height:100%;
+                     object-fit:contain;transform:none}
+
+  /* 02-1 은 한 칸 안에서 화면 둘을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
+     들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
+  .sf-cnt{position:absolute;inset:0;opacity:0;visibility:hidden;
+          transition:opacity .35s var(--ease),visibility .35s}
+  .sf-cnt.is-on{opacity:1;visibility:visible}
+  .sf-cnt>.shot{position:absolute;inset:0;display:flex;align-items:center;
+                justify-content:center;padding:16px;background:var(--sf-gray100)}
+  .sf-cnt>.shot img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;
+                    object-fit:contain;transform:none}
+
+  /* 화면을 고르는 단추 — 스마트 제조의 제품 단추와 같은 짜임이다.
+     다만 여기 그림도 화면 갈무리라 잘라 채우지 않는다 */
+  .sf-picks{display:flex;gap:8px}
+  .sf-picks button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;
+                   padding:4px;background:#fff;border:1px solid var(--c-bd);
+                   cursor:pointer;text-align:left;
+                   transition:border-color .3s var(--ease)}
+  .sf-picks button:hover{border-color:var(--c-bd-s)}
+  .sf-picks button[aria-selected="true"]{border-color:var(--c-num)}
+  .sf-picks .shot{aspect-ratio:160/120;overflow:hidden;padding:6px;
+                  display:flex;align-items:center;justify-content:center;
+                  background:var(--sf-gray100);border:1px solid var(--c-bd)}
+  .sf-picks .shot img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+  .sf-picks .nm{padding:12px;font-family:var(--suit);font-weight:800;
+                font-size:var(--t-sm);line-height:1.35;letter-spacing:-.32px;
+                color:var(--c-ttl)}
+
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
        제목 900 → 300 · 줄글 600 → 200 · 번호/점 파랑 → 300
        눈금 가로 300 → 200 · 세로 500 → 300 · 목록 윗선 300 → 200 · 칸선 200 → 100
@@ -864,8 +898,15 @@
       <div class="sf-figstack">
         <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/industrial-safety-diagnostics.jpg" alt="이차전지 설비 앞을 도는 바퀴형 안전 진단 로봇" decoding="async" /></figure>
         <figure class="sf-ph has-img" data-for="sf01-2"><img src="../assets/industrial-safety-robot-platform.jpg" alt="펌프 설비를 점검하는 네 발 보행 로봇" decoding="async" /></figure>
-        <figure class="sf-ph" data-for="sf02-1"><span>도표 or 이미지</span></figure>
-        <figure class="sf-ph" data-for="sf02-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph has-panes" data-for="sf02-1">
+          <div class="sf-cnt is-on" role="tabpanel" id="ev-dash" aria-labelledby="ev-dash-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-safety-dashboard.png" alt="배터리 셀 안전 분류 결과를 표와 히트맵으로 보여 주는 대시보드 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="ev-mob" aria-labelledby="ev-mob-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-safety-mobile.png" alt="안전 진단 리포트를 등급과 막대로 보여 주는 모바일 화면" decoding="async" /></div>
+          </div>
+        </figure>
+        <figure class="sf-ph has-img is-shot" data-for="sf02-2"><img src="../assets/ev-performance-report.png" alt="배터리 진단 결과를 항목별 백분율과 레이더 도표로 보여 주는 화면" decoding="async" /></figure>
         <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/ev-fast-charger.jpg" alt="에이프로 전기자동차 급속 충전기" decoding="async" /></figure>
         <figure class="sf-ph" data-for="sf03-2"><span>도표 or 이미지</span></figure>
         <figure class="sf-ph has-img" data-for="sf04-1"><img src="../assets/ev-controller.jpg" alt="제어기를 얹은 전기자동차 구동 플랫폼" decoding="async" /></figure>
@@ -921,6 +962,14 @@
               <p>전기자동차 충전 중 배터리 데이터를 실시간으로 수집하고, 개별 셀 전압과 모듈 온도 정보를 AI 기반으로 분석하여 배터리의 이상 징후와 안전 상태를 진단하는 솔루션입니다.</p>
               <p>이를 통해 배터리 사고 위험을 사전에 감지하고, 안전한 충전 환경 조성과 배터리 유지관리 효율 향상을 지원합니다.</p>
             </div>
+          </div>
+          <div class="sf-picks" role="tablist" aria-label="EV 배터리 안전 진단 화면">
+            <button type="button" role="tab" id="ev-dash-t" aria-controls="ev-dash" aria-selected="true">
+              <span class="shot"><img src="../assets/ev-safety-dashboard.png" alt="" decoding="async" /></span><span class="nm">대시보드</span>
+            </button>
+            <button type="button" role="tab" id="ev-mob-t" aria-controls="ev-mob" aria-selected="false" tabindex="-1">
+              <span class="shot"><img src="../assets/ev-safety-mobile.png" alt="" decoding="async" /></span><span class="nm">모바일</span>
+            </button>
           </div>
         </div>
       </div>
@@ -1478,6 +1527,44 @@
       return;
     });
   });
+})();
+</script>
+<script>
+/* ── 화면 고르기 ─────────────────────────────────────────────────────────
+   단추 하나가 그림 칸의 화면 하나를 켠다. tablist 의 약속대로 화살표로도
+   옮겨 다닌다. 단추가 없는 장에서는 조용히 지나간다 */
+(function(){
+  var list = document.querySelector('.sf-picks');
+  if(!list) return;
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  if(!tabs.length) return;
+
+  function pick(i, move){
+    for(var k=0;k<tabs.length;k++){
+      var on = (k === i);
+      tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[k].tabIndex = on ? 0 : -1;
+      var pane = document.getElementById(tabs[k].getAttribute('aria-controls'));
+      if(pane) pane.classList.toggle('is-on', on);
+    }
+    if(move) tabs[i].focus();
+  }
+
+  for(var i=0;i<tabs.length;i++)(function(i){
+    tabs[i].addEventListener('click', function(){ pick(i); });
+    tabs[i].addEventListener('keydown', function(e){
+      var n;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End')  n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      pick(n, true);
+    });
+  })(i);
+
+  pick(0);
 })();
 </script>
 </body>
