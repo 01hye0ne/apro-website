@@ -509,7 +509,11 @@
   /* 화면을 고르는 단추 — 스마트 제조의 제품 단추와 같은 짜임이다.
      다만 여기 그림도 화면 갈무리라 잘라 채우지 않는다 */
   .sf-picks{display:flex;gap:8px}
-  .sf-picks button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;
+  /* 단추가 둘뿐이라도 폭은 셋으로 나눈 몫을 쓴다 — 탄소 나노 튜브의 단추와
+     같은 크기여야 하고, 폭이 같으면 그림 칸의 세로도 저절로 같아진다.
+     남는 한 칸은 비워 둔다 */
+  .sf-picks button{flex:0 0 calc((100% - 16px) / 3);min-width:0;
+                   display:flex;flex-direction:column;gap:4px;
                    padding:4px;background:#fff;border:1px solid var(--c-bd);
                    cursor:pointer;text-align:left;
                    transition:border-color .3s var(--ease)}
