@@ -399,7 +399,8 @@
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){
     .sf-ph img{transform:none}
-    .sf-map .ring li,.sf-map .ring i{transition:none}
+    .sf-map .ring li,.sf-map .ring i,
+    .sf-map .ring li::before,.sf-map .ring li::after{transition:none}
     .sf-map .row.is-on,.sf-map .row.is-out{transition:none}
   }
   /* 사진이 든 칸과 제품을 갈아 끼우는 칸은 자리표시 테두리를 걷는다 */
@@ -420,30 +421,74 @@
   .sf-map .ring{--bw:8px;
                 width:100%;height:100%;display:grid;gap:4px;list-style:none;
                 grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
-  .sf-map .ring li{display:flex;flex-direction:column;gap:8px;padding:32px 20px;
-                   overflow:hidden;font-family:var(--suit);color:var(--sf-ter)}
+  .sf-map .ring li{position:relative;display:flex;flex-direction:column;gap:8px;
+                   padding:32px 20px;
+                   overflow:hidden;font-family:var(--suit);color:var(--sf-ter);
+                   background-repeat:no-repeat}
   .sf-map .ring b{font-family:var(--ald);font-weight:400;font-size:var(--t-xs);
                   line-height:1}
   .sf-map .ring i{font-style:normal;font-weight:500;font-size:var(--t-xs);
                   line-height:1.35;letter-spacing:-.28px}
-  /* 윗줄은 왼쪽 위에 붙고 아랫줄은 오른쪽 아래에 붙는다 — 01→03 으로 갔다가
+  /* 굵은 띠는 테두리가 아니라 바탕 그림이다 — 켜질 때 그 위로 브랜드 색이
+     차오르려면, 띠와 차오르는 몫이 따로 있어야 하기 때문이다. 띠가 먹던
+     자리는 안쪽 여백으로 대신 받는다(윗줄 위, 아랫줄 아래, 모서리 칸은 옆도).
+     윗줄은 왼쪽 위에 붙고 아랫줄은 오른쪽 아래에 붙는다 — 01→03 으로 갔다가
      04→06 으로 되돌아오는 흐름이 글의 자리만으로 읽힌다 */
-  .sf-map .ring li:nth-child(-n+3){border-top:var(--bw) solid var(--sf-line)}
-  .sf-map .ring li:nth-child(n+4){border-bottom:var(--bw) solid var(--sf-line);
+  .sf-map .ring li{background-image:linear-gradient(var(--sf-line),var(--sf-line))}
+  .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(3),
+  .sf-map .ring li:nth-child(4),.sf-map .ring li:nth-child(6)
+    {background-image:linear-gradient(var(--sf-line),var(--sf-line)),
+                      linear-gradient(var(--sf-line),var(--sf-line))}
+  .sf-map .ring li:nth-child(-n+3){padding-top:calc(32px + var(--bw))}
+  .sf-map .ring li:nth-child(n+4){padding-bottom:calc(32px + var(--bw));
                                   justify-content:flex-end;text-align:right}
   .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4)
-    {border-left:var(--bw) solid var(--sf-line)}
+    {padding-left:calc(20px + var(--bw))}
   .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6)
-    {border-right:var(--bw) solid var(--sf-line)}
-  /* 모서리는 안팎 모두 각지다 — 고리가 굵은 네 변으로만 읽힌다 */
+    {padding-right:calc(20px + var(--bw))}
+  .sf-map .ring li:nth-child(1){background-size:100% var(--bw),var(--bw) 100%;
+                                background-position:left top,left top}
+  .sf-map .ring li:nth-child(2){background-size:100% var(--bw);
+                                background-position:left top}
+  .sf-map .ring li:nth-child(3){background-size:100% var(--bw),var(--bw) 100%;
+                                background-position:left top,right top}
+  .sf-map .ring li:nth-child(4){background-size:100% var(--bw),var(--bw) 100%;
+                                background-position:left bottom,left bottom}
+  .sf-map .ring li:nth-child(5){background-size:100% var(--bw);
+                                background-position:left bottom}
+  .sf-map .ring li:nth-child(6){background-size:100% var(--bw),var(--bw) 100%;
+                                background-position:left bottom,right bottom}
+  /* 차오르는 몫 — ::before 가 가로 띠, ::after 가 세로 띠다. 고리를 도는
+     방향에서 자라 들어오고, 꺼질 때는 그 방향 그대로 빠져나간다. 그래서 불이
+     켜졌다 꺼지는 게 아니라 한 점이 고리를 돌아 나가는 것으로 읽힌다 */
+  .sf-map .ring li::before,.sf-map .ring li::after{content:"";position:absolute;
+                   background:var(--brand-2);
+                   transition:transform var(--slide) var(--soft)}
+  .sf-map .ring li:nth-child(2)::after,.sf-map .ring li:nth-child(5)::after{content:none}
+  .sf-map .ring li::before{left:0;right:0;height:var(--bw);transform:scaleX(0)}
+  .sf-map .ring li::after{top:0;bottom:0;width:var(--bw);transform:scaleY(0)}
+  .sf-map .ring li:nth-child(-n+3)::before{top:0;transform-origin:left center}
+  .sf-map .ring li:nth-child(n+4)::before{bottom:0;transform-origin:right center}
+  .sf-map .ring li:nth-child(1)::after{left:0;transform-origin:center bottom}
+  .sf-map .ring li:nth-child(4)::after{left:0;transform-origin:center bottom}
+  .sf-map .ring li:nth-child(3)::after{right:0;transform-origin:center top}
+  .sf-map .ring li:nth-child(6)::after{right:0;transform-origin:center top}
+  .sf-map .ring li.is-on::before{transform:scaleX(1)}
+  .sf-map .ring li.is-on::after{transform:scaleY(1)}
+  /* 빠져나갈 때는 반대 끝으로 — 차오를 때가 1(제자리)이라 끝을 바꿔도 튀지 않는다 */
+  .sf-map .ring li:nth-child(-n+3).is-out::before{transform-origin:right center}
+  .sf-map .ring li:nth-child(n+4).is-out::before{transform-origin:left center}
+  .sf-map .ring li:nth-child(1).is-out::after,
+  .sf-map .ring li:nth-child(4).is-out::after{transform-origin:center top}
+  .sf-map .ring li:nth-child(3).is-out::after,
+  .sf-map .ring li:nth-child(6).is-out::after{transform-origin:center bottom}
   /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
      굵기도 중간값으로 이어진다 */
-  .sf-map .ring li{transition:color var(--slide) var(--soft),
-                              border-color var(--slide) var(--soft)}
+  .sf-map .ring li{transition:color var(--slide) var(--soft)}
   .sf-map .ring i{transition:font-size var(--slide) var(--soft),
                   font-weight var(--slide) var(--soft),
                   letter-spacing var(--slide) var(--soft)}
-  .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
+  .sf-map .ring li.is-on{color:var(--brand)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
   /* 설비 — 겹테두리 카드를 걷고 바닥 띠 위에 세운다(Figma 1191:7574 Carousel).
      이름이 그림 위에 오고, 그림 아랫변이 바닥 띠에 닿는다. 칸을 아래로 맞춰
@@ -1819,8 +1864,11 @@
   function show(n){
     at = n;
     var i;
-    for(i=0;i<cells.length;i++)
-      cells[i].classList.toggle('is-on', +cells[i].getAttribute('data-step') === n);
+    for(i=0;i<cells.length;i++){
+      var lit = +cells[i].getAttribute('data-step') === n;
+      if(!lit && cells[i].classList.contains('is-on')) leave(cells[i]);
+      cells[i].classList.toggle('is-on', lit);
+    }
     for(i=0;i<rows.length;i++){
       var me = +rows[i].getAttribute('data-step') === n;
       if(!me && rows[i].classList.contains('is-on')) leave(rows[i]);
