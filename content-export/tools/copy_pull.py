@@ -111,7 +111,8 @@ def role(el):
         if "en" in c:   return "장 영문 제목"
         if "cat" in c:  return "소분류 이름"
         if t == "p" and anc(el, "sf-body"):
-            return "본문(예정)" if "tbd" in c else "본문"
+            if "tbd" in c: return "본문(예정)"
+            return "작은 제목" if "sub" in c else "본문"
         if t == "p" and anc(el, "sf-texts"): return "장 보조 문구"
         return None
 
