@@ -400,7 +400,12 @@
      세 대가 겹테두리 카드로 얹힌다. 지금 공정(01)만 진하다 — 고리의 굵은 변이
      그 칸의 위·왼쪽에서 브랜드 색으로 켜진다 */
   .sf-ph.has-map{background:#fff;border:0;overflow:hidden}
-  .sf-map{position:relative;width:100%;height:100%}
+  /* 도는 결 — 한 공정에 머무는 시간(--dwell)과 미끄러지는 시간(--slide)을
+     여기 한 곳에 둔다. 스크립트도 이 값을 읽어 가므로 둘이 어긋나지 않는다.
+     --soft 는 쉬었다 떠나 쉬면서 서는 곡선이다 — 공용 --ease 는 튕기듯
+     빨리 떠나서, 저절로 넘어가는 이 움직임에는 급해 보였다 */
+  .sf-map{--dwell:3600ms;--slide:1s;--soft:cubic-bezier(.5,0,.2,1);
+          position:relative;width:100%;height:100%}
   /* 고리 — 3×2 격자의 바깥 변만 굵게 둔다. 칸 사이를 4 벌려 두면 굵은 변이
      공정마다 끊겨, 여섯 도막이 고리를 도는 것으로 읽힌다 */
   .sf-map .ring{--bw:8px;
@@ -424,9 +429,11 @@
   /* 모서리는 안팎 모두 각지다 — 고리가 굵은 네 변으로만 읽힌다 */
   /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
      굵기도 중간값으로 이어진다 */
-  .sf-map .ring li{transition:color .45s var(--ease),border-color .45s var(--ease)}
-  .sf-map .ring i{transition:font-size .45s var(--ease),font-weight .45s var(--ease),
-                  letter-spacing .45s var(--ease)}
+  .sf-map .ring li{transition:color var(--slide) var(--soft),
+                              border-color var(--slide) var(--soft)}
+  .sf-map .ring i{transition:font-size var(--slide) var(--soft),
+                  font-weight var(--slide) var(--soft),
+                  letter-spacing var(--slide) var(--soft)}
   .sf-map .ring li.is-on{color:var(--brand);border-color:var(--brand-2)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:-.32px}
   /* 설비 — 겹테두리 카드를 걷고 바닥 띠 위에 세운다(Figma 1191:7574 Carousel).
@@ -444,7 +451,8 @@
   /* 전이는 들고 나는 두 벌에만 건다 — 다 나간 벌이 오른쪽 대기 자리로 돌아갈
      때는 전이가 없어야 되돌아가는 모습이 보이지 않는다 */
   .sf-map .row.is-on,.sf-map .row.is-out{
-               transition:transform .6s var(--ease),opacity .6s var(--ease)}
+               transition:transform var(--slide) var(--soft),
+                          opacity var(--slide) var(--soft)}
   .sf-map .row.is-on{transform:none;opacity:1;visibility:visible}
   .sf-map .row.is-out{transform:translateX(-100%);opacity:0;visibility:visible}
   .sf-map .it{width:120px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;
@@ -1786,8 +1794,14 @@
 
   var LAST = cells.length, at = 1, timer = null;
   var slow = window.matchMedia('(prefers-reduced-motion:reduce)');
+  /* 머무는 시간과 미끄러지는 시간은 CSS 에 적어 둔 것을 그대로 읽는다 —
+     한쪽만 고쳐서 어긋나는 일이 없다 */
+  function ms(name, fallback){
+    var v = getComputedStyle(map).getPropertyValue(name).trim();
+    if(!v) return fallback;
+    return /ms$/.test(v) ? parseFloat(v) : parseFloat(v) * 1000;
+  }
 
-  var OUT = 600;   /* 밀려 나가는 데 걸리는 시간 — CSS 의 전이와 같아야 한다 */
   function show(n){
     at = n;
     var i;
@@ -1802,14 +1816,14 @@
   /* 나가는 벌은 왼쪽으로 밀려난 뒤, 전이를 끄고 오른쪽 대기 자리로 되돌아간다 */
   function leave(row){
     row.classList.add('is-out');
-    setTimeout(function(){ row.classList.remove('is-out'); }, OUT);
+    setTimeout(function(){ row.classList.remove('is-out'); }, ms('--slide', 1000));
   }
   function tick(){ show(at % LAST + 1); }
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
   function run(){
     stop();
     if(slow.matches){ show(1); return; }
-    if(!document.hidden) timer = setInterval(tick, 2000);
+    if(!document.hidden) timer = setInterval(tick, ms('--dwell', 3600));
   }
   document.addEventListener('visibilitychange', run);
   if(slow.addEventListener) slow.addEventListener('change', run);
