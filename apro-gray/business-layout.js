@@ -806,6 +806,54 @@
   var burger = document.querySelector('.sf-gnb .menu-toggle');
   if(burger) burger.addEventListener('click', shut);
 
+  /* 목록 열을 자기 상단 메뉴 바로 아래로 세운다 — 판은 화면 폭을 다 쓰는데 목록이
+     늘 왼쪽 끝에 붙어 있으면, 오른쪽 메뉴일수록 커서가 가로로 멀리 건너야 하고
+     그러다 상단 띠에 걸치면 옆 메뉴 판으로 바뀌어 버린다. 메뉴 글자 왼쪽 끝에
+     목록 글자를 맞추면 커서는 세로로만 내려오면 된다.
+     띠 왼쪽에서 그 메뉴까지가 --mm-a, 목록 열(띠의 넉 분의 하나)이 --mm-w,
+     오른쪽에 남는 자리가 --mm-b 다. 남는 쪽이 좁아지면 강조 콘텐츠를 왼쪽으로
+     넘긴다(.feat-left). 글꼴이 늦게 오면 메뉴 자리가 밀리므로 load 때 다시 잰다 */
+  function alignMega(){
+    items.forEach(function(li){
+      var p = panel(li); if(!p) return;
+      var g = p.querySelector('.cols.aligned'); if(!g) return;
+      var stack = g.querySelector('.stack'); if(!stack) return;
+      var a = li.querySelector('a'); if(!a) return;
+      var band = g.getBoundingClientRect();
+      if(!band.width) return;                       /* 좁은 화면에선 판이 없다 */
+      /* 글자끼리 맞춘다 — 메뉴 링크도 목록 칸도 제 안에 여백을 두고 있어서,
+         상자 왼쪽이 아니라 여백을 걷어낸 자리를 재야 줄이 선다 */
+      var pad = parseFloat(getComputedStyle(stack).paddingLeft) || 0;
+      var apad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
+      /* 열은 띠의 넉 분의 하나가 기본이되, 가장 긴 이름이 접히지 않을 만큼은 넓힌다
+         (이름 + 사이 8 + 화살촉 20 + 양쪽 여백). 1200 아래에서 글로벌 네트워크가
+         두 줄로 접히던 것을 여기서 막는다 */
+      var need = 0;
+      [].forEach.call(stack.querySelectorAll('.hd'), function(hd){
+        var t = hd.firstChild;
+        if(!t || t.nodeType !== 3) return;
+        var rg = document.createRange(); rg.selectNodeContents(t);
+        need = Math.max(need, rg.getBoundingClientRect().width);
+      });
+      var w = Math.min(band.width, Math.max(band.width / 4, Math.ceil(need) + 28 + pad * 2));
+      var x = a.getBoundingClientRect().left + apad - band.left - pad;
+      x = Math.max(0, Math.min(x, band.width - w));  /* 띠 밖으로 나가지 않게 */
+      var rest = band.width - x - w;
+      /* 한쪽에 여백 한 칸도 못 되게 남으면 띠 끝에 붙인다 — 실오라기만 한 빈틈은
+         강조 콘텐츠 자리가 아니라 실수로 보인다 */
+      if(x && x < pad) x = 0;
+      else if(rest && rest < pad) x = band.width - w;
+      rest = band.width - x - w;
+      g.style.setProperty('--mm-a', x + 'px');
+      g.style.setProperty('--mm-w', w + 'px');
+      g.style.setProperty('--mm-b', rest + 'px');
+      g.classList.toggle('feat-left', rest < x);
+    });
+  }
+  alignMega();
+  window.addEventListener('resize', alignMega);
+  window.addEventListener('load', alignMega);
+
   /* 언어 선택 - 세부 A-1 네 장의 스크립트와 같은 동작 */
   var lang = document.getElementById('sfLang'), lb = document.getElementById('sfLangBtn');
   if(lang && lb){
