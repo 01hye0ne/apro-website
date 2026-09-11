@@ -462,7 +462,17 @@
      켜졌다 꺼지는 게 아니라 한 점이 고리를 돌아 나가는 것으로 읽힌다 */
   .sf-map .ring li::before,.sf-map .ring li::after{content:"";position:absolute;
                    background:var(--brand-2);
-                   transition:transform var(--slide) var(--soft)}
+                   transition:transform var(--t,var(--slide)) linear var(--d,0s)}
+  /* 모서리 칸은 도막이 둘이다. 같이 자라면 가로와 세로가 따로 놀아 선이
+     끊겨 보인다 — 먼저 지나는 도막이 반을 쓰고, 나머지 반을 다음 도막이
+     이어받는다. 빠질 때도 같은 차례라 머리와 꼬리가 함께 앞으로 간다.
+     결은 linear 다 — 도막마다 쉬었다 가면 이음매에서 멈칫한다 */
+  .sf-map .ring li:nth-child(1)::after,.sf-map .ring li:nth-child(3)::before,
+  .sf-map .ring li:nth-child(4)::before,.sf-map .ring li:nth-child(6)::after
+    {--t:calc(var(--slide) * .5)}
+  .sf-map .ring li:nth-child(1)::before,.sf-map .ring li:nth-child(3)::after,
+  .sf-map .ring li:nth-child(4)::after,.sf-map .ring li:nth-child(6)::before
+    {--t:calc(var(--slide) * .5);--d:calc(var(--slide) * .5)}
   .sf-map .ring li:nth-child(2)::after,.sf-map .ring li:nth-child(5)::after{content:none}
   .sf-map .ring li::before{left:0;right:0;height:var(--bw);transform:scaleX(0)}
   .sf-map .ring li::after{top:0;bottom:0;width:var(--bw);transform:scaleY(0)}
