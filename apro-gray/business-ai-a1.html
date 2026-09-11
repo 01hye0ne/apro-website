@@ -506,6 +506,26 @@
   .sf-cnt>.shot img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;
                     object-fit:contain;transform:none}
 
+  /* 그림이 여럿인 칸에는 아래에 몇 장 중 몇 번째인지 표시한다. 지금 장은
+     길쭉한 알약, 나머지는 점이다. 눌러서 옮길 수도 있다.
+     이름이 필요한 칸에는 단추를 쓰고(아래), 그림만 넘기면 되는 칸에는 이것을
+     쓴다 — 둘 다 tablist 라 고르는 방식은 같다 */
+  /* 표시를 다는 칸은 그림 자리를 그 높이만큼 비워 둔다. 겹쳐 놓으면 화면
+     위에 점이 얹혀 읽기 나빠지고, 판이 칸을 꽉 채우고 있어 덮이기도 한다 */
+  .sf-ph.has-dots{background:var(--sf-gray100);border:0;overflow:hidden;
+                  flex-direction:column;justify-content:flex-end}
+  .sf-ph.has-dots .sf-cnt{bottom:28px}
+  /* 띄워 놓지 않고 칸의 마지막 줄로 앉힌다 — 판이 칸을 꽉 채우고 있어
+     띄워 두면 그 아래 깔린다 */
+  .sf-dots{position:relative;z-index:2;width:100%;height:28px;flex-shrink:0;
+           display:flex;align-items:center;justify-content:center;gap:6px}
+  .sf-dots button{width:6px;height:6px;padding:0;border:0;border-radius:3px;
+                  background:var(--sf-line-s);cursor:pointer;
+                  transition:width .3s var(--ease),background .3s var(--ease)}
+  .sf-dots button:hover{background:var(--sf-ter)}
+  .sf-dots button[aria-selected="true"]{width:20px;background:var(--brand)}
+  @media(prefers-reduced-motion:reduce){.sf-dots button{transition:none}}
+
   /* 화면을 고르는 단추 — 스마트 제조의 제품 단추와 같은 짜임이다.
      다만 여기 그림도 화면 갈무리라 잘라 채우지 않는다 */
   .sf-picks{display:flex;gap:8px}
@@ -910,7 +930,18 @@
             <div class="shot"><img src="../assets/ev-safety-mobile.png" alt="안전 진단 리포트를 등급과 막대로 보여 주는 모바일 화면" decoding="async" /></div>
           </div>
         </figure>
-        <figure class="sf-ph has-img is-shot" data-for="sf02-2"><img src="../assets/ev-performance-report.png" alt="배터리 진단 결과를 항목별 백분율과 레이더 도표로 보여 주는 화면" decoding="async" /></figure>
+        <figure class="sf-ph has-panes has-dots" data-for="sf02-2">
+          <div class="sf-cnt is-on" role="tabpanel" id="ev-rep" aria-labelledby="ev-rep-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-performance-report.png" alt="배터리 진단 결과를 항목별 백분율과 레이더 도표로 보여 주는 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="ev-inp" aria-labelledby="ev-inp-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-performance-input.png" alt="업체와 차량, 배터리 제원을 입력하는 진단 준비 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-dots" role="tablist" aria-label="EV 배터리 성능 진단 화면">
+            <button type="button" role="tab" id="ev-rep-t" aria-controls="ev-rep" aria-selected="true" aria-label="1 / 2 진단 결과"></button>
+            <button type="button" role="tab" id="ev-inp-t" aria-controls="ev-inp" aria-selected="false" tabindex="-1" aria-label="2 / 2 진단 준비"></button>
+          </div>
+        </figure>
         <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/ev-fast-charger.jpg" alt="건물 앞 충전소에 나란히 선 에이프로 전기자동차 급속 충전기 세 대" decoding="async" /></figure>
         <figure class="sf-ph" data-for="sf03-2"><span>도표 or 이미지</span></figure>
         <figure class="sf-ph has-img" data-for="sf04-1"><img src="../assets/ev-controller.jpg" alt="제어기를 얹은 전기자동차 구동 플랫폼" decoding="async" /></figure>
@@ -1538,8 +1569,11 @@
    단추 하나가 그림 칸의 화면 하나를 켠다. tablist 의 약속대로 화살표로도
    옮겨 다닌다. 단추가 없는 장에서는 조용히 지나간다 */
 (function(){
-  var list = document.querySelector('.sf-picks');
-  if(!list) return;
+  var lists = [].slice.call(document.querySelectorAll('.sf-picks,.sf-dots'));
+  if(!lists.length) return;
+  lists.forEach(wire);
+
+  function wire(list){
   var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
   if(!tabs.length) return;
 
@@ -1569,6 +1603,7 @@
   })(i);
 
   pick(0);
+  }
 })();
 </script>
 </body>
