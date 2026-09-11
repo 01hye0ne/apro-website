@@ -63,7 +63,7 @@
     --t-lg:clamp(18px,2vw,28px);   /* 인트로 리드                */
     --t-md:clamp(17px,1.39vw,20px);/* 제품 이름 · 카드 라벨      */
     --t-sm:16px;                   /* 소분류 이름 · 목록 항목    */
-    --t-xs:14px;                   /* 줄글 · 인덱스 · 특징 · 표  */
+    --t-xs:15px;                   /* 줄글 · 인덱스 · 특징 · 표  */
     --t-2xs:12px;                  /* 번호 · 그룹 머리 · 꼬리    */
     --t-tag:11px;                  /* 숫자 태그                  */
     --ald:"Aldrich",var(--rc),sans-serif;
@@ -477,7 +477,7 @@
                  color:var(--c-ttl,var(--sf-txt))}
   .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-texts p{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:1.6;
+  .sf-texts p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:1.6;
               letter-spacing:-.3px;color:var(--c-body)}
   /* 주요 적용 분야 — 윗선만 굵다 */
   .sf-apps{width:100%;list-style:none;border-top:2px solid var(--c-bd-s)}
@@ -533,7 +533,7 @@
   .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
   .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
                 line-height:1.2;letter-spacing:-.04em;color:var(--c-ttl)}
-  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);
+  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
                    line-height:1.6;letter-spacing:-.3px;color:var(--c-ttl)}
   /* Certification — 왼쪽에 이름, 오른쪽 끝에 인증 표시. 파란 띠였던 것을
      흰 바탕 한 줄로 바꿨다(와이어프레임 개정) */
@@ -583,7 +583,7 @@
   .sf-feat .t{display:flex;flex-direction:column;gap:4px}
   .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
               line-height:1.35;letter-spacing:-.28px;color:var(--c-ttl)}
-  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);
+  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
               line-height:1.6;letter-spacing:-.28px;color:var(--c-body)}
   /* 와이어프레임은 이 줄을 한 줄로 자르지만(말줄임) 글을 잘라 버리는 대신
      접히게 둔다 — 카드가 그만큼 자란다 */
