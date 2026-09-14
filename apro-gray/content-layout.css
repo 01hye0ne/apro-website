@@ -84,13 +84,13 @@
      바가 없으니 위 여백과 같은 값으로 돌려 타이틀이 배너 정중앙에 오게 한다 */
   padding-bottom:80px}
 /* Figma 995:339 — 회사정보 · 투자정보 · 지속가능경영 · 커뮤니티가 같은 히어로 틀을 쓴다.
-   464 높이 판 가운데에 제목(SUIT 800 48, 흰색) · 설명(SUIT 800 24, 흰 70%)을 12 간격으로 세운다.
+   464 높이 판 가운데에 제목(SUIT 800 48, 흰색) · 설명(SUIT 400 24, 흰 70%)을 12 간격으로 세운다.
    높이는 공용 값(데스크톱 88vh · 좁은 화면 480)을 덮는다 — 이 파일이 business-layout.css 뒤에
    불리므로 같은 특정도에서 이긴다. 회사소개 A-1(company-a1.html 의 .co-hero)도 같은 값을 쓴다 */
 .dhero{min-height:464px}
 .dhero .in{display:flex;flex-direction:column;align-items:center;gap:12px}
 .dhero h1{font-size:48px;line-height:1.2;letter-spacing:-.96px}
-.dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:800;font-size:24px;
+.dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:400;font-size:24px;
   line-height:1.2;letter-spacing:-.48px;color:rgba(255,255,255,.7)}
 /* 좁은 화면 — Figma 에 모바일 판이 없어 같은 비율로 줄인다(높이 360 · 제목 32 · 설명 18) */
 @media(max-width:900px){
