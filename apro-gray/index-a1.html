@@ -418,14 +418,15 @@
                 -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
                 mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-card .cap a{pointer-events:auto}
-  /* 위층 — 이름 · 설명은 왼쪽, 사업영역 픽토그램은 오른쪽(바닥을 설명글에 맞춘다) */
+  /* 위층 — 이름 · 설명은 왼쪽, 사업영역 픽토그램은 오른쪽. 픽토그램은 바닥선이 캔버스 맨 아래에
+     있으므로, 글 띠의 층 사이 간격(16)만큼 아래로 내리면 띠지 윗선에 딱 붙어 선다 */
   .hm-card .crow{display:flex;align-items:flex-end;gap:24px;padding:0 20px}
   .hm-card .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   /* 픽토그램 — 사업영역 페이지 아래 마을(.bhop)의 그림을 그대로 쓴다. 원본은 짙은 회색
      선이라 어두운 유리 판에서 묻히므로 filter 로 흰 선을 만든다(<img> 로 부른 SVG 는
      CSS 로 선 색을 못 바꾼다). 높이만 정하고 폭은 캔버스 비율(--ar)로 미리 잡아, 그림이
      늦게 들어와도 글이 밀리지 않는다 */
-  .hm-card .vec{display:block;flex-shrink:0;height:88px;width:auto;aspect-ratio:var(--ar);
+  .hm-card .vec{display:block;flex-shrink:0;height:120px;width:auto;aspect-ratio:var(--ar);margin-bottom:-16px;
                 filter:brightness(0) invert(1);opacity:.92}
   /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
   .hm-card h3{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px}
@@ -519,7 +520,7 @@
     .hm-card{flex-basis:calc((100% - var(--hm-m)) * .86);aspect-ratio:auto;height:420px}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{gap:12px;padding:0 16px}
-    .hm-card .vec{height:56px}
+    .hm-card .vec{height:72px;margin-bottom:-12px}
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:13px}
