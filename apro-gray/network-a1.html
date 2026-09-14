@@ -15,49 +15,44 @@
 <!-- ============================================================
      글로벌 네트워크 A-1 (Figma 1227:7859) — 회사정보 세 페이지(회사소개 · 글로벌 네트워크 ·
      사업장소재)가 같은 틀을 쓴다: 흰 히어로(company-info.css 의 .ci-hero) 아래 파랑 띠(.ci-band).
-     이 페이지의 띠는 점 지도 한 장과 거점 표시(마커) 열다섯이다.
+     이 페이지의 띠는 홈 Who we are(index-a1.html)와 같은 지도 요소다 — 점 지도 위에 본사에서
+     법인 넷으로 뻗는 선, 본사 · 법인 · 거점 점, 그 아래 범례.
 
      2026-09-14 부터 손으로 고치는 파일이다 — A(network.html)는 옛 전면 무대 그대로 두고
      _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
      (business-layout.css / business-layout.js)이다 -->
 <style>
-  /* 지도 띠 (Figma 995:518) — 파랑 판, 1440 에서 580. 점 지도(921×451, gnet-map.png)가 띠 가운데에
-     선다(위아래 64 · 옆 최소 24). 좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
-  .gn-band{display:flex;justify-content:center;align-items:center;padding:64px 24px;border-bottom:1px solid #c7c9cc}
-  .gn-map{position:relative;flex:0 1 921px;aspect-ratio:922/451}
-  .gn-map>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+  /* 지도 띠 (Figma 995:518) — 파랑 판. 지도(921×451)가 띠 가운데에 서고 그 아래 16 에 범례가 붙는다.
+     좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
+  .gn-band{display:flex;justify-content:center;padding:64px 24px;border-bottom:1px solid #c7c9cc}
+  .gn-wrap{flex:0 1 921px;display:flex;flex-direction:column;gap:16px}
 
-  /* 거점 표시 — --x · --y 는 지도 그림 안의 % 좌표(점 한가운데)라 지도가 줄어도 제자리를 짚는다.
-     20 상자 안에서 점 중심이 (10, 11) 이므로 그만큼 당긴다. 옛 전면 무대(1280×900)의 px 좌표에서 옮겨 왔다 */
-  .gnet-mk{position:absolute;left:calc(var(--x) - 10px);top:calc(var(--y) - 11px);width:20px;height:20px;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:6px;cursor:pointer}
-  .gnet-mk .dot{position:relative;width:6px;height:6px;background:#ff8f47;border:1px solid #fff;
-    box-shadow:0 6px 4px 2px rgba(0,0,0,.25);flex-shrink:0}
-  .gnet-mk .tip{position:absolute;bottom:18px;left:50%;transform:translate(-50%,6px);white-space:nowrap;padding:8px 16px;
-    font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900);
-    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    box-shadow:0 0 16px rgba(11,11,10,.12);opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
-  .gnet-mk:hover{z-index:5}
-  .gnet-mk:hover .tip{opacity:1;transform:translate(-50%,0)}
-  /* 지도가 화면에 들어오면 표시가 하나씩 솟았다가, 그 뒤로는 은은한 파동으로 숨 쉰다 */
-  .gnet-mk .dot::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;
-    border:1px solid #ff8f47;box-sizing:border-box;opacity:0;pointer-events:none}
-  @media (prefers-reduced-motion:no-preference){
-    .js-anim .gnet-mk{opacity:0;transform:translateY(6px) scale(.35);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-    .js-anim .gnet-live .gnet-mk{opacity:1;transform:none}
-    .gnet-live .gnet-mk .dot::after{animation:mkPulse 2.8s var(--ease) infinite;animation-delay:var(--pd,0s)}
-  }
-  @keyframes mkPulse{0%{opacity:.5;transform:scale(1)}70%{opacity:0;transform:scale(3.4)}100%{opacity:0;transform:scale(3.4)}}
-  @media (prefers-reduced-motion:reduce){ .gnet-mk .tip{transition:none} }
+  /* 지도 요소 — 홈 Who we are(index-a1.html 의 .map · .hm-tech 반전)와 같은 값이다.
+     점 지도(gnet-map.png) 위에 같은 좌표계(922×451)의 SVG 로 본사 → 법인 넷 선(.arc)과
+     본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
+     파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
+     띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
+  .gn-map{position:relative;display:block;width:100%;aspect-ratio:922/451}
+  .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
+  .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
+               transition:stroke-dashoffset 1s var(--ease) var(--d)}
+  .gn-map .pin{transform-box:fill-box;transform-origin:center;
+               transition:transform .5s var(--ease) var(--d),opacity .5s var(--ease) var(--d)}
+  .gn-map .hub{fill:#fff}
+  .gn-map .hq{fill:var(--point-200)}
+  .gn-map .st{fill:var(--brand);stroke:#fff;stroke-width:2.4}
+  .gn-map .halo{fill:#fff;opacity:.16;transform-box:fill-box;transform-origin:center}
+  .gn-band.is-wait .arc{stroke-dashoffset:1}
+  .gn-band.is-wait .pin,.gn-band.is-wait .halo{transform:scale(0);opacity:0}
+  .gn-band .lg{align-self:flex-start;display:flex;flex-wrap:wrap;gap:6px 16px;
+               font-family:var(--pre);font-size:12px;line-height:1.4;color:rgba(255,255,255,.65)}
+  .gn-band .lg>span{display:flex;align-items:center;gap:6px}
+  .gn-band .lg i{width:8px;height:8px;border-radius:50%;background:var(--point-200)}
+  .gn-band .lg .hub{width:10px;height:10px;background:#fff}
+  .gn-band .lg .st{background:transparent;box-shadow:inset 0 0 0 1.5px #fff}
 
-  @media(max-width:900px){
-    .gn-band{padding:40px 16px}
-    .gn-map{flex-basis:100%}
-    .gnet-mk .tip{padding:6px 12px;font-size:14px}
-  }
+  @media(max-width:900px){ .gn-band{padding:40px 16px} }
 </style>
-<!-- 표시(마커)를 숨겼다 띄우는 연출 스위치. JS 가 없거나 못 돌면 그냥 다 보인다 -->
-<script>document.documentElement.classList.add('js-anim');</script>
 </head>
 <body>
 
@@ -159,25 +154,11 @@
 </section>
 
 <!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 995:518) ===================== -->
-<!-- 표시(.gnet-mk)의 --x / --y 는 지도 그림 안의 % 좌표다 — 값 하나하나가 나라 한 곳을 가리킨다 -->
+<!-- 지도 요소는 홈 Who we are(index-a1.html)와 같다 — SVG 좌표는 점 지도 그림(922×451)에 맞춘 밀러 투영 -->
 <section class="ci-band gn-band" aria-label="글로벌 거점 지도">
-  <div class="gn-map">
-    <img src="../assets/gnet-map.png" width="922" height="451" alt="" aria-hidden="true" />
-    <span class="gnet-mk" style="--x:22.48%;--y:33.48%"><span class="tip">United States of America</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:23.02%;--y:52.77%"><span class="tip">Nicaragua</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:22.91%;--y:58.98%"><span class="tip">Panama</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:26.06%;--y:67.18%"><span class="tip">Peru</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:50.38%;--y:31.71%"><span class="tip">Germany</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:51.68%;--y:35.70%"><span class="tip">Czech</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:53.20%;--y:39.47%"><span class="tip">Austria</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:54.07%;--y:27.94%"><span class="tip">Poland</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:54.83%;--y:41.69%"><span class="tip">Hungary</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:55.05%;--y:33.92%"><span class="tip">Slovakia</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:56.35%;--y:37.69%"><span class="tip">Romania</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:75.57%;--y:55.21%"><span class="tip">Vietnam</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:77.09%;--y:43.24%"><span class="tip">China</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:82.08%;--y:41.24%"><span class="tip">Korea</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:87.95%;--y:37.69%"><span class="tip">Japan</span><span class="dot"></span></span>
+  <div class="gn-wrap">
+    <span class="gn-map" aria-hidden="true"><img src="../assets/gnet-map.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span>
+    <span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span>
   </div>
 </section>
 
@@ -294,21 +275,23 @@
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
 <script>
-/* 거점 표시 — 지도가 화면에 들어오면 차례로 솟았다가 은은히 파동친다(CSS 의 .gnet-live) */
+/* 지도 요소 — 띠가 35% 넘게 보일 때 한 번 움직인다(홈 Who we are 와 같은 방식).
+   먼저 .is-wait 로 처음 모습을 걸고, 보이면 떼고 .is-in 을 붙인다. 움직임 줄이기를
+   켠 사람과 IntersectionObserver 가 없는 브라우저는 다 그려진 모습 그대로 둔다 */
 (function(){
-  var map = document.querySelector('.gn-map');
-  if(!map){ return; }
-  map.querySelectorAll('.gnet-mk').forEach(function(m,i){
-    m.style.transitionDelay = (0.35 + i*0.06).toFixed(2) + 's';   /* 솟는 차례 */
-    m.style.setProperty('--pd', (-(i%7)*0.4).toFixed(2) + 's');   /* 파동 시점을 흩는다 */
-  });
-  function run(){ map.classList.add('gnet-live'); }
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting){ run(); io.disconnect(); } });
-    }, { threshold: 0.3 });
-    io.observe(map);
-  } else { run(); }
+  var band = document.querySelector('.gn-band');
+  if(!band || !('IntersectionObserver' in window)) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  band.classList.add('is-wait');
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      band.classList.remove('is-wait');
+      band.classList.add('is-in');
+      io.disconnect();
+    });
+  }, { threshold: .35 });
+  io.observe(band);
 })();
 </script>
 </body>
