@@ -344,10 +344,29 @@
          mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-ov>*{position:relative;z-index:1}
   .hm-heads{flex:1;min-width:0;display:grid;container-type:inline-size}
+  /* 제목 전환 — 줄 올라오기.
+     영문은 줄마다 가림막(.ln) 안에 있다. 쉬는 제목은 줄이 가림막 아래에 숨어 있고,
+     켜지면(.is-on) 한 줄씩 차례로 밀려 올라온다. 나가는 제목(.is-out)은 위로 먼저
+     짧게 빠지고(.56s 에 끝), 들어오는 쪽은 그 뒤에 출발한다(.45s · .57s) — 두 제목이 겹쳐 보이지 않는다.
+     움직임은 켜질 때와 나갈 때만 건다. 다 빠진 뒤 숨은 자리(아래)로 돌아가는 건
+     보이지 않는 동안 한 번에 끝난다.
+     가림막은 글자 아랫도리(g · y · p)가 잘리지 않게 아래로 .12em 더 연다 */
   .hm-hl{grid-area:1/1;align-self:end;display:flex;flex-direction:column;gap:10px;
-         opacity:0;transform:translateY(12px);
-         transition:opacity .8s var(--ease),transform .8s var(--ease)}
-  .hm-hl.is-on{opacity:1;transform:none}
+         visibility:hidden}
+  .hm-hl.is-on,.hm-hl.is-out{visibility:visible}
+  .hm-hl .en .ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+  .hm-hl .en .ln>span{display:block;transform:translateY(110%)}
+  .hm-hl.is-on .en .ln>span{transform:none;
+         transition:transform .9s var(--ease) .45s}
+  .hm-hl.is-on .en .ln+.ln>span{transition-delay:.57s}
+  .hm-hl.is-out .en .ln>span{transform:translateY(-110%);
+         transition:transform .5s cubic-bezier(.55,0,.75,.2)}
+  .hm-hl.is-out .en .ln+.ln>span{transition-delay:.06s}
+  .hm-hl .ko{opacity:0;transform:translateY(8px)}
+  .hm-hl.is-on .ko{opacity:1;transform:none;
+         transition:opacity .7s var(--ease) .85s,transform .7s var(--ease) .85s}
+  .hm-hl.is-out .ko{opacity:0;transform:translateY(-6px);
+         transition:opacity .3s ease-in,transform .3s ease-in}
   /* 영문 제목은 <br> 에서만 꺾어 늘 두 줄 이하다. 글자 크기는 네 제목 중 가장 긴
      줄(Industrial Safety Innovation, 64px 에서 804px = 12.57em)이 제목 칸에 딱
      들도록 칸 폭(cqi)에서 구한다 — 네 장이 같은 크기라 넘길 때 글자가 튀지 않는다.
@@ -495,7 +514,8 @@
     .hm-ncards{grid-template-columns:1fr}
   }
   @media(prefers-reduced-motion:reduce){
-    .hm-bg img,.hm-hl,.hm-track,.hm-tab .th img,.hm-card>img{transition:none}
+    .hm-bg img,.hm-hl,.hm-track,.hm-tab .th img,.hm-card>img,
+    .hm-hl .en .ln>span,.hm-hl .ko{transition:none!important}
     .hm-tab .gauge{animation:none!important}
   }
 </style>
@@ -607,19 +627,19 @@
     <div class="hm-ov">
       <div class="hm-heads">
         <div class="hm-hl is-on" id="hm-p0" role="tabpanel" aria-labelledby="hm-t0">
-          <p class="en">Smart &amp;<br />Automated Manufacturing</p>
+          <p class="en"><span class="ln"><span>Smart &amp;</span></span><span class="ln"><span>Automated Manufacturing</span></span></p>
           <p class="ko">이차전지 활성화 전 공정을 자체 기술로 완성합니다</p>
         </div>
         <div class="hm-hl" id="hm-p1" role="tabpanel" aria-labelledby="hm-t1" aria-hidden="true">
-          <p class="en">Smart &amp;<br />Resilient Power Grid</p>
+          <p class="en"><span class="ln"><span>Smart &amp;</span></span><span class="ln"><span>Resilient Power Grid</span></span></p>
           <p class="ko">BESS·UPS로 안정적인 에너지 인프라를 구축합니다</p>
         </div>
         <div class="hm-hl" id="hm-p2" role="tabpanel" aria-labelledby="hm-t2" aria-hidden="true">
-          <p class="en">Physical AI-based<br />Industrial Safety Innovation</p>
+          <p class="en"><span class="ln"><span>Physical AI-based</span></span><span class="ln"><span>Industrial Safety Innovation</span></span></p>
           <p class="ko">AI로 산업 현장의 안전과 효율을 높여 나갑니다</p>
         </div>
         <div class="hm-hl" id="hm-p3" role="tabpanel" aria-labelledby="hm-t3" aria-hidden="true">
-          <p class="en">More Efficient &amp;<br />Reliable Power</p>
+          <p class="en"><span class="ln"><span>More Efficient &amp;</span></span><span class="ln"><span>Reliable Power</span></span></p>
           <p class="ko">차세대 화합물 GaN 전력반도체를 선도합니다</p>
         </div>
       </div>
@@ -1089,12 +1109,24 @@
     slides.forEach(function(s, k){ s.classList.toggle('is-on', k === i); });
     heads.forEach(function(p, k){
       var on = k === i;
+      if(!on && p.classList.contains('is-on')) leave(p);
       p.classList.toggle('is-on', on);
-      if(on) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+      if(on){
+        clearTimeout(p._out); p.classList.remove('is-out');
+        p.removeAttribute('aria-hidden');
+      } else {
+        p.setAttribute('aria-hidden', 'true');
+      }
     });
     /* 게이지를 처음부터 다시 채운다 */
     var g = tabs[i].querySelector('.gauge');
     if(g){ g.style.animation = 'none'; void g.offsetWidth; g.style.animation = ''; }
+  }
+  /* 위로 다 빠질 때까지만 .is-out 을 달아 둔다(CSS 의 .5s + 줄 사이 .06s 에 여유) */
+  function leave(p){
+    p.classList.add('is-out');
+    clearTimeout(p._out);
+    p._out = setTimeout(function(){ p.classList.remove('is-out'); }, 700);
   }
   function run(){
     clearInterval(timer); timer = 0;
