@@ -21,9 +21,9 @@
      _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
      (business-layout.css / business-layout.js)이다 -->
 <style>
-  /* 지도 띠 (Figma 995:518) — 파랑 판, 1440 에서 580. 점 지도(921×451, gnet-map.png)가 오른쪽 24 에
-     붙고 위아래 64 로 가운데에 선다. 좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
-  .gn-band{display:flex;justify-content:flex-end;align-items:center;padding:64px 24px;border-bottom:1px solid #c7c9cc}
+  /* 지도 띠 (Figma 995:518) — 파랑 판, 1440 에서 580. 점 지도(921×451, gnet-map.png)가 띠 가운데에
+     선다(위아래 64 · 옆 최소 24). 좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
+  .gn-band{display:flex;justify-content:center;align-items:center;padding:64px 24px;border-bottom:1px solid #c7c9cc}
   .gn-map{position:relative;flex:0 1 921px;aspect-ratio:922/451}
   .gn-map>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 
