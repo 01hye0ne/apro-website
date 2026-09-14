@@ -138,9 +138,11 @@ def build(src_text, want_body=False):
     out, n_title = re.subn(r'(<title>[^<]*)</title>',
                            lambda m: m.group(1) + ' (A-1)</title>', out, count=1)
     n_link = 0
+    # 앵커가 붙은 링크(href="business-smart.html#sf01-1")도 함께 바꾼다 — 예전엔 딱 맞는
+    # href="page.html" 만 바꿔서, 메가 판 소분류가 A 판으로 새고 A 판엔 그 앵커가 없어 맨 위에 떨어졌다
     for page in PAGES:
-        out, k = re.subn(r'href="%s\.html"' % re.escape(page),
-                         'href="%s-a1.html"' % page, out)
+        out, k = re.subn(r'href="%s\.html(#[^"]*)?"' % re.escape(page),
+                         lambda m, p=page: 'href="%s-a1.html%s"' % (p, m.group(1) or ''), out)
         n_link += k
     return out, (n_body, n_title, n_link)
 
