@@ -467,6 +467,10 @@
      깔고, 글 띠는 손을 받지 않게 비워 링크만 받는다. 읽기와 초점은 이름 링크가
      맡으므로 .hit 는 가려 둔다 */
   .hm-card .hit{position:absolute;inset:0}
+  /* 접힌 띠에서는 .hit 가 '펼치기' 단추가 된다 — 어둠 · 이름표 위로 올려 초점 테두리가 또렷하게 보이게 한다.
+     펴진 카드에서는 글 띠 아래에 두어 소분류 링크가 손을 받는다 */
+  .hm-card:not(.is-open) .hit{z-index:3}
+  .hm-card .hit:focus-visible{outline:2px solid #fff;outline-offset:-6px}
   .hm-card h3 a{color:#fff;text-decoration:none}
   .hm-card .d{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
               letter-spacing:-.3px;font-feature-settings:"lnum" 1,"tnum" 1}
@@ -489,12 +493,10 @@
                   letter-spacing:-.28px;color:rgba(255,255,255,.7);white-space:nowrap;
                   text-decoration:none;transition:color .2s var(--ease)}
   .hm-card .sub a:hover,.hm-card .sub a:focus-visible{color:#fff}
-  .hm-nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .hm-dots{display:flex;align-items:center;gap:8px}
-  .hm-dots button{position:relative;width:6px;height:6px;padding:0;border:0;background:#d9d9d9;
-                  cursor:pointer;transition:width .4s var(--ease),background .4s var(--ease)}
-  .hm-dots button::after{content:"";position:absolute;inset:-10px -4px}
-  .hm-dots button.is-on{width:32px;background:var(--brand-2)}
+  /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
+     화살표를 레일 아래 오른쪽에 두면 화면 오른쪽 아래에 떠 있는 '맨 위로' 단추와 겹친다.
+     아코디언은 네 카드가 늘 다 보이므로 몇 번째인지 알리던 점 표시는 두지 않는다 */
+  .hm-bhead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
   .hm-arrows{display:flex;gap:8px}
   .hm-arrows button{width:44px;height:44px;display:grid;place-content:center;padding:0;
                     background:#fff;border:1px solid var(--border-g);color:var(--hm-icon);
@@ -881,7 +883,13 @@
 
   <!-- ===================== BUSINESS (Figma 991:76) ===================== -->
   <section class="hm-sec hm-biz" id="hmBiz" aria-labelledby="hm-biz-t" aria-roledescription="아코디언">
-    <h2 class="hm-ttl" id="hm-biz-t">Business</h2>
+    <div class="hm-bhead">
+      <h2 class="hm-ttl" id="hm-biz-t">Business</h2>
+      <div class="hm-arrows" role="group" aria-label="카드 넘기기">
+        <button type="button" data-go="-1" aria-label="이전 카드" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5.64648L8.00001 11.6465L8.00001 12.3535L14 18.3535L14.707 17.6465L9.06055 12L14.707 6.35352L14 5.64648Z" fill="currentColor"/></svg></button>
+        <button type="button" data-go="1" aria-label="다음 카드"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 5.63026L16 11.6303L16 12.3373L10 18.3373L9.29297 17.6303L14.9395 11.9838L9.29297 6.33729L10 5.63026Z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
     <div class="hm-rail">
       <ul class="hm-track">
         <li class="hm-card is-open">
@@ -963,18 +971,6 @@
           </div>
         </li>
       </ul>
-    </div>
-    <div class="hm-nav">
-      <div class="hm-dots" role="group" aria-label="카드 고르기">
-        <button type="button" class="is-on" aria-label="1 / 4 스마트 제조" aria-current="true"></button>
-        <button type="button" aria-label="2 / 4 에너지 인프라"></button>
-        <button type="button" aria-label="3 / 4 인공지능 플랫폼"></button>
-        <button type="button" aria-label="4 / 4 화합물 전력 반도체"></button>
-      </div>
-      <div class="hm-arrows">
-        <button type="button" data-go="-1" aria-label="이전 카드" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5.64648L8.00001 11.6465L8.00001 12.3535L14 18.3535L14.707 17.6465L9.06055 12L14.707 6.35352L14 5.64648Z" fill="currentColor"/></svg></button>
-        <button type="button" data-go="1" aria-label="다음 카드"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 5.63026L16 11.6303L16 12.3373L10 18.3373L9.29297 17.6303L14.9395 11.9838L9.29297 6.33729L10 5.63026Z" fill="currentColor"/></svg></button>
-      </div>
     </div>
   </section>
 
@@ -1435,14 +1431,15 @@
 
 /* ── Business — 비대칭 아코디언 ──────────────────────────────────────────────
    켜진 카드에 .is-open 을 붙이면 폭 · 글 띠 · 이름표는 CSS 가 옮긴다.
-   접힌 띠를 누르면 페이지로 가지 않고 그 카드를 편다. 점 · 화살표도 같은 go() 를 부른다.
+   접힌 띠를 누르면 페이지로 가지 않고 그 카드를 편다. 제목 줄 화살표도 같은 go() 를 부른다.
+   접힌 띠의 .hit 는 키보드 '펼치기' 단추로 바꿔 둔다(role=button · 이름 · aria-expanded).
+   키보드로 폈을 때만 초점을 새로 펴진 카드의 이름 링크로 옮겨, 이어서 Tab 으로 읽어 갈 수 있게 한다.
    픽토그램은 선 그리기 애니메이션이 SVG 파일 안에 있어 불러오는 순간 한 번만 재생한다 —
    섹션이 보인 뒤, 카드가 펴지고 글 띠가 드러날 즈음 그 카드 것만 붙인다 */
 (function(){
   var root = document.getElementById('hmBiz');
   if(!root) return;
   var cards = [].slice.call(root.querySelectorAll('.hm-card'));
-  var dots  = [].slice.call(root.querySelectorAll('.hm-dots button'));
   var prev  = root.querySelector('[data-go="-1"]');
   var next  = root.querySelector('[data-go="1"]');
   var at = 0, seen = false, timer = 0;
@@ -1455,11 +1452,22 @@
   function load(c){ attach(c.querySelector('.vec')); }
   function go(i){
     at = Math.max(0, Math.min(cards.length - 1, i));
-    cards.forEach(function(c, k){ c.classList.toggle('is-open', k === at); });
-    dots.forEach(function(d, k){
-      var on = k === at;
-      d.classList.toggle('is-on', on);
-      if(on) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    cards.forEach(function(c, k){
+      var open = k === at, hit = c.querySelector('.hit');
+      c.classList.toggle('is-open', open);
+      if(open){
+        hit.setAttribute('tabindex', '-1');
+        hit.setAttribute('aria-hidden', 'true');
+        hit.removeAttribute('role');
+        hit.removeAttribute('aria-label');
+        hit.removeAttribute('aria-expanded');
+      } else {
+        hit.removeAttribute('tabindex');
+        hit.removeAttribute('aria-hidden');
+        hit.setAttribute('role', 'button');
+        hit.setAttribute('aria-label', c.querySelector('h3 a').textContent + ' 펼치기');
+        hit.setAttribute('aria-expanded', 'false');
+      }
     });
     prev.disabled = at === 0;
     next.disabled = at === cards.length - 1;
@@ -1468,12 +1476,18 @@
   }
   prev.addEventListener('click', function(){ go(at - 1); });
   next.addEventListener('click', function(){ go(at + 1); });
-  dots.forEach(function(d, k){ d.addEventListener('click', function(){ go(k); }); });
   cards.forEach(function(c, k){
-    c.querySelector('.hit').addEventListener('click', function(e){
-      if(k === at) return;
+    var hit = c.querySelector('.hit');
+    function unfold(e){
       e.preventDefault();
+      var byKey = document.activeElement === hit;
       go(k);
+      if(byKey) setTimeout(function(){ c.querySelector('h3 a').focus({ preventScroll: true }); }, 0);
+    }
+    hit.addEventListener('click', function(e){ if(k !== at) unfold(e); });
+    /* 링크는 Enter 로만 눌리므로, 단추 역할일 때 Space 도 받는다 */
+    hit.addEventListener('keydown', function(e){
+      if(k !== at && (e.key === ' ' || e.key === 'Spacebar')) unfold(e);
     });
   });
 
