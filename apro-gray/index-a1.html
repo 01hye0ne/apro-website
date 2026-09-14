@@ -295,7 +295,7 @@
   .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
 
   /* ===================== 홈 A-1 (Figma 991:15) =====================
-     배너 · Business · Technology · News 네 장. 푸터와 머리는 위 공용 블록 그대로다.
+     배너 · Business · Who we are · News 네 장. 푸터와 머리는 위 공용 블록 그대로다.
      Figma 변수는 여기 토큰으로 옮겼다 — Grid/Margin 44 = --hm-m,
      Text/Secondary = --hm-sec, Icon/Primary = --hm-icon, Border/Default = --border-g,
      Primitive/Brand/400 = --brand-2. 제목 영문만 Aldrich, 나머지는 SUIT · Pretendard */
@@ -499,7 +499,7 @@
   .hm-arrows button:disabled{opacity:.4;cursor:default}
   .hm-arrows svg{display:block;width:24px;height:24px}
 
-  /* ── Technology — 가운데 큰 지도 + 사업영역마다 핵심 기술 한 칸 ──────────
+  /* ── Who we are — 가운데 큰 지도 + 사업영역마다 핵심 기술 한 칸 ──────────
      4열 두 줄. 가운데 2×2 네 칸을 세계 지도 한 칸이 차지하고, 양옆 네 칸에
      사업영역을 하나씩 둔다 — 왼쪽 위 스마트 제조 · 오른쪽 위 에너지 인프라 ·
      왼쪽 아래 인공지능 플랫폼 · 오른쪽 아래 화합물 전력 반도체(읽는 순서).
@@ -510,10 +510,7 @@
   :root{--hm-mute:#7a8694;--hm-warn:#e39a36}
   .hm-tech{gap:40px}
   .hm-thead{display:flex;flex-direction:column;gap:20px}
-  .hm-thead .lead{font-family:var(--suit);font-weight:800;font-size:clamp(24px,2.6vw,36px);
-                  line-height:1.35;letter-spacing:-.02em;color:var(--g900)}
-  .hm-thead .lead span{display:block}
-  .hm-thead .lead .m,.hm-tile h3 .m{color:var(--hm-mute)}
+  .hm-tile h3 .m{color:var(--hm-mute)}
   .hm-tiles{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;
             grid-template-rows:repeat(2,minmax(0,1fr));grid-template-areas:"sm mp mp en" "ai mp mp se"}
   .hm-tiles>li{min-width:0;display:flex}
@@ -652,6 +649,24 @@
                   transition:color .2s var(--ease)}
   .hm-ncards a:hover .ttl{color:var(--brand)}
   .hm-ncards .date{font-family:var(--pre);font-weight:400;font-size:12px;color:var(--hm-sec)}
+  /* 목록 — 한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 아래 선. 제목과 날짜 칸을 같은 폭으로
+     나눠 날짜가 본문 가운데쯤에서 선다. 제목이 길면 한 줄에서 말줄임한다.
+     커서를 올리면 제목이 브랜드 색이 되고 화살표가 새 창 쪽(오른쪽 위)으로 조금 나간다 */
+  .hm-nlist{list-style:none;margin-top:12px}
+  .hm-nlist a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;
+              column-gap:24px;padding:28px 0;border-bottom:1px solid var(--hm-rule);
+              color:inherit;text-decoration:none}
+  .hm-nlist .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+                 font-family:var(--pre);font-weight:500;font-size:16px;line-height:1.5;color:var(--g900);
+                 transition:color .2s var(--ease)}
+  .hm-nlist .date{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.5;color:var(--hm-sec);
+                  font-feature-settings:"tnum" 1}
+  .hm-nlist .go{display:flex;align-items:center;gap:6px;font-family:var(--pre);font-weight:400;
+                font-size:15px;line-height:1.5;color:var(--g900);white-space:nowrap}
+  .hm-nlist .go svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}
+  .hm-nlist a:hover .ttl{color:var(--brand)}
+  .hm-nlist a:hover .go svg{transform:translate(2px,-2px)}
+  .hm-nlist a:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
 
   /* 1280 아래로는 제목(760)과 탭(604)이 한 줄에 안 든다 — 탭을 제목 아래로 내린다 */
   @media(max-width:1280px){
@@ -692,6 +707,14 @@
     .hm-tiles>.t-mp .map{width:calc(100% + 38px);margin-inline:-19px}
     .hm-tile h3{font-size:18px}
     .hm-ncards{grid-template-columns:1fr}
+    /* 좁은 화면은 날짜를 제목 아래로 내리고, 오른쪽엔 화살표만 남긴다. 제목은 두 줄까지 */
+    .hm-nlist a{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t g" "d g";
+                row-gap:4px;column-gap:16px;padding:20px 0}
+    .hm-nlist .ttl{grid-area:t;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;
+                   -webkit-line-clamp:2;font-size:15px}
+    .hm-nlist .date{grid-area:d;font-size:13px}
+    .hm-nlist .go{grid-area:g}
+    .hm-nlist .go .lb{display:none}
   }
   @media(max-width:640px){
     .hm-tiles{grid-template-columns:minmax(0,1fr);grid-template-areas:"mp" "sm" "en" "ai" "se"}
@@ -953,8 +976,7 @@
        도식은 그 내용을 줄여 그린 그림이다(진단 칸의 셀 격자는 화면 예시) -->
   <section class="hm-sec hm-tech" aria-labelledby="hm-tech-t">
     <div class="hm-thead">
-      <h2 class="hm-ttl" id="hm-tech-t">Technology</h2>
-      <p class="lead"><span>전력을 다루는 한 가지 기술로</span><span class="m">네 개의 사업을 잇습니다.</span></p>
+      <h2 class="hm-ttl" id="hm-tech-t">Who we are</h2>
     </div>
     <ul class="hm-tiles">
         <li class="t-sm">
@@ -1018,6 +1040,24 @@
           <span class="th" aria-hidden="true"></span>
           <span class="txt"><span class="ttl">에이프로, 각형 배터리 양산 장비 수주…제품 라인업 확장</span><span class="date">2026-02-23</span></span>
         </a>
+      </li>
+    </ul>
+    <!-- 카드 셋 다음으로 최근인 다섯 건(보도자료 목록 순서, 카드에 쓴 글은 뺀다). 새 창으로 연다 -->
+    <ul class="hm-nlist">
+      <li>
+        <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=83" target="_blank" rel="noopener"><span class="ttl">에이프로세미콘, 8인치 GaN 에피웨이퍼 앞세워 글로벌 시장 공략</span><span class="date">2026-06-25</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 16.5L16.5 7.5M9.5 7.5H16.5V14.5" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
+      </li>
+      <li>
+        <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=82" target="_blank" rel="noopener"><span class="ttl">구미시 찾은 구윤철 경제부총리…반도체·로봇·피지컬 AI 육성 방안 논의</span><span class="date">2026-06-22</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 16.5L16.5 7.5M9.5 7.5H16.5V14.5" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
+      </li>
+      <li>
+        <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=81" target="_blank" rel="noopener"><span class="ttl">로봇 배터리, EV와 다르다… 기회충전·자율교환이 핵심</span><span class="date">2026-06-12</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 16.5L16.5 7.5M9.5 7.5H16.5V14.5" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
+      </li>
+      <li>
+        <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=79" target="_blank" rel="noopener"><span class="ttl">에이프로, 중기부 R&amp;D 우수성과 50선 선정</span><span class="date">2026-02-04</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 16.5L16.5 7.5M9.5 7.5H16.5V14.5" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
+      </li>
+      <li>
+        <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=78" target="_blank" rel="noopener"><span class="ttl">에이프로세미콘, GaN 에피웨이퍼 본격 양산…기술 고도화</span><span class="date">2026-01-21</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 16.5L16.5 7.5M9.5 7.5H16.5V14.5" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
       </li>
     </ul>
   </section>
