@@ -323,6 +323,10 @@
                      letter-spacing:-.4px;color:var(--brand)}
   .co-vhead h2{font-family:var(--ald);font-weight:400;font-size:clamp(36px,4.45vw,64px);line-height:1;
                letter-spacing:-.06em;color:var(--g900)}
+  /* 영문 제목 아래 국문 본문 두 문장 — 문장마다 한 줄. 좁으면 문장 안에서 낱말 단위로 접힌다 */
+  .co-vhead .lead{font-family:var(--suit);font-weight:500;font-size:18px;line-height:1.6;
+                  letter-spacing:-.36px;color:var(--co-sec)}
+  .co-vhead .lead span{display:block}
 
   /* AAA 세 장 — 화면 폭의 68%(1440 중 981) 판이 왼쪽 · 오른쪽 끝에 번갈아 붙는다.
      판은 두 겹이다. 바깥 판은 모서리 60, 그 안 20 들어간 안쪽 판은 모서리 40 이고,
@@ -419,6 +423,7 @@
     .co-hero h1{font-size:24px}
     .co-vision{padding:120px 0;--vgap:80px}
     .co-vhead .eyebrow{font-size:16px}
+    .co-vhead .lead{font-size:15px}
     .co-val{width:auto;margin-inline:var(--co-m)}
     .co-val:nth-child(even){margin-left:var(--co-m)}
     .co-val .in,.co-val:nth-child(even) .in{--pt:48px;padding:var(--pt) 20px 64px}
@@ -537,6 +542,7 @@
     <div class="co-vhead">
       <p class="eyebrow">VISION 2030</p>
       <h2 id="co-vis-t">Global Top 5<br />Total Energy - Solution Provider</h2>
+      <p class="lead"><span>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</span><span>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</span></p>
     </div>
 
     <!-- AAA 세 장. 그림 자리는 Figma 에서도 비어 있다(빈칸) -->
