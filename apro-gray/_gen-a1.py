@@ -57,7 +57,12 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # 이 페이지는 <style> 을 자체적으로 갖고 있어 세부 페이지와 CSS 를 공유하지 않는다 →
 # 스타일을 고칠 때도 business.html 을 고치고 이 스크립트를 돌리면 된다.
 #
-# company.html(회사소개)도 같은 이유로 들어와 있다 — 모든 페이지의 GNB "회사소개"와
+# ⚠ company.html(회사소개)도 2026-09-14 부터 여기 없다 — A-1 회사소개를 Figma 995:324
+#   와이어프레임(노을 사옥 히어로 · Vision 2030 제목 · AAA 세 장 · A-PRO 문구)으로 새로
+#   짰기 때문이다. company-a1.html 은 이제 손으로 고치는 파일이고, 머리 · 푸터 · 전체메뉴는
+#   index-a1.html 과 같은 벌이다. PAGES 에는 'company' 를 남겨 둔다(다른 A-1 페이지의
+#   회사소개 링크가 company-a1.html 로 와야 한다). 아래 단락은 그 전의 사정이다.
+# company.html(회사소개)도 같은 이유로 들어와 있었다 — 모든 페이지의 GNB "회사소개"와
 # 메가메뉴·전체메뉴의 "에이프로 소개"가 여기로 모이고, 이 페이지도 세부 페이지 4개와
 # 홈을 되짚어 링크한다. 한 벌만 두면 A-1 에서 회사소개를 한 번 누르는 순간 그 뒤로는
 # 전부 A 갈래가 된다. 디자인은 A/A-1 이 같고 링크만 갈라진다는 점도 business.html 과 같다.
@@ -94,10 +99,10 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #
 # ⚠ business-energy.html 도 2026-09-09 부터 여기 없다 — 마지막 하나였다
 #   (Figma 994:141 와이어프레임). 이제 세부 페이지 넷이 모두 손으로 고치는 A-1 이고,
-#   생성기가 만드는 건 허브(business)·회사소개·네트워크와 콘텐츠 페이지뿐이다(홈은 2026-09-14 에 빠졌다 — 위 참고).
+#   생성기가 만드는 건 허브(business)·네트워크와 콘텐츠 페이지뿐이다(홈 · 회사소개는 2026-09-14 에 빠졌다 — 위 참고).
 #   에너지 인프라 A-1 은 본문 골격까지 형제 셋과 다르다 — 붙박이가 [좌측 인덱스 +
 #   가운데 헤더] 둘이고 나머지가 통째로 흐른다.
-SOURCES = ['business.html', 'company.html', 'network.html',
+SOURCES = ['business.html', 'network.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
            'esg-report.html', 'esg-board.html',
