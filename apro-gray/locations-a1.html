@@ -19,8 +19,10 @@
      A 페이지는 없다 — A 파일의 "사업장소재" 링크는 여전히 "#" 이고, A-1 에서만 이 파일로 잇는다
      (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
 <style>
-  /* 지도 자리 띠 (Figma 1227:7864) — 파랑 판, 1440 에서 580. 아직 내용이 없다 */
-  .lc-band{min-height:580px;border-bottom:1px solid #c7c9cc}
+  /* 지도 자리 띠 (Figma 1227:7864) — 1440 에서 580. 파랑 판 대신 푸른 밤하늘 사진(night-sky-stars.jpg)을
+     꽉 채워 깐다(글로벌 네트워크 지도 띠와 같은 사진). 아직 내용이 없다 */
+  .lc-band{min-height:580px;border-bottom:1px solid #c7c9cc;
+           background:#1e3a78 url("../assets/night-sky-stars.jpg") 50% 50% / cover no-repeat}
   @media(max-width:900px){ .lc-band{min-height:360px} }
 </style>
 </head>
