@@ -2,9 +2,9 @@
    회사정보 세 페이지 공용 틀 — 회사소개 · 글로벌 네트워크 · 사업장소재 (A-1)
    Figma 1227:7858 / 1227:7859 / 1227:7862
 
-   ① 히어로(.ci-hero) — 흰 판, 위아래 96 사이에 내용만큼 선다(한 줄 설명이면 1440 에서 232).
-      12열 그리드(마진 44 · 거터 20)에서 1~3열에 영문 제목(Aldrich 40, 브랜드 파랑),
-      4열부터 설명(Pretendard 400 20).
+   ① 히어로(.ci-hero) — 흰 판, 위아래 64 사이에 내용만큼 선다(한 줄 설명이면 1440 에서 168).
+      12열 그리드(마진 44 · 거터 20)에서 1~4열(437)에 영문 제목(Aldrich 40, 브랜드 파랑),
+      5열부터 설명(Pretendard 400 15).
    ② 파랑 띠(.ci-band) — 히어로 바로 아래 브랜드 파랑 판. 안의 내용과 여백은 페이지마다 다르다
       (회사소개 Vision 2030 · 네트워크 지도 · 사업장소재 지도 자리).
 
@@ -13,12 +13,12 @@
 .ci-hero,.ci-band{--ci-m:44px;--ci-gap:20px}
 
 .ci-hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--ci-gap);align-items:start;
-  padding:96px var(--ci-m);background:#fff;color:#1b2733;word-break:keep-all}
-.ci-hero h1{grid-column:1 / span 3;margin:0;font-family:"Aldrich",sans-serif;font-weight:400;
+  padding:64px var(--ci-m);background:#fff;color:#1b2733;word-break:keep-all}
+.ci-hero h1{grid-column:1 / span 4;margin:0;font-family:"Aldrich",sans-serif;font-weight:400;
   font-size:40px;line-height:1;letter-spacing:-.06em;color:#2c5790}
 /* 설명은 Figma 에서 줄마다 끊겨 있다 — 줄 하나가 <span> 하나, 줄 사이 2 */
-.ci-hero .sub{grid-column:4 / -1;margin:0;font-family:"Pretendard",sans-serif;font-weight:400;font-size:20px;
-  line-height:1.6;letter-spacing:-.4px;font-feature-settings:"lnum" 1,"tnum" 1}
+.ci-hero .sub{grid-column:5 / -1;margin:0;font-family:"Pretendard",sans-serif;font-weight:400;font-size:15px;
+  line-height:1.6;letter-spacing:-.3px;font-feature-settings:"lnum" 1,"tnum" 1}
 .ci-hero .sub span{display:block}
 .ci-hero .sub span+span{margin-top:2px}
 
@@ -27,9 +27,8 @@
 /* 좁은 화면 — Figma 에 모바일 판이 없다. 제목과 설명을 위아래로 쌓고 마진을 16 으로 */
 @media(max-width:900px){
   .ci-hero,.ci-band{--ci-m:16px}
-  .ci-hero{grid-template-columns:minmax(0,1fr);row-gap:16px;min-height:0;padding:56px var(--ci-m)}
+  .ci-hero{grid-template-columns:minmax(0,1fr);row-gap:16px;min-height:0;padding:48px var(--ci-m)}
   .ci-hero h1,.ci-hero .sub{grid-column:1 / -1}
-  .ci-hero .sub{font-size:16px;letter-spacing:-.32px}
   /* 설명의 줄 끊김은 1440 판 기준이다 — 좁은 화면에서는 줄을 이어 흐르게 한다 */
   .ci-hero .sub span{display:inline}
   .ci-hero .sub span+span{margin-top:0}
