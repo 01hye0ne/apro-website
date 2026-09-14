@@ -375,7 +375,12 @@
      떨어뜨리며 앞 사진을 다음 사진으로 겹쳐 바꾼다. 자리(.ph)는 착지 자리로 테두리만 남는다.
      스크립트가 없거나 움직임 줄이기를 켜면 세 자리가 원래대로 보인다 */
   .co-values{position:relative}
+  /* 사진은 A 회사소개 AAA 장의 세 장(세로로 잘린 원본)이라 4:3 자리에서는 가로 띠만 보인다 —
+     어느 높이를 남길지는 사진마다 object-position 으로 정한다(마크업의 style) */
+  .co-val .ph{overflow:hidden}
+  .co-val .ph>img{display:block;width:100%;height:100%;object-fit:cover}
   .co-values.is-morph .co-val .ph{background:transparent}
+  .co-values.is-morph .co-val .ph>img{visibility:hidden}
   .co-morph{position:absolute;left:0;top:0;z-index:3;pointer-events:none;will-change:transform}
   .co-morph .ly{position:absolute;inset:0;background:var(--co-ph);border:1px solid var(--border-g);overflow:hidden}
   .co-morph .ly>img{display:block;width:100%;height:100%;object-fit:cover}
@@ -526,7 +531,7 @@
           <p class="pair"><span><b>A</b>dvance</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>P</b>ioneer</span></p>
           <p class="d">앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
         </div>
-        <span class="ph" aria-hidden="true"></span>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-reliability-lab.jpg" width="1100" height="1631" alt="" decoding="async" style="object-position:50% 45%" /></span>
       </div></div></li>
       <li class="co-val"><div class="out"><div class="in">
         <div class="kw">
@@ -535,7 +540,7 @@
           <p class="pair"><span><b>A</b>ggressiveness</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>R</b>emarkability</span></p>
           <p class="d">도전적이고 과감한 자세로 시장을 확대합니다.</p>
         </div>
-        <span class="ph" aria-hidden="true"></span>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-award-shelf.jpg" width="1100" height="1527" alt="" decoding="async" style="object-position:50% 25%" /></span>
       </div></div></li>
       <li class="co-val"><div class="out"><div class="in">
         <div class="kw">
@@ -544,7 +549,7 @@
           <p class="pair"><span><b>A</b>gility</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>O</b>rganism</span></p>
           <p class="d">빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
         </div>
-        <span class="ph" aria-hidden="true"></span>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-office-floor.jpg" width="1100" height="1520" alt="" decoding="async" style="object-position:50% 75%" /></span>
       </div></div></li>
     </ul>
 
