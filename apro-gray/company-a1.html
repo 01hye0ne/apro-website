@@ -296,14 +296,21 @@
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .co-hero,.co-vision{word-break:keep-all}
 
-  /* ── 히어로 — 노을 속 사옥. 글은 왼쪽 아래(격자 마진)에 이름표와 슬로건 두 덩이 ── */
-  .co-hero{position:relative;height:600px;overflow:hidden;background:var(--g900);color:#fff}
+  /* ── 히어로 (Figma 995:339) — 투자정보 · 지속가능경영 · 커뮤니티(content-layout.css 의 .dhero)와 같은 틀.
+     464 높이 판 가운데에 제목(SUIT 800 48, 흰색) · 부제(SUIT 800 24, 흰 70%)를 12 간격으로 세운다.
+     사진은 노을 속 사옥 그대로 두고, 흰 글이 읽히게 .dhero::after 와 같은 어둠을 한 겹 깐다 */
+  .co-hero{position:relative;height:464px;overflow:hidden;background:var(--g900);color:#fff;
+           display:flex;align-items:center;justify-content:center;padding-inline:var(--co-m)}
   .co-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%}
-  .co-hero .in{position:absolute;left:var(--co-m);right:var(--co-m);bottom:59px;
-               display:flex;flex-direction:column;align-items:flex-start;gap:26px}
-  .co-hero .lbl{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px}
-  .co-hero h1{max-width:900px;font-family:var(--suit);font-weight:800;font-size:36px;line-height:1.2;
-              letter-spacing:-.72px}
+  .co-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% -10%,rgba(64,119,183,.28),transparent 62%),
+      linear-gradient(to top,rgba(14,22,30,.48) 0%,rgba(14,22,30,.48) 72%,rgba(14,22,30,.66) 100%)}
+  .co-hero .in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px;
+               text-align:center}
+  .co-hero h1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px}
+  .co-hero .sub{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px;
+                color:rgba(255,255,255,.7)}
 
   /* ── Vision 2030 — 제목, AAA 세 장, 닫는 문구가 120 간격으로 쌓인다 ─────────── */
   .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);padding:240px 0;
@@ -407,10 +414,9 @@
 
   @media(max-width:900px){
     :root{--co-m:16px}
-    .co-hero{height:440px}
-    .co-hero .in{bottom:40px;gap:16px}
-    .co-hero .lbl{font-size:18px}
-    .co-hero h1{font-size:24px}
+    .co-hero{height:360px}
+    .co-hero h1{font-size:32px;letter-spacing:-.64px}
+    .co-hero .sub{font-size:18px;letter-spacing:-.36px}
     .co-vision{padding:120px 0;--vgap:80px}
     .co-vhead .eyebrow{font-size:16px}
     .co-vhead .lead{font-size:15px}
@@ -522,8 +528,8 @@
   <section class="co-hero">
     <img src="../assets/hq-dusk.jpg" width="2560" height="1511" alt="" aria-hidden="true" />
     <div class="in">
-      <p class="lbl">회사소개</p>
-      <h1>THE BEST ELECTRICAL ENGINEERING<br />SOLUTION PROVIDER</h1>
+      <h1>회사소개</h1>
+      <p class="sub">The Best Electrical Engineering Solution Provider</p>
     </div>
   </section>
 

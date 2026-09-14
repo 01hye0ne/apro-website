@@ -83,8 +83,20 @@
   /* 공용 기본값은 var(--bar-h) — 소분류 탭 바가 히어로 밑단에 얹히는 자리였다.
      바가 없으니 위 여백과 같은 값으로 돌려 타이틀이 배너 정중앙에 오게 한다 */
   padding-bottom:80px}
-@media(min-width:901px){
-  .dhero h1{font-size:60px;line-height:1.22}
+/* Figma 995:339 — 회사정보 · 투자정보 · 지속가능경영 · 커뮤니티가 같은 히어로 틀을 쓴다.
+   464 높이 판 가운데에 제목(SUIT 800 48, 흰색) · 설명(SUIT 800 24, 흰 70%)을 12 간격으로 세운다.
+   높이는 공용 값(데스크톱 88vh · 좁은 화면 480)을 덮는다 — 이 파일이 business-layout.css 뒤에
+   불리므로 같은 특정도에서 이긴다. 회사소개 A-1(company-a1.html 의 .co-hero)도 같은 값을 쓴다 */
+.dhero{min-height:464px}
+.dhero .in{display:flex;flex-direction:column;align-items:center;gap:12px}
+.dhero h1{font-size:48px;line-height:1.2;letter-spacing:-.96px}
+.dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:800;font-size:24px;
+  line-height:1.2;letter-spacing:-.48px;color:rgba(255,255,255,.7)}
+/* 좁은 화면 — Figma 에 모바일 판이 없어 같은 비율로 줄인다(높이 360 · 제목 32 · 설명 18) */
+@media(max-width:900px){
+  .dhero{min-height:360px}
+  .dhero h1{font-size:32px;letter-spacing:-.64px}
+  .dhero-lead{font-size:18px;letter-spacing:-.36px}
 }
 
 /* =====================================================================
@@ -973,7 +985,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 }
 @media(max-width:760px){
   :root{--cx:24px}
-  .dhero{min-height:380px}
+  .dhero{min-height:360px}
   .cbody{padding:56px 0 80px}
   .cblock+.cblock{margin-top:64px}
   .ccard,.cperson,.cway{padding:24px}
