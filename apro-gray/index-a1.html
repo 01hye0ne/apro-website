@@ -318,10 +318,9 @@
           letter-spacing:-.06em;color:var(--g900)}
 
   /* ── 배너 — 네 사업영역을 차례로 돌린다 ─────────────────────────────────
-     사진과 제목은 겹쳐 두고 켜진 장만 드러낸다. 탭 이름 밑줄은 네 탭을 한 줄로
-     잇고, 켜진 탭 밑에서 흰 게이지가 머무는 시간만큼 찬다 */
-  .hm-banner{container:hmbanner/inline-size;
-             position:relative;height:var(--hm-h);min-height:560px;overflow:hidden;
+     사진과 제목은 겹쳐 두고 켜진 장만 드러낸다. 탭 이름 밑줄은 한 줄로 화면
+     오른쪽 끝까지 이어지고, 켜진 탭 밑에서 흰 게이지가 머무는 시간만큼 찬다 */
+  .hm-banner{position:relative;height:var(--hm-h);min-height:560px;overflow:hidden;
              display:flex;flex-direction:column;justify-content:flex-end;
              background:var(--g900);word-break:keep-all}
   .hm-bg{position:absolute;inset:0}
@@ -332,9 +331,10 @@
      그냥 걸면 윗변에서 갑자기 흐려져 가로줄이 생기므로, 어두워지는 그라디언트와
      블러를 ::before 한 판에 얹고 mask 로 위에서 아래로 서서히 드러낸다
      (0 투명 → 55% 완전). 값도 세부 히어로와 같다(블러 3px · 어둠 .22).
-     좌우는 본문과 같은 2~11열이다 */
+     왼쪽은 격자 마진(44)에 서고, 탭 밑줄은 화면 오른쪽 끝까지 간다.
+     아래 여백은 80 — 제목과 섬네일이 배너 바닥에 붙어 보이지 않게 넉넉히 둔다 */
   .hm-ov{position:relative;min-height:270px;display:flex;align-items:flex-end;gap:32px;
-         padding:40px calc(var(--hm-m) + 20px + (100% - 308px) / 12)}
+         padding:40px 0 80px var(--hm-m)}
   .hm-ov::before{content:"";position:absolute;inset:0;pointer-events:none;
          background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22));
          -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
@@ -350,7 +350,7 @@
              font-size:clamp(40px,4.45vw,64px);line-height:1;letter-spacing:-.06em;color:#fff}
   .hm-hl .ko{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;
              letter-spacing:-.4px;color:rgba(255,255,255,.7)}
-  .hm-tabs{position:relative;flex:0 0 560px;
+  .hm-tabs{position:relative;flex:0 0 604px;padding-right:var(--hm-m);
            display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   .hm-tabs::before{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:#fff}
   .hm-tab{min-width:0;display:flex;flex-direction:column;gap:8px;padding:0;
@@ -460,19 +460,16 @@
   .hm-ncards a:hover .ttl{color:var(--brand)}
   .hm-ncards .date{font-family:var(--pre);font-weight:400;font-size:12px;color:var(--hm-sec)}
 
-  /* 배너 폭이 1400 아래면 2~11열 안에서 제목 칸이 500px 밑으로 줄어 긴 제목
-     (Physical AI…)이 네다섯 줄로 접힌다 — 탭을 제목 아래로 내린다. 내린 탭은 나란할
-     때와 같은 560 폭을 지켜 섬네일이 커지지 않게 한다.
-     창 폭(media)이 아니라 배너의 실제 폭으로 가른다 — 윈도 브라우저는 스크롤바
-     몫만큼 본문이 좁아, 같은 1440 창에서도 줄 수가 달라지기 때문이다 */
-  @container hmbanner (max-width:1399px){
+  /* 1280 아래로는 제목(760)과 탭(604)이 한 줄에 안 든다 — 탭을 제목 아래로 내린다 */
+  @media(max-width:1280px){
     .hm-ov{flex-direction:column;align-items:stretch;gap:24px;padding-top:32px}
-    .hm-tabs{flex:none;width:100%;max-width:560px}
+    .hm-tabs{flex:none;width:100%}
   }
   @media(max-width:900px){
     :root{--hm-m:16px}
     /* 좁은 화면은 열을 들이지 않고 16px 마진만 둔다 */
-    .hm-sec,.hm-ov{padding-inline:var(--hm-m)}
+    .hm-sec{padding-inline:var(--hm-m)}
+    .hm-ov{padding-bottom:56px}
     .hm-rail{margin-right:calc(var(--hm-m) * -1)}
     .hm-ttl{font-size:32px}
     .hm-hl .ko{font-size:16px}
