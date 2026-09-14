@@ -347,7 +347,8 @@
      px 고정이라 viewBox 늘이기로는 모서리가 찌그러진다). 채운 길이는 stroke-dashoffset */
   .co-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
   .co-draw path{fill:none;stroke:var(--co-line);stroke-width:1}
-  .co-val .kw{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  /* z-index 4 — 판 사이를 떨어지는 사진(.co-morph, 3)이 지나갈 때 제목 · 글 · 번호 박스가 사진 위에 남는다 */
+  .co-val .kw{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
   /* 번호 박스 — 바깥 선과 안쪽 선 사이 20px 틈의 한가운데, 글 기둥 중앙에 얹는다.
      흰 바탕이 두 선을 가려 선이 박스를 뚫고 지나가는 것처럼 보인다. 파란 선(바깥)이
      박스에 닿으면 스크립트가 .is-lit 을 달아 테두리와 숫자도 파랗게 바뀐다.
@@ -369,6 +370,15 @@
   .co-val .d{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.2;letter-spacing:-.32px;
              color:var(--co-sec)}
   .co-val .ph{display:block;aspect-ratio:4/3;background:var(--co-ph);border:1px solid var(--border-g)}
+  /* 사진 모핑 — 세 장의 사진 자리는 가로로 거의 같은 중앙선에 있다. 스크립트가 사진 한 장
+     (.co-morph)을 목록 위에 띄우고, 사진 자리가 화면 가운데를 지날 때마다 다음 자리로
+     떨어뜨리며 앞 사진을 다음 사진으로 겹쳐 바꾼다. 자리(.ph)는 착지 자리로 테두리만 남는다.
+     스크립트가 없거나 움직임 줄이기를 켜면 세 자리가 원래대로 보인다 */
+  .co-values{position:relative}
+  .co-values.is-morph .co-val .ph{background:transparent}
+  .co-morph{position:absolute;left:0;top:0;z-index:3;pointer-events:none;will-change:transform}
+  .co-morph .ly{position:absolute;inset:0;background:var(--co-ph);border:1px solid var(--border-g);overflow:hidden}
+  .co-morph .ly>img{display:block;width:100%;height:100%;object-fit:cover}
 
   /* 닫는 문구 — 격자 2~11열 16:9 그림 자리 한가운데에 얹는다(그림은 Figma 에서도 비어 있다) */
   .co-apro{padding-inline:calc(var(--co-m) + 20px + (100% - 308px) / 12)}
@@ -766,6 +776,81 @@
     window.addEventListener('resize', refit);
     window.addEventListener('load', refit);
     if(window.ResizeObserver) new ResizeObserver(refit).observe(document.querySelector('.co-values'));
+  })();
+
+  /* ===== AAA 사진 — 한 장이 판에서 판으로 떨어지며 바뀐다 =====
+     진행값 f 는 0(1번 자리) ~ 2(3번 자리). i 번 자리 가운데가 화면 가운데(GNB 아래 기준)에
+     닿으면 출발하고, i+1 번 자리 가운데가 닿으면 도착한다. 그 사이는 앞뒤 10% 를 머물고
+     smoothstep 으로 가감속한다 — 처음엔 판을 따라 살짝 올라갔다가 다음 자리로 내려앉는다.
+     사진 층은 자리마다 하나(.ly, 자리 안의 내용을 복사). 떠나는 층은 그대로 두고 오는 층을
+     위에서 서서히 올려 겹쳐 바꾼다(둘 다 반투명이 되면 가운데서 바탕이 비친다).
+     선 그리기와 같은 이유로 목표값을 조금씩 따라간다 */
+  (function(){
+    var list = document.querySelector('.co-values');
+    var slots = list ? [].slice.call(list.querySelectorAll('.co-val .ph')) : [];
+    if(slots.length < 2) return;
+    if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var gnb = document.querySelector('.sf-gnb');
+    var box = document.createElement('div');
+    box.className = 'co-morph';
+    box.setAttribute('aria-hidden', 'true');
+    var layers = slots.map(function(s){
+      var ly = document.createElement('div');
+      ly.className = 'ly';
+      ly.innerHTML = s.innerHTML;
+      box.appendChild(ly);
+      return ly;
+    });
+    list.appendChild(box);
+    list.classList.add('is-morph');
+
+    var R = [], cur = 0, goal = 0, raf = 0, last = slots.length - 1;
+    function measure(){
+      var b = list.getBoundingClientRect();
+      R = slots.map(function(s){
+        var r = s.getBoundingClientRect();
+        return { x:r.left - b.left, y:r.top - b.top, w:r.width, h:r.height };
+      });
+    }
+    function ease(p){
+      p = (p - .1) / .8;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      return p * p * (3 - 2 * p);
+    }
+    function target(){
+      var top = list.getBoundingClientRect().top;
+      var vc = ((gnb ? gnb.offsetHeight : 0) + window.innerHeight) / 2;
+      for(var i = 0; i < last; i++){
+        var a = top + R[i].y + R[i].h / 2, c = top + R[i + 1].y + R[i + 1].h / 2;
+        if(vc < c) return vc <= a ? i : i + ease((vc - a) / (c - a));
+      }
+      return last;
+    }
+    function paint(){
+      var i = Math.min(Math.floor(cur), last), e = cur - i;
+      var A = R[i], B = R[Math.min(i + 1, last)];
+      box.style.width = (A.w + (B.w - A.w) * e) + 'px';
+      box.style.height = (A.h + (B.h - A.h) * e) + 'px';
+      box.style.transform = 'translate(' + (A.x + (B.x - A.x) * e) + 'px,' + (A.y + (B.y - A.y) * e) + 'px)';
+      layers.forEach(function(ly, j){ ly.style.opacity = j === i ? 1 : j === i + 1 ? e : 0; });
+    }
+    function tick(){
+      raf = 0;
+      var d = goal - cur;
+      if(Math.abs(d) < .001) cur = goal;
+      else { cur += d * .16; raf = requestAnimationFrame(tick); }
+      paint();
+    }
+    function kick(){ goal = target(); if(!raf) raf = requestAnimationFrame(tick); }
+    function refit(){ measure(); goal = target(); paint(); kick(); }
+
+    measure();
+    cur = goal = target();
+    paint();
+    window.addEventListener('scroll', kick, { passive:true });
+    window.addEventListener('resize', refit);
+    window.addEventListener('load', refit);
+    if(window.ResizeObserver) new ResizeObserver(refit).observe(list);
   })();
 </script>
 
