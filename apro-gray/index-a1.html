@@ -335,19 +335,26 @@
      아래 여백은 80 — 제목과 섬네일이 배너 바닥에 붙어 보이지 않게 넉넉히 둔다 */
   .hm-ov{position:relative;min-height:270px;display:flex;align-items:flex-end;gap:32px;
          padding:40px 0 80px var(--hm-m)}
-  .hm-ov::before{content:"";position:absolute;inset:0;pointer-events:none;
-         background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22));
+  /* 제목이 흰 글자라 세부 히어로보다 짙게 깐다(.22 → .5). 판을 위로 120 더 올려
+     그라디언트가 제목 첫 줄에 닿기 전에 충분히 차오르게 한다 */
+  .hm-ov::before{content:"";position:absolute;inset:-120px 0 0;pointer-events:none;
+         background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.5));
          -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
          -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
          mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-ov>*{position:relative;z-index:1}
-  .hm-heads{flex:1;min-width:0;display:grid}
+  .hm-heads{flex:1;min-width:0;display:grid;container-type:inline-size}
   .hm-hl{grid-area:1/1;align-self:end;display:flex;flex-direction:column;gap:10px;
          opacity:0;transform:translateY(12px);
          transition:opacity .8s var(--ease),transform .8s var(--ease)}
   .hm-hl.is-on{opacity:1;transform:none}
-  .hm-hl .en{max-width:760px;font-family:var(--ald);font-weight:400;
-             font-size:clamp(40px,4.45vw,64px);line-height:1;letter-spacing:-.06em;color:#fff}
+  /* 영문 제목은 <br> 에서만 꺾어 늘 두 줄 이하다. 글자 크기는 네 제목 중 가장 긴
+     줄(Industrial Safety Innovation, 64px 에서 804px = 12.57em)이 제목 칸에 딱
+     들도록 칸 폭(cqi)에서 구한다 — 네 장이 같은 크기라 넘길 때 글자가 튀지 않는다.
+     제목을 고쳐 더 긴 줄이 생기면 12.6 을 다시 잰다 */
+  .hm-hl .en{font-family:var(--ald);font-weight:400;white-space:nowrap;
+             font-size:clamp(24px,calc(100cqi / 12.6),64px);line-height:1;
+             letter-spacing:-.06em;color:#fff}
   .hm-hl .ko{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;
              letter-spacing:-.4px;color:rgba(255,255,255,.7)}
   .hm-tabs{position:relative;flex:0 0 604px;padding-right:var(--hm-m);
@@ -463,6 +470,9 @@
   /* 1280 아래로는 제목(760)과 탭(604)이 한 줄에 안 든다 — 탭을 제목 아래로 내린다 */
   @media(max-width:1280px){
     .hm-ov{flex-direction:column;align-items:stretch;gap:24px;padding-top:32px}
+    /* 내려앉으면 제목 칸이 화면 오른쪽 끝까지 가므로, 긴 줄이 끝에 닿지 않게
+       오른쪽에도 마진을 둔다(글자 크기는 이 여백을 뺀 칸 폭에서 구해진다) */
+    .hm-heads{padding-right:var(--hm-m)}
     .hm-tabs{flex:none;width:100%}
   }
   @media(max-width:900px){
