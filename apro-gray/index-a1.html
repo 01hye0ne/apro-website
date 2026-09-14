@@ -300,7 +300,10 @@
      Text/Secondary = --hm-sec, Icon/Primary = --hm-icon, Border/Default = --border-g,
      Primitive/Brand/400 = --brand-2. 제목 영문만 Aldrich, 나머지는 SUIT · Pretendard */
   :root{--ald:"Aldrich",var(--rc),sans-serif;--hm-m:44px;--hm-h:calc(100svh - 53px);
-        --hm-rule:#c7c9cc;--hm-sec:#5a6675;--hm-icon:#445464;--hm-ph:#e5e6e8}
+        --hm-rule:#c7c9cc;--hm-sec:#5a6675;--hm-icon:#445464;--hm-ph:#e5e6e8;
+        /* 히어로 탭 네 개가 차지하는 폭. Business 접힌 띠 셋의 폭 합도 이 값이라
+           두 줄의 오른쪽 덩어리가 위아래로 같은 폭에 선다 */
+        --hm-tabs:560px}
   body{background:#fff}
   .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -372,7 +375,7 @@
              letter-spacing:-.06em;color:#fff}
   .hm-hl .ko{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;
              letter-spacing:-.4px;color:rgba(255,255,255,.7)}
-  .hm-tabs{position:relative;flex:0 0 604px;padding-right:var(--hm-m);
+  .hm-tabs{position:relative;flex:0 0 calc(var(--hm-tabs) + var(--hm-m));padding-right:var(--hm-m);
            display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   .hm-tabs::before{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:#fff}
   .hm-tab{min-width:0;display:flex;flex-direction:column;gap:8px;padding:0;
@@ -406,7 +409,7 @@
   .hm-rail{container-type:inline-size}
   /* 카드 사이는 틈 없이 붙이고 흰 선 1px 로만 가른다 — 선은 뒤 카드의 왼쪽 테두리다
      (box-sizing 이 border-box 라 폭 계산에 따로 넣지 않아도 된다) */
-  .hm-track{--fold:calc(100cqi * .125);--open:calc(100cqi - 3 * var(--fold));
+  .hm-track{--fold:calc(var(--hm-tabs) / 3);--open:calc(100cqi - 3 * var(--fold));
             display:flex;list-style:none;height:max(360px,calc(var(--open) * .5623))}
   .hm-card+.hm-card{border-left:1px solid #fff}
   .hm-card{position:relative;flex:0 0 var(--fold);min-width:0;overflow:hidden;background:#c7c7c7;
@@ -676,6 +679,8 @@
        오른쪽에도 마진을 둔다(글자 크기는 이 여백을 뺀 칸 폭에서 구해진다) */
     .hm-heads{padding-right:var(--hm-m)}
     .hm-tabs{flex:none;width:100%}
+    /* 탭이 제목 아래로 내려가 폭을 다 쓰면 띠가 맞출 짝이 없다 — 띠는 본문의 12.5% 로 돌아간다 */
+    .hm-track{--fold:calc(100cqi * .125)}
     /* 두 열로 — 지도가 한 줄을 다 쓰고 그 아래 사업 네 칸이 2×2 */
     .hm-tiles{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-template-areas:"mp mp" "sm en" "ai se"}
   }
