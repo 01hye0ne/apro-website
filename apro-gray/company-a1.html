@@ -340,14 +340,25 @@
                border-radius:60px 0 0 0;padding:20px 0 0 20px}
   .co-val .in{position:relative;background:#fff;border-top:1px solid var(--border-g);
               border-right:1px solid var(--border-g);border-top-right-radius:40px;
-              padding:64px 2.08% 120px 52.13%;display:flex;flex-direction:column;gap:28px}
+              --pt:64px;padding:var(--pt) 2.08% 120px 52.13%;display:flex;flex-direction:column;gap:28px}
   .co-val:nth-child(even) .in{border-right:0;border-left:1px solid var(--border-g);
-              border-radius:40px 0 0 0;padding:64px 52.13% 120px 2.08%}
+              border-radius:40px 0 0 0;padding:var(--pt) 52.13% 120px 2.08%}
   /* 파란 선 — 판 위에 겹친 SVG. 경로는 판 크기에 맞춰 스크립트가 그린다(모서리 반경이
      px 고정이라 viewBox 늘이기로는 모서리가 찌그러진다). 채운 길이는 stroke-dashoffset */
   .co-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
   .co-draw path{fill:none;stroke:var(--co-line);stroke-width:1}
-  .co-val .kw{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .co-val .kw{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  /* 번호 박스 — 바깥 선과 안쪽 선 사이 20px 틈의 한가운데, 글 기둥 중앙에 얹는다.
+     흰 바탕이 두 선을 가려 선이 박스를 뚫고 지나가는 것처럼 보인다. 파란 선(바깥)이
+     박스에 닿으면 스크립트가 .is-lit 을 달아 테두리와 숫자도 파랗게 바뀐다.
+     세로 자리: 두 선의 중심은 .in 안쪽 상자 위 -21.5 / -0.5 → 가운데 -11,
+     .kw 는 거기서 --pt 만큼 아래에 있다. z-index 는 위에 겹친 SVG(.co-draw)를 덮기 위해 */
+  .co-val .no{position:absolute;left:50%;top:calc(-1 * var(--pt) - 11px);z-index:2;
+              transform:translate(-50%,-50%);min-width:40px;height:32px;padding:0 10px;
+              display:grid;place-items:center;background:#fff;border:1px solid var(--co-rule);
+              font-family:var(--ald);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.02em;
+              color:var(--co-mute);transition:color .4s var(--ease),border-color .4s var(--ease)}
+  .co-val .no.is-lit{color:var(--co-line);border-color:var(--co-line)}
   .co-val h3{font-family:var(--ald);font-weight:400;font-size:40px;line-height:1;letter-spacing:-.06em;
              color:var(--g900)}
   /* 키워드 짝 — 머리글자만 파랑, 나머지는 옅은 회색 */
@@ -378,7 +389,7 @@
     .co-vhead .eyebrow{font-size:16px}
     .co-val{width:auto;margin-inline:var(--co-m)}
     .co-val:nth-child(even){margin-left:var(--co-m)}
-    .co-val .in,.co-val:nth-child(even) .in{padding:48px 20px 64px}
+    .co-val .in,.co-val:nth-child(even) .in{--pt:48px;padding:var(--pt) 20px 64px}
     .co-val h3{font-size:32px}
     .co-apro{padding-inline:var(--co-m)}
     .co-apro .fig{aspect-ratio:auto;min-height:360px}
@@ -500,6 +511,7 @@
     <ul class="co-values" aria-label="AAA 전략">
       <li class="co-val"><div class="out"><div class="in">
         <div class="kw">
+          <span class="no" aria-hidden="true">01</span>
           <h3>Advanced</h3>
           <p class="pair"><span><b>A</b>dvance</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>P</b>ioneer</span></p>
           <p class="d">앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
@@ -508,6 +520,7 @@
       </div></div></li>
       <li class="co-val"><div class="out"><div class="in">
         <div class="kw">
+          <span class="no" aria-hidden="true">02</span>
           <h3>Aggressive</h3>
           <p class="pair"><span><b>A</b>ggressiveness</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>R</b>emarkability</span></p>
           <p class="d">도전적이고 과감한 자세로 시장을 확대합니다.</p>
@@ -516,6 +529,7 @@
       </div></div></li>
       <li class="co-val"><div class="out"><div class="in">
         <div class="kw">
+          <span class="no" aria-hidden="true">03</span>
           <h3>Agile</h3>
           <p class="pair"><span><b>A</b>gility</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>O</b>rganism</span></p>
           <p class="d">빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
@@ -658,6 +672,7 @@
       svg.appendChild(po); svg.appendChild(pi);
       li.appendChild(svg);
       return { li:li, out:li.querySelector('.out'), inn:li.querySelector('.in'),
+               no:li.querySelector('.no'), bx:0,
                po:po, pi:pi, lo:0, lI:0, cur:0, goal:0 };
     });
 
@@ -683,6 +698,11 @@
         it.pi.setAttribute('d', edge(n.left - b.left, n.top - b.top, n.width, n.height,
                                      parseFloat(left ? si.borderTopLeftRadius : si.borderTopRightRadius) || 0, left));
         it.lo = it.po.getTotalLength(); it.lI = it.pi.getTotalLength();
+        /* 번호 박스까지 바깥 선이 달려야 할 거리 — 선이 출발하는 쪽 박스 가장자리까지 */
+        if(it.no){
+          var nb = it.no.getBoundingClientRect();
+          it.bx = left ? o.right - nb.right : nb.left - o.left;
+        }
         it.po.style.strokeDasharray = it.lo + ' ' + it.lo;
         it.pi.style.strokeDasharray = it.lI + ' ' + it.lI;
       });
@@ -692,6 +712,7 @@
       var o = clamp(it.cur * 1.12), i = clamp(it.cur * 1.12 - .12);
       it.po.style.strokeDashoffset = it.lo * (1 - o);
       it.pi.style.strokeDashoffset = it.lI * (1 - i);
+      if(it.no) it.no.classList.toggle('is-lit', it.lo && it.lo * o >= it.bx);
     }
     function goals(){
       var vh = window.innerHeight;
