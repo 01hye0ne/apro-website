@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APRO | 에이프로 — 글로벌 네트워크 (A-1)</title>
-<meta name="description" content="에이프로(APRO) 글로벌 네트워크 — 경기도의 본사·R&D센터와 세계 각지의 생산·판매 거점." />
+<title>APRO | 에이프로 — 사업장소재 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 사업장소재 — 본사와 국내외 사업장의 위치." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -13,51 +13,16 @@
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="company-info.css" />
 <!-- ============================================================
-     글로벌 네트워크 A-1 (Figma 1227:7859) — 회사정보 세 페이지(회사소개 · 글로벌 네트워크 ·
-     사업장소재)가 같은 틀을 쓴다: 흰 히어로(company-info.css 의 .ci-hero) 아래 파랑 띠(.ci-band).
-     이 페이지의 띠는 점 지도 한 장과 거점 표시(마커) 열다섯이다.
+     사업장소재 A-1 (Figma 1227:7862) — 회사정보 세 페이지 공용 틀(company-info.css):
+     흰 히어로 아래 파랑 띠. 띠는 지도 자리로 Figma 에서도 아직 비어 있고, 설명도 자리표시("~~~")다.
 
-     2026-09-14 부터 손으로 고치는 파일이다 — A(network.html)는 옛 전면 무대 그대로 두고
-     _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
-     (business-layout.css / business-layout.js)이다 -->
+     A 페이지는 없다 — A 파일의 "사업장소재" 링크는 여전히 "#" 이고, A-1 에서만 이 파일로 잇는다
+     (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
 <style>
-  /* 지도 띠 (Figma 995:518) — 파랑 판, 1440 에서 580. 점 지도(921×451, gnet-map.png)가 오른쪽 24 에
-     붙고 위아래 64 로 가운데에 선다. 좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
-  .gn-band{display:flex;justify-content:flex-end;align-items:center;padding:64px 24px;border-bottom:1px solid #c7c9cc}
-  .gn-map{position:relative;flex:0 1 921px;aspect-ratio:922/451}
-  .gn-map>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
-
-  /* 거점 표시 — --x · --y 는 지도 그림 안의 % 좌표(점 한가운데)라 지도가 줄어도 제자리를 짚는다.
-     20 상자 안에서 점 중심이 (10, 11) 이므로 그만큼 당긴다. 옛 전면 무대(1280×900)의 px 좌표에서 옮겨 왔다 */
-  .gnet-mk{position:absolute;left:calc(var(--x) - 10px);top:calc(var(--y) - 11px);width:20px;height:20px;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:6px;cursor:pointer}
-  .gnet-mk .dot{position:relative;width:6px;height:6px;background:#ff8f47;border:1px solid #fff;
-    box-shadow:0 6px 4px 2px rgba(0,0,0,.25);flex-shrink:0}
-  .gnet-mk .tip{position:absolute;bottom:18px;left:50%;transform:translate(-50%,6px);white-space:nowrap;padding:8px 16px;
-    font-family:var(--suit);font-weight:800;font-size:16px;letter-spacing:-.32px;color:var(--g900);
-    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    box-shadow:0 0 16px rgba(11,11,10,.12);opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
-  .gnet-mk:hover{z-index:5}
-  .gnet-mk:hover .tip{opacity:1;transform:translate(-50%,0)}
-  /* 지도가 화면에 들어오면 표시가 하나씩 솟았다가, 그 뒤로는 은은한 파동으로 숨 쉰다 */
-  .gnet-mk .dot::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;
-    border:1px solid #ff8f47;box-sizing:border-box;opacity:0;pointer-events:none}
-  @media (prefers-reduced-motion:no-preference){
-    .js-anim .gnet-mk{opacity:0;transform:translateY(6px) scale(.35);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-    .js-anim .gnet-live .gnet-mk{opacity:1;transform:none}
-    .gnet-live .gnet-mk .dot::after{animation:mkPulse 2.8s var(--ease) infinite;animation-delay:var(--pd,0s)}
-  }
-  @keyframes mkPulse{0%{opacity:.5;transform:scale(1)}70%{opacity:0;transform:scale(3.4)}100%{opacity:0;transform:scale(3.4)}}
-  @media (prefers-reduced-motion:reduce){ .gnet-mk .tip{transition:none} }
-
-  @media(max-width:900px){
-    .gn-band{padding:40px 16px}
-    .gn-map{flex-basis:100%}
-    .gnet-mk .tip{padding:6px 12px;font-size:14px}
-  }
+  /* 지도 자리 띠 (Figma 1227:7864) — 파랑 판, 1440 에서 580. 아직 내용이 없다 */
+  .lc-band{min-height:580px;border-bottom:1px solid #c7c9cc}
+  @media(max-width:900px){ .lc-band{min-height:360px} }
 </style>
-<!-- 표시(마커)를 숨겼다 띄우는 연출 스위치. JS 가 없거나 못 돌면 그냥 다 보인다 -->
-<script>document.documentElement.classList.add('js-anim');</script>
 </head>
 <body>
 
@@ -123,8 +88,8 @@
 <div class="sf-mega card" id="mega-com" aria-hidden="true" aria-label="회사정보">
   <div class="menu">
     <a class="hd" href="company-a1.html">회사 소개<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    <a class="hd" href="network-a1.html" aria-current="page">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
-    <a class="hd" href="locations-a1.html">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="network-a1.html">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="locations-a1.html" aria-current="page">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
   </div>
 </div>
 <div class="sf-mega card" id="mega-ir" aria-hidden="true" aria-label="투자정보">
@@ -152,34 +117,14 @@
 </div>
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
-<!-- ===================== HERO (Figma 1227:7859) — 회사정보 공용 틀(company-info.css) ===================== -->
+<!-- ===================== HERO (Figma 1227:7862) — 회사정보 공용 틀(company-info.css) ===================== -->
 <section class="ci-hero">
-  <h1 lang="en">Global<br />Network</h1>
-  <p class="sub"><span>A-PRO의 본사와 R&amp;D센터는 경기도에 있으며, 다양한 제품 포트폴리오를 개발하고 있습니다.</span><span>최고의 엔지니어들이 새롭고 혁신적인 기술 개발을 위해 끊임 없이 노력하고 있습니다.</span><span>제품은 여러 국가에서 현지 생산되고 있으며, 본사의 제품과 서비스는 글로벌</span><span>해외 영업 네트워크를 통해 판매되고 있습니다.</span></p>
+  <h1 lang="en">Locations</h1>
+  <p class="sub">~~~</p>
 </section>
 
-<!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 995:518) ===================== -->
-<!-- 표시(.gnet-mk)의 --x / --y 는 지도 그림 안의 % 좌표다 — 값 하나하나가 나라 한 곳을 가리킨다 -->
-<section class="ci-band gn-band" aria-label="글로벌 거점 지도">
-  <div class="gn-map">
-    <img src="../assets/gnet-map.png" width="922" height="451" alt="" aria-hidden="true" />
-    <span class="gnet-mk" style="--x:22.48%;--y:33.48%"><span class="tip">United States of America</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:23.02%;--y:52.77%"><span class="tip">Nicaragua</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:22.91%;--y:58.98%"><span class="tip">Panama</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:26.06%;--y:67.18%"><span class="tip">Peru</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:50.38%;--y:31.71%"><span class="tip">Germany</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:51.68%;--y:35.70%"><span class="tip">Czech</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:53.20%;--y:39.47%"><span class="tip">Austria</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:54.07%;--y:27.94%"><span class="tip">Poland</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:54.83%;--y:41.69%"><span class="tip">Hungary</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:55.05%;--y:33.92%"><span class="tip">Slovakia</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:56.35%;--y:37.69%"><span class="tip">Romania</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:75.57%;--y:55.21%"><span class="tip">Vietnam</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:77.09%;--y:43.24%"><span class="tip">China</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:82.08%;--y:41.24%"><span class="tip">Korea</span><span class="dot"></span></span>
-    <span class="gnet-mk" style="--x:87.95%;--y:37.69%"><span class="tip">Japan</span><span class="dot"></span></span>
-  </div>
-</section>
+<!-- ===================== 지도 자리 띠 (Figma 1227:7864) — Figma 에서도 비어 있다 ===================== -->
+<section class="ci-band lc-band" aria-label="사업장 지도"></section>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">
@@ -196,7 +141,7 @@
       </div>
       <div class="f-col">
         <p class="head">회사 정보</p>
-        <ul><li><a href="company-a1.html">회사 소개</a></li><li><a href="network-a1.html" aria-current="page">글로벌 네트워크</a></li><li><a href="locations-a1.html">사업장소재</a></li></ul>
+        <ul><li><a href="company-a1.html">회사 소개</a></li><li><a href="network-a1.html">글로벌 네트워크</a></li><li><a href="locations-a1.html" aria-current="page">사업장소재</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
@@ -216,7 +161,7 @@
       <div class="f-links">
         <a href="network-a1.html">글로벌 네트워크</a><i class="sep"></i>
         <a href="#">Contact us</a><i class="sep"></i>
-        <a href="locations-a1.html">사업장소재</a><i class="sep"></i>
+        <a href="locations-a1.html" >사업장소재</a><i class="sep"></i>
         <a href="#">이메일무단수집거부</a><i class="sep"></i>
         <a href="#" class="strong">개인정보처리방침</a>
       </div>
@@ -273,7 +218,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">회사 정보</div>
-      <div class="ov-links"><a href="company-a1.html">회사 소개</a><a href="network-a1.html" aria-current="page">글로벌 네트워크</a><a href="locations-a1.html">사업장소재</a></div>
+      <div class="ov-links"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="locations-a1.html" aria-current="page">사업장소재</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
@@ -293,23 +238,5 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
-<script>
-/* 거점 표시 — 지도가 화면에 들어오면 차례로 솟았다가 은은히 파동친다(CSS 의 .gnet-live) */
-(function(){
-  var map = document.querySelector('.gn-map');
-  if(!map){ return; }
-  map.querySelectorAll('.gnet-mk').forEach(function(m,i){
-    m.style.transitionDelay = (0.35 + i*0.06).toFixed(2) + 's';   /* 솟는 차례 */
-    m.style.setProperty('--pd', (-(i%7)*0.4).toFixed(2) + 's');   /* 파동 시점을 흩는다 */
-  });
-  function run(){ map.classList.add('gnet-live'); }
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting){ run(); io.disconnect(); } });
-    }, { threshold: 0.3 });
-    io.observe(map);
-  } else { run(); }
-})();
-</script>
 </body>
 </html>
