@@ -99,10 +99,13 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #
 # ⚠ business-energy.html 도 2026-09-09 부터 여기 없다 — 마지막 하나였다
 #   (Figma 994:141 와이어프레임). 이제 세부 페이지 넷이 모두 손으로 고치는 A-1 이고,
-#   생성기가 만드는 건 허브(business)·네트워크와 콘텐츠 페이지뿐이다(홈 · 회사소개는 2026-09-14 에 빠졌다 — 위 참고).
+#   생성기가 만드는 건 허브(business)와 콘텐츠 페이지뿐이다(홈 · 회사소개는 2026-09-14 에 빠졌다 — 위 참고).
 #   에너지 인프라 A-1 은 본문 골격까지 형제 셋과 다르다 — 붙박이가 [좌측 인덱스 +
 #   가운데 헤더] 둘이고 나머지가 통째로 흐른다.
-SOURCES = ['business.html', 'network.html',
+# ⚠ network.html(글로벌 네트워크)도 2026-09-14 부터 여기 없다 — A-1 을 회사정보 세 페이지 공용 틀
+#   (Figma 1227:7859, 흰 히어로 + 파랑 지도 띠)로 짰다. network-a1.html 은 손으로 고치는 파일이고
+#   A 는 옛 전면 무대 그대로다. PAGES 에는 'network' 를 남겨 둔다(다른 A-1 의 링크가 network-a1.html 로 와야 한다).
+SOURCES = ['business.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
            'esg-report.html', 'esg-board.html',
@@ -144,6 +147,10 @@ def build(src_text, want_body=False):
         out, k = re.subn(r'href="%s\.html(#[^"]*)?"' % re.escape(page),
                          lambda m, p=page: 'href="%s-a1.html%s"' % (p, m.group(1) or ''), out)
         n_link += k
+    # 사업장소재는 A-1 에만 페이지가 있다(locations-a1.html, 2026-09-14) — A 원본의 빈 링크(href="#")를
+    # A-1 에서만 그 페이지로 잇는다. A 는 계속 "#" 이다
+    out, k = re.subn(r'href="#">사업장소재', 'href="locations-a1.html">사업장소재', out)
+    n_link += k
     return out, (n_body, n_title, n_link)
 
 
