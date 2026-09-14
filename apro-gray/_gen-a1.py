@@ -42,10 +42,14 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 
 # 실제로 A-1 을 생성할 페이지
 #
-# index.html(홈)도 여기 들어와 있다 — 한동안은 A/A-1 을 손으로 따로 관리했다(히어로 밑단
-# 탭 띠와 Business 장이 갈래마다 달랐다). 지금은 홈 디자인을 하나로 합쳤으므로(히어로는
-# A-1 의 유리 탭 띠, 나머지는 A 의 정적 4타일) 두 갈래가 링크와 타이틀만 다르다 →
-# 다른 페이지와 똑같이 이 스크립트가 낸다. 홈을 고칠 때도 index.html 만 고치면 된다.
+# ⚠ index.html(홈)은 2026-09-14 부터 여기 없다 — A-1 홈을 Figma 991:15 와이어프레임
+#   (배너 네 장 탭 · Business 카드 캐러셀 · Who we are · News 세 건)으로 새로 짰기
+#   때문이다. 한동안 두 갈래가 링크와 타이틀만 달라 이 스크립트가 냈지만, 이제
+#   index-a1.html 은 손으로 고치는 파일이고 A 를 고쳐도 A-1 로 넘어가지 않는다.
+#   GNB · 메가 판 · 전체메뉴 · 푸터는 index.html 의 것을 그대로 옮겨 왔으므로 그
+#   껍데기를 고칠 일이 생기면 두 장을 함께 고친다.
+#   PAGES 에는 'index' 를 남겨 둔다: 다른 A-1 페이지의 로고·홈 링크가
+#   index-a1.html 로 이어져야 하기 때문이다.
 #
 # business.html(사업영역 허브)도 A-1 이 필요하다 — 디자인은 A/A-1 이 같지만, 이 페이지가
 # 세부 페이지 4개와 홈을 하드링크하는데 모든 페이지의 GNB "사업영역"이 여기로 들어온다.
@@ -90,10 +94,10 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 #
 # ⚠ business-energy.html 도 2026-09-09 부터 여기 없다 — 마지막 하나였다
 #   (Figma 994:141 와이어프레임). 이제 세부 페이지 넷이 모두 손으로 고치는 A-1 이고,
-#   생성기가 만드는 건 허브(business)·회사소개·네트워크·홈과 콘텐츠 페이지뿐이다.
+#   생성기가 만드는 건 허브(business)·회사소개·네트워크와 콘텐츠 페이지뿐이다(홈은 2026-09-14 에 빠졌다 — 위 참고).
 #   에너지 인프라 A-1 은 본문 골격까지 형제 셋과 다르다 — 붙박이가 [좌측 인덱스 +
 #   가운데 헤더] 둘이고 나머지가 통째로 흐른다.
-SOURCES = ['business.html', 'company.html', 'network.html', 'index.html',
+SOURCES = ['business.html', 'company.html', 'network.html',
            'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
            'esg-report.html', 'esg-board.html',
