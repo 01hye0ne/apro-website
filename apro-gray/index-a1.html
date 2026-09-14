@@ -306,8 +306,12 @@
   .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-  /* 장마다 한 화면(머리 바 아래)을 차지하고, 내용은 그 가운데에 선다 */
-  .hm-sec{position:relative;min-height:var(--hm-h);padding:56px var(--hm-m);
+  /* 장마다 한 화면(머리 바 아래)을 차지하고, 내용은 그 가운데에 선다.
+     좌우는 격자 2~11열에 앉는다 — GNB 격자(마진 44 · 거터 20 · 12열)에서 1열과
+     거터 하나를 더 들인 자리로, 메가 판의 네 칸(.sf-mega .cols)과 같은 폭이다.
+     padding 의 % 는 장 바깥 폭(화면 폭)을 가리키므로 열 폭 공식을 그대로 쓴다 */
+  .hm-sec{position:relative;min-height:var(--hm-h);
+          padding:56px calc(var(--hm-m) + 20px + (100% - 308px) / 12);
           display:flex;flex-direction:column;justify-content:center;
           background:#fff;border-bottom:1px solid var(--hm-rule);word-break:keep-all}
   .hm-ttl{font-family:var(--ald);font-weight:400;font-size:40px;line-height:1;
@@ -360,11 +364,15 @@
 
   /* ── Business — 카드 네 장 캐러셀 ────────────────────────────────────────
      카드는 본문 폭의 57.6%(1352 중 779)라 다음 카드가 화면 오른쪽 끝에 걸린다.
-     그래서 레일만 오른쪽 여백까지 넓혀 거기서 자른다 */
+     그래서 레일만 오른쪽 여백까지 넓혀 거기서 자른다.
+     여기서 % 는 본문 폭(C)을 가리킨다. 옆 여백 i 를 C 로 풀면
+     i = C/10 + 마진 + 거터/10 = 10% + 44px + 2px 이다 */
   .hm-biz{gap:24px}
-  .hm-rail{margin-right:calc(var(--hm-m) * -1);overflow:hidden}
+  .hm-rail{margin-right:calc(-10% - var(--hm-m) - 2px);overflow:hidden}
   .hm-track{display:flex;gap:20px;list-style:none;transition:transform .9s var(--ease)}
-  .hm-card{position:relative;flex:0 0 calc((100% - var(--hm-m)) * .5762);
+  /* 카드는 본문 폭의 57.62% 를 지킨다. 여기서 % 는 레일 폭(C + i)이라
+     C = (100% - 44px - 2px) / 1.1 로 되돌려 곱한다 */
+  .hm-card{position:relative;flex:0 0 calc((100% - var(--hm-m) - 2px) * .5238);
            aspect-ratio:779/438;overflow:hidden;background:#c7c7c7}
   .hm-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
                transition:transform 1.2s var(--ease)}
@@ -440,6 +448,9 @@
   }
   @media(max-width:900px){
     :root{--hm-m:16px}
+    /* 좁은 화면은 열을 들이지 않고 16px 마진만 둔다 */
+    .hm-sec{padding-inline:var(--hm-m)}
+    .hm-rail{margin-right:calc(var(--hm-m) * -1)}
     .hm-ttl{font-size:32px}
     .hm-hl .ko{font-size:16px}
     .hm-tabs{gap:6px}
