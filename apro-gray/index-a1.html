@@ -572,9 +572,11 @@
     .steps li:nth-child(4)::before,.steps li:nth-child(4)::after{display:none}
   }
 
-  /* 4 · 글로벌 — 태평양 가운데 세계 지도에 본사 · 법인 · 거점을 찍는다.
+  /* 4 · 글로벌 — 점으로 된 세계 지도에 본사 · 법인 · 거점을 찍는다.
      본사에서 법인 넷으로 선이 뻗은 뒤 점이 돋는다. 커서를 올리면 본사가 숨 쉰다 */
-  .hm-tile .map{position:relative;display:block;width:100%;aspect-ratio:1000/387.78}
+  /* 지도는 글로벌 네트워크 페이지와 같은 점 지도(gnet-map.png, 922x451, 반투명 흰 점)다.
+     거점 좌표는 이 그림에 맞춘 밀러 투영으로 구했다 — 가로는 경도 -168~191, 세로는 북위 84~남위 53 쯤 */
+  .hm-tile .map{position:relative;display:block;width:100%;aspect-ratio:922/451}
   .map img,.map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .map img{opacity:1}
   .map .arc{fill:none;stroke:var(--brand-2);stroke-width:2.4;stroke-dasharray:1;
@@ -651,7 +653,7 @@
   .hm-tech .steps .k{color:var(--on)}
   .hm-tech .steps .e{color:var(--on-2)}
   /* 지도 — 옅은 회색 땅을 흰 25% 로 가라앉히고, 본사 · 선은 흰색, 법인은 옅은 파랑 */
-  .hm-tech .map img{opacity:.25}
+  .hm-tech .map img{opacity:1}
   .hm-tech .map .arc{stroke:#fff}
   .hm-tech .map .hub{fill:#fff}
   .hm-tech .map .hq{fill:var(--point-200)}
@@ -1050,7 +1052,7 @@
         <li class="t-mp">
           <div class="hm-tile">
             <div class="tt"><h3 id="hm-tc-4"><span>고객사 공장 곁에서 함께합니다</span><span class="m">미국 · 폴란드 · 중국 · 인도네시아 현지 법인</span></h3></div>
-            <div class="viz" aria-hidden="true"><span class="map"><img src="../assets/world-map-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 1000 387.78"><path class="arc" pathLength="1" style="--d:0.20s" d="M383.3 127.9 Q591.6 4.5 799.9 114.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M383.3 127.9 Q230.6 22.9 77.9 90.3"/><path class="arc" pathLength="1" style="--d:0.50s" d="M383.3 127.9 Q371.9 127.8 360.6 143.2"/><path class="arc" pathLength="1" style="--d:0.65s" d="M383.3 127.9 Q355.9 151.4 328.6 249.8"/><circle class="pin st" cx="54.7" cy="93.0" r="5" style="--d:1.10s"/><circle class="pin st" cx="810.1" cy="111.0" r="5" style="--d:1.16s"/><circle class="pin st" cx="800.0" cy="121.2" r="5" style="--d:1.22s"/><circle class="pin st" cx="789.5" cy="131.8" r="5" style="--d:1.28s"/><circle class="pin st" cx="796.1" cy="138.5" r="5" style="--d:1.34s"/><circle class="pin hq" cx="799.9" cy="114.6" r="7" style="--d:0.90s"/><circle class="pin hq" cx="77.9" cy="90.3" r="7" style="--d:1.05s"/><circle class="pin hq" cx="360.6" cy="143.2" r="7" style="--d:1.20s"/><circle class="pin hq" cx="328.6" cy="249.8" r="7" style="--d:1.35s"/><circle class="halo" cx="383.3" cy="127.9" r="18"/><circle class="pin hub" cx="383.3" cy="127.9" r="9" style="--d:0s"/></svg></span><span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span></div>
+            <div class="viz" aria-hidden="true"><span class="map"><img src="../assets/gnet-map.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span><span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span></div>
           </div>
         </li>
     </ul>
