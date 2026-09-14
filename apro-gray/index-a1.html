@@ -417,8 +417,7 @@
                 mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-card .cap a{pointer-events:auto}
   .hm-card .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-  /* 사업영역 이름과 소분류 목록은 Figma 의 두 배로 키웠다(이름 20→40, 목록 글자 12→24 ·
-     안쪽 여백 · 점 · 간격도 함께 두 배). 설명글은 그대로다 */
+  /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
   .hm-card h3{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px}
   /* 카드 어디를 눌러도 세부 페이지로 간다 — 사진 위에 카드 크기 링크(.hit)를 한 장
      깔고, 글 띠는 손을 받지 않게 비워 링크만 받는다. 읽기와 초점은 이름 링크가
@@ -427,14 +426,14 @@
   .hm-card h3 a{color:#fff;text-decoration:none}
   .hm-card .d{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
               letter-spacing:-.3px;font-feature-settings:"lnum" 1,"tnum" 1}
-  .hm-card .sub{position:relative;z-index:1;flex:0 0 auto;min-width:232px;list-style:none;
-                display:flex;flex-direction:column;gap:4px}
-  .hm-card .sub a{display:flex;align-items:center;gap:16px;padding:8px 16px;
+  .hm-card .sub{position:relative;z-index:1;flex:0 0 auto;min-width:116px;list-style:none;
+                display:flex;flex-direction:column;gap:2px}
+  .hm-card .sub a{display:flex;align-items:center;gap:8px;padding:4px 8px;
                   background:rgba(255,255,255,.85);border-top:1px solid #fff;border-bottom:1px solid #fff;
-                  font-family:var(--pre);font-weight:500;font-size:24px;line-height:1.4;
-                  letter-spacing:-.48px;color:var(--hm-sec);white-space:nowrap;text-decoration:none;
+                  font-family:var(--pre);font-weight:500;font-size:12px;line-height:1.4;
+                  letter-spacing:-.24px;color:var(--hm-sec);white-space:nowrap;text-decoration:none;
                   transition:background .2s var(--ease),color .2s var(--ease)}
-  .hm-card .sub a::before{content:"";width:8px;height:8px;flex-shrink:0;background:var(--brand)}
+  .hm-card .sub a::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--brand)}
   .hm-card .sub a:hover{background:#fff;color:var(--brand)}
   .hm-nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
   .hm-dots{display:flex;align-items:center;gap:8px}
