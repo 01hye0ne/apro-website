@@ -394,24 +394,53 @@
   .hm-banner:not(.is-run) .hm-tab.is-on .gauge{transform:none}
   @keyframes hmGauge{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
-  /* ── Business — 카드 네 장 캐러셀 ────────────────────────────────────────
-     카드는 본문 폭의 57.6%(1352 중 779)라 다음 카드가 화면 오른쪽 끝에 걸린다.
-     그래서 레일만 오른쪽 여백까지 넓혀 거기서 자른다 */
+  /* ── Business — 비대칭 4열 아코디언 ─────────────────────────────────────
+     켜진 카드 한 장만 펴서 크게 보이고, 나머지 셋은 세로로 긴 띠로 접힌다.
+     띠 폭은 본문의 12.5%(1352 에서 169), 펴진 카드는 남는 폭 전부다(785 — 예전 캐러셀
+     카드 779 와 거의 같다). 폭은 레일을 컨테이너로 삼아 cqi 로 구하므로 화면 폭이
+     바뀌어도 스크립트 없이 맞는다. 줄 높이는 펴진 카드의 779:438 비율을 따른다.
+     띠를 누르면 그 카드가 펴지고, 펴진 카드를 누르면 세부 페이지로 간다.
+     사진은 늘 펴진 폭으로 그려 가운데에 두므로, 폭이 바뀌는 동안 확대 비율이 튀지 않고
+     접힌 띠에는 사진 가운데 한 줄기만 보인다 */
   .hm-biz{gap:24px}
-  .hm-rail{margin-right:calc(var(--hm-m) * -1);overflow:hidden}
-  .hm-track{display:flex;gap:20px;list-style:none;transition:transform .9s var(--ease)}
-  .hm-card{position:relative;flex:0 0 calc((100% - var(--hm-m)) * .5762);
-           aspect-ratio:779/438;overflow:hidden;background:#c7c7c7}
-  .hm-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-               transition:transform 1.2s var(--ease)}
-  .hm-card:hover>img{transform:scale(1.03)}
+  .hm-rail{container-type:inline-size}
+  .hm-track{--fold:calc(100cqi * .125);--open:calc(100cqi - 3 * var(--fold) - 60px);
+            display:flex;gap:20px;list-style:none;height:max(360px,calc(var(--open) * .5623))}
+  .hm-card{position:relative;flex:0 0 var(--fold);min-width:0;overflow:hidden;background:#c7c7c7;
+           transition:flex-basis .8s var(--ease)}
+  .hm-card.is-open{flex-basis:var(--open)}
+  .hm-card>img{position:absolute;top:0;left:50%;width:var(--open);max-width:none;height:100%;
+               object-fit:cover;transform:translateX(-50%);transition:transform 1.2s var(--ease)}
+  .hm-card.is-open:hover>img{transform:translateX(-50%) scale(1.03)}
+  /* 접힌 띠 — 사진 위에 어둠을 한 겹 깔고 번호와 이름을 세로로 세운다.
+     커서를 올리면 어둠이 옅어져 누를 수 있음을 알린다. 펴질 때는 이름표가 먼저 사라지고,
+     접힐 때는 폭이 거의 줄어든 뒤에 나타난다 */
+  .hm-card::after{content:"";position:absolute;inset:0;pointer-events:none;
+                  background:rgba(14,22,30,.5);opacity:0;transition:opacity .6s var(--ease)}
+  .hm-card:not(.is-open)::after{opacity:1}
+  .hm-card:not(.is-open):hover::after{opacity:.6}
+  .hm-card .fold{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+                 justify-content:space-between;padding:20px;color:#fff;pointer-events:none;
+                 opacity:0;transition:opacity .2s var(--ease)}
+  .hm-card:not(.is-open) .fold{opacity:1;transition:opacity .5s var(--ease) .45s}
+  .hm-card .fold b{font-family:var(--ald);font-weight:400;font-size:16px;line-height:1;opacity:.8}
+  /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다).
+     왼쪽 아래 모서리에 붙인다 */
+  .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
+                     transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:24px;
+                     line-height:1;letter-spacing:-.02em;white-space:nowrap}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
      위 여백 40 은 유리 판이 위에서 서서히 드러나는 동안 글자가 그 안에 들게 둔다 */
-  .hm-card .cap{position:absolute;left:0;right:0;bottom:0;z-index:1;
+  /* 글 띠는 펴진 폭으로 고정해 폭이 바뀌는 동안 글이 다시 흐르지 않게 한다.
+     접힌 카드에서는 숨기고(visibility 로 탭 이동도 막는다), 펴질 때 폭이 거의 찬 뒤 드러난다 */
+  .hm-card .cap{position:absolute;left:0;bottom:0;z-index:1;width:var(--open);
                 display:flex;flex-direction:column;gap:16px;padding-top:40px;
-                color:#fff;pointer-events:none}
+                color:#fff;pointer-events:none;
+                transition:opacity .5s var(--ease) .4s,visibility 0s linear 0s}
+  .hm-card:not(.is-open) .cap{opacity:0;visibility:hidden;
+                transition:opacity .2s var(--ease),visibility 0s linear .2s}
   .hm-card .cap::before{content:"";position:absolute;inset:0;z-index:-1;
                 background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22));
                 -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
@@ -643,7 +672,15 @@
     .hm-tabs::before{display:none}
     .hm-tab .lbl{height:auto;min-height:27px;padding-bottom:4px;font-size:12px;line-height:1.2;
                  white-space:normal;border-bottom:1px solid rgba(255,255,255,.6)}
-    .hm-card{flex-basis:calc((100% - var(--hm-m)) * .86);aspect-ratio:auto;height:420px}
+    /* 좁은 화면은 세로 아코디언 — 카드가 위아래로 쌓이고, 접힌 카드는 64 높이의 가로 띠,
+       펴진 카드는 420 이다. 사진은 늘 420 높이로 그려 가운데에 둔다 */
+    .hm-track{flex-direction:column;height:auto}
+    .hm-card,.hm-card.is-open{flex:0 0 auto;height:64px;transition:height .8s var(--ease)}
+    .hm-card.is-open{height:420px}
+    .hm-card>img,.hm-card.is-open:hover>img{top:50%;left:0;width:100%;height:420px;transform:translateY(-50%)}
+    .hm-card .cap{right:0;width:auto}
+    .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;padding:0 16px}
+    .hm-card .fold .nm{writing-mode:horizontal-tb;font-size:18px}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{gap:12px;padding:0 16px}
     .hm-card .vec{height:72px;margin-bottom:-12px}
@@ -661,6 +698,7 @@
   }
   @media(prefers-reduced-motion:reduce){
     .hm-bg img,.hm-hl,.hm-track,.hm-tab .th img,.hm-card>img,
+    .hm-card,.hm-card::after,.hm-card .cap,.hm-card .fold,
     .hm-hl .en .ln>span,.hm-hl .ko{transition:none!important}
     .hm-tab .gauge{animation:none!important}
     .hm-tile *,.hm-tile *::before,.hm-tile *::after{transition:none!important;animation:none!important}
@@ -812,13 +850,14 @@
   </section>
 
   <!-- ===================== BUSINESS (Figma 991:76) ===================== -->
-  <section class="hm-sec hm-biz" id="hmBiz" aria-labelledby="hm-biz-t" aria-roledescription="carousel">
+  <section class="hm-sec hm-biz" id="hmBiz" aria-labelledby="hm-biz-t" aria-roledescription="아코디언">
     <h2 class="hm-ttl" id="hm-biz-t">Business</h2>
     <div class="hm-rail">
       <ul class="hm-track">
-        <li class="hm-card">
+        <li class="hm-card is-open">
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-a1.html" tabindex="-1" aria-hidden="true"></a>
+          <span class="fold" aria-hidden="true"><b>01</b><span class="nm">스마트 제조</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -838,6 +877,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-a1.html" tabindex="-1" aria-hidden="true"></a>
+          <span class="fold" aria-hidden="true"><b>02</b><span class="nm">에너지 인프라</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -856,6 +896,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-a1.html" tabindex="-1" aria-hidden="true"></a>
+          <span class="fold" aria-hidden="true"><b>03</b><span class="nm">인공지능 플랫폼</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -875,6 +916,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-gan.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-a1.html" tabindex="-1" aria-hidden="true"></a>
+          <span class="fold" aria-hidden="true"><b>04</b><span class="nm">화합물 전력 반도체</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -1344,33 +1386,29 @@
   show(0); run();
 })();
 
-/* ── Business — 카드 캐러셀 ─────────────────────────────────────────────────
-   한 번에 한 장씩 민다. 자리는 카드의 실제 offsetLeft 로 재므로 화면 폭이
-   바뀌어도 어긋나지 않는다. 가려진 카드의 링크로 탭 이동해 오면 그 카드로 민다 */
+/* ── Business — 비대칭 아코디언 ──────────────────────────────────────────────
+   켜진 카드에 .is-open 을 붙이면 폭 · 글 띠 · 이름표는 CSS 가 옮긴다.
+   접힌 띠를 누르면 페이지로 가지 않고 그 카드를 편다. 점 · 화살표도 같은 go() 를 부른다.
+   픽토그램은 선 그리기 애니메이션이 SVG 파일 안에 있어 불러오는 순간 한 번만 재생한다 —
+   섹션이 보인 뒤, 카드가 펴지고 글 띠가 드러날 즈음 그 카드 것만 붙인다 */
 (function(){
   var root = document.getElementById('hmBiz');
   if(!root) return;
-  var track = root.querySelector('.hm-track');
-  var cards = [].slice.call(track.children);
+  var cards = [].slice.call(root.querySelectorAll('.hm-card'));
   var dots  = [].slice.call(root.querySelectorAll('.hm-dots button'));
   var prev  = root.querySelector('[data-go="-1"]');
   var next  = root.querySelector('[data-go="1"]');
-  var nav   = root.querySelector('.hm-nav');
-  var at = 0;
+  var at = 0, seen = false, timer = 0;
 
-  /* 카드마다 왼쪽을 본문 시작에 맞추되, 민 거리가 [마지막 카드 오른쪽 = 본문 끝]
-     을 넘지 않게 묶는다 — 마지막 카드는 오른쪽이 11열 끝(화살표 단추 끝)에 붙고
-     그 뒤로 빈 레일이 남지 않는다. 본문 폭은 같은 폭을 쓰는 .hm-nav 로 잰다.
-     rect 의 차이는 지금 걸린 transform 과 무관하고, 소수점 폭도 그대로 맞는다 */
-  function shift(k){
-    var first = cards[0].getBoundingClientRect();
-    var last  = cards[cards.length - 1].getBoundingClientRect();
-    var max   = last.right - first.left - nav.getBoundingClientRect().width;
-    return Math.max(0, Math.min(cards[k].getBoundingClientRect().left - first.left, max));
+  function load(c){
+    var im = c.querySelector('.vec[data-src]');
+    if(!im) return;
+    im.src = im.getAttribute('data-src');
+    im.removeAttribute('data-src');
   }
   function go(i){
     at = Math.max(0, Math.min(cards.length - 1, i));
-    track.style.transform = 'translateX(' + (-shift(at)) + 'px)';
+    cards.forEach(function(c, k){ c.classList.toggle('is-open', k === at); });
     dots.forEach(function(d, k){
       var on = k === at;
       d.classList.toggle('is-on', on);
@@ -1378,37 +1416,31 @@
     });
     prev.disabled = at === 0;
     next.disabled = at === cards.length - 1;
+    clearTimeout(timer);
+    if(seen) timer = setTimeout(function(){ load(cards[at]); }, 450);
   }
   prev.addEventListener('click', function(){ go(at - 1); });
   next.addEventListener('click', function(){ go(at + 1); });
   dots.forEach(function(d, k){ d.addEventListener('click', function(){ go(k); }); });
-  cards.forEach(function(c, k){ c.addEventListener('focusin', function(){ if(k !== at) go(k); }); });
-  window.addEventListener('resize', function(){ go(at); });
-  go(0);
-})();
-
-/* ── Business 픽토그램 — 카드가 절반 넘게 보일 때 붙인다 ─────────────────────
-   선 그리기 애니메이션이 SVG 파일 안에 있어 <img> 는 불러오는 순간 한 번만
-   재생한다. 미리 불러 두면 카드를 넘겨 봤을 때 이미 다 그려져 있다 → 사업영역
-   페이지 마을과 같이 보일 때 src 를 붙인다. 레일이 overflow 로 자르므로 옆에
-   걸려 있는 카드는 절반을 못 넘어 아직 붙지 않는다 */
-(function(){
-  var imgs = [].slice.call(document.querySelectorAll('.hm-card .vec[data-src]'));
-  if(!imgs.length) return;
-  function load(im){
-    if(!im || !im.hasAttribute('data-src')) return;
-    im.src = im.getAttribute('data-src');
-    im.removeAttribute('data-src');
-  }
-  if(!('IntersectionObserver' in window)){ imgs.forEach(load); return; }
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      load(e.target.querySelector('.vec'));
-      io.unobserve(e.target);
+  cards.forEach(function(c, k){
+    c.querySelector('.hit').addEventListener('click', function(e){
+      if(k === at) return;
+      e.preventDefault();
+      go(k);
     });
-  }, { threshold: .5 });
-  imgs.forEach(function(im){ io.observe(im.closest('.hm-card')); });
+  });
+
+  if(!('IntersectionObserver' in window)){ seen = true; }
+  else {
+    var io = new IntersectionObserver(function(es){
+      if(!es[0].isIntersecting) return;
+      seen = true;
+      load(cards[at]);
+      io.disconnect();
+    }, { threshold: .3 });
+    io.observe(root.querySelector('.hm-track'));
+  }
+  go(0);
 })();
 
 /* ── Technology 도식 — 칸이 35% 넘게 보일 때 한 번 움직인다 ────────────────────
