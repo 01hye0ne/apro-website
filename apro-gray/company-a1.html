@@ -656,7 +656,9 @@
   /* ===== AAA 판 테두리 — 스크롤을 따라 파란 선이 그려진다 =====
      판마다 SVG 하나에 경로 둘(바깥 판 · 안쪽 판). 경로는 붙은 쪽 화면 끝에서 시작해
      윗선 → 둥근 모서리 → 옆선 아래로 간다. 진행도는 판 윗변이 화면 90% 에 닿을 때 0,
-     아랫변이 화면 55% 까지 올라올 때 1 이고, 안쪽 선은 바깥 선보다 조금 늦게 따라온다.
+     아랫변이 화면 55% 까지 올라올 때 1 이다. 두 선은 길이가 달라 같은 비율로 채우면
+     끝이 어긋나므로, 바깥 선의 끝 자리를 안쪽 선에 옮겨 준다 — 윗선에서는 같은 x,
+     모서리에서는 같은 각도(두 호는 중심이 같다), 옆선에서는 같은 y 에 안쪽 끝이 선다.
      스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 목표값으로 조금씩 따라가게 한다.
      되감으면 선도 거꾸로 지워진다 */
   (function(){
@@ -676,15 +678,33 @@
                po:po, pi:pi, lo:0, lI:0, cur:0, goal:0 };
     });
 
-    /* 상자(x,y,w,h) 의 윗선 + 옆선. 선 두께 1 의 가운데(0.5 안쪽)를 지나야 CSS 테두리와 겹친다 */
+    /* 상자(x,y,w,h) 의 윗선 + 옆선. 선 두께 1 의 가운데(0.5 안쪽)를 지나야 CSS 테두리와 겹친다.
+       경로(d)와 함께 끝 자리 옮기기에 쓸 치수를 돌려준다 — 출발 x(sx), 윗선 곧은 길이(H),
+       호 길이(A), 옆선이 시작하는 y(cy) */
     function edge(x, y, w, h, r, left){
-      var t = y + .5, rr = r - .5;
+      var t = y + .5, rr = r - .5, sx, ex, d;
       if(!left){
         var R = x + w - .5;
-        return 'M' + x + ' ' + t + 'H' + (R - rr) + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
+        sx = x; ex = R - rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
+      } else {
+        var L = x + .5;
+        sx = x + w; ex = L + rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
       }
-      var L = x + .5;
-      return 'M' + (x + w) + ' ' + t + 'H' + (L + rr) + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
+      return { d:d, left:left, sx:sx, H:Math.abs(ex - sx), A:Math.PI * rr / 2, cy:t + rr };
+    }
+    /* 바깥 선이 s 만큼 그려졌을 때 안쪽 선이 그려져야 할 길이 */
+    function follow(go, gi, s){
+      if(s <= go.H){
+        var x = go.left ? go.sx - s : go.sx + s;
+        var d = go.left ? gi.sx - x : x - gi.sx;
+        return d < 0 ? 0 : d > gi.H ? gi.H : d;
+      }
+      s -= go.H;
+      if(s <= go.A) return gi.H + s / go.A * gi.A;
+      var y = go.cy + s - go.A;
+      return gi.H + gi.A + Math.max(0, y - gi.cy);
     }
     function measure(){
       items.forEach(function(it){
@@ -693,10 +713,12 @@
         /* 선이 왼쪽에 있으면(짝수 장) 왼쪽 테두리 두께가 잡힌다 */
         var left = parseFloat(so.borderLeftWidth) > 0;
         var o = it.out.getBoundingClientRect(), n = it.inn.getBoundingClientRect();
-        it.po.setAttribute('d', edge(o.left - b.left, o.top - b.top, o.width, o.height,
-                                     parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left));
-        it.pi.setAttribute('d', edge(n.left - b.left, n.top - b.top, n.width, n.height,
-                                     parseFloat(left ? si.borderTopLeftRadius : si.borderTopRightRadius) || 0, left));
+        it.go = edge(o.left - b.left, o.top - b.top, o.width, o.height,
+                     parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left);
+        it.gi = edge(n.left - b.left, n.top - b.top, n.width, n.height,
+                     parseFloat(left ? si.borderTopLeftRadius : si.borderTopRightRadius) || 0, left);
+        it.po.setAttribute('d', it.go.d);
+        it.pi.setAttribute('d', it.gi.d);
         it.lo = it.po.getTotalLength(); it.lI = it.pi.getTotalLength();
         /* 번호 박스까지 바깥 선이 달려야 할 거리 — 선이 출발하는 쪽 박스 가장자리까지 */
         if(it.no){
@@ -709,10 +731,11 @@
     }
     function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
     function paint(it){
-      var o = clamp(it.cur * 1.12), i = clamp(it.cur * 1.12 - .12);
-      it.po.style.strokeDashoffset = it.lo * (1 - o);
-      it.pi.style.strokeDashoffset = it.lI * (1 - i);
-      if(it.no) it.no.classList.toggle('is-lit', it.lo && it.lo * o >= it.bx);
+      if(!it.go) return;
+      var so = it.lo * clamp(it.cur), si = Math.min(it.lI, follow(it.go, it.gi, so));
+      it.po.style.strokeDashoffset = it.lo - so;
+      it.pi.style.strokeDashoffset = it.lI - si;
+      if(it.no) it.no.classList.toggle('is-lit', it.lo > 0 && so >= it.bx);
     }
     function goals(){
       var vh = window.innerHeight;
