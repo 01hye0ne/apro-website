@@ -346,6 +346,9 @@
      px 고정이라 viewBox 늘이기로는 모서리가 찌그러진다). 채운 길이는 stroke-dashoffset */
   .co-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
   .co-draw path{fill:none;stroke:var(--co-line);stroke-width:1}
+  /* 두 선 사이 틈을 채우는 면 — 틈 한가운데를 지나는 굵은 선이라 선과 같은 방식(dashoffset)으로 차오른다.
+     두께는 스크립트가 틈(바깥 테두리 아래 ~ 안쪽 테두리 위)에 맞춰 넣는다. 경로가 SVG 맨 앞이라 선 아래에 깔린다 */
+  .co-draw path.fill{stroke:#d6e3f6;stroke-width:20}
   /* 마지막 판의 두 선(바깥 · 안쪽)을 닫는 그림 윗변까지 잇는 회색 바탕. 길이 = 판과 닫는 문구
      사이 간격(--vgap) + 그림의 위 여백(32). 파란 선은 스크립트가 같은 길이만큼 경로를 늘려 그린다.
      선마다 제 테두리 상자(.out · .in)에 매단다 — 판 폭이 소수점(959.875 등)이라 목록 끝에서
@@ -718,7 +721,8 @@
      끝이 어긋나므로, 바깥 선의 끝 자리를 안쪽 선에 옮겨 준다 — 윗선에서는 같은 x,
      모서리에서는 같은 각도(두 호는 중심이 같다), 옆선에서는 같은 y 에 안쪽 끝이 선다.
      스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 목표값으로 조금씩 따라가게 한다.
-     되감으면 선도 거꾸로 지워진다 */
+     되감으면 선도 거꾸로 지워진다.
+     두 선 사이 틈은 밝은 파랑 면(경로 pf)이 같이 차오른다 — 끝 자리는 안쪽 선과 같은 방식으로 옮긴다 */
   (function(){
     var cards = [].slice.call(document.querySelectorAll('.co-val'));
     if(!cards.length || !window.SVGElement) return;
@@ -728,12 +732,13 @@
       var svg = document.createElementNS(NS, 'svg');
       svg.setAttribute('class', 'co-draw');
       svg.setAttribute('aria-hidden', 'true');
-      var po = document.createElementNS(NS, 'path'), pi = document.createElementNS(NS, 'path');
-      svg.appendChild(po); svg.appendChild(pi);
+      var pf = document.createElementNS(NS, 'path'), po = document.createElementNS(NS, 'path'), pi = document.createElementNS(NS, 'path');
+      pf.setAttribute('class', 'fill');
+      svg.appendChild(pf); svg.appendChild(po); svg.appendChild(pi);
       li.appendChild(svg);
       return { li:li, out:li.querySelector('.out'), inn:li.querySelector('.in'),
                no:li.querySelector('.no'), bx:0,
-               po:po, pi:pi, lo:0, lI:0, cur:0, goal:0 };
+               pf:pf, po:po, pi:pi, lf:0, lo:0, lI:0, cur:0, goal:0 };
     });
 
     /* 상자(x,y,w,h) 의 윗선 + 옆선. 선 두께 1 의 가운데(0.5 안쪽)를 지나야 CSS 테두리와 겹친다.
@@ -747,6 +752,21 @@
         d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
       } else {
         var L = x + .5;
+        sx = x + w; ex = L + rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
+      }
+      return { d:d, left:left, sx:sx, H:Math.abs(ex - sx), A:Math.PI * rr / 2, cy:t + rr };
+    }
+    /* 두 선 사이 틈을 채우는 면의 가운데 길. 바깥 상자(x,y,w,h · 모서리 r)에서 m 만큼 안쪽을 지난다.
+       edge() 와 같은 치수를 돌려주어 follow() 로 끝 자리를 옮길 수 있다 */
+    function band(x, y, w, h, r, left, m){
+      var t = y + m, rr = Math.max(0, r - m), sx, ex, d;
+      if(!left){
+        var R = x + w - m;
+        sx = x; ex = R - rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
+      } else {
+        var L = x + m;
         sx = x + w; ex = L + rr;
         d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
       }
@@ -781,9 +801,16 @@
                      parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left);
         it.gi = edge(n.left - b.left, n.top - b.top, n.width, o.bottom - n.top + it.ext,
                      parseFloat(left ? si.borderTopLeftRadius : si.borderTopRightRadius) || 0, left);
+        /* 면 — 바깥 테두리 아래(o.top+1)부터 안쪽 테두리 위(n.top)까지가 틈이다. 그 가운데를 틈 두께로 지난다 */
+        var gap = Math.max(0, n.top - o.top - 1), mid = 1 + gap / 2;
+        it.gf = band(o.left - b.left, o.top - b.top, o.width, o.height + it.ext,
+                     parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left, mid);
+        it.pf.setAttribute('d', it.gf.d);
+        it.pf.style.strokeWidth = gap;
         it.po.setAttribute('d', it.go.d);
         it.pi.setAttribute('d', it.gi.d);
-        it.lo = it.po.getTotalLength(); it.lI = it.pi.getTotalLength();
+        it.lf = it.pf.getTotalLength(); it.lo = it.po.getTotalLength(); it.lI = it.pi.getTotalLength();
+        it.pf.style.strokeDasharray = it.lf + ' ' + it.lf;
         /* 번호 박스까지 바깥 선이 달려야 할 거리 — 선이 출발하는 쪽 박스 가장자리까지 */
         if(it.no){
           var nb = it.no.getBoundingClientRect();
@@ -797,6 +824,8 @@
     function paint(it){
       if(!it.go) return;
       var so = it.lo * clamp(it.cur), si = Math.min(it.lI, follow(it.go, it.gi, so));
+      var sf = Math.min(it.lf, follow(it.go, it.gf, so));
+      it.pf.style.strokeDashoffset = it.lf - sf;
       it.po.style.strokeDashoffset = it.lo - so;
       it.pi.style.strokeDashoffset = it.lI - si;
       if(it.no) it.no.classList.toggle('is-lit', it.lo > 0 && so >= it.bx);
