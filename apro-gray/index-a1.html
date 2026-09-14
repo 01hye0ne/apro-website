@@ -638,6 +638,61 @@
   .is-wait .diag .cells i{background:var(--border-g)}
   .is-wait .diag .bar i{transform:scaleX(0)}
 
+  /* ── Who we are 색 반전 — 파랑 판 ───────────────────────────────────────
+     섹션 바탕을 브랜드 파랑(--brand)으로 깔고 글 · 선 · 채움을 뒤집는다. 위 규칙은 흰 바탕
+     기준 그대로 두고 여기서 .hm-tech 아래만 덮어쓴다. 칸은 --tile(파랑 위 흰 6% 를 불투명으로 굳힌 색) + 흰 16% 테두리,
+     글은 흰색과 흰 65%, 강조 채움은 흰색, 보조 채움은 옅은 파랑(--point-200/300).
+     .is-wait(움직이기 전 모습)의 색도 한 단계 높은 선택자로 따로 덮어, 파랑 판 위에서
+     '꺼진 칸 → 켜진 칸'이 그대로 읽히게 한다 */
+  .hm-tech{--tile:rgb(57 97 151);--on:#fff;--on-2:rgba(255,255,255,.65);--on-line:rgba(255,255,255,.16);--on-line-2:rgba(255,255,255,.32);
+           background:var(--brand);border-bottom-color:var(--brand)}
+  .hm-tech .hm-ttl{color:var(--on)}
+  .hm-tech .hm-tile{background:var(--tile);border-color:var(--on-line)}
+  .hm-tech .hm-tile:hover{border-color:rgba(255,255,255,.55)}
+  .hm-tech .hm-tile:focus-visible{outline-color:#fff}
+  .hm-tech .hm-tile h3{color:var(--on)}
+  .hm-tech .hm-tile h3 .m{color:var(--on-2)}
+  .hm-tech .hm-tile .go{background:transparent;border-color:var(--on-line-2);color:var(--on)}
+  .hm-tech .hm-tile:hover .go{border-color:var(--on)}
+  /* 웨이퍼 — 판은 흰 8%, 다이는 옅은 파랑. 노치는 칸 바탕색(--tile)으로 칠해 원을 파낸다 */
+  .hm-tech .wf .disc{fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.45)}
+  .hm-tech .wf .die{fill:var(--point-300)}
+  .hm-tech .wf .notch{fill:var(--tile);stroke:rgba(255,255,255,.45)}
+  .hm-tech .wf .dim{stroke:rgba(255,255,255,.5)}
+  .hm-tech .wf text{fill:var(--on-2)}
+  /* 공정 — 켜진 칸은 흰 판에 파랑 숫자, 이어지는 선은 흰색. 꺼진 칸은 칸 바탕색으로 칠해 뒤 선이 비치지 않게 한다 */
+  .hm-tech .steps li+li::before{background:rgba(255,255,255,.2)}
+  .hm-tech .steps li+li::after{background:var(--on)}
+  .hm-tech .steps b{background:#fff;border-color:#fff;color:var(--brand)}
+  .hm-tech .hm-tile.is-wait .steps b{background:var(--tile);border-color:var(--on-line-2);color:var(--on-2)}
+  .hm-tech .steps .k{color:var(--on)}
+  .hm-tech .steps .e{color:var(--on-2)}
+  /* 지도 — 옅은 회색 땅을 흰 25% 로 가라앉히고, 본사 · 선은 흰색, 법인은 옅은 파랑 */
+  .hm-tech .map img{opacity:.25}
+  .hm-tech .map .arc{stroke:#fff}
+  .hm-tech .map .hub{fill:#fff}
+  .hm-tech .map .hq{fill:var(--point-200)}
+  .hm-tech .map .st{fill:var(--brand);stroke:#fff}
+  .hm-tech .map .halo{fill:#fff}
+  .hm-tech .hm-tile .lg{color:var(--on-2)}
+  .hm-tech .lg i{background:var(--point-200)}
+  .hm-tech .lg .hub{background:#fff}
+  .hm-tech .lg .st{background:transparent;box-shadow:inset 0 0 0 1.5px #fff}
+  /* 인증 — 이름표는 흰 선 테두리, 핵심 인증 하나만 흰 판에 파랑 글 */
+  .hm-tech .certs .nm{color:var(--on-2)}
+  .hm-tech .certs .ch{background:transparent;border-color:var(--on-line-2);color:var(--on)}
+  .hm-tech .certs .is-key{background:#fff;border-color:#fff;color:var(--brand)}
+  /* 진단 — 판은 흰 6%, 셀은 옅은 파랑, 주의 칸은 그대로 주황. 주의 글은 파랑 위에서 읽히게 밝힌다 */
+  .hm-tech .hm-tile .diag{background:rgba(255,255,255,.06);border-color:var(--on-line)}
+  .hm-tech .diag .hd,.hm-tech .diag .ft{color:var(--on-2)}
+  .hm-tech .diag .st{color:#ffc27a}
+  .hm-tech .diag .cells i{background:var(--point-300)}
+  .hm-tech .diag .cells i.is-warn{background:var(--hm-warn)}
+  .hm-tech .hm-tile.is-wait .diag .cells i{background:rgba(255,255,255,.14)}
+  .hm-tech .diag .cells::after{background:#fff}
+  .hm-tech .diag .bar{background:rgba(255,255,255,.2)}
+  .hm-tech .diag .bar i{background:#fff}
+
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
   .hm-nhead{display:flex;align-items:flex-start;gap:8px}
