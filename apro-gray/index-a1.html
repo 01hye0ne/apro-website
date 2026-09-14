@@ -370,14 +370,16 @@
              letter-spacing:-.4px;color:rgba(255,255,255,.7)}
   .hm-tabs{position:relative;flex:0 0 calc(var(--hm-tabs) + var(--hm-m));padding-right:var(--hm-m);
            display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-  .hm-tabs::before{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:#fff}
-  .hm-tab{min-width:0;display:flex;flex-direction:column;gap:8px;padding:0;
+  /* 게이지 트랙 — 이름 줄 바로 아래 6px 반투명 막대. 채워지는 선(.gauge)도 같은 6px 흰색으로 겹친다.
+     막대가 이름과 썸네일 사이에 끼므로 탭 간격은 8 + 6 */
+  .hm-tabs::before{content:"";position:absolute;left:0;right:0;top:27px;height:6px;background:rgba(255,255,255,.3)}
+  .hm-tab{min-width:0;display:flex;flex-direction:column;gap:14px;padding:0;
           background:none;border:0;color:#fff;text-align:left;cursor:pointer}
   .hm-tab .lbl{position:relative;height:27px;display:flex;align-items:center;
                font-family:var(--suit);font-weight:800;font-size:14px;line-height:1.35;
                letter-spacing:-.28px;white-space:nowrap;
                opacity:.6;transition:opacity .4s var(--ease)}
-  .hm-tab .gauge{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#fff;
+  .hm-tab .gauge{position:absolute;left:0;right:0;bottom:-6px;height:6px;background:#fff;
                  transform:scaleX(0);transform-origin:left center}
   .hm-tab .th{display:block;aspect-ratio:4/3;overflow:hidden;
               background:var(--hm-ph);border:1px solid var(--border-g)}
@@ -730,8 +732,10 @@
     .hm-hl .ko{font-size:16px}
     .hm-tabs{gap:6px}
     .hm-tabs::before{display:none}
+    /* 좁은 화면은 이름이 두 줄까지 늘어 탭마다 트랙을 따로 둔다 — 6px 반투명 밑테두리 자리에 채움 선이 겹친다 */
+    .hm-tab{gap:8px}
     .hm-tab .lbl{height:auto;min-height:27px;padding-bottom:4px;font-size:12px;line-height:1.2;
-                 white-space:normal;border-bottom:1px solid rgba(255,255,255,.6)}
+                 white-space:normal;border-bottom:6px solid rgba(255,255,255,.3)}
     /* 좁은 화면은 세로 아코디언 — 카드가 위아래로 쌓이고, 접힌 카드는 64 높이의 가로 띠,
        펴진 카드는 420 이다. 사진은 늘 420 높이로 그려 가운데에 둔다 */
     .hm-track{flex-direction:column;height:auto}
