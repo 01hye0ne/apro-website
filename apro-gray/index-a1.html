@@ -415,22 +415,21 @@
   .hm-card>img{position:absolute;top:0;left:50%;width:var(--open);max-width:none;height:100%;
                object-fit:cover;transform:translateX(-50%);transition:transform 1.2s var(--ease)}
   .hm-card.is-open:hover>img{transform:translateX(-50%) scale(1.03)}
-  /* 접힌 띠 — 사진 위에 어둠을 한 겹 깔고 사업영역 픽토그램을 가운데 세운다.
+  /* 접힌 띠 — 사진 위에 어둠을 한 겹 깔고 사업명을 세로로 눕혀 왼쪽 아래에 둔다.
      커서를 올리면 어둠이 옅어져 누를 수 있음을 알린다. 펴질 때는 이름표가 먼저 사라지고,
      접힐 때는 폭이 거의 줄어든 뒤에 나타난다 */
   .hm-card::after{content:"";position:absolute;inset:0;pointer-events:none;
                   background:rgba(14,22,30,.5);opacity:0;transition:opacity .6s var(--ease)}
   .hm-card:not(.is-open)::after{opacity:1}
   .hm-card:not(.is-open):hover::after{opacity:.6}
-  .hm-card .fold{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:20px;
-                 pointer-events:none;opacity:0;transition:opacity .2s var(--ease)}
+  .hm-card .fold{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+                 justify-content:flex-end;padding:20px;color:#fff;pointer-events:none;
+                 opacity:0;transition:opacity .2s var(--ease)}
   .hm-card:not(.is-open) .fold{opacity:1;transition:opacity .5s var(--ease) .45s}
-  /* 픽토그램은 글 띠의 것과 같은 그림을 흰 선으로 돌려 쓴다. 폭은 띠 안쪽에 맞추되 120 을
-     넘지 않는다. 주소 끝 ?fold 는 글 띠 그림과 다른 이미지로 불러 선 그리기가 따로 재생되게 한다.
-     원본은 251 폭 캔버스의 1px 선이라 띠 폭으로 줄이면 선이 0.5px 아래로 가늘어져 사진에 묻힌다 —
-     흐림 반경 .5px 흰 그림자를 두 번 겹쳐 선을 굵어 보이게 한다 */
-  .hm-card .fvec{display:block;width:min(100%,120px);height:auto;aspect-ratio:var(--ar);
-                 filter:brightness(0) invert(1) drop-shadow(0 0 .5px #fff) drop-shadow(0 0 .5px #fff)}
+  /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다) */
+  .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
+                     transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:24px;
+                     line-height:1;letter-spacing:-.02em;white-space:nowrap}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
@@ -697,8 +696,8 @@
     .hm-card>img,.hm-card.is-open:hover>img{top:50%;left:0;width:100%;height:420px;transform:translateY(-50%)}
     .hm-card .cap{right:0;width:auto}
     .hm-card+.hm-card{border-left:0;border-top:1px solid #fff}
-    .hm-card .fold{place-items:center start;padding:0 16px}
-    .hm-card .fvec{width:auto;height:44px}
+    .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
+    .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:18px}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{gap:12px;padding:0 16px}
     .hm-card .vec{height:72px;margin-bottom:-12px}
@@ -883,7 +882,7 @@
         <li class="hm-card is-open">
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><img class="fvec" data-src="../assets/vec-smart.svg?fold" style="--ar:251/177" alt="" /></span>
+          <span class="fold" aria-hidden="true"><span class="nm">스마트 제조</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -903,7 +902,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><img class="fvec" data-src="../assets/vec-energy.svg?fold" style="--ar:251/179" alt="" /></span>
+          <span class="fold" aria-hidden="true"><span class="nm">에너지 인프라</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -922,7 +921,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><img class="fvec" data-src="../assets/vec-ai.svg?fold" style="--ar:267/176" alt="" /></span>
+          <span class="fold" aria-hidden="true"><span class="nm">인공지능 플랫폼</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -942,7 +941,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-gan.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><img class="fvec" data-src="../assets/vec-semicon.svg?fold" style="--ar:251/180" alt="" /></span>
+          <span class="fold" aria-hidden="true"><span class="nm">화합물 전력 반도체</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -1449,8 +1448,6 @@
     im.removeAttribute('data-src');
   }
   function load(c){ attach(c.querySelector('.vec')); }
-  /* 접힌 띠의 픽토그램은 섹션이 보일 때 넷 모두 한 번에 붙여 함께 그려지게 한다 */
-  function loadFolds(){ [].forEach.call(root.querySelectorAll('.fvec'), attach); }
   function go(i){
     at = Math.max(0, Math.min(cards.length - 1, i));
     cards.forEach(function(c, k){ c.classList.toggle('is-open', k === at); });
@@ -1475,13 +1472,12 @@
     });
   });
 
-  if(!('IntersectionObserver' in window)){ seen = true; loadFolds(); }
+  if(!('IntersectionObserver' in window)){ seen = true; }
   else {
     var io = new IntersectionObserver(function(es){
       if(!es[0].isIntersecting) return;
       seen = true;
       load(cards[at]);
-      loadFolds();
       io.disconnect();
     }, { threshold: .3 });
     io.observe(root.querySelector('.hm-track'));
