@@ -1095,11 +1095,22 @@
   var dots  = [].slice.call(root.querySelectorAll('.hm-dots button'));
   var prev  = root.querySelector('[data-go="-1"]');
   var next  = root.querySelector('[data-go="1"]');
+  var nav   = root.querySelector('.hm-nav');
   var at = 0;
 
+  /* 카드마다 왼쪽을 본문 시작에 맞추되, 민 거리가 [마지막 카드 오른쪽 = 본문 끝]
+     을 넘지 않게 묶는다 — 마지막 카드는 오른쪽이 11열 끝(화살표 단추 끝)에 붙고
+     그 뒤로 빈 레일이 남지 않는다. 본문 폭은 같은 폭을 쓰는 .hm-nav 로 잰다.
+     rect 의 차이는 지금 걸린 transform 과 무관하고, 소수점 폭도 그대로 맞는다 */
+  function shift(k){
+    var first = cards[0].getBoundingClientRect();
+    var last  = cards[cards.length - 1].getBoundingClientRect();
+    var max   = last.right - first.left - nav.getBoundingClientRect().width;
+    return Math.max(0, Math.min(cards[k].getBoundingClientRect().left - first.left, max));
+  }
   function go(i){
     at = Math.max(0, Math.min(cards.length - 1, i));
-    track.style.transform = 'translateX(' + (cards[0].offsetLeft - cards[at].offsetLeft) + 'px)';
+    track.style.transform = 'translateX(' + (-shift(at)) + 'px)';
     dots.forEach(function(d, k){
       var on = k === at;
       d.classList.toggle('is-on', on);
