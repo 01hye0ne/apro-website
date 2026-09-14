@@ -299,23 +299,19 @@
 
   /* ── 히어로는 회사정보 세 페이지 공용 틀이다(company-info.css 의 .ci-hero, Figma 1227:7858) ── */
 
-  /* ── Vision 2030 띠 (Figma 1227:7853) — 파랑 판(.ci-band) 위 120 · 아래 40 · 옆 44.
-     두 기둥이 26 을 두고 선다. 왼쪽 기둥은 히어로 제목과 같은 3열 폭(1440 에서 323)이고
-     눈썹이 위, 본문이 밑에 붙는다. 오른쪽 기둥은 나머지를 다 쓰고 제목(Aldrich 48)이 위,
-     그림 네 칸이 밑에 붙는다. 기둥 높이는 1440 판의 508 을 바닥으로 잡는다.
-     그림 칸은 Figma 에서도 비어 있다(빈칸) */
+  /* ── Vision 2030 띠 (Figma 1227:7853 을 바탕으로) — 파랑 판(.ci-band) 위아래 120 · 옆 44.
+     두 기둥이 26 을 두고 선다. 왼쪽 기둥은 히어로 제목과 같은 3열 폭(1440 에서 323)에 눈썹 하나,
+     오른쪽 기둥은 나머지를 다 쓰고 비전 제목(Aldrich 48) 아래 20 에 본문이 붙는다.
+     (Figma 판의 그림 네 칸과 왼쪽 아래 본문 자리는 2026-09-15 요청으로 뺐다) */
   .co-vband{display:grid;grid-template-columns:calc((100% - 11 * var(--ci-gap)) / 4 + 2 * var(--ci-gap)) minmax(0,1fr);
-            column-gap:26px;padding:120px var(--ci-m) 40px;word-break:keep-all}
-  .co-vband .col{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;min-height:508px}
+            column-gap:26px;padding:120px var(--ci-m);word-break:keep-all}
+  .co-vband .col{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
   .co-vband .eyebrow{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
   .co-vband h2{font-family:var(--ald);font-weight:400;font-size:48px;line-height:1;letter-spacing:-.06em}
   .co-vband .lead{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;letter-spacing:-.3px;
                   color:rgba(255,255,255,.7);font-feature-settings:"lnum" 1,"tnum" 1}
   .co-vband .lead span{display:block}
   .co-vband .lead span+span{margin-top:2px}
-  /* 네 칸이 오른쪽 기둥 폭을 나눠 가진다 — 1440 에서 (1003 − 8 × 3) / 4 ≈ 245 */
-  .co-vband .imgs{list-style:none;margin:0;padding:0;display:flex;gap:8px;width:100%}
-  .co-vband .imgs li{flex:1;min-width:0;aspect-ratio:1;background:#dedede;border:1px solid var(--border-g)}
 
   /* ── AAA 전략 — AAA 세 장과 닫는 카드가 --vgap 간격으로 쌓인다. 위아래 여백은 --vpad ─────────── */
   .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);--vpad:240px;padding:var(--vpad) 0;
@@ -408,14 +404,10 @@
 
   @media(max-width:900px){
     :root{--co-m:16px}
-    /* 좁은 화면은 한 줄로 쌓는다 — 기둥을 풀고 눈썹 · 제목 · 본문 · 그림 순서로 */
-    .co-vband{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:64px var(--ci-m) 40px}
+    /* 좁은 화면은 한 줄로 쌓는다 — 기둥을 풀면 마크업 순서 그대로 눈썹 · 제목 · 본문 */
+    .co-vband{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:64px var(--ci-m)}
     .co-vband .col{display:contents}
-    .co-vband .eyebrow{order:1}
-    .co-vband h2{order:2;font-size:32px}
-    .co-vband .lead{order:3}
-    .co-vband .imgs{order:4;margin-top:8px;flex-wrap:wrap}
-    .co-vband .imgs li{flex:0 0 calc((100% - 8px) / 2)}
+    .co-vband h2{font-size:32px}
     .co-vision{--vpad:120px;--vgap:80px}
     .co-val{width:auto;margin-inline:var(--co-m)}
     .co-val:nth-child(odd){margin-left:var(--co-m)}
@@ -540,12 +532,10 @@
   <section class="ci-band co-vband" id="vision" aria-labelledby="co-vis-t">
     <div class="col">
       <p class="eyebrow">VISION 2030</p>
-      <p class="lead"><span>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</span><span>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</span></p>
     </div>
     <div class="col">
       <h2 id="co-vis-t">Global Top 5<br />Total Energy - Solution Provider</h2>
-      <!-- 그림 네 칸 — Figma 에서도 비어 있다(빈칸) -->
-      <ul class="imgs" aria-hidden="true"><li></li><li></li><li></li><li></li></ul>
+      <p class="lead"><span>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</span><span>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</span></p>
     </div>
   </section>
 
