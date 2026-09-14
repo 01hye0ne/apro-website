@@ -681,13 +681,17 @@
   .hm-more:hover{border-color:var(--hm-icon)}
   .hm-more:hover svg{transform:translateX(3px)}
   .hm-ncards{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-  .hm-ncards a{display:flex;flex-direction:column;gap:12px;color:inherit;text-decoration:none}
+  /* 카드 글자는 커뮤니티 > 보도자료 카드(content-layout.css 의 .cnews)와 같은 규칙이다 —
+     그림 → 제목 16, 제목은 두 줄에서 자르고, 날짜는 카드 밑변에 붙는다(제목에서 최소 12) */
+  .hm-ncards a{display:flex;flex-direction:column;height:100%;color:inherit;text-decoration:none}
   .hm-ncards .th{display:block;aspect-ratio:16/9;background:var(--hm-ph);border:1px solid var(--border-g)}
-  .hm-ncards .txt{display:flex;flex-direction:column;gap:6px;line-height:1.5}
-  .hm-ncards .ttl{font-family:var(--pre);font-weight:500;font-size:15px;color:var(--g900);
-                  transition:color .2s var(--ease)}
+  .hm-ncards .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
+  .hm-ncards .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+                  font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;
+                  color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
   .hm-ncards a:hover .ttl{color:var(--brand)}
-  .hm-ncards .date{font-family:var(--pre);font-weight:400;font-size:12px;color:var(--hm-sec)}
+  .hm-ncards .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:500;
+                   font-size:14px;letter-spacing:.04em;color:var(--teritary)}
   /* 목록 — 한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 아래 선. 제목과 날짜 칸을 같은 폭으로
      나눠 날짜가 본문 가운데쯤에서 선다. 제목이 길면 한 줄에서 말줄임한다.
      커서를 올리면 제목이 브랜드 색이 되고 화살표가 새 창 쪽(오른쪽 위)으로 조금 나간다 */
@@ -695,11 +699,11 @@
   .hm-nlist a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;
               column-gap:24px;padding:28px 0;border-bottom:1px solid var(--hm-rule);
               color:inherit;text-decoration:none}
+  /* 목록의 제목 · 날짜도 보도자료 카드와 같은 글자 규칙이다 */
   .hm-nlist .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-                 font-family:var(--pre);font-weight:500;font-size:16px;line-height:1.5;color:var(--g900);
-                 transition:color .2s var(--ease)}
-  .hm-nlist .date{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.5;color:var(--hm-sec);
-                  font-feature-settings:"tnum" 1}
+                 font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;
+                 color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
+  .hm-nlist .date{font-family:var(--suit);font-weight:500;font-size:14px;letter-spacing:.04em;color:var(--teritary)}
   .hm-nlist .go{display:flex;align-items:center;gap:6px;font-family:var(--pre);font-weight:400;
                 font-size:15px;line-height:1.5;color:var(--g900);white-space:nowrap}
   .hm-nlist .go svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}
@@ -753,8 +757,8 @@
     .hm-nlist a{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t g" "d g";
                 row-gap:4px;column-gap:16px;padding:20px 0}
     .hm-nlist .ttl{grid-area:t;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;
-                   -webkit-line-clamp:2;font-size:15px}
-    .hm-nlist .date{grid-area:d;font-size:13px}
+                   -webkit-line-clamp:2}
+    .hm-nlist .date{grid-area:d}
     .hm-nlist .go{grid-area:g}
     .hm-nlist .go .lb{display:none}
   }
