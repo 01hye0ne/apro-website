@@ -313,7 +313,8 @@
                 color:rgba(255,255,255,.7)}
 
   /* ── Vision 2030 — 제목, AAA 세 장, 닫는 문구가 120 간격으로 쌓인다 ─────────── */
-  .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);padding:240px 0;
+  /* 위아래 여백은 --vpad. 제목 덩어리와 AAA 판 사이도 같은 --vpad 만큼 벌린다(아래 .co-values 의 margin-top) */
+  .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);--vpad:240px;padding:var(--vpad) 0;
              display:flex;flex-direction:column;--vgap:120px;gap:var(--vgap);overflow:hidden}
   /* 제목 덩어리는 왼쪽 정렬 — 격자 마진(--co-m)에서 시작해 GNB 로고와 같은 선에 선다 */
   .co-vhead{display:flex;flex-direction:column;gap:26px;padding-inline:var(--co-m);text-align:left}
@@ -334,7 +335,8 @@
      스크립트가 겹쳐 두고, 판이 화면을 지나가는 만큼 붙은 쪽 끝 → 모서리 → 옆선 순으로
      그려 나간다. 판이 좌우로 번갈아 붙어 세 장의 파란 선이 지그재그로 이어진다.
      (Figma 원본의 "안쪽 선 왼쪽 2/3 파랑" 그라디언트는 이 동작으로 대신한다) */
-  .co-values{list-style:none;display:flex;flex-direction:column}
+  /* 제목 덩어리 → 판 사이 = 섹션 위 여백. 섹션 gap(--vgap)에 모자란 만큼만 더한다 */
+  .co-values{list-style:none;display:flex;flex-direction:column;margin-top:calc(var(--vpad) - var(--vgap))}
   .co-val{position:relative;width:68.125%}
   .co-val:nth-child(odd){margin-left:auto}
   .co-val .out{background:#fff;border-top:1px solid var(--border-g);border-right:1px solid var(--border-g);
@@ -419,7 +421,7 @@
     .co-hero{height:360px}
     .co-hero h1{font-size:32px;letter-spacing:-.64px}
     .co-hero .sub{font-size:18px;letter-spacing:-.36px}
-    .co-vision{padding:120px 0;--vgap:80px}
+    .co-vision{--vpad:120px;--vgap:80px}
     .co-vhead .eyebrow{font-size:16px}
     .co-vhead .lead{font-size:15px}
     .co-val{width:auto;margin-inline:var(--co-m)}
