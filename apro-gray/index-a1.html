@@ -470,8 +470,10 @@
   .hm-arrows button:disabled{opacity:.4;cursor:default}
   .hm-arrows svg{display:block;width:24px;height:24px}
 
-  /* ── Technology — 네 사업을 가로지르는 핵심 기술 여섯 칸 ─────────────────
-     4열 격자 두 줄. 윗줄은 1·1·2, 아랫줄은 2·1·1 로 넓은 칸이 엇갈린다.
+  /* ── Technology — 가운데 큰 지도 + 사업영역마다 핵심 기술 한 칸 ──────────
+     4열 두 줄. 가운데 2×2 네 칸을 세계 지도 한 칸이 차지하고, 양옆 네 칸에
+     사업영역을 하나씩 둔다 — 왼쪽 위 스마트 제조 · 오른쪽 위 에너지 인프라 ·
+     왼쪽 아래 인공지능 플랫폼 · 오른쪽 아래 화합물 전력 반도체(읽는 순서).
      칸 전체가 링크다. 위에 두 줄 제목(짙음 · 옅음)과 열기 단추, 아래에 작은 도식.
      도식은 칸이 화면에 들어올 때 한 번만 움직인다 — 스크립트가 먼저 .is-wait 로
      처음 모습을 걸어 두고, 보이면 떼어 원래 모습으로 옮겨 간다. 스크립트가 없으면
@@ -483,9 +485,18 @@
                   line-height:1.35;letter-spacing:-.02em;color:var(--g900)}
   .hm-thead .lead span{display:block}
   .hm-thead .lead .m,.hm-tile h3 .m{color:var(--hm-mute)}
-  .hm-tiles{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .hm-tiles{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;
+            grid-template-rows:repeat(2,minmax(0,1fr));grid-template-areas:"sm mp mp en" "ai mp mp se"}
   .hm-tiles>li{min-width:0;display:flex}
-  .hm-tiles>.is-wide{grid-column:span 2}
+  .hm-tiles>.t-sm{grid-area:sm}
+  .hm-tiles>.t-en{grid-area:en}
+  .hm-tiles>.t-ai{grid-area:ai}
+  .hm-tiles>.t-se{grid-area:se}
+  .hm-tiles>.t-mp{grid-area:mp}
+  /* 지도는 칸 안쪽 여백을 넘어 테두리 1px 안까지 넓힌다. 세로로 남는 자리는 위아래로 나눈다 —
+     가로로 잘라 채우면 미국 · 유럽 거점이 잘려 나가 비율은 지킨다.
+     아래 .hm-tile .map(폭 100%)보다 앞에 있어 선택자를 한 단계 높였다 */
+  .hm-tiles>.t-mp .map{width:calc(100% + 46px);max-width:none;margin-inline:-23px}
   .hm-tile{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;padding:24px;
            background:var(--secondary-bg);border:1px solid var(--border-g);
            color:inherit;text-decoration:none;transition:border-color .3s var(--ease)}
@@ -505,32 +516,12 @@
                 justify-content:center;gap:12px;container-type:inline-size}
   .hm-tile .viz>svg{display:block;width:100%;height:auto;max-width:300px}
 
-  /* 1 · 양방향 전력 — 위 선은 충전, 아래 선은 방전 · 회생. 들어올 때 선이 그어지고
-     셀이 찬다. 커서를 올리면 두 선 위로 점이 흐른다 */
-  .rg .box{fill:#fff;stroke:var(--hm-icon)}
-  .rg .ic{fill:none;stroke:var(--hm-icon);stroke-linecap:round}
-  .rg .lv{fill:var(--brand-2);transform-box:fill-box;transform-origin:50% 100%;
-          transition:transform 1.4s var(--ease) .6s}
-  .rg .ln,.rg .hd{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-  .rg .ln{stroke-dasharray:1;transition:stroke-dashoffset .8s var(--ease) var(--d,0s)}
-  .rg .hd{transition:opacity .3s var(--ease) var(--d,.7s)}
-  .rg .c{stroke:var(--hm-icon)}
-  .rg .r{stroke:var(--brand-2)}
-  .rg .flow{fill:none;stroke:var(--brand-2);stroke-width:3;stroke-linecap:round;
-            stroke-dasharray:0 14;opacity:0;transition:opacity .3s var(--ease)}
-  .hm-tile:hover .rg .flow{opacity:1;animation:hmFlow 1.1s linear infinite}
-  @keyframes hmFlow{to{stroke-dashoffset:-14}}
-  .rg text,.wf text{font-family:var(--pre);font-size:11px;fill:var(--hm-sec);text-anchor:middle}
-  .rg .cap{font-family:var(--rc);font-weight:600;letter-spacing:.08em;fill:var(--g900)}
-  .is-wait .rg .ln{stroke-dashoffset:1}
-  .is-wait .rg .hd{opacity:0}
-  .is-wait .rg .lv{transform:scaleY(.12)}
-
   /* 2 · 8인치 웨이퍼 — 다이가 왼쪽 위부터 비스듬히 차오른다 */
   .wf .disc{fill:#fff;stroke:var(--point-300)}
   .wf .die{fill:var(--point-200);transition:opacity .5s var(--ease) calc(var(--i) * 45ms + .2s)}
   .wf .notch{fill:var(--secondary-bg);stroke:var(--point-300)}
   .wf .dim{fill:none;stroke:var(--hm-mute)}
+  .wf text{font-family:var(--pre);font-size:11px;fill:var(--hm-sec);text-anchor:middle}
   .is-wait .wf .die{opacity:0}
 
   /* 3 · 활성화 공정 — 여섯 칸이 차례로 켜지며 사이 선이 이어진다.
@@ -557,7 +548,7 @@
 
   /* 4 · 글로벌 — 태평양 가운데 세계 지도에 본사 · 법인 · 거점을 찍는다.
      본사에서 법인 넷으로 선이 뻗은 뒤 점이 돋는다. 커서를 올리면 본사가 숨 쉰다 */
-  .hm-tile .map{position:relative;display:block;width:100%;max-width:760px;aspect-ratio:1000/387.78}
+  .hm-tile .map{position:relative;display:block;width:100%;aspect-ratio:1000/387.78}
   .map img,.map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .map img{opacity:1}
   .map .arc{fill:none;stroke:var(--brand-2);stroke-width:2.4;stroke-dasharray:1;
@@ -640,8 +631,8 @@
        오른쪽에도 마진을 둔다(글자 크기는 이 여백을 뺀 칸 폭에서 구해진다) */
     .hm-heads{padding-right:var(--hm-m)}
     .hm-tabs{flex:none;width:100%}
-    /* 여섯 칸은 두 열로 — 넓은 칸은 한 줄을 다 쓴다 */
-    .hm-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+    /* 두 열로 — 지도가 한 줄을 다 쓰고 그 아래 사업 네 칸이 2×2 */
+    .hm-tiles{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-template-areas:"mp mp" "sm en" "ai se"}
   }
   @media(max-width:900px){
     :root{--hm-m:16px}
@@ -661,12 +652,12 @@
     .hm-card .d{font-size:13px}
     .hm-tech{gap:28px}
     .hm-tile{padding:20px;gap:20px}
+    .hm-tiles>.t-mp .map{width:calc(100% + 38px);margin-inline:-19px}
     .hm-tile h3{font-size:18px}
     .hm-ncards{grid-template-columns:1fr}
   }
   @media(max-width:640px){
-    .hm-tiles{grid-template-columns:minmax(0,1fr)}
-    .hm-tiles>.is-wide{grid-column:auto}
+    .hm-tiles{grid-template-columns:minmax(0,1fr);grid-template-areas:"mp" "sm" "en" "ai" "se"}
   }
   @media(prefers-reduced-motion:reduce){
     .hm-bg img,.hm-hl,.hm-track,.hm-tab .th img,.hm-card>img,
@@ -916,7 +907,7 @@
   </section>
 
   <!-- ===================== TECHNOLOGY ===================== -->
-  <!-- 네 사업을 가로지르는 핵심 기술 여섯 칸. 글은 모두 사업영역 세부 페이지의 내용이고,
+  <!-- 가운데 세계 지도 + 사업영역마다 핵심 기술 한 칸. 글은 모두 사업영역 세부 페이지의 내용이고,
        도식은 그 내용을 줄여 그린 그림이다(진단 칸의 셀 격자는 화면 예시) -->
   <section class="hm-sec hm-tech" aria-labelledby="hm-tech-t">
     <div class="hm-thead">
@@ -924,40 +915,34 @@
       <p class="lead"><span>전력을 다루는 한 가지 기술로</span><span class="m">네 개의 사업을 잇습니다.</span></p>
     </div>
     <ul class="hm-tiles">
-        <li>
-          <a class="hm-tile" href="business-smart-a1.html#sf02-1" aria-labelledby="hm-tc-1">
-            <span class="tt"><h3 id="hm-tc-1"><span>방전 에너지를 되살립니다</span><span class="m">양방향 전력 제어 · 회생</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
-            <span class="viz" aria-hidden="true"><svg class="rg" viewBox="0 0 280 180"><rect class="box" x="12" y="46" width="64" height="84"/><path class="ic" d="M44 56 L31 116 M44 56 L57 116 M28 70 H60 M32 86 H56 M35 100 H53"/><rect class="box" x="204" y="54" width="60" height="76" rx="6"/><rect class="box" x="222" y="47" width="24" height="7" rx="2"/><rect class="lv" x="210" y="78" width="48" height="46" rx="3"/><path class="ln c" pathLength="1" d="M84 76 H196"/><path class="hd c" d="M190 71 L196 76 L190 81"/><path class="ln r" pathLength="1" style="--d:.5s" d="M196 108 H84"/><path class="hd r" style="--d:1.2s" d="M90 103 L84 108 L90 113"/><path class="flow" d="M84 76 H196"/><path class="flow" d="M196 108 H84"/><text x="140" y="65">충전</text><text x="140" y="127">방전 · 회생</text><text class="cap" x="44" y="150">GRID</text><text class="cap" x="234" y="150">CELL</text></svg></span>
-          </a>
-        </li>
-        <li>
-          <a class="hm-tile" href="business-semicon-a1.html#sf01-1" aria-labelledby="hm-tc-2">
-            <span class="tt"><h3 id="hm-tc-2"><span>8인치 GaN 에피 양산</span><span class="m">국내 최초 8인치 양산 체계</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
-            <span class="viz" aria-hidden="true"><svg class="wf" viewBox="0 0 280 180"><defs><clipPath id="hmWfClip"><circle cx="140" cy="80" r="64"/></clipPath></defs><circle class="disc" cx="140" cy="80" r="68"/><g clip-path="url(#hmWfClip)"><rect class="die" x="121.5" y="26" width="11" height="8" style="--i:6"/><rect class="die" x="134.5" y="26" width="11" height="8" style="--i:7"/><rect class="die" x="147.5" y="26" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="36" width="11" height="8" style="--i:6"/><rect class="die" x="121.5" y="36" width="11" height="8" style="--i:7"/><rect class="die" x="134.5" y="36" width="11" height="8" style="--i:8"/><rect class="die" x="147.5" y="36" width="11" height="8" style="--i:8"/><rect class="die" x="160.5" y="36" width="11" height="8" style="--i:9"/><rect class="die" x="95.5" y="46" width="11" height="8" style="--i:6"/><rect class="die" x="108.5" y="46" width="11" height="8" style="--i:7"/><rect class="die" x="121.5" y="46" width="11" height="8" style="--i:8"/><rect class="die" x="134.5" y="46" width="11" height="8" style="--i:8"/><rect class="die" x="147.5" y="46" width="11" height="8" style="--i:9"/><rect class="die" x="160.5" y="46" width="11" height="8" style="--i:9"/><rect class="die" x="173.5" y="46" width="11" height="8" style="--i:10"/><rect class="die" x="95.5" y="56" width="11" height="8" style="--i:7"/><rect class="die" x="108.5" y="56" width="11" height="8" style="--i:8"/><rect class="die" x="121.5" y="56" width="11" height="8" style="--i:8"/><rect class="die" x="134.5" y="56" width="11" height="8" style="--i:9"/><rect class="die" x="147.5" y="56" width="11" height="8" style="--i:9"/><rect class="die" x="160.5" y="56" width="11" height="8" style="--i:10"/><rect class="die" x="173.5" y="56" width="11" height="8" style="--i:11"/><rect class="die" x="82.5" y="66" width="11" height="8" style="--i:7"/><rect class="die" x="95.5" y="66" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="66" width="11" height="8" style="--i:8"/><rect class="die" x="121.5" y="66" width="11" height="8" style="--i:9"/><rect class="die" x="134.5" y="66" width="11" height="8" style="--i:9"/><rect class="die" x="147.5" y="66" width="11" height="8" style="--i:10"/><rect class="die" x="160.5" y="66" width="11" height="8" style="--i:11"/><rect class="die" x="173.5" y="66" width="11" height="8" style="--i:11"/><rect class="die" x="186.5" y="66" width="11" height="8" style="--i:12"/><rect class="die" x="82.5" y="76" width="11" height="8" style="--i:8"/><rect class="die" x="95.5" y="76" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="76" width="11" height="8" style="--i:9"/><rect class="die" x="121.5" y="76" width="11" height="8" style="--i:9"/><rect class="die" x="134.5" y="76" width="11" height="8" style="--i:10"/><rect class="die" x="147.5" y="76" width="11" height="8" style="--i:11"/><rect class="die" x="160.5" y="76" width="11" height="8" style="--i:11"/><rect class="die" x="173.5" y="76" width="11" height="8" style="--i:12"/><rect class="die" x="186.5" y="76" width="11" height="8" style="--i:12"/><rect class="die" x="82.5" y="86" width="11" height="8" style="--i:8"/><rect class="die" x="95.5" y="86" width="11" height="8" style="--i:9"/><rect class="die" x="108.5" y="86" width="11" height="8" style="--i:9"/><rect class="die" x="121.5" y="86" width="11" height="8" style="--i:10"/><rect class="die" x="134.5" y="86" width="11" height="8" style="--i:11"/><rect class="die" x="147.5" y="86" width="11" height="8" style="--i:11"/><rect class="die" x="160.5" y="86" width="11" height="8" style="--i:12"/><rect class="die" x="173.5" y="86" width="11" height="8" style="--i:12"/><rect class="die" x="186.5" y="86" width="11" height="8" style="--i:13"/><rect class="die" x="95.5" y="96" width="11" height="8" style="--i:9"/><rect class="die" x="108.5" y="96" width="11" height="8" style="--i:10"/><rect class="die" x="121.5" y="96" width="11" height="8" style="--i:11"/><rect class="die" x="134.5" y="96" width="11" height="8" style="--i:11"/><rect class="die" x="147.5" y="96" width="11" height="8" style="--i:12"/><rect class="die" x="160.5" y="96" width="11" height="8" style="--i:12"/><rect class="die" x="173.5" y="96" width="11" height="8" style="--i:13"/><rect class="die" x="95.5" y="106" width="11" height="8" style="--i:10"/><rect class="die" x="108.5" y="106" width="11" height="8" style="--i:11"/><rect class="die" x="121.5" y="106" width="11" height="8" style="--i:11"/><rect class="die" x="134.5" y="106" width="11" height="8" style="--i:12"/><rect class="die" x="147.5" y="106" width="11" height="8" style="--i:12"/><rect class="die" x="160.5" y="106" width="11" height="8" style="--i:13"/><rect class="die" x="173.5" y="106" width="11" height="8" style="--i:14"/><rect class="die" x="108.5" y="116" width="11" height="8" style="--i:11"/><rect class="die" x="121.5" y="116" width="11" height="8" style="--i:12"/><rect class="die" x="134.5" y="116" width="11" height="8" style="--i:12"/><rect class="die" x="147.5" y="116" width="11" height="8" style="--i:13"/><rect class="die" x="160.5" y="116" width="11" height="8" style="--i:14"/><rect class="die" x="121.5" y="126" width="11" height="8" style="--i:12"/><rect class="die" x="134.5" y="126" width="11" height="8" style="--i:13"/><rect class="die" x="147.5" y="126" width="11" height="8" style="--i:14"/></g><path class="notch" d="M135 149 L140 142 L145 149 Z"/><path class="dim" d="M72 158 V166 M72 162 H208 M208 158 V166"/><text x="140" y="178">Ø 200 mm · 8 inch</text></svg></span>
-          </a>
-        </li>
-        <li class="is-wide">
+        <li class="t-sm">
           <a class="hm-tile" href="business-smart-a1.html#sf01-1" aria-labelledby="hm-tc-3">
             <span class="tt"><h3 id="hm-tc-3"><span>활성화 공정의 모든 설비를 직접 만듭니다</span><span class="m">1차 충전부터 불량 선별까지 여섯 단계</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
             <span class="viz" aria-hidden="true"><ol class="steps"><li style="--i:0"><b>01</b><span class="k">1차 충전</span><span class="e">Pre-Formation</span></li><li style="--i:1"><b>02</b><span class="k">디개싱</span><span class="e">Degas</span></li><li style="--i:2"><b>03</b><span class="k">에이징</span><span class="e">Aging</span></li><li style="--i:3"><b>04</b><span class="k">충·방전</span><span class="e">Formation</span></li><li style="--i:4"><b>05</b><span class="k">품질 검사</span><span class="e">IR-OCV</span></li><li style="--i:5"><b>06</b><span class="k">불량 선별</span><span class="e">DSF / EOL</span></li></ol></span>
           </a>
         </li>
-        <li class="is-wide">
-          <a class="hm-tile" href="business-smart-a1.html#sf01-2" aria-labelledby="hm-tc-4">
-            <span class="tt"><h3 id="hm-tc-4"><span>고객사 공장 곁에서 함께합니다</span><span class="m">미국 · 폴란드 · 중국 · 인도네시아 현지 법인</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
-            <span class="viz" aria-hidden="true"><span class="map"><img src="../assets/world-map-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 1000 387.78"><path class="arc" pathLength="1" style="--d:0.20s" d="M383.3 127.9 Q591.6 4.5 799.9 114.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M383.3 127.9 Q230.6 22.9 77.9 90.3"/><path class="arc" pathLength="1" style="--d:0.50s" d="M383.3 127.9 Q371.9 127.8 360.6 143.2"/><path class="arc" pathLength="1" style="--d:0.65s" d="M383.3 127.9 Q355.9 151.4 328.6 249.8"/><circle class="pin st" cx="54.7" cy="93.0" r="5" style="--d:1.10s"/><circle class="pin st" cx="810.1" cy="111.0" r="5" style="--d:1.16s"/><circle class="pin st" cx="800.0" cy="121.2" r="5" style="--d:1.22s"/><circle class="pin st" cx="789.5" cy="131.8" r="5" style="--d:1.28s"/><circle class="pin st" cx="796.1" cy="138.5" r="5" style="--d:1.34s"/><circle class="pin hq" cx="799.9" cy="114.6" r="7" style="--d:0.90s"/><circle class="pin hq" cx="77.9" cy="90.3" r="7" style="--d:1.05s"/><circle class="pin hq" cx="360.6" cy="143.2" r="7" style="--d:1.20s"/><circle class="pin hq" cx="328.6" cy="249.8" r="7" style="--d:1.35s"/><circle class="halo" cx="383.3" cy="127.9" r="18"/><circle class="pin hub" cx="383.3" cy="127.9" r="9" style="--d:0s"/></svg></span><span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span></span>
-          </a>
-        </li>
-        <li>
+        <li class="t-en">
           <a class="hm-tile" href="business-energy-a1.html#sf03-4" aria-labelledby="hm-tc-5">
             <span class="tt"><h3 id="hm-tc-5"><span>국제 인증 안전 설계</span><span class="m">ESS · BMS 인증 보유</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
             <span class="viz" aria-hidden="true"><span class="certs"><span class="grp"><span class="nm">ESS</span><span class="ch" style="--i:0">KC</span><span class="ch" style="--i:1">IEC</span><span class="ch" style="--i:2">UL</span><span class="ch is-key" style="--i:3">UL 9540A</span></span><span class="grp"><span class="nm">BMS</span><span class="ch" style="--i:4">IEC 60730-1</span><span class="ch" style="--i:5">IEC 62443</span></span></span></span>
           </a>
         </li>
-        <li>
+        <li class="t-ai">
           <a class="hm-tile" href="business-ai-a1.html#sf02-1" aria-labelledby="hm-tc-6">
             <span class="tt"><h3 id="hm-tc-6"><span>셀 이상을 읽는 AI 진단</span><span class="m">셀 전압 · 모듈 온도 분석</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
             <span class="viz" aria-hidden="true"><span class="diag"><span class="hd"><span>Cell Voltage</span><span class="st">이상 징후 1</span></span><span class="cells"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i class="is-warn" style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i></span><span class="ft"><span>Module Temp.</span><span class="bar"><i></i></span></span></span></span>
+          </a>
+        </li>
+        <li class="t-se">
+          <a class="hm-tile" href="business-semicon-a1.html#sf01-1" aria-labelledby="hm-tc-2">
+            <span class="tt"><h3 id="hm-tc-2"><span>8인치 GaN 에피 양산</span><span class="m">국내 최초 8인치 양산 체계</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
+            <span class="viz" aria-hidden="true"><svg class="wf" viewBox="0 0 280 180"><defs><clipPath id="hmWfClip"><circle cx="140" cy="80" r="64"/></clipPath></defs><circle class="disc" cx="140" cy="80" r="68"/><g clip-path="url(#hmWfClip)"><rect class="die" x="121.5" y="26" width="11" height="8" style="--i:6"/><rect class="die" x="134.5" y="26" width="11" height="8" style="--i:7"/><rect class="die" x="147.5" y="26" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="36" width="11" height="8" style="--i:6"/><rect class="die" x="121.5" y="36" width="11" height="8" style="--i:7"/><rect class="die" x="134.5" y="36" width="11" height="8" style="--i:8"/><rect class="die" x="147.5" y="36" width="11" height="8" style="--i:8"/><rect class="die" x="160.5" y="36" width="11" height="8" style="--i:9"/><rect class="die" x="95.5" y="46" width="11" height="8" style="--i:6"/><rect class="die" x="108.5" y="46" width="11" height="8" style="--i:7"/><rect class="die" x="121.5" y="46" width="11" height="8" style="--i:8"/><rect class="die" x="134.5" y="46" width="11" height="8" style="--i:8"/><rect class="die" x="147.5" y="46" width="11" height="8" style="--i:9"/><rect class="die" x="160.5" y="46" width="11" height="8" style="--i:9"/><rect class="die" x="173.5" y="46" width="11" height="8" style="--i:10"/><rect class="die" x="95.5" y="56" width="11" height="8" style="--i:7"/><rect class="die" x="108.5" y="56" width="11" height="8" style="--i:8"/><rect class="die" x="121.5" y="56" width="11" height="8" style="--i:8"/><rect class="die" x="134.5" y="56" width="11" height="8" style="--i:9"/><rect class="die" x="147.5" y="56" width="11" height="8" style="--i:9"/><rect class="die" x="160.5" y="56" width="11" height="8" style="--i:10"/><rect class="die" x="173.5" y="56" width="11" height="8" style="--i:11"/><rect class="die" x="82.5" y="66" width="11" height="8" style="--i:7"/><rect class="die" x="95.5" y="66" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="66" width="11" height="8" style="--i:8"/><rect class="die" x="121.5" y="66" width="11" height="8" style="--i:9"/><rect class="die" x="134.5" y="66" width="11" height="8" style="--i:9"/><rect class="die" x="147.5" y="66" width="11" height="8" style="--i:10"/><rect class="die" x="160.5" y="66" width="11" height="8" style="--i:11"/><rect class="die" x="173.5" y="66" width="11" height="8" style="--i:11"/><rect class="die" x="186.5" y="66" width="11" height="8" style="--i:12"/><rect class="die" x="82.5" y="76" width="11" height="8" style="--i:8"/><rect class="die" x="95.5" y="76" width="11" height="8" style="--i:8"/><rect class="die" x="108.5" y="76" width="11" height="8" style="--i:9"/><rect class="die" x="121.5" y="76" width="11" height="8" style="--i:9"/><rect class="die" x="134.5" y="76" width="11" height="8" style="--i:10"/><rect class="die" x="147.5" y="76" width="11" height="8" style="--i:11"/><rect class="die" x="160.5" y="76" width="11" height="8" style="--i:11"/><rect class="die" x="173.5" y="76" width="11" height="8" style="--i:12"/><rect class="die" x="186.5" y="76" width="11" height="8" style="--i:12"/><rect class="die" x="82.5" y="86" width="11" height="8" style="--i:8"/><rect class="die" x="95.5" y="86" width="11" height="8" style="--i:9"/><rect class="die" x="108.5" y="86" width="11" height="8" style="--i:9"/><rect class="die" x="121.5" y="86" width="11" height="8" style="--i:10"/><rect class="die" x="134.5" y="86" width="11" height="8" style="--i:11"/><rect class="die" x="147.5" y="86" width="11" height="8" style="--i:11"/><rect class="die" x="160.5" y="86" width="11" height="8" style="--i:12"/><rect class="die" x="173.5" y="86" width="11" height="8" style="--i:12"/><rect class="die" x="186.5" y="86" width="11" height="8" style="--i:13"/><rect class="die" x="95.5" y="96" width="11" height="8" style="--i:9"/><rect class="die" x="108.5" y="96" width="11" height="8" style="--i:10"/><rect class="die" x="121.5" y="96" width="11" height="8" style="--i:11"/><rect class="die" x="134.5" y="96" width="11" height="8" style="--i:11"/><rect class="die" x="147.5" y="96" width="11" height="8" style="--i:12"/><rect class="die" x="160.5" y="96" width="11" height="8" style="--i:12"/><rect class="die" x="173.5" y="96" width="11" height="8" style="--i:13"/><rect class="die" x="95.5" y="106" width="11" height="8" style="--i:10"/><rect class="die" x="108.5" y="106" width="11" height="8" style="--i:11"/><rect class="die" x="121.5" y="106" width="11" height="8" style="--i:11"/><rect class="die" x="134.5" y="106" width="11" height="8" style="--i:12"/><rect class="die" x="147.5" y="106" width="11" height="8" style="--i:12"/><rect class="die" x="160.5" y="106" width="11" height="8" style="--i:13"/><rect class="die" x="173.5" y="106" width="11" height="8" style="--i:14"/><rect class="die" x="108.5" y="116" width="11" height="8" style="--i:11"/><rect class="die" x="121.5" y="116" width="11" height="8" style="--i:12"/><rect class="die" x="134.5" y="116" width="11" height="8" style="--i:12"/><rect class="die" x="147.5" y="116" width="11" height="8" style="--i:13"/><rect class="die" x="160.5" y="116" width="11" height="8" style="--i:14"/><rect class="die" x="121.5" y="126" width="11" height="8" style="--i:12"/><rect class="die" x="134.5" y="126" width="11" height="8" style="--i:13"/><rect class="die" x="147.5" y="126" width="11" height="8" style="--i:14"/></g><path class="notch" d="M135 149 L140 142 L145 149 Z"/><path class="dim" d="M72 158 V166 M72 162 H208 M208 158 V166"/><text x="140" y="178">Ø 200 mm · 8 inch</text></svg></span>
+          </a>
+        </li>
+        <li class="t-mp">
+          <a class="hm-tile" href="business-smart-a1.html#sf01-2" aria-labelledby="hm-tc-4">
+            <span class="tt"><h3 id="hm-tc-4"><span>고객사 공장 곁에서 함께합니다</span><span class="m">미국 · 폴란드 · 중국 · 인도네시아 현지 법인</span></h3><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></span>
+            <span class="viz" aria-hidden="true"><span class="map"><img src="../assets/world-map-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 1000 387.78"><path class="arc" pathLength="1" style="--d:0.20s" d="M383.3 127.9 Q591.6 4.5 799.9 114.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M383.3 127.9 Q230.6 22.9 77.9 90.3"/><path class="arc" pathLength="1" style="--d:0.50s" d="M383.3 127.9 Q371.9 127.8 360.6 143.2"/><path class="arc" pathLength="1" style="--d:0.65s" d="M383.3 127.9 Q355.9 151.4 328.6 249.8"/><circle class="pin st" cx="54.7" cy="93.0" r="5" style="--d:1.10s"/><circle class="pin st" cx="810.1" cy="111.0" r="5" style="--d:1.16s"/><circle class="pin st" cx="800.0" cy="121.2" r="5" style="--d:1.22s"/><circle class="pin st" cx="789.5" cy="131.8" r="5" style="--d:1.28s"/><circle class="pin st" cx="796.1" cy="138.5" r="5" style="--d:1.34s"/><circle class="pin hq" cx="799.9" cy="114.6" r="7" style="--d:0.90s"/><circle class="pin hq" cx="77.9" cy="90.3" r="7" style="--d:1.05s"/><circle class="pin hq" cx="360.6" cy="143.2" r="7" style="--d:1.20s"/><circle class="pin hq" cx="328.6" cy="249.8" r="7" style="--d:1.35s"/><circle class="halo" cx="383.3" cy="127.9" r="18"/><circle class="pin hub" cx="383.3" cy="127.9" r="9" style="--d:0s"/></svg></span><span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span></span>
           </a>
         </li>
     </ul>
