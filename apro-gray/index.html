@@ -754,10 +754,9 @@
   /* ===================== SHARED: hamburger + full-screen overlay ===================== */
   .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
     cursor:pointer;color:inherit;padding:0;flex-shrink:0}
-  .menu-toggle span{display:block;width:26px;height:1.8px;background:currentColor;border-radius:2px;transition:transform .3s var(--ease)}
-  .menu-toggle span+span{margin-top:7px}
-  .menu-toggle:hover span:first-child{transform:translateY(1px)}
-  .menu-toggle:hover span:last-child{transform:translateY(-1px)}
+  /* 줄 모양은 아래 .sf-burger 가 맡는다. 예전 세 줄 단추의 span 규칙(두께 1.8 · 줄 사이
+     margin 7 · 커서 올릴 때 밀기)이 남아 있으면 둘째 · 셋째 줄이 7px 씩 아래로 밀리고,
+     커서를 올리면 .sf-burger 의 transform 까지 덮어써 모양이 틀어진다 */
   .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
     background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
     color:#fff;opacity:0;visibility:hidden;pointer-events:none;
