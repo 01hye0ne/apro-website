@@ -307,8 +307,8 @@
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
   /* 장마다 한 화면(머리 바 아래)을 차지하고, 내용은 그 가운데에 선다.
-     좌우는 격자 1~12열 — GNB 와 같은 마진(44)이다 */
-  .hm-sec{position:relative;min-height:var(--hm-h);padding:56px var(--hm-m);
+     좌우는 격자 1~12열 — GNB 와 같은 마진(44)이다. 위아래 여백은 112(Figma 56 의 두 배) */
+  .hm-sec{position:relative;min-height:var(--hm-h);padding:112px var(--hm-m);
           display:flex;flex-direction:column;justify-content:center;
           background:#fff;border-bottom:1px solid var(--hm-rule);word-break:keep-all}
   .hm-ttl{font-family:var(--ald);font-weight:400;font-size:40px;line-height:1;
