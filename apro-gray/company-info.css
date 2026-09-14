@@ -2,9 +2,9 @@
    회사정보 세 페이지 공용 틀 — 회사소개 · 글로벌 네트워크 · 사업장소재 (A-1)
    Figma 1227:7858 / 1227:7859 / 1227:7862
 
-   ① 히어로(.ci-hero) — 흰 판, 1440 에서 320 높이. 12열 그리드(마진 44 · 거터 20)에서
-      1~3열에 영문 제목(Aldrich 64), 4열부터 설명(Pretendard 400 20)이 위 96 에 선다.
-      제목 색은 기본이 글자색(#1b2733), .ci-hero--brand 면 브랜드 파랑(네트워크 · 사업장소재).
+   ① 히어로(.ci-hero) — 흰 판, 위아래 96 사이에 내용만큼 선다(한 줄 설명이면 1440 에서 232).
+      12열 그리드(마진 44 · 거터 20)에서 1~3열에 영문 제목(Aldrich 40, 브랜드 파랑),
+      4열부터 설명(Pretendard 400 20).
    ② 파랑 띠(.ci-band) — 히어로 바로 아래 브랜드 파랑 판. 안의 내용과 여백은 페이지마다 다르다
       (회사소개 Vision 2030 · 네트워크 지도 · 사업장소재 지도 자리).
 
@@ -13,14 +13,12 @@
 .ci-hero,.ci-band{--ci-m:44px;--ci-gap:20px}
 
 .ci-hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--ci-gap);align-items:start;
-  min-height:320px;padding:96px var(--ci-m) 64px;background:#fff;color:#1b2733;word-break:keep-all}
-/* 1440 에서 64, 좁아지면 3열 폭에 맞춰 줄어든다(Global / Network · Locations 가 칸을 넘지 않게) */
+  padding:96px var(--ci-m);background:#fff;color:#1b2733;word-break:keep-all}
 .ci-hero h1{grid-column:1 / span 3;margin:0;font-family:"Aldrich",sans-serif;font-weight:400;
-  font-size:clamp(40px,4.45vw,64px);line-height:1;letter-spacing:-.06em}
+  font-size:40px;line-height:1;letter-spacing:-.06em;color:#2c5790}
 /* 설명은 Figma 에서 줄마다 끊겨 있다 — 줄 하나가 <span> 하나, 줄 사이 2 */
 .ci-hero .sub{grid-column:4 / -1;margin:0;font-family:"Pretendard",sans-serif;font-weight:400;font-size:20px;
   line-height:1.6;letter-spacing:-.4px;font-feature-settings:"lnum" 1,"tnum" 1}
-.ci-hero--brand h1{color:#2c5790}
 .ci-hero .sub span{display:block}
 .ci-hero .sub span+span{margin-top:2px}
 
