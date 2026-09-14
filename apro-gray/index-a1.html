@@ -418,7 +418,15 @@
                 -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
                 mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-card .cap a{pointer-events:auto}
-  .hm-card .txt{display:flex;flex-direction:column;gap:8px;padding:0 20px}
+  /* 위층 — 이름 · 설명은 왼쪽, 사업영역 픽토그램은 오른쪽(바닥을 설명글에 맞춘다) */
+  .hm-card .crow{display:flex;align-items:flex-end;gap:24px;padding:0 20px}
+  .hm-card .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+  /* 픽토그램 — 사업영역 페이지 아래 마을(.bhop)의 그림을 그대로 쓴다. 원본은 짙은 회색
+     선이라 어두운 유리 판에서 묻히므로 filter 로 흰 선을 만든다(<img> 로 부른 SVG 는
+     CSS 로 선 색을 못 바꾼다). 높이만 정하고 폭은 캔버스 비율(--ar)로 미리 잡아, 그림이
+     늦게 들어와도 글이 밀리지 않는다 */
+  .hm-card .vec{display:block;flex-shrink:0;height:88px;width:auto;aspect-ratio:var(--ar);
+                filter:brightness(0) invert(1);opacity:.92}
   /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
   .hm-card h3{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px}
   /* 카드 어디를 눌러도 세부 페이지로 간다 — 사진 위에 카드 크기 링크(.hit)를 한 장
@@ -510,7 +518,8 @@
                  white-space:normal;border-bottom:1px solid rgba(255,255,255,.6)}
     .hm-card{flex-basis:calc((100% - var(--hm-m)) * .86);aspect-ratio:auto;height:420px}
     .hm-card .cap{gap:12px;padding-top:32px}
-    .hm-card .txt{padding:0 16px}
+    .hm-card .crow{gap:12px;padding:0 16px}
+    .hm-card .vec{height:56px}
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:13px}
@@ -678,9 +687,12 @@
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-a1.html" tabindex="-1" aria-hidden="true"></a>
           <div class="cap">
-            <div class="txt">
-              <h3><a href="business-smart-a1.html">스마트 제조</a></h3>
-              <p class="d">이차전지 활성화 중요 공정 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.</p>
+            <div class="crow">
+              <div class="txt">
+                <h3><a href="business-smart-a1.html">스마트 제조</a></h3>
+                <p class="d">이차전지 활성화 중요 공정 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.</p>
+              </div>
+              <img class="vec" data-src="../assets/vec-smart.svg" style="--ar:251/177" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="스마트 제조 소분류">
               <li><a href="business-smart-a1.html#sf01-1">이차전지 활성화</a></li>
@@ -694,9 +706,12 @@
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-a1.html" tabindex="-1" aria-hidden="true"></a>
           <div class="cap">
-            <div class="txt">
-              <h3><a href="business-energy-a1.html">에너지 인프라</a></h3>
-              <p class="d">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.<br />그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</p>
+            <div class="crow">
+              <div class="txt">
+                <h3><a href="business-energy-a1.html">에너지 인프라</a></h3>
+                <p class="d">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.<br />그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</p>
+              </div>
+              <img class="vec" data-src="../assets/vec-energy.svg" style="--ar:251/179" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="에너지 인프라 소분류">
               <li><a href="business-energy-a1.html#sf01-1">ESS</a></li>
@@ -709,9 +724,12 @@
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-a1.html" tabindex="-1" aria-hidden="true"></a>
           <div class="cap">
-            <div class="txt">
-              <h3><a href="business-ai-a1.html">인공지능 플랫폼</a></h3>
-              <p class="d">AI로 배터리와 설비의 상태를 읽어냅니다.<br />진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</p>
+            <div class="crow">
+              <div class="txt">
+                <h3><a href="business-ai-a1.html">인공지능 플랫폼</a></h3>
+                <p class="d">AI로 배터리와 설비의 상태를 읽어냅니다.<br />진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</p>
+              </div>
+              <img class="vec" data-src="../assets/vec-ai.svg" style="--ar:267/176" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="인공지능 플랫폼 소분류">
               <li><a href="business-ai-a1.html#sf01-1">로봇 플랫폼</a></li>
@@ -725,9 +743,12 @@
           <img src="../assets/carousel-gan.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-a1.html" tabindex="-1" aria-hidden="true"></a>
           <div class="cap">
-            <div class="txt">
-              <h3><a href="business-semicon-a1.html">화합물 전력 반도체</a></h3>
-              <p class="d">질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.<br />국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다</p>
+            <div class="crow">
+              <div class="txt">
+                <h3><a href="business-semicon-a1.html">화합물 전력 반도체</a></h3>
+                <p class="d">질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.<br />국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다</p>
+              </div>
+              <img class="vec" data-src="../assets/vec-semicon.svg" style="--ar:251/180" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="화합물 전력 반도체 소분류">
               <li><a href="business-semicon-a1.html#sf01-1">GaN Epi-Wafer</a></li>
@@ -1196,6 +1217,30 @@
   cards.forEach(function(c, k){ c.addEventListener('focusin', function(){ if(k !== at) go(k); }); });
   window.addEventListener('resize', function(){ go(at); });
   go(0);
+})();
+
+/* ── Business 픽토그램 — 카드가 절반 넘게 보일 때 붙인다 ─────────────────────
+   선 그리기 애니메이션이 SVG 파일 안에 있어 <img> 는 불러오는 순간 한 번만
+   재생한다. 미리 불러 두면 카드를 넘겨 봤을 때 이미 다 그려져 있다 → 사업영역
+   페이지 마을과 같이 보일 때 src 를 붙인다. 레일이 overflow 로 자르므로 옆에
+   걸려 있는 카드는 절반을 못 넘어 아직 붙지 않는다 */
+(function(){
+  var imgs = [].slice.call(document.querySelectorAll('.hm-card .vec[data-src]'));
+  if(!imgs.length) return;
+  function load(im){
+    if(!im || !im.hasAttribute('data-src')) return;
+    im.src = im.getAttribute('data-src');
+    im.removeAttribute('data-src');
+  }
+  if(!('IntersectionObserver' in window)){ imgs.forEach(load); return; }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      load(e.target.querySelector('.vec'));
+      io.unobserve(e.target);
+    });
+  }, { threshold: .5 });
+  imgs.forEach(function(im){ io.observe(im.closest('.hm-card')); });
 })();
 </script>
 </body>
