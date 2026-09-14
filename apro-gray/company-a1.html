@@ -315,7 +315,8 @@
   /* ── Vision 2030 — 제목, AAA 세 장, 닫는 문구가 120 간격으로 쌓인다 ─────────── */
   .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);padding:240px 0;
              display:flex;flex-direction:column;--vgap:120px;gap:var(--vgap);overflow:hidden}
-  .co-vhead{display:flex;flex-direction:column;gap:26px;padding-inline:var(--co-m);text-align:center}
+  /* 제목 덩어리는 왼쪽 정렬 — 격자 마진(--co-m)에서 시작해 GNB 로고와 같은 선에 선다 */
+  .co-vhead{display:flex;flex-direction:column;gap:26px;padding-inline:var(--co-m);text-align:left}
   .co-vhead .eyebrow{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
                      letter-spacing:-.4px;color:var(--brand)}
   .co-vhead h2{font-family:var(--ald);font-weight:400;font-size:clamp(36px,4.45vw,64px);line-height:1;
@@ -325,7 +326,8 @@
                   letter-spacing:-.36px;color:var(--co-sec)}
   .co-vhead .lead span{display:block}
 
-  /* AAA 세 장 — 화면 폭의 68%(1440 중 981) 판이 왼쪽 · 오른쪽 끝에 번갈아 붙는다.
+  /* AAA 세 장 — 화면 폭의 68%(1440 중 981) 판이 오른쪽 · 왼쪽 끝에 번갈아 붙는다(1 · 3 오른쪽, 2 왼쪽).
+     아래 규칙의 기본값이 왼쪽에 붙는 판이고, :nth-child(odd) 가 오른쪽에 붙는 판이다.
      판은 두 겹이다. 바깥 판은 모서리 60, 그 안 20 들어간 안쪽 판은 모서리 40 이고,
      둘 다 위와 [화면 안쪽 옆]에만 선이 있다. 글과 그림은 판의 화면 안쪽 절반에 선다.
      선은 두 겹 모두 회색이 바탕이다. 그 위에 같은 자리를 따라가는 파란 선(.co-draw)을
@@ -334,15 +336,15 @@
      (Figma 원본의 "안쪽 선 왼쪽 2/3 파랑" 그라디언트는 이 동작으로 대신한다) */
   .co-values{list-style:none;display:flex;flex-direction:column}
   .co-val{position:relative;width:68.125%}
-  .co-val:nth-child(even){margin-left:auto}
+  .co-val:nth-child(odd){margin-left:auto}
   .co-val .out{background:#fff;border-top:1px solid var(--border-g);border-right:1px solid var(--border-g);
                border-top-right-radius:60px;padding:20px 20px 0 0}
-  .co-val:nth-child(even) .out{border-right:0;border-left:1px solid var(--border-g);
+  .co-val:nth-child(odd) .out{border-right:0;border-left:1px solid var(--border-g);
                border-radius:60px 0 0 0;padding:20px 0 0 20px}
   .co-val .in{position:relative;background:#fff;border-top:1px solid var(--border-g);
               border-right:1px solid var(--border-g);border-top-right-radius:40px;
               --pt:64px;padding:var(--pt) 2.08% 120px 52.13%;display:flex;flex-direction:column;gap:28px}
-  .co-val:nth-child(even) .in{border-right:0;border-left:1px solid var(--border-g);
+  .co-val:nth-child(odd) .in{border-right:0;border-left:1px solid var(--border-g);
               border-radius:40px 0 0 0;padding:var(--pt) 52.13% 120px 2.08%}
   /* 파란 선 — 판 위에 겹친 SVG. 경로는 판 크기에 맞춰 스크립트가 그린다(모서리 반경이
      px 고정이라 viewBox 늘이기로는 모서리가 찌그러진다). 채운 길이는 stroke-dashoffset */
@@ -358,8 +360,8 @@
   .co-val:last-of-type .out::after,
   .co-val:last-of-type .in::after{content:"";position:absolute;top:100%;right:-1px;width:1px;
                                   height:calc(var(--vgap) + 32px);background:var(--border-g);pointer-events:none}
-  .co-val:last-of-type:nth-of-type(even) .out::after,
-  .co-val:last-of-type:nth-of-type(even) .in::after{right:auto;left:-1px}
+  .co-val:last-of-type:nth-of-type(odd) .out::after,
+  .co-val:last-of-type:nth-of-type(odd) .in::after{right:auto;left:-1px}
   /* z-index 4 — 판 사이를 떨어지는 사진(.co-morph, 3)이 지나갈 때 제목 · 글 · 번호 박스가 사진 위에 남는다 */
   .co-val .kw{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
   /* 번호 박스 — 바깥 선과 안쪽 선 사이 20px 틈의 한가운데, 글 기둥 중앙에 얹는다.
@@ -421,8 +423,8 @@
     .co-vhead .eyebrow{font-size:16px}
     .co-vhead .lead{font-size:15px}
     .co-val{width:auto;margin-inline:var(--co-m)}
-    .co-val:nth-child(even){margin-left:var(--co-m)}
-    .co-val .in,.co-val:nth-child(even) .in{--pt:48px;padding:var(--pt) 20px 64px}
+    .co-val:nth-child(odd){margin-left:var(--co-m)}
+    .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
     .co-val h3{font-size:32px}
     .co-apro{padding-inline:var(--co-m)}
     .co-apro .fig{aspect-ratio:auto;min-height:360px}
@@ -745,7 +747,7 @@
       items.forEach(function(it){
         var b = it.li.getBoundingClientRect();
         var so = getComputedStyle(it.out), si = getComputedStyle(it.inn);
-        /* 선이 왼쪽에 있으면(짝수 장) 왼쪽 테두리 두께가 잡힌다 */
+        /* 선이 왼쪽에 있으면(홀수 장 — 오른쪽에 붙은 판) 왼쪽 테두리 두께가 잡힌다 */
         var left = parseFloat(so.borderLeftWidth) > 0;
         var o = it.out.getBoundingClientRect(), n = it.inn.getBoundingClientRect();
         /* 마지막 판은 옆선을 닫는 그림 윗변까지 늘린다(회색 바탕은 CSS ::before) */
