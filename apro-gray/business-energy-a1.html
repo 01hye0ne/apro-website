@@ -70,7 +70,7 @@
     /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
        (히어로·장 높이·sticky 인덱스·앵커 여백)이 함께 빼는 값이다.
        한 군데서 바꾸면 전부 따라온다 */
-    --gnb-h:53px;
+    --gnb-only:53px;--gnb-h:calc(var(--gnb-only) + var(--bar-h));
     /* 장 위아래 여백. 설계값은 176(= 바깥 120 + 카드 자체 56)이고 900 높이 화면을
        전제로 그렸는데, 고정 GNB 가 53 을 먹어 그대로 쓰면 가장 긴 장(01-1, 여섯 줄
        목록)이 한 화면을 29px 넘긴다 — 휠 한 번이 다음 장으로 건너뛰므로 그 29px 는
@@ -141,7 +141,7 @@
      로고 · 가운데 대분류 다섯 · 오른쪽 도구 (Figma 1135:7128).
      대분류 묶음은 화면 한가운데에 못 박는다 — 로고(78)와 도구(58)의 폭이 달라
      space-between 만으로는 가운데가 어긋난다 */
-  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-h);
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-only);
           display:flex;align-items:center;justify-content:space-between;gap:24px;
           padding:8px var(--grid-m);background:#fff;border-bottom:1px solid var(--sf-line)}
   .sf-gnb .logo{flex-shrink:0;width:78px}
@@ -802,6 +802,24 @@
   .sf-burger[aria-expanded="true"] .a{opacity:0}
   .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
   .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+  /* ── 상단 소분류 탭 바 (2026-09-16 되살림) ─────────────────────────────
+     2026-09-09 와이어프레임 개편 때 왼쪽 세로 인덱스로 바뀌면서 빠졌던 바다.
+     A(business-*.html)의 바와 같은 부품(.bnav-wrap / .bnav / .bnav-tabs, business-layout.css)을
+     쓰되, 히어로 밑단에 얹혀 있다가 고정되는 A 의 연출 대신 GNB 아래에 늘 붙어 있는다 —
+     이 시안은 첫 화면이 사진 한 장(.sf-hero)이라 바가 얹힐 밑단이 없다.
+     그래서 --gnb-h 는 [GNB + 바] 높이를 가리키고(본문 여백 · 붙박이 기둥이 이 값을 쓴다),
+     GNB 자신의 키만 --gnb-only 로 따로 둔다 */
+  .bnav-wrap{position:fixed;top:var(--gnb-only);left:0;width:100%;height:var(--bar-h);
+             margin-top:0;z-index:56;
+             background:linear-gradient(180deg,var(--point-900),var(--point-950))}
+  .bnav-wrap::before,.bnav-wrap::after{display:none}
+  /* A 는 바가 고정될 때만 켜는 것들 — 이 시안의 바는 늘 고정이라 항상 켠다 */
+  .bnav-wrap .bnav-ttl{opacity:1;translate:none}
+  .bnav-wrap .bnav-tabs a{color:var(--on-dark-sub);text-shadow:0 1px 4px rgba(0,0,0,.28)}
+  .bnav-wrap .bnav-tabs a:hover,
+  .bnav-wrap .bnav-tabs a[aria-current]{color:#fff}
+  .bnav-wrap .bnav-pager{opacity:1}
+  .bnav-wrap .bnav-pager button{pointer-events:auto}
 </style>
 </head>
 <body>
@@ -829,6 +847,20 @@
       <button type="button" class="sf-burger" id="sfBurger" aria-controls="sfNav" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
   </div>
 </header>
+
+<!-- ==== 소분류 탭 바 — GNB 아래 고정. A(business-*.html)와 같은 부품 ==== -->
+<div class="bnav-wrap">
+  <nav class="bnav" aria-label="에너지 인프라 소분류">
+    <p class="bnav-ttl">에너지 인프라</p>
+    <div class="bnav-tabs">
+      <a href="#sf01-1" aria-current="true">ESS</a>
+      <a href="#sf02-1">UPS</a>
+      <a href="#sf03-1">솔루션</a>
+    </div>
+  </nav>
+  <span class="bnav-rule" aria-hidden="true"></span>
+</div>
+
 
 <div class="sf-mega" id="mega-biz" aria-hidden="true" aria-label="사업영역">
   <div class="cols">
@@ -983,30 +1015,6 @@
 
 <!-- ===================== 본문 ===================== -->
 <div class="sf-main">
-
-  <div class="sf-railwrap">
-    <nav class="sf-rail" id="sfRail" aria-label="에너지 인프라 소분류">
-      <div class="sf-grp">
-        <p class="hd"><span>01</span><span>ESS</span></p>
-        <a href="#sf01-1">GRID ESS</a>
-        <a href="#sf01-2">Renewable ESS</a>
-        <a href="#sf01-3">C&amp;I ESS</a>
-      </div>
-      <div class="sf-grp">
-        <p class="hd"><span>02</span><span>UPS</span></p>
-        <a href="#sf02-1">데이터 센터 전용 UPS</a>
-        <a href="#sf02-2">산업용 UPS</a>
-        <a href="#sf02-3">주요 전력망 UPS</a>
-      </div>
-      <div class="sf-grp">
-        <p class="hd"><span>03</span><span>솔루션</span></p>
-        <a href="#sf03-1">Module</a>
-        <a href="#sf03-2">Rack</a>
-        <a href="#sf03-3">Container</a>
-        <a href="#sf03-4">BMS</a>
-      </div>
-    </nav>
-  </div>
 
   <div class="sf-body">
 
