@@ -390,7 +390,7 @@
   .co-val .ph{overflow:hidden}
   .co-val .ph>img{display:block;width:100%;height:100%;object-fit:cover}
   /* 사진 스택 모핑 — Vision 띠의 사진 세 장이 스크롤을 따라 첫 장 자리로 모여 스택이 되고(1단계),
-     그 스택이 아래 AAA 첫 판의 사진 자리로 내려앉는다(2단계). 스크립트가 사진 복사본(.co-fly)을
+     스택이 같은 높이에서 화면 가로 가운데로 옮겨 간 뒤(2단계), 아래 AAA 첫 판의 사진 자리로 내려앉는다(3단계). 스크립트가 사진 복사본(.co-fly)을
      #stage 위에 띄워 움직이고, 그동안 원래 사진(Vision 세 장 · 첫 판)은 자리만 남긴다.
      맨 앞 장이 첫 판과 같은 사진이라 내려앉으면 이음새 없이 제자리 사진이 된다.
      z-index 는 GNB(100) · 메가메뉴(98) 아래. 좁은 화면(900 이하) · 움직임 줄이기 · 스크립트 없음이면
@@ -865,15 +865,16 @@
     if(window.ResizeObserver) new ResizeObserver(refit).observe(document.querySelector('.co-values'));
   })();
 
-  /* ===== 사진 스택 모핑 — Vision 세 장이 모여 쌓였다가 AAA 첫 판 사진 자리로 내려앉는다 =====
-     진행값 p 는 0 ~ 2.
-       0 ~ 1 쌓기   사진 줄 윗변이 화면 60% 에서 25% 로 올라가는 동안 둘째 · 셋째 장이 첫 장 자리 뒤로
-                    모인다. 뒤 장일수록 12px 씩 오른쪽으로 비껴 스택이 보인다.
-       1 ~ 2 떨어짐 이어서 첫 판 사진 자리 가운데가 화면 가운데에 올 때까지 스택이 그 자리로 옮겨 가며
-                    16:9 → 4:3 으로 모양을 바꾼다. 비낌은 0 으로 줄고 뒤 장은 끝 30% 에서 사라진다.
+  /* ===== 사진 스택 모핑 — Vision 세 장이 쌓여 가운데로 간 뒤 AAA 첫 판 사진 자리로 내려앉는다 =====
+     진행값 p 는 0 ~ 3.
+       0 ~ 1 쌓기     사진 줄 윗변이 화면 65% 에서 45% 로 올라가는 동안 둘째 · 셋째 장이 첫 장 자리 뒤로
+                      모인다. 뒤 장일수록 12px 씩 오른쪽으로 비껴 스택이 보인다.
+       1 ~ 2 가운데로 45% 에서 25% 까지 스택이 같은 높이에서 #stage 가로 가운데로 옮겨 간다.
+       2 ~ 3 떨어짐   이어서 첫 판 사진 자리 가운데가 화면 가운데에 올 때까지 스택이 그 자리로 옮겨 가며
+                      16:9 → 4:3 으로 모양을 바꾼다. 비낌은 0 으로 줄고 뒤 장은 끝 30% 에서 사라진다.
      스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 선 그리기처럼 목표값을 조금씩 따라간다.
      되감으면 거꾸로 돌아간다.
-     확인용: <html data-co-fly="1.5"> 처럼 값을 주면 스크롤과 상관없이 그 진행값에 멈춘다 */
+     확인용: <html data-co-fly="2.5"> 처럼 값을 주면 스크롤과 상관없이 그 진행값에 멈춘다 */
   (function(){
     var stage = document.getElementById('stage');
     var src = [].slice.call(document.querySelectorAll('.co-vband .imgs li'));
@@ -890,7 +891,7 @@
       stage.appendChild(el);
       return el;
     });
-    var S = [], T = null, y0 = 0, y1 = 0, y2 = 1, cur = 0, goal = 0, raf = 0, on = false;
+    var S = [], C = null, T = null, Y = [0, 1, 2, 3], cur = 0, goal = 0, raf = 0, on = false;
     /* #stage 기준 상자 — 복사본이 #stage(position:relative) 안에서 움직이므로 같은 기준으로 잰다 */
     function box(el){
       var r = el.getBoundingClientRect(), b = stage.getBoundingClientRect();
@@ -900,11 +901,13 @@
       var sy = window.scrollY || window.pageYOffset, vh = window.innerHeight;
       S = src.map(box);
       T = box(dst.querySelector('img') || dst);
+      /* 가운데 자리 — 스택(비낌 포함 폭)이 #stage 가로 가운데에 오게, 높이는 첫 장 그대로 */
+      var span = S[0].w + OFF * (src.length - 1);
+      C = { x:(stage.clientWidth - span) / 2, y:S[0].y, w:S[0].w, h:S[0].h };
       var st = stage.getBoundingClientRect().top + sy;
       var rowTop = st + S[0].y, tc = st + T.y + T.h / 2;
-      y0 = rowTop - vh * .6;
-      y1 = rowTop - vh * .25;
-      y2 = Math.max(y1 + 200, tc - vh * .5);
+      Y = [rowTop - vh * .65, rowTop - vh * .45, rowTop - vh * .25, 0];
+      Y[3] = Math.max(Y[2] + 200, tc - vh * .5);
     }
     function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
     function ease(v){ return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; }
@@ -913,15 +916,19 @@
       var q = parseFloat(root.getAttribute('data-co-fly'));
       if(!isNaN(q)) return q;
       var y = window.scrollY || window.pageYOffset;
-      return y <= y1 ? clamp((y - y0) / (y1 - y0)) : 1 + clamp((y - y1) / (y2 - y1));
+      if(y <= Y[1]) return clamp((y - Y[0]) / (Y[1] - Y[0]));
+      if(y <= Y[2]) return 1 + clamp((y - Y[1]) / (Y[2] - Y[1]));
+      return 2 + clamp((y - Y[2]) / (Y[3] - Y[2]));
     }
     function paint(){
-      var a = ease(clamp(cur)), f = ease(clamp(cur - 1)), A = S[0];
+      var a = ease(clamp(cur)), m = ease(clamp(cur - 1)), f = ease(clamp(cur - 2)), A = S[0];
       flies.forEach(function(el, i){
         var s = S[i], off = i * OFF, x, y, w, h;
-        if(f > 0){
-          x = lerp(A.x + off, T.x, f); y = lerp(A.y, T.y, f); w = lerp(A.w, T.w, f); h = lerp(A.h, T.h, f);
-        } else {
+        if(f > 0){        /* 3단계 — 가운데 스택 → 첫 판 사진 자리 */
+          x = lerp(C.x + off, T.x, f); y = lerp(C.y, T.y, f); w = lerp(C.w, T.w, f); h = lerp(C.h, T.h, f);
+        } else if(m > 0){ /* 2단계 — 첫 장 자리 스택 → 가운데 */
+          x = lerp(A.x, C.x, m) + off; y = A.y; w = A.w; h = A.h;
+        } else {          /* 1단계 — 제자리 → 첫 장 자리(+비낌) */
           x = lerp(s.x, A.x + off, a); y = lerp(s.y, A.y, a); w = lerp(s.w, A.w, a); h = lerp(s.h, A.h, a);
         }
         el.style.width = w + 'px';
