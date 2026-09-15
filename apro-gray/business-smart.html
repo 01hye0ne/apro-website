@@ -1651,16 +1651,6 @@
             <span class="glab" style="left:42%;top:47%">중국 남경<em>(중국법인)</em></span>
             <span class="glab glab--r" style="left:25%;top:79%">인도네시아 카라왕<em>(인도네시아법인)</em></span>
 
-            <figure class="gpop" id="gpop-mi" style="left:55%;top:27.1%;max-height:70.4%">
-              <img src="../assets/site-michigan-lges.jpg" width="353" height="235" loading="lazy"
-                   alt="LG에너지솔루션 미시간 공장 전경" />
-              <figcaption>LG에너지솔루션 미시간 공장</figcaption>
-            </figure>
-            <figure class="gpop" id="gpop-ga" style="left:55%;top:51.2%;max-height:46.3%">
-              <img src="../assets/site-georgia-hyundai.png" width="353" height="235" loading="lazy"
-                   alt="현대자동차 조지아 공장 전경" />
-              <figcaption>현대자동차 조지아 공장</figcaption>
-            </figure>
           </div>
         </div>
       </article>
@@ -1697,7 +1687,8 @@
 
   <!-- 03 -->
   <section class="hsec" id="s3">
-    <div class="hrail"></div>
+    <!-- MES 카드를 걷어 카드가 하나뿐이다 — JS(buildIndex)가 인덱스를 만들지 않으므로 제목을 직접 적어 둔다 -->
+    <div class="hrail"><ol class="hidx"><li><button type="button" aria-current="true">자동화 설비</button></li></ol></div>
     <div class="htrack">
 
       <!-- data-tab 은 인덱스에 찍히는 글 — 괄호 안 원어는 카드 제목(h3)에만 두고
@@ -1732,36 +1723,6 @@
         </div>
       </article>
 
-      <article class="hcard hcard--tbd" data-tab="MES">
-        <div class="hleft">
-          <h3>MES</h3>
-        </div>
-        <div class="hright">
-          <div class="descgrid" role="img" aria-label="MES 기능 4종">
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 1</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 2</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 3</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-            <div class="descitem">
-              <span class="ic" aria-hidden="true"></span>
-              <span class="k">키워드 4</span>
-              <span class="txt">설명 추가 예정</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
     </div>
   </section>
 
@@ -1777,40 +1738,6 @@
             <p>A-PRO Materials의 글로벌 소싱 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
             <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
           </div>
-          <ul class="pict">
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 8 11 16 16 11 25 20"/>
-                <polyline points="25 14 25 20 19 20"/>
-              </svg></span>
-              <span class="k">내부 저항 저감</span>
-              <span class="en">Low Resistance</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23.5 12A10 10 0 0 0 6 7.5"/><path d="M4 4v5h5"/>
-                <path d="M4.5 16A10 10 0 0 0 22 20.5"/><path d="M24 24v-5h-5"/>
-              </svg></span>
-              <span class="k">전체 수명 연장</span>
-              <span class="en">Cycle Life</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15.5 3L6.5 15.5H13l-.5 9.5L21.5 12.5H15L15.5 3z"/>
-              </svg></span>
-              <span class="k">충전 시간 단축</span>
-              <span class="en">Fast Charge</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4v20"/>
-                <path d="M3 14h8"/><path d="M8 10.5L11.5 14 8 17.5"/>
-                <path d="M25 14h-8"/><path d="M20 10.5L16.5 14 20 17.5"/>
-              </svg></span>
-              <span class="k">부피 팽창 / 입자 붕괴 현상 억제</span>
-              <span class="en">Volume Control</span>
-            </li>
-          </ul>
         </div>
         <!-- 투명 픽셀 없는 실사(SEM 촬영본) — 슬롯을 cover 로 꽉 채운다 -->
         <div class="hright">
@@ -1826,37 +1753,12 @@
             <p>A-PRO Materials는 엄선된 공급망을 통해 고순도 LiFSI 전해염 소재를 안정적으로 공급합니다.</p>
             <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
           </div>
-          <ul class="pict">
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 8.5h22"/><path d="M3 19.5h22"/>
-                <path d="M6 14h11"/><path d="M14 10.5l3.5 3.5-3.5 3.5"/>
-              </svg></span>
-              <span class="k">이온 전도도 향상</span>
-              <span class="en">Ionic Conductivity</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
-                <path d="M3 3l18 18"/>
-              </svg></span>
-              <span class="k">전해액 열분해 억제</span>
-              <span class="en">Thermal Stability</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4l10 5-10 5-10-5 10-5z"/><path d="M4 15l10 5 10-5"/>
-              </svg></span>
-              <span class="k">SEI 피막 형성 &amp; 계면 저항 저감</span>
-              <span class="en">Stable SEI</span>
-            </li>
-            <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15.5 3L6.5 15.5H13l-.5 9.5L21.5 12.5H15L15.5 3z"/>
-              </svg></span>
-              <span class="k">고속 충전 성능 극대화</span>
-              <span class="en">Fast Charge</span>
-            </li>
+          <ul>
+            <li>High Purity</li>
+            <li>Thermal Stability</li>
+            <li>Long Cycle Life</li>
+            <li>Fast Charging</li>
+            <li>Low Resistance &amp; Low Viscosity</li>
           </ul>
         </div>
         <div class="hright">
