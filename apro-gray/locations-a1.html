@@ -15,14 +15,15 @@
 <!-- ============================================================
      사업장소재 A-1 (Figma 1227:7862) — 회사정보 세 페이지 공용 틀(company-info.css):
      한 장의 첫 화면(.ci-top) 위에 히어로와 사업장 띠. 띠 왼쪽은 사업장 이름 · 주소 · 전화 · 팩스와
-     사업장 탭 셋, 오른쪽은 사진 자리(Figma 에서도 빈칸). 세 사업장 자료는 아래 스크립트의 SITES 에 있다.
+     사업장 탭 셋, 오른쪽은 고른 사업장의 구글 지도(Figma 에서는 빈칸 — 키 없는 embed 주소로 한글 주소를 찾는다).
+     세 사업장 자료는 아래 스크립트의 SITES 에 있다.
 
      A 페이지는 없다 — A 파일의 "사업장소재" 링크는 여전히 "#" 이고, A-1 에서만 이 파일로 잇는다
      (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
 <style>
   /* 사업장 띠 (Figma 1227:7864) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 옆 44, 사이 20.
      왼쪽 552(오른쪽 115 비움 → 글 폭 437): 사업장 이름(SUIT 800 38) · 영문 이름(밑줄 2px) → 주소 · 전화 · 팩스 줄
-     → 20 아래 사업장 탭 셋(사이 8, 고른 탭은 흰 판에 파랑 글). 오른쪽: 4:3 사진 자리 */
+     → 20 아래 사업장 탭 셋(사이 8, 고른 탭은 흰 판에 파랑 글). 오른쪽: 구글 지도(남은 폭 × 띠 안쪽 높이를 꽉 채운다) */
   .lc-band{display:flex;align-items:center;gap:20px;padding:56px var(--ci-m)}
   .lc-info{flex:0 0 552px;padding-right:115px;display:flex;flex-direction:column;gap:20px}
   .lc-head{display:flex;flex-direction:column;gap:8px;padding-bottom:24px;border-bottom:2px solid #e4e8ed}
@@ -42,23 +43,27 @@
           background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
   .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
   /* 첫 화면 높이에 맞추기 — 탭 섬네일은 띠 안쪽 높이(cqh)에서 정보 칸의 나머지(약 485)를 뺀 만큼(40~99),
-     오른쪽 사진 자리는 폭이 cqh × 4/3 을 넘지 않는다. 바닥 높이는 섬네일 40 기준 832 */
+     오른쪽 지도는 남은 폭과 띠 안쪽 높이를 다 갖는다. 바닥 높이는 섬네일 40 기준 832 */
   .ci-top{--ci-min:832px}
   @media(min-width:901px){
     .lc-tab .th{aspect-ratio:auto;height:clamp(40px, calc(100cqh - 485px), 99px)}
-    .lc-photo{max-width:calc(100cqh * 4 / 3);margin-left:auto}
+    .lc-map{align-self:stretch;aspect-ratio:auto}
   }
   .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
   .lc-tab .nm span{display:block}
   .lc-tab .nm span+span{margin-top:4px}
   .lc-tab[aria-selected="true"]{background:#fff;color:#2c5790}
   .lc-tab:focus-visible{outline:2px solid #fff;outline-offset:2px}
-  .lc-photo{flex:1 1 0;min-width:0;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
+  /* 지도 칸 — 사업장마다 iframe 을 처음 고를 때 하나 만들고 이후엔 숨겼다 보인다. 불러오면 살짝 나타난다 */
+  .lc-map{position:relative;flex:1 1 0;min-width:0;aspect-ratio:4/3;overflow:hidden;background:#dedede}
+  .lc-map iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;opacity:0;transition:opacity .4s var(--ease)}
+  .lc-map iframe.is-in{opacity:1}
+  .lc-map iframe[hidden]{display:none}
   @media(max-width:1100px){ .lc-info{flex:0 1 437px;padding-right:0} }
   @media(max-width:900px){
     .lc-band{flex-direction:column;align-items:stretch;padding:40px var(--ci-m)}
     .lc-info{flex:none}
-    .lc-photo{flex:none;width:100%}
+    .lc-map{flex:none;width:100%}
   }
 </style>
 </head>
@@ -179,8 +184,8 @@
       <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
     </div>
   </div>
-  <!-- 사진 자리 — Figma 에서도 비어 있다(빈칸) -->
-  <div class="lc-photo" aria-hidden="true"></div>
+  <!-- 지도 — 아래 스크립트가 고른 사업장의 구글 지도 iframe 을 넣는다 -->
+  <div class="lc-map" id="lc-map"></div>
 </section>
 </div>
 
@@ -297,8 +302,8 @@
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
 <script>
-/* 사업장 탭 — 누른 사업장의 이름 · 주소 · 전화 · 팩스로 바꾼다. 좌우 화살표로도 옮겨 간다.
-   자료가 빈 칸은 "준비 중" 으로 보인다 */
+/* 사업장 탭 — 누른 사업장의 이름 · 주소 · 전화 · 팩스와 오른쪽 구글 지도로 바꾼다. 좌우 화살표로도 옮겨 간다.
+   자료가 빈 칸은 "준비 중" 으로 보인다. 지도는 한글 주소(addr 첫 줄)로 찾는다 */
 (function(){
   var SITES = {
     global:   { name:'에이프로 글로벌센터', en:'A-PRO Global Center (HQ)',
@@ -326,6 +331,17 @@
     });
     el('lc-tel').textContent = s.tel || '준비 중';
     el('lc-fax').textContent = s.fax || '준비 중';
+    var box = el('lc-map'), key = tabs[i].getAttribute('data-site');
+    [].forEach.call(box.children, function(f){ f.hidden = f.getAttribute('data-site') !== key; });
+    if(s.addr.length && !box.querySelector('[data-site="' + key + '"]')){
+      var f = document.createElement('iframe');
+      f.setAttribute('data-site', key);
+      f.title = s.name + ' 위치 지도';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.addEventListener('load', function(){ f.classList.add('is-in'); });
+      f.src = 'https://maps.google.com/maps?q=' + encodeURIComponent(s.addr[0]) + '&hl=ko&z=16&output=embed';
+      box.appendChild(f);
+    }
     if(focus) tabs[i].focus();
   }
   tabs.forEach(function(t, i){
@@ -336,6 +352,7 @@
       show((i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length, true);
     });
   });
+  tabs.forEach(function(t, i){ if(t.getAttribute('aria-selected') === 'true') show(i); });
 })();
 </script>
 </body>
