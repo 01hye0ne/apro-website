@@ -302,7 +302,7 @@
   /* ── Vision 2030 띠 (Figma 1227:7853) — 낮 하늘 사진(sky-day-gradient.jpg — 회사정보 세 페이지 띠 공통)을 꽉 채워 깐다.
      위 120 · 아래 40 · 옆 44. 글 줄(.row)은 12열 그리드에서 1~4열(437)에 눈썹, 5열부터 비전 제목(Aldrich 48)과
      그 아래 20 에 본문이 선다 — 히어로의 제목 · 설명과 같은 세로선이다. 글 줄 높이는 1440 판의 300 을 바닥으로 잡고,
-     그 아래 26 에 16:9 그림 세 칸(사이 20 — 칸 하나가 곧 4열 폭)이 옆 마진까지 찬다. 그림 칸은 Figma 에서도 비어 있다(빈칸) */
+     그 아래 26 에 16:9 그림 세 칸(사이 20 — 칸 하나가 곧 4열 폭)이 옆 마진까지 찬다. 칸에는 AAA 세 판과 같은 사진이 든다 */
   .co-vband{display:flex;flex-direction:column;gap:26px;padding:120px var(--ci-m) 40px;word-break:keep-all;
             background:#3f86c9 url("../assets/sky-day-gradient.jpg") 50% 50% / cover no-repeat}
   .co-vband .row{display:grid;grid-template-columns:calc((100% - 11 * var(--ci-gap)) / 3 + 3 * var(--ci-gap)) minmax(0,1fr);
@@ -315,7 +315,8 @@
   .co-vband .lead span{display:block}
   .co-vband .lead span+span{margin-top:2px}
   .co-vband .imgs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ci-gap)}
-  .co-vband .imgs li{aspect-ratio:16/9;background:#dedede;border:1px solid var(--border-g)}
+  .co-vband .imgs li{aspect-ratio:16/9;overflow:hidden;background:#dedede;border:1px solid var(--border-g)}
+  .co-vband .imgs li>img{display:block;width:100%;height:100%;object-fit:cover}
 
   /* ── AAA 전략 — AAA 세 장과 닫는 카드가 --vgap 간격으로 쌓인다. 위아래 여백은 --vpad ─────────── */
   .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);--vpad:240px;padding:var(--vpad) 0;
@@ -542,8 +543,12 @@
         <p class="lead"><span>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</span><span>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</span></p>
       </div>
     </div>
-    <!-- 그림 세 칸 — Figma 에서도 비어 있다(빈칸) -->
-    <ul class="imgs" aria-hidden="true"><li></li><li></li><li></li></ul>
+    <!-- 그림 세 칸 — 아래 AAA 세 판과 같은 사진을 같은 차례 · 같은 자름 자리(object-position)로 쓴다 -->
+    <ul class="imgs" aria-hidden="true">
+      <li><img src="../assets/aaa-reliability-lab.jpg" width="1100" height="1631" alt="" decoding="async" style="object-position:50% 45%" /></li>
+      <li><img src="../assets/aaa-award-shelf.jpg" width="1100" height="1527" alt="" decoding="async" style="object-position:50% 25%" /></li>
+      <li><img src="../assets/aaa-office-floor.jpg" width="1100" height="1520" alt="" decoding="async" style="object-position:50% 75%" /></li>
+    </ul>
   </section>
 
   <!-- ===================== 02 · AAA 전략 ===================== -->
