@@ -31,6 +31,11 @@
   --ls:-.02em;
   --ls-num:-.06em;
   --ls-caps:.06em;
+
+  /* 글자 색 — 어두운 바탕(사진 · 그라디언트 · 짙은 단색 · 메뉴 · 푸터) 위. 바탕이 제각각이라 반투명 흰색 세 단계 */
+  --on-dark:#fff;                       /* 제목 · 강조     */
+  --on-dark-body:rgba(255,255,255,.8);  /* 줄글 · 링크     */
+  --on-dark-sub:rgba(255,255,255,.6);   /* 보조 · 메타     */
 }
 @media(max-width:900px){
   :root{--fs-h3:18px;--fs-lead:16px}
