@@ -39,7 +39,7 @@
     /* 소분류 개수 — 히어로 탭 띠와 고정 탭 바가 이 값으로 칸을 나누고 칸 경계에
      구분선을 긋는다(네 곳). 소분류를 늘리거나 줄일 때 고칠 자리는 여기 하나다.
      ⚠ 마크업(.bnav-tabs 안 <a> 개수)과 반드시 같아야 한다 */
-:root{--tabs:2;--gm:84px;--gcg:12px;
+:root{--tabs:3;--gm:84px;--gcg:12px;
     --gx:calc((100% - 2 * var(--gm) + var(--gcg)) / 12);
     --bx:calc((100% + var(--gcg)) / 12)}
   /* 좁아지면 좌우 마진을 단계로 줄인다. GNB 메뉴 한 칸(--mm-col)도 같이 줄인다 —
@@ -700,35 +700,35 @@
     <div class="col">
       <a class="hd" href="business-smart.html">스마트 제조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
       <ul>
-        <li><a href="business-smart.html#sf01-1">이차전지 활성화</a></li>
-        <li><a href="business-smart.html#sf02-1">Cycler(Cell&amp;Module)</a></li>
-        <li><a href="business-smart.html#sf03-1">자동화 시스템</a></li>
-        <li><a href="business-smart.html#sf04-1">이차전지 소재</a></li>
+        <li><a href="business-smart.html#s1">이차전지 활성화</a></li>
+        <li><a href="business-smart.html#s2">Cycler(Cell&amp;Module)</a></li>
+        <li><a href="business-smart.html#s3">자동화 시스템</a></li>
+        <li><a href="business-smart.html#s4">이차전지 소재</a></li>
       </ul>
     </div>
     <div class="col">
       <a class="hd" href="business-energy.html" aria-current="page">에너지 인프라<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
       <ul>
-        <li><a href="business-energy.html#sf01-1">ESS</a></li>
-        <li><a href="business-energy.html#sf02-1">UPS</a></li>
-        <li><a href="business-energy.html#sf03-1">솔루션</a></li>
+        <li><a href="business-energy.html#s1">ESS</a></li>
+        <li><a href="business-energy.html#s2">UPS</a></li>
+        <li><a href="business-energy.html#s3">솔루션</a></li>
       </ul>
     </div>
     <div class="col">
       <a class="hd" href="business-ai.html">인공지능 플랫폼<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
       <ul>
-        <li><a href="business-ai.html#sf01-1">로봇 플랫폼</a></li>
-        <li><a href="business-ai.html#sf02-1">배터리 진단 플랫폼</a></li>
-        <li><a href="business-ai.html#sf03-1">전기자동차 충전 플랫폼</a></li>
-        <li><a href="business-ai.html#sf04-1">전기자동차 제어 플랫폼</a></li>
+        <li><a href="business-ai.html#s1">로봇 플랫폼</a></li>
+        <li><a href="business-ai.html#s2">배터리 진단 플랫폼</a></li>
+        <li><a href="business-ai.html#s3">전기자동차 충전 플랫폼</a></li>
+        <li><a href="business-ai.html#s4">전기자동차 제어 플랫폼</a></li>
       </ul>
     </div>
     <div class="col">
       <a class="hd" href="business-semicon.html">화합물 전력 반도체<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
       <ul>
-        <li><a href="business-semicon.html#sf01-1">GaN Epi-Wafer</a></li>
-        <li><a href="business-semicon.html#sf02-1">GaN Power Device</a></li>
-        <li><a href="business-semicon.html#sf03-1">에이프로 세미콘</a></li>
+        <li><a href="business-semicon.html#s1">GaN Epi-Wafer</a></li>
+        <li><a href="business-semicon.html#s2">GaN Power Device</a></li>
+        <li><a href="business-semicon.html#s3">에이프로 세미콘</a></li>
       </ul>
     </div>
   </div>
@@ -771,9 +771,8 @@
        --hero-pos 는 이 가로 띠에서의 크롭 지점 — 통로 소실점이 중앙에 오도록 -->
   <span class="dhero-bg" style="--hero-pos:50% 52%"><img src="../assets/carousel-ess.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <!-- 히어로는 A / A-1 이 같다 — 국문 + 영문 + 설명글 2줄을 두 시안이 그대로 보여준다.
-         이 파일이 원본이고 business-*-a1.html 은 _gen-a1.py 가 여기서 만든다 —
-         문안을 고칠 자리는 여기 한 곳뿐이다. 설명글 문안은 아직 확정 전 -->
+    <!-- 설명글 2줄은 A-1(business-energy-a1.html)과 같은 문안이다. 2026-09-09 부터 A-1 은
+         생성기에서 빠져 손으로 고치므로, 문안을 바꾸면 두 파일을 함께 고친다 -->
     <h1>에너지 인프라</h1>
     <p class="dhero-lead">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.<br />그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</p>
   </div>
@@ -788,6 +787,7 @@
     <div class="bnav-tabs">
       <a href="#s1" aria-current="true">ESS</a>
       <a href="#s2">UPS</a>
+      <a href="#s3">솔루션</a>
     </div>
   </nav>
   <span class="bnav-rule" aria-hidden="true"></span>
@@ -814,52 +814,60 @@
         <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
         <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
       </div>
-      <article class="hcard hcard--tbd" data-tab="Grid">
+      <article class="hcard" data-tab="GRID ESS">
         <div class="hleft">
-          <h3>Grid</h3>
+          <h3>GRID ESS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Grid Stabilization</li>
+            <li>Frequency Regulation</li>
+            <li>Peak Shaving</li>
+            <li>Load Shifting</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ess-grid.jpg" width="2100" height="1800" loading="lazy"
+               alt="변전소와 송전탑을 배경으로 놓인 에이프로 ESS 컨테이너" />
+        </div>
       </article>
 
-      <article class="hcard hcard--tbd" data-tab="Renewable Energy">
+      <article class="hcard" data-tab="Renewable ESS">
         <div class="hleft">
-          <h3>Renewable Energy</h3>
+          <h3>Renewable ESS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Solar Energy</li>
+            <li>Wind Energy</li>
+            <li>Renewable Energy Integration</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ess-renewable.jpg" width="2100" height="1800" loading="lazy"
+               alt="태양광 발전소와 풍력 발전기를 배경으로 놓인 에이프로 ESS 컨테이너" />
+        </div>
       </article>
 
-      <article class="hcard hcard--tbd" data-tab="C&amp;I">
+      <article class="hcard" data-tab="C&amp;I ESS">
         <div class="hleft">
-          <h3>C&amp;I</h3>
+          <h3>C&amp;I ESS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Factory</li>
+            <li>Commercial Building</li>
+            <li>Industrial Facility</li>
+            <li>Microgrid</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ess-commercial-industrial.jpg" width="2100" height="1800" loading="lazy"
+               alt="산업단지 플랜트 앞에 놓인 에이프로 ESS 컨테이너" />
+        </div>
       </article>
     </div>
   </section>
@@ -876,52 +884,156 @@
         <p>고출력과 높은 신뢰성이 요구되는 Data Center 및 Critical Infrastructure를 위한 배터리 시스템 솔루션을 제공합니다.</p>
         <p>빠른 전력 응답과 안정적인 시스템 운영을 고려하여 Application에 최적화된 UPS Battery System을 설계합니다.</p>
       </div>
-      <article class="hcard hcard--tbd" data-tab="Data Center">
+      <article class="hcard" data-tab="데이터 센터 전용 UPS">
         <div class="hleft">
-          <h3>Data Center</h3>
+          <h3>데이터 센터 전용 UPS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Data Center</li>
+            <li>AI Data Center</li>
+            <li>Cloud &amp; Hyperscale Data Center</li>
+            <li>Colocation Data Center</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ups-data-center.jpg" width="2100" height="1800" loading="lazy"
+               alt="도시와 통신 철탑을 배경으로 놓인 데이터 센터용 UPS 한 벌" />
+        </div>
       </article>
 
-      <article class="hcard hcard--tbd" data-tab="Industrial">
+      <article class="hcard" data-tab="산업용 UPS">
         <div class="hleft">
-          <h3>Industrial</h3>
+          <h3>산업용 UPS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Manufacturing Facility</li>
+            <li>Semiconductor &amp; Display Facility</li>
+            <li>Process Industry</li>
+            <li>Industrial Automation</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ups-industrial.jpg" width="2100" height="1800" loading="lazy"
+               alt="생산 설비가 늘어선 공장 바닥에 놓인 산업용 UPS" />
+        </div>
       </article>
 
-      <article class="hcard hcard--tbd" data-tab="Critical Power">
+      <article class="hcard" data-tab="주요 전력망 UPS">
         <div class="hleft">
-          <h3>Critical Power</h3>
+          <h3>주요 전력망 UPS</h3>
           <div class="hlead">
-            <p class="tbd">텍스트 추가 예정</p>
+            <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
           </div>
-          <ul class="pict">
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 1</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 2</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 3</span></li>
-            <li><span class="ic" aria-hidden="true"></span><span class="k">키워드 4</span></li>
+          <ul>
+            <li>Hospital &amp; Healthcare</li>
+            <li>Telecommunication</li>
+            <li>Transportation Infrastructure</li>
+            <li>Emergency &amp; Critical Facilities</li>
           </ul>
         </div>
-        <div class="hright"></div>
+        <div class="hright">
+          <img src="../assets/ups-power-grid.jpg" width="2100" height="1800" loading="lazy"
+               alt="넓은 전력실에 줄지어 선 주요 전력망용 UPS 캐비닛" />
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 03 — 2026-09-15 : A-1(business-energy-a1.html 03 솔루션)에만 있던 소분류. 제품 넷을 카드 넷으로,
+       제품마다 인증 · 적용 분야 · 타입별 기능 키워드를 싣고 타입 사진을 2초마다 넘긴다.
+       기능 설명 문장(A-1 의 .d)은 카드 칸에 다 싣지 않았다 -->
+  <section class="hsec" id="s3">
+    <div class="hrail"></div>
+    <div class="htrack">
+      <article class="hcard" data-tab="Module">
+        <div class="hleft">
+          <h3>Module</h3>
+          <p>배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
+          <div class="hlead">
+            <p>Certification — KC / IEC / UL · UL 9540A</p>
+            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          </div>
+          <ul>
+            <li><b>에어 쿨링 타입(Air Cooling)</b> 자연 공기 또는 강제 공기 순환 방식 · 구조가 단순하고 설치가 용이 · 다양한 환경에서의 안정적 운용 · 경제성 우수</li>
+            <li><b>리퀴드 쿨링 타입(Liquid Cooling)</b> 직접 액체 냉각 방식 · 우수한 열 관리 성능 · 고출력·고밀도 시스템에 최적 · 저소음 설계 가능</li>
+          </ul>
+        </div>
+        <div class="hright is-plate hph--slides">
+          <img class="is-on" src="../assets/ess-module-air-cooling.jpg" width="2100" height="2100" loading="lazy"
+               alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 배터리 모듈" />
+          <img src="../assets/ess-module-liquid-cooling.jpg" width="2100" height="2100" loading="lazy"
+               alt="냉각수 배관이 연결된 리퀴드 쿨링 타입 배터리 모듈" />
+        </div>
+      </article>
+
+      <article class="hcard" data-tab="Rack">
+        <div class="hleft">
+          <h3>Rack</h3>
+          <p>Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
+          <div class="hlead">
+            <p>Certification — KC / IEC / UL · UL 9540A</p>
+            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          </div>
+          <ul>
+            <li><b>High Energy Type Rack</b> 높은 에너지 밀도 · 장시간 에너지 저장 · 안정적인 시스템 운영 · 확장성 및 유연성</li>
+            <li><b>High Power Type Rack</b> 높은 출력 성능 · 빠른 응답 성능 · 우수한 열 관리 성능 · 안정성 및 신뢰성</li>
+          </ul>
+        </div>
+        <div class="hright is-plate hph--slides">
+          <img class="is-on" src="../assets/ess-rack-high-energy.jpg" width="2100" height="2100" loading="lazy"
+               alt="문을 연 High Energy Type 배터리 랙" />
+          <img src="../assets/ess-rack-high-power.jpg" width="2100" height="2100" loading="lazy"
+               alt="문을 연 High Power Type 배터리 랙" />
+        </div>
+      </article>
+
+      <article class="hcard" data-tab="Container">
+        <div class="hleft">
+          <h3>Container</h3>
+          <p>Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
+          <div class="hlead">
+            <p>Certification — KC / IEC / UL</p>
+            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          </div>
+          <ul>
+            <li><b>Container Air Cooling Type</b> 자연 공기 순환 방식 · 구조가 단순하고 유지보수가 용이 · 다양한 환경에서 안정적 운용 · 경제성 우수</li>
+            <li><b>Container Liquid Cooling Type</b> 직접 액체 냉각 방식 · 우수한 열 관리 성능 · 고출력·고밀도 시스템에 최적 · 저소음 설계 가능</li>
+          </ul>
+        </div>
+        <div class="hright is-plate hph--slides">
+          <img class="is-on" src="../assets/ess-container-air-cooling.jpg" width="2100" height="2100" loading="lazy"
+               alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 ESS 컨테이너" />
+          <img src="../assets/ess-container-liquid-cooling.jpg" width="2100" height="2100" loading="lazy"
+               alt="냉각 유닛이 보이는 리퀴드 쿨링 타입 ESS 컨테이너" />
+        </div>
+      </article>
+
+      <article class="hcard" data-tab="BMS">
+        <div class="hleft">
+          <h3>BMS</h3>
+          <p>Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
+          <div class="hlead">
+            <p>Certification — Functional Safety (IEC 60730-1) · Cybersecurity solutions (IEC 62443)</p>
+            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          </div>
+          <ul>
+            <li><b>Module BMS(CMU)</b> 정밀한 셀 모니터링 · 높은 신뢰성과 안정성 · Rack BMS와 완벽 연동 · 높은 확장성</li>
+            <li><b>Rack BMS(BPU)</b> Rack 상태 통합 모니터링 · 보호 및 제어 기능 · BPU 하드웨어 통합 보호 · 기능안전 인증 취득</li>
+            <li><b>System BMS(BCP)</b> 전체 시스템 통합 관리 · 상위 시스템 연계 · 시스템 보호 및 제어 · 사이버 보안 솔루션 제공</li>
+          </ul>
+        </div>
+        <div class="hright is-plate hph--slides">
+          <img class="is-on" src="../assets/ess-bms-module.jpg" width="2100" height="2100" loading="lazy"
+               alt="모듈 BMS(CMU) 제어 보드" />
+          <img src="../assets/ess-bms-rack.jpg" width="2100" height="2100" loading="lazy"
+               alt="랙 BMS(BPU) 제어 유닛" />
+          <img src="../assets/ess-bms-system.jpg" width="2100" height="2100" loading="lazy"
+               alt="시스템 BMS(BCP) 제어반" />
+        </div>
       </article>
     </div>
   </section>
