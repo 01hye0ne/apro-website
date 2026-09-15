@@ -37,7 +37,8 @@
 .cs-hero-page{display:flex;flex-direction:column;gap:24px}
 .cs-hero h1{margin:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;
   letter-spacing:-.32px;color:#fff}
-.cs-hero .sub{margin:0;font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;
+/* 문장은 Medium 500 — 2026-09-15 Figma 1248:14052 에서 ExtraBold 800 → 500 으로 바뀌었다(페이지 이름은 800 그대로) */
+.cs-hero .sub{margin:0;font-family:var(--suit);font-weight:500;font-size:24px;line-height:1.2;
   letter-spacing:-.48px;color:#fff}
 
 /* 장 목록 — 본문 장으로 건너뛰는 앵커 */
