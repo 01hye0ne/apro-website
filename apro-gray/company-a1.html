@@ -389,6 +389,18 @@
      가로 띠만 보인다 — 어느 높이를 남길지는 사진마다 object-position 으로 정한다(마크업의 style) */
   .co-val .ph{overflow:hidden}
   .co-val .ph>img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 사진 스택 모핑 — Vision 띠의 사진 세 장이 스크롤을 따라 첫 장 자리로 모여 스택이 되고(1단계),
+     그 스택이 아래 AAA 첫 판의 사진 자리로 내려앉는다(2단계). 스크립트가 사진 복사본(.co-fly)을
+     #stage 위에 띄워 움직이고, 그동안 원래 사진(Vision 세 장 · 첫 판)은 자리만 남긴다.
+     맨 앞 장이 첫 판과 같은 사진이라 내려앉으면 이음새 없이 제자리 사진이 된다.
+     z-index 는 GNB(100) · 메가메뉴(98) 아래. 좁은 화면(900 이하) · 움직임 줄이기 · 스크립트 없음이면
+     html 에 .is-flying 이 붙지 않아 원래 사진이 제자리에 그대로 있다 */
+  .co-fly{position:absolute;left:0;top:0;z-index:5;overflow:hidden;pointer-events:none;
+          will-change:transform,width,height;background:#dedede}
+  .co-fly>img{display:block;width:100%;height:100%;object-fit:cover}
+  .is-flying .co-vband .imgs li{background:transparent}
+  .is-flying .co-vband .imgs li>img,.is-flying .co-val:first-child .ph>img{visibility:hidden}
+  .is-flying .co-val:first-child .ph{background:transparent}
 
   /* 닫는 카드 — 격자 2~11열, 밤하늘 사옥 사진(Figma 1212:7744). 안쪽 20 에 흰 20% 선 상자를 두고
      위는 6대 핵심가치 3×2 칸, 아래는 왼쪽 정렬 세 줄 문구. 하늘이 짙어 막은 덮지 않는다 */
@@ -851,6 +863,96 @@
     window.addEventListener('resize', refit);
     window.addEventListener('load', refit);
     if(window.ResizeObserver) new ResizeObserver(refit).observe(document.querySelector('.co-values'));
+  })();
+
+  /* ===== 사진 스택 모핑 — Vision 세 장이 모여 쌓였다가 AAA 첫 판 사진 자리로 내려앉는다 =====
+     진행값 p 는 0 ~ 2.
+       0 ~ 1 쌓기   사진 줄 윗변이 화면 60% 에서 25% 로 올라가는 동안 둘째 · 셋째 장이 첫 장 자리 뒤로
+                    모인다. 뒤 장일수록 12px 씩 오른쪽으로 비껴 스택이 보인다.
+       1 ~ 2 떨어짐 이어서 첫 판 사진 자리 가운데가 화면 가운데에 올 때까지 스택이 그 자리로 옮겨 가며
+                    16:9 → 4:3 으로 모양을 바꾼다. 비낌은 0 으로 줄고 뒤 장은 끝 30% 에서 사라진다.
+     스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 선 그리기처럼 목표값을 조금씩 따라간다.
+     되감으면 거꾸로 돌아간다.
+     확인용: <html data-co-fly="1.5"> 처럼 값을 주면 스크롤과 상관없이 그 진행값에 멈춘다 */
+  (function(){
+    var stage = document.getElementById('stage');
+    var src = [].slice.call(document.querySelectorAll('.co-vband .imgs li'));
+    var dst = document.querySelector('.co-val .ph');
+    if(!stage || src.length < 2 || !dst || !window.matchMedia) return;
+    var still = matchMedia('(prefers-reduced-motion: reduce)'), wide = matchMedia('(min-width: 901px)');
+    var root = document.documentElement, OFF = 12;
+    var flies = src.map(function(li, i){
+      var el = document.createElement('div');
+      el.className = 'co-fly';
+      el.setAttribute('aria-hidden', 'true');
+      el.style.zIndex = 5 + (src.length - i);   /* 앞 장이 위 */
+      el.innerHTML = li.innerHTML;
+      stage.appendChild(el);
+      return el;
+    });
+    var S = [], T = null, y0 = 0, y1 = 0, y2 = 1, cur = 0, goal = 0, raf = 0, on = false;
+    /* #stage 기준 상자 — 복사본이 #stage(position:relative) 안에서 움직이므로 같은 기준으로 잰다 */
+    function box(el){
+      var r = el.getBoundingClientRect(), b = stage.getBoundingClientRect();
+      return { x:r.left - b.left, y:r.top - b.top, w:r.width, h:r.height };
+    }
+    function measure(){
+      var sy = window.scrollY || window.pageYOffset, vh = window.innerHeight;
+      S = src.map(box);
+      T = box(dst.querySelector('img') || dst);
+      var st = stage.getBoundingClientRect().top + sy;
+      var rowTop = st + S[0].y, tc = st + T.y + T.h / 2;
+      y0 = rowTop - vh * .6;
+      y1 = rowTop - vh * .25;
+      y2 = Math.max(y1 + 200, tc - vh * .5);
+    }
+    function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function ease(v){ return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; }
+    function lerp(a, b, v){ return a + (b - a) * v; }
+    function target(){
+      var q = parseFloat(root.getAttribute('data-co-fly'));
+      if(!isNaN(q)) return q;
+      var y = window.scrollY || window.pageYOffset;
+      return y <= y1 ? clamp((y - y0) / (y1 - y0)) : 1 + clamp((y - y1) / (y2 - y1));
+    }
+    function paint(){
+      var a = ease(clamp(cur)), f = ease(clamp(cur - 1)), A = S[0];
+      flies.forEach(function(el, i){
+        var s = S[i], off = i * OFF, x, y, w, h;
+        if(f > 0){
+          x = lerp(A.x + off, T.x, f); y = lerp(A.y, T.y, f); w = lerp(A.w, T.w, f); h = lerp(A.h, T.h, f);
+        } else {
+          x = lerp(s.x, A.x + off, a); y = lerp(s.y, A.y, a); w = lerp(s.w, A.w, a); h = lerp(s.h, A.h, a);
+        }
+        el.style.width = w + 'px';
+        el.style.height = h + 'px';
+        el.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        el.style.opacity = i === 0 ? 1 : 1 - clamp((f - .7) / .3);
+      });
+    }
+    function tick(){
+      raf = 0;
+      var d = goal - cur;
+      if(Math.abs(d) < .001) cur = goal;
+      else { cur += d * .16; raf = requestAnimationFrame(tick); }
+      paint();
+    }
+    function kick(){ if(!on) return; goal = target(); if(!raf) raf = requestAnimationFrame(tick); }
+    function setup(){
+      on = wide.matches && !still.matches;
+      root.classList.toggle('is-flying', on);
+      flies.forEach(function(el){ el.style.display = on ? '' : 'none'; });
+      if(!on) return;
+      measure(); goal = cur = target(); paint();
+    }
+    setup();
+    window.addEventListener('scroll', kick, { passive:true });
+    window.addEventListener('resize', setup);
+    window.addEventListener('load', setup);
+    if(wide.addEventListener){ wide.addEventListener('change', setup); still.addEventListener('change', setup); }
+    /* 복사본은 절대 위치라 #stage 크기를 바꾸지 않는다 — 글꼴 · 사진이 늦게 와 판이 움직일 때만 다시 잰다 */
+    if(window.ResizeObserver) new ResizeObserver(function(){ if(on){ measure(); paint(); } }).observe(stage);
+    if(window.MutationObserver) new MutationObserver(kick).observe(root, { attributes:true, attributeFilter:['data-co-fly'] });
   })();
 </script>
 
