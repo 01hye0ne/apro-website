@@ -14,26 +14,33 @@
 <link rel="stylesheet" href="company-info.css" />
 <!-- ============================================================
      글로벌 네트워크 A-1 (Figma 1227:7859) — 회사정보 세 페이지(회사소개 · 글로벌 네트워크 ·
-     사업장소재)가 같은 틀을 쓴다: 흰 히어로(company-info.css 의 .ci-hero) 아래 파랑 띠(.ci-band).
-     이 페이지의 띠는 홈 Who we are(index-a1.html)와 같은 지도 요소다 — 점 지도 위에 본사에서
-     법인 넷으로 뻗는 선, 본사 · 법인 · 거점 점, 그 아래 범례.
+     사업장소재)가 같은 틀을 쓴다: 한 장의 첫 화면(company-info.css 의 .ci-top) 위에 히어로와 띠.
+     이 페이지의 띠는 오른쪽에 홈 Who we are(index-a1.html)와 같은 지도 요소(점 지도 위에 본사에서
+     법인 넷으로 뻗는 선, 본사 · 법인 · 거점 점), 왼쪽 아래에 숫자 둘(Global Bases · Years History).
 
      2026-09-14 부터 손으로 고치는 파일이다 — A(network.html)는 옛 전면 무대 그대로 두고
      _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
      (business-layout.css / business-layout.js)이다 -->
 <style>
-  /* 지도 띠 (Figma 995:518) — 파랑 판 대신 파랑 그라디언트 사진(blue-studio-gradient.jpg — 회사정보 세 페이지 띠 공통)을 꽉 채워 깐다(사업장소재 띠와 같은 사진).
-     지도(921×451)가 띠 가운데에 서고 그 아래 16 에 범례가 붙는다. 좁아지면 지도가 띠 폭에 맞춰 줄어든다 */
-  .gn-band{display:flex;justify-content:center;padding:64px 24px;border-bottom:1px solid #c7c9cc;
-           background:#4a78b4 url("../assets/blue-studio-gradient.jpg") 50% 50% / cover no-repeat}
-  .gn-wrap{flex:0 1 921px;display:flex;flex-direction:column;gap:16px}
+  /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4 */
+  .ci-hero .sub{line-height:1.4}
+
+  /* 지도 띠 (Figma 1227:7859) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 왼쪽 44 · 오른쪽 20.
+     점 지도는 1440 에서 1053×515 로 오른쪽에 붙고(Figma 처럼 점이 불투명한 흰색 — gnet-map.png 의 알파만 올린 gnet-map-bright.png), 왼쪽 아래(지도 밑변과 같은 선)에 숫자 둘이 선다.
+     좁아지면 지도가 먼저 줄어든다 */
+  .gn-band{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:56px 20px 56px var(--ci-m)}
+  /* 숫자 덩어리는 Figma 에서 띠 아래 여백 안으로 12 내려앉아 있다 — 마지막 숫자 글자 밑이 지도 밑변과 같은 선 */
+  .gn-stats{flex:none;list-style:none;margin:0 0 -12px;padding:0;display:flex;flex-direction:column;gap:34px}
+  .gn-stats li{display:flex;flex-direction:column;gap:8px}
+  .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:16px;line-height:1;letter-spacing:-.06em}
+  .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:64px;line-height:1;letter-spacing:-.06em}
 
   /* 지도 요소 — 홈 Who we are(index-a1.html 의 .map · .hm-tech 반전)와 같은 값이다.
      점 지도(gnet-map.png) 위에 같은 좌표계(922×451)의 SVG 로 본사 → 법인 넷 선(.arc)과
      본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
      파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
      띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
-  .gn-map{position:relative;display:block;width:100%;aspect-ratio:922/451}
+  .gn-map{position:relative;display:block;flex:0 1 1053px;min-width:0;aspect-ratio:922/451}
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
                transition:stroke-dashoffset 1s var(--ease) var(--d)}
@@ -45,14 +52,12 @@
   .gn-map .halo{fill:#fff;opacity:.16;transform-box:fill-box;transform-origin:center}
   .gn-band.is-wait .arc{stroke-dashoffset:1}
   .gn-band.is-wait .pin,.gn-band.is-wait .halo{transform:scale(0);opacity:0}
-  .gn-band .lg{align-self:flex-start;display:flex;flex-wrap:wrap;gap:6px 16px;
-               font-family:var(--pre);font-size:12px;line-height:1.4;color:rgba(255,255,255,.65)}
-  .gn-band .lg>span{display:flex;align-items:center;gap:6px}
-  .gn-band .lg i{width:8px;height:8px;border-radius:50%;background:var(--point-200)}
-  .gn-band .lg .hub{width:10px;height:10px;background:#fff}
-  .gn-band .lg .st{background:transparent;box-shadow:inset 0 0 0 1.5px #fff}
-
-  @media(max-width:900px){ .gn-band{padding:40px 16px} }
+  @media(max-width:900px){
+    .gn-band{flex-direction:column-reverse;align-items:stretch;gap:32px;padding:40px var(--ci-m)}
+    .gn-map{flex:none;width:100%}
+    .gn-stats{flex-direction:row;gap:40px;margin-bottom:0}
+    .gn-stats .v{font-size:44px}
+  }
 </style>
 </head>
 <body>
@@ -148,20 +153,23 @@
 </div>
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
-<!-- ===================== HERO (Figma 1227:7859) — 회사정보 공용 틀(company-info.css) ===================== -->
+<!-- ===================== 첫 화면 (Figma 1227:7859) — 회사정보 공용 틀(company-info.css) ===================== -->
+<div class="ci-top">
 <section class="ci-hero">
-  <h1 lang="en">Global<br />Network</h1>
+  <h1 lang="en">Global Network</h1>
   <p class="sub"><span>A-PRO의 본사와 R&amp;D센터는 경기도에 있으며, 다양한 제품 포트폴리오를 개발하고 있습니다.</span><span>최고의 엔지니어들이 새롭고 혁신적인 기술 개발을 위해 끊임 없이 노력하고 있습니다.</span><span>제품은 여러 국가에서 현지 생산되고 있으며, 본사의 제품과 서비스는 글로벌 해외 영업 네트워크를 통해 판매되고 있습니다.</span></p>
 </section>
 
-<!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 995:518) ===================== -->
+<!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 1227:7859) ===================== -->
 <!-- 지도 요소는 홈 Who we are(index-a1.html)와 같다 — SVG 좌표는 점 지도 그림(922×451)에 맞춘 밀러 투영 -->
 <section class="ci-band gn-band" aria-label="글로벌 거점 지도">
-  <div class="gn-wrap">
-    <span class="gn-map" aria-hidden="true"><img src="../assets/gnet-map.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span>
-    <span class="lg"><span><i class="hub"></i>한국 본사</span><span><i class="hq"></i>현지 법인 4</span><span><i class="st"></i>거점 5</span></span>
-  </div>
+  <ul class="gn-stats">
+    <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
+    <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
+  </ul>
+  <span class="gn-map" aria-hidden="true"><img src="../assets/gnet-map-bright.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span>
 </section>
+</div>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">

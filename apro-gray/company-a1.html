@@ -297,18 +297,15 @@
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .co-vision{word-break:keep-all}
 
-  /* ── 히어로는 회사정보 세 페이지 공용 틀이다(company-info.css 의 .ci-hero, Figma 1227:7858) ── */
+  /* ── 첫 화면은 회사정보 세 페이지 공용 틀이다(company-info.css 의 .ci-top · .ci-hero, Figma 1227:7858) ── */
 
-  /* ── Vision 2030 띠 (Figma 1227:7853) — 파랑 그라디언트 사진(blue-studio-gradient.jpg — 회사정보 세 페이지 띠 공통)을 꽉 채워 깐다.
-     위 120 · 아래 40 · 옆 44. 글 줄(.row)은 12열 그리드에서 1~4열(437)에 눈썹, 5열부터 비전 제목(Aldrich 48)과
-     그 아래 20 에 본문이 선다 — 히어로의 제목 · 설명과 같은 세로선이다. 글 줄 높이는 1440 판의 300 을 바닥으로 잡고,
-     그 아래 26 에 16:9 그림 세 칸(사이 20 — 칸 하나가 곧 4열 폭)이 옆 마진까지 찬다. 칸에는 AAA 세 판과 같은 사진이 든다 */
-  .co-vband{display:flex;flex-direction:column;gap:26px;padding:120px var(--ci-m) 40px;word-break:keep-all;
-            background:#4a78b4 url("../assets/blue-studio-gradient.jpg") 50% 50% / cover no-repeat}
-  .co-vband .row{display:grid;grid-template-columns:calc((100% - 11 * var(--ci-gap)) / 3 + 3 * var(--ci-gap)) minmax(0,1fr);
-                 column-gap:var(--ci-gap);align-items:start;min-height:300px}
+  /* ── Vision 2030 (Figma 1227:7853) — 첫 화면 파랑 그라디언트 위, 위아래 40 · 옆 44.
+     글 덩어리(눈썹 Aldrich 16 · 비전 제목 Aldrich 48 · 본문 15, 사이 20)가 남은 높이 가운데에 서고,
+     그 아래 26 에 16:9 그림 세 칸(사이 20)이 옆 마진까지 찬다. 칸에는 AAA 세 판과 같은 사진이 든다 */
+  .co-vband{display:flex;flex-direction:column;gap:26px;padding:40px var(--ci-m);word-break:keep-all}
+  .co-vband .row{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:20px}
   .co-vband .txt{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
-  .co-vband .eyebrow{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
+  .co-vband .eyebrow{font-family:var(--ald);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.06em}
   .co-vband h2{font-family:var(--ald);font-weight:400;font-size:48px;line-height:1;letter-spacing:-.06em}
   .co-vband .lead{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;letter-spacing:-.3px;
                   color:rgba(255,255,255,.7);font-feature-settings:"lnum" 1,"tnum" 1}
@@ -425,8 +422,7 @@
   @media(max-width:900px){
     :root{--co-m:16px}
     /* 좁은 화면은 한 줄로 쌓는다 — 눈썹 · 제목 · 본문 · 그림. 그림은 한 줄에 한 칸 */
-    .co-vband{padding:64px var(--ci-m) 40px}
-    .co-vband .row{grid-template-columns:minmax(0,1fr);row-gap:20px;min-height:0}
+    .co-vband{padding:40px var(--ci-m)}
     .co-vband h2{font-size:32px}
     .co-vision{--vpad:120px;--vgap:80px}
     .co-val{width:auto;margin-inline:var(--co-m)}
@@ -542,7 +538,8 @@
 
 <div id="stage">
 
-  <!-- ===================== HERO (Figma 1227:7858) — 회사정보 공용 틀(company-info.css) ===================== -->
+  <!-- ===================== 첫 화면 (Figma 1227:7858) — 회사정보 공용 틀(company-info.css) ===================== -->
+  <div class="ci-top">
   <section class="ci-hero">
     <h1 lang="en">About</h1>
     <p class="sub">The Best Electrical Engineering Solution Provider</p>
@@ -564,6 +561,7 @@
       <li><img src="../assets/aaa-office-floor.jpg" width="1100" height="1520" alt="" decoding="async" style="object-position:50% 75%" /></li>
     </ul>
   </section>
+  </div>
 
   <!-- ===================== 02 · AAA 전략 ===================== -->
   <section class="co-vision" aria-label="AAA 전략">
