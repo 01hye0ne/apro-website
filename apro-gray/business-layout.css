@@ -1,3 +1,4 @@
+@import url("type-scale.css");
 /* APRO 사업영역 서브페이지 공용 레이아웃
    business-{smart,energy,ai,semicon}.html(A)과 그 -a1.html(A-1), 여덟 페이지가 함께 쓴다.
 
@@ -50,7 +51,7 @@
        (1.6~1.75)의 시작점 — 한글은 네모틀이라 어센더·디센더가 만드는 줄 간 여백이
        없어서 같은 값이면 영문보다 빽빽해 보인다. 그래서 영문 통례(1.5~1.6)보다
        한 단 위에서 잡는다 */
-    --body-lh:1.6;
+    --body-lh:var(--lh-body);
     /* 카드 세로 스택 간격 — 제목·본문·소제목 블록·비주얼 사이의 숨 */
     --stack-gap:16px;
     /* 본문 덩어리 안의 숨 — 줄글의 단락 사이와 목록의 항목 사이가 이 값 하나를 쓴다.
@@ -94,7 +95,7 @@
   html{scroll-behavior:auto}
   /* overflow-x는 hidden이 아니라 clip — hidden은 body를 스크롤 컨테이너로 만들어
      안쪽 sticky/fixed 요소의 기준을 흔든다. clip은 스크롤 컨테이너 없이 잘라내기만 한다 */
-  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:clip}
+  body{font-family:var(--suit);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:clip}
   img{display:block;max-width:none}
   p{margin:0}
   a{text-decoration:none;color:inherit}
@@ -134,9 +135,9 @@
     opacity:0;transition:opacity .35s var(--ease)}
   .gnb .logo img{width:78px;height:auto;transition:opacity .35s var(--ease)}
   .gnb .menus{flex:1;display:flex;gap:var(--mm-gap);align-items:center;justify-content:center}
-  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--pre);font-weight:500;font-size:16px;letter-spacing:-.32px;color:#fff;white-space:nowrap;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
+  .gnb .menus a{width:var(--mm-col);box-sizing:border-box;text-align:center;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls);color:#fff;white-space:nowrap;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.28);transition:opacity .2s,color .35s var(--ease),text-shadow .35s var(--ease)}
   .gnb .menus a:hover{opacity:1}
-  .gnb .menus a.active{font-weight:700;opacity:1}
+  .gnb .menus a.active{font-weight:800;opacity:1}
   .gnb-group.mega-open .gnb .menus a.active{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:24px}
   .gnb-group.nav-light .gnb .menus a,.gnb-group.mega-open .gnb .menus a{color:var(--g900);text-shadow:none}
   .gnb-group.nav-light .gnb .logo img,.gnb-group.mega-open .gnb .logo img{opacity:0}
@@ -160,14 +161,14 @@
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
   .gnb-mega .m-globe{width:78px;flex-shrink:0}
   .gnb-mega .m-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;gap:30px;padding:0 16px}
-  .gnb-mega .m-col a{align-self:center;text-align:center;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:#5a6675;white-space:nowrap;transition:color .18s}
+  .gnb-mega .m-col a{align-self:center;text-align:center;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls);color:#5a6675;white-space:nowrap;transition:color .18s}
   .gnb-mega .m-col a:hover{color:var(--brand)}
-  .gnb-mega .m-col a[aria-current]{color:var(--brand);font-weight:700}
+  .gnb-mega .m-col a[aria-current]{color:var(--brand);font-weight:800}
   .lang-menu{position:fixed;top:60px;right:calc(var(--gutter) + 24px);z-index:101;min-width:120px;background:#fff;border:1px solid var(--border-g);border-radius:var(--r);box-shadow:0 12px 28px rgba(14,22,30,.16);padding:6px;opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
   .gnb-group.lang-open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-  .lang-menu a{display:block;padding:9px 14px;border-radius:3px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:#5a6675;transition:background .18s,color .18s}
+  .lang-menu a{display:block;padding:9px 14px;border-radius:3px;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:#5a6675;transition:background .18s,color .18s}
   .lang-menu a:hover{background:var(--secondary-bg);color:var(--g900)}
-  .lang-menu a.on{color:var(--brand);font-weight:700}
+  .lang-menu a.on{color:var(--brand);font-weight:800}
   @media(max-width:900px){.gnb-mega{display:none}.gnb .menus{display:none}}
 
   /* ===================== HERO (배너) ===================== */
@@ -224,7 +225,7 @@
      480px 높이 배너에 18px 타이틀은 위계가 서지 않았다 → 34px.
      아래 .bnav-ttl(20px)과 크기를 맞추지 않는다 — 둘은 같은 자리를 잇는 게 아니라
      (h1 은 배너 중앙, 탭 바 이름은 좌측 끝) 각자 제 위치에서 제 위계를 갖는다 */
-  .dhero h1{font-family:var(--suit);font-weight:800;font-size:34px;line-height:1.24;letter-spacing:-.68px}
+  .dhero h1{font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls)}
   /* 줄바꿈은 문안에 넣은 <br> 이 잡고, max-width 는 그 두 줄이 접히지 않는 폭이다
      (가장 긴 줄이 약 630px). 좁은 화면에서는 vw 가 줄어들며 자연히 여러 줄로 풀린다.
 
@@ -235,8 +236,8 @@
   /* 위쪽 영문(.dhero-en, 각 페이지 <style>)과의 사이 숨. 영문이 국문 h1 에 붙는
      간격(14px)보다 넓게 잡아 [국문+영문] 한 덩어리와 설명글이 갈라져 읽히게 한다 */
   .dhero-lead{max-width:min(760px,88vw);margin:22px auto 0;
-    font-family:var(--pre);font-weight:400;font-size:21px;line-height:1.62;
-    letter-spacing:-.42px;color:var(--on-white-90);word-break:keep-all}
+    font-family:var(--suit);font-weight:400;font-size:var(--fs-h3);line-height:var(--lh-body);
+    letter-spacing:var(--ls);color:var(--on-white-90);word-break:keep-all}
 
   /* ===================== 소분류 탭 바 (Figma 592:3950) =====================
      두 가지 상태로 산다.
@@ -336,8 +337,8 @@
      같은 밴드에서 여백이 11px 이고 그 아래로 흰 패널이 본문까지 이어져 문제가 없다.
      밴드째 6px 올려 14px 을 확보한다 — 위치 이동에 translate 를 쓰면 아래 등장
      애니메이션과 충돌하므로 margin 으로 민다 (align-self:end 라 그대로 들어올림) */
-  .bnav-ttl{grid-column:1 / span 3;margin-bottom:6px;font-family:var(--suit);font-weight:800;font-size:20px;
-    letter-spacing:-.4px;color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28);
+  .bnav-ttl{grid-column:1 / span 3;margin-bottom:6px;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+    letter-spacing:var(--ls);color:#fff;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.28);
     opacity:0;translate:0 6px;
     transition:opacity .4s var(--ease),translate .4s var(--ease)}
   .bnav-wrap.is-fixed .bnav-ttl{opacity:1;translate:none}
@@ -352,11 +353,11 @@
     overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .bnav-tabs::-webkit-scrollbar{display:none}
   /* 흰 패널 위에 놓이므로 두 상태에서 색이 같다 */
-  .bnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:500;font-size:16px;line-height:1.15;
-    letter-spacing:-.32px;color:var(--teritary);white-space:nowrap;
+  .bnav-tabs a{flex-shrink:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--teritary);white-space:nowrap;
     transition:color .3s var(--ease),text-shadow .3s var(--ease)}
   .bnav-tabs a:hover{color:var(--sec)}
-  .bnav-tabs a[aria-current]{font-weight:700;color:var(--g900)}
+  .bnav-tabs a[aria-current]{font-weight:800;color:var(--g900)}
 
   /* ── 소분류 네모 페이지네이션 ─────────────────────────────────────────
      탭 오른쪽, 본문 카드 오른쪽 끝과 같은 선에 소분류 수만큼 네모를 놓는다.
@@ -482,7 +483,7 @@
      안쪽 여백으로 되돌려 놓으면 선만 늘어나고 글 폭은 레일 3칸 그대로다 */
   .httl{padding:32px var(--grid-gutter) 32px 0;margin-right:calc(-1 * var(--grid-gutter));
     border-top:1px solid var(--border-g);border-bottom:1px solid var(--border-g);
-    font-family:var(--suit);font-weight:800;font-size:clamp(28px,3vw,44px);line-height:1.32;letter-spacing:-.7px;color:var(--g900);word-break:keep-all}
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--g900);word-break:keep-all}
 
   /* --- rail: 소분류 카드 인덱스 ─────────────────────────────────────────
      이 소분류에 무엇이 담겼는지를 카드 제목으로 펼친 목록. 예전 하단 스크롤 게이지가
@@ -500,12 +501,12 @@
   .hidx{list-style:none;display:flex;flex-direction:column}
   .hidx button{display:block;width:100%;padding:9px 0;
     border:0;background:none;cursor:pointer;
-    font-family:var(--suit);font-weight:500;font-size:15px;line-height:1.4;
-    letter-spacing:-.3px;color:var(--teritary);text-align:left;word-break:keep-all;
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-label);
+    letter-spacing:var(--ls);color:var(--teritary);text-align:left;word-break:keep-all;
     transition:color .22s var(--ease)}
   .hidx button:hover{color:var(--sec)}
   .hidx button:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
-  .hidx button[aria-current]{font-weight:700;color:var(--g900)}
+  .hidx button[aria-current]{font-weight:800;color:var(--g900)}
 
   /* ── 소속 뱃지(.hbadge) — "이 소분류는 어느 계열사가 만드는가"
      HTML 에서 .hrail 바로 밑에 적고, JS(business-layout.js placeBadge)가 인덱스 바
@@ -520,8 +521,8 @@
      "에이프로 머티리얼즈") 좁은 폭에서 뱃지 하나가 두 줄에 걸치는 걸 막는다 */
   .hbadge{display:inline-flex;align-items:center;flex-shrink:0;
     padding:1px 8px;border-radius:2px;background:var(--brand-2);color:#fff;
-    font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;
-    letter-spacing:-.26px;white-space:nowrap;
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);
+    letter-spacing:var(--ls);white-space:nowrap;
     transition:background .2s var(--ease),color .2s var(--ease)}
   .hbadge:hover{background:var(--brand)}
   .hbadge:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
@@ -573,8 +574,8 @@
   @media(max-width:900px){.hcols2{grid-template-columns:1fr}}
   /* 본문 17px 대비 24px — 1.41배. 21px(1.24배)은 굵기만 다른 같은 크기처럼 읽혀
      카드 안에서 제목이 제목으로 서지 않았다. 본문은 그대로 두고 제목만 올린다 */
-  .hcard h3{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.28;letter-spacing:-.48px;color:var(--g900);word-break:keep-all}
-  .hcard p{font-family:var(--pre);font-weight:400;font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+  .hcard h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .hcard p{font-family:var(--suit);font-weight:400;font-size:var(--fs-lead);line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 
   /* ── 본문 단락 간격 ──────────────────────────────────────────────────
      이웃한 단락 사이는 --para-gap(8px). 제목·소제목 블록·비주얼과의 숨
@@ -593,7 +594,7 @@
 
   /* 카드 안 소제목 블록 */
   .hblock{padding-top:16px;border-top:1px solid var(--border-g)}
-  .hblock .lbl{display:block;margin-bottom:8px;font-family:var(--suit);font-weight:700;font-size:12px;letter-spacing:.06em;color:var(--brand)}
+  .hblock .lbl{display:block;margin-bottom:8px;font-family:var(--suit);font-weight:800;font-size:var(--fs-tag);letter-spacing:var(--ls-caps);color:var(--brand)}
 
   /* 리스트 */
   /* 행간·자간·크기는 위 .hcard p 와 같은 값이다 — 같은 카드 안에서 줄글과 불릿이
@@ -604,8 +605,8 @@
      두 줄로 접히는 항목이 많아(해외 협력·ESS 현황) 0 으로 붙이면 어디까지가 한 항목인지
      불릿 점만으로는 읽히지 않는다 */
   .hcard ul{list-style:none;display:flex;flex-direction:column;gap:var(--para-gap)}
-  .hcard ul li{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-  .hcard ul li b{font-weight:700;color:var(--g900)}
+  .hcard ul li{font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
+  .hcard ul li b{font-weight:800;color:var(--g900)}
 
   /* ── 본문 불릿 점 ────────────────────────────────────────────────────
      불릿 목록의 항목과 줄글의 단락이 똑같은 점을 단다 — 카드마다 본문이 목록으로
@@ -699,9 +700,9 @@
 
      text-wrap:balance 는 두 줄로 나뉠 때 줄 길이를 고르게 맞춘다 —
      "전력 낭비 · 냉각 / 부하 저감" 처럼 첫 줄만 꽉 차는 모양을 막는다 */
-  .pict .k{--k-lh:1.3;
-    font-family:var(--suit);font-weight:900;font-size:16px;line-height:var(--k-lh);
-    letter-spacing:-.32px;color:var(--g900);word-break:keep-all;text-wrap:balance}
+  .pict .k{--k-lh:var(--lh-head);
+    font-family:var(--suit);font-weight:900;font-size:var(--fs-body);line-height:var(--k-lh);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all;text-wrap:balance}
   /* 영문 보조 라벨은 감춘다. 마크업(<span class="en">)은 그대로 두었다 —
      되살릴 때 CSS 한 줄이면 되고, 지우면 원문 80개를 다시 써넣어야 한다.
      display:none 이라 스크린리더에도 읽히지 않는다 */
@@ -721,7 +722,7 @@
     .hcard{--pict-gut:8px}   /* 선 -4px, 점 -6px — 여기서도 정수 */
     .hcard ul.pict li{padding:12px;gap:12px}
     .pict .ic{width:32px;height:32px}
-    .pict .k{--k-lh:1.25;font-size:14px}
+    .pict .k{--k-lh:var(--lh-head);font-size:var(--fs-meta)}
   }
 
   /* 아이콘 그리드 (PLC) — 2열 2행 */
@@ -730,27 +731,27 @@
   .hgrid2 .cell{display:flex;flex-direction:column;gap:14px}
   .hgrid2 .ico{flex:none;width:112px;height:112px;border:1px dashed var(--border-g);
     border-radius:var(--r)}
-  .hgrid2 .t{font-family:var(--suit);font-weight:900;font-size:17px;line-height:1;letter-spacing:-.34px;color:var(--g900)}
-  .hgrid2 .d{font-family:var(--pre);font-size:16px;line-height:var(--body-lh);letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+  .hgrid2 .t{font-family:var(--suit);font-weight:900;font-size:var(--fs-lead);line-height:var(--lh-tight);letter-spacing:var(--ls);color:var(--g900)}
+  .hgrid2 .d{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 
   /* key-value 행 (파트너십 등) */
   .kv{padding:14px 0}
   .kv:first-child{padding-top:2px}
   .kv+.kv{border-top:1px solid var(--border-g)}
   /* .k 와 .v 도 이웃한 두 단락이다 → 같은 --para-gap 으로 갈린다 */
-  .kv .k{font-family:var(--suit);font-weight:700;font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--g900);margin-bottom:var(--para-gap)}
-  .kv .v{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec)}
+  .kv .k{font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--g900);margin-bottom:var(--para-gap)}
+  .kv .v{font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec)}
 
   /* 이미지 자리 — 카드 하단에 붙음 */
   .hph{margin-top:auto;aspect-ratio:16/9;background:var(--secondary-bg);border:1px dashed var(--border-g);
     border-radius:var(--r);
-    display:grid;place-content:center;font-family:var(--rc);font-size:12px;letter-spacing:.06em;color:var(--teritary)}
+    display:grid;place-content:center;font-family:var(--suit);font-size:var(--fs-tag);letter-spacing:var(--ls-caps);color:var(--teritary)}
   .hthumbs{margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
   .hthumbs .th{display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center}
   .hthumbs .th .box{width:100%;aspect-ratio:1/1;background:var(--secondary-bg);
     border:1px dashed var(--border-g);border-radius:var(--r)}
-  .hthumbs .th .nm{font-family:var(--suit);font-weight:700;font-size:12px;line-height:1.3;letter-spacing:-.24px;color:var(--g900);word-break:keep-all}
-  .hthumbs .th .en{font-family:var(--rc);font-size:11px;letter-spacing:.04em;color:var(--teritary)}
+  .hthumbs .th .nm{font-family:var(--suit);font-weight:800;font-size:var(--fs-tag);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .hthumbs .th .en{font-family:var(--suit);font-size:var(--fs-tag);letter-spacing:var(--ls-caps);color:var(--teritary)}
 
   /* 아직 내용이 없는 카드(.hcard--tbd) ────────────────────────────────────
      처음에는 제목과 "내용 추가 예정" 한 줄뿐이었고, 오른쪽 비주얼 칸(.hright)을
@@ -776,8 +777,8 @@
      ⚠ 키워드·아이콘 규칙에 .hcard 를 한 번 더 붙여 클래스를 다섯으로 만든 이유 —
        각 페이지 <style> 의 v3.1 블록이 .hcard .hleft .pict .k / .ic (클래스 넷)로
        색과 배경을 잡는데, 그 <style> 이 이 파일보다 뒤에 오므로 넷끼리는 진다 */
-  .hcard--tbd .tbd{font-family:var(--pre);font-weight:400;font-size:17px;
-    line-height:var(--body-lh);letter-spacing:-.34px;color:var(--teritary)}
+  .hcard--tbd .tbd{font-family:var(--suit);font-weight:400;font-size:var(--fs-lead);
+    line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--teritary)}
   .hcard.hcard--tbd .hleft .pict .k{color:var(--teritary)}
   /* 아이콘도 미정 — 빈 <span class="ic"> 를 점선 상자로 세운다. 크기는 손대지
      않는다: 넓은 화면 32px / 좁은 화면 44px 을 그대로 물려받아 실제 아이콘이
@@ -855,11 +856,11 @@
   @keyframes mkPulse{0%{opacity:.5;transform:scale(1)}70%,100%{opacity:0;transform:scale(3.4)}}
   /* 라벨 — 기본은 좌표 오른쪽으로 뻗고, --r 은 왼쪽으로 뻗는다(우측 정렬) */
   .glab{position:absolute;transform:translateY(-50%);padding-left:5px;white-space:nowrap;
-    font-family:var(--suit);font-weight:700;font-size:13px;line-height:1.35;
-    letter-spacing:-.26px;color:var(--g900)}
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);line-height:var(--lh-label);
+    letter-spacing:var(--ls);color:var(--g900)}
   .glab--r{transform:translate(-100%,-50%);padding:0 5px 0 0;text-align:right}
-  .glab em{display:block;font-style:normal;font-weight:500;font-size:11px;
-    letter-spacing:-.22px;color:var(--brand)}
+  .glab em{display:block;font-style:normal;font-weight:400;font-size:var(--fs-tag);
+    letter-spacing:var(--ls);color:var(--brand)}
 
   /* 사진이 있는 거점(미시간·조지아) — 점과 라벨이 서로 떨어져 있어 공통 부모가 없다.
      그래서 호버 대상을 :has()로 지도 전체에서 잡아 해당 사진만 띄운다 */
@@ -901,8 +902,8 @@
      줄어들면 cover 가 위아래를 잘라내므로 캡션이 밀리거나 팝업이 넘치지 않는다 */
   .gpop img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
     flex:1 1 auto;min-height:0}
-  .gpop figcaption{padding:8px 2px 2px;font-family:var(--suit);font-weight:700;
-    font-size:12px;letter-spacing:-.24px;color:var(--g900)}
+  .gpop figcaption{padding:8px 2px 2px;font-family:var(--suit);font-weight:800;
+    font-size:var(--fs-tag);letter-spacing:var(--ls);color:var(--g900)}
   .gmap:has([data-pop="mi"]:hover) #gpop-mi,
   .gmap:has([data-pop="mi"]:focus-visible) #gpop-mi,
   .gmap:has([data-pop="ga"]:hover) #gpop-ga,
@@ -919,8 +920,8 @@
   /* 이미지 영역만 0.75배로 줄인다 (.th이 center 정렬이라 칸 안에서 가운데 유지) */
   .hcard--grid .th .box{width:75%}
   /* 칸이 좁아진 대신 본문 17px과 나란히 놓이므로 캡션을 한 단계 키운다 */
-  .hcard--grid .th .nm{font-size:15px;letter-spacing:-.3px}
-  .hcard--grid .th .en{font-size:12px;line-height:1.35;word-break:keep-all}
+  .hcard--grid .th .nm{font-size:var(--fs-body);letter-spacing:var(--ls)}
+  .hcard--grid .th .en{font-size:var(--fs-tag);line-height:var(--lh-label);word-break:keep-all}
   .hcard--grid .th .en:empty{display:none}
   @media(max-width:1180px){.hcard.hcard--grid>.hthumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media(max-width:900px){.hcard.hcard--grid>.hthumbs{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -971,8 +972,8 @@
   .fsteps li+li{position:relative}
   .fsteps li+li::before{content:"";position:absolute;left:-17px;top:50%;transform:translateY(-50%);
     border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid #c2cad4}
-  .fsteps li b{font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--brand)}
-  .fsteps li span{font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.35;letter-spacing:-.3px;color:var(--g900);word-break:keep-all}
+  .fsteps li b{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls-caps);color:var(--brand)}
+  .fsteps li span{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   @media(max-width:1240px){
     .fsteps{grid-template-columns:repeat(4,minmax(0,1fr))}
     .fsteps li:nth-child(4n+1)::before{display:none}
@@ -1515,10 +1516,10 @@
   /* 태그와 같은 기준(칸 가운데)으로 세운다 — text-align 은 화합물 전력 반도체처럼
      좁은 화면에서 두 줄로 접히는 이름을 위해 함께 건다 */
   .bhnow{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
-  .bhnow .ko{font-family:var(--suit);font-weight:800;font-size:clamp(20px,1.7vw,25px);
-    line-height:1.26;letter-spacing:-.5px;color:var(--g900);word-break:keep-all}
-  .bhnow .en{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.3;
-    letter-spacing:-.3px;color:var(--teritary)}
+  .bhnow .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+    line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--g900);word-break:keep-all}
+  .bhnow .en{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--teritary)}
   /* 갈라 세우는 좌우 세로선 — 섹션 맨 위에서 푸터 윗변까지 통으로 내린다.
      칸 사이 여백 한가운데를 지나가도록 양쪽으로 여백 절반만큼 밀어 둔다.
      맨 앞·맨 뒤 자리(스마트 제조 / 화합물 전력 반도체)면 한쪽 선이 마을 폭 바깥
@@ -1537,7 +1538,7 @@
   .bhtop{display:flex;align-items:center;justify-content:center}
   .bhtag{flex-shrink:0;height:38px;display:inline-flex;align-items:center;padding:0 14px;
     border:1px solid var(--brand);border-radius:var(--r);color:var(--brand);
-    font-family:var(--suit);font-weight:700;font-size:15px;line-height:1;letter-spacing:-.3px;white-space:nowrap;
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap;
     transition:background .25s var(--ease),color .25s var(--ease)}
 
   /* --- 태그에 불이 하나씩 들어오는 루프 --- */
@@ -1585,9 +1586,9 @@
   @media(max-width:900px){
     .bhop{--pad:72px}
     .bhlot{gap:28px}
-    .bhtag{height:32px;padding:0 10px;font-size:13px}
-    .bhnow .ko{font-size:18px}
-    .bhnow .en{font-size:13px}
+    .bhtag{height:32px;padding:0 10px;font-size:var(--fs-meta)}
+    .bhnow .ko{font-size:var(--fs-h3)}
+    .bhnow .en{font-size:var(--fs-meta)}
   }
 
   /* ===================== FOOTER =====================
@@ -1601,28 +1602,28 @@
   /* --- 사이트맵 --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
-  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
   .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);opacity:.75;transition:opacity .2s}
+  .footer .f-col a{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.75;transition:opacity .2s}
   .footer .f-col a:hover{opacity:1}
   /* 지금 보고 있는 페이지 — GNB 메가메뉴와 같은 표시 방식 */
-  .footer .f-col a[aria-current]{opacity:1;font-weight:700;color:#fff}
+  .footer .f-col a[aria-current]{opacity:1;font-weight:800;color:#fff}
   /* --- 유틸리티 바 (정보 링크 + 패밀리사이트) --- */
   .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
   .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);white-space:nowrap;opacity:.85;transition:opacity .2s}
   .footer .f-links a:hover{opacity:1}
-  .footer .f-links a.strong{font-weight:700;color:#fff;opacity:1}
+  .footer .f-links a.strong{font-weight:800;color:#fff;opacity:1}
   .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
   .footer .f-family{position:relative;flex-shrink:0}
-  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:var(--r);font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:var(--r);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls);color:#fff;cursor:pointer;transition:border-color .2s}
   .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
   .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
   .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
   /* 푸터가 페이지 맨 아래라 메뉴는 버튼 위로 펼친다 */
   .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:var(--r);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
   .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
-  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85);transition:background .2s,color .2s}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);transition:background .2s,color .2s}
   .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
   /* --- 로고 + 사업자 정보 + copyright --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
@@ -1630,9 +1631,9 @@
   .footer .f-bottom .logo{width:97px;height:auto}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line span{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.75;white-space:nowrap}
   .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
-  .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  .footer .f-bottom .copy{font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.6;white-space:nowrap}
   @media(max-width:900px){.footer{--f-m:16px}}
   @media(max-width:960px){
     .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
@@ -1650,7 +1651,7 @@
   .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
   .ov-logo img{height:20px;width:auto;display:block}
   .ov-tools{display:flex;align-items:center;gap:22px}
-  .ov-lang{color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang{color:rgba(255,255,255,.85);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);transition:color .2s}
   .ov-lang:hover{color:#fff}
   .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
   .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
@@ -1660,11 +1661,11 @@
   .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
   .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
   .ov-row:first-child{border-top:none}
-  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
   .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
-  .ov-links a{color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a{color:rgba(255,255,255,.76);font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
   .ov-links a:hover{color:#fff}
-  .ov-links a[aria-current]{color:#fff;font-weight:700}
+  .ov-links a[aria-current]{color:#fff;font-weight:800}
   @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
 
   /* ===================== 공통 GNB (Figma 1135:7128) =====================
@@ -1693,12 +1694,12 @@
                     display:flex;align-items:center;gap:16px}
   .sf-gnb .sf-menus>li{display:flex}
   .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
-                         font-family:var(--pre);font-weight:500;font-size:14px;
-                         line-height:1.5;color:var(--gnb-sec);white-space:nowrap;
+                         font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+                         line-height:var(--lh-body);color:var(--gnb-sec);white-space:nowrap;
                          text-decoration:none;
                          transition:background .2s var(--ease),color .2s var(--ease)}
   .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
-  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:800}
   /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
   .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
                  transition:opacity .18s var(--ease),transform .22s var(--ease)}
@@ -1720,12 +1721,12 @@
                    transition:opacity .22s var(--ease),transform .22s var(--ease),
                               visibility .22s}
   .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
-  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);
-                     font-weight:400;font-size:13px;line-height:1.4;
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);
+                     font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                      color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
                      transition:background .18s,color .18s}
   .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
-  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:800}
 
   /* 메가 판 두 갈래 — 사업영역만 화면 폭을 다 쓰는 넓은 판이고(안쪽은 격자 2~11 열
      띠에 앉아 네 칸으로 갈린다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card).
@@ -1750,15 +1751,15 @@
   .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
   .sf-mega.card .hd{white-space:nowrap}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
-               font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+               font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
                color:var(--gnb-sec);text-decoration:none;
                transition:color .18s var(--ease)}
   .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
   .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
   .sf-mega ul{list-style:none;margin:0;padding:0;
               display:flex;flex-direction:column;gap:20px}
-  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:16px;
-                line-height:1.2;letter-spacing:-.32px;color:var(--gnb-sec);
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec);
                 text-decoration:none;transition:color .18s var(--ease)}
   .sf-mega ul a:hover{color:var(--gnb-brand)}
 

@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="type-scale.css" />
 <style>
   @font-face{
     font-family:"SUIT Variable";
@@ -40,7 +41,7 @@
   html{scroll-behavior:smooth}
   /* NOTE: no overflow-x on body/html — that (hidden OR clip) makes body the sticky scroll context
      and breaks the who-we-are pin. Horizontal overflow is clipped per-section via .section{overflow:hidden}. */
-  body{font-family:var(--pre);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
+  body{font-family:var(--suit);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
   img{display:block;max-width:none}
   p{margin:0}
   button{font-family:inherit}
@@ -65,25 +66,25 @@
   /* --- sitemap (menu tree) --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
-  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
   .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
+  .footer .f-col a{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
   .footer .f-col a:hover{opacity:1}
   /* --- utility bar (family site + info links) --- */
   .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
   .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
   .footer .f-links a:hover{opacity:1}
-  .footer .f-links a.strong{font-weight:700;color:#fff;opacity:1}
+  .footer .f-links a.strong{font-weight:800;color:#fff;opacity:1}
   .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
   .footer .f-family{position:relative;flex-shrink:0}
-  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls);color:#fff;cursor:pointer;transition:border-color .2s}
   .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
   .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
   .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
   .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:4px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
   .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
-  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;transition:background .2s,color .2s}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;transition:background .2s,color .2s}
   .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
   /* --- bottom (logo + legal + copyright) --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
@@ -91,9 +92,9 @@
   .footer .f-bottom .logo{width:97px;height:auto}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line span{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.75;white-space:nowrap}
   .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
-  .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  .footer .f-bottom .copy{font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.6;white-space:nowrap}
   @media(max-width:900px){.footer{--f-m:16px}}
   @media(max-width:960px){
     .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
@@ -104,7 +105,7 @@
   @media(max-width:560px){.footer .f-nav{grid-template-columns:1fr}}
 
   .mnote{display:none}
-  @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
+  @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:var(--fs-tag);color:#8895a5;background:#0b1118;font-family:var(--suit)}}
 
   /* ===================== SHARED: hamburger + full-screen overlay ===================== */
   .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
@@ -120,7 +121,7 @@
   .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
   .ov-logo img{height:20px;width:auto;display:block}
   .ov-tools{display:flex;align-items:center;gap:22px}
-  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);transition:color .2s}
   .ov-lang:hover{color:#fff}
   .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
   .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
@@ -130,9 +131,9 @@
   .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
   .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
   .ov-row:first-child{border-top:none}
-  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
   .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
-  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
   .ov-links a:hover{color:#fff}
   .navover .ov-row{transform:translateY(18px);opacity:0}
   .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
@@ -187,12 +188,12 @@
                     display:flex;align-items:center;gap:16px}
   .sf-gnb .sf-menus>li{display:flex}
   .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
-                         font-family:var(--pre);font-weight:500;font-size:14px;
-                         line-height:1.5;color:var(--gnb-sec);white-space:nowrap;
+                         font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+                         line-height:var(--lh-body);color:var(--gnb-sec);white-space:nowrap;
                          text-decoration:none;
                          transition:background .2s var(--ease),color .2s var(--ease)}
   .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
-  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:800}
   /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
   .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
                  transition:opacity .18s var(--ease),transform .22s var(--ease)}
@@ -214,12 +215,12 @@
                    transition:opacity .22s var(--ease),transform .22s var(--ease),
                               visibility .22s}
   .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
-  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);
-                     font-weight:400;font-size:13px;line-height:1.4;
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);
+                     font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                      color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
                      transition:background .18s,color .18s}
   .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
-  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:800}
 
   /* 메가 판 두 갈래 — 사업영역만 화면 폭을 다 쓰는 넓은 판이고(안쪽은 격자 2~11 열
      띠에 앉아 네 칸으로 갈린다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card).
@@ -244,15 +245,15 @@
   .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
   .sf-mega.card .hd{white-space:nowrap}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
-               font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+               font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
                color:var(--gnb-sec);text-decoration:none;
                transition:color .18s var(--ease)}
   .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
   .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
   .sf-mega ul{list-style:none;margin:0;padding:0;
               display:flex;flex-direction:column;gap:20px}
-  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:16px;
-                line-height:1.2;letter-spacing:-.32px;color:var(--gnb-sec);
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec);
                 text-decoration:none;transition:color .18s var(--ease)}
   .sf-mega ul a:hover{color:var(--gnb-brand)}
 
@@ -306,8 +307,8 @@
   .hm-sec{position:relative;min-height:var(--hm-h);padding:var(--hm-pad) var(--hm-m);
           display:flex;flex-direction:column;justify-content:center;
           background:#fff;border-bottom:1px solid var(--hm-rule);word-break:keep-all}
-  .hm-ttl{font-family:var(--ald);font-weight:400;font-size:40px;line-height:1;
-          letter-spacing:-.06em;color:var(--g900)}
+  .hm-ttl{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);
+          letter-spacing:var(--ls-num);color:var(--g900)}
 
   /* ── 배너 — 네 사업영역을 차례로 돌린다 ─────────────────────────────────
      사진과 제목은 겹쳐 두고 켜진 장만 드러낸다. 탭 이름 밑줄은 한 줄로 화면
@@ -364,10 +365,10 @@
      들도록 칸 폭(cqi)에서 구한다 — 네 장이 같은 크기라 넘길 때 글자가 튀지 않는다.
      제목을 고쳐 더 긴 줄이 생기면 12.6 을 다시 잰다 */
   .hm-hl .en{font-family:var(--ald);font-weight:400;white-space:nowrap;
-             font-size:clamp(24px,calc(100cqi / 12.6),64px);line-height:1;
-             letter-spacing:-.06em;color:#fff}
-  .hm-hl .ko{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;
-             letter-spacing:-.4px;color:rgba(255,255,255,.7)}
+             font-size:clamp(24px,calc(100cqi / 12.6),64px);line-height:var(--lh-tight);
+             letter-spacing:var(--ls-num);color:#fff}
+  .hm-hl .ko{font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);line-height:var(--lh-label);
+             letter-spacing:var(--ls);color:rgba(255,255,255,.7)}
   .hm-tabs{position:relative;flex:0 0 calc(var(--hm-tabs) + var(--hm-m));padding-right:var(--hm-m);
            display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   /* 게이지 트랙 — 이름 줄 바로 아래 6px 반투명 막대. 채워지는 선(.gauge)도 같은 6px 흰색으로 겹친다.
@@ -376,8 +377,8 @@
   .hm-tab{min-width:0;display:flex;flex-direction:column;gap:14px;padding:0;
           background:none;border:0;color:#fff;text-align:left;cursor:pointer}
   .hm-tab .lbl{position:relative;height:27px;display:flex;align-items:center;
-               font-family:var(--suit);font-weight:800;font-size:17px;line-height:1.35;
-               letter-spacing:-.34px;white-space:nowrap;
+               font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-label);
+               letter-spacing:var(--ls);white-space:nowrap;
                opacity:.6;transition:opacity .4s var(--ease)}
   .hm-tab .gauge{position:absolute;left:0;right:0;bottom:-6px;height:6px;background:#fff;
                  transform:scaleX(0);transform-origin:left center}
@@ -426,8 +427,8 @@
   .hm-card:not(.is-open) .fold{opacity:1;transition:opacity .5s var(--ease) .45s}
   /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다) */
   .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
-                     transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:24px;
-                     line-height:1;letter-spacing:-.02em;white-space:nowrap}
+                     transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+                     line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
@@ -457,7 +458,7 @@
   .hm-card .vec{display:block;flex-shrink:0;height:120px;width:auto;aspect-ratio:var(--ar);margin-bottom:-16px;
                 filter:brightness(0) invert(1);opacity:.92}
   /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
-  .hm-card h3{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px}
+  .hm-card h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls)}
   /* 카드 어디를 눌러도 세부 페이지로 간다 — 사진 위에 카드 크기 링크(.hit)를 한 장
      깔고, 글 띠는 손을 받지 않게 비워 링크만 받는다. 읽기와 초점은 이름 링크가
      맡으므로 .hit 는 가려 둔다 */
@@ -467,8 +468,8 @@
   .hm-card:not(.is-open) .hit{z-index:3}
   .hm-card .hit:focus-visible{outline:2px solid #fff;outline-offset:-6px}
   .hm-card h3 a{color:#fff;text-decoration:none}
-  .hm-card .d{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
-              letter-spacing:-.3px;font-feature-settings:"lnum" 1,"tnum" 1}
+  .hm-card .d{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
+              letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
   /* 소분류 띠지 — 사업영역 세부 히어로의 띠지(.sf-ticker)와 같은 모양이되 흐르지 않는다.
      위에 옅은 선 한 줄, 이름은 SUIT 800 · 흰 70%, 이름 사이는 1px 세로선 두 개.
      카드보다 길면 옆으로 밀어 볼 수 있고(스크롤바는 숨김), 오른쪽 끝을 흐려 잘린 줄을
@@ -484,8 +485,8 @@
   .hm-card .sub li{display:flex;align-items:center;gap:30px;flex-shrink:0}
   .hm-card .sub li+li::before{content:"";width:9px;height:10px;box-sizing:border-box;flex-shrink:0;
                 border-left:1px solid rgba(255,255,255,.7);border-right:1px solid rgba(255,255,255,.7)}
-  .hm-card .sub a{font-family:var(--suit);font-weight:800;font-size:15px;line-height:1.35;
-                  letter-spacing:-.28px;color:rgba(255,255,255,.7);white-space:nowrap;
+  .hm-card .sub a{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-label);
+                  letter-spacing:var(--ls);color:rgba(255,255,255,.7);white-space:nowrap;
                   text-decoration:none;transition:color .2s var(--ease)}
   .hm-card .sub a:hover,.hm-card .sub a:focus-visible{color:#fff}
   /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
@@ -527,8 +528,8 @@
   .hm-tile{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;padding:24px;
            background:var(--secondary-bg)}
   .hm-tile .tt{display:flex;align-items:flex-start;gap:16px}
-  .hm-tile h3{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:18px;
-              line-height:1.4;letter-spacing:-.4px;color:var(--g900)}
+  .hm-tile h3{flex:1;min-width:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);
+              line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
   .hm-tile h3 span{display:block}
   .hm-tile .viz{flex:1;min-height:200px;display:flex;flex-direction:column;align-items:center;
                 justify-content:center;gap:12px;container-type:inline-size}
@@ -539,7 +540,7 @@
   .wf .die{fill:var(--point-200);transition:opacity .5s var(--ease) calc(var(--i) * 45ms + .2s)}
   .wf .notch{fill:var(--secondary-bg);stroke:var(--point-300)}
   .wf .dim{fill:none;stroke:var(--hm-mute)}
-  .wf text{font-family:var(--pre);font-size:11px;fill:var(--hm-sec);text-anchor:middle}
+  .wf text{font-family:var(--suit);font-size:var(--fs-tag);fill:var(--hm-sec);text-anchor:middle}
   .is-wait .wf .die{opacity:0}
 
   /* 3 · 활성화 공정 — 여섯 칸이 차례로 켜지며 사이 선이 이어진다.
@@ -552,11 +553,11 @@
                       transition:transform .38s linear calc(var(--i) * .38s - .38s)}
   .steps b{position:relative;z-index:1;width:40px;height:40px;margin-bottom:8px;display:grid;place-content:center;
            background:var(--brand-2);border:1px solid var(--brand-2);color:#fff;
-           font-family:var(--ald);font-weight:400;font-size:14px;
+           font-family:var(--ald);font-weight:400;font-size:var(--fs-meta);
            transition:background .4s var(--ease) calc(var(--i) * .38s),border-color .4s var(--ease) calc(var(--i) * .38s),
                       color .4s var(--ease) calc(var(--i) * .38s)}
-  .steps .k{font-family:var(--pre);font-weight:600;font-size:14px;line-height:1.35;color:var(--g900)}
-  .steps .e{font-family:var(--rc);font-size:12px;line-height:1.3;color:var(--hm-sec)}
+  .steps .k{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-label);color:var(--g900)}
+  .steps .e{font-family:var(--suit);font-size:var(--fs-tag);line-height:var(--lh-head);color:var(--hm-sec)}
   .is-wait .steps b{background:#fff;border-color:var(--border-g);color:var(--hm-mute)}
   .is-wait .steps li+li::after{transform:scaleX(0)}
   @container (max-width:480px){
@@ -582,7 +583,7 @@
   .is-wait .map .arc{stroke-dashoffset:1}
   .is-wait .map .pin,.is-wait .map .halo{transform:scale(0);opacity:0}
   .hm-tile .lg{align-self:flex-start;display:flex;flex-wrap:wrap;gap:6px 16px;
-               font-family:var(--pre);font-size:12px;line-height:1.4;color:var(--hm-sec)}
+               font-family:var(--suit);font-size:var(--fs-tag);line-height:var(--lh-label);color:var(--hm-sec)}
   .lg>span{display:flex;align-items:center;gap:6px}
   .lg i{width:8px;height:8px;border-radius:50%;background:var(--brand-2)}
   .lg .hub{width:10px;height:10px;background:var(--brand)}
@@ -591,10 +592,10 @@
   /* 5 · 인증 — 제품군별 인증 이름표가 차례로 올라온다 */
   .hm-tile .certs{width:100%;display:flex;flex-direction:column;align-items:center;gap:16px}
   .certs .grp{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-  .certs .nm{width:100%;text-align:center;font-family:var(--rc);font-size:12px;
-             letter-spacing:.08em;color:var(--hm-sec)}
+  .certs .nm{width:100%;text-align:center;font-family:var(--suit);font-size:var(--fs-tag);
+             letter-spacing:var(--ls-caps);color:var(--hm-sec)}
   .certs .ch{padding:6px 10px;background:#fff;border:1px solid var(--border-g);
-             font-family:var(--rc);font-weight:600;font-size:14px;line-height:1.2;color:var(--g900);
+             font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-head);color:var(--g900);
              transition:opacity .5s var(--ease) calc(var(--i) * 70ms + .15s),transform .5s var(--ease) calc(var(--i) * 70ms + .15s)}
   .certs .is-key{border-color:var(--brand-2);color:var(--brand)}
   .is-wait .certs .ch{opacity:0;transform:translateY(8px)}
@@ -604,8 +605,8 @@
   .hm-tile .diag{width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px;
                  padding:14px;background:#fff;border:1px solid var(--border-g)}
   .diag .hd,.diag .ft{display:flex;align-items:center;justify-content:space-between;gap:10px;
-                      font-family:var(--rc);font-size:12px;line-height:1.3;color:var(--hm-sec)}
-  .diag .st{font-family:var(--pre);font-weight:600;color:#a8620f}
+                      font-family:var(--suit);font-size:var(--fs-tag);line-height:var(--lh-head);color:var(--hm-sec)}
+  .diag .st{font-family:var(--suit);font-weight:600;color:#a8620f}
   .diag .cells{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;overflow:hidden}
   .diag .cells i{aspect-ratio:1/1.3;background:var(--point-200);
                  transition:background .4s var(--ease) calc(var(--i) * 90ms + .3s)}
@@ -674,10 +675,10 @@
   .hm-news{gap:28px}
   .hm-nhead{display:flex;align-items:flex-start;gap:8px}
   .hm-nhead .tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-  .hm-nhead .sub{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.5;color:var(--hm-sec)}
+  .hm-nhead .sub{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);color:var(--hm-sec)}
   .hm-more{display:flex;align-items:center;gap:8px;padding:4px 12px;background:#fff;
-           border:1px solid var(--border-g);font-family:var(--pre);font-weight:400;font-size:15px;
-           line-height:1.5;color:var(--g900);white-space:nowrap;text-decoration:none;
+           border:1px solid var(--border-g);font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
+           line-height:var(--lh-body);color:var(--g900);white-space:nowrap;text-decoration:none;
            transition:border-color .2s var(--ease)}
   .hm-more svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}
   .hm-more:hover{border-color:var(--hm-icon)}
@@ -689,11 +690,11 @@
   .hm-ncards .th{display:block;aspect-ratio:16/9;background:var(--hm-ph);border:1px solid var(--border-g)}
   .hm-ncards .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
   .hm-ncards .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-                  font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;
+                  font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
                   color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
   .hm-ncards a:hover .ttl{color:var(--brand)}
-  .hm-ncards .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:500;
-                   font-size:14px;letter-spacing:.04em;color:var(--teritary)}
+  .hm-ncards .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:400;
+                   font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
   /* 목록 — 한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 아래 선. 제목과 날짜 칸을 같은 폭으로
      나눠 날짜가 본문 가운데쯤에서 선다. 제목이 길면 한 줄에서 말줄임한다.
      커서를 올리면 제목이 브랜드 색이 되고 화살표가 새 창 쪽(오른쪽 위)으로 조금 나간다 */
@@ -703,11 +704,11 @@
               color:inherit;text-decoration:none}
   /* 목록의 제목 · 날짜도 보도자료 카드와 같은 글자 규칙이다 */
   .hm-nlist .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-                 font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.34px;
+                 font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
                  color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
-  .hm-nlist .date{font-family:var(--suit);font-weight:500;font-size:14px;letter-spacing:.04em;color:var(--teritary)}
-  .hm-nlist .go{display:flex;align-items:center;gap:6px;font-family:var(--pre);font-weight:400;
-                font-size:15px;line-height:1.5;color:var(--g900);white-space:nowrap}
+  .hm-nlist .date{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
+  .hm-nlist .go{display:flex;align-items:center;gap:6px;font-family:var(--suit);font-weight:400;
+                font-size:var(--fs-body);line-height:var(--lh-body);color:var(--g900);white-space:nowrap}
   .hm-nlist .go svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}
   .hm-nlist a:hover .ttl{color:var(--brand)}
   .hm-nlist a:hover .go svg{transform:translate(2px,-2px)}
@@ -728,13 +729,13 @@
   @media(max-width:900px){
     :root{--hm-m:16px;--hm-pad:128px}
     .hm-ov{padding-bottom:56px}
-    .hm-ttl{font-size:32px}
-    .hm-hl .ko{font-size:16px}
+    .hm-ttl{font-size:var(--fs-h1)}
+    .hm-hl .ko{font-size:var(--fs-body)}
     .hm-tabs{gap:6px}
     .hm-tabs::before{display:none}
     /* 좁은 화면은 이름이 두 줄까지 늘어 탭마다 트랙을 따로 둔다 — 6px 반투명 밑테두리 자리에 채움 선이 겹친다 */
     .hm-tab{gap:8px}
-    .hm-tab .lbl{height:auto;min-height:27px;padding-bottom:4px;font-size:14px;line-height:1.2;
+    .hm-tab .lbl{height:auto;min-height:27px;padding-bottom:4px;font-size:var(--fs-meta);line-height:var(--lh-head);
                  white-space:normal;border-bottom:6px solid rgba(255,255,255,.3)}
     /* 좁은 화면은 세로 아코디언 — 카드가 위아래로 쌓이고, 접힌 카드는 64 높이의 가로 띠,
        펴진 카드는 420 이다. 사진은 늘 420 높이로 그려 가운데에 둔다 */
@@ -745,17 +746,17 @@
     .hm-card .cap{right:0;width:auto}
     .hm-card+.hm-card{border-left:0;border-top:1px solid #fff}
     .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
-    .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:18px}
+    .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:var(--fs-h3)}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{gap:12px;padding:0 16px}
     .hm-card .vec{height:72px;margin-bottom:-12px}
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
-    .hm-card .d{font-size:13px}
+    .hm-card .d{font-size:var(--fs-meta)}
     .hm-tech{gap:28px}
     .hm-tile{padding:20px;gap:20px}
     .hm-tiles>.t-mp .map{width:calc(100% + 40px);margin-inline:-20px}
-    .hm-tile h3{font-size:18px}
+    .hm-tile h3{font-size:var(--fs-h3)}
     .hm-ncards{grid-template-columns:1fr}
     /* 좁은 화면은 날짜를 제목 아래로 내리고, 오른쪽엔 화살표만 남긴다. 제목은 두 줄까지 */
     .hm-nlist a{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t g" "d g";

@@ -27,14 +27,14 @@
   .lc-band{display:flex;align-items:center;gap:20px;padding:56px var(--ci-m)}
   .lc-info{flex:0 0 552px;padding-right:115px;display:flex;flex-direction:column;gap:20px}
   .lc-head{display:flex;flex-direction:column;gap:8px;padding-bottom:24px;border-bottom:2px solid #e4e8ed}
-  .lc-head h2{margin:0;font-family:var(--suit);font-weight:800;font-size:38px;line-height:1.2;letter-spacing:-1.52px;color:#fff}
-  .lc-head .en{margin:0;font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:#fff}
+  .lc-head h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
+  .lc-head .en{margin:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);color:#fff}
   .lc-rows{margin:0}
   .lc-rows>div{display:flex;flex-direction:column;gap:8px;padding:16px 8px;border-bottom:1px solid rgba(255,255,255,.2)}
-  .lc-rows dt{display:flex;align-items:center;gap:4px;font-family:var(--suit);font-weight:800;font-size:16px;
-              line-height:1;letter-spacing:-.32px;color:#fff}
+  .lc-rows dt{display:flex;align-items:center;gap:4px;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+              line-height:var(--lh-tight);letter-spacing:var(--ls);color:#fff}
   .lc-rows dt::before{content:"";flex:none;width:4px;height:4px;background:#fdfdfa}
-  .lc-rows dd{margin:0;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;letter-spacing:-.3px;
+  .lc-rows dd{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
               color:rgba(255,255,255,.7);font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
   .lc-rows dd span{display:block}
   .lc-rows dd span+span{margin-top:2px}
@@ -49,7 +49,7 @@
     .lc-tab .th{aspect-ratio:auto;height:clamp(40px, calc(100cqh - 485px), 99px)}
     .lc-map{align-self:stretch;aspect-ratio:auto}
   }
-  .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
+  .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls)}
   .lc-tab .nm span{display:block}
   .lc-tab .nm span+span{margin-top:4px}
   .lc-tab[aria-selected="true"]{background:#fff;color:#2c5790}

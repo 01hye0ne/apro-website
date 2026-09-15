@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="type-scale.css" />
 <style>
   @font-face{
     font-family:"SUIT Variable";
@@ -26,7 +27,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{font-family:var(--suit);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{display:block;max-width:none}
   p{margin:0}
   a{text-decoration:none;color:inherit}
@@ -40,7 +41,7 @@
   .subgnb .back{width:28px;height:28px;flex-shrink:0;border:1px solid currentColor;
     display:grid;place-content:center;color:inherit}
   .subgnb .back svg{width:18px;height:18px}
-  .subgnb .lbl{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:inherit;white-space:nowrap}
+  .subgnb .lbl{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);color:inherit;white-space:nowrap}
   @keyframes gnbIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
   /* ===================== BUSINESS CAROUSEL ===================== */
@@ -108,16 +109,16 @@
   .pvec::before{content:"VECTOR\A" attr(data-vec);white-space:pre-line;
     box-sizing:border-box;width:85%;max-width:560px;max-height:100%;aspect-ratio:251/177;border:1px dashed var(--border-g);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:0 12px;text-align:center;line-height:2;
-    font-family:var(--rc);font-size:11px;letter-spacing:.08em;color:var(--teritary)}
+    padding:0 12px;text-align:center;line-height:var(--lh-body);
+    font-family:var(--suit);font-size:var(--fs-tag);letter-spacing:var(--ls-caps);color:var(--teritary)}
   .pvec:has(img)::before{display:none}
 
   /* ---- title + (hover) sub-menu ---- */
   .p-foot{position:relative;z-index:2;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center}
   .p-title{display:flex;flex-direction:column;gap:6px}
   /* 세부 페이지 섹션 타이틀(.httl)과 동일한 타이포 */
-  .p-title .ko{font-family:var(--suit);font-weight:800;font-size:clamp(25px,2.6vw,38px);line-height:1.26;letter-spacing:-.6px;color:inherit;word-break:keep-all}
-  .p-title .en{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.3;letter-spacing:-.32px;opacity:.55}
+  .p-title .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:inherit;word-break:keep-all}
+  .p-title .en{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);opacity:.55}
 
   /* ---- sub-menu: pinned to the bottom, hidden by default, revealed on hover ---- */
   /* 좌우는 패널의 27px 여백을 그대로 쓰고, 아래만 80px 로 띄워 바닥에서 크게 올렸다
@@ -130,8 +131,8 @@
   .li{background:rgba(255,255,255,.08);height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;
     border:1px solid rgba(255,255,255,.14)}
   .li .dot{width:4px;height:4px;border-radius:50%;background:var(--brand-2);flex-shrink:0;margin-right:4px}
-  .li .nm{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.2;letter-spacing:-.3px;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .li .tag{margin-left:auto;flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:1px 8px;font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px}
+  .li .nm{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .li .tag{margin-left:auto;flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:1px 8px;font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls)}
 
   /* ---- 1440px 미만 = 4열 → 2×2 ----
      4열을 그대로 좁히면 패널이 300px 밑으로 내려가 타이틀이 세 줄로 접히고 그래픽이 뭉개진다.
@@ -155,9 +156,11 @@
 
   .mnote{display:none}
   @media(max-width:640px){
-    .p-title .ko{font-size:16px}
+    .p-title .ko{font-size:var(--fs-body)}
+    /* 두 칸 격자에서 줄 폭이 94 안팎이라 16 은 "에이프로 세미콘" 이 말줄임된다 */
+    .li .nm{font-size:var(--fs-meta)}
   }
-  @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:50;display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
+  @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:50;display:block;padding:10px;text-align:center;font-size:var(--fs-tag);color:#8895a5;background:#0b1118;font-family:var(--suit)}}
 
   /* ---- cross-document view transitions (Figma Smart Animate–style morph) ---- */
   @view-transition{navigation:auto}
@@ -190,7 +193,7 @@
   .hd-back:hover{opacity:.62}
   .hd-back .box{width:28px;height:28px;flex-shrink:0;border:1px solid currentColor;display:grid;place-content:center}
   .hd-back .box svg{width:18px;height:18px}
-  .hd-back .lbl{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1;letter-spacing:-.3px;white-space:nowrap}
+  .hd-back .lbl{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
   @keyframes hdIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
   /* ===================== SHARED: hamburger + full-screen overlay ===================== */
@@ -208,7 +211,7 @@
   .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
   .ov-logo img{height:20px;width:auto;display:block}
   .ov-tools{display:flex;align-items:center;gap:22px}
-  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);transition:color .2s}
   .ov-lang:hover{color:#fff}
   .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
   .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
@@ -218,9 +221,9 @@
   .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
   .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
   .ov-row:first-child{border-top:none}
-  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
   .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
-  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
   .ov-links a:hover{color:#fff}
   .navover .ov-row{transform:translateY(18px);opacity:0}
   .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}

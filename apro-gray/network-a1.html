@@ -23,7 +23,7 @@
      (business-layout.css / business-layout.js)이다 -->
 <style>
   /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4 */
-  .ci-hero .sub{line-height:1.4}
+  .ci-hero .sub{line-height:var(--lh-label)}
 
   /* 지도 띠 (Figma 1227:7859) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 왼쪽 44 · 오른쪽 20.
      오른쪽은 면 지도, 왼쪽 아래(지도 칸 밑변과 같은 선)에 숫자 둘이 선다. 좁아지면 지도가 먼저 줄어든다 */
@@ -31,8 +31,8 @@
   /* 숫자 덩어리는 Figma 에서 띠 아래 여백 안으로 12 내려앉아 있다 — 마지막 숫자 글자 밑이 지도 밑변과 같은 선 */
   .gn-stats{flex:none;list-style:none;margin:0 0 -12px;padding:0;display:flex;flex-direction:column;gap:34px}
   .gn-stats li{display:flex;flex-direction:column;gap:8px}
-  .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:16px;line-height:1;letter-spacing:-.06em}
-  .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:64px;line-height:1;letter-spacing:-.06em}
+  .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
 
   /* 지도 요소 — 면 지도(world-map-countries-pacific.svg: Figma World Map 커뮤니티 파일 72:2200 의 나라 면, 메르카토르)는
      아메리카 · 그린란드를 360° 오른쪽으로 옮겨 태평양이 가운데 온다. 땅은 흰 30%, 나라 경계는 흰 50% 선.
@@ -65,7 +65,7 @@
     .gn-band{flex-direction:column-reverse;align-items:stretch;gap:32px;padding:40px var(--ci-m)}
     .gn-map{flex:none;width:100%}
     .gn-stats{flex-direction:row;gap:40px;margin-bottom:0}
-    .gn-stats .v{font-size:44px}
+    .gn-stats .v{font-size:var(--fs-display-sm)}
   }
 </style>
 </head>

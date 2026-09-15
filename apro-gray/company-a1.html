@@ -41,7 +41,7 @@
   html{scroll-behavior:smooth}
   /* NOTE: no overflow-x on body/html — that (hidden OR clip) makes body the sticky scroll context
      and breaks the who-we-are pin. Horizontal overflow is clipped per-section via .section{overflow:hidden}. */
-  body{font-family:var(--pre);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
+  body{font-family:var(--suit);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
   img{display:block;max-width:none}
   p{margin:0}
   button{font-family:inherit}
@@ -66,25 +66,25 @@
   /* --- sitemap (menu tree) --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
   .footer .f-col{display:flex;flex-direction:column;gap:20px}
-  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;color:#fff}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
   .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .footer .f-col a{font-family:var(--pre);font-weight:400;font-size:14px;line-height:1.5;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
+  .footer .f-col a{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;opacity:.75;transition:opacity .2s}
   .footer .f-col a:hover{opacity:1}
   /* --- utility bar (family site + info links) --- */
   .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
   .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .footer .f-links a{font-family:var(--pre);font-weight:500;font-size:14px;line-height:1.6;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
   .footer .f-links a:hover{opacity:1}
-  .footer .f-links a.strong{font-weight:700;color:#fff;opacity:1}
+  .footer .f-links a.strong{font-weight:800;color:#fff;opacity:1}
   .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
   .footer .f-family{position:relative;flex-shrink:0}
-  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--pre);font-weight:500;font-size:14px;letter-spacing:-.28px;color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls);color:#fff;cursor:pointer;transition:border-color .2s}
   .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
   .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
   .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
   .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:4px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
   .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
-  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--on-white-85);text-decoration:none;transition:background .2s,color .2s}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);text-decoration:none;transition:background .2s,color .2s}
   .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
   /* --- bottom (logo + legal + copyright) --- */
   .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
@@ -92,9 +92,9 @@
   .footer .f-bottom .logo{width:97px;height:auto}
   .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
   .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .footer .f-bottom .infos .line span{font-family:var(--pre);font-size:13px;line-height:1.6;letter-spacing:-.26px;color:var(--on-white-85);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line span{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.75;white-space:nowrap}
   .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
-  .footer .f-bottom .copy{font-family:var(--pre);font-size:13px;letter-spacing:-.26px;color:var(--on-white-85);opacity:.6;white-space:nowrap}
+  .footer .f-bottom .copy{font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-white-85);opacity:.6;white-space:nowrap}
   @media(max-width:900px){.footer{--f-m:16px}}
   @media(max-width:960px){
     .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
@@ -105,7 +105,7 @@
   @media(max-width:560px){.footer .f-nav{grid-template-columns:1fr}}
 
   .mnote{display:none}
-  @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:12px;color:#8895a5;background:#0b1118;font-family:var(--pre)}}
+  @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:var(--fs-tag);color:#8895a5;background:#0b1118;font-family:var(--suit)}}
 
   /* ===================== SHARED: hamburger + full-screen overlay ===================== */
   .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
@@ -121,7 +121,7 @@
   .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
   .ov-logo img{height:20px;width:auto;display:block}
   .ov-tools{display:flex;align-items:center;gap:22px}
-  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--pre);font-weight:600;font-size:14px;letter-spacing:.04em;transition:color .2s}
+  .ov-lang{text-decoration:none;color:rgba(255,255,255,.85);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);transition:color .2s}
   .ov-lang:hover{color:#fff}
   .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
   .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
@@ -131,9 +131,9 @@
   .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
   .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
   .ov-row:first-child{border-top:none}
-  .ov-cat{font-family:var(--suit);font-weight:800;font-size:clamp(21px,1.9vw,30px);line-height:1.15;letter-spacing:-.5px;color:#fff}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
   .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
-  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--pre);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:-.3px;word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a{text-decoration:none;color:rgba(255,255,255,.76);font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
   .ov-links a:hover{color:#fff}
   .navover .ov-row{transform:translateY(18px);opacity:0}
   .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
@@ -188,12 +188,12 @@
                     display:flex;align-items:center;gap:16px}
   .sf-gnb .sf-menus>li{display:flex}
   .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
-                         font-family:var(--pre);font-weight:500;font-size:14px;
-                         line-height:1.5;color:var(--gnb-sec);white-space:nowrap;
+                         font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+                         line-height:var(--lh-body);color:var(--gnb-sec);white-space:nowrap;
                          text-decoration:none;
                          transition:background .2s var(--ease),color .2s var(--ease)}
   .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
-  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:800}
   /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
   .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
                  transition:opacity .18s var(--ease),transform .22s var(--ease)}
@@ -215,12 +215,12 @@
                    transition:opacity .22s var(--ease),transform .22s var(--ease),
                               visibility .22s}
   .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
-  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--pre);
-                     font-weight:400;font-size:13px;line-height:1.4;
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);
+                     font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                      color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
                      transition:background .18s,color .18s}
   .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
-  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:700}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:800}
 
   /* 메가 판 두 갈래 — 사업영역만 화면 폭을 다 쓰는 넓은 판이고(안쪽은 격자 2~11 열
      띠에 앉아 네 칸으로 갈린다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card).
@@ -245,15 +245,15 @@
   .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
   .sf-mega.card .hd{white-space:nowrap}
   .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
-               font-weight:800;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+               font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
                color:var(--gnb-sec);text-decoration:none;
                transition:color .18s var(--ease)}
   .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
   .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
   .sf-mega ul{list-style:none;margin:0;padding:0;
               display:flex;flex-direction:column;gap:20px}
-  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:16px;
-                line-height:1.2;letter-spacing:-.32px;color:var(--gnb-sec);
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec);
                 text-decoration:none;transition:color .18s var(--ease)}
   .sf-mega ul a:hover{color:var(--gnb-brand)}
 
@@ -305,9 +305,9 @@
   .co-vband{display:flex;flex-direction:column;gap:26px;padding:40px var(--ci-m);word-break:keep-all}
   .co-vband .row{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:20px}
   .co-vband .txt{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
-  .co-vband .eyebrow{font-family:var(--ald);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.06em}
-  .co-vband h2{font-family:var(--ald);font-weight:400;font-size:48px;line-height:1;letter-spacing:-.06em}
-  .co-vband .lead{font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;letter-spacing:-.3px;
+  .co-vband .eyebrow{font-family:var(--ald);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .co-vband h2{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .co-vband .lead{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
                   color:rgba(255,255,255,.7);font-feature-settings:"lnum" 1,"tnum" 1}
   .co-vband .lead span{display:block}
   .co-vband .lead span+span{margin-top:2px}
@@ -375,17 +375,17 @@
   .co-val .no{position:absolute;left:50%;top:calc(-1 * var(--pt) - 11px);z-index:2;
               transform:translate(-50%,-50%);min-width:40px;height:32px;padding:0 10px;
               display:grid;place-items:center;background:#fff;border:1px solid var(--co-rule);
-              font-family:var(--ald);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.02em;
+              font-family:var(--ald);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num);
               color:var(--co-mute);transition:color .4s var(--ease),border-color .4s var(--ease)}
   .co-val .no.is-lit{color:var(--co-line);border-color:var(--co-line)}
-  .co-val h3{font-family:var(--ald);font-weight:400;font-size:40px;line-height:1;letter-spacing:-.06em;
+  .co-val h3{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num);
              color:var(--g900)}
   /* 키워드 짝 — 머리글자만 파랑, 나머지는 옅은 회색 */
   .co-val .pair{display:flex;align-items:center;gap:8px;height:20px;font-family:var(--suit);
-                font-weight:800;font-size:14px;line-height:1.35;letter-spacing:-.28px;color:var(--co-mute)}
+                font-weight:800;font-size:var(--fs-meta);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--co-mute)}
   .co-val .pair b{font-weight:800;color:var(--brand)}
   .co-val .plus{display:block;width:20px;height:20px;flex-shrink:0;color:var(--brand-2)}
-  .co-val .d{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.2;letter-spacing:-.32px;
+  .co-val .d{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
              color:var(--co-sec)}
   .co-val .ph{display:block;aspect-ratio:4/3;background:var(--co-ph);border:1px solid var(--border-g)}
   /* 사진은 판 안 제자리에 가만히 있다. A 회사소개 AAA 장의 세 장(세로로 잘린 원본)이라 4:3 자리에서는
@@ -418,10 +418,10 @@
   .co-apro .vals{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
   .co-apro .vals li{display:flex;align-items:center;justify-content:center;padding:20px 16px;text-align:center;
                     border-bottom:1px solid rgba(255,255,255,.2);font-family:var(--suit);font-weight:800;
-                    font-size:24px;line-height:1.2;letter-spacing:-.48px;word-break:break-word}
+                    font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:break-word}
   .co-apro .vals li:not(:nth-child(3n)){border-right:1px solid rgba(255,255,255,.2)}
-  .co-apro p{padding:20px;max-width:calc(764px + 40px);font-family:var(--suit);font-weight:600;font-size:20px;
-             line-height:1.4;letter-spacing:-.4px;word-break:keep-all}
+  .co-apro p{padding:20px;max-width:calc(764px + 40px);font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);
+             line-height:var(--lh-label);letter-spacing:var(--ls);word-break:keep-all}
   .co-apro p span{display:block}
 
   @media(max-width:700px){ .co-vband .imgs{grid-template-columns:minmax(0,1fr)} }
@@ -429,12 +429,12 @@
     :root{--co-m:16px}
     /* 좁은 화면은 한 줄로 쌓는다 — 눈썹 · 제목 · 본문 · 그림. 그림은 한 줄에 한 칸 */
     .co-vband{padding:40px var(--ci-m)}
-    .co-vband h2{font-size:32px}
+    .co-vband h2{font-size:var(--fs-h1)}
     .co-vision{--vpad:120px;--vgap:80px}
     .co-val{width:auto;margin-inline:var(--co-m)}
     .co-val:nth-child(odd){margin-left:var(--co-m)}
     .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
-    .co-val h3{font-size:32px}
+    .co-val h3{font-size:var(--fs-h1)}
     .co-apro{padding-inline:var(--co-m)}
     .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:12px}
     .co-apro .fig>img{object-position:70% 50%}
@@ -442,10 +442,10 @@
     .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
     .co-apro .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .co-apro .vals li{padding:16px 8px;font-size:16px;letter-spacing:-.32px}
+    .co-apro .vals li{padding:16px 8px;font-size:var(--fs-body);letter-spacing:var(--ls)}
     .co-apro .vals li:not(:nth-child(3n)){border-right:0}
     .co-apro .vals li:nth-child(odd){border-right:1px solid rgba(255,255,255,.2)}
-    .co-apro p{padding:16px;font-size:16px;letter-spacing:-.32px}
+    .co-apro p{padding:16px;font-size:var(--fs-body);letter-spacing:var(--ls)}
     .co-apro p span{display:inline}
   }
 </style>
