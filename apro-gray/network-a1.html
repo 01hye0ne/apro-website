@@ -40,18 +40,16 @@
      본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
      파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
      띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
-  /* 첫 화면 높이에 맞추기 · 오른쪽 폭 꽉 채우기 — 넓은 화면에서 지도 칸(.gn-map)은 숫자 옆 남은 폭 × 띠 안쪽 높이를
-     다 갖고, 그 안의 그림(.cv: 점 지도 + SVG, 922:451)은 칸 폭을 채울 만큼 커져 넘치는 위아래가 잘린다.
-     다만 선 · 점이 있는 세로 60~316(그림 좌표)은 늘 보이게 그림 높이는 칸 높이의 451/260 배를 넘지 않는다
-     (아주 낮은 화면에서는 폭을 다 못 채우고 가운데 선다). 초점은 그 구간 가운데(41.7%).
-     바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
+  /* 첫 화면 높이에 맞추기 — 넓은 화면에서 지도 칸(.gn-map)은 숫자 옆 남은 폭 × 띠 안쪽 높이를 다 갖고,
+     그 안의 그림(.cv: 점 지도 + SVG, 922:451)은 칸 안에 통째로 들어가는 가장 큰 크기로 가운데 선다(잘리지 않는다).
+     화면 비율이 넓으면 높이에 맞춰 양옆이 남는다. 바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
   .ci-top{--ci-min:620px}
   .gn-map{position:relative;display:block;min-width:0;aspect-ratio:922/451;width:100%}
   .gn-map .cv{position:absolute;inset:0}
   @media(min-width:901px){
     .gn-map{flex:1 1 0;align-self:stretch;aspect-ratio:auto;width:auto;overflow:hidden;container-type:size}
     .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:922/451;
-                width:min(max(100cqw, calc(100cqh * 922 / 451)), calc(100cqh * 922 / 260));transform:translate(-50%,-41.7%)}
+                width:min(100cqw, calc(100cqh * 922 / 451));transform:translate(-50%,-50%)}
   }
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
