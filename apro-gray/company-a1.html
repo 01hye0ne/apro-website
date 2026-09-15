@@ -299,12 +299,12 @@
 
   /* ── 히어로는 회사정보 세 페이지 공용 틀이다(company-info.css 의 .ci-hero, Figma 1227:7858) ── */
 
-  /* ── Vision 2030 띠 (Figma 1227:7853) — 낮 하늘 사진(sky-day-gradient.jpg — 회사정보 세 페이지 띠 공통)을 꽉 채워 깐다.
+  /* ── Vision 2030 띠 (Figma 1227:7853) — 파랑 그라디언트 사진(blue-studio-gradient.jpg — 회사정보 세 페이지 띠 공통)을 꽉 채워 깐다.
      위 120 · 아래 40 · 옆 44. 글 줄(.row)은 12열 그리드에서 1~4열(437)에 눈썹, 5열부터 비전 제목(Aldrich 48)과
      그 아래 20 에 본문이 선다 — 히어로의 제목 · 설명과 같은 세로선이다. 글 줄 높이는 1440 판의 300 을 바닥으로 잡고,
      그 아래 26 에 16:9 그림 세 칸(사이 20 — 칸 하나가 곧 4열 폭)이 옆 마진까지 찬다. 칸에는 AAA 세 판과 같은 사진이 든다 */
   .co-vband{display:flex;flex-direction:column;gap:26px;padding:120px var(--ci-m) 40px;word-break:keep-all;
-            background:#3f86c9 url("../assets/sky-day-gradient.jpg") 50% 50% / cover no-repeat}
+            background:#4a78b4 url("../assets/blue-studio-gradient.jpg") 50% 50% / cover no-repeat}
   .co-vband .row{display:grid;grid-template-columns:calc((100% - 11 * var(--ci-gap)) / 3 + 3 * var(--ci-gap)) minmax(0,1fr);
                  column-gap:var(--ci-gap);align-items:start;min-height:300px}
   .co-vband .txt{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
@@ -315,7 +315,7 @@
   .co-vband .lead span{display:block}
   .co-vband .lead span+span{margin-top:2px}
   .co-vband .imgs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ci-gap)}
-  .co-vband .imgs li{aspect-ratio:16/9;overflow:hidden;background:#dedede;border:1px solid var(--border-g)}
+  .co-vband .imgs li{aspect-ratio:16/9;overflow:hidden;background:#dedede}
   .co-vband .imgs li>img{display:block;width:100%;height:100%;object-fit:cover}
 
   /* ── AAA 전략 — AAA 세 장과 닫는 카드가 --vgap 간격으로 쌓인다. 위아래 여백은 --vpad ─────────── */
