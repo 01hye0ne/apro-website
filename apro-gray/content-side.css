@@ -10,7 +10,8 @@
    ① 히어로 — GNB(53) 밑에 붙어 화면 높이를 채우고, 본문이 흐르는 동안 제자리에 선다(sticky).
       위 88 · 아래 40 · 좌우 44. 페이지 이름(SUIT 800 16) 아래 24 에 문장(SUIT 800 24 / 1.2),
       그 아래 56 에 흰 2px 선과 이 페이지의 장 목록(점 · SUIT 600 16, 줄 41 · 밑줄 흰 20%).
-      사진은 대분류마다 한 장 — 투자정보 밤하늘 사옥 세로 판(Figma 원본) · 지속가능경영 태양광 · 커뮤니티 노을 사옥.
+      사진은 대분류마다 한 장 — 투자정보 밤하늘 사옥 세로 판(Figma 원본) · 지속가능경영 풍력 발전기 세로 판
+      (Figma 1249:14467 의 크롭 그대로 잘라 넣음) · 커뮤니티 노을 사옥.
    ② 본문 — 장(.cblock)마다 위 88 · 아래 40 · 좌우 44, 제목 24, 장 사이 가는 선.
       장 안의 표 · 그래프 · 규정 전문 · 카드는 content-layout.css 의 기존 부품을 그대로 쓴다
       (Figma 본문은 자리표시 와이어프레임이라 레이아웃만 따랐다).
@@ -29,8 +30,8 @@
    판이 사진보다 납작해지면 세로가 잘리는데, 사옥 · 패널이 아래에 있으므로 아래를 붙든다 */
 .cs-hero-bg{position:absolute;inset:0;z-index:-1;display:block;width:100%;height:100%;
   object-fit:cover;object-position:var(--pos,10% 100%)}
-/* 밝은 낮 하늘 사진(태양광 · 노을 사옥) — 흰 글자가 구름에 묻힌다. 글이 앉는 위쪽만 남색으로 누른다.
-   밤하늘 사진은 이미 어두워 걸지 않는다(Figma 에도 없다) */
+/* 밝은 낮 하늘 사진(커뮤니티 노을 사옥) — 흰 글자가 구름에 묻힌다. 글이 앉는 위쪽만 남색으로 누른다.
+   밤하늘(투자정보) · 풍력 발전기(지속가능경영) 사진은 하늘이 짙어 걸지 않는다(Figma 에도 없다) */
 .cs-hero.is-bright::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,20,48,.62) 0%,rgba(6,20,48,.38) 38%,rgba(6,20,48,0) 66%)}
 .cs-hero-page{display:flex;flex-direction:column;gap:24px}
