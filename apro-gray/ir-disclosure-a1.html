@@ -11,21 +11,17 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="ir-layout.css" />
 <!-- ============================================================
-     투자정보 > 재무정보
+     투자정보 > 공시정보 (A-1)
 
-     글과 수치는 content-export/ 에서 그대로 옮겨 온 것이다(원본: 구 apro_home).
-     본문 레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
-     시안이 나오면 이 파일의 마크업은 두고 그 CSS 부터 갈아탄다.
+     2026-09-15 부터 투자정보 네 페이지 공용 틀(ir-layout.css, Figma 1248:13870 · 1248:13902)을 쓴다 —
+     왼쪽 세로 히어로(밤하늘 사옥 사진 · 페이지 이름 · 문장 · 이 페이지의 장 목록)가 화면에
+     붙어 있고, 오른쪽 본문이 흐른다. 본문의 표 · 그래프 · 규정 전문은 A(ir-disclosure.html)와 같은
+     기존 부품(content-layout.css)이다.
 
-     GNB·푸터·전체메뉴, 그리고 2026-08-21 부터 히어로(.dhero)까지 사업영역 세부
-     페이지와 같은 한 벌(business-layout.css / business-layout.js)을 쓴다.
-     그 위에 얹는 값은 content-layout.css 의 "1. 히어로" 블록에 있다.
-
-     형제 페이지로 가는 소분류 탭 줄은 두지 않는다 — 대분류 안에서 어디로
-     갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
-     열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
-     A-1(ir-finance-a1.html)은 이 파일에서 _gen-a1.py 로 나온다 -->
+     손으로 고치는 파일이다 — _gen-a1.py 의 SOURCES 에서 뺐다. A 는 옛 배너 히어로 그대로이고,
+     A 를 고쳐도 여기로 넘어오지 않는다. GNB · 푸터 · 전체메뉴는 business-layout.css / .js 한 벌이다 -->
 </head>
 <body>
 
@@ -120,57 +116,60 @@
 </div>
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
-<!-- ===================== 히어로 ===================== -->
-<section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 8%"><img src="../assets/hq-exterior.jpg" alt="" aria-hidden="true" /></span>
-  <div class="in">
-    <h1>공시정보</h1>
-    <p class="dhero-lead">투명하고 정확한 기업 정보를 적시에 공개합니다.</p>
-  </div>
-</section>
+<!-- ===================== 히어로 · 본문 (Figma 1248:13902) — ir-layout.css ===================== -->
+<div class="ir-split">
+  <header class="ir-hero">
+    <img class="ir-hero-bg" src="../assets/hq-night-sky-portrait.jpg" width="1200" height="1669" alt="" aria-hidden="true" decoding="async" />
+    <div class="ir-hero-page">
+      <h1>공시정보</h1>
+      <p class="sub">투명하고 정확한 기업 정보를 적시에 공개합니다.</p>
+    </div>
+    <nav class="ir-toc" aria-label="공시정보 목차">
+      <a href="#settlement">결산 자료</a>
+      <a href="#dart">공시 자료</a>
+    </nav>
+  </header>
 
-<!-- ===================== 본문 ===================== -->
-<main class="cbody">
-  <div class="cwrap">
-    <section class="cblock" id="settlement">
-      <h2>결산 자료</h2>
-      <table class="cboard">
-        <thead><tr><th>번호</th><th>제목</th><th>등록일</th></tr></thead>
-        <tbody>
-          <tr><td class="no">12</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=12" target="_blank" rel="noopener">주식회사 에이프로 제26기 결산공고</a></td><td>2026-03-30</td></tr>
-          <tr><td class="no">11</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=11" target="_blank" rel="noopener">주식회사 에이프로 제26기 사업보고서 및 감사보고서</a></td><td>2026-03-19</td></tr>
-          <tr><td class="no">10</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=10" target="_blank" rel="noopener">주식회사 에이프로 제25기 결산공고</a></td><td>2025-03-27</td></tr>
-          <tr><td class="no">9</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=9" target="_blank" rel="noopener">주식회사 에이프로 제25기 사업보고서 및 감사보고서</a></td><td>2025-03-19</td></tr>
-          <tr><td class="no">8</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=8" target="_blank" rel="noopener">주식회사 에이프로 제24기 결산공고</a></td><td>2024-03-28</td></tr>
-          <tr><td class="no">7</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=7" target="_blank" rel="noopener">주식회사 에이프로 제24기 사업보고서 및 감사보고서</a></td><td>2024-03-20</td></tr>
-          <tr><td class="no">6</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=6" target="_blank" rel="noopener">주식회사 에이프로 제23기 결산공고</a></td><td>2023-03-31</td></tr>
-          <tr><td class="no">5</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=5" target="_blank" rel="noopener">주식회사 에이프로 제23기 사업보고서 및 감사보고서</a></td><td>2023-03-22</td></tr>
-          <tr><td class="no">4</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=4" target="_blank" rel="noopener">주식회사 에이프로 제22기 결산공고</a></td><td>2022-03-31</td></tr>
-          <tr><td class="no">3</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=3" target="_blank" rel="noopener">주식회사 에이프로 제22기 사업보고서 및 감사보고서</a></td><td>2022-03-23</td></tr>
-        </tbody>
-      </table>
-      <div class="cnote">
-        <p>제목을 누르면 <strong>기존 사이트의 원본 글</strong>이 새 창으로 열립니다. 첨부된 공고·보고서 파일이 그쪽에 있어서, 새 사이트로 파일을 옮기기 전까지는 이렇게 이어 둡니다.</p>
-      </div>
-    </section>
+  <main class="ir-body">
+  <section class="cblock" id="settlement">
+    <h2>결산 자료</h2>
+    <table class="cboard">
+      <thead><tr><th>번호</th><th>제목</th><th>등록일</th></tr></thead>
+      <tbody>
+        <tr><td class="no">12</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=12" target="_blank" rel="noopener">주식회사 에이프로 제26기 결산공고</a></td><td>2026-03-30</td></tr>
+        <tr><td class="no">11</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=11" target="_blank" rel="noopener">주식회사 에이프로 제26기 사업보고서 및 감사보고서</a></td><td>2026-03-19</td></tr>
+        <tr><td class="no">10</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=10" target="_blank" rel="noopener">주식회사 에이프로 제25기 결산공고</a></td><td>2025-03-27</td></tr>
+        <tr><td class="no">9</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=9" target="_blank" rel="noopener">주식회사 에이프로 제25기 사업보고서 및 감사보고서</a></td><td>2025-03-19</td></tr>
+        <tr><td class="no">8</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=8" target="_blank" rel="noopener">주식회사 에이프로 제24기 결산공고</a></td><td>2024-03-28</td></tr>
+        <tr><td class="no">7</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=7" target="_blank" rel="noopener">주식회사 에이프로 제24기 사업보고서 및 감사보고서</a></td><td>2024-03-20</td></tr>
+        <tr><td class="no">6</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=6" target="_blank" rel="noopener">주식회사 에이프로 제23기 결산공고</a></td><td>2023-03-31</td></tr>
+        <tr><td class="no">5</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=5" target="_blank" rel="noopener">주식회사 에이프로 제23기 사업보고서 및 감사보고서</a></td><td>2023-03-22</td></tr>
+        <tr><td class="no">4</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=4" target="_blank" rel="noopener">주식회사 에이프로 제22기 결산공고</a></td><td>2022-03-31</td></tr>
+        <tr><td class="no">3</td><td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=info01&amp;wr_id=3" target="_blank" rel="noopener">주식회사 에이프로 제22기 사업보고서 및 감사보고서</a></td><td>2022-03-23</td></tr>
+      </tbody>
+    </table>
+    <div class="cnote">
+      <p>제목을 누르면 <strong>기존 사이트의 원본 글</strong>이 새 창으로 열립니다. 첨부된 공고·보고서 파일이 그쪽에 있어서, 새 사이트로 파일을 옮기기 전까지는 이렇게 이어 둡니다.</p>
+    </div>
+  </section>
 
-    <section class="cblock" id="dart">
-      <h2>공시 자료</h2>
-      <hr class="crule" />
-      <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 질의문의 textCrpNM 에는 회사
-           이름 대신 종목코드(262260, 코스닥 에이프로)를 넣는다 — 이름으로 넣으면 같은
-           글자를 쓰는 회사가 섞일 수 있어 코드 쪽이 확실하다. 목록은 저쪽에서 채우므로
-           우리가 갱신할 것이 없다.
-           frameborder·marginwidth 같은 옛 속성은 걷고 크기·테두리는 CSS(.cframe)가 맡는다 -->
-      <div class="cframe">
-        <iframe src="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260"
-                title="금융감독원 전자공시시스템 — 에이프로 공시 목록"
-                name="IR" scrolling="yes" loading="lazy"></iframe>
-      </div>
-      <p class="cframe-out">목록이 보이지 않으면 <a href="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260" target="_blank" rel="noopener">DART에서 직접 보기</a></p>
-    </section>
-  </div>
-</main>
+  <section class="cblock" id="dart">
+    <h2>공시 자료</h2>
+    <hr class="crule" />
+    <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 질의문의 textCrpNM 에는 회사
+         이름 대신 종목코드(262260, 코스닥 에이프로)를 넣는다 — 이름으로 넣으면 같은
+         글자를 쓰는 회사가 섞일 수 있어 코드 쪽이 확실하다. 목록은 저쪽에서 채우므로
+         우리가 갱신할 것이 없다.
+         frameborder·marginwidth 같은 옛 속성은 걷고 크기·테두리는 CSS(.cframe)가 맡는다 -->
+    <div class="cframe">
+      <iframe src="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260"
+              title="금융감독원 전자공시시스템 — 에이프로 공시 목록"
+              name="IR" scrolling="yes" loading="lazy"></iframe>
+    </div>
+    <p class="cframe-out">목록이 보이지 않으면 <a href="https://dart.fss.or.kr/html/search/SearchCompanyIR3_M.html?textCrpNM=262260" target="_blank" rel="noopener">DART에서 직접 보기</a></p>
+  </section>
+  </main>
+</div>
 
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
