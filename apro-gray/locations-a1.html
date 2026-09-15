@@ -14,16 +14,46 @@
 <link rel="stylesheet" href="company-info.css" />
 <!-- ============================================================
      사업장소재 A-1 (Figma 1227:7862) — 회사정보 세 페이지 공용 틀(company-info.css):
-     흰 히어로 아래 파랑 띠. 띠는 지도 자리로 Figma 에서도 아직 비어 있고, 설명도 자리표시("~~~")다.
+     한 장의 첫 화면(.ci-top) 위에 히어로와 사업장 띠. 띠 왼쪽은 사업장 이름 · 주소 · 전화 · 팩스와
+     사업장 탭 셋, 오른쪽은 사진 자리(Figma 에서도 빈칸). Figma 에는 시화 R&D 센터 자료만 있다 —
+     나머지 두 곳은 자료가 오면 아래 스크립트의 SITES 에 채운다.
 
      A 페이지는 없다 — A 파일의 "사업장소재" 링크는 여전히 "#" 이고, A-1 에서만 이 파일로 잇는다
      (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
 <style>
-  /* 지도 자리 띠 (Figma 1227:7864) — 1440 에서 580. 파랑 판 대신 파랑 그라디언트 사진(blue-studio-gradient.jpg — 회사정보 세 페이지 띠 공통)을
-     꽉 채워 깐다(글로벌 네트워크 지도 띠와 같은 사진). 아직 내용이 없다 */
-  .lc-band{min-height:580px;border-bottom:1px solid #c7c9cc;
-           background:#4a78b4 url("../assets/blue-studio-gradient.jpg") 50% 50% / cover no-repeat}
-  @media(max-width:900px){ .lc-band{min-height:360px} }
+  /* 사업장 띠 (Figma 1227:7864) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 옆 44, 사이 20.
+     왼쪽 552(오른쪽 115 비움 → 글 폭 437): 사업장 이름(SUIT 800 38) · 영문 이름(밑줄 2px) → 주소 · 전화 · 팩스 줄
+     → 20 아래 사업장 탭 셋(사이 8, 고른 탭은 흰 판에 파랑 글). 오른쪽: 4:3 사진 자리 */
+  .lc-band{display:flex;align-items:center;gap:20px;padding:56px var(--ci-m)}
+  .lc-info{flex:0 0 552px;padding-right:115px;display:flex;flex-direction:column;gap:20px}
+  .lc-head{display:flex;flex-direction:column;gap:8px;padding-bottom:24px;border-bottom:2px solid #e4e8ed}
+  .lc-head h2{margin:0;font-family:var(--suit);font-weight:800;font-size:38px;line-height:1.2;letter-spacing:-1.52px;color:#fff}
+  .lc-head .en{margin:0;font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:#fff}
+  .lc-rows{margin:0}
+  .lc-rows>div{display:flex;flex-direction:column;gap:8px;padding:16px 8px;border-bottom:1px solid rgba(255,255,255,.2)}
+  .lc-rows dt{display:flex;align-items:center;gap:4px;font-family:var(--suit);font-weight:800;font-size:16px;
+              line-height:1;letter-spacing:-.32px;color:#fff}
+  .lc-rows dt::before{content:"";flex:none;width:4px;height:4px;background:#fdfdfa}
+  .lc-rows dd{margin:0;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;letter-spacing:-.3px;
+              color:rgba(255,255,255,.7);font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
+  .lc-rows dd span{display:block}
+  .lc-rows dd span+span{margin-top:2px}
+  .lc-tabs{display:flex;gap:8px}
+  .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;border:0;
+          background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
+  .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
+  .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
+  .lc-tab .nm span{display:block}
+  .lc-tab .nm span+span{margin-top:4px}
+  .lc-tab[aria-selected="true"]{background:#fff;color:#2c5790}
+  .lc-tab:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .lc-photo{flex:1 1 0;min-width:0;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
+  @media(max-width:1100px){ .lc-info{flex:0 1 437px;padding-right:0} }
+  @media(max-width:900px){
+    .lc-band{flex-direction:column;align-items:stretch;padding:40px var(--ci-m)}
+    .lc-info{flex:none}
+    .lc-photo{flex:none;width:100%}
+  }
 </style>
 </head>
 <body>
@@ -119,14 +149,34 @@
 </div>
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
-<!-- ===================== HERO (Figma 1227:7862) — 회사정보 공용 틀(company-info.css) ===================== -->
+<!-- ===================== 첫 화면 (Figma 1227:7862) — 회사정보 공용 틀(company-info.css) ===================== -->
+<div class="ci-top">
 <section class="ci-hero">
   <h1 lang="en">Locations</h1>
-  <p class="sub">~~~</p>
+  <p class="sub">A-PRO와 함께하는 혁신의 공간</p>
 </section>
 
-<!-- ===================== 지도 자리 띠 (Figma 1227:7864) — Figma 에서도 비어 있다 ===================== -->
-<section class="ci-band lc-band" aria-label="사업장 지도"></section>
+<!-- ===================== 사업장 띠 (Figma 1227:7864) ===================== -->
+<section class="ci-band lc-band" aria-label="사업장 정보">
+  <div class="lc-info">
+    <div id="lc-panel" role="tabpanel" aria-live="polite">
+      <div class="lc-head"><h2 id="lc-name">시화 R&amp;D 센터</h2><p class="en" lang="en" id="lc-en">Sihwa R&amp;D Center</p></div>
+      <dl class="lc-rows">
+        <div><dt lang="en">Address</dt><dd id="lc-addr"><span>경기도 시흥시 정왕동 2825-5</span><span>2825-5, Jeongwang-dong, Siheung-si, Gyeonggi-do, Republic of Korea</span></dd></div>
+        <div><dt lang="en">Tel</dt><dd id="lc-tel">031-441-4001</dd></div>
+        <div><dt lang="en">Fax</dt><dd id="lc-fax">031-477-4020</dd></div>
+      </dl>
+    </div>
+    <div class="lc-tabs" role="tablist" aria-label="사업장">
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="global"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="sihwa"><span class="th" aria-hidden="true"></span><span class="nm"><span>시화</span><span>R&amp;D 센터</span></span></button>
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
+    </div>
+  </div>
+  <!-- 사진 자리 — Figma 에서도 비어 있다(빈칸) -->
+  <div class="lc-photo" aria-hidden="true"></div>
+</section>
+</div>
 
 <!-- ===================== FOOTER (apro-gray/index.html 과 동일) ===================== -->
 <footer class="footer">
@@ -240,5 +290,43 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
+<script>
+/* 사업장 탭 — 누른 사업장의 이름 · 주소 · 전화 · 팩스로 바꾼다. 좌우 화살표로도 옮겨 간다.
+   Figma 에는 시화 R&D 센터 자료만 있다 — 나머지 두 곳은 자료가 오면 SITES 에 채운다(비어 있으면 "준비 중") */
+(function(){
+  var SITES = {
+    global:   { name:'에이프로 글로벌센터', en:'A-PRO Global Center', addr:[], tel:'', fax:'' },
+    sihwa:    { name:'시화 R&D 센터', en:'Sihwa R&D Center',
+                addr:['경기도 시흥시 정왕동 2825-5', '2825-5, Jeongwang-dong, Siheung-si, Gyeonggi-do, Republic of Korea'],
+                tel:'031-441-4001', fax:'031-477-4020' },
+    hwaseong: { name:'에이프로 화성공장', en:'A-PRO Hwaseong Plant', addr:[], tel:'', fax:'' }
+  };
+  var tabs = [].slice.call(document.querySelectorAll('.lc-tab'));
+  if(!tabs.length) return;
+  function el(id){ return document.getElementById(id); }
+  function show(i, focus){
+    var s = SITES[tabs[i].getAttribute('data-site')];
+    tabs.forEach(function(t, j){ t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+    el('lc-name').textContent = s.name;
+    el('lc-en').textContent = s.en;
+    var addr = el('lc-addr');
+    addr.textContent = '';
+    (s.addr.length ? s.addr : ['준비 중']).forEach(function(line){
+      var sp = document.createElement('span'); sp.textContent = line; addr.appendChild(sp);
+    });
+    el('lc-tel').textContent = s.tel || '준비 중';
+    el('lc-fax').textContent = s.fax || '준비 중';
+    if(focus) tabs[i].focus();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(i); });
+    t.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      show((i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length, true);
+    });
+  });
+})();
+</script>
 </body>
 </html>

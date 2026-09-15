@@ -2,35 +2,34 @@
    회사정보 세 페이지 공용 틀 — 회사소개 · 글로벌 네트워크 · 사업장소재 (A-1)
    Figma 1227:7858 / 1227:7859 / 1227:7862
 
-   ① 히어로(.ci-hero) — 흰 판, 위아래 64 사이에 내용만큼 선다(한 줄 설명이면 1440 에서 168).
-      12열 그리드(마진 44 · 거터 20)에서 1~4열(437)에 영문 제목(Aldrich 40, 브랜드 파랑),
-      5열부터 설명(Pretendard 400 15).
-   ② 파랑 띠(.ci-band) — 히어로 바로 아래 브랜드 파랑 판. 안의 내용과 여백은 페이지마다 다르다
-      (회사소개 Vision 2030 · 네트워크 지도 · 사업장소재 지도 자리).
+   첫 화면(.ci-top) — 히어로와 페이지별 띠를 한 장의 파랑 그라디언트 사진(blue-studio-gradient.jpg) 위에
+   세운다. 높이는 GNB(53) 아래 화면을 채우고(바닥 720), 띠(.ci-band)가 남은 높이를 가진다.
+   ① 히어로(.ci-hero) — 위 88 · 아래 40 · 왼쪽 44 · 오른쪽 20, 밑줄 흰 20%.
+      영문 눈썹(h1, Aldrich 16) 아래 24 에 한 줄 문장(SUIT 800 24 / 1.2). 글은 모두 흰색.
+   ② 띠(.ci-band) — 안의 내용과 여백은 페이지마다 다르다(회사소개 Vision · 네트워크 지도 · 사업장소재 정보).
 
-   글꼴은 부르지 않는다 — Aldrich · Pretendard 는 각 페이지 <head> 가 부른다.
+   글꼴은 부르지 않는다 — Aldrich · Pretendard · SUIT 는 각 페이지 <head> 가 부른다.
    ===================================================================== */
-.ci-hero,.ci-band{--ci-m:44px;--ci-gap:20px}
+.ci-top{--ci-m:44px;--ci-gap:20px;position:relative;display:flex;flex-direction:column;
+  min-height:max(720px,calc(100vh - 53px));color:#fff;
+  background:#4a78b4 url("../assets/blue-studio-gradient.jpg") 50% 50% / cover no-repeat}
 
-.ci-hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--ci-gap);align-items:start;
-  padding:64px var(--ci-m);background:#fff;color:#1b2733;word-break:keep-all}
-.ci-hero h1{grid-column:1 / span 4;margin:0;font-family:"Aldrich",sans-serif;font-weight:400;
-  font-size:40px;line-height:1;letter-spacing:-.06em;color:#2c5790}
-/* 설명은 Figma 에서 줄마다 끊겨 있다 — 줄 하나가 <span> 하나, 줄 사이 2 */
-.ci-hero .sub{grid-column:5 / -1;margin:0;font-family:"Pretendard",sans-serif;font-weight:400;font-size:15px;
-  line-height:1.6;letter-spacing:-.3px;font-feature-settings:"lnum" 1,"tnum" 1}
+.ci-hero{display:flex;flex-direction:column;align-items:flex-start;gap:24px;
+  padding:88px 20px 40px var(--ci-m);border-bottom:1px solid rgba(255,255,255,.2);word-break:keep-all}
+.ci-hero h1{margin:0;font-family:"Aldrich",sans-serif;font-weight:400;font-size:16px;line-height:1;
+  letter-spacing:-.06em;color:#fff}
+/* 문장이 여러 줄이면 Figma 처럼 줄마다 <span> 하나 */
+.ci-hero .sub{margin:0;font-family:"SUIT Variable","Pretendard",sans-serif;font-weight:800;font-size:24px;
+  line-height:1.2;letter-spacing:-.48px;color:#fff}
 .ci-hero .sub span{display:block}
-.ci-hero .sub span+span{margin-top:2px}
 
-.ci-band{position:relative;background:#2c5790;color:#fff}
+.ci-band{position:relative;flex:1 0 auto;color:#fff}
 
-/* 좁은 화면 — Figma 에 모바일 판이 없다. 제목과 설명을 위아래로 쌓고 마진을 16 으로 */
+/* 좁은 화면 — Figma 에 모바일 판이 없다. 여백을 줄이고 문장 줄 끊김을 풀어 흐르게 한다 */
 @media(max-width:900px){
-  .ci-hero,.ci-band{--ci-m:16px}
-  .ci-hero{grid-template-columns:minmax(0,1fr);row-gap:16px;min-height:0;padding:48px var(--ci-m)}
-  .ci-hero h1,.ci-hero .sub{grid-column:1 / -1}
-  /* 설명의 줄 끊김은 1440 판 기준이다 — 좁은 화면에서는 줄을 이어 흐르게 한다 */
+  .ci-top{--ci-m:16px;min-height:0}
+  .ci-hero{padding:48px var(--ci-m) 32px}
+  .ci-hero .sub{font-size:20px;letter-spacing:-.4px}
   .ci-hero .sub span{display:inline}
-  .ci-hero .sub span+span{margin-top:0}
   .ci-hero .sub span+span::before{content:" "}
 }
