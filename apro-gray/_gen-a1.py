@@ -105,8 +105,10 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # ⚠ network.html(글로벌 네트워크)도 2026-09-14 부터 여기 없다 — A-1 을 회사정보 세 페이지 공용 틀
 #   (Figma 1227:7859, 흰 히어로 + 파랑 지도 띠)로 짰다. network-a1.html 은 손으로 고치는 파일이고
 #   A 는 옛 전면 무대 그대로다. PAGES 에는 'network' 를 남겨 둔다(다른 A-1 의 링크가 network-a1.html 로 와야 한다).
+# ⚠ 투자정보 네 장(ir-finance · ir-disclosure · ir-stock · ir-policy)도 2026-09-15 부터 여기 없다 —
+#   A-1 을 왼쪽 세로 히어로 틀(ir-layout.css, Figma 1248:13870 · 1248:13902)로 짰다. -a1 네 장은
+#   손으로 고치는 파일이고 A 는 옛 배너 히어로 그대로다. PAGES 에는 남겨 둔다(다른 A-1 의 링크가 -a1 로 와야 한다).
 SOURCES = ['business.html',
-           'ir-finance.html', 'ir-disclosure.html', 'ir-stock.html', 'ir-policy.html',
            'esg-environment.html', 'esg-social.html', 'esg-governance.html',
            'esg-report.html', 'esg-board.html',
            'community-notice.html', 'community-press.html']
