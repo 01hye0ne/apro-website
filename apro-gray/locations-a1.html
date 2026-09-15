@@ -15,8 +15,7 @@
 <!-- ============================================================
      사업장소재 A-1 (Figma 1227:7862) — 회사정보 세 페이지 공용 틀(company-info.css):
      한 장의 첫 화면(.ci-top) 위에 히어로와 사업장 띠. 띠 왼쪽은 사업장 이름 · 주소 · 전화 · 팩스와
-     사업장 탭 셋, 오른쪽은 사진 자리(Figma 에서도 빈칸). Figma 에는 시화 R&D 센터 자료만 있다 —
-     나머지 두 곳은 자료가 오면 아래 스크립트의 SITES 에 채운다.
+     사업장 탭 셋, 오른쪽은 사진 자리(Figma 에서도 빈칸). 세 사업장 자료는 아래 스크립트의 SITES 에 있다.
 
      A 페이지는 없다 — A 파일의 "사업장소재" 링크는 여전히 "#" 이고, A-1 에서만 이 파일로 잇는다
      (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
@@ -299,14 +298,18 @@
 <script src="business-layout.js"></script>
 <script>
 /* 사업장 탭 — 누른 사업장의 이름 · 주소 · 전화 · 팩스로 바꾼다. 좌우 화살표로도 옮겨 간다.
-   Figma 에는 시화 R&D 센터 자료만 있다 — 나머지 두 곳은 자료가 오면 SITES 에 채운다(비어 있으면 "준비 중") */
+   자료가 빈 칸은 "준비 중" 으로 보인다 */
 (function(){
   var SITES = {
-    global:   { name:'에이프로 글로벌센터', en:'A-PRO Global Center', addr:[], tel:'', fax:'' },
+    global:   { name:'에이프로 글로벌센터', en:'A-PRO Global Center (HQ)',
+                addr:['경기도 안양시 동안구 부림로 170번길 41-14', '41-14, Burim-ro 170beon-gil, Dongan-gu, Anyang-si, Gyeonggi-do, Republic of Korea'],
+                tel:'031-441-4001', fax:'031-477-4020' },
     sihwa:    { name:'시화 R&D 센터', en:'Sihwa R&D Center',
                 addr:['경기도 시흥시 정왕동 2825-5', '2825-5, Jeongwang-dong, Siheung-si, Gyeonggi-do, Republic of Korea'],
                 tel:'031-441-4001', fax:'031-477-4020' },
-    hwaseong: { name:'에이프로 화성공장', en:'A-PRO Hwaseong Plant', addr:[], tel:'', fax:'' }
+    hwaseong: { name:'에이프로 화성공장', en:'A-PRO Hwaseong Factory',
+                addr:['경기도 화성시 호곡공단로 53', '53, Hogokgongdan-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea'],
+                tel:'031-455-3737', fax:'031-455-3738' }
   };
   var tabs = [].slice.call(document.querySelectorAll('.lc-tab'));
   if(!tabs.length) return;
