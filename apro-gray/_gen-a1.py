@@ -108,10 +108,10 @@ PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
 # ⚠ 투자정보 네 장(ir-finance · ir-disclosure · ir-stock · ir-policy)도 2026-09-15 부터 여기 없다 —
 #   A-1 을 왼쪽 세로 히어로 틀(ir-layout.css, Figma 1248:13870 · 1248:13902)로 짰다. -a1 네 장은
 #   손으로 고치는 파일이고 A 는 옛 배너 히어로 그대로다. PAGES 에는 남겨 둔다(다른 A-1 의 링크가 -a1 로 와야 한다).
-SOURCES = ['business.html',
-           'esg-environment.html', 'esg-social.html', 'esg-governance.html',
-           'esg-report.html', 'esg-board.html',
-           'community-notice.html', 'community-press.html']
+# ⚠ 지속가능경영 다섯 장 · 커뮤니티 두 장도 같은 날(2026-09-15) 여기서 뺐다 — 투자정보와 같은 세로 히어로 틀
+#   (content-side.css)로 짰다. 투자정보 틀 CSS 이름도 그때 ir-layout.css → content-side.css 로 바뀌었다.
+#   이제 이 스크립트가 만드는 A-1 은 사업영역 허브(business) 하나뿐이다. PAGES 는 그대로 둔다.
+SOURCES = ['business.html']
 
 # body 에 CSS 분기 스위치(class="v-a1")를 달 페이지.
 #

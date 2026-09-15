@@ -11,11 +11,11 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
-<link rel="stylesheet" href="ir-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
      투자정보 > 내부규정 (A-1)
 
-     2026-09-15 부터 투자정보 네 페이지 공용 틀(ir-layout.css, Figma 1248:13870 · 1248:13902)을 쓴다 —
+     2026-09-15 부터 콘텐츠 페이지 공용 세로 히어로 틀(content-side.css, Figma 1248:13870 · 1248:13902)을 쓴다 —
      왼쪽 세로 히어로(밤하늘 사옥 사진 · 페이지 이름 · 문장 · 이 페이지의 장 목록)가 화면에
      붙어 있고, 오른쪽 본문이 흐른다. 본문의 표 · 그래프 · 규정 전문은 A(ir-policy.html)와 같은
      기존 부품(content-layout.css)이다.
@@ -116,21 +116,21 @@
 </div>
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
-<!-- ===================== 히어로 · 본문 (Figma 1248:13870) — ir-layout.css ===================== -->
-<div class="ir-split">
-  <header class="ir-hero">
-    <img class="ir-hero-bg" src="../assets/hq-night-sky-portrait.jpg" width="1200" height="1669" alt="" aria-hidden="true" decoding="async" />
-    <div class="ir-hero-page">
+<!-- ===================== 히어로 · 본문 (Figma 1248:13870) — content-side.css ===================== -->
+<div class="cs-split">
+  <header class="cs-hero">
+    <img class="cs-hero-bg" src="../assets/hq-night-sky-portrait.jpg" width="1200" height="1669" alt="" aria-hidden="true" decoding="async" />
+    <div class="cs-hero-page">
       <h1>내부규정</h1>
       <p class="sub">재무 보고의 신뢰성과 공정한 정보 공개를 뒷받침하는 회사의 내부 규정입니다.</p>
     </div>
-    <nav class="ir-toc" aria-label="내부규정 목차">
+    <nav class="cs-toc" aria-label="내부규정 목차">
       <a href="#accounting">내부회계관리규정</a>
       <a href="#insider">내부정보관리규정</a>
     </nav>
   </header>
 
-  <main class="ir-body">
+  <main class="cs-body">
   <section class="cblock" id="accounting">
     <h2>내부회계관리규정</h2>
 
