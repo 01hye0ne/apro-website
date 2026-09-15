@@ -40,11 +40,19 @@
      본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
      파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
      띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
-  /* 첫 화면 높이에 맞추기 — 지도 폭은 1053 · 띠 안쪽 폭에서 숫자 칸(180)을 뺀 값 · 띠 안쪽 높이(cqh) × 922/451
-     가운데 가장 작은 값. 그래서 지도는 늘 띠 안에 들어온다. 바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
+  /* 첫 화면 높이에 맞추기 · 오른쪽 폭 꽉 채우기 — 넓은 화면에서 지도 칸(.gn-map)은 숫자 옆 남은 폭 × 띠 안쪽 높이를
+     다 갖고, 그 안의 그림(.cv: 점 지도 + SVG, 922:451)은 칸 폭을 채울 만큼 커져 넘치는 위아래가 잘린다.
+     다만 선 · 점이 있는 세로 60~316(그림 좌표)은 늘 보이게 그림 높이는 칸 높이의 451/260 배를 넘지 않는다
+     (아주 낮은 화면에서는 폭을 다 못 채우고 가운데 선다). 초점은 그 구간 가운데(41.7%).
+     바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
   .ci-top{--ci-min:620px}
-  .gn-map{position:relative;display:block;flex:none;min-width:0;aspect-ratio:922/451;
-          width:min(1053px, calc(100cqw - 180px), calc(100cqh * 922 / 451))}
+  .gn-map{position:relative;display:block;min-width:0;aspect-ratio:922/451;width:100%}
+  .gn-map .cv{position:absolute;inset:0}
+  @media(min-width:901px){
+    .gn-map{flex:1 1 0;align-self:stretch;aspect-ratio:auto;width:auto;overflow:hidden;container-type:size}
+    .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:922/451;
+                width:min(max(100cqw, calc(100cqh * 922 / 451)), calc(100cqh * 922 / 260));transform:translate(-50%,-41.7%)}
+  }
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
                transition:stroke-dashoffset 1s var(--ease) var(--d)}
@@ -171,7 +179,7 @@
     <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
     <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
   </ul>
-  <span class="gn-map" aria-hidden="true"><img src="../assets/gnet-map-bright.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span>
+  <span class="gn-map" aria-hidden="true"><span class="cv"><img src="../assets/gnet-map-bright.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span></span>
 </section>
 </div>
 
