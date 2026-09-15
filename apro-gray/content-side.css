@@ -1,0 +1,88 @@
+/* =====================================================================
+   콘텐츠 페이지 공용 세로 히어로 틀 (A-1)
+     투자정보      재무정보 · 공시정보 · 주식정보 · 내부규정          (2026-09-15)
+     지속가능경영  환경 · 사회 · 지배구조 · 내/외부 신고채널 · ESG 게시판 (2026-09-15)
+     커뮤니티      공지사항 · 보도자료                                (2026-09-15)
+   Figma 1248:13870 (재무정보) / 1248:13902 (공시정보) — 투자정보 시안을 세 대분류가 함께 쓴다.
+   (2026-09-15 오전에는 ir-layout.css · .ir- 접두사였다. 세 대분류로 넓히며 이름을 바꿨다)
+
+   왼쪽 세로 히어로(.cs-hero) + 오른쪽 본문(.cs-body). 1440 에서 471 : 969.
+   ① 히어로 — GNB(53) 밑에 붙어 화면 높이를 채우고, 본문이 흐르는 동안 제자리에 선다(sticky).
+      위 88 · 아래 40 · 좌우 44. 페이지 이름(SUIT 800 16) 아래 24 에 문장(SUIT 800 24 / 1.2),
+      그 아래 56 에 흰 2px 선과 이 페이지의 장 목록(점 · SUIT 600 16, 줄 41 · 밑줄 흰 20%).
+      사진은 대분류마다 한 장 — 투자정보 밤하늘 사옥 세로 판(Figma 원본) · 지속가능경영 태양광 · 커뮤니티 노을 사옥.
+   ② 본문 — 장(.cblock)마다 위 88 · 아래 40 · 좌우 44, 제목 24, 장 사이 가는 선.
+      장 안의 표 · 그래프 · 규정 전문 · 카드는 content-layout.css 의 기존 부품을 그대로 쓴다
+      (Figma 본문은 자리표시 와이어프레임이라 레이아웃만 따랐다).
+
+   content-layout.css 뒤에 불러야 한다 — 같은 부품의 여백을 덮어쓰는 규칙이 있다.
+   ===================================================================== */
+.cs-split{--cs-m:44px;display:flex;align-items:flex-start}
+
+/* ① 히어로 */
+.cs-hero{position:sticky;top:53px;isolation:isolate;overflow:hidden;
+  flex:0 0 clamp(340px,32.71%,560px);height:calc(100vh - 53px);min-height:560px;
+  display:flex;flex-direction:column;gap:56px;padding:88px var(--cs-m) 40px;
+  background:#0b1b3d;color:#fff;word-break:keep-all}
+/* 사진 자리는 페이지가 --pos 로 정한다. 기본값은 투자정보 밤하늘 사옥 —
+   Figma 는 사진 폭을 판의 137% 로 잡고 왼쪽을 3.8% 잘라 낸다(cover 에서 가로 10%).
+   판이 사진보다 납작해지면 세로가 잘리는데, 사옥 · 패널이 아래에 있으므로 아래를 붙든다 */
+.cs-hero-bg{position:absolute;inset:0;z-index:-1;display:block;width:100%;height:100%;
+  object-fit:cover;object-position:var(--pos,10% 100%)}
+/* 밝은 낮 하늘 사진(태양광 · 노을 사옥) — 흰 글자가 구름에 묻힌다. 글이 앉는 위쪽만 남색으로 누른다.
+   밤하늘 사진은 이미 어두워 걸지 않는다(Figma 에도 없다) */
+.cs-hero.is-bright::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,20,48,.62) 0%,rgba(6,20,48,.38) 38%,rgba(6,20,48,0) 66%)}
+.cs-hero-page{display:flex;flex-direction:column;gap:24px}
+.cs-hero h1{margin:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;
+  letter-spacing:-.32px;color:#fff}
+.cs-hero .sub{margin:0;font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;
+  letter-spacing:-.48px;color:#fff}
+
+/* 장 목록 — 본문 장으로 건너뛰는 앵커 */
+.cs-toc{display:flex;flex-direction:column;border-top:2px solid #fff}
+.cs-toc a{display:flex;align-items:center;gap:8px;min-height:41px;padding:12px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:#fff;
+  transition:background-color .25s var(--ease)}
+.cs-toc a::before{content:"";flex:0 0 4px;height:4px;background:#fff}
+.cs-toc a:hover{background:rgba(255,255,255,.08)}
+.cs-toc a:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+
+/* ② 본문 */
+.cs-body{flex:1 1 0;min-width:0}
+.cs-body>.cblock{padding:88px var(--cs-m) 40px}
+.cs-body>.cblock+.cblock{margin-top:0}
+.cs-body>*+*{border-top:1px solid var(--border-g)}
+.cs-body>.cblock>h2{font-size:24px;line-height:1.2;letter-spacing:-.48px}
+/* 제목 밑 첫 부품까지 24 — 부품마다 제각각이던 윗여백(16~32)을 Figma 값 하나로 맞춘다 */
+.cs-body>.cblock>h2+*{margin-top:24px}
+/* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
+.cs-body>[id]{scroll-margin-top:53px}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* 폭 상한 풀기 — 줄글 상자(.cdoc 900 등)의 상한이 본문 열보다 좁아 오른쪽만 비던 것을,
+   예전 좁은 본문(.cbody--mid/--narrow)이 하던 대로 본문 열에 맡긴다. 표와 오른쪽 끝이 맞는다 */
+.cs-body .cdoc,.cs-body .ctoc,.cs-body .cnote,.cs-body .cdetails,.cs-body .cblock>.lead{max-width:none}
+
+/* 판(.cblock--plate) — 원래는 그림자를 사방 100vmax 로 퍼뜨려 화면 폭을 칠한다. 이 틀에서는
+   왼쪽으로 퍼진 판이 히어로를 덮으므로(clip-path 가 쌓임 맥락을 만들어 히어로 위에 그려진다)
+   본문 열 안에서만 칠한다 */
+.cs-body>.cblock--plate{box-shadow:none;clip-path:none}
+
+/* 이사회 판(.cgov-board, 지배구조) — 원래 본문 상자 밖 화면 폭 판이다. 본문 열 안의 첫 장으로
+   들어오면서 제목 · 소개를 카드 위로 올리고(좁은 화면 배치와 같다) 여백을 다른 장과 맞춘다 */
+.cs-body>.cgov-board{--gm:var(--cs-m);grid-template-columns:minmax(0,1fr);row-gap:24px;
+  padding:88px var(--cs-m) 40px;border-bottom:0}
+
+/* 좁은 화면 — Figma 에 모바일 판이 없다. 히어로를 본문 위로 올려 붙박이를 풀고 여백을 줄인다 */
+@media(max-width:900px){
+  .cs-split{--cs-m:16px;display:block}
+  .cs-hero{position:relative;top:auto;height:auto;min-height:0;gap:40px;padding:48px var(--cs-m) 32px}
+  /* 판이 가로로 넓어져 사진이 폭에 맞춰 커진다 — 아래를 붙들면 사옥 · 패널이 글 바로 뒤에 와서
+     흰 글자가 묻힌다. 위(하늘)를 붙든다 */
+  .cs-hero-bg{object-position:var(--pos-m,10% 0)}
+  .cs-hero .sub{font-size:20px;letter-spacing:-.4px}
+  .cs-hero .sub br{display:none}
+  .cs-body>.cblock,.cs-body>.cgov-board{padding:48px var(--cs-m) 40px}
+}
