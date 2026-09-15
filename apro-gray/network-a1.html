@@ -26,8 +26,7 @@
   .ci-hero .sub{line-height:1.4}
 
   /* 지도 띠 (Figma 1227:7859) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 왼쪽 44 · 오른쪽 20.
-     점 지도는 1440 에서 1053×515 로 오른쪽에 붙고(Figma 처럼 점이 불투명한 흰색 — gnet-map.png 의 알파만 올린 gnet-map-bright.png), 왼쪽 아래(지도 밑변과 같은 선)에 숫자 둘이 선다.
-     좁아지면 지도가 먼저 줄어든다 */
+     오른쪽은 면 지도, 왼쪽 아래(지도 칸 밑변과 같은 선)에 숫자 둘이 선다. 좁아지면 지도가 먼저 줄어든다 */
   .gn-band{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:56px 20px 56px var(--ci-m)}
   /* 숫자 덩어리는 Figma 에서 띠 아래 여백 안으로 12 내려앉아 있다 — 마지막 숫자 글자 밑이 지도 밑변과 같은 선 */
   .gn-stats{flex:none;list-style:none;margin:0 0 -12px;padding:0;display:flex;flex-direction:column;gap:34px}
@@ -35,21 +34,21 @@
   .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:16px;line-height:1;letter-spacing:-.06em}
   .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:64px;line-height:1;letter-spacing:-.06em}
 
-  /* 지도 요소 — 홈 Who we are(index-a1.html 의 .map · .hm-tech 반전)와 같은 값이다.
-     점 지도(gnet-map.png) 위에 같은 좌표계(922×451)의 SVG 로 본사 → 법인 넷 선(.arc)과
-     본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
-     파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
+  /* 지도 요소 — 면 지도(world-map-countries-pacific.svg: Figma World Map 커뮤니티 파일 72:2200 의 나라 면, 메르카토르)는
+     아메리카 · 그린란드를 360° 오른쪽으로 옮겨 태평양이 가운데 온다. 땅은 흰 30%, 나라 경계는 흰 50% 선.
+     그 위에 같은 좌표계(1068×667)의 SVG 로 본사 → 법인 넷 선(.arc)과 본사 · 법인 · 거점 점(.pin)을 얹는다.
+     점 자리는 위도 · 경도를 같은 메르카토르로 옮긴 값. 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
      띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
   /* 첫 화면 높이에 맞추기 — 넓은 화면에서 지도 칸(.gn-map)은 숫자 옆 남은 폭 × 띠 안쪽 높이를 다 갖고,
-     그 안의 그림(.cv: 점 지도 + SVG, 922:451)은 칸 안에 통째로 들어가는 가장 큰 크기로 가운데 선다(잘리지 않는다).
+     그 안의 그림(.cv: 면 지도 + SVG, 1068:667)은 칸 안에 통째로 들어가는 가장 큰 크기로 가운데 선다(잘리지 않는다).
      화면 비율이 넓으면 높이에 맞춰 양옆이 남는다. 바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
   .ci-top{--ci-min:620px}
-  .gn-map{position:relative;display:block;min-width:0;aspect-ratio:922/451;width:100%}
+  .gn-map{position:relative;display:block;min-width:0;aspect-ratio:1068/667;width:100%}
   .gn-map .cv{position:absolute;inset:0}
   @media(min-width:901px){
     .gn-map{flex:1 1 0;align-self:stretch;aspect-ratio:auto;width:auto;overflow:hidden;container-type:size}
-    .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:922/451;
-                width:min(100cqw, calc(100cqh * 922 / 451));transform:translate(-50%,-50%)}
+    .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:1068/667;
+                width:min(100cqw, calc(100cqh * 1068 / 667));transform:translate(-50%,-50%)}
   }
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
@@ -171,13 +170,13 @@
 </section>
 
 <!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 1227:7859) ===================== -->
-<!-- 지도 요소는 홈 Who we are(index-a1.html)와 같다 — SVG 좌표는 점 지도 그림(922×451)에 맞춘 밀러 투영 -->
+<!-- 면 지도(태평양 가운데) 위에 같은 좌표계(1068×667)의 선 · 점 — 점 자리는 위도 · 경도를 메르카토르로 옮긴 값 -->
 <section class="ci-band gn-band" aria-label="글로벌 거점 지도">
   <ul class="gn-stats">
     <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
     <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
   </ul>
-  <span class="gn-map" aria-hidden="true"><span class="cv"><img src="../assets/gnet-map-bright.png" alt="" decoding="async" /><svg viewBox="0 0 922 451"><path class="arc" pathLength="1" style="--d:0.20s" d="M756.8 193.0 Q488.3 -39.8 219.8 178.7"/><path class="arc" pathLength="1" style="--d:0.35s" d="M756.8 193.0 Q616.3 92.2 475.7 150.7"/><path class="arc" pathLength="1" style="--d:0.50s" d="M756.8 193.0 Q746.4 193.5 735.9 208.8"/><path class="arc" pathLength="1" style="--d:0.65s" d="M756.8 193.0 Q731.7 215.6 706.5 309.0"/><circle class="pin st" cx="454.3" cy="154.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="229.1" cy="174.7" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="219.9" cy="185.9" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="210.2" cy="197.1" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="216.3" cy="204.0" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="219.8" cy="178.7" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="475.7" cy="150.7" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="735.9" cy="208.8" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="706.5" cy="309.0" r="6.5" style="--d:1.35s"/><circle class="halo" cx="756.8" cy="193.0" r="16.6"/><circle class="pin hub" cx="756.8" cy="193.0" r="8.3" style="--d:0s"/></svg></span></span>
+  <span class="gn-map" aria-hidden="true"><span class="cv"><img src="../assets/world-map-countries-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 1068 667"><path class="arc" pathLength="1" style="--d:0.20s" d="M445.0 350.6 Q655.4 223.7 865.9 332.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M445.0 350.6 Q290.8 235.9 136.6 296.6"/><path class="arc" pathLength="1" style="--d:0.50s" d="M445.0 350.6 Q433.6 349.8 422.1 368.9"/><path class="arc" pathLength="1" style="--d:0.65s" d="M445.0 350.6 Q417.4 376.4 389.8 481.7"/><circle class="pin st" cx="113.1" cy="301.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="876.2" cy="327.5" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="866.0" cy="341.4" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="855.4" cy="355.0" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="862.1" cy="363.2" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="865.9" cy="332.6" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="136.6" cy="296.6" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="422.1" cy="368.9" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="389.8" cy="481.7" r="6.5" style="--d:1.35s"/><circle class="halo" cx="445.0" cy="350.6" r="16.6"/><circle class="pin hub" cx="445.0" cy="350.6" r="8.3" style="--d:0s"/></svg></span></span>
 </section>
 </div>
 
