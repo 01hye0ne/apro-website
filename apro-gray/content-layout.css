@@ -1,3 +1,4 @@
+@import url("type-scale.css");
 /* APRO 콘텐츠 페이지 공용 레이아웃
    투자정보 · 지속가능경영 · 커뮤니티 아래 아홉 페이지가 함께 쓴다.
 
@@ -89,14 +90,14 @@
    불리므로 같은 특정도에서 이긴다. 회사소개 A-1(company-a1.html 의 .co-hero)도 같은 값을 쓴다 */
 .dhero{min-height:464px}
 .dhero .in{display:flex;flex-direction:column;align-items:center;gap:12px}
-.dhero h1{font-size:48px;line-height:1.2;letter-spacing:-.96px}
-.dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:400;font-size:24px;
-  line-height:1.2;letter-spacing:-.48px;color:rgba(255,255,255,.7)}
+.dhero h1{font-size:var(--fs-display-sm);line-height:var(--lh-head);letter-spacing:var(--ls)}
+.dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
+  line-height:var(--lh-head);letter-spacing:var(--ls);color:rgba(255,255,255,.7)}
 /* 좁은 화면 — Figma 에 모바일 판이 없어 같은 비율로 줄인다(높이 360 · 제목 32 · 설명 18) */
 @media(max-width:900px){
   .dhero{min-height:360px}
-  .dhero h1{font-size:32px;letter-spacing:-.64px}
-  .dhero-lead{font-size:18px;letter-spacing:-.36px}
+  .dhero h1{font-size:var(--fs-h1);letter-spacing:var(--ls)}
+  .dhero-lead{font-size:var(--fs-h3);letter-spacing:var(--ls)}
 }
 
 /* =====================================================================
@@ -170,21 +171,21 @@
 
 /* 제목 줄 — 왼쪽 짧은 브랜드 선 + 제목. 페이지 안에서 장을 가르는 유일한 장치다 */
 .cblock>h2{font-family:var(--suit);font-weight:800;
-  font-size:clamp(24px,2.2vw,32px);line-height:1.3;letter-spacing:-.64px;color:var(--g900);
+  font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--g900);
   word-break:keep-all}
-.cblock>.lead{margin-top:18px;max-width:900px;font-family:var(--pre);font-size:17px;
-  line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
-.cblock>h3{margin-top:44px;font-family:var(--suit);font-weight:700;font-size:20px;
-  line-height:1.4;letter-spacing:-.4px;color:var(--g900)}
+.cblock>.lead{margin-top:18px;max-width:900px;font-family:var(--suit);font-size:var(--fs-lead);
+  line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
+.cblock>h3{margin-top:44px;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
 .cblock>h3+p,.cblock>h3+ul{margin-top:12px}
-.cblock .body{margin-top:24px;font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
-  letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+.cblock .body{margin-top:24px;font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .cblock .body p+p{margin-top:var(--para-gap)}
 
 /* 불릿 — 사업영역 카드의 목록과 같은 점 모양 */
 ul.cul{margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:var(--para-gap)}
-ul.cul li{position:relative;padding-left:16px;font-family:var(--pre);font-size:17px;
-  line-height:var(--body-lh);letter-spacing:-.34px;color:var(--sec);word-break:keep-all}
+ul.cul li{position:relative;padding-left:16px;font-family:var(--suit);font-size:var(--fs-lead);
+  line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width:4px;height:4px;
   border-radius:50%;background:var(--brand-2)}
 
@@ -200,7 +201,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    설명글(.lead)이 아니라 내거는 말이다 — IR Contact 의 "Partnership for Future"
    같은 것. 같은 자리에 .lead 로 두면 17px 회색이라 안내문처럼 읽혀 힘이 빠진다 */
 .cblock>.ctagline{margin-top:16px;font-family:var(--suit);font-weight:800;
-  font-size:clamp(22px,2vw,30px);line-height:1.3;letter-spacing:-.6px;color:var(--brand)}
+  font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--brand)}
 
 /* =====================================================================
    4. 카드 — 소제목 + 설명 + (선택) 불릿
@@ -209,18 +210,18 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   gap:16px}
 .ccard{padding:32px;background:var(--secondary-bg);border:1px solid var(--border-g);
   border-radius:var(--r)}
-.ccard h3{font-family:var(--suit);font-weight:700;font-size:20px;line-height:1.4;
-  letter-spacing:-.4px;color:var(--g900);word-break:keep-all}
-.ccard p{margin-top:12px;font-family:var(--pre);font-size:16px;line-height:var(--body-lh);
-  letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+.ccard h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);line-height:var(--lh-label);
+  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.ccard p{margin-top:12px;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .ccard ul{margin-top:16px;list-style:none;display:flex;flex-direction:column;gap:6px}
-.ccard ul li{position:relative;padding-left:14px;font-family:var(--pre);font-size:15px;
-  line-height:1.55;letter-spacing:-.3px;color:var(--sec);word-break:keep-all}
+.ccard ul li{position:relative;padding-left:14px;font-family:var(--suit);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .ccard ul li::before{content:"";position:absolute;left:0;top:calc(.78em - 2px);width:4px;height:4px;
   border-radius:50%;background:var(--brand-2)}
 /* 번호가 붙는 카드 — PDCA 4단계처럼 순서가 뜻을 갖는 묶음 */
-.ccard .no{display:block;margin-bottom:14px;font-family:var(--suit);font-weight:700;font-size:14px;
-  letter-spacing:.12em;color:var(--brand-2)}
+.ccard .no{display:block;margin-bottom:14px;font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);
+  letter-spacing:var(--ls-caps);color:var(--brand-2)}
 
 /* 좌 1 · 우 3 (.ccards--split) — 왼쪽에 장의 요지를 큰 한 장으로 세우고,
    오른쪽에 그것을 받치는 세 갈래를 쌓는다. 왼쪽 장이 오른쪽 세 줄을 통으로
@@ -254,8 +255,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ccard>.cvalues>li{display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:14px;
   padding:26px 14px;background:#fff;border-radius:var(--r);
-  font-family:var(--suit);font-weight:700;font-size:16px;
-  line-height:1.45;letter-spacing:-.32px;color:var(--g900);
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);
   text-align:center;word-break:keep-all}
 /* 아이콘 자리 — 아직 그림이 없어 점선으로 자리만 잡아 둔다. 파일이 오면 안에
    도형을 넣고 이 점선만 걷으면 된다. 색은 글자색을 따라가는 아이콘
@@ -295,12 +296,12 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   padding:clamp(28px,2.6vw,36px);
   background:var(--secondary-bg);border:1px solid var(--border-g);
   border-radius:var(--r)}
-.ccreed .no{font-family:var(--suit);font-weight:800;font-size:14px;
-  line-height:1;letter-spacing:.12em;color:var(--brand-2)}
+.ccreed .no{font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);
+  line-height:var(--lh-tight);letter-spacing:var(--ls-caps);color:var(--brand-2)}
 /* 본문 회색(--sec)이 아니라 --g900 을 쓴다 — 장을 받치는 설명이 아니라 헌장의
    조문 그 자체라서, 위의 .lead 와 같은 색이면 무게가 서지 않는다 */
-.ccreed p{font-family:var(--pre);font-size:17px;line-height:var(--body-lh);
-  letter-spacing:-.34px;color:var(--g900);word-break:keep-all}
+.ccreed p{font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
 /* 좁은 화면 — 두 칸을 세우면 한 줄에 열 몇 자밖에 안 들어간다. 한 칸으로 편다 */
 @media(max-width:720px){.ccreed{grid-template-columns:minmax(0,1fr)}}
 
@@ -345,16 +346,16 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    그림자는 두지 않는다. 얇은 획에 그림자가 붙으면 획보다 그림자가 두꺼워져
    글자가 번져 보인다 — 묻히더라도 깨끗한 쪽을 고른다 */
 .cpolicy .no{position:absolute;right:clamp(20px,2.2vw,30px);bottom:clamp(12px,1.4vw,18px);
-  font-family:var(--suit);font-weight:200;font-size:clamp(56px,6.2vw,88px);
-  line-height:1;letter-spacing:.02em;color:rgba(255,255,255,.72);
+  font-family:var(--suit);font-weight:200;font-size:var(--fs-display);
+  line-height:var(--lh-tight);letter-spacing:var(--ls-caps);color:rgba(255,255,255,.72);
   pointer-events:none}
 
 /* 제목과 설명 — 둘 다 첫 칸에 넣으면 자동 배치가 위아래로 쌓는다. 둘째 칸(1fr)은
    비고, 그 빈 자리가 사진 몫이다 */
-.cpolicy h3{grid-column:1;font-family:var(--suit);font-weight:700;font-size:19px;
-  line-height:1.4;letter-spacing:-.38px;color:var(--g900);word-break:keep-all}
-.cpolicy p{grid-column:1;font-family:var(--pre);font-size:16px;line-height:1.7;
-  letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+.cpolicy h3{grid-column:1;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.cpolicy p{grid-column:1;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 
 /* 사진이 깔린 줄 — <li data-bg style="--bg:… ; --c1:… ; --c2:…">
    점선을 걷고 사진을 깔고 글을 흰색으로 뒤집는다. 사진은 z-index:-2 층에,
@@ -499,10 +500,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cpolicy-grid .ic{flex:none;display:block;width:58px;height:58px;background:#d9d9d9;overflow:hidden}
 .cpolicy-grid .ic img{display:block;width:100%;height:100%;object-fit:contain}
 .cpolicy-grid .t{display:flex;flex-direction:column;gap:6px;width:100%}
-.cpolicy-grid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.25;
-  letter-spacing:-.32px;color:var(--g900);word-break:keep-all}
-.cpolicy-grid p{margin:0;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
-  letter-spacing:-.3px;color:#73757a;font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
+.cpolicy-grid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);
+  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.cpolicy-grid p{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:#73757a;font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
 @media(max-width:1100px){ .cpolicy-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media(max-width:640px){ .cpolicy-grid{grid-template-columns:minmax(0,1fr)} }
 
@@ -514,11 +515,11 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ctable-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g);
   border-radius:var(--r)}
 .ctable{width:100%;min-width:760px;border-collapse:collapse;
-  font-family:var(--pre);font-size:16px;letter-spacing:-.32px;color:var(--g900)}
+  font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900)}
 .ctable th,.ctable td{position:relative;padding:14px 20px;border-bottom:1px solid var(--border-g);
   white-space:nowrap;text-align:right}
-.ctable thead th{background:var(--secondary-bg);font-family:var(--suit);font-weight:700;
-  font-size:15px;color:var(--g900)}
+.ctable thead th{background:var(--secondary-bg);font-family:var(--suit);font-weight:800;
+  font-size:var(--fs-body);color:var(--g900)}
 .ctable th:first-child,.ctable td:first-child{position:sticky;left:0;z-index:1;
   text-align:left;background:#fff;font-family:var(--suit);font-weight:600}
 .ctable thead th:first-child{background:var(--secondary-bg)}
@@ -527,12 +528,12 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   top:0;right:0;bottom:0;width:1px;background:var(--border-g)}
 .ctable tbody tr:last-child td{border-bottom:0}
 /* 합계 줄 — 자산총계·부채총계·당기순이익처럼 위 줄들을 받는 행 */
-.ctable tr.sum td{background:rgba(44,87,144,.05);font-weight:700}
+.ctable tr.sum td{background:rgba(44,87,144,.05);font-weight:800}
 .ctable tr.sum td:first-child{background:rgba(44,87,144,.05)}
 /* 음수는 붉게 — 영업손실·당기순손실이 한눈에 갈린다 */
 .ctable td.minus{color:#c0392b}
-.ctable-unit{margin-top:10px;text-align:right;font-family:var(--pre);font-size:14px;
-  letter-spacing:-.28px;color:var(--teritary)}
+.ctable-unit{margin-top:10px;text-align:right;font-family:var(--suit);font-size:var(--fs-meta);
+  letter-spacing:var(--ls);color:var(--teritary)}
 
 /* 재무제표 전환 탭 — 네 갈래가 표 한 자리를 나눠 쓴다.
    알약 버튼을 늘어놓던 것을 한 줄 가득 채우는 칸으로 바꿨다(2026-08-24 시안).
@@ -543,17 +544,17 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cfin-tabs{margin-top:28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   border-bottom:1px solid var(--border-g)}
 .cfin-tabs button{padding:16px 12px;border:0;background:none;
-  font-family:var(--suit);font-weight:500;font-size:15px;letter-spacing:-.3px;color:var(--teritary);
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--teritary);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
   transition:background .22s var(--ease),color .22s var(--ease),box-shadow .22s var(--ease)}
 .cfin-tabs button:hover{color:var(--sec)}
-.cfin-tabs button[aria-current]{background:var(--secondary-bg);color:var(--g900);font-weight:700;
+.cfin-tabs button[aria-current]{background:var(--secondary-bg);color:var(--g900);font-weight:800;
   box-shadow:inset 0 -2px 0 var(--brand)}
 .cfin-tabs button:focus-visible{outline:2px solid var(--brand-2);outline-offset:-2px}
 /* 좁은 화면 — 넷을 한 줄에 넣으면 글자가 잘린다. 2×2 로 접는다 */
 @media(max-width:760px){
   .cfin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .cfin-tabs button{padding:13px 10px;font-size:14px}
+  .cfin-tabs button{padding:13px 10px;font-size:var(--fs-meta)}
 }
 .cfin-panel[hidden]{display:none}
 
@@ -575,7 +576,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    상자와 같은 자를 써서 함께 가운데로 간다. 상자만 옮기고 이 줄이 본문 왼쪽
    끝에 남으면 둘이 딴 것으로 보인다 — 글은 상자 왼쪽 모서리에서 시작한다 */
 .cframe-out{margin-top:12px;margin-inline:auto;max-width:780px;
-  font-family:var(--pre);font-size:15px;letter-spacing:-.3px;
+  font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);
   color:var(--teritary)}
 .cframe-out a{color:var(--brand);font-weight:600}
 .cframe-out a:hover{text-decoration:underline}
@@ -588,16 +589,16 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cstock-wrap{margin-top:24px;overflow-x:auto}
 .cstock{width:100%;min-width:560px;border-collapse:collapse;border-top:2px solid var(--g900)}
 .cstock th,.cstock td{padding:18px 16px;border-bottom:1px solid var(--border-g);
-  text-align:center;font-family:var(--pre);font-weight:400;font-size:16px;
-  letter-spacing:-.32px;color:var(--sec)}
-.cstock thead th{background:var(--secondary-bg);font-family:var(--suit);font-weight:700;
-  font-size:15px;color:var(--g900)}
+  text-align:center;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
+  letter-spacing:var(--ls);color:var(--sec)}
+.cstock thead th{background:var(--secondary-bg);font-family:var(--suit);font-weight:800;
+  font-size:var(--fs-body);color:var(--g900)}
 .cstock tbody td{font-variant-numeric:tabular-nums}
 /* 합계 — 위 줄을 받는 자리라 글자를 굵게 하고 색을 본문색으로 올린다 */
-.cstock tr.sum th,.cstock tr.sum td{font-family:var(--suit);font-weight:700;color:var(--g900)}
+.cstock tr.sum th,.cstock tr.sum td{font-family:var(--suit);font-weight:800;color:var(--g900)}
 /* 표 밑 두 줄 — 왼쪽은 주석, 오른쪽은 단위. 좁아지면 아래로 접힌다 */
 .cstock-foot{margin-top:12px;display:flex;justify-content:space-between;gap:12px;
-  flex-wrap:wrap;font-family:var(--pre);font-size:14px;letter-spacing:-.28px;
+  flex-wrap:wrap;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);
   color:var(--teritary)}
 
 /* 재무상태표 막대그래프 (.cchart)
@@ -612,7 +613,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   border-radius:var(--r);
   background:var(--secondary-bg)}
 .cchart-legend{display:flex;justify-content:flex-end;gap:16px;
-  font-family:var(--pre);font-size:14px;letter-spacing:-.28px;color:var(--sec)}
+  font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--sec)}
 .cchart-legend span{display:inline-flex;align-items:center;gap:6px}
 .cchart-legend span::before{content:"";width:9px;height:9px;border-radius:50%}
 .cchart-legend .l-debt::before{background:var(--brand-2)}
@@ -624,23 +625,23 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   background-image:repeating-linear-gradient(to top,var(--border-g) 0 1px,transparent 1px 60px);
   pointer-events:none}
 .cchart .col{position:relative;flex:1 1 0;max-width:180px;text-align:center}
-.cchart .total{font-family:var(--suit);font-weight:800;font-size:clamp(15px,1.5vw,19px);
-  letter-spacing:-.38px;color:var(--g900);font-variant-numeric:tabular-nums}
+.cchart .total{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+  letter-spacing:var(--ls-num);color:var(--g900);font-variant-numeric:tabular-nums}
 .cchart .track{margin-top:10px;height:240px;display:flex;flex-direction:column;
   justify-content:flex-end}
 .cchart .bar{width:100%;height:var(--h);display:flex;flex-direction:column;overflow:hidden}
 .cchart .seg{display:grid;place-items:center;min-height:0;
-  font-family:var(--pre);font-weight:600;font-size:clamp(12px,1.2vw,15px);letter-spacing:-.3px;
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls-num);
   color:#fff;font-variant-numeric:tabular-nums}
 .cchart .seg-debt{background:linear-gradient(180deg,var(--brand-2),var(--brand))}
 .cchart .seg-cap{background:var(--point-900)}
 /* 칸이 얕으면 숫자가 넘쳐 두 겹으로 보인다 — 안 보이게 접는다 */
 .cchart .seg span{padding:0 4px}
-.cchart .yr{margin-top:12px;font-family:var(--suit);font-weight:700;font-size:14px;
-  letter-spacing:.06em;color:var(--teritary)}
+.cchart .yr{margin-top:12px;font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);
+  letter-spacing:var(--ls-caps);color:var(--teritary)}
 /* 표·그림 위 오른쪽 단위 표기 */
-.cfin-unit{margin-top:24px;text-align:right;font-family:var(--pre);font-size:14px;
-  letter-spacing:-.28px;color:var(--teritary)}
+.cfin-unit{margin-top:24px;text-align:right;font-family:var(--suit);font-size:var(--fs-meta);
+  letter-spacing:var(--ls);color:var(--teritary)}
 @media(max-width:760px){
   .cchart .track{height:180px}
   .cchart-plot::before{height:180px;background-image:repeating-linear-gradient(
@@ -652,21 +653,21 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 .cboard{margin-top:28px;width:100%;border-collapse:collapse;border-top:2px solid var(--g900)}
 .cboard th,.cboard td{padding:18px 16px;border-bottom:1px solid var(--border-g);
-  font-family:var(--pre);font-size:16px;letter-spacing:-.32px;color:var(--sec);text-align:center}
-.cboard thead th{font-family:var(--suit);font-weight:700;font-size:15px;color:var(--g900)}
-.cboard td.ttl{text-align:left;color:var(--g900);font-weight:500;word-break:keep-all}
+  font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec);text-align:center}
+.cboard thead th{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);color:var(--g900)}
+.cboard td.ttl{text-align:left;color:var(--g900);font-weight:600;word-break:keep-all}
 /* 공지 고정 글 */
 .cboard tr.pin td{background:var(--secondary-bg)}
 .cboard .badge{display:inline-block;margin-right:8px;padding:2px 9px;border-radius:2px;
-  background:var(--brand-2);color:#fff;font-family:var(--pre);font-weight:500;font-size:13px;
-  line-height:1.6;letter-spacing:-.26px;vertical-align:1px}
+  background:var(--brand-2);color:#fff;font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+  line-height:var(--lh-body);letter-spacing:var(--ls);vertical-align:1px}
 .cboard .badge.gray{background:var(--teritary)}
-.cboard .file{display:block;margin-top:6px;font-size:14px;color:var(--teritary)}
+.cboard .file{display:block;margin-top:6px;font-size:var(--fs-meta);color:var(--teritary)}
 @media(max-width:760px){
   .cboard thead{display:none}
   .cboard tr{display:block;padding:16px 0;border-bottom:1px solid var(--border-g)}
   .cboard td{display:inline;border:0;padding:0 6px 0 0}
-  .cboard td.ttl{display:block;margin-bottom:8px;font-size:17px}
+  .cboard td.ttl{display:block;margin-bottom:8px;font-size:var(--fs-h3)}
   .cboard td.no{display:none}
 }
 
@@ -678,21 +679,21 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   flex-wrap:wrap}
 .cpager button{min-width:36px;height:36px;padding:0 10px;border:1px solid transparent;
   border-radius:var(--r);
-  background:none;font-family:var(--pre);font-size:15px;letter-spacing:-.3px;color:var(--sec);
+  background:none;font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec);
   cursor:pointer;transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease)}
 .cpager button:hover:not(:disabled):not([aria-current]){color:var(--brand);border-color:var(--border-g)}
 .cpager button[aria-current]{background:var(--brand);border-color:var(--brand);color:#fff;
-  font-weight:700}
+  font-weight:800}
 .cpager button:disabled{color:var(--border-g);cursor:default}
 .cpager button:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
 /* 앞뒤 화살표 — 숫자와 같은 크기 자리를 차지하되 글자만 부호로 */
-.cpager .arw{font-size:17px;line-height:1}
+.cpager .arw{font-size:var(--fs-lead);line-height:var(--lh-tight)}
 
 /* 목록 머리줄 (.clist-hd) — 왼쪽 건수, 오른쪽 검색칸.
    건수의 숫자는 검색이 걸리면 걸러진 수로 바뀐다(스크립트가 <b> 만 갈아 끼운다) */
 .clist-hd{margin-top:24px;display:flex;justify-content:space-between;align-items:center;
   gap:16px;flex-wrap:wrap}
-.clist-hd .count{font-family:var(--pre);font-size:16px;letter-spacing:-.32px;color:var(--sec)}
+.clist-hd .count{font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec)}
 .clist-hd .count b{font-family:var(--suit);font-weight:800;color:var(--g900);
   font-variant-numeric:tabular-nums}
 .csearch{display:flex;align-items:center;gap:8px;width:min(300px,100%);
@@ -701,7 +702,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   transition:border-color .2s var(--ease)}
 .csearch:focus-within{border-color:var(--brand)}
 .csearch input{flex:1;min-width:0;border:0;background:none;outline:none;
-  font-family:var(--pre);font-size:15px;letter-spacing:-.3px;color:var(--g900)}
+  font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900)}
 .csearch input::placeholder{color:var(--teritary)}
 /* 브라우저가 넣어 주는 지우기 단추 — 테두리 안 오른쪽 끝에서 우리 아이콘과 겹친다 */
 .csearch input::-webkit-search-cancel-button{-webkit-appearance:none}
@@ -713,7 +714,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 검색 결과가 없을 때 목록 자리에 서는 줄 */
 .cempty{margin-top:28px;padding:48px 20px;text-align:center;border:1px solid var(--border-g);
   border-radius:var(--r);
-  background:var(--secondary-bg);font-family:var(--pre);font-size:16px;letter-spacing:-.32px;
+  background:var(--secondary-bg);font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);
   color:var(--teritary)}
 .cempty[hidden]{display:none}
 
@@ -738,13 +739,13 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cnews .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .cnews .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
 .cnews .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden;font-family:var(--suit);font-weight:700;font-size:17px;line-height:1.5;
-  letter-spacing:-.34px;color:var(--g900);word-break:keep-all;
+  overflow:hidden;font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all;
   transition:color .2s var(--ease)}
 .cnews>li>a:hover .ttl{color:var(--brand)}
 /* margin-top:auto — 제목이 한 줄이든 두 줄이든 날짜는 카드 밑변에 붙는다 */
-.cnews .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:500;
-  font-size:14px;letter-spacing:.04em;color:var(--teritary)}
+.cnews .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:400;
+  font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
 @media(max-width:900px){.cnews{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.cnews{grid-template-columns:minmax(0,1fr)}}
 
@@ -755,15 +756,15 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    본문 폭을 900px 로 묶는다 — 84px 여백만 두면 한 줄이 1700px 이 넘어 읽히지 않는다 */
 .cdoc{margin-top:32px;max-width:900px}
 .cdoc h3{margin-top:56px;padding-bottom:12px;border-bottom:1px solid var(--border-g);
-  font-family:var(--suit);font-weight:800;font-size:22px;line-height:1.4;letter-spacing:-.44px;
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-label);letter-spacing:var(--ls);
   color:var(--g900)}
 .cdoc h3:first-child{margin-top:0}
-.cdoc h4{margin-top:32px;font-family:var(--suit);font-weight:700;font-size:18px;line-height:1.5;
-  letter-spacing:-.36px;color:var(--brand)}
-.cdoc h5{margin-top:24px;font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.5;
-  letter-spacing:-.32px;color:var(--g900)}
-.cdoc p{margin-top:12px;font-family:var(--pre);font-size:16px;line-height:1.75;
-  letter-spacing:-.32px;color:var(--sec);word-break:keep-all}
+.cdoc h4{margin-top:32px;font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--brand)}
+.cdoc h5{margin-top:24px;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--g900)}
+.cdoc p{margin-top:12px;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .cdoc ul,.cdoc ol{margin-top:12px;padding-left:22px;display:flex;flex-direction:column;gap:6px}
 /* 조문의 항은 번호가 곧 이름이다 — 본문이 "제3항 단서", "제1항 제2호" 로 서로를 가리킨다.
    항(ol) 아래 호(ol ol)는 마커를 갈아 두 층이 눈으로 갈리게 한다 */
@@ -772,8 +773,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cdoc ol ol>li{counter-increment:ho}
 .cdoc ol ol>li::marker{content:none}
 .cdoc ol ol>li::before{content:"제" counter(ho) "호  ";font-weight:600;color:var(--brand)}
-.cdoc li::marker{color:var(--teritary);font-family:var(--pre)}
-.cdoc li{font-family:var(--pre);font-size:16px;line-height:1.75;letter-spacing:-.32px;
+.cdoc li::marker{color:var(--teritary);font-family:var(--suit)}
+.cdoc li{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
   color:var(--sec);word-break:keep-all}
 /* 규정 안의 링크 — 전역 a 는 색도 밑줄도 없다(a{color:inherit}). 규정 글 사이에
    섞이면 눌러지는 것인 줄 모르므로 여기서만 색으로 알린다 */
@@ -785,19 +786,19 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cdoc blockquote p{margin-top:0;color:var(--g900)}
 .cdoc blockquote p+p{margin-top:8px}
 /* 규정 안의 표 */
-.cdoc table{margin-top:16px;width:100%;border-collapse:collapse;font-family:var(--pre);
-  font-size:15px;letter-spacing:-.3px;color:var(--sec)}
+.cdoc table{margin-top:16px;width:100%;border-collapse:collapse;font-family:var(--suit);
+  font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec)}
 .cdoc th,.cdoc td{padding:12px 14px;border:1px solid var(--border-g);text-align:left;
-  vertical-align:top;line-height:1.65}
-.cdoc th{background:var(--secondary-bg);font-family:var(--suit);font-weight:700;color:var(--g900)}
+  vertical-align:top;line-height:var(--lh-body)}
+.cdoc th{background:var(--secondary-bg);font-family:var(--suit);font-weight:800;color:var(--g900)}
 
 /* 긴 문서 위의 목차 */
 .ctoc{margin-top:32px;max-width:900px;padding:28px 32px;background:var(--secondary-bg);
   border-radius:var(--r);
   border:1px solid var(--border-g)}
-.ctoc p{font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;color:var(--g900)}
+.ctoc p{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900)}
 .ctoc ol{margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:7px}
-.ctoc li{font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;color:var(--sec)}
+.ctoc li{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--sec)}
 .ctoc a:hover{color:var(--brand);text-decoration:underline}
 /* 화면 상단 GNB 흰 플레이트에 제목이 가리지 않도록. 화면에 늘 떠 있는 것이 이제
    그것 하나뿐이라 여기서 피할 것도 그것뿐이다 */
@@ -811,7 +812,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cdetails+.cdetails{margin-top:12px}
 .cdetails summary{padding:20px 26px;background:var(--secondary-bg);cursor:pointer;list-style:none;
   display:flex;align-items:center;gap:12px;
-  font-family:var(--suit);font-weight:700;font-size:16px;letter-spacing:-.32px;color:var(--g900);
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900);
   transition:color .2s var(--ease)}
 .cdetails summary::-webkit-details-marker{display:none}
 .cdetails summary:hover{color:var(--brand)}
@@ -820,7 +821,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
   transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s var(--ease)}
 .cdetails[open] summary::after{transform:rotate(225deg) translate(-2px,-2px)}
-.cdetails summary span{font-family:var(--pre);font-weight:400;font-size:14px;color:var(--teritary)}
+.cdetails summary span{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);color:var(--teritary)}
 .cdetails>div{padding:8px 26px 32px}
 .cdetails .cdoc{margin-top:24px}
 
@@ -834,7 +835,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cbtns{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
 .cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;
   border:1px solid var(--g900);background:#fff;border-radius:var(--r);
-  font-family:var(--suit);font-weight:600;font-size:16px;letter-spacing:-.32px;color:var(--g900);
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900);
   transition:background .24s var(--ease),color .24s var(--ease),border-color .24s var(--ease)}
 .cbtn:hover{background:var(--g900);color:#fff}
 .cbtn svg{width:16px;height:16px;flex-shrink:0}
@@ -851,10 +852,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    빈칸으로 두면 "빠뜨린 것"과 "아직 없는 것"이 구분되지 않는다 */
 .cnote{margin-top:28px;max-width:900px;padding:22px 26px;background:#fffaf2;
   border:1px solid #f0dcc0;border-left:3px solid #d99b3f;border-radius:var(--r)}
-.cnote p{font-family:var(--pre);font-size:15px;line-height:1.7;letter-spacing:-.3px;
+.cnote p{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
   color:#7a5620;word-break:keep-all}
 .cnote p+p{margin-top:8px}
-.cnote strong{font-weight:700}
+.cnote strong{font-weight:800}
 
 /* =====================================================================
    10. 이사회 — 화면 폭 판 (Figma 1232:17918, 지배구조)
@@ -868,20 +869,20 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cgov-board{--gm:44px;display:grid;grid-template-columns:calc((100% - 220px) / 4 + 40px) minmax(0,1fr);
   column-gap:20px;align-items:start;padding:64px var(--gm);border-bottom:1px solid #c7c9cc}
 .cgov-board .hd{display:flex;flex-direction:column;gap:20px;word-break:keep-all}
-.cgov-board h2{margin:0;font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;
-  letter-spacing:-.48px;color:var(--g900)}
-.cgov-board .lead{margin:0;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
-  letter-spacing:-.3px;color:#5a6675;font-feature-settings:"lnum" 1,"tnum" 1}
+.cgov-board h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+  letter-spacing:var(--ls);color:var(--g900)}
+.cgov-board .lead{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:#5a6675;font-feature-settings:"lnum" 1,"tnum" 1}
 .cpeople{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start}
 .cperson{display:flex;flex-direction:column;min-width:0}
 .cperson .top{min-height:185px;display:flex;flex-direction:column;gap:12px;padding:24px 16px;background:var(--brand)}
-.cperson .role{margin:0;font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;
-  letter-spacing:-.32px;color:rgba(255,255,255,.7)}
-.cperson .nm{margin:0;font-family:var(--suit);font-weight:800;font-size:36px;line-height:1.2;
-  letter-spacing:-.72px;color:#fff}
+.cperson .role{margin:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);
+  letter-spacing:var(--ls);color:rgba(255,255,255,.7)}
+.cperson .nm{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);
+  letter-spacing:var(--ls);color:#fff}
 .cperson ul{margin:0;padding:0;list-style:none}
 .cperson li{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border-g);
-  font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.25;letter-spacing:-.32px;
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
   color:#5a6675;word-break:keep-all}
 .cperson li::before{content:"";flex:0 0 4px;height:4px;margin-top:calc((1.25em - 4px) / 2);background:var(--brand)}
 /* 좁아지면 제목 · 소개를 카드 위로 올리고(카드 세 장은 가로 그대로), 더 좁으면 카드도 한 줄에 한 장 */
@@ -899,10 +900,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   gap:1px;background:var(--border-g);border:1px solid var(--border-g);
   border-radius:var(--r);overflow:clip}
 .cway{padding:30px 28px;background:#fff}
-.cway .k{font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;color:var(--brand)}
-.cway .v{margin-top:12px;font-family:var(--pre);font-size:17px;line-height:1.6;
-  letter-spacing:-.34px;color:var(--g900);word-break:keep-all}
-.cway .v small{display:block;margin-top:6px;font-size:15px;color:var(--teritary)}
+.cway .k{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--brand)}
+.cway .v{margin-top:12px;font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.cway .v small{display:block;margin-top:6px;font-size:var(--fs-body);color:var(--teritary)}
 
 /* 처리 절차 표 (.cflow) — 단계 이름 한 줄, 그 아래 설명 한 줄. 왼쪽에서
    오른쪽으로 흐르는 것이 곧 순서다. 칸을 고정 폭(table-layout:fixed)으로 나눠
@@ -915,10 +916,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   border-left:1px solid var(--border-g);word-break:keep-all}
 .cflow th:first-child,.cflow td:first-child{border-left:0}
 .cflow thead th{background:var(--secondary-bg);border-bottom:1px solid var(--border-g);
-  font-family:var(--suit);font-weight:700;font-size:15px;line-height:1.5;
-  letter-spacing:-.3px;color:var(--g900)}
-.cflow tbody td{padding:26px 18px;font-family:var(--pre);font-size:15px;line-height:1.7;
-  letter-spacing:-.3px;color:var(--sec)}
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--g900)}
+.cflow tbody td{padding:26px 18px;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--sec)}
 
 /* 온라인 제보 양식 (.cform) — 이름표 한 칸 + 입력 한 칸이 한 줄.
    표처럼 보이지만 <table> 이 아니라 격자다. 좁은 화면에서는 이름표를 입력 위로
@@ -933,7 +934,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cform-k{display:flex;align-items:center;justify-content:center;gap:2px;
   padding:16px 12px;background:var(--secondary-bg);
   border-right:1px solid var(--border-g);
-  font-family:var(--suit);font-weight:700;font-size:15px;letter-spacing:-.3px;
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls);
   color:var(--g900);text-align:center;word-break:keep-all}
 /* 꼭 채워야 하는 칸 — 화면에는 별표만, 읽어 주는 기계에는 <abbr title> 로 '필수' */
 .cform-k .req{color:var(--brand-2);text-decoration:none}
@@ -941,11 +942,11 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cform-v>*{min-width:0}
 
 .cform input,.cform select,.cform textarea{width:100%;padding:11px 13px;
-  font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;
+  font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
   color:var(--g900);background:#fff;border:1px solid var(--border-g);border-radius:var(--r);
   transition:border-color .2s}
 .cform input::placeholder,.cform textarea::placeholder{color:var(--teritary)}
-.cform textarea{min-height:220px;resize:vertical;line-height:1.75}
+.cform textarea{min-height:220px;resize:vertical;line-height:var(--lh-body)}
 /* 마우스로 짚었을 때는 테두리 색만 바꾸고, 자판으로 옮겨 왔을 때는 테를 둘러
    지금 어디에 서 있는지 보이게 한다 */
 .cform input:focus,.cform select:focus,.cform textarea:focus{
@@ -963,7 +964,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cform-v--mail{display:grid;
   grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) minmax(0,180px);
   align-items:center;gap:8px}
-.cform-v--mail .at{font-family:var(--pre);font-size:15px;color:var(--teritary)}
+.cform-v--mail .at{font-family:var(--suit);font-size:var(--fs-body);color:var(--teritary)}
 @media(max-width:760px){
   .cform-v--mail{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
   .cform-v--mail select{grid-column:1 / -1}
@@ -977,13 +978,13 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 
 .cform-submit{margin-top:20px;width:100%;padding:20px;
   background:var(--g900);color:#fff;border:0;border-radius:var(--r);cursor:pointer;
-  font-family:var(--suit);font-weight:700;font-size:17px;letter-spacing:-.34px;
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);letter-spacing:var(--ls);
   transition:background .25s var(--ease)}
 .cform-submit:hover{background:var(--brand)}
 /* 누른 뒤에 뜨는 한 줄 */
 .cform-msg{margin-top:14px;padding:16px 18px;background:#fffaf2;
   border:1px solid #f0dcc0;border-left:3px solid #d99b3f;border-radius:var(--r);
-  font-family:var(--pre);font-size:15px;line-height:1.7;letter-spacing:-.3px;
+  font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
   color:#7a5620;word-break:keep-all}
 .cform-msg[hidden]{display:none}
 

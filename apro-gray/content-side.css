@@ -35,17 +35,17 @@
 .cs-hero.is-bright::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,20,48,.62) 0%,rgba(6,20,48,.38) 38%,rgba(6,20,48,0) 66%)}
 .cs-hero-page{display:flex;flex-direction:column;gap:24px}
-.cs-hero h1{margin:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;
-  letter-spacing:-.32px;color:#fff}
+.cs-hero h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-tight);
+  letter-spacing:var(--ls);color:#fff}
 /* 문장은 Medium 500 — 2026-09-15 Figma 1248:14052 에서 ExtraBold 800 → 500 으로 바뀌었다(페이지 이름은 800 그대로) */
-.cs-hero .sub{margin:0;font-family:var(--suit);font-weight:500;font-size:24px;line-height:1.2;
-  letter-spacing:-.48px;color:#fff}
+.cs-hero .sub{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);line-height:var(--lh-head);
+  letter-spacing:var(--ls);color:#fff}
 
 /* 장 목록 — 본문 장으로 건너뛰는 앵커 */
 .cs-toc{display:flex;flex-direction:column;border-top:2px solid #fff}
 .cs-toc a{display:flex;align-items:center;gap:8px;min-height:41px;padding:12px;
   border-bottom:1px solid rgba(255,255,255,.2);
-  font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:#fff;
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);color:#fff;
   transition:background-color .25s var(--ease)}
 .cs-toc a::before{content:"";flex:0 0 4px;height:4px;background:#fff}
 .cs-toc a:hover{background:rgba(255,255,255,.08)}
@@ -56,7 +56,7 @@
 .cs-body>.cblock{padding:88px var(--cs-m) 40px}
 .cs-body>.cblock+.cblock{margin-top:0}
 .cs-body>*+*{border-top:1px solid var(--border-g)}
-.cs-body>.cblock>h2{font-size:24px;line-height:1.2;letter-spacing:-.48px}
+.cs-body>.cblock>h2{font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
 /* 제목 밑 첫 부품까지 24 — 부품마다 제각각이던 윗여백(16~32)을 Figma 값 하나로 맞춘다 */
 .cs-body>.cblock>h2+*{margin-top:24px}
 /* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
@@ -84,7 +84,7 @@
   /* 판이 가로로 넓어져 사진이 폭에 맞춰 커진다 — 아래를 붙들면 사옥 · 패널이 글 바로 뒤에 와서
      흰 글자가 묻힌다. 위(하늘)를 붙든다 */
   .cs-hero-bg{object-position:var(--pos-m,10% 0)}
-  .cs-hero .sub{font-size:20px;letter-spacing:-.4px}
+  .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
   .cs-body>.cblock,.cs-body>.cgov-board{padding:48px var(--cs-m) 40px}
 }
