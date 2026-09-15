@@ -92,7 +92,7 @@
 .dhero .in{display:flex;flex-direction:column;align-items:center;gap:12px}
 .dhero h1{font-size:var(--fs-display-sm);line-height:var(--lh-head);letter-spacing:var(--ls)}
 .dhero-lead{max-width:min(960px,88vw);margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
-  line-height:var(--lh-head);letter-spacing:var(--ls);color:rgba(255,255,255,.7)}
+  line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--on-dark-body)}
 /* 좁은 화면 — Figma 에 모바일 판이 없어 같은 비율로 줄인다(높이 360 · 제목 32 · 설명 18) */
 @media(max-width:900px){
   .dhero{min-height:360px}
@@ -347,7 +347,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    글자가 번져 보인다 — 묻히더라도 깨끗한 쪽을 고른다 */
 .cpolicy .no{position:absolute;right:clamp(20px,2.2vw,30px);bottom:clamp(12px,1.4vw,18px);
   font-family:var(--suit);font-weight:200;font-size:var(--fs-display);
-  line-height:var(--lh-tight);letter-spacing:var(--ls-caps);color:rgba(255,255,255,.72);
+  line-height:var(--lh-tight);letter-spacing:var(--ls-caps);color:var(--on-dark-sub);
   pointer-events:none}
 
 /* 제목과 설명 — 둘 다 첫 칸에 넣으면 자동 배치가 위아래로 쌓는다. 둘째 칸(1fr)은
@@ -479,7 +479,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
     rgb(var(--c1) / .78);
   -webkit-mask:var(--fade);mask:var(--fade)}
 .cpolicy>li[data-bg] h3{color:#fff}
-.cpolicy>li[data-bg] p{color:rgba(255,255,255,.84)}
+.cpolicy>li[data-bg] p{color:var(--on-dark-body)}
 
 /* 좁은 화면 — 석 줄을 세울 자리가 없다. 아이콘과 제목을 한 줄에 두고 설명을
    그 아래로 내린다. 설명은 아이콘 칸을 건너뛰어 제목 밑에서 시작한다 */
@@ -877,7 +877,7 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cperson{display:flex;flex-direction:column;min-width:0}
 .cperson .top{min-height:185px;display:flex;flex-direction:column;gap:12px;padding:24px 16px;background:var(--brand)}
 .cperson .role{margin:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);
-  letter-spacing:var(--ls);color:rgba(255,255,255,.7)}
+  letter-spacing:var(--ls);color:var(--on-dark-sub)}
 .cperson .nm{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);
   letter-spacing:var(--ls);color:#fff}
 .cperson ul{margin:0;padding:0;list-style:none}
