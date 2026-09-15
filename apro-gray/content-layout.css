@@ -486,6 +486,26 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   .cpolicy>li{min-height:0;grid-template-columns:minmax(0,1fr)}
 }
 
+/* 방침 카드 격자 (.cpolicy-grid) — Figma 1249:14656, 지속가능경영 > 환경 A-1 (2026-09-15)
+   사진 띠(.cpolicy)를 [아이콘 58 / 키워드 / 본문] 카드로 바꾼 판이다. 3열 × 2줄.
+   회색 판(안쪽 4) 위에 흰 카드를 4 간격으로 깐다 — 판 위(.cblock--plate)에 놓이면 바탕이 같아
+   판 여백은 안 보이고 카드 사이 4 만 남는다. 한 줄의 키는 긴 카드에 맞춰 늘어난다(stretch).
+   아이콘은 그림이 아직 없어 Figma 처럼 회색 네모 자리만 둔다(.ic 안에 <img> 를 넣으면 채워진다).
+   키워드 줄높이는 Figma 1 이지만 좁아져 두 줄로 접힐 때 겹치지 않게 1.25 로 둔다 */
+.cpolicy-grid{margin-top:32px;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:4px;padding:4px;background:var(--secondary-bg)}
+.cpolicy-grid>li{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:20px;
+  padding:16px;background:#fff}
+.cpolicy-grid .ic{flex:none;display:block;width:58px;height:58px;background:#d9d9d9;overflow:hidden}
+.cpolicy-grid .ic img{display:block;width:100%;height:100%;object-fit:contain}
+.cpolicy-grid .t{display:flex;flex-direction:column;gap:6px;width:100%}
+.cpolicy-grid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1.25;
+  letter-spacing:-.32px;color:var(--g900);word-break:keep-all}
+.cpolicy-grid p{margin:0;font-family:var(--pre);font-weight:400;font-size:15px;line-height:1.6;
+  letter-spacing:-.3px;color:#73757a;font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
+@media(max-width:1100px){ .cpolicy-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media(max-width:640px){ .cpolicy-grid{grid-template-columns:minmax(0,1fr)} }
+
 /* =====================================================================
    5. 표 — 재무제표
    ===================================================================== */
