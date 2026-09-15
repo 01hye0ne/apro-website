@@ -42,6 +42,13 @@
   .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;border:0;
           background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
   .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
+  /* 첫 화면 높이에 맞추기 — 탭 섬네일은 띠 안쪽 높이(cqh)에서 정보 칸의 나머지(약 485)를 뺀 만큼(40~99),
+     오른쪽 사진 자리는 폭이 cqh × 4/3 을 넘지 않는다. 바닥 높이는 섬네일 40 기준 832 */
+  .ci-top{--ci-min:832px}
+  @media(min-width:901px){
+    .lc-tab .th{aspect-ratio:auto;height:clamp(40px, calc(100cqh - 485px), 99px)}
+    .lc-photo{max-width:calc(100cqh * 4 / 3);margin-left:auto}
+  }
   .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:16px;line-height:1;letter-spacing:-.32px}
   .lc-tab .nm span{display:block}
   .lc-tab .nm span+span{margin-top:4px}
