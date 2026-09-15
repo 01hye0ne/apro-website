@@ -40,7 +40,11 @@
      본사 · 법인 · 거점 점(.pin)을 얹는다. 좌표는 이 그림에 맞춘 밀러 투영.
      파랑 바탕이라 홈의 반전 색 — 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
      띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
-  .gn-map{position:relative;display:block;flex:0 1 1053px;min-width:0;aspect-ratio:922/451}
+  /* 첫 화면 높이에 맞추기 — 지도 폭은 1053 · 띠 안쪽 폭에서 숫자 칸(180)을 뺀 값 · 띠 안쪽 높이(cqh) × 922/451
+     가운데 가장 작은 값. 그래서 지도는 늘 띠 안에 들어온다. 바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
+  .ci-top{--ci-min:620px}
+  .gn-map{position:relative;display:block;flex:none;min-width:0;aspect-ratio:922/451;
+          width:min(1053px, calc(100cqw - 180px), calc(100cqh * 922 / 451))}
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
                transition:stroke-dashoffset 1s var(--ease) var(--d)}
