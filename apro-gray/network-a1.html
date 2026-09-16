@@ -22,17 +22,13 @@
      _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
      (business-layout.css / business-layout.js)이다 -->
 <style>
-  /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4.
-     가로 밑줄은 이 페이지만 걷는다 — 아래 지도가 화면을 가로질러 눕는 그림이라,
-     그 위에 줄이 한 겹 더 있으면 띠가 둘로 읽힌다 */
-  .ci-hero{border-bottom:0}
+  /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4 */
   .ci-hero .sub{line-height:var(--lh-label)}
 
-  /* 지도 띠 (Figma 1227:7859) — 오른쪽은 지도, 왼쪽 아래(지도 칸 밑변과 같은 선)에 숫자 둘.
-     여백은 Figma 의 56 에서 줄였다 — 지도가 2.08:1 로 납작해 세로에 걸리기 때문에,
-     위아래로 덜어 낸 만큼이 그대로 지도 크기가 된다(아래 .ci-hero 주석 참고) */
+  /* 지도 띠 (Figma 1227:7859) — 첫 화면 파랑 하늘 위. 위아래 56 · 왼쪽 44 · 오른쪽 20으로
+     회사소개 · 사업장소재와 같은 여백이다. 오른쪽은 지도, 왼쪽 아래(지도 칸 밑변과 같은 선)에 숫자 둘 */
   .gn-band{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
-           padding:24px 20px 40px var(--ci-m);container-type:inline-size}
+           padding:56px 20px 56px var(--ci-m);container-type:inline-size}
   /* 숫자 덩어리는 띠 아래 여백 안으로 12 내려앉는다 — 마지막 숫자 글자 밑이 지도 밑변과 같은 선 */
   .gn-stats{flex:none;list-style:none;margin:0 0 -12px;padding:0;display:flex;flex-direction:column;gap:34px}
   .gn-stats li{display:flex;flex-direction:column;gap:8px}
@@ -97,13 +93,12 @@
                       background:currentColor;opacity:.7;transform:translateY(-1px)}
   .gn-list em{font-style:normal;font-weight:400;font-size:var(--fs-tag);color:var(--on-dark-sub)}
 
-  /* 줄글은 Figma 자리 그대로 맨 위에 눕는다. 대신 위아래 여백을 88/40 에서 48/24 로 줄여
-     그만큼을 지도에 넘긴다 — 지도가 2.08:1 로 납작해서 가로가 아니라 세로에 걸리기 때문에,
-     히어로에서 덜어 낸 높이가 곧 지도 크기다(1440 에서 769×370 → 979×471).
-     회사소개 · 사업장소재는 이 페이지 <style> 을 안 쓰므로 예전 그대로다
-     (공용 틀 company-info.css 는 손대지 않았다) */
+  /* 지도만 띠의 위아래 여백을 뚫고 나간다 — 여백 값은 다른 회사정보 페이지와 똑같이 두되
+     (밑줄 · 숫자 자리는 그대로), 지도가 2.08:1 로 납작해 세로에 걸리므로 그 112 를 그대로
+     지도 크기로 돌려준다(1440 에서 769×370 → 1001×482). 지도 그림은 띠 안에 꽉 차게 서므로
+     위로는 밑줄에, 아래로는 첫 화면 바닥에 닿는다 */
   @media(min-width:901px){
-    .ci-hero{padding:48px 20px 28px var(--ci-m)}
+    .gn-map{margin-block:-56px}
   }
 
   @media(max-width:900px){
