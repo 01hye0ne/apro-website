@@ -799,8 +799,13 @@
   .sf-dl--row{display:grid;grid-template-columns:max-content 1fr max-content}
   .sf-dl--row li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;
                  align-items:center}
-  .sf-dl--row .k{padding:4px 8px;background:var(--c-tagbg);color:var(--c-num);
-                 font-size:var(--t-sm);line-height:var(--lh-tight)}
+  /* 이름 태그 — 제품 목록(.sf-dl--row)과 제품 카드(.sf-prods)가 한 벌을 같이 쓴다.
+     둘 다 "이 줄/칸이 무슨 제품인가"를 다는 이름표라 색도 크기도 갈릴 이유가 없다.
+     .sf-dl .k 와 클래스 수가 같으므로(둘 다 2개) 반드시 그 뒤에 와야 이긴다 */
+  .sf-dl--row .k,.sf-prods .k{align-self:flex-start;padding:4px 8px;
+                 background:var(--c-tagbg);color:var(--c-num);
+                 font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
+                 line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
   .sf-dl--row .k::before{display:none}
   .sf-dl--row .v{justify-self:end;font-family:var(--suit);font-weight:600;
                  font-size:var(--t-xs);line-height:var(--lh-body);
@@ -810,7 +815,29 @@
      선이 어느 묶음의 것인지 읽히지 않는다(제품 쪽 밑줄처럼 보인다).
      맞닿은 그 한 칸만 당기고 스택 gap 자체는 건드리지 않는다 — 제목·줄글과의
      숨은 그대로여야 한다 */
-  .sf-dl--row+.sf-dl{margin-top:-24px}
+  .sf-dl--row+.sf-dl,.sf-prods+.sf-dl{margin-top:-24px}
+
+  /* ── 제품 카드 (04-2 LiFSI 전해염) — Figma 1302:46436 ──────────────────
+     [이름 태그][두 줄 설명][정보][그림 칸] 을 세로로 쌓은 카드 두 장이다.
+
+     칸 폭은 시안의 160 을 그대로 쓴다. 글 열을 반씩 나눠 갖게 하면 폭이 두 배가
+     되고 4:3 그림도 따라 두 배가 되어(108 → 243) 장이 한 화면을 넘긴다 — 이 장의
+     글 열에 남는 세로가 900 높이 화면에서 242px 뿐이라, 시안 크기(블록 242)가
+     사실상 들어갈 수 있는 최대치다.
+
+     카드에는 시안에 있는 아래 선을 긋지 않는다. 바로 밑에 특징 목록이 제 2px
+     윗선을 달고 붙어 서기 때문에(아래 규칙이 그 사이 24 를 당긴다) 선이 두 겹으로
+     겹친다 — 닫는 선 노릇은 그쪽 하나면 된다 */
+  .sf-prods{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,160px));
+            gap:8px}
+  .sf-prods li{min-width:0;display:flex;flex-direction:column;gap:8px;padding:8px}
+  .sf-prods .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+               line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-body)}
+  /* 그림 칸에 붙는 꼬리말. 사다리에 14 칸이 없어 한 칸 아래(12)를 쓴다 */
+  .sf-prods .cap{font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+                 line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-num)}
+  /* 아직 사진이 없다 — 붙박이 그림 기둥의 자리표시와 같은 톤으로 칸만 세워 둔다 */
+  .sf-prods .box{aspect-ratio:4/3;background:var(--sf-ph-bg);border:1px solid var(--c-bd)}
 
   /* 04-1 제품 고르기 — 단추는 글 기둥에, 사진은 붙박이 그림 기둥에 있다.
      떨어져 있어도 한 짝으로 읽히도록 tab / tabpanel 로 묶었다 */
@@ -845,8 +872,10 @@
   }
   /* 색이 갈리는 대신 넘어가도록 — 토큰 자체는 전환되지 않으므로 쓰는 자리에 건다 */
   .sf-texts h2,.sf-texts .en,.sf-body p,
-  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v{transition:color .5s var(--ease)}
-  .sf-dl--row .k{transition:background-color .5s var(--ease)}
+  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v,
+  .sf-prods .k,.sf-prods .d,.sf-prods .cap{transition:color .5s var(--ease)}
+  .sf-dl--row .k,.sf-prods .k{transition:background-color .5s var(--ease)}
+  .sf-prods .box{transition:border-color .5s var(--ease)}
   .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
   /* 공정 목록은 장이 제자리에 서면 위에서부터 한 줄씩 올라온다 — 원본 도식의
      "공정 순서대로 텍스트가 등장" 을 옮긴 것이다. 한 번 보인 장은 다시 감추지
@@ -864,6 +893,7 @@
     transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
     .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v,
+    .sf-prods .k,.sf-prods .d,.sf-prods .cap,.sf-prods .box,
     .sf-num,.sf-dl,.sf-num li,.sf-dl li,
     .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
     .sf-ph,.sf-ph.is-on{transition:none}
@@ -1445,6 +1475,21 @@
               <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
             </div>
           </div>
+          <!-- 제품 두 장 (Figma 1302:46436) — 특징 목록 위에 선다 -->
+          <ul class="sf-prods">
+            <li>
+              <p class="k">LiFSI 전해질</p>
+              <p class="d">고출력 · 수명연장용<br />차세대 전해염</p>
+              <p class="cap">정보</p>
+              <span class="box"></span>
+            </li>
+            <li>
+              <p class="k">산화물계 전해질</p>
+              <p class="d">산화물계<br />LLZMO · LATP</p>
+              <p class="cap">정보</p>
+              <span class="box"></span>
+            </li>
+          </ul>
           <ul class="sf-dl">
             <li><p class="k">High Purity</p></li>
             <li><p class="k">Thermal Stability</p></li>
