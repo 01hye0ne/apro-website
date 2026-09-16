@@ -22,10 +22,12 @@
      (_gen-a1.py 의 build() 규칙). GNB · 푸터 · 전체메뉴는 글로벌 네트워크 A-1 과 같은 한 벌이다 -->
 <style>
   /* 사업장 띠 (Figma 1227:7864) — 첫 화면 파랑 그라디언트 위. 위아래 56 · 옆 44, 사이 20.
-     왼쪽 552(오른쪽 115 비움 → 글 폭 437): 사업장 이름(SUIT 800 38) · 영문 이름(밑줄 2px) → 주소 · 전화 · 팩스 줄
-     → 20 아래 사업장 탭 셋(사이 8, 고른 탭은 흰 판에 파랑 글). 오른쪽: 구글 지도(남은 폭 × 띠 안쪽 높이를 꽉 채운다) */
+     왼쪽 437(= 1440 에서 12컬럼 중 4열. Figma 는 552 상자에 오른쪽 115 를 비워 글 폭이 437 이었는데,
+     그 빈 자리를 지도에 넘겨 지도가 7열 → 8열이 된다. 글은 437 그대로라 한 줄도 움직이지 않는다):
+     사업장 이름(SUIT 800 38) · 영문 이름(밑줄 2px) → 주소 · 전화 · 팩스 줄
+     → 20 아래 사업장 탭 셋(사이 8, 고른 탭은 흰 판에 파랑 글). 오른쪽: 구글 지도 */
   .lc-band{display:flex;align-items:center;gap:20px;padding:56px var(--ci-m)}
-  .lc-info{flex:0 0 552px;padding-right:115px;display:flex;flex-direction:column;gap:20px}
+  .lc-info{flex:0 0 437px;display:flex;flex-direction:column;gap:20px}
   .lc-head{display:flex;flex-direction:column;gap:8px;padding-bottom:24px;border-bottom:2px solid #e4e8ed}
   .lc-head h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
   .lc-head .en{margin:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);color:#fff}
@@ -65,15 +67,15 @@
      1.46:1 · 1920 에서 2.00:1). 한 건물 주소를 짚는 지도가 2:1 까지 늘어나면 가운데 건물
      빼고는 다 주변 여백이고, 파랑 하늘도 오른쪽 삼분의 이가 회색으로 덮인다.
      남는 폭은 글 칸과 지도 사이 여백이 된다(space-between) — 지도는 오른쪽 끝에 붙는다.
-     자리가 3:2 보다 좁으면 flex-shrink 가 줄여 주므로 예전처럼 꽉 찬다(1440 이하가 그렇다).
+     1.7 은 1440 에서 지도가 8열(884)에 딱 차는 값이다 — 3:2(1.5)로 묶으면 783 에서 걸려
+     8열에 못 미친다. 그보다 넓은 화면에서는 1.7 이 걸려 2:1 슬래브로 늘어나지 않는다.
+     자리가 그보다 좁으면 flex-shrink 가 줄여 주므로 예전처럼 꽉 찬다.
      ⚠ 이 블록은 위 .lc-map 기본 규칙보다 뒤에 있어야 한다 — 특정도가 같아 순서가 이긴다 */
   @media(min-width:901px){
     .lc-band{justify-content:space-between}
-    .lc-map{flex:0 1 auto;width:calc(100cqh * 1.5)}
+    .lc-map{flex:0 1 auto;width:calc(100cqh * 1.7)}
   }
-  /* 글 칸은 줄어들지 않는다(0 0) — 지도에 큰 기준 폭이 생기면서 예전의 0 1 로는 둘이
-     함께 줄어 글 칸이 437 에서 320 까지 밀렸다. 줄어드는 건 지도만 맡는다 */
-  @media(max-width:1100px){ .lc-info{flex:0 0 437px;padding-right:0} }
+
   @media(max-width:900px){
     .lc-band{flex-direction:column;align-items:stretch;padding:40px var(--ci-m)}
     .lc-info{flex:none}
