@@ -702,7 +702,7 @@
           --c-tick:var(--sf-ter);    /* 500 눈금 세로   */
           --c-bd-s:var(--sf-line-s); /* 300 목록 윗선   */
           --c-bd:var(--sf-line)}     /* 200 목록 칸선   */
-  .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+  .sf-txtin{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
             padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
   /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
   /* ── 줄바꿈 ────────────────────────────────────────────────────────────
@@ -729,6 +729,29 @@
      앞의 점은 달지 않는다: 목록 항목이 아니라 문단의 머리이기 때문이다 */
   .sf-body .sub{font-weight:800;font-size:var(--t-md);line-height:var(--lh-head);
                 letter-spacing:var(--ls-num);color:var(--c-ttl)}
+
+  /* ── 문의 단추 (04-1 ~ 04-4) ──────────────────────────────────────────
+     제목 줄 오른쪽 끝에 얹는다. 글 열의 세로는 이미 [제목 · 줄글]과 [목록]이
+     나눠 쓰고 있고 그 둘의 관계(목록 마지막 줄이 그림 바닥선에 앉는다)가 이
+     레이아웃의 뼈대라, 흐름에 끼워 넣으면 네 장 모두 그 선이 어긋난다.
+     HNBR 바인더는 목록이 둘이라 남는 자리가 13px 뿐이기도 하다.
+     그래서 흐름에서 빼내(absolute) 세로를 한 픽셀도 쓰지 않는다.
+
+     높이는 제목 한 줄과 같게 잡는다 — 제목이 clamp 로 화면을 따라 줄어도
+     단추가 늘 그 줄에 정확히 맞물린다(보정값을 둘 필요가 없다).
+     오른쪽은 --txt-pad-r 만큼 물러나 목록의 오른쪽 끝과 같은 세로줄에 선다
+     (기준 상자가 .sf-txtin 의 패딩 상자라 right:0 은 여백 바깥이 된다).
+
+     색은 브랜드 파랑을 직접 칠하지 않고 --c-num 을 쓴다 : 지금 보고 있지 않은
+     장은 글 열이 통째로 바래는데 단추 넷만 파랗게 남으면 그쪽으로 눈이 끌린다 */
+  .sf-cta{position:absolute;top:0;right:var(--txt-pad-r);
+          height:calc(var(--t-xl) * var(--lh-head));
+          display:inline-flex;align-items:center;padding:0 20px;
+          background:var(--c-num);color:#fff;
+          font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
+          line-height:var(--lh-tight);letter-spacing:var(--ls-num);white-space:nowrap;
+          transition:background-color .5s var(--ease)}
+  .sf-cta:hover{background:var(--point-900)}
 
   /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
   .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--c-bd-s)}
@@ -941,6 +964,9 @@
      열린 장 안은 글이 먼저, 그림이 그 아래 가로로 눕는다 — 좁은 폭에서 그림을
      옆에 두면 둘 다 읽히지 않는다 */
   @media(max-width:767px){
+    /* 이 폭에서는 제목 줄이 아코디언 머리줄로 바뀌어(스크립트가 따로 만든다) 얹을
+       자리가 없다. 흐름으로 되돌리면 마크업 순서대로 목록 다음에 선다 */
+    .sf-cta{position:static;align-self:flex-start;height:auto;padding:12px 20px}
     .sf-railwrap{display:none}
     /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
     .sf-acc-grp{display:flex}
@@ -1395,6 +1421,7 @@
               <span class="shot"><img src="../assets/cnt-carbon-black.jpg" alt="" decoding="async" /></span><span class="nm">Carbon Black</span>
             </button>
           </div>
+          <a class="sf-cta" href="#" aria-label="탄소 나노 튜브 문의하기">문의하기</a>
         </div>
       </div>
     </section>
@@ -1418,6 +1445,7 @@
             <li><p class="k">Fast Charging</p></li>
             <li><p class="k">Low Resistance &amp; Low Viscosity</p></li>
           </ul>
+          <a class="sf-cta" href="#" aria-label="LiFSI 전해염 문의하기">문의하기</a>
         </div>
       </div>
     </section>
@@ -1445,6 +1473,7 @@
             <li><p class="k">높은 강도 및 유연성</p><p class="d">전극 활물질 부피 변화 흡수, 탈락 방지.</p></li>
             <li><p class="k">SWCNT 분산 최적화</p><p class="d">단일벽 탄소나노튜브의 응집 해소, 점도 감소.</p></li>
           </ul>
+          <a class="sf-cta" href="#" aria-label="HNBR 바인더 문의하기">문의하기</a>
         </div>
       </div>
     </section>
@@ -1468,6 +1497,7 @@
             <li><b>04</b><span>화성 공정</span></li>
             <li><b>05</b><span>제품 출하</span></li>
           </ol>
+          <a class="sf-cta" href="#" aria-label="파우치셀 제조 문의하기">문의하기</a>
         </div>
       </div>
     </section>
