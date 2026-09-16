@@ -146,48 +146,42 @@
     <!-- 방침 카드 격자 (Figma 1249:14656) — [아이콘 / 키워드 / 본문] 한 장이 방침 하나, 3열 × 2줄.
          아이콘은 아직 그림이 없어 Figma 처럼 58 네모 자리(.ic)만 둔다 — 그림이 오면 그 안에 <img> 를 넣는다.
          받는 규칙은 content-layout.css 의 .cpolicy-grid. A(esg-environment.html)는 사진 띠(.cpolicy) 그대로다 -->
-    <ul class="cpolicy-grid">
+    <!-- 방침 여섯 장 — 다섯 섹션 공용 카드 격자(.cgrid, content-layout.css). 눈금은 아이콘.
+         2026-09-16 에 .cpolicy-grid(판 위 흰 카드)에서 갈아탔다. A 는 사진 띠(.cpolicy) 그대로다 -->
+    <ul class="cgrid">
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>지속적인 온실가스 감축</h3>
-          <p>재생에너지 도입 및 에너지 효율 개선을 통해 온실가스 감축 목표를 달성하고자 지속적으로 노력합니다. 제품 설계부터 생산 공정 전반에 걸쳐 에너지 효율 향상을 고려하며, 사업장 온실가스 배출량을 정기적으로 모니터링하고 관리합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 14 A3 3 0 0 1 7.6 8.3 A4.4 4.4 0 0 1 16.2 9.7 A2.8 2.8 0 0 1 17.5 14 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16 V20.4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 18.3 L12 20.4 L14.1 18.3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>지속적인 온실가스 감축</h3>
+        <p>재생에너지 도입 및 에너지 효율 개선을 통해 온실가스 감축 목표를 달성하고자 지속적으로 노력합니다. 제품 설계부터 생산 공정 전반에 걸쳐 에너지 효율 향상을 고려하며,
+          사업장 온실가스 배출량을 정기적으로 모니터링하고 관리합니다.</p>
       </li>
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>오염물질 배출 최소화</h3>
-          <p>대기, 수질, 토양 등 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극적으로 참여합니다. 오염물질 발생량을 측정 및 관리하고, 방지시설의 성능 및 운영 효율을 점검하여 개선 계획을 수립합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 20.5 L7.8 11.5 H12.2 L13.5 20.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.9 14.5 H13.1" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 20.5 H20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.3 11 C15.7 11 15.7 9.2 17.1 9.2 C18.2 9.2 18.4 9.9 19.3 9.6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 7.6 C15.1 7.6 15.1 5.8 16.5 5.8 C17.6 5.8 17.8 6.5 18.7 6.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>오염물질 배출 최소화</h3>
+        <p>대기, 수질, 토양 등 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극적으로 참여합니다. 오염물질 발생량을 측정 및 관리하고, 방지시설의 성능 및
+          운영 효율을 점검하여 개선 계획을 수립합니다.</p>
       </li>
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>자원 효율성 증대 및 폐기물 관리</h3>
-          <p>제품의 설계 단계부터 자원 절감과 에너지 효율 향상을 고려합니다. 폐기물 발생을 최대한 억제하고 재활용을 확대하며, 유해 화학물질에 대한 사전 식별 및 관리 체계를 강화합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5.106 10.784 A7 7 0 0 1 17.362 7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.257 4.502 L17.362 7.5 L14.428 6.876" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.894 13.216 A7 7 0 0 1 6.638 16.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.743 19.498 L6.638 16.5 L9.572 17.124" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>자원 효율성 증대 및 폐기물 관리</h3>
+        <p>제품의 설계 단계부터 자원 절감과 에너지 효율 향상을 고려합니다. 폐기물 발생을 최대한 억제하고 재활용을 확대하며, 유해 화학물질에 대한 사전 식별 및 관리 체계를
+          강화합니다.</p>
       </li>
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>수자원 관리</h3>
-          <p>수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 C12 3.5 16.2 8.5 16.2 11.5 A4.2 4.2 0 0 1 7.8 11.5 C7.8 8.5 12 3.5 12 3.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 18.2 C4.8 17.4 6.2 17.4 7.5 18.2 S10.2 19 11.5 18.2 S14.2 17.4 15.5 18.2 S18.2 19 20.5 18.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 20.8 C4.8 20 6.2 20 7.5 20.8 S10.2 21.6 11.5 20.8 S14.2 20 15.5 20.8 S18.2 21.6 20.5 20.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>수자원 관리</h3>
+        <p>수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.</p>
       </li>
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>생물다양성 보호</h3>
-          <p>기업 활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력합니다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20.5 V12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 14.5 C9.5 14.5 7 13 7 10 C10 10 12 11.5 12 14.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 12.5 C14.5 12.5 17 11 17 8 C14 8 12 9.5 12 12.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 20.5 H18.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>생물다양성 보호</h3>
+        <p>기업 활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력합니다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행합니다.</p>
       </li>
       <li>
-        <span class="ic" aria-hidden="true"></span>
-        <div class="t">
-          <h3>투명한 정보 공개 및 소통</h3>
-          <p>고객사, 협력사 등 이해관계자와의 소통을 강화하고, 주요 환경 성과와 개선 노력을 투명하게 공유합니다. 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경 경영의 인식 제고와 실천 확산을 추진합니다.</p>
-        </div>
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5.5 3.5 H13.5 L17 7 V17.5 H5.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 3.5 V7 H17" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10 H14.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 12.8 H12 " stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 15.5 A3 3 0 1 1 12.5 15.5 A3 3 0 1 1 18.5 15.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.6 17.6 L20.5 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>투명한 정보 공개 및 소통</h3>
+        <p>고객사, 협력사 등 이해관계자와의 소통을 강화하고, 주요 환경 성과와 개선 노력을 투명하게 공유합니다. 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경
+          경영의 인식 제고와 실천 확산을 추진합니다.</p>
       </li>
     </ul>
   </section>

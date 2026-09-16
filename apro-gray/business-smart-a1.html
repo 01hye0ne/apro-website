@@ -769,6 +769,12 @@
   .sf-dl--row{display:grid;grid-template-columns:max-content 1fr}
   .sf-dl--row li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;
                  align-items:center}
+  /* 제품 목록과 뒤따르는 특징 목록은 붙여 세운다 — 두 묶음을 가르는 것은 특징
+     목록의 2px 윗선이고, 그 선과 제품 마지막 칸 사이에 .sf-txtin 의 24 가 벌어지면
+     선이 어느 묶음의 것인지 읽히지 않는다(제품 쪽 밑줄처럼 보인다).
+     맞닿은 그 한 칸만 당기고 스택 gap 자체는 건드리지 않는다 — 제목·줄글과의
+     숨은 그대로여야 한다 */
+  .sf-dl--row+.sf-dl{margin-top:-24px}
   .sf-dl em{font-style:normal;color:var(--c-ter)}
 
   /* 04-1 제품 고르기 — 단추는 글 기둥에, 사진은 붙박이 그림 기둥에 있다.
