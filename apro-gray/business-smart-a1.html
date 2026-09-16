@@ -860,10 +860,11 @@
      달고 붙어 서기 때문에(아래 .sf-prods+.sf-dl 규칙이 그 사이 24 를 당긴다) 선이
      두 겹으로 겹친다 — 닫는 선 노릇은 그쪽 하나면 된다.
 
-     그림은 시안의 210×158(4:3)이 최대치다. 칸 폭에 비례해서만 잡으면 넓은 화면
-     (글 열 647)에서 281×211 까지 커져 카드가 227, 두 장이 454 가 된다 — 이 장은
+     그림은 4:3 을 지키되 140×105 가 최대치다(시안 210×158 에서 줄였다). 칸 폭에
+     비례해서만 잡으면 넓은 화면(글 열 647)에서 281×211 까지 커진다 — 이 장은
      제목 · 줄글 · 제품 · 특징 · 문의를 한 화면에 세우므로 그만한 자리가 없다.
-     시안 크기로 묶으면 두 장이 350 에 머물고, 넓은 화면에서는 글 쪽이 대신 넓어진다 */
+     105 는 글 덩어리(태그 · 설명 · 값) 높이와 거의 같아 카드가 글에 맞춰 선다
+     (두 장 350 → 약 250). 넓은 화면에서는 글 쪽이 대신 넓어진다 */
   .sf-prods{list-style:none;display:flex;flex-direction:column;
              border-top:2px solid var(--c-bd-s)}
   .sf-prods li{min-width:0;display:flex;align-items:flex-start;gap:8px;padding:9px 8px}
@@ -872,7 +873,7 @@
                 align-items:flex-start;gap:8px}
   .sf-prods .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
                line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-body)}
-  .sf-prods .box{flex:0 0 auto;width:min(44.6%,210px);
+  .sf-prods .box{flex:0 0 auto;width:min(44.6%,140px);
                  aspect-ratio:4/3;overflow:hidden;
                  background:var(--sf-ph-bg);border:1px solid var(--c-bd)}
   .sf-prods .box img{display:block;width:100%;height:100%;object-fit:cover}
