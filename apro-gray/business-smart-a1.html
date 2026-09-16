@@ -2000,9 +2000,10 @@
    고리는 tablist 다 : 칸 하나가 tab, 그 공정의 설비 벌이 tabpanel 이다.
    눌러서 고르고 화살표로 옮겨 다닌다 — 04-1 제품 고르기와 같은 약속이다.
 
-   맵에 손이 닿아 있는 동안(마우스가 위에 있거나 키보드 초점이 안에 있는
-   동안)에는 저절로 넘어가지 않는다. 고른 공정을 읽으려던 참인데 3.6초 뒤에
-   끌려가면 고른 보람이 없다. 손이 떠나면 고른 자리에서 다시 돈다.
+   마우스를 올려 둔다고 멈추지는 않는다 — 누르면 그 공정에서 머무는 시간을
+   처음부터 다시 세므로, 고른 공정을 온전히 3.6초 보고 나서 넘어간다.
+   키보드 초점이 맵 안에 있는 동안만 멈춘다 : 화살표로 옮겨 다니는 중에
+   저절로 넘어가면 짚어 둔 자리를 잃는다.
    움직임을 줄인 설정에서는 아예 돌지 않는다 — 그때는 누르는 것만 남는다 */
 (function(){
   var map = document.querySelector('.sf-map');
@@ -2058,15 +2059,13 @@
   if(slow.addEventListener) slow.addEventListener('change', run);
   else if(slow.addListener) slow.addListener(run);
 
-  map.addEventListener('mouseenter', function(){ hold(true); });
-  map.addEventListener('mouseleave', function(){ hold(false); });
   map.addEventListener('focusin',  function(){ hold(true); });
   map.addEventListener('focusout', function(e){
     if(!map.contains(e.relatedTarget)) hold(false);
   });
 
-  /* 누르면 그 공정으로 간다. 그 자리에 머무는 건 hold 가 맡는다 —
-     누른 뒤에도 손이 맵 위에 있으니 저절로 넘어가지 않는다 */
+  /* 누르면 그 공정으로 가고, 머무는 시간을 처음부터 다시 센다(run 이 앞선
+     시계를 버리고 새로 건다) — 누르자마자 넘어가 버리지 않는다 */
   function at_(i){ return +cells[i].getAttribute('data-step'); }
   for(var i=0;i<tabs.length;i++)(function(i){
     if(!tabs[i]) return;
