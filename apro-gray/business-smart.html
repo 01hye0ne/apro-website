@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <!-- ============================================================
@@ -1433,6 +1434,99 @@
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft{padding:24px 0 12px}
   }
+  /* A-1 본문 · 리스트 · 버튼 스타일 이식 (2026-09-17) — business-smart-a1.html 값 그대로 */
+  /* 색 — A-1 :root 의 --sf-* 와 글 열(.sf-txt)의 --c-* 를 "지금 보고 있는 장" 값으로 풀어 적는다
+     (--c-ttl=--sf-txt · --c-body=--sf-sec · --c-num=--brand · --c-tagbg=--point-200 ·
+      --c-bd-s=--sf-line-s · --c-bd=--sf-line). A-1 의 옅은 장(바랜 색) 규칙은 가져오지 않는다.
+     글자 크기는 A-1 의 --t-* 별칭이 이 파일에 없어 그 밑의 --fs-* 를 바로 쓴다
+     (--t-md=--fs-h3 · --t-sm/--t-xs=--fs-body · --t-2xs=--fs-tag).
+     선택자에 .hcard .hleft 를 붙인 이유 — business-layout.css 의 .hcard p / .hcard ul li
+     (불릿 점 · 17px 들여쓰기 · 18px 글)를 이기되, 비주얼 칸(.pmap-spec 등)은 건드리지 않는다 */
+  .hcard>.hleft{--sf-txt:#1b2733;--sf-sec:#5a6675;--sf-ter:#96a3b3;
+    --sf-line:#e4e8ed;--sf-line-s:#cbd2da;--ald:"Aldrich",var(--rc),sans-serif}
+  .hcard>.hleft>h3+p,.hcard .hleft .hlead>p,
+  .hcard .hleft .sf-num,.hcard .hleft .sf-dl,.hcard .hleft .sf-prods{word-break:keep-all;
+    overflow-wrap:break-word;text-wrap:pretty}
+
+  /* 줄글 위 작은 제목 (A-1 .sf-body .sub) — 점 없음 */
+  .hcard>.hleft>h3+p{padding-left:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+    line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--sf-txt);text-wrap:balance}
+  /* 줄글 (A-1 .sf-body p) — 점 · 들여쓰기를 뗀다. 문단 사이 8 */
+  .hcard .hleft .hlead{gap:8px}
+  .hcard .hleft .hlead>p{padding-left:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+  .hcard .hleft .hlead>p::before{content:none}
+
+  /* 목록 공통 — .hcard ul 의 세로 flex · 8px 간격과 li 불릿 점을 푼다 */
+  .hcard .hleft .sf-num,.hcard .hleft .sf-dl{display:block;list-style:none;width:100%;
+    border-top:2px solid var(--sf-line-s)}
+  .hcard .hleft .sf-num li::before,.hcard .hleft .sf-dl li::before,
+  .hcard .hleft .sf-prods li::before{content:none}
+
+  /* 번호 목록 (A-1 .sf-num) */
+  .hcard .hleft .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
+    border-bottom:1px solid var(--sf-line)}
+  .hcard .hleft .sf-num b{width:18px;flex-shrink:0;font-family:var(--ald);font-weight:400;
+    font-size:var(--fs-tag);line-height:var(--lh-tight);color:var(--brand)}
+  .hcard .hleft .sf-num span{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+
+  /* 점 목록 (A-1 .sf-dl) */
+  .hcard .hleft .sf-dl li{display:flex;flex-direction:column;gap:8px;padding:8px;
+    border-bottom:1px solid var(--sf-line)}
+  .hcard .hleft .sf-dl .k{display:flex;align-items:center;gap:4px;font-family:var(--suit);
+    font-weight:800;font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls-num);
+    color:var(--sf-txt)}
+  .hcard .hleft .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--brand)}
+  .hcard .hleft .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+  .hcard .hleft .sf-num li:last-child,.hcard .hleft .sf-dl li:last-child{border-bottom:0}
+
+  /* 제품 목록 (A-1 .sf-dl--row) — [이름 태그][설명][값] 세 칸을 subgrid 로 맞춘다 */
+  .hcard .hleft .sf-dl--row{display:grid;grid-template-columns:max-content 1fr max-content}
+  .hcard .hleft .sf-dl--row li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;
+    align-items:center}
+  .hcard .hleft .sf-dl--row .k,.hcard .hleft .sf-prods .k{align-self:flex-start;padding:4px 8px;
+    background:var(--point-200);color:var(--brand);
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+    line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .hcard .hleft .sf-dl--row .k::before{display:none}
+  .hcard .hleft .sf-dl--row .v{justify-self:end;white-space:nowrap}
+  /* 좁은 폭(900 이하)에서만 값 칸을 접게 둔다 — A-1 그대로(한 줄 고정)면 탄소 나노 튜브의
+     긴 값(비표면적 ≥ 300~1,000 m²/g)이 글 열을 넘어 오른쪽이 잘린다(700 폭 실측 29px) */
+  @media(max-width:900px){
+    .hcard .hleft .sf-dl--row{grid-template-columns:max-content 1fr auto}
+    .hcard .hleft .sf-dl--row .v{white-space:normal;text-align:right}
+  }
+  .hcard .hleft .sf-dl--row .v,.hcard .hleft .sf-prods .cap{font-family:var(--suit);font-weight:600;
+    font-size:var(--fs-meta);line-height:var(--lh-body);
+    letter-spacing:var(--ls-num);color:var(--brand)}
+  /* 제품 목록 · 제품 카드 뒤 특징 목록은 붙여 세운다 — A-1 은 스택 gap 24 를 당기고,
+     여기 글 열의 스택 gap 은 --stack-gap 이라 그만큼 당긴다 */
+  .hcard .hleft .sf-dl--row+.sf-dl,.hcard .hleft .sf-prods+.sf-dl{margin-top:calc(var(--stack-gap) * -1)}
+
+  /* 제품 카드 (A-1 .sf-prods) — 그림은 A 의 비주얼 칸(.hph--slides)이 넘겨 보이므로
+     여기서는 글 덩어리(태그 · 설명 · 값)만 쓴다. .box 규칙은 그림을 붙일 때를 위해 함께 둔다 */
+  .hcard .hleft .sf-prods{list-style:none;display:flex;flex-direction:column;gap:0;
+    border-top:2px solid var(--sf-line-s)}
+  .hcard .hleft .sf-prods li{min-width:0;display:flex;align-items:flex-start;gap:8px;padding:9px 8px}
+  .hcard .hleft .sf-prods li+li{border-top:1px solid var(--sf-line)}
+  .hcard .hleft .sf-prods .tx{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
+    align-items:flex-start;gap:8px}
+  .hcard .hleft .sf-prods .d{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+  .hcard .hleft .sf-prods .box{flex:0 0 auto;width:min(44.6%,140px);aspect-ratio:4/3;overflow:hidden;
+    background:#e5e6e8;border:1px solid var(--sf-line)}
+  .hcard .hleft .sf-prods .box img{display:block;width:100%;height:100%;object-fit:cover}
+  .hcard .hleft .sf-prods .box--plate{background:#fff}
+  .hcard .hleft .sf-prods .box--plate img{object-fit:contain}
+
+  /* 문의 단추 (A-1 .sf-cta) — 자리는 A 그대로(글 열 흐름 맨 아래), 모양만 A-1 */
+  .hcta{padding:12px 20px;border-radius:0;background:var(--brand);color:#fff;
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+    line-height:var(--lh-tight);letter-spacing:var(--ls-num);white-space:nowrap;
+    transition:background-color .5s var(--ease)}
+  .hcta:hover{background:var(--point-900)}
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -1650,11 +1744,11 @@
           <div class="hlead">
             <p>활성화 공정 전체 설비의 실시간 정밀 제어와 체계적인 데이터 관리를 통해 최고의 생산 가동 효율과 제조 안정성을 보장합니다.</p>
           </div>
-          <ul>
-            <li><b>스마트 설비 제어</b> 충방전기, 디개싱, 에이징 룸 등 공정 내 모든 하드웨어를 실시간 직접 제어합니다.</li>
-            <li><b>실시간 데이터 수집</b> 미세한 온도·압력·전압·전류 데이터를 정밀 측정하여 완벽한 품질 추적성을 확보합니다.</li>
-            <li><b>지능형 안전 인터록</b> 가스 누출, 과전압 등 이상 징후 감지 시 설비를 즉각 정지시켜 사고를 원천 차단합니다.</li>
-            <li><b>유연한 상위 연동</b> PC 및 MES와의 고속 통신으로 공정 데이터를 실시간 전송하고 레시피 명령을 완벽히 수행합니다.</li>
+          <ul class="sf-dl">
+            <li><p class="k">스마트 설비 제어</p><p class="d">충방전기, 디개싱, 에이징 룸 등 공정 내 모든 하드웨어를 실시간 직접 제어합니다.</p></li>
+            <li><p class="k">실시간 데이터 수집</p><p class="d">미세한 온도·압력·전압·전류 데이터를 정밀 측정하여 완벽한 품질 추적성을 확보합니다.</p></li>
+            <li><p class="k">지능형 안전 인터록</p><p class="d">가스 누출, 과전압 등 이상 징후 감지 시 설비를 즉각 정지시켜 사고를 원천 차단합니다.</p></li>
+            <li><p class="k">유연한 상위 연동</p><p class="d">PC 및 MES와의 고속 통신으로 공정 데이터를 실시간 전송하고 레시피 명령을 완벽히 수행합니다.</p></li>
           </ul>
         </div>
         <div class="hright">
@@ -1680,10 +1774,11 @@
           </div>
           <!-- 2026-09-16 : A-1 04-1 의 제품 셋(고르기 단추 이름 + 사진 밑 설명).
                줄 꼴은 같은 섹션 HNBR 바인더 제품 두 줄과 같다 — 이름 / 설명 (수치) -->
-          <ul>
-            <li><b>SW/FW-CNT Powder</b> 단일벽/소수벽 CNT 분말 (비표면적 ≥ 300~1,000 m&sup2;/g)</li>
-            <li><b>SW/FW-CNT Slurry</b> 단일벽/소수벽 CNT 분산액 (CNT 함량 0.2 ~ 4.0 wt%)</li>
-            <li><b>Carbon Black</b> 전도성 카본블랙 (비표면적 60 ~ 150 m&sup2;/g)</li>
+          <!-- 2026-09-17 : 글 모양은 A-1 제품 목록(.sf-dl--row) — [이름 태그][설명][값] -->
+          <ul class="sf-dl sf-dl--row">
+            <li><p class="k">SW/FW-CNT Powder</p><p class="d">단일벽/소수벽 CNT 분말</p><p class="v">비표면적 ≥ 300~1,000 m&sup2;/g</p></li>
+            <li><p class="k">SW/FW-CNT Slurry</p><p class="d">단일벽/소수벽 CNT 분산액</p><p class="v">CNT 함량 0.2 ~ 4.0 wt%</p></li>
+            <li><p class="k">Carbon Black</p><p class="d">전도성 카본블랙</p><p class="v">비표면적 60 ~ 150 m&sup2;/g</p></li>
           </ul>
           <a class="hcta" href="#" aria-label="탄소 나노 튜브 문의하기">문의하기</a>
         </div>
@@ -1708,19 +1803,19 @@
           </div>
           <!-- 2026-09-16 : A-1 04-2 의 제품 두 장(Figma 1302:46436). HNBR 바인더와 같은 짜임 —
                제품 줄 / .hblock 가로선 / 특징 줄 -->
-          <ul>
-            <li><b>LiFSI 전해질</b> 고출력 · 수명연장용 차세대 전해염 (비표면적 ≥300~1,000 m&sup2;/g)</li>
-            <li><b>산화물계 전해질</b> 산화물계 LLZMO · LATP (이온 전도도 0.2~1.0 mS/cm)</li>
+          <!-- 2026-09-17 : 글 모양은 A-1 04-2 그대로 — 제품 카드(.sf-prods, 그림은 오른쪽 비주얼 칸이 맡는다)
+               + 붙여 세운 특징 목록(.sf-dl). 사이 가로선은 .hblock 대신 특징 목록의 2px 윗선이 긋는다 -->
+          <ul class="sf-prods">
+            <li><div class="tx"><p class="k">LiFSI 전해질</p><p class="d">고출력 · 수명연장용 차세대 전해염</p><p class="cap">비표면적 ≥300~1,000 m&sup2;/g</p></div></li>
+            <li><div class="tx"><p class="k">산화물계 전해질</p><p class="d">산화물계 LLZMO · LATP</p><p class="cap">이온 전도도 0.2~1.0 mS/cm</p></div></li>
           </ul>
-          <div class="hblock">
-            <ul>
-              <li>High Purity</li>
-              <li>Thermal Stability</li>
-              <li>Long Cycle Life</li>
-              <li>Fast Charging</li>
-              <li>Low Resistance &amp; Low Viscosity</li>
-            </ul>
-          </div>
+          <ul class="sf-dl">
+            <li><p class="k">High Purity</p></li>
+            <li><p class="k">Thermal Stability</p></li>
+            <li><p class="k">Long Cycle Life</p></li>
+            <li><p class="k">Fast Charging</p></li>
+            <li><p class="k">Low Resistance &amp; Low Viscosity</p></li>
+          </ul>
           <a class="hcta" href="#" aria-label="LiFSI 전해염 문의하기">문의하기</a>
         </div>
         <!-- 대표 사진(A-1 그림 칸) + 제품 두 장의 그림(A-1 제품 칸). 모식도는 잘리지 않게 담는다 -->
@@ -1746,19 +1841,19 @@
                같은 카드 안에 성격이 다른 목록이 둘이라 — 파는 것(제품) / 그것이 좋은 이유(특징) —
                아래 특징 묶음만 .hblock 로 감싸 사이에 가로선 한 줄을 둔다. 시안도 같은 자리에서
                갈린다. 두 목록의 글자·불릿은 .hcard ul 한 벌을 그대로 함께 쓴다 -->
-          <ul>
-            <li><b>HNBR 바인더</b> CNT 분산용 고성능 고무 바인더 (포화도 99.6%)</li>
-            <li><b>HNBR 라텍스</b> NMP계 고분산 액상 바인더 (고형분 8~10%)</li>
+          <!-- 2026-09-17 : 글 모양은 A-1 04-3 그대로 — 제품 목록(.sf-dl--row) + 붙여 세운 특징 목록(.sf-dl).
+               위 주석의 .hblock 가로선은 특징 목록의 2px 윗선으로 바뀌었다 -->
+          <ul class="sf-dl sf-dl--row">
+            <li><p class="k">HNBR 바인더</p><p class="d">CNT 분산용 고성능 고무 바인더</p><p class="v">포화도 99.6%</p></li>
+            <li><p class="k">HNBR 라텍스</p><p class="d">NMP계 고분산 액상 바인더</p><p class="v">고형분 8~10%</p></li>
           </ul>
-          <div class="hblock">
-            <ul>
-              <li><b>PVDF 대체</b> 기존 불소계 바인더의 5~15% 이상을 친환경 HNBR로 대체.</li>
-              <li><b>고율 충방전 특성</b> 10C 고속 충전 조건에서도 우수한 용량 유지.</li>
-              <li><b>내부 저항 감소</b> 젖음성 개선으로 이온 전달 및 계면 저항 최소화.</li>
-              <li><b>높은 강도 및 유연성</b> 전극 활물질 부피 변화 흡수, 탈락 방지.</li>
-              <li><b>SWCNT 분산 최적화</b> 단일벽 탄소나노튜브의 응집 해소, 점도 감소.</li>
-            </ul>
-          </div>
+          <ul class="sf-dl">
+            <li><p class="k">PVDF 대체</p><p class="d">기존 불소계 바인더의 5~15% 이상을 친환경 HNBR로 대체.</p></li>
+            <li><p class="k">고율 충방전 특성</p><p class="d">10C 고속 충전 조건에서도 우수한 용량 유지.</p></li>
+            <li><p class="k">내부 저항 감소</p><p class="d">젖음성 개선으로 이온 전달 및 계면 저항 최소화.</p></li>
+            <li><p class="k">높은 강도 및 유연성</p><p class="d">전극 활물질 부피 변화 흡수, 탈락 방지.</p></li>
+            <li><p class="k">SWCNT 분산 최적화</p><p class="d">단일벽 탄소나노튜브의 응집 해소, 점도 감소.</p></li>
+          </ul>
           <a class="hcta" href="#" aria-label="HNBR 바인더 문의하기">문의하기</a>
         </div>
         <div class="hright">
@@ -1774,13 +1869,13 @@
             <p>A-PRO Materials는 Lab-scale 파우치셀 제작 및 소재 적용성 검증 서비스를 제공합니다.</p>
             <p>셀 설계부터 조립 공정, 품질 평가까지 통합 프로세스를 통해 고객사의 신소재 적용 가능성을 사전 검증합니다.</p>
           </div>
-          <ul>
-            <li><b>01</b> 사양 협의</li>
-            <li><b>02</b> 소재 입고 및 검수</li>
-            <li><b>03</b> 파우치셀 조립</li>
-            <li><b>04</b> 화성 공정</li>
-            <li><b>05</b> 제품 출하</li>
-          </ul>
+          <ol class="sf-num">
+            <li><b>01</b><span>사양 협의</span></li>
+            <li><b>02</b><span>소재 입고 및 검수</span></li>
+            <li><b>03</b><span>파우치셀 조립</span></li>
+            <li><b>04</b><span>화성 공정</span></li>
+            <li><b>05</b><span>제품 출하</span></li>
+          </ol>
           <a class="hcta" href="#" aria-label="파우치셀 제조 문의하기">문의하기</a>
         </div>
         <div class="hright">
