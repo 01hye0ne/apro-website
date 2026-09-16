@@ -87,7 +87,7 @@
   }
   /* 좁은 화면은 위로 자라지 않고(--bar-rise:0) GNB 아래(72px)에 붙는다.
      터치 기기는 상단 호버로 GNB를 불러낼 수 없으므로 GNB를 접지 않고 그대로 두기 때문 */
-  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px;--bar-top:53px}}   /* 53 = 새 껍데기 GNB 키 (예전 72 는 옛 GNB 기준이라 19px 이 비었다) */
+  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px;--bar-top:72px}}
   *{margin:0;padding:0;box-sizing:border-box}
   /* 페이지 스크롤은 JS가 직접 제어한다. scroll-behavior:smooth 를 켜두면
      window.scrollTo() 한 번 한 번이 브라우저 이징을 타서 프레임 애니메이션이 뭉개지고,
