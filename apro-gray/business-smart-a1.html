@@ -504,12 +504,12 @@
      띠는 벌에 딸리지 않고 제자리에 붙박여 있어, 공정이 바뀌면 설비만 띠 위를
      지나간다. 칸을 위로 맞춰 두어 이름이 두 줄인 설비는 아래로 자란다 */
   .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-               width:529px;max-width:100%;padding:0 24px 40px;
+               width:100%;padding:0 0 40px;
                display:flex;flex-direction:column;align-items:center}
   /* 한 벌이 나가고 다음 벌이 들어오는 창. 여섯 벌을 같은 격자 칸에 겹쳐 두면
      창 높이가 가장 큰 벌(이름이 두 줄인 벌)에 맞춰져, 공정이 바뀌어도 칸이
      오르내리지 않는다 — 바닥 띠도 같은 창에 붙박여 있어 함께 가만히 있는다 */
-  .sf-map .rail{position:relative;width:100%;display:grid;overflow:hidden}
+  .sf-map .rail{width:100%;display:grid;overflow:hidden}
   .sf-map .row{grid-area:1/1;display:flex;gap:var(--eg);align-items:flex-start;
                justify-content:center;
                transform:translateX(100%);opacity:0;visibility:hidden}
@@ -523,11 +523,12 @@
   /* 설비 한 대의 폭은 그림의 가로세로비(--ar)가 정한다 — Figma 에서 일곱 대가
      모두 400 높이의 같은 틀에 그려져 있어(1269:8290 · 설비), 높이를 한 칸(--eu)으로
      고정하고 폭만 비율만큼 늘리면 공정이 바뀌어도 설비가 같은 크기로 읽힌다.
-     한 칸을 19.2% 로 둔 건 가장 넓은 벌인 01(1+2+2 = 다섯 칸 + 사이 둘)이
-     96% + 4% = 100% 로 딱 맞아떨어지기 때문이다 — 칸도 사이도 모두 비율이라
-     그림 기둥이 좁아져도 벌이 창 밖으로 새지 않는다.
+     한 칸(--eu)도 사이(--eg)도 그림 칸 폭에 대한 비율이라, 칸이 넓어지면 설비도
+     함께 커지고 좁아져도 벌이 창 밖으로 새지 않는다. 17% 는 가장 넓은 벌인
+     01(1+2+2 = 다섯 칸 + 사이 둘)이 89% 에 드는 값이다 — 남는 11% 가 이름이
+     제 설비보다 넓을 때 삐져나갈 자리다.
      그림이 아직 없는 설비(에이징 룸 셋 · DSF/EOL)는 4:3 회색 네모로 남는다 */
-  .sf-map{--eu:19.2%;--eg:2%}
+  .sf-map{--eu:17%;--eg:2%}
   .sf-map .it{--ar:1;width:calc(var(--ar) * var(--eu));
               flex-shrink:0;display:flex;flex-direction:column;gap:16px;
               align-items:center;justify-content:flex-start}
@@ -537,10 +538,13 @@
   .sf-map .it .gx{width:100%;height:auto;aspect-ratio:var(--ar);
                   flex-shrink:0;display:block;background:#e6e6e6}
   .sf-map .it img.gx{background:none;object-fit:contain;object-position:center bottom}
-  /* 바닥 띠 — 설비 밑변에 딱 붙는다. 위에서 띄우는 거리가 그림 높이(= 벌 폭의
-     --eu)와 같아야 하는데, 절대 위치 요소의 세로 % 여백은 담는 칸의 '가로'를
-     기준으로 재므로 --eu 를 그대로 쓰면 된다 — 창이 좁아져도 저절로 따라온다 */
-  .sf-map .floor{position:absolute;left:0;right:0;top:0;margin-top:var(--eu);
+  /* 바닥 띠 — 설비 밑변에 딱 붙되, 벌보다 길게 그림 칸 양끝 8px 까지 뻗는다.
+     그래서 벌 창(.rail) 안이 아니라 그 바깥인 .kit 에 건다 — 창은 미끄러지는
+     벌을 자르느라 overflow 를 닫고 있어, 안에 두면 띠도 함께 잘린다.
+     위에서 띄우는 거리는 그림 높이(= 칸 폭의 --eu)와 같아야 하는데, 절대 위치
+     요소의 세로 % 여백은 담는 칸의 '가로'를 기준으로 재므로 --eu 를 그대로
+     넘기면 된다 — 칸이 넓어지든 좁아지든 저절로 따라온다 */
+  .sf-map .floor{position:absolute;left:8px;right:8px;top:0;margin-top:var(--eu);
                  height:8px;background:var(--sf-brand200);pointer-events:none}
   /* 줄임말에는 풀어 쓴 이름을 달아 둔다 — 마우스를 올리면 뜬다 */
   .sf-map .it abbr{text-decoration:none}
@@ -858,12 +862,11 @@
     .sf-map .ring{--bw:5px}
     .sf-map .ring li{padding:12px 10px;gap:4px}
     /* 칸과 사이가 모두 비율이라(위 --eu · --eg) 설비는 따로 줄일 게 없다 —
-       칸 폭만 확정해 주면 된다. width:auto 로 두면 폭이 내용에서 나와
-       안쪽 비율이 기댈 데를 잃는다 */
-    .sf-map .kit{width:100%;padding:0 20px 16px}
-    /* 한 칸을 16.5% 로 낮춘다 — 넓은 화면 그림 기둥의 절반 폭에서도 설비 높이가
-       예전 자리표시 네모(56)와 같아, 이름줄이 고리의 공정 이름까지 올라오지 않는다 */
-    .sf-map{--eu:16.5%}
+       아래 여백만 좁힌다 */
+    .sf-map .kit{padding:0 0 16px}
+    /* 한 칸을 14.5% 로 낮춘다 — 고리의 공정 이름은 폭을 따라 줄지 않는데 설비만
+       줄어서, 넓은 화면 비율(17%)을 그대로 쓰면 이름줄이 고리까지 올라온다 */
+    .sf-map{--eu:14.5%}
     .sf-map .it{gap:8px}
     .sf-map .floor{height:6px}
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:var(--ls-num)}
@@ -1188,8 +1191,8 @@
               <li data-step="4"><b>04</b><i>충&middot;방전</i></li>
             </ol>
             <div class="kit">
+              <span class="floor"></span>
               <div class="rail">
-                  <span class="floor"></span>
                   <div class="row is-on" data-step="1">
                     <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>Pre-Formation</b></div>
                     <div class="it w2"><img class="gx" src="../assets/equip-hot-press-formation.svg" alt="" decoding="async" /><b><abbr title="High-Temperature Pressurized Formation">고온가압
