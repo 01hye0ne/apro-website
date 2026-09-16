@@ -177,7 +177,11 @@
   line-height:var(--body-lh);letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .cblock>h3{margin-top:44px;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
   line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
+/* 소제목 밑 문단 — 카드에서 빠져나온 글이 맨몸으로 남지 않게 .ccard p 와 같은 꼴을 준다
+   (2026-09-16 공급망 '협력사 행동강령'이 카드를 벗고 이 자리로 내려오면서 필요해졌다) */
 .cblock>h3+p,.cblock>h3+ul{margin-top:12px}
+.cblock>h3+p{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .cblock .body{margin-top:24px;font-family:var(--suit);font-size:var(--fs-lead);line-height:var(--body-lh);
   letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .cblock .body p+p{margin-top:var(--para-gap)}
@@ -272,6 +276,45 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   .ccard>.cvalues{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){.ccard>.cvalues{grid-template-columns:minmax(0,1fr)}}
+
+/* 카드 격자 (.cgrid) — 다섯 장이 함께 쓰는 한 벌 (2026-09-16)
+
+   환경 방침 · 인권 경영 · 윤리헌장 · 책임있는 공급망 관리 · 제보 사항이 저마다
+   다른 묶음을 쓰고 있었다 — .cpolicy-grid(판 위 흰 카드 · 칸 사이 4 · 안쪽 16) ·
+   .ccards--split(좌 1 + 우 3) · .ccards--stack(한 줄에 한 장) · .ccreed(안쪽 36) ·
+   .ccards(auto-fit). 담는 것은 다섯 곳 다 [제목 + 짧은 글] 한 가지인데 꼴만 달랐다.
+
+   한 벌로 합치고, 장이 고르는 것은 열 수(--col) 하나로 줄인다.
+   한 장의 세로 짜임은 [눈금] → [제목] → [본문] 로 고정한다.
+
+   눈금은 셋 중 하나다 — 아이콘 24 · 번호 01 · 없음. 셋이 같은 자리에 같은 높이(24)로
+   앉아, 아이콘을 쓰는 장과 번호를 쓰는 장의 제목 줄이 나란히 떨어진다.
+
+   이 부품은 세로 히어로 틀(A-1) 네 장만 쓴다. A 쪽은 옛 묶음을 그대로 쓰므로
+   .ccards--split · .ccards--stack · .ccreed · .cvalues 는 아래에 남겨 둔다.
+   (.cpolicy-grid 는 A-1 환경 하나만 쓰던 것이라 이 벌로 갈아타며 지웠다 —
+    A 는 사진 띠 .cpolicy 를 쓴다) */
+.cgrid{--col:3;margin-top:24px;list-style:none;
+  display:grid;grid-template-columns:repeat(var(--col),minmax(0,1fr));gap:16px}
+.cgrid>li{display:flex;flex-direction:column;
+  padding:clamp(24px,2.4vw,32px);
+  background:var(--secondary-bg);border:1px solid var(--border-g);border-radius:var(--r)}
+/* 눈금 자리 — 비어 있어도 높이 24 를 지켜 제목 줄을 맞춘다 */
+.cgrid .mark{flex:none;height:24px;margin-bottom:16px;display:flex;align-items:center;
+  color:var(--brand-2);
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);
+  line-height:1;letter-spacing:var(--ls-caps)}
+.cgrid .mark svg{width:24px;height:24px}
+.cgrid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.cgrid p{margin:12px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
+/* 제목 없이 글만 있는 장(윤리헌장 넉 줄) — 눈금 바로 밑에서 시작한다 */
+.cgrid>li>p:first-of-type{margin-top:0}
+.cgrid h3+p{margin-top:12px}
+/* 좁은 화면에서는 장이 정한 열 수를 무시하고 줄여 나간다 */
+@media(max-width:900px){.cgrid{--col:2}}
+@media(max-width:560px){.cgrid{--col:1}}
 
 /* 헌장 낱장 (.ccreed) — 다짐 하나가 낱장 하나다. 지배구조 페이지의 윤리헌장
    넉 줄이 쓴다.
@@ -486,26 +529,6 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 @media(max-width:900px){
   .cpolicy>li{min-height:0;grid-template-columns:minmax(0,1fr)}
 }
-
-/* 방침 카드 격자 (.cpolicy-grid) — Figma 1249:14656, 지속가능경영 > 환경 A-1 (2026-09-15)
-   사진 띠(.cpolicy)를 [아이콘 58 / 키워드 / 본문] 카드로 바꾼 판이다. 3열 × 2줄.
-   회색 판(안쪽 4) 위에 흰 카드를 4 간격으로 깐다 — 판 위(.cblock--plate)에 놓이면 바탕이 같아
-   판 여백은 안 보이고 카드 사이 4 만 남는다. 한 줄의 키는 긴 카드에 맞춰 늘어난다(stretch).
-   아이콘은 그림이 아직 없어 Figma 처럼 회색 네모 자리만 둔다(.ic 안에 <img> 를 넣으면 채워진다).
-   키워드 줄높이는 Figma 1 이지만 좁아져 두 줄로 접힐 때 겹치지 않게 1.25 로 둔다 */
-.cpolicy-grid{margin-top:32px;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:4px;padding:4px;background:var(--secondary-bg)}
-.cpolicy-grid>li{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:20px;
-  padding:16px;background:#fff}
-.cpolicy-grid .ic{flex:none;display:block;width:58px;height:58px;background:#d9d9d9;overflow:hidden}
-.cpolicy-grid .ic img{display:block;width:100%;height:100%;object-fit:contain}
-.cpolicy-grid .t{display:flex;flex-direction:column;gap:6px;width:100%}
-.cpolicy-grid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);
-  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
-.cpolicy-grid p{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
-  letter-spacing:var(--ls);color:#73757a;font-feature-settings:"lnum" 1,"tnum" 1;word-break:keep-all}
-@media(max-width:1100px){ .cpolicy-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media(max-width:640px){ .cpolicy-grid{grid-template-columns:minmax(0,1fr)} }
 
 /* =====================================================================
    5. 표 — 재무제표
