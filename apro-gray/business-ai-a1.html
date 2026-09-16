@@ -362,7 +362,10 @@
      아래 한 귀퉁이라 눈에 안 띄었지만, 한 줄로 눕히면 그 자리가 줄 끝에 크게
      뚫려 보인다. auto-flow 로 두면 항목 수가 바뀌어도 값을 고칠 데가 없다 */
   @media(min-width:1181px){
-    .sf-intro{--isplit:calc((100% - 235px - 8px) / 2);padding-right:0}
+    /* 장 아래 여백은 위(--intro-pad, 최대 120)보다 좁게 좌우 여백(44)으로 묶는다 —
+       카드가 장 바닥 쪽으로 내려앉고, 줄어든 만큼은 그림 칸이 먹어 그림이 커진다 */
+    .sf-intro{--isplit:calc((100% - 235px - 8px) / 2);padding-right:0;
+              padding-bottom:min(var(--intro-pad),var(--grid-m))}
     .sf-lead{margin-left:235px;max-width:var(--isplit)}
     .sf-subs{align-self:stretch;width:auto;
              margin-left:235px;margin-right:var(--txt-pad-r);
