@@ -90,6 +90,8 @@
 .cs-body .cways{gap:16px;background:none;border:0;border-radius:0;overflow:visible}
 .cs-body .cway{background:var(--secondary-bg)}
 .cs-body .cnews .thumb{border:0;border-radius:0}
+/* 접어 둔 전문(.cdetails, '… 펼쳐보기') — 테두리는 두고 모서리만 각지게 */
+.cs-body .cdetails{border-radius:0}
 
 /* 이사회 판(.cgov-board, 지배구조) — 원래 본문 상자 밖 화면 폭 판이다. 본문 열 안의 첫 장으로
    들어오면서 제목 · 소개를 카드 위로 올리고(좁은 화면 배치와 같다) 여백을 다른 장과 맞춘다 */
