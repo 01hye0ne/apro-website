@@ -34,38 +34,77 @@
   .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
   .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
 
-  /* 지도 요소 — 면 지도(world-map-countries-pacific.svg: Figma World Map 커뮤니티 파일 72:2200 의 나라 면, 메르카토르)는
-     아메리카 · 그린란드를 360° 오른쪽으로 옮겨 태평양이 가운데 온다. 땅은 흰 30%, 나라 경계는 흰 50% 선.
-     그 위에 같은 좌표계(1068×667)의 SVG 로 본사 → 법인 넷 선(.arc)과 본사 · 법인 · 거점 점(.pin)을 얹는다.
-     점 자리는 위도 · 경도를 같은 메르카토르로 옮긴 값. 선 · 본사는 흰색, 법인은 옅은 파랑, 거점은 파랑 속 흰 테.
-     띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗은 뒤 점이 돋는다(아래 스크립트) */
+  /* 지도 요소 — 점 지도(world-map-dot-pacific.svg)는 태평양이 가운데 오는 메르카토르다.
+     그 위에 같은 좌표계(748.64×360.29)의 SVG 로 본사 → 법인 넷 선(.arc), 이름표로 뻗는
+     가는 선(.lead), 표시(.halo + .pin)를 얹고, 그 앞에 이름표(.gn-lab)를 글자로 둔다.
+     점 · 표시 자리는 위도 · 경도를 지도와 같은 식으로 옮긴 값이다(식은 SVG 머리말에 적어 두었다) :
+       x = 2.01408 · lon + 46.469            (아메리카는 lon + 360)
+       y = -105.84812 · ln(tan(45 + lat/2)) + 237.0277
+     표시는 가운데 진한 원과 둘레의 옅은 후광 한 겹이다. 본사는 흰색 · 법인은 옅은 파랑 ·
+     거점은 더 옅은 파랑, 크기도 그 순서로 줄어든다.
+     띠가 35% 넘게 보이면 한 번 움직인다 — 선이 뻗고, 표시가 돋고, 이름표가 뜬다(아래 스크립트) */
   /* 첫 화면 높이에 맞추기 — 넓은 화면에서 지도 칸(.gn-map)은 숫자 옆 남은 폭 × 띠 안쪽 높이를 다 갖고,
-     그 안의 그림(.cv: 면 지도 + SVG, 1068:667)은 칸 안에 통째로 들어가는 가장 큰 크기로 가운데 선다(잘리지 않는다).
+     그 안의 그림(.cv: 점 지도 + SVG, 748.64:360.29)은 칸 안에 통째로 들어가는 가장 큰 크기로 가운데 선다(잘리지 않는다).
      화면 비율이 넓으면 높이에 맞춰 양옆이 남는다. 바닥 높이는 히어로 271 + 여백 112 + 숫자 약 210 */
   .ci-top{--ci-min:620px}
-  .gn-map{position:relative;display:block;min-width:0;aspect-ratio:1068/667;width:100%}
-  .gn-map .cv{position:absolute;inset:0}
+  .gn-map{position:relative;display:block;min-width:0;aspect-ratio:748.64/360.29;width:100%}
+  /* 이름표 글자는 지도 폭을 따라 큰다 — .cv 가 늘 지도 그림과 같은 칸이라 여기를 기준으로 삼는다 */
+  .gn-map .cv{position:absolute;inset:0;container-type:inline-size}
   @media(min-width:901px){
     .gn-map{flex:1 1 0;align-self:stretch;aspect-ratio:auto;width:auto;overflow:hidden;container-type:size}
-    .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:1068/667;
-                width:min(100cqw, calc(100cqh * 1068 / 667));transform:translate(-50%,-50%)}
+    .gn-map .cv{inset:auto;left:50%;top:50%;aspect-ratio:748.64/360.29;
+                width:min(100cqw, calc(100cqh * 748.64 / 360.29));transform:translate(-50%,-50%)}
   }
   .gn-map img,.gn-map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
-  .gn-map .arc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:1;
+  .gn-map img{opacity:.55}
+  .gn-map .arc{fill:none;stroke:#fff;stroke-width:1.7;stroke-dasharray:1;
                transition:stroke-dashoffset 1s var(--ease) var(--d)}
-  .gn-map .pin{transform-box:fill-box;transform-origin:center;
+  .gn-map .lead{fill:none;stroke:#fff;stroke-opacity:.6;stroke-width:1.2;
+                stroke-dasharray:1;transition:stroke-dashoffset .5s var(--ease) 1.5s}
+  .gn-map .pin,.gn-map .halo{transform-box:fill-box;transform-origin:center;
                transition:transform .5s var(--ease) var(--d),opacity .5s var(--ease) var(--d)}
-  .gn-map .hub{fill:#fff}
-  .gn-map .hq{fill:var(--point-200)}
-  .gn-map .st{fill:var(--brand);stroke:#fff;stroke-width:2.4}
-  .gn-map .halo{fill:#fff;opacity:.16;transform-box:fill-box;transform-origin:center}
-  .gn-band.is-wait .arc{stroke-dashoffset:1}
+  .gn-map .pin.hub{fill:#fff}
+  .gn-map .pin.hq{fill:var(--point-200)}
+  .gn-map .pin.st{fill:var(--point-300)}
+  .gn-map .halo{fill:#fff}
+  .gn-map .halo.hub{opacity:.22}
+  .gn-map .halo.hq{opacity:.18}
+  .gn-map .halo.st{opacity:.14}
+  /* 이름표 — 표시 옆 가는 선 끝에 앉는다. 글자는 그림이 아니라 글이라 SVG 밖에 둔다
+     (뷰박스를 따라 늘어나면 넓은 화면에서 커지고 좁은 화면에서 뭉갠다) */
+  .gn-lab{position:absolute;transform:translateY(-50%);
+          font-family:var(--suit);font-weight:600;font-size:clamp(9px,1.45cqw,15px);
+          line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff;white-space:nowrap;
+          transition:opacity .5s var(--ease) 1.8s}
+  .gn-lab--l{transform:translate(-100%,-50%);text-align:right}
+  .gn-lab em{display:block;margin-top:2px;font-style:normal;font-weight:400;
+             font-size:clamp(8px,1.2cqw,13px);color:var(--on-dark-sub)}
+  .gn-band.is-wait .arc,.gn-band.is-wait .lead{stroke-dashoffset:1}
   .gn-band.is-wait .pin,.gn-band.is-wait .halo{transform:scale(0);opacity:0}
+  .gn-band.is-wait .gn-lab{opacity:0}
+  /* 이름 목록 — 좁은 화면에서 이름표 대신 나오는 것. 넓은 화면에서는 지도가 이름을 다 달고 있다 */
+  .gn-list{display:none;list-style:none;margin:0;padding:0;
+           flex-wrap:wrap;gap:8px 20px;
+           font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+           line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
+  .gn-list li{display:flex;align-items:baseline;gap:4px}
+  .gn-list li::before{content:"";width:6px;height:6px;flex:none;border-radius:50%;
+                      background:currentColor;opacity:.7;transform:translateY(-1px)}
+  .gn-list em{font-style:normal;font-weight:400;font-size:var(--fs-tag);color:var(--on-dark-sub)}
+
   @media(max-width:900px){
     .gn-band{flex-direction:column-reverse;align-items:stretch;gap:32px;padding:40px var(--ci-m)}
     .gn-map{flex:none;width:100%}
     .gn-stats{flex-direction:row;gap:40px;margin-bottom:0}
     .gn-stats .v{font-size:var(--fs-display-sm)}
+  }
+  /* 767 아래에서는 지도가 이름표를 달기에 너무 좁다 — 열 곳이 서로 겹치고 오른쪽 사다리는
+     칸 밖으로 새어 가로 스크롤을 만든다. 이름표와 그 선을 걷고 목록으로 대신 받는다 */
+  @media(max-width:767px){
+    .gn-map .lead,.gn-lab{display:none}
+    .gn-band{flex-direction:column;gap:24px}
+    .gn-list{display:flex;order:2}
+    .gn-stats{order:3}
   }
 </style>
 </head>
@@ -170,13 +209,32 @@
 </section>
 
 <!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 1227:7859) ===================== -->
-<!-- 면 지도(태평양 가운데) 위에 같은 좌표계(1068×667)의 선 · 점 — 점 자리는 위도 · 경도를 메르카토르로 옮긴 값 -->
+<!-- 점 지도(태평양 가운데) 위에 같은 좌표계(748.64×360.29)의 선 · 표시 · 이름표 -->
 <section class="ci-band gn-band" aria-label="글로벌 거점 지도">
   <ul class="gn-stats">
     <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
     <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
   </ul>
-  <span class="gn-map" aria-hidden="true"><span class="cv"><img src="../assets/world-map-countries-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 1068 667"><path class="arc" pathLength="1" style="--d:0.20s" d="M445.0 350.6 Q655.4 223.7 865.9 332.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M445.0 350.6 Q290.8 235.9 136.6 296.6"/><path class="arc" pathLength="1" style="--d:0.50s" d="M445.0 350.6 Q433.6 349.8 422.1 368.9"/><path class="arc" pathLength="1" style="--d:0.65s" d="M445.0 350.6 Q417.4 376.4 389.8 481.7"/><circle class="pin st" cx="113.1" cy="301.0" r="4.6" style="--d:1.10s"/><circle class="pin st" cx="876.2" cy="327.5" r="4.6" style="--d:1.16s"/><circle class="pin st" cx="866.0" cy="341.4" r="4.6" style="--d:1.22s"/><circle class="pin st" cx="855.4" cy="355.0" r="4.6" style="--d:1.28s"/><circle class="pin st" cx="862.1" cy="363.2" r="4.6" style="--d:1.34s"/><circle class="pin hq" cx="865.9" cy="332.6" r="6.5" style="--d:0.90s"/><circle class="pin hq" cx="136.6" cy="296.6" r="6.5" style="--d:1.05s"/><circle class="pin hq" cx="422.1" cy="368.9" r="6.5" style="--d:1.20s"/><circle class="pin hq" cx="389.8" cy="481.7" r="6.5" style="--d:1.35s"/><circle class="halo" cx="445.0" cy="350.6" r="16.6"/><circle class="pin hub" cx="445.0" cy="350.6" r="8.3" style="--d:0s"/></svg></span></span>
+  <span class="gn-map">
+    <span class="cv"><img src="../assets/world-map-dot-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 748.64 360.29" aria-hidden="true"><path class="arc" pathLength="1" style="--d:0.20s" d="M302.2 162 Q453.2 78.8 604.3 150.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M302.2 162 Q191.5 86.8 80.8 126.8"/><path class="arc" pathLength="1" style="--d:0.50s" d="M302.2 162 Q294 161.8 285.7 174.4"/><path class="arc" pathLength="1" style="--d:0.65s" d="M302.2 162 Q282.4 179.4 262.6 248.7"/><polyline class="lead" pathLength="1" points="611.7,147.2 636,108 646,108"/><polyline class="lead" pathLength="1" points="604.3,150.6 636,134 646,134"/><polyline class="lead" pathLength="1" points="604.4,156.4 636,160 646,160"/><polyline class="lead" pathLength="1" points="596.8,165.3 636,186 646,186"/><polyline class="lead" pathLength="1" points="601.6,170.7 636,212 646,212"/><polyline class="lead" pathLength="1" points="80.8,126.8 66,80 64,80"/><polyline class="lead" pathLength="1" points="64,129.7 50,118 46,118"/><polyline class="lead" pathLength="1" points="285.7,174.4 292,196 294,196"/><polyline class="lead" pathLength="1" points="262.6,248.7 256,266 256,266"/><circle class="halo st" cx="64" cy="129.7" r="9" style="--d:0.90s"/><circle class="pin st" cx="64" cy="129.7" r="4" style="--d:0.90s"/><circle class="halo st" cx="611.7" cy="147.2" r="9" style="--d:0.96s"/><circle class="pin st" cx="611.7" cy="147.2" r="4" style="--d:0.96s"/><circle class="halo st" cx="604.4" cy="156.4" r="9" style="--d:1.02s"/><circle class="pin st" cx="604.4" cy="156.4" r="4" style="--d:1.02s"/><circle class="halo st" cx="596.8" cy="165.3" r="9" style="--d:1.08s"/><circle class="pin st" cx="596.8" cy="165.3" r="4" style="--d:1.08s"/><circle class="halo st" cx="601.6" cy="170.7" r="9" style="--d:1.14s"/><circle class="pin st" cx="601.6" cy="170.7" r="4" style="--d:1.14s"/><circle class="halo hq" cx="604.3" cy="150.6" r="11" style="--d:1.20s"/><circle class="pin hq" cx="604.3" cy="150.6" r="5" style="--d:1.20s"/><circle class="halo hq" cx="80.8" cy="126.8" r="11" style="--d:1.26s"/><circle class="pin hq" cx="80.8" cy="126.8" r="5" style="--d:1.26s"/><circle class="halo hq" cx="285.7" cy="174.4" r="11" style="--d:1.32s"/><circle class="pin hq" cx="285.7" cy="174.4" r="5" style="--d:1.32s"/><circle class="halo hq" cx="262.6" cy="248.7" r="11" style="--d:1.38s"/><circle class="pin hq" cx="262.6" cy="248.7" r="5" style="--d:1.38s"/><circle class="halo hub" cx="302.2" cy="162" r="15" style="--d:0.00s"/><circle class="pin hub" cx="302.2" cy="162" r="7" style="--d:0.00s"/></svg>
+      <span class="gn-lab" style="left:87.091%;top:29.976%">캐나다 온타리오</span>
+      <span class="gn-lab" style="left:87.091%;top:37.192%">미시간<em>(북미법인)</em></span>
+      <span class="gn-lab" style="left:87.091%;top:44.409%">오하이오</span>
+      <span class="gn-lab" style="left:87.091%;top:51.625%">테네시</span>
+      <span class="gn-lab" style="left:87.091%;top:58.841%">조지아</span>
+      <span class="gn-lab" style="left:43.279%;top:38.303%">한국 본사</span>
+      <span class="gn-lab" style="left:40.073%;top:54.401%">중국 남경<em>(중국법인)</em></span>
+      <span class="gn-lab gn-lab--l" style="left:33.394%;top:73.829%">인도네시아 카라왕<em>(인도네시아법인)</em></span>
+      <span class="gn-lab gn-lab--l" style="left:7.747%;top:22.204%">폴란드<em>(유럽법인)</em></span>
+      <span class="gn-lab gn-lab--l" style="left:5.343%;top:32.751%">독일</span>
+    
+    </span>
+  </span>
+  <ul class="gn-list">
+    <li>한국 본사</li><li>미시간<em>(북미법인)</em></li><li>폴란드<em>(유럽법인)</em></li>
+    <li>중국 남경<em>(중국법인)</em></li><li>인도네시아 카라왕<em>(인도네시아법인)</em></li>
+    <li>독일</li><li>캐나다 온타리오</li><li>오하이오</li><li>테네시</li><li>조지아</li>
+  </ul>
 </section>
 </div>
 
