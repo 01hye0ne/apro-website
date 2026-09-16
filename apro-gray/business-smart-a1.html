@@ -697,7 +697,6 @@
   .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
           --c-ttl:var(--sf-txt);     /* 900 제목        */
           --c-body:var(--sf-sec);    /* 600 줄글        */
-          --c-ter:var(--sf-ter);     /* 500 곁들이는 값 */
           --c-num:var(--brand);      /* 목록 번호·점    */
           --c-rule:var(--sf-line-s); /* 300 눈금 가로선 */
           --c-tick:var(--sf-ter);    /* 500 눈금 세로   */
@@ -753,30 +752,36 @@
      표를 닫는 테두리가 아니다 */
   .sf-num li:last-child,.sf-dl li:last-child{border-bottom:0}
 
-  /* 제품 목록 (04-3 HNBR 바인더) — 같은 점 목록인데 이름과 설명이 한 줄에
-     나란히 눕는다(Figma 1285:45697 "HNBR 바인더-제품"). 선(윗선 2px · 칸선 1px)은
-     특징 목록과 똑같이 긋는다 — 두 목록이 같은 표의 두 묶음으로 읽혀야 한다.
+  /* 제품 목록 (04-3 HNBR 바인더) — Figma 1285:45606. 같은 점 목록인데 한 줄이
+     세 칸이다 : [이름 — 남색 판에 흰 글씨] [설명] [값 — 줄 오른쪽 끝].
+     선(윗선 2px · 칸선 1px)은 특징 목록과 똑같이 긋는다 — 두 목록이 같은 표의
+     두 묶음으로 읽혀야 한다.
 
-     이름 칸은 가장 긴 이름에 맞춰 저절로 잡힌다 — 목록을 두 칸 격자로 두고 li 가
-     그 칸을 subgrid 로 물려받는다. li 를 display:contents 로 풀면 더 짧지만 그
-     순간 li 의 여백과 칸선이 함께 사라진다. li 마다 폭을 주는 것도 안 된다 —
-     이름 길이가 달라지면 설명 시작점이 어긋난다.
-     이름(t-sm)과 설명(t-xs)은 글자 크기가 달라 밑줄을 맞추면 한쪽이 처져 보인다.
-     한 줄에 눕는 목록이므로 번호 목록(.sf-num)처럼 세로 가운데로 맞춘다.
+     세 칸은 목록에 한 번만 잡고 li 가 그것을 subgrid 로 물려받는다. li 를
+     display:contents 로 풀면 더 짧지만 그 순간 li 의 여백과 칸선이 함께 사라지고,
+     li 마다 폭을 주면 이름 길이가 달라지는 순간 설명과 값의 세로줄이 어긋난다.
+     글자 크기가 칸마다 달라(이름 t-sm · 설명/값 t-xs) 밑줄을 맞추면 한쪽이
+     처져 보이므로 번호 목록(.sf-num)처럼 세로 가운데로 맞춘다.
 
-     설명 뒤에 괄호로 붙는 규격(<em>)은 한 칸 더 옅게 — 이름·설명·값이
-     세 단이다. 시안은 이 자리를 흰색으로 칠해 두었는데(회색 캔버스 위에서만
-     읽힌다) 흰 바닥에서는 사라지므로 500 을 쓴다 */
-  .sf-dl--row{display:grid;grid-template-columns:max-content 1fr}
+     이름은 점을 떼고 판을 깐다 — 점은 "여기가 항목의 머리"라는 표지인데 판이
+     그 일을 더 세게 하므로 둘을 겹쳐 둘 이유가 없다. 판과 값의 색은 브랜드
+     파랑을 직접 칠하지 않고 --c-num 을 쓴다 : 옅은 장에서 이 목록만 진하게
+     남지 않도록, 목록 번호 · 점과 같은 칸에서 함께 바래야 한다 */
+  .sf-dl--row{display:grid;grid-template-columns:max-content 1fr max-content}
   .sf-dl--row li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;
                  align-items:center}
+  .sf-dl--row .k{padding:4px 8px;background:var(--c-num);color:#fff;
+                 font-size:var(--t-sm);line-height:var(--lh-tight)}
+  .sf-dl--row .k::before{display:none}
+  .sf-dl--row .v{justify-self:end;font-family:var(--suit);font-weight:600;
+                 font-size:var(--t-xs);line-height:var(--lh-body);
+                 letter-spacing:var(--ls-num);color:var(--c-num);white-space:nowrap}
   /* 제품 목록과 뒤따르는 특징 목록은 붙여 세운다 — 두 묶음을 가르는 것은 특징
      목록의 2px 윗선이고, 그 선과 제품 마지막 칸 사이에 .sf-txtin 의 24 가 벌어지면
      선이 어느 묶음의 것인지 읽히지 않는다(제품 쪽 밑줄처럼 보인다).
      맞닿은 그 한 칸만 당기고 스택 gap 자체는 건드리지 않는다 — 제목·줄글과의
      숨은 그대로여야 한다 */
   .sf-dl--row+.sf-dl{margin-top:-24px}
-  .sf-dl em{font-style:normal;color:var(--c-ter)}
 
   /* 04-1 제품 고르기 — 단추는 글 기둥에, 사진은 붙박이 그림 기둥에 있다.
      떨어져 있어도 한 짝으로 읽히도록 tab / tabpanel 로 묶었다 */
@@ -804,14 +809,14 @@
      .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
   @media(min-width:1181px){
     .js .sf-sec:not(.is-on) .sf-txt{
-      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-ter:var(--sf-line);
-      --c-num:var(--sf-line-s);
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
       --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
       --c-bd-s:var(--sf-line);--c-bd:var(--sf-gray100)}
   }
   /* 색이 갈리는 대신 넘어가도록 — 토큰 자체는 전환되지 않으므로 쓰는 자리에 건다 */
   .sf-texts h2,.sf-texts .en,.sf-body p,
-  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl em{transition:color .5s var(--ease)}
+  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v{transition:color .5s var(--ease)}
+  .sf-dl--row .k{transition:background-color .5s var(--ease)}
   .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
   /* 공정 목록은 장이 제자리에 서면 위에서부터 한 줄씩 올라온다 — 원본 도식의
      "공정 순서대로 텍스트가 등장" 을 옮긴 것이다. 한 번 보인 장은 다시 감추지
@@ -828,7 +833,7 @@
   .sf-dl .k::before,.sf-line .rule,.sf-line .tick{
     transition:background-color .5s var(--ease)}
   @media(prefers-reduced-motion:reduce){
-    .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl em,
+    .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v,
     .sf-num,.sf-dl,.sf-num li,.sf-dl li,
     .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
     .sf-ph,.sf-ph.is-on{transition:none}
@@ -1430,8 +1435,8 @@
             </div>
           </div>
           <ul class="sf-dl sf-dl--row">
-            <li><p class="k">HNBR 바인더</p><p class="d">CNT 분산용 고성능 고무 바인더 <em>(포화도 99.6%)</em></p></li>
-            <li><p class="k">HNBR 라텍스</p><p class="d">NMP계 고분산 액상 바인더 <em>(고형분 8~10%)</em></p></li>
+            <li><p class="k">HNBR 바인더</p><p class="d">CNT 분산용 고성능 고무 바인더</p><p class="v">포화도 99.6%</p></li>
+            <li><p class="k">HNBR 라텍스</p><p class="d">NMP계 고분산 액상 바인더</p><p class="v">고형분 8~10%</p></li>
           </ul>
           <ul class="sf-dl">
             <li><p class="k">PVDF 대체</p><p class="d">기존 불소계 바인더의 5~15% 이상을 친환경 HNBR로 대체.</p></li>
