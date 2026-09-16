@@ -348,6 +348,22 @@
   /* 설명 여러 줄은 한 덩어리다 — 칸 사이 8 중 6 을 당겨 2 로 좁힌다(시안과 같다).
      아이콘 · 이름 · 설명덩어리 사이의 8 은 그대로 둔다 */
   .sf-subs .d+.d{margin-top:calc(2px - 8px)}
+  /* 설비 그림 — 리드와 카드 사이 빈 자리에 선다. 칸이 남는 세로를 먹고 그림은
+     그 안에 비율을 지켜 들어앉되 바닥에 붙는다(contain · center bottom). 칸 모양이
+     화면마다 달라도 그림이 잘리거나 늘어나지 않는다 */
+  .sf-introfig{position:relative;flex:0 0 200px;min-height:0}
+  .sf-introfig img{position:absolute;inset:0;width:100%;height:100%;
+                   object-fit:contain;object-position:center bottom}
+  /* 바탕이 불투명한 그림(흰 하늘이 아래로 갈수록 옅은 회색)은 칸 안에서 네모 판으로
+     떠 보인다 — 위와 양옆 가장자리만 바탕으로 풀어 준다. 아래는 카드 띠에 닿는
+     바닥선이라 풀지 않는다. 투명 PNG(스마트 제조)에는 붙이지 않는다 */
+  .sf-introfig.is-plate img{
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+            mask-composite:intersect}
   /* 본문의 세 기둥이 살아 있는 폭에서는 소개 장을 그 기둥에 맞춘다.
      리드는 그림 기둥 폭에 맞춰 서고(왼쪽 끝이 설비 그림 시작점),
      카드는 두 기둥을 가로질러 한 줄로 눕는다.
@@ -374,6 +390,11 @@
                 붙이고(margin-top:auto) 남는 세로는 리드 아래로 보낸다 —
                 본문 장에서 목록이 그림 바닥선에 앉는 것과 같은 짜임이다 */
              flex:0 0 auto;margin-top:auto;min-height:240px}
+    /* 그림 칸이 리드 아래 남는 세로를 다 먹고 카드 폭을 따라 선다. 아래 간격 64 를
+       되돌려 카드 띠 윗선에 그림 바닥을 붙인다 — 띠가 설비가 놓인 바닥선이 된다.
+       낮은 화면에서도 160 은 지키고, 그보다 모자라면 장이 아래로 자란다 */
+    .sf-introfig{flex:1 1 0;min-height:160px;
+                 margin-left:235px;margin-right:var(--txt-pad-r);margin-bottom:-64px}
   }
   /* ===================== 본문 — 인덱스 + 열 장 =====================
      붙박이는 왼쪽 인덱스 하나뿐이다. 오른쪽은 머리 줄까지 장에 딸려 통째로 흐르고,
@@ -864,6 +885,7 @@
     .sf-tickrow b{}
     /* 한 화면에 묶어 둘 이유가 없다 — 장이 제 높이로 흐르고 카드는 한 줄에 한 장 */
     .sf-intro{height:auto;min-height:0;gap:32px;padding:64px 24px 40px}
+    .sf-introfig{flex-basis:140px}
     .sf-gnb{padding-left:16px;padding-right:16px}
     .sf-mega,.sf-scrim{display:none}
     /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
@@ -1042,6 +1064,10 @@
     <span class="a">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.</span>
     <span class="b">그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</span>
   </p>
+  <div class="sf-introfig is-plate">
+    <img src="../assets/ess-grid-overview.png" width="1248" height="244"
+         alt="에너지 인프라 한눈에 보기 — 태양광·풍력 발전과 ESS 컨테이너, 변전 설비, 수요처가 송전선으로 이어진 그림" decoding="async" />
+  </div>
   <ul class="sf-subs">
     <li>
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7H3V18H21V7H6V6H22V18H24V19H0V18H2V6H5V7ZM6 17H5V8H6V17ZM9 17H8V8H9V17ZM13 11H14.4551L12.3545 17H11V14H9.54492L11.6455 8H13V11ZM16 17H15V8H16V17ZM19 17H18V8H19V17ZM10.9541 13H12V14.9873L13.0459 12H12V10.0127L10.9541 13Z" fill="currentColor"/></svg></span>
