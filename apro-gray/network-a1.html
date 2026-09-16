@@ -22,13 +22,19 @@
      _gen-a1.py 의 SOURCES 에서 뺐다. GNB · 푸터 · 전체메뉴는 사업영역 세부 페이지와 같은 한 벌
      (business-layout.css / business-layout.js)이다 -->
 <style>
-  /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4 */
+  /* 히어로 문장이 세 줄 — Figma 에서 이 페이지만 줄높이 1.4.
+     가로 밑줄은 이 페이지만 걷는다 — 아래 지도가 화면을 가로질러 눕는 그림이라,
+     그 위에 줄이 한 겹 더 있으면 띠가 둘로 읽힌다 */
+  .ci-hero{border-bottom:0}
   .ci-hero .sub{line-height:var(--lh-label)}
 
-  /* 지도 띠 — 글과 숫자는 왼쪽 기둥, 지도는 남은 자리를 다 갖는다. 좁아지면 아래에서 세로로 쌓인다 */
+  /* 지도 띠 (Figma 1227:7859) — 오른쪽은 지도, 왼쪽 아래(지도 칸 밑변과 같은 선)에 숫자 둘.
+     여백은 Figma 의 56 에서 줄였다 — 지도가 2.08:1 로 납작해 세로에 걸리기 때문에,
+     위아래로 덜어 낸 만큼이 그대로 지도 크기가 된다(아래 .ci-hero 주석 참고) */
   .gn-band{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
-           padding:56px 20px 56px var(--ci-m);container-type:inline-size}
-  .gn-stats{flex:none;list-style:none;margin:0;padding:0;display:flex;gap:40px}
+           padding:24px 20px 40px var(--ci-m);container-type:inline-size}
+  /* 숫자 덩어리는 띠 아래 여백 안으로 12 내려앉는다 — 마지막 숫자 글자 밑이 지도 밑변과 같은 선 */
+  .gn-stats{flex:none;list-style:none;margin:0 0 -12px;padding:0;display:flex;flex-direction:column;gap:34px}
   .gn-stats li{display:flex;flex-direction:column;gap:8px}
   .gn-stats .k{font-family:"Aldrich",sans-serif;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
   .gn-stats .v{font-family:"Aldrich",sans-serif;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
@@ -91,36 +97,20 @@
                       background:currentColor;opacity:.7;transform:translateY(-1px)}
   .gn-list em{font-style:normal;font-weight:400;font-size:var(--fs-tag);color:var(--on-dark-sub)}
 
-  /* ── 넓은 화면 : 첫 화면을 좌우로 가른다 ──────────────────────────────
-     지도는 2.08:1 로 납작해서 세로에 걸린다 — 예전처럼 글을 위에 가로로 눕히면
-     그 높이(270)만큼 지도가 작아졌고, 정작 가로는 1241 중 769 만 쓰고 있었다.
-     글과 숫자를 왼쪽 기둥으로 세워 그 세로를 지도에 돌려준다(1440 에서 769→980,
-     1920 에서 1143→1460). 이 배치에서 지도는 가로에 걸리므로 왼쪽 기둥 폭이
-     곧 지도 크기다 — 340 은 줄글이 18px 로 편히 읽히는 가장 좁은 폭이다.
+  /* 줄글은 Figma 자리 그대로 맨 위에 눕는다. 대신 위아래 여백을 88/40 에서 48/24 로 줄여
+     그만큼을 지도에 넘긴다 — 지도가 2.08:1 로 납작해서 가로가 아니라 세로에 걸리기 때문에,
+     히어로에서 덜어 낸 높이가 곧 지도 크기다(1440 에서 769×370 → 979×471).
      회사소개 · 사업장소재는 이 페이지 <style> 을 안 쓰므로 예전 그대로다
-     (공용 틀 company-info.css 는 손대지 않았다).
-
-     가르는 조건에 가로세로비를 함께 건 건, 세로로 긴 화면(태블릿 세로 1024×1366 같은)에서는
-     가로가 먼저 모자라 좌우로 가르면 지도가 되레 작아지기 때문이다. 그런 화면은 예전처럼
-     위아래로 쌓는다 — 숫자가 지도 옆을 비켜 준 만큼 그때도 지도는 넓어진다 */
-  @media(min-width:901px) and (min-aspect-ratio:5/4){
-    .ci-top{flex-direction:row;align-items:stretch;gap:32px;padding:0 40px 0 var(--ci-m)}
-    /* 좌우로 서면 가로 밑줄은 두 기둥을 가로질러 걸리적거린다 — 걷는다 */
-    .ci-hero{flex:0 0 340px;min-width:0;justify-content:center;
-             padding:40px 0;border-bottom:0}
-    /* 340 칸에서 24px 는 열두 줄이 된다 — 한 칸 내리고 줄 사이를 연다 */
-    .ci-hero .sub{font-size:var(--fs-lead);line-height:var(--lh-body)}
-    .ci-hero .sub span{display:block;margin-top:.7em}
-    .ci-hero .sub span:first-child{margin-top:0}
-    .ci-hero .gn-stats{margin-top:8px}
-    .gn-band{flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;
-             align-items:stretch;gap:24px;padding:32px 0}
-    .gn-map{flex:1 1 0}
+     (공용 틀 company-info.css 는 손대지 않았다) */
+  @media(min-width:901px){
+    .ci-hero{padding:48px 20px 28px var(--ci-m)}
   }
 
   @media(max-width:900px){
+    /* 지도 · (목록) · 숫자 차례. 마크업은 숫자가 먼저라(넓은 화면에서 지도 왼쪽) 자리만 뒤로 보낸다 */
     .gn-band{flex-direction:column;align-items:stretch;gap:32px;padding:40px var(--ci-m)}
     .gn-map{flex:none;width:100%}
+    .gn-stats{order:3;flex-direction:row;gap:40px;margin-bottom:0}
     .gn-stats .v{font-size:var(--fs-display-sm)}
   }
   /* 767 아래에서는 지도가 이름표를 달기에 너무 좁다 — 열 곳이 서로 겹치고 오른쪽 사다리는
@@ -137,9 +127,6 @@
   @container (max-width:640px){
     .gn-map .lead,.gn-lab{display:none}
     .gn-list{display:flex}
-    /* 목록이 나오면 지도 칸은 제 비율만큼만 갖는다 — 남은 높이를 다 먹으면 목록이 바닥에 떨어진다 */
-    .gn-map{flex:0 0 auto;width:100%;height:auto;aspect-ratio:748.64/360.29;container-type:normal}
-    .gn-map .cv{inset:0;width:auto;transform:none}
   }
 </style>
 </head>
@@ -241,15 +228,15 @@
 <section class="ci-hero">
   <h1 lang="en">Global Network</h1>
   <p class="sub"><span>A-PRO의 본사와 R&amp;D센터는 경기도에 있으며, 다양한 제품 포트폴리오를 개발하고 있습니다.</span><span>최고의 엔지니어들이 새롭고 혁신적인 기술 개발을 위해 끊임 없이 노력하고 있습니다.</span><span>제품은 여러 국가에서 현지 생산되고 있으며, 본사의 제품과 서비스는 글로벌 해외 영업 네트워크를 통해 판매되고 있습니다.</span></p>
-  <ul class="gn-stats">
-    <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
-    <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
-  </ul>
 </section>
 
 <!-- ===================== GLOBAL NETWORK · 지도 띠 (Figma 1227:7859) ===================== -->
 <!-- 점 지도(태평양 가운데) 위에 같은 좌표계(748.64×360.29)의 선 · 표시 · 이름표 -->
 <section class="ci-band gn-band" aria-label="글로벌 거점 지도">
+  <ul class="gn-stats">
+    <li><span class="k" lang="en">Global Bases</span><span class="v">6+</span></li>
+    <li><span class="k" lang="en">Years History</span><span class="v">25+</span></li>
+  </ul>
   <span class="gn-map">
     <span class="cv"><img src="../assets/world-map-dot-pacific.svg" alt="" decoding="async" /><svg viewBox="0 0 748.64 360.29" aria-hidden="true"><path class="arc" pathLength="1" style="--d:0.20s" d="M302.2 162 Q453.2 78.8 604.3 150.6"/><path class="arc" pathLength="1" style="--d:0.35s" d="M302.2 162 Q191.5 86.8 80.8 126.8"/><path class="arc" pathLength="1" style="--d:0.50s" d="M302.2 162 Q294 161.8 285.7 174.4"/><path class="arc" pathLength="1" style="--d:0.65s" d="M302.2 162 Q282.4 179.4 262.6 248.7"/><polyline class="lead" pathLength="1" points="611.7,147.2 636,102 646,102"/><polyline class="lead" pathLength="1" points="604.3,150.6 636,132 646,132"/><polyline class="lead" pathLength="1" points="604.4,156.4 636,162 646,162"/><polyline class="lead" pathLength="1" points="596.8,165.3 636,192 646,192"/><polyline class="lead" pathLength="1" points="601.6,170.7 636,222 646,222"/><polyline class="lead" pathLength="1" points="80.8,126.8 66,80 64,80"/><polyline class="lead" pathLength="1" points="64,129.7 50,118 46,118"/><polyline class="lead" pathLength="1" points="285.7,174.4 292,196 294,196"/><polyline class="lead" pathLength="1" points="262.6,248.7 256,266 256,266"/><circle class="halo st" cx="64" cy="129.7" r="9" style="--d:0.90s"/><circle class="pin st" cx="64" cy="129.7" r="4" style="--d:0.90s"/><circle class="halo st" cx="611.7" cy="147.2" r="9" style="--d:0.96s"/><circle class="pin st" cx="611.7" cy="147.2" r="4" style="--d:0.96s"/><circle class="halo st" cx="604.4" cy="156.4" r="9" style="--d:1.02s"/><circle class="pin st" cx="604.4" cy="156.4" r="4" style="--d:1.02s"/><circle class="halo st" cx="596.8" cy="165.3" r="9" style="--d:1.08s"/><circle class="pin st" cx="596.8" cy="165.3" r="4" style="--d:1.08s"/><circle class="halo st" cx="601.6" cy="170.7" r="9" style="--d:1.14s"/><circle class="pin st" cx="601.6" cy="170.7" r="4" style="--d:1.14s"/><circle class="halo hq" cx="604.3" cy="150.6" r="11" style="--d:1.20s"/><circle class="pin hq" cx="604.3" cy="150.6" r="5" style="--d:1.20s"/><circle class="halo hq" cx="80.8" cy="126.8" r="11" style="--d:1.26s"/><circle class="pin hq" cx="80.8" cy="126.8" r="5" style="--d:1.26s"/><circle class="halo hq" cx="285.7" cy="174.4" r="11" style="--d:1.32s"/><circle class="pin hq" cx="285.7" cy="174.4" r="5" style="--d:1.32s"/><circle class="halo hq" cx="262.6" cy="248.7" r="11" style="--d:1.38s"/><circle class="pin hq" cx="262.6" cy="248.7" r="5" style="--d:1.38s"/><circle class="halo hub" cx="302.2" cy="162" r="15" style="--d:0.00s"/><circle class="pin hub" cx="302.2" cy="162" r="7" style="--d:0.00s"/></svg>
       <span class="gn-lab" style="left:87.091%;top:28.311%">캐나다 온타리오</span>
