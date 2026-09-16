@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>카드 격자 통일안 · A-PRO</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="apro-gray/business-layout.css" />
+<link rel="stylesheet" href="apro-gray/content-layout.css" />
+<!--
+  다섯 섹션(환경 방침 · 인권 경영 · 윤리헌장 · 책임있는 공급망 관리 · 제보 사항)의
+  카드 묶음을 한 부품(.cgrid)으로 합치는 안을 눈으로 견주어 보는 페이지다.
+
+  '지금' 쪽은 실제 A-1 페이지의 markup 을 그대로 잘라 붙였다 — 손으로 옮겨 적지
+  않았으므로 지금 사이트의 모습과 어긋나지 않는다.
+  '바꾼 뒤' 쪽은 같은 글을 새 부품에 다시 담았다.
+
+  본문 열 폭 870 은 세로 히어로 틀(content-side.css)에서 1440 일 때의 실제 폭이다.
+  이 페이지는 결정을 위한 자리이고, 아직 어느 페이지에도 반영하지 않았다.
+-->
+<style>
+/* ─────────────────────────────────────────────────────────────
+   제안하는 새 부품 — 카드 격자 (.cgrid)
+   다섯 장이 함께 쓴다. 장이 고르는 것은 열 수(--col) 하나뿐이다.
+   한 장의 세로 짜임은 [눈금] → [제목] → [본문] 로 고정한다.
+   눈금은 아이콘 24 · 번호 01 · 없음 셋 중 하나이고, 셋 다 같은 자리 같은 높이다.
+   ───────────────────────────────────────────────────────────── */
+.cgrid{--col:3;margin-top:24px;list-style:none;
+  display:grid;grid-template-columns:repeat(var(--col),minmax(0,1fr));gap:16px}
+.cgrid>li{display:flex;flex-direction:column;
+  padding:clamp(24px,2.4vw,32px);
+  background:var(--secondary-bg);border:1px solid var(--border-g);border-radius:var(--r)}
+.cgrid .mark{flex:none;height:24px;margin-bottom:16px;display:flex;align-items:center;
+  color:var(--brand-2);
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-meta);
+  line-height:1;letter-spacing:var(--ls-caps)}
+.cgrid .mark svg{width:24px;height:24px}
+.cgrid h3{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+.cgrid h3:empty{display:none}
+.cgrid p{margin:12px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
+.cgrid h3:empty + p{margin-top:0}
+@media(max-width:900px){.cgrid{--col:2}}
+@media(max-width:560px){.cgrid{--col:1}}
+
+/* ── 비교 페이지 자체의 틀 ── */
+body{margin:0;padding:48px 0 96px;background:#fff;color:var(--g900);
+  font-family:var(--suit);letter-spacing:var(--ls);-webkit-font-smoothing:antialiased}
+.wrap{width:870px;margin:0 auto}
+h1{margin:0 0 10px;font-size:30px;font-weight:800;line-height:1.25}
+.intro{margin:0 0 6px;font-size:15px;line-height:1.8;color:var(--sec)}
+.sec{margin-top:72px;padding-top:28px;border-top:2px solid var(--g900)}
+.sec>h2{margin:0;font-size:22px;font-weight:800;line-height:1.3}
+.src{margin:6px 0 0;font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--teritary)}
+.why{margin:12px 0 0;padding:12px 16px;background:var(--secondary-bg);
+  border-left:2px solid var(--brand-2);font-size:13px;line-height:1.75;color:var(--sec)}
+.panel{margin-top:28px}
+.tag{display:inline-block;margin-bottom:10px;padding:3px 10px;border-radius:2px;
+  font-size:11px;font-weight:800;letter-spacing:.08em}
+.tag.now{background:#f0f1f3;color:#73757a}
+.tag.next{background:var(--brand);color:#fff}
+.lead{margin:0 0 4px;font-size:var(--fs-lead);line-height:var(--body-lh);color:var(--sec);word-break:keep-all}
+.after{margin:28px 0 0;font-size:var(--fs-h3);font-weight:800;color:var(--g900)}
+.afterp{margin:12px 0 0;font-size:var(--fs-body);line-height:var(--body-lh);color:var(--sec);word-break:keep-all}
+.note{margin:14px 0 0;font-size:12px;line-height:1.7;color:var(--teritary)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>카드 격자 통일안</h1>
+  <p class="intro">다섯 섹션이 지금 네 가지 부품(<code>.cpolicy-grid</code> ·
+    <code>.ccards--split</code> · <code>.ccards--stack</code> · <code>.ccreed</code> ·
+    <code>.ccards</code>)을 나눠 쓰고 있습니다. 이것을 <code>.cgrid</code> 한 벌로 합치고,
+    장이 고르는 것은 <b>열 수 하나</b>로 줄이는 안입니다.</p>
+  <p class="intro">한 장의 세로 짜임은 <b>[눈금] → [제목] → [본문]</b> 로 고정합니다.
+    눈금 자리에는 아이콘 24 · 번호 01 · 없음 셋 중 하나가 오고, 셋 다 같은 자리에
+    같은 높이로 앉습니다. 카드는 회색 바탕 · 테두리 1 · 모서리 4 · 안쪽
+    <code>clamp(24px,2.4vw,32px)</code>, 칸 사이는 16 하나입니다.</p>
+  <p class="intro">아래 폭 870 은 세로 히어로 틀에서 1440 일 때의 실제 본문 열 폭입니다.</p>
+  <section class="sec"><h2>환경 방침</h2><p class="src">esg-environment-a1.html · .cpolicy-grid → .cgrid(3열)</p><p class="why">판 위 흰 카드 · 칸 사이 4 · 안쪽 16 · 테두리 없음 — 여기만 다른 언어를 썼다.</p><div class="panel"><span class="tag now">지금</span><ul class="cpolicy-grid">
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>지속적인 온실가스 감축</h3>
+          <p>재생에너지 도입 및 에너지 효율 개선을 통해 온실가스 감축 목표를 달성하고자 지속적으로 노력합니다. 제품 설계부터 생산 공정 전반에 걸쳐 에너지 효율 향상을 고려하며, 사업장 온실가스 배출량을 정기적으로 모니터링하고 관리합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>오염물질 배출 최소화</h3>
+          <p>대기, 수질, 토양 등 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극적으로 참여합니다. 오염물질 발생량을 측정 및 관리하고, 방지시설의 성능 및 운영 효율을 점검하여 개선 계획을 수립합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>자원 효율성 증대 및 폐기물 관리</h3>
+          <p>제품의 설계 단계부터 자원 절감과 에너지 효율 향상을 고려합니다. 폐기물 발생을 최대한 억제하고 재활용을 확대하며, 유해 화학물질에 대한 사전 식별 및 관리 체계를 강화합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>수자원 관리</h3>
+          <p>수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>생물다양성 보호</h3>
+          <p>기업 활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력합니다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ic" aria-hidden="true"></span>
+        <div class="t">
+          <h3>투명한 정보 공개 및 소통</h3>
+          <p>고객사, 협력사 등 이해관계자와의 소통을 강화하고, 주요 환경 성과와 개선 노력을 투명하게 공유합니다. 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경 경영의 인식 제고와 실천 확산을 추진합니다.</p>
+        </div>
+      </li>
+    </ul></div><div class="panel"><span class="tag next">바꾼 뒤</span><ul class="cgrid" style="--col:3"><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6.5 14 A3 3 0 0 1 7.6 8.3 A4.4 4.4 0 0 1 16.2 9.7 A2.8 2.8 0 0 1 17.5 14 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 16 V20.4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9.9 18.3 L12 20.4 L14.1 18.3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>지속적인 온실가스 감축</h3><p>재생에너지 도입 및 에너지 효율 개선을 통해 온실가스 감축 목표를 달성하고자 지속적으로 노력합니다. 제품 설계부터 생산 공정 전반에 걸쳐 에너지 효율 향상을 고려하며, 사업장 온실가스 배출량을 정기적으로 모니터링하고 관리합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6.5 20.5 L7.8 11.5 H12.2 L13.5 20.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6.9 14.5 H13.1" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 20.5 H20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M14.3 11 C15.7 11 15.7 9.2 17.1 9.2 C18.2 9.2 18.4 9.9 19.3 9.6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M13.7 7.6 C15.1 7.6 15.1 5.8 16.5 5.8 C17.6 5.8 17.8 6.5 18.7 6.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>오염물질 배출 최소화</h3><p>대기, 수질, 토양 등 오염물질 배출을 법적 기준 이하로 유지하며, 오염물질 저감 활동에 적극적으로 참여합니다. 오염물질 발생량을 측정 및 관리하고, 방지시설의 성능 및 운영 효율을 점검하여 개선 계획을 수립합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.106 10.784 A7 7 0 0 1 17.362 7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M17.257 4.502 L17.362 7.5 L14.428 6.876" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18.894 13.216 A7 7 0 0 1 6.638 16.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6.743 19.498 L6.638 16.5 L9.572 17.124" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>자원 효율성 증대 및 폐기물 관리</h3><p>제품의 설계 단계부터 자원 절감과 에너지 효율 향상을 고려합니다. 폐기물 발생을 최대한 억제하고 재활용을 확대하며, 유해 화학물질에 대한 사전 식별 및 관리 체계를 강화합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 C12 3.5 16.2 8.5 16.2 11.5 A4.2 4.2 0 0 1 7.8 11.5 C7.8 8.5 12 3.5 12 3.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 18.2 C4.8 17.4 6.2 17.4 7.5 18.2 S10.2 19 11.5 18.2 S14.2 17.4 15.5 18.2 S18.2 19 20.5 18.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 20.8 C4.8 20 6.2 20 7.5 20.8 S10.2 21.6 11.5 20.8 S14.2 20 15.5 20.8 S18.2 21.6 20.5 20.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>수자원 관리</h3><p>수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 20.5 V12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 14.5 C9.5 14.5 7 13 7 10 C10 10 12 11.5 12 14.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 12.5 C14.5 12.5 17 11 17 8 C14 8 12 9.5 12 12.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.5 20.5 H18.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>생물다양성 보호</h3><p>기업 활동으로 인한 생태계 훼손을 사전에 예방하고, 생물다양성 손실을 최소화하기 위해 노력합니다. 이해관계자의 의견을 고려하여 생물다양성 보전 활동을 수행합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 3.5 H13.5 L17 7 V17.5 H5.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M13.5 3.5 V7 H17" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M8 10 H14.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M8 12.8 H12 " stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18.5 15.5 A3 3 0 1 1 12.5 15.5 A3 3 0 1 1 18.5 15.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M17.6 17.6 L20.5 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>투명한 정보 공개 및 소통</h3><p>고객사, 협력사 등 이해관계자와의 소통을 강화하고, 주요 환경 성과와 개선 노력을 투명하게 공유합니다. 임직원을 대상으로 한 정기 교육과 내부 커뮤니케이션을 통해 환경 경영의 인식 제고와 실천 확산을 추진합니다.</p></li></ul></div></section>
+  <section class="sec"><h2>인권 경영</h2><p class="src">esg-social-a1.html · .ccards--split → 소개문 + .cgrid(3열)</p><p class="why">왼쪽 큰 카드는 내용상 카드가 아니라 소개문이다. 아래로 내리면 격자가 석 장 한 줄이 된다.</p><div class="panel"><span class="tag now">지금</span><div class="ccards ccards--split">
+      <article class="ccard">
+        <h3>A-PRO의 인권 정책 : 모든 이해관계자를 위한 존중과 보호</h3>
+        <p>A-PRO는 국제노동기구(ILO) 핵심협약, 세계인권선언(UDHR), 유엔 기업과 인권 이행원칙(UNGPs) 등
+          국제 인권 기준을 충실히 반영한 인권정책을 수립하고 있습니다. 이러한 정책은 국내외 임직원뿐만
+          아니라 협력사, 그리고 지역사회 이해관계자에게도 확대 적용됩니다.</p>
+      </article>
+      <article class="ccard">
+        <h3>우리의 약속</h3>
+        <p>A-PRO는 아동 노동 및 강제 노동을 철저히 금지하며, 성별, 인종, 장애 등에 따른 모든 형태의
+          차별을 허용하지 않습니다. 우리는 결사의 자유 및 단체 교섭의 자유를 존중합니다. 또한, 안전하고
+          위생적인 근로 환경 제공, 생활 임금 보장, 개인 정보 보호 등을 통해 근로자의 기본 권리를
+          실질적으로 보장하고 있습니다.</p>
+      </article>
+      <article class="ccard">
+        <h3>인권침해 고충처리 시스템</h3>
+        <p>인권침해 발생 시, 누구나 안심하고 제보할 수 있도록 고충처리 제도를 운영하고 있습니다.
+          제보자의 신원은 철저히 보호되며, 신속하고 공정한 조치를 보장합니다.</p>
+      </article>
+      <article class="ccard">
+        <h3>인권 존중 문화 확산</h3>
+        <p>A-PRO는 정기적인 인권 교육과 인식 개선 활동을 통해 인권 존중 문화를 조직 전반에 확산시키고
+          있습니다. 모든 임직원이 인권 경영의 주체로서 행동할 수 있도록 적극적으로 지원하고 있습니다.</p>
+      </article>
+    </div></div><div class="panel"><span class="tag next">바꾼 뒤</span><p class="lead">A-PRO는 국제노동기구(ILO) 핵심협약, 세계인권선언(UDHR), 유엔 기업과 인권 이행원칙(UNGPs) 등 국제 인권 기준을 충실히 반영한 인권정책을 수립하고 있습니다. 이러한 정책은 국내외 임직원뿐만 아니라 협력사, 그리고 지역사회 이해관계자에게도 확대 적용됩니다.</p><ul class="cgrid" style="--col:3"><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.5 6.2 L5.2 7.9 L8.6 4.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M11.5 6.2 H20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 12 L5.2 13.7 L8.6 10.3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M11.5 12 H20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 17.8 L5.2 19.5 L8.6 16.1" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M11.5 17.8 H20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>우리의 약속</h3><p>A-PRO는 아동 노동 및 강제 노동을 철저히 금지하며, 성별, 인종, 장애 등에 따른 모든 형태의 차별을 허용하지 않습니다. 우리는 결사의 자유 및 단체 교섭의 자유를 존중합니다. 또한, 안전하고 위생적인 근로 환경 제공, 생활 임금 보장, 개인 정보 보호 등을 통해 근로자의 기본 권리를 실질적으로 보장하고 있습니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 4.5 H19 A2 2 0 0 1 21 6.5 V14 A2 2 0 0 1 19 16 H12.5 L8.5 19.5 V16 H5 A2 2 0 0 1 3 14 V6.5 A2 2 0 0 1 5 4.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 7.8 V11.4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 12.9 A0.6 0.6 0 1 1 12 14.1 A0.6 0.6 0 1 1 12 12.9 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>인권침해 고충처리 시스템</h3><p>인권침해 발생 시, 누구나 안심하고 제보할 수 있도록 고충처리 제도를 운영하고 있습니다. 제보자의 신원은 철저히 보호되며, 신속하고 공정한 조치를 보장합니다.</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 7.2 A2 2 0 1 1 10 7.2 A2 2 0 1 1 14 7.2 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M8.6 14.2 C8.6 12.1 10 10.8 12 10.8 C14 10.8 15.4 12.1 15.4 14.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M7.2 10.6 A1.7 1.7 0 1 1 3.8 10.6 A1.7 1.7 0 1 1 7.2 10.6 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M2.5 17 C2.5 15.2 3.7 14 5.5 14 C6.1 14 6.6 14.1 7 14.3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M20.2 10.6 A1.7 1.7 0 1 1 16.8 10.6 A1.7 1.7 0 1 1 20.2 10.6 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M21.5 17 C21.5 15.2 20.3 14 18.5 14 C17.9 14 17.4 14.1 17 14.3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>인권 존중 문화 확산</h3><p>A-PRO는 정기적인 인권 교육과 인식 개선 활동을 통해 인권 존중 문화를 조직 전반에 확산시키고 있습니다. 모든 임직원이 인권 경영의 주체로서 행동할 수 있도록 적극적으로 지원하고 있습니다.</p></li></ul></div></section>
+  <section class="sec"><h2>윤리헌장</h2><p class="src">esg-governance-a1.html · .ccreed → .cgrid(2열)</p><p class="why">이미 거의 같다. 안쪽 여백만 36 → 32 로 맞춘다. 번호가 아이콘 자리를 대신한다.</p><div class="panel"><span class="tag now">지금</span><ul class="ccreed">
+      <li><span class="no">01</span>
+        <p>우리는 높은 윤리적 가치관을 바탕으로 모든 법령을 준수하고, 공정하고 청렴한 자세로 업무를 수행합니다.</p></li>
+      <li><span class="no">02</span>
+        <p>우리는 고객과의 신뢰를 최우선으로 하며, 안전하고 우수한 제품과 최상의 서비스를 제공할 것을 약속합니다.</p></li>
+      <li><span class="no">03</span>
+        <p>우리는 건전한 시장질서 확립을 추구하고, 공정한 경쟁을 통해 모든 이해관계자와 공동 발전을 추구합니다.</p></li>
+      <li><span class="no">04</span>
+        <p>우리는 미래 가치를 창조하는 기업으로서 사회적 역할과 책임을 성실하게 수행합니다.</p></li>
+    </ul></div><div class="panel"><span class="tag next">바꾼 뒤</span><ul class="cgrid" style="--col:2"><li><span class="mark">01</span><h3></h3><p>우리는 높은 윤리적 가치관을 바탕으로 모든 법령을 준수하고, 공정하고 청렴한 자세로 업무를 수행합니다.</p></li><li><span class="mark">02</span><h3></h3><p>우리는 고객과의 신뢰를 최우선으로 하며, 안전하고 우수한 제품과 최상의 서비스를 제공할 것을 약속합니다.</p></li><li><span class="mark">03</span><h3></h3><p>우리는 건전한 시장질서 확립을 추구하고, 공정한 경쟁을 통해 모든 이해관계자와 공동 발전을 추구합니다.</p></li><li><span class="mark">04</span><h3></h3><p>우리는 미래 가치를 창조하는 기업으로서 사회적 역할과 책임을 성실하게 수행합니다.</p></li></ul></div></section>
+  <section class="sec"><h2>책임있는 공급망 관리</h2><p class="src">esg-social-a1.html · .ccards--stack → 소개문 + .cgrid(3열) + 글</p><p class="why">지금은 870 폭 카드 안에 153 폭 낱장 다섯이 들어 있다 — 카드 안의 카드. 동반 성장은 소개문으로, 행동강령은 글로 내리면 격자는 핵심가치 다섯만 남는다. 다만 이 다섯에는 설명 문장이 없어 제목만 있는 카드가 된다 — 한 줄씩 붙이면 다른 넷과 완전히 같아진다.</p><div class="panel"><span class="tag now">지금</span><div class="ccards ccards--stack">
+      <article class="ccard">
+        <h3>동반 성장</h3>
+        <p>A-PRO는 글로벌 2차전지 산업을 선도하며, 환경, 사회, 지배구조(ESG) 측면에서 책임 있는 경영을
+          실천하고 있습니다. 우리는 이러한 책임경영의 가치를 모든 이해관계자와 공유하며, 특히 협력사와의
+          지속가능한 동반 성장을 통해 더욱 견고한 미래를 만들어가고자 합니다.</p>
+      </article>
+
+      <article class="ccard">
+        <h3>책임있는 공급망의 핵심가치</h3>
+        <ul class="cvalues">
+          <li>
+            <span class="ic" aria-hidden="true"><!-- 아이콘 자리 --></span>
+            <span class="k">인권 존중 및 보호</span>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><!-- 아이콘 자리 --></span>
+            <span class="k">안전하고 건강한 작업 환경</span>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><!-- 아이콘 자리 --></span>
+            <span class="k">환경 보호 및 지속가능성</span>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><!-- 아이콘 자리 --></span>
+            <span class="k">투명하고 공정한 윤리 경영</span>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><!-- 아이콘 자리 --></span>
+            <span class="k">열린 소통과 개선</span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="ccard">
+        <h3>협력사 행동강령</h3>
+        <p>협력사 행동강령은 단순한 규제를 넘어, A-PRO와 협력사가 상호 신뢰를 바탕으로 책임 있는
+          공급망을 함께 구축하기 위한 공동의 약속입니다. 본 행동강령은 유엔 세계인권선언, OECD 다국적기업
+          가이드라인, 유엔글로벌콤팩트(UNGC) 10대 원칙, 국제노동기구(ILO) 핵심협약 등 국제 인권 및
+          지속가능성 기준을 반영하여 제정되었습니다. A-PRO는 모든 협력사가 인권 존중, 산업 안전, 환경
+          보호, 윤리경영을 실천할 수 있도록 본 강령을 통해 방향을 제시하며, 지속가능한 가치 창출을 위해
+          함께 성장해 나가고자 합니다.</p>
+      </article>
+    </div></div><div class="panel"><span class="tag next">바꾼 뒤</span><p class="lead">A-PRO는 글로벌 2차전지 산업을 선도하며, 환경, 사회, 지배구조(ESG) 측면에서 책임 있는 경영을 실천하고 있습니다. 우리는 이러한 책임경영의 가치를 모든 이해관계자와 공유하며, 특히 협력사와의 지속가능한 동반 성장을 통해 더욱 견고한 미래를 만들어가고자 합니다.</p><ul class="cgrid" style="--col:3"><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.2 7 A2.2 2.2 0 1 1 9.8 7 A2.2 2.2 0 1 1 14.2 7 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9 13.5 C9 11.3 10.3 10 12 10 C13.7 10 15 11.3 15 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M4.5 14.5 C4.5 17.6 7.2 20.2 10.6 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19.5 14.5 C19.5 17.6 16.8 20.2 13.4 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>인권 존중 및 보호</h3></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 15.5 A6.5 6.5 0 0 1 18.5 15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 15.5 H20.5 V17.3 H3.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 9 V15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>안전하고 건강한 작업 환경</h3></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 18 C6 10 11 5 19 5 C19 13 14 18 6 18 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6.5 17.5 C10 14 14 9.5 18.5 5.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 20.5 L6 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>환경 보호 및 지속가능성</h3></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8.5 V20" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M8.5 20.5 H15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.5 8.5 H18.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.5 8.5 L3 13.5 M5.5 8.5 L8 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3 13.5 A2.5 2.5 0 0 0 8 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18.5 8.5 L16 13.5 M18.5 8.5 L21 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16 13.5 A2.5 2.5 0 0 0 21 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>투명하고 공정한 윤리 경영</h3></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 4 H12 A2 2 0 0 1 14 6 V9.5 A2 2 0 0 1 12 11.5 H5 A2 2 0 0 1 3 9.5 V6 A2 2 0 0 1 5 4 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6 11.5 L6 14.3 L8.8 11.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 13 H19 A2 2 0 0 1 21 15 V18.5 A2 2 0 0 1 19 20.5 H12 A2 2 0 0 1 10 18.5 V15 A2 2 0 0 1 12 13 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18 13 L18 10.2 L15.2 13" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>열린 소통과 개선</h3></li></ul><h3 class="after"></h3><p class="afterp"></p></div></section>
+  <section class="sec"><h2>제보 사항</h2><p class="src">esg-report-a1.html · .ccards → .cgrid(3열)</p><p class="why">지금은 auto-fit 이 870 에서 2열로 떨어져 2+2+1 로 끝 줄 한 칸이 빈다. 3열이면 3+2 로 채워진다.</p><div class="panel"><span class="tag now">지금</span><div class="ccards">
+      <article class="ccard">
+        <h3>윤리</h3>
+        <p>공금 횡령 및 금품 수수, 청탁, 업무 관련 부정 행위 등</p>
+        
+      </article>
+      <article class="ccard">
+        <h3>인권/노동</h3>
+        <p>차별 및 괴롭힘, 강제노동, 인권 침해, 부당한 처우 등</p>
+        
+      </article>
+      <article class="ccard">
+        <h3>안전보건</h3>
+        <p>산업재해, 위험 방치, 유해 환경 등</p>
+        
+      </article>
+      <article class="ccard">
+        <h3>환경</h3>
+        <p>폐기물 무단처리, 오염 유발, 에너지 낭비 등</p>
+        
+      </article>
+      <article class="ccard">
+        <h3>기타</h3>
+        <p>제도 개선 제안 등</p>
+        
+      </article>
+    </div></div><div class="panel"><span class="tag next">바꾼 뒤</span><ul class="cgrid" style="--col:3"><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8.5 V20" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M8.5 20.5 H15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.5 8.5 H18.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M5.5 8.5 L3 13.5 M5.5 8.5 L8 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3 13.5 A2.5 2.5 0 0 0 8 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18.5 8.5 L16 13.5 M18.5 8.5 L21 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16 13.5 A2.5 2.5 0 0 0 21 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>윤리</h3><p>공금 횡령 및 금품 수수, 청탁, 업무 관련 부정 행위 등</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.2 7 A2.2 2.2 0 1 1 9.8 7 A2.2 2.2 0 1 1 14.2 7 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9 13.5 C9 11.3 10.3 10 12 10 C13.7 10 15 11.3 15 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M4.5 14.5 C4.5 17.6 7.2 20.2 10.6 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19.5 14.5 C19.5 17.6 16.8 20.2 13.4 20.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>인권/노동</h3><p>차별 및 괴롭힘, 강제노동, 인권 침해, 부당한 처우 등</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 15.5 A6.5 6.5 0 0 1 18.5 15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 15.5 H20.5 V17.3 H3.5 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 9 V15.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>안전보건</h3><p>산업재해, 위험 방치, 유해 환경 등</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 18 C6 10 11 5 19 5 C19 13 14 18 6 18 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6.5 17.5 C10 14 14 9.5 18.5 5.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3.5 20.5 L6 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>환경</h3><p>폐기물 무단처리, 오염 유발, 에너지 낭비 등</p></li><li><span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 4 H12 A2 2 0 0 1 14 6 V9.5 A2 2 0 0 1 12 11.5 H5 A2 2 0 0 1 3 9.5 V6 A2 2 0 0 1 5 4 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6 11.5 L6 14.3 L8.8 11.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 13 H19 A2 2 0 0 1 21 15 V18.5 A2 2 0 0 1 19 20.5 H12 A2 2 0 0 1 10 18.5 V15 A2 2 0 0 1 12 13 Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18 13 L18 10.2 L15.2 13" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><h3>기타</h3><p>제도 개선 제안 등</p></li></ul></div></section>
+  <p class="note">아이콘은 피그마 Icon 세트(1044:10959)에 올려 둔 것을 그대로 인라인했습니다.
+    인권 경영 셋(icon-commitment · icon-grievance · icon-culture-spread)은 이 안을 위해 새로 그렸고
+    아직 피그마에는 올리지 않았습니다. 제보 사항 다섯은 핵심가치 다섯과 주제가 그대로
+    겹쳐(윤리 · 인권/노동 · 안전보건 · 환경 · 개선) 같은 아이콘을 다시 씁니다.</p>
+  <p class="note">눈금 높이는 24 로 잡았습니다 — 아이콘이 그려진 바탕 격자와 같은 값이고,
+    핵심가치 자리(.cvalues .ic)가 쓰던 svg 크기와도 같습니다. 지금 환경 방침의 자리표시는 58 이라
+    한눈에 작아 보일 수 있습니다. 32 나 40 으로 키우는 것도 되고, 그때는 다섯 장 모두 같이 올립니다.</p>
+</div>
+</body>
+</html>
