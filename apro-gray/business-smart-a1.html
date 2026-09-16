@@ -501,9 +501,14 @@
   .sf-map .ring li:nth-child(6).is-out::after{transform-origin:center bottom}
   /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
      굵기도 중간값으로 이어진다 */
-  .sf-map .ring li{transition:color var(--slide) var(--soft),
-                   background-color .3s var(--ease)}
-  .sf-map .ring li:not(.is-on):hover{background-color:var(--sf-gray100)}
+  .sf-map .ring li{transition:color var(--slide) var(--soft)}
+  /* 손이 닿은 칸은 글자만 짙어진다 — 바탕은 건드리지 않는다. 켜진 칸은
+     브랜드 색이 이미 제 색이라 그대로 둔다.
+     들어올 때의 결을 :hover 안에 따로 적은 건, 공정이 넘어가는 1초짜리
+     흐름을 손끝 반응에까지 쓰면 굼떠 보이기 때문이다 — 짙어질 때는 빠르게,
+     손이 떠나 옅어질 때는 위의 1초를 그대로 받아 가만히 풀린다 */
+  .sf-map .ring li:not(.is-on):hover{color:var(--sf-txt);
+                                     transition:color .25s var(--ease)}
   .sf-map .ring i{transition:font-size var(--slide) var(--soft),
                   font-weight var(--slide) var(--soft),
                   letter-spacing var(--slide) var(--soft)}
