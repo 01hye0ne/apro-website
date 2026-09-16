@@ -62,24 +62,26 @@
   .gn-map img{opacity:.55}
   .gn-map .arc{fill:none;stroke:#fff;stroke-width:1.7;stroke-dasharray:1;
                transition:stroke-dashoffset 1s var(--ease) var(--d)}
-  /* 이름표로 뻗는 가는 선 — 파란 표시와 흰 이름표를 잇는 선이라 브랜드 파랑이다 */
-  .gn-map .lead{fill:none;stroke:var(--brand);stroke-opacity:.55;stroke-width:1.2;
+  /* 이름표로 뻗는 가는 선 — 본사에서 뻗는 곡선(.arc)과 같은 흰색이다. 그림 위의 선은
+     모두 흰색 한 벌로 두고, 파랑은 표시(점)에만 쓴다 */
+  .gn-map .lead{fill:none;stroke:#fff;stroke-opacity:.6;stroke-width:1.2;
                 stroke-dasharray:1;transition:stroke-dashoffset .5s var(--ease) 1.5s}
   .gn-map .pin,.gn-map .halo{transform-box:fill-box;transform-origin:center;
                transition:transform .5s var(--ease) var(--d),opacity .5s var(--ease) var(--d)}
-  /* 표시는 셋 다 브랜드 파랑 한 색이다 — 본사 · 법인 · 거점은 색이 아니라 크기로 갈린다
-     (원 7 / 5 / 4, 후광 15 / 11 / 9) */
+  /* 점은 셋 다 브랜드 파랑 한 색이다 — 본사 · 법인 · 거점은 색이 아니라 크기로 갈린다
+     (원 7 / 5 / 4, 후광 15 / 11 / 9). 둘레 후광은 반투명 흰색이다 —
+     파란 점 둘레에 파란 반투명을 두면 바탕 하늘색에 묻힌다 */
   .gn-map .pin{fill:var(--brand)}
-  .gn-map .halo{fill:var(--brand)}
+  .gn-map .halo{fill:#fff}
   .gn-map .halo.hub{opacity:.20}
   .gn-map .halo.hq{opacity:.16}
   .gn-map .halo.st{opacity:.13}
   /* 이름표 — 표시 옆 가는 선 끝에 앉는 흰 태그. 글자는 그림이 아니라 글이라 SVG 밖에 둔다
      (뷰박스를 따라 늘어나면 넓은 화면에서 커지고 좁은 화면에서 뭉갠다).
-     안쪽 여백과 모서리는 em 으로 잡아 글자와 함께 커지고 줄어든다 —
-     px 로 두면 지도가 작아질수록 여백만 남는다 */
+     안쪽 여백은 em 으로 잡아 글자와 함께 커지고 줄어든다 —
+     px 로 두면 지도가 작아질수록 여백만 남는다. 모서리는 각지게 둔다 */
   .gn-lab{position:absolute;transform:translateY(-50%);
-          padding:.42em .7em;border-radius:.55em;
+          padding:.42em .7em;
           background:#fff;box-shadow:0 2px 8px rgba(27,39,51,.18);
           font-family:var(--suit);font-weight:600;font-size:clamp(9px,1.45cqw,15px);
           line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--brand);
