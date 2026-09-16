@@ -87,7 +87,7 @@
   }
   /* 좁은 화면은 위로 자라지 않고(--bar-rise:0) GNB 아래(72px)에 붙는다.
      터치 기기는 상단 호버로 GNB를 불러낼 수 없으므로 GNB를 접지 않고 그대로 두기 때문 */
-  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px;--bar-top:72px}}
+  @media(max-width:900px){:root{--bar-h:52px;--bar-rise:0px;--bar-top:53px}}   /* 53 = 새 껍데기 GNB 키 (예전 72 는 옛 GNB 기준이라 19px 이 비었다) */
   *{margin:0;padding:0;box-sizing:border-box}
   /* 페이지 스크롤은 JS가 직접 제어한다. scroll-behavior:smooth 를 켜두면
      window.scrollTo() 한 번 한 번이 브라우저 이징을 타서 프레임 애니메이션이 뭉개지고,
@@ -113,6 +113,10 @@
      ::before(흰 플레이트)는 .nav-light 규칙과 특정도가 같으므로 반드시 그 뒤에 온다 */
   .gnb-group.nav-hide .gnb{opacity:0;transform:translate(-50%,-14px);pointer-events:none}
   .gnb-group.nav-hide::before{opacity:0}
+  /* 새 껍데기(.sf-gnb)도 같은 판정으로 접는다 — 바가 상단에 붙으면 그 자리를 어두운 바가
+     채우므로 흰 GNB 가 겹쳐 남으면 두 겹이 된다. 좁은 화면은 JS 가 접지 않는다(바가 GNB 아래) */
+  .sf-gnb{transition:transform .34s var(--ease),opacity .34s var(--ease)}
+  .sf-gnb.nav-hide{transform:translateY(-100%);opacity:0;pointer-events:none}
   /* 워드마크는 assets/logo-apro-white.svg 한 벌로 사이트 전체를 덮는다(GNB · 전체메뉴 ·
      홈 히어로 · 푸터). 예전 logo-white.png / logo-white-footer.png 는 내용이 같은
      161×33 PNG 두 장이었다 — assets/_unused/ 에 남겨 두었다.

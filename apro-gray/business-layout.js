@@ -56,7 +56,10 @@
 
 /* GNB: lang dropdown + mega menu + light/dark contrast over hero */
 (function(){
-  var g=document.querySelector('.gnb-group');if(!g)return;
+  /* 2026-09-16 : 세부 페이지 GNB 가 새 껍데기(.sf-gnb)로 바뀌면서 .gnb-group 을 못 찾아
+     이 블록이 통째로 빠져나갔고, 그 바람에 소분류 탭 바가 상단에 고정되지 않았다.
+     아래 lang · mega 손잡이는 옛 GNB 전용이라 각자 if 로 막혀 있어 새 껍데기에서는 그냥 지나간다 */
+  var g=document.querySelector('.gnb-group')||document.querySelector('.sf-gnb');if(!g)return;
   var lb=document.getElementById('langBtn');
   if(lb){
     lb.addEventListener('click',function(e){e.stopPropagation();g.classList.toggle('lang-open');});
