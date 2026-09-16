@@ -1505,8 +1505,7 @@
      여기 글 열의 스택 gap 은 --stack-gap 이라 그만큼 당긴다 */
   .hcard .hleft .sf-dl--row+.sf-dl,.hcard .hleft .sf-prods+.sf-dl{margin-top:calc(var(--stack-gap) * -1)}
 
-  /* 제품 카드 (A-1 .sf-prods) — 그림은 A 의 비주얼 칸(.hph--slides)이 넘겨 보이므로
-     여기서는 글 덩어리(태그 · 설명 · 값)만 쓴다. .box 규칙은 그림을 붙일 때를 위해 함께 둔다 */
+  /* 제품 카드 (A-1 .sf-prods) — 글 덩어리(태그 · 설명 · 값) 오른쪽에 제품 그림(.box, 140×105 4:3) */
   .hcard .hleft .sf-prods{list-style:none;display:flex;flex-direction:column;gap:0;
     border-top:2px solid var(--sf-line-s)}
   .hcard .hleft .sf-prods li{min-width:0;display:flex;align-items:flex-start;gap:8px;padding:9px 8px}
@@ -1527,6 +1526,31 @@
     line-height:var(--lh-tight);letter-spacing:var(--ls-num);white-space:nowrap;
     transition:background-color .5s var(--ease)}
   .hcta:hover{background:var(--point-900)}
+  /* 제목 줄 — 제목 왼쪽, 문의 단추 오른쪽 (2026-09-17). 단추는 제목 높이 가운데에 선다 */
+  .hcard .hleft .hhead{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .hcard .hleft .hhead h3{min-width:0}
+  .hcard .hleft .hhead .hcta{flex:none;align-self:center}
+
+  /* 제품 고르기 (A-1 .sf-picks 값 그대로, 색 토큰은 지금 장 값) + 그림 칸 갈아 끼우기 */
+  .hcard .hleft .sf-picks{display:flex;gap:8px}
+  .hcard .hleft .sf-picks button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;
+    padding:4px;background:#fff;border:1px solid var(--sf-line);border-radius:0;
+    cursor:pointer;text-align:left;font:inherit;color:inherit;
+    transition:border-color .3s var(--ease)}
+  .hcard .hleft .sf-picks button:hover{border-color:var(--sf-line-s)}
+  .hcard .hleft .sf-picks button[aria-selected="true"]{border-color:var(--brand)}
+  .hcard .hleft .sf-picks button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .hcard .hleft .sf-picks .shot{display:block;aspect-ratio:160/120;overflow:hidden;background:#e5e6e8;
+    border:1px solid var(--sf-line)}
+  .hcard .hleft .sf-picks .shot img{display:block;width:100%;height:100%;object-fit:cover}
+  .hcard .hleft .sf-picks .nm{display:block;padding:12px;word-break:normal;font-family:var(--suit);font-weight:800;
+    font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-txt)}
+  .hcard>.hright.hph--picks .hpane{position:absolute;inset:0;opacity:0;visibility:hidden;
+    transition:opacity .35s var(--ease),visibility .35s}
+  .hcard>.hright.hph--picks .hpane.is-on{opacity:1;visibility:visible}
+  @media(prefers-reduced-motion:reduce){
+    .hcard .hleft .sf-picks button,.hcard>.hright.hph--picks .hpane{transition:none}
+  }
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -1767,7 +1791,10 @@
 
       <article class="hcard" data-tab="탄소 나노 튜브">
         <div class="hleft">
-          <h3>탄소 나노 튜브</h3>
+          <div class="hhead">
+            <h3>탄소 나노 튜브</h3>
+            <a class="hcta" href="#" aria-label="탄소 나노 튜브 문의하기">문의하기</a>
+          </div>
           <div class="hlead">
             <p>A-PRO Materials의 글로벌 소싱 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
             <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
@@ -1780,23 +1807,39 @@
             <li><p class="k">SW/FW-CNT Slurry</p><p class="d">단일벽/소수벽 CNT 분산액</p><p class="v">CNT 함량 0.2 ~ 4.0 wt%</p></li>
             <li><p class="k">Carbon Black</p><p class="d">전도성 카본블랙</p><p class="v">비표면적 60 ~ 150 m&sup2;/g</p></li>
           </ul>
-          <a class="hcta" href="#" aria-label="탄소 나노 튜브 문의하기">문의하기</a>
+          <!-- 2026-09-17 : A-1 04-1 제품 고르기 단추 그대로. 오른쪽 그림 칸과 tab / tabpanel 로 묶는다
+               (자동 넘김 .hph--slides 는 걷었다 — 고른 제품만 보인다) -->
+          <div class="sf-picks" role="tablist" aria-label="탄소 나노 튜브 제품">
+            <button type="button" role="tab" id="cnt-pw-t" aria-controls="cnt-pw" aria-selected="true">
+              <span class="shot"><img src="../assets/cnt-powder.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-CNT Powder</span>
+            </button>
+            <button type="button" role="tab" id="cnt-sl-t" aria-controls="cnt-sl" aria-selected="false" tabindex="-1">
+              <span class="shot"><img src="../assets/cnt-slurry.jpg" alt="" decoding="async" /></span><span class="nm">SW/FW-CNT Slurry</span>
+            </button>
+            <button type="button" role="tab" id="cnt-cb-t" aria-controls="cnt-cb" aria-selected="false" tabindex="-1">
+              <span class="shot"><img src="../assets/cnt-carbon-black.jpg" alt="" decoding="async" /></span><span class="nm">Carbon Black</span>
+            </button>
+          </div>
         </div>
-        <!-- 제품 사진 세 장 — A-1 은 단추로 골라 갈아 끼우고, 여기서는 에너지 인프라 A 의
-             여러 장짜리 비주얼(.hph--slides)로 차례로 넘긴다 -->
-        <div class="hright hph--slides">
-          <img src="../assets/cnt-powder.jpg" loading="lazy"
-               alt="유리 접시에 담긴 단일벽·소수벽 CNT 분말" />
-          <img src="../assets/cnt-slurry.jpg" loading="lazy"
-               alt="메스실린더에 담긴 단일벽·소수벽 CNT 분산액" />
-          <img src="../assets/cnt-carbon-black.jpg" loading="lazy"
-               alt="유리 접시에 담긴 전도성 카본블랙" />
+        <div class="hright hph--picks">
+          <div class="hpane is-on" role="tabpanel" id="cnt-pw" aria-labelledby="cnt-pw-t" tabindex="0">
+            <img src="../assets/cnt-powder.jpg" alt="유리 접시에 담긴 단일벽·소수벽 CNT 분말" decoding="async" />
+          </div>
+          <div class="hpane" role="tabpanel" id="cnt-sl" aria-labelledby="cnt-sl-t" tabindex="0">
+            <img src="../assets/cnt-slurry.jpg" alt="메스실린더에 담긴 단일벽·소수벽 CNT 분산액" decoding="async" />
+          </div>
+          <div class="hpane" role="tabpanel" id="cnt-cb" aria-labelledby="cnt-cb-t" tabindex="0">
+            <img src="../assets/cnt-carbon-black.jpg" alt="유리 접시에 담긴 전도성 카본블랙" decoding="async" />
+          </div>
         </div>
       </article>
 
       <article class="hcard" data-tab="LiFSI 전해염">
         <div class="hleft">
-          <h3>LiFSI 전해염</h3>
+          <div class="hhead">
+            <h3>LiFSI 전해염</h3>
+            <a class="hcta" href="#" aria-label="LiFSI 전해염 문의하기">문의하기</a>
+          </div>
           <div class="hlead">
             <p>A-PRO Materials는 엄선된 공급망을 통해 고순도 LiFSI 전해염 소재를 안정적으로 공급합니다.</p>
             <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
@@ -1806,8 +1849,12 @@
           <!-- 2026-09-17 : 글 모양은 A-1 04-2 그대로 — 제품 카드(.sf-prods, 그림은 오른쪽 비주얼 칸이 맡는다)
                + 붙여 세운 특징 목록(.sf-dl). 사이 가로선은 .hblock 대신 특징 목록의 2px 윗선이 긋는다 -->
           <ul class="sf-prods">
-            <li><div class="tx"><p class="k">LiFSI 전해질</p><p class="d">고출력 · 수명연장용 차세대 전해염</p><p class="cap">비표면적 ≥300~1,000 m&sup2;/g</p></div></li>
-            <li><div class="tx"><p class="k">산화물계 전해질</p><p class="d">산화물계 LLZMO · LATP</p><p class="cap">이온 전도도 0.2~1.0 mS/cm</p></div></li>
+            <li><div class="tx"><p class="k">LiFSI 전해질</p><p class="d">고출력 · 수명연장용 차세대 전해염</p><p class="cap">비표면적 ≥300~1,000 m&sup2;/g</p></div>
+              <span class="box"><img src="../assets/lifsi-electrolyte-sem.jpg" width="900" height="600" loading="lazy" decoding="async"
+                   alt="LiFSI 전해염 입자 표면의 주사전자현미경 사진 — 크고 작은 구멍이 촘촘한 다공성 구조" /></span></li>
+            <li><div class="tx"><p class="k">산화물계 전해질</p><p class="d">산화물계 LLZMO · LATP</p><p class="cap">이온 전도도 0.2~1.0 mS/cm</p></div>
+              <span class="box box--plate"><img src="../assets/oxide-electrolyte-diagram.jpg" width="900" height="450" loading="lazy" decoding="async"
+                   alt="산화물계 전해질 모식도 — 왼쪽은 결정 격자, 오른쪽은 고체 전해질 막을 가로지르는 이온 이동" /></span></li>
           </ul>
           <ul class="sf-dl">
             <li><p class="k">High Purity</p></li>
@@ -1816,23 +1863,22 @@
             <li><p class="k">Fast Charging</p></li>
             <li><p class="k">Low Resistance &amp; Low Viscosity</p></li>
           </ul>
-          <a class="hcta" href="#" aria-label="LiFSI 전해염 문의하기">문의하기</a>
         </div>
-        <!-- 대표 사진(A-1 그림 칸) + 제품 두 장의 그림(A-1 제품 칸). 모식도는 잘리지 않게 담는다 -->
-        <div class="hright hph--slides">
+        <!-- 2026-09-17 : A-1 그대로 — 대표 사진 한 장만 그림 칸에 두고, 제품 두 장의 그림은 제품 칸(.box)에 단다.
+             자동 넘김(.hph--slides)은 걷었다 -->
+        <div class="hright">
           <img src="../assets/lifsi-electrolyte-salt.jpg" loading="lazy"
                alt="플라스크에 담긴 LiFSI 전해염 분말" />
-          <img src="../assets/lifsi-electrolyte-sem.jpg" width="900" height="600" loading="lazy"
-               alt="LiFSI 전해염 입자 표면의 주사전자현미경 사진 — 크고 작은 구멍이 촘촘한 다공성 구조" />
-          <img class="is-contain" src="../assets/oxide-electrolyte-diagram.jpg" width="900" height="450" loading="lazy"
-               alt="산화물계 전해질 모식도 — 왼쪽은 결정 격자, 오른쪽은 고체 전해질 막을 가로지르는 이온 이동" />
         </div>
       </article>
 
       <!-- 2026-09-15 : A-1(business-smart-a1.html 04-3 · 04-4)에만 있던 두 소재 카드 -->
       <article class="hcard" data-tab="HNBR 바인더">
         <div class="hleft">
-          <h3>HNBR 바인더</h3>
+          <div class="hhead">
+            <h3>HNBR 바인더</h3>
+            <a class="hcta" href="#" aria-label="HNBR 바인더 문의하기">문의하기</a>
+          </div>
           <div class="hlead">
             <p>PVDF 바인더의 일부 대체 가능성을 검토할 수 있는 HNBR 바인더 소재입니다.</p>
             <p>우수한 결합력과 유연성, 전극 저항 감소 효과를 통해 배터리의 고율 충·방전 성능과 안정성 향상에 기여할 수 있습니다.</p>
@@ -1854,7 +1900,6 @@
             <li><p class="k">높은 강도 및 유연성</p><p class="d">전극 활물질 부피 변화 흡수, 탈락 방지.</p></li>
             <li><p class="k">SWCNT 분산 최적화</p><p class="d">단일벽 탄소나노튜브의 응집 해소, 점도 감소.</p></li>
           </ul>
-          <a class="hcta" href="#" aria-label="HNBR 바인더 문의하기">문의하기</a>
         </div>
         <div class="hright">
           <img src="../assets/hnbr-binder.jpg" width="2100" height="1800" loading="lazy"
@@ -1864,7 +1909,10 @@
 
       <article class="hcard" data-tab="파우치셀 제조">
         <div class="hleft">
-          <h3>파우치셀 제조</h3>
+          <div class="hhead">
+            <h3>파우치셀 제조</h3>
+            <a class="hcta" href="#" aria-label="파우치셀 제조 문의하기">문의하기</a>
+          </div>
           <div class="hlead">
             <p>A-PRO Materials는 Lab-scale 파우치셀 제작 및 소재 적용성 검증 서비스를 제공합니다.</p>
             <p>셀 설계부터 조립 공정, 품질 평가까지 통합 프로세스를 통해 고객사의 신소재 적용 가능성을 사전 검증합니다.</p>
@@ -1876,7 +1924,6 @@
             <li><b>04</b><span>화성 공정</span></li>
             <li><b>05</b><span>제품 출하</span></li>
           </ol>
-          <a class="hcta" href="#" aria-label="파우치셀 제조 문의하기">문의하기</a>
         </div>
         <div class="hright">
           <img src="../assets/pouch-cell.jpg" width="2100" height="1800" loading="lazy"
@@ -2049,6 +2096,43 @@
   </svg>
 </button>
 
+<script>
+/* ── 탄소 나노 튜브 : 제품 고르기 (A-1 04-1 스크립트 그대로) ────────────────
+   단추는 글 열에, 사진은 오른쪽 그림 칸에 있다. tab / tabpanel 로 묶었다 */
+(function(){
+  var list = document.querySelector('.sf-picks');
+  if(!list) return;
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  if(!tabs.length) return;
+
+  function pick(i, move){
+    for(var k=0;k<tabs.length;k++){
+      var on = (k === i);
+      tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[k].tabIndex = on ? 0 : -1;
+      var pane = document.getElementById(tabs[k].getAttribute('aria-controls'));
+      if(pane) pane.classList.toggle('is-on', on);
+    }
+    if(move) tabs[i].focus();
+  }
+
+  for(var i=0;i<tabs.length;i++)(function(i){
+    tabs[i].addEventListener('click', function(){ pick(i); });
+    tabs[i].addEventListener('keydown', function(e){
+      var n;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End')  n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      pick(n, true);
+    });
+  })(i);
+
+  pick(0);
+})();
+</script>
 <script src="business-layout.js"></script>
 <script>
 (function(){
