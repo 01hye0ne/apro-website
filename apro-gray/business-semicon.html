@@ -553,6 +553,30 @@
     .hsec{padding-bottom:12px}
 
   }
+
+  /* A-1 본문 · 리스트 · 버튼 스타일 이식 (2026-09-17) — business-semicon-a1.html 값 그대로
+     A-1 의 .sf-body p(줄글) 규칙을 카드 본문 단락에 옮긴다. A-1 은 장을 오갈 때 지금
+     장이 아닌 글을 옅게 칠하지만 그 동작은 옮기지 않고, 켜진 장의 색만 푼 값으로 쓴다.
+     이 페이지 본문은 줄글뿐이라 A-1 의 목록(.sf-num · .sf-dl)·버튼(.sf-cta) 규칙은 받을
+     자리가 없어 옮기지 않았다.
+       · 제목 밑 한 줄(.hleft>p)과 이어지는 단락 묶음(.hlead>p)은 A-1 에서 한 .sf-body
+         안의 단락들이다 → 둘 사이도 단락 간격 8px 로 붙인다(--stack-gap 을 되돌린다)
+       · A 공용 CSS 가 단락 앞에 다는 불릿 점·들여쓰기(business-layout.css .hlead>p)는
+         A-1 줄글에 없어 걷는다 */
+  :root{
+    --sf-txt:#1b2733;        /* text/primary       */
+    --sf-sec:#5a6675;        /* text/secondary     */
+    --sf-ter:#96a3b3;        /* text/tertiary      */
+    --sf-line:#e4e8ed;       /* border/default     */
+    --sf-line-s:#cbd2da;     /* border/strong      */
+  }
+  .hcard .hleft>p,.hcard .hleft .hlead>p{
+    padding-left:0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec);
+    word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+  .hcard .hleft>p::before,.hcard .hleft .hlead>p::before{content:none}
+  .hcard .hleft .hlead{gap:8px}
+  .hcard .hleft>p+.hlead{margin-top:calc(8px - var(--stack-gap))}
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->

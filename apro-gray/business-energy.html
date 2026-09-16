@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <!-- ============================================================
@@ -676,6 +677,98 @@
     .hsec{padding-bottom:12px}
 
   }
+  /* A-1 본문 · 리스트 · 버튼 스타일 이식 (2026-09-17) — business-energy-a1.html 값 그대로 */
+  /* 요청: "본문이나 리스트, 버튼들도 스타일 그대로 가져와줘". 카드 틀(좌 글 | 우 그림)·
+     스크롤·인덱스·제목(h3)은 A 것을 그대로 두고, 글과 목록의 모양만 A-1 에서 옮긴다.
+     A-1 은 지금 장이 아닌 장을 옅게 칠하는데(--c-* 계단) 그건 가져오지 않는다 —
+     색은 전부 "지금 장"일 때의 값으로 풀어 적었다.
+     글자 크기는 A-1 의 --t-* 별칭 대신 그 밑의 --fs-* 토큰을 바로 쓴다
+     (--t-sm · --t-xs = --fs-body, --t-2xs = --fs-tag, --t-md = --fs-h3).
+     본문에는 버튼이 없어 옮길 것이 없다 */
+  :root{
+    --sf-txt:#1b2733;        /* text/primary       */
+    --sf-sec:#5a6675;        /* text/secondary     */
+    --sf-ter:#96a3b3;        /* text/tertiary      */
+    --sf-line:#e4e8ed;       /* border/default     */
+    --sf-line-s:#cbd2da;     /* border/strong      */
+    --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
+    --ald:"Aldrich",var(--rc),sans-serif}
+
+  /* 도입 띠 줄글 ← A-1 소개 장 소분류 카드 설명(.sf-subs .d) — 같은 문안이다.
+     글자·굵기·행간·자간과 단락 사이 2px 은 그대로, 색만 파랑이 아니라 줄글 색이다
+     (A-1 에서는 옅은 파란 카드 위라 파랑이었다 — 흰 띠 위 두세 줄을 파랑으로 두면
+     링크처럼 읽힌다. 형제 세 장의 도입 띠와도 같은 색이다) */
+  .hintro{gap:2px}
+  .hintro p{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+
+  /* 카드 줄글 ← .sf-texts p (ESS·UPS) · .sf-ptexts .lead (솔루션). 불릿 점은 떼어 낸다 —
+     A-1 줄글에는 점이 없다(공용 .hlead>p 규칙의 들여쓰기 17px 도 함께 되돌린다) */
+  .hcard .hleft .hlead>p,
+  .hcard .hleft>p:not(.hen){padding-left:0;
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+  .hcard .hleft .hlead>p::before{content:none}
+  /* 솔루션 리드는 A-1 에서 제목 색이다(.sf-ptexts .lead → --c-ttl) */
+  .hcard .hleft>p:not(.hen){color:var(--sf-txt)}
+
+  /* 영문 부제 ← .sf-texts h2 의 글꼴·굵기·행간·자간·색. 크기만은 A 값(--fs-lead)을 둔다 —
+     A-1 에서는 이 줄이 장 제목이라 --fs-h1 인데, A 는 국문 h3 가 제목이라 그대로 키우면
+     부제가 제목보다 커진다 */
+  .hleft>.hen{font-family:var(--suit);font-weight:800;line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--sf-txt)}
+
+  /* 주요 적용 분야 목록 ← .sf-apps — 윗선 2px 굵은 선, 칸 사이 1px, 마지막 칸은 선 없음.
+     번호(01~)는 A-1 이 <b> 로 적어 둔 것을 카운터로 찍는다(마크업을 늘리지 않으려고) */
+  .hcard .hleft ul.happs{gap:0;counter-reset:happ;border-top:2px solid var(--sf-line-s)}
+  .hcard .hleft ul.happs li{display:flex;align-items:center;gap:8px;padding:8px;
+    border-bottom:1px solid var(--sf-line);
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-sec)}
+  .hcard .hleft ul.happs li:last-child{border-bottom:0}
+  .hcard .hleft ul.happs li::before{counter-increment:happ;content:counter(happ,decimal-leading-zero);
+    position:static;width:18px;height:auto;flex-shrink:0;border-radius:0;background:none;
+    font-family:var(--ald);font-weight:400;font-size:var(--fs-tag);
+    line-height:var(--lh-tight);letter-spacing:normal;color:var(--brand)}
+
+  /* Certification ← .sf-cert — 이름 옆에 인증 표시가 4×4 파란 네모를 달고 선다.
+     A 의 글 칸이 A-1 한 폭보다 좁아 긴 인증(BMS)이 한 줄에 안 들어간다 → A-1 이 좁은
+     화면(900 이하)에서 쓰는 줄바꿈 값을 늘 건다 */
+  .hcard .hcert{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:8px 0}
+  .hcard .hcert .ttl{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+    line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-txt)}
+  .hcard .hcert ul{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style:none}
+  .hcard .hcert li{display:flex;align-items:center;gap:8px;padding:0 12px;
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+    line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-sec);white-space:nowrap}
+  .hcard .hcert li:first-child{padding-left:0}
+  .hcard .hcert li::before{content:"";position:static;width:4px;height:4px;flex-shrink:0;
+    border-radius:0;background:var(--brand)}
+
+  /* 타입별 제품 판 ← .sf-prod — 1px 테두리 한 장 안에 [회색 이름 띠][특징 칸][주요 적용 분야].
+     타입이 둘·셋이면 이름 띠부터 다시 시작하고, 그 경계만 굵은 선이다
+     (A-1 의 .sf-prod+.sf-prod). 특징 칸은 A 글 칸 폭에 맞춰 A-1 이 1280 이하에서 쓰는
+     2×2 배치·여백(12 8)을 그대로 쓴다. 사진은 A 의 오른쪽 칸이 맡으므로 판에 없다 */
+  .hcard .hprod{border:1px solid var(--sf-line)}
+  .hcard .hprod .lbl{display:flex;align-items:center;padding:12px 16px;
+    border-bottom:1px solid var(--sf-line);background:var(--sf-gray100);
+    /* 공용 .hcard p 의 글자 값(18px · 160%)을 걷는다 — A-1 의 이 <p> 는 기본값이다 */
+    font-size:var(--fs-body);font-weight:400;line-height:normal;letter-spacing:normal}
+  .hcard .hprod .feat+.lbl{border-top:1px solid var(--sf-line-s)}
+  .hcard .hprod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+    line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--sf-txt)}
+  .hcard .hprod ul.feat{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style:none}
+  .hcard .hprod .feat li{flex:1 1 50%;min-width:0;padding:12px 8px;
+    font-family:var(--suit);font-weight:800;font-size:var(--fs-body);
+    line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-txt)}
+  .hcard .hprod .feat li::before{content:none}
+  .hcard .hprod .feat li+li{border-left:1px solid var(--sf-line)}
+  .hcard .hprod .feat li:nth-child(odd){border-left:0}
+  .hcard .hprod .use{display:flex;gap:10px;padding:12px 16px;font-weight:400;
+    border-top:1px solid var(--sf-line);font-family:var(--suit);
+    font-size:var(--fs-tag);line-height:var(--lh-body);letter-spacing:var(--ls-num)}
+  .hcard .hprod .use b{flex-shrink:0;font-weight:800;color:var(--sf-sec)}
+  .hcard .hprod .use span{min-width:0;font-weight:600;color:var(--sf-ter)}
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -762,7 +855,7 @@
           <div class="hlead">
             <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Grid Stabilization</li>
             <li>Frequency Regulation</li>
             <li>Peak Shaving</li>
@@ -782,7 +875,7 @@
           <div class="hlead">
             <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Solar Energy</li>
             <li>Wind Energy</li>
             <li>Renewable Energy Integration</li>
@@ -801,7 +894,7 @@
           <div class="hlead">
             <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Factory</li>
             <li>Commercial Building</li>
             <li>Industrial Facility</li>
@@ -835,7 +928,7 @@
           <div class="hlead">
             <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Data Center</li>
             <li>AI Data Center</li>
             <li>Cloud &amp; Hyperscale Data Center</li>
@@ -856,7 +949,7 @@
           <div class="hlead">
             <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Manufacturing Facility</li>
             <li>Semiconductor &amp; Display Facility</li>
             <li>Process Industry</li>
@@ -876,7 +969,7 @@
           <div class="hlead">
             <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
           </div>
-          <ul>
+          <ul class="happs">
             <li>Hospital &amp; Healthcare</li>
             <li>Telecommunication</li>
             <li>Transportation Infrastructure</li>
@@ -908,14 +1001,27 @@
         <div class="hleft">
           <h3>Module</h3>
           <p>배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
-          <div class="hlead">
-            <p>Certification — KC / IEC / UL · UL 9540A</p>
-            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          <div class="hcert">
+            <p class="ttl">Certification</p>
+            <ul><li>KC / IEC / UL</li><li>UL 9540A</li></ul>
           </div>
-          <ul>
-            <li><b>에어 쿨링 타입(Air Cooling)</b> 자연 공기 또는 강제 공기 순환 방식 · 구조가 단순하고 설치가 용이 · 다양한 환경에서의 안정적 운용 · 경제성 우수</li>
-            <li><b>리퀴드 쿨링 타입(Liquid Cooling)</b> 직접 액체 냉각 방식 · 우수한 열 관리 성능 · 고출력·고밀도 시스템에 최적 · 저소음 설계 가능</li>
-          </ul>
+          <div class="hprod">
+            <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
+            <ul class="feat">
+              <li>자연 공기 또는 강제 공기 순환 방식</li>
+              <li>구조가 단순하고 설치가 용이</li>
+              <li>다양한 환경에서의 안정적 운용</li>
+              <li>경제성 우수</li>
+            </ul>
+            <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
+            <ul class="feat">
+              <li>직접 액체 냉각 방식</li>
+              <li>우수한 열 관리 성능</li>
+              <li>고출력·고밀도 시스템에 최적</li>
+              <li>저소음 설계 가능</li>
+            </ul>
+            <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          </div>
         </div>
         <div class="hright is-plate hph--slides">
           <img class="is-on" src="../assets/ess-module-air-cooling.jpg" width="2100" height="2100" loading="lazy"
@@ -929,14 +1035,27 @@
         <div class="hleft">
           <h3>Rack</h3>
           <p>Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
-          <div class="hlead">
-            <p>Certification — KC / IEC / UL · UL 9540A</p>
-            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          <div class="hcert">
+            <p class="ttl">Certification</p>
+            <ul><li>KC / IEC / UL</li><li>UL 9540A</li></ul>
           </div>
-          <ul>
-            <li><b>High Energy Type Rack</b> 높은 에너지 밀도 · 장시간 에너지 저장 · 안정적인 시스템 운영 · 확장성 및 유연성</li>
-            <li><b>High Power Type Rack</b> 높은 출력 성능 · 빠른 응답 성능 · 우수한 열 관리 성능 · 안정성 및 신뢰성</li>
-          </ul>
+          <div class="hprod">
+            <p class="lbl"><b>High Energy Type Rack</b></p>
+            <ul class="feat">
+              <li>높은 에너지 밀도</li>
+              <li>장시간 에너지 저장</li>
+              <li>안정적인 시스템 운영</li>
+              <li>확장성 및 유연성</li>
+            </ul>
+            <p class="lbl"><b>High Power Type Rack</b></p>
+            <ul class="feat">
+              <li>높은 출력 성능</li>
+              <li>빠른 응답 성능</li>
+              <li>우수한 열 관리 성능</li>
+              <li>안정성 및 신뢰성</li>
+            </ul>
+            <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          </div>
         </div>
         <div class="hright is-plate hph--slides">
           <img class="is-on" src="../assets/ess-rack-high-energy.jpg" width="2100" height="2100" loading="lazy"
@@ -950,14 +1069,27 @@
         <div class="hleft">
           <h3>Container</h3>
           <p>Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
-          <div class="hlead">
-            <p>Certification — KC / IEC / UL</p>
-            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          <div class="hcert">
+            <p class="ttl">Certification</p>
+            <ul><li>KC / IEC / UL</li></ul>
           </div>
-          <ul>
-            <li><b>Container Air Cooling Type</b> 자연 공기 순환 방식 · 구조가 단순하고 유지보수가 용이 · 다양한 환경에서 안정적 운용 · 경제성 우수</li>
-            <li><b>Container Liquid Cooling Type</b> 직접 액체 냉각 방식 · 우수한 열 관리 성능 · 고출력·고밀도 시스템에 최적 · 저소음 설계 가능</li>
-          </ul>
+          <div class="hprod">
+            <p class="lbl"><b>Container Air Cooling Type</b></p>
+            <ul class="feat">
+              <li>자연 공기 순환 방식</li>
+              <li>구조가 단순하고 유지보수가 용이</li>
+              <li>다양한 환경에서 안정적 운용</li>
+              <li>경제성 우수</li>
+            </ul>
+            <p class="lbl"><b>Container Liquid Cooling Type</b></p>
+            <ul class="feat">
+              <li>직접 액체 냉각 방식</li>
+              <li>우수한 열 관리 성능</li>
+              <li>고출력·고밀도 시스템에 최적</li>
+              <li>저소음 설계 가능</li>
+            </ul>
+            <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          </div>
         </div>
         <div class="hright is-plate hph--slides">
           <img class="is-on" src="../assets/ess-container-air-cooling.jpg" width="2100" height="2100" loading="lazy"
@@ -971,15 +1103,34 @@
         <div class="hleft">
           <h3>BMS</h3>
           <p>Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
-          <div class="hlead">
-            <p>Certification — Functional Safety (IEC 60730-1) · Cybersecurity solutions (IEC 62443)</p>
-            <p>주요 적용 분야 — ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</p>
+          <div class="hcert">
+            <p class="ttl">Certification</p>
+            <ul><li>Functional Safety (IEC 60730-1)</li><li>Cybersecurity solutions (IEC 62443)</li></ul>
           </div>
-          <ul>
-            <li><b>Module BMS(CMU)</b> 정밀한 셀 모니터링 · 높은 신뢰성과 안정성 · Rack BMS와 완벽 연동 · 높은 확장성</li>
-            <li><b>Rack BMS(BPU)</b> Rack 상태 통합 모니터링 · 보호 및 제어 기능 · BPU 하드웨어 통합 보호 · 기능안전 인증 취득</li>
-            <li><b>System BMS(BCP)</b> 전체 시스템 통합 관리 · 상위 시스템 연계 · 시스템 보호 및 제어 · 사이버 보안 솔루션 제공</li>
-          </ul>
+          <div class="hprod">
+            <p class="lbl"><b>Module BMS(CMU)</b></p>
+            <ul class="feat">
+              <li>정밀한 셀 모니터링</li>
+              <li>높은 신뢰성과 안정성</li>
+              <li>Rack BMS와 완벽 연동</li>
+              <li>높은 확장성</li>
+            </ul>
+            <p class="lbl"><b>Rack BMS(BPU)</b></p>
+            <ul class="feat">
+              <li>Rack 상태 통합 모니터링</li>
+              <li>보호 및 제어 기능</li>
+              <li>BPU 하드웨어 통합 보호</li>
+              <li>기능안전 인증 취득</li>
+            </ul>
+            <p class="lbl"><b>System BMS(BCP)</b></p>
+            <ul class="feat">
+              <li>전체 시스템 통합 관리</li>
+              <li>상위 시스템 연계</li>
+              <li>시스템 보호 및 제어</li>
+              <li>사이버 보안 솔루션 제공</li>
+            </ul>
+            <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+          </div>
         </div>
         <div class="hright is-plate hph--slides">
           <img class="is-on" src="../assets/ess-bms-module.jpg" width="2100" height="2100" loading="lazy"

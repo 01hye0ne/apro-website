@@ -166,10 +166,8 @@
   .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
     line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
   .hleft>.pict{margin-top:auto}
-  /* 제목 밑 제품명 한 줄(.hsub) — A-1 의 줄글 머리 소제목(.sf-body .sub)과 같은 문안.
-     제목(h3)보다 한 단 작고 줄글보다 진하다. 점(불릿)은 달지 않는다 — .hlead 밖이다 */
-  .hleft>.hsub{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
-    line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900)}
+  /* 제목 밑 제품명 한 줄(.hsub) — A-1 처럼 줄글 묶음(.hlead)의 머리로 옮겼다(2026-09-17).
+     글자 값은 파일 끝 "A-1 본문 · 리스트 · 버튼 스타일 이식" 블록이 잡는다 */
 
   /* 여러 장짜리 비주얼(.hph--slides) — 목업엔 선례가 없다(전부 사진 1장). 이 페이지엔
      2종(EV 배터리 안전 진단·EV 배터리 성능 진단) 있어 새로 짠다. JS(business-layout.js)는
@@ -600,6 +598,30 @@
     .hsec{padding-bottom:12px}
 
   }
+  /* A-1 본문 · 리스트 · 버튼 스타일 이식 (2026-09-17) — business-ai-a1.html 값 그대로 */
+  /* 요청: "본문이나 리스트, 버튼들도 스타일 그대로 가져와줘". 카드 골격(좌 글 | 우 비주얼)·
+     제목(h3)·비주얼·픽토그램은 A 그대로 두고, 글 열 안의 글자만 A-1 과 같게 한다.
+     색은 A-1 글 열(.sf-txt)의 "켜진 장" 값으로 풀어 옮긴다 — A-1 의 옅은 장(흐린 회색)
+     연출은 스크롤 위치에 매인 것이라 가져오지 않는다.
+       줄글   .sf-body p    → .hlead>p      SUIT 600 · --fs-body · --lh-body · --ls-num · --sf-sec
+       단락   p+p 8px       → .hlead gap(--para-gap 8px, 이미 같다)
+       소제목 .sf-body .sub → .hlead>.hsub  800 · --fs-h3 · --lh-head · --ls-num · --sf-txt
+       미정   .sf-body .tbd → .hlead>.tbd   --sf-ter
+     A-1 줄글엔 불릿 점이 없다 — business-layout.css 가 .hlead>p 에 다는 점과 17px
+     들여쓰기를 여기서 걷는다(공용 CSS 는 A-1 도 쓰므로 손대지 않는다).
+     글자 크기는 A-1 의 --t-* 별칭이 이 파일엔 없어 그 밑 토큰(--fs-*)을 바로 쓴다
+     (--t-xs = --fs-body, --t-md = --fs-h3).
+     목록(.sf-num/.sf-dl)·버튼(.sf-picks 화면 고르기)은 이 페이지 A 에 대응하는 것이 없다 —
+     A 의 여러 장 비주얼(.hph--slides)은 이름표 없이 저절로 넘어가므로 새 조작부를 달지 않는다 */
+  :root{--sf-txt:#1b2733;--sf-sec:#5a6675;--sf-ter:#96a3b3;--sf-line:#e4e8ed;--sf-line-s:#cbd2da}
+  .hcard .hleft .hlead>p{position:static;padding-left:0;
+    font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-body);
+    letter-spacing:var(--ls-num);color:var(--sf-sec);
+    word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+  .hcard .hleft .hlead>p::before{content:none;display:none}
+  .hcard .hleft .hlead>p.hsub{font-weight:800;font-size:var(--fs-h3);line-height:var(--lh-head);
+    letter-spacing:var(--ls-num);color:var(--sf-txt);text-wrap:balance}
+  .hcard .hleft .hlead>p.tbd{color:var(--sf-ter)}
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -777,8 +799,8 @@
       <article class="hcard" data-tab="급속 충전기">
         <div class="hleft">
           <h3>급속 충전기</h3>
-          <p class="hsub">PICKLE Station</p>
           <div class="hlead">
+            <p class="hsub">PICKLE Station</p>
             <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
             <!-- 원문 둘째 단락 첫 문장이 "하드웨어 / 전력변환·제어 / 통신 / 인증·안전관리" 네 항목을
                  그대로 나열하고 있어 아래 픽토그램으로 접었다. 뒷문장(원격 운영·EMS 연계)은 남겼다 -->
