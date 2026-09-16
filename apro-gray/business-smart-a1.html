@@ -499,16 +499,18 @@
                   letter-spacing var(--slide) var(--soft)}
   .sf-map .ring li.is-on{color:var(--brand)}
   .sf-map .ring li.is-on i{font-weight:800;font-size:var(--t-sm);letter-spacing:var(--ls-num)}
-  /* 설비 — 겹테두리 카드를 걷고 바닥 띠 위에 세운다(Figma 1191:7574 Carousel).
-     이름이 그림 위에 오고, 그림 아랫변이 바닥 띠에 닿는다. 칸을 아래로 맞춰
-     두어 이름이 두 줄인 설비는 위로 자란다 */
+  /* 설비 — 바닥 띠 한 줄을 축으로 놓고 위에 설비, 아래에 이름을 둔다
+     (Figma 1269:8290 · 설비 — 일곱 대가 한 바닥선에 나란히 선다).
+     띠는 벌에 딸리지 않고 제자리에 붙박여 있어, 공정이 바뀌면 설비만 띠 위를
+     지나간다. 칸을 위로 맞춰 두어 이름이 두 줄인 설비는 아래로 자란다 */
   .sf-map .kit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
                width:529px;max-width:100%;padding:0 24px 40px;
                display:flex;flex-direction:column;align-items:center}
   /* 한 벌이 나가고 다음 벌이 들어오는 창. 여섯 벌을 같은 격자 칸에 겹쳐 두면
-     창 높이가 가장 큰 벌에 맞춰져, 공정이 바뀌어도 바닥 띠가 흔들리지 않는다 */
-  .sf-map .rail{width:100%;display:grid;overflow:hidden}
-  .sf-map .row{grid-area:1/1;display:flex;gap:var(--eg);align-items:flex-end;
+     창 높이가 가장 큰 벌(이름이 두 줄인 벌)에 맞춰져, 공정이 바뀌어도 칸이
+     오르내리지 않는다 — 바닥 띠도 같은 창에 붙박여 있어 함께 가만히 있는다 */
+  .sf-map .rail{position:relative;width:100%;display:grid;overflow:hidden}
+  .sf-map .row{grid-area:1/1;display:flex;gap:var(--eg);align-items:flex-start;
                justify-content:center;
                transform:translateX(100%);opacity:0;visibility:hidden}
   /* 전이는 들고 나는 두 벌에만 건다 — 다 나간 벌이 오른쪽 대기 자리로 돌아갈
@@ -528,14 +530,18 @@
   .sf-map{--eu:19.2%;--eg:2%}
   .sf-map .it{--ar:1;width:calc(var(--ar) * var(--eu));
               flex-shrink:0;display:flex;flex-direction:column;gap:16px;
-              align-items:center;justify-content:flex-end}
+              align-items:center;justify-content:flex-start}
   .sf-map .it.w2{--ar:2}
   .sf-map .it.w3{--ar:3}
   .sf-map .it.is-blank{--ar:1.3333}
   .sf-map .it .gx{width:100%;height:auto;aspect-ratio:var(--ar);
                   flex-shrink:0;display:block;background:#e6e6e6}
   .sf-map .it img.gx{background:none;object-fit:contain;object-position:center bottom}
-  .sf-map .floor{width:100%;height:8px;flex-shrink:0;background:var(--sf-brand200)}
+  /* 바닥 띠 — 설비 밑변에 딱 붙는다. 위에서 띄우는 거리가 그림 높이(= 벌 폭의
+     --eu)와 같아야 하는데, 절대 위치 요소의 세로 % 여백은 담는 칸의 '가로'를
+     기준으로 재므로 --eu 를 그대로 쓰면 된다 — 창이 좁아져도 저절로 따라온다 */
+  .sf-map .floor{position:absolute;left:0;right:0;top:0;margin-top:var(--eu);
+                 height:8px;background:var(--sf-brand200);pointer-events:none}
   /* 줄임말에는 풀어 쓴 이름을 달아 둔다 — 마우스를 올리면 뜬다 */
   .sf-map .it abbr{text-decoration:none}
   .sf-map .it b{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
@@ -902,6 +908,11 @@
     /* 그림은 글 아래로 — 좁은 폭에서 옆에 두면 둘 다 읽히지 않는다 */
     .sf-sec>.sf-ph{order:3;flex:0 0 auto;width:100%;max-width:none;
                    aspect-ratio:16/9;margin-bottom:28px}
+    /* 공정 맵만 4:3 이다 — 16:9 로는 고리의 공정 이름과 설비 · 설비 이름이
+       서로 올라탄다. 사진 칸은 그대로 16:9.
+       min-height 도 함께 둔다 : 고리의 글자 높이는 폭을 따라 줄지 않는데 설비는
+       줄어들어서, 좁은 기기에서 비율만으로는 다시 붙는다 */
+    .sf-sec>.sf-ph.has-map{aspect-ratio:4/3;min-height:280px}
     /* 줄 이름과 같은 말인 제목만 접는다 — 스크립트가 .sf-acc-dup 로 짚어 준다.
        에너지 인프라처럼 줄은 소분류 이름 · 안은 장 제목으로 갈리는 곳은 그대로 둔다 */
     .sf-sec.sf-acc-dup h2:not(.sf-acc-hd){display:none}
@@ -1178,35 +1189,35 @@
             </ol>
             <div class="kit">
               <div class="rail">
+                  <span class="floor"></span>
                   <div class="row is-on" data-step="1">
-                    <div class="it"><b>Pre-Formation</b><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /></div>
-                    <div class="it w2"><b><abbr title="High-Temperature Pressurized Formation">고온가압
-충방전기</abbr></b><img class="gx" src="../assets/equip-hot-press-formation.svg" alt="" decoding="async" /></div>
-                    <div class="it w2"><b>Selector</b><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /></div>
+                    <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>Pre-Formation</b></div>
+                    <div class="it w2"><img class="gx" src="../assets/equip-hot-press-formation.svg" alt="" decoding="async" /><b><abbr title="High-Temperature Pressurized Formation">고온가압
+충방전기</abbr></b></div>
+                    <div class="it w2"><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /><b>Selector</b></div>
                   </div>
                   <div class="row" data-step="2">
-                    <div class="it w3"><b>Degas</b><img class="gx" src="../assets/equip-degas.svg" alt="" decoding="async" /></div>
+                    <div class="it w3"><img class="gx" src="../assets/equip-degas.svg" alt="" decoding="async" /><b>Degas</b></div>
                   </div>
                   <div class="row" data-step="3">
-                    <div class="it is-blank"><b>High Temp</b><span class="gx"></span></div>
-                    <div class="it is-blank"><b>Normal Temp</b><span class="gx"></span></div>
-                    <div class="it is-blank"><b>Shipping Temp</b><span class="gx"></span></div>
+                    <div class="it is-blank"><span class="gx"></span><b>High Temp</b></div>
+                    <div class="it is-blank"><span class="gx"></span><b>Normal Temp</b></div>
+                    <div class="it is-blank"><span class="gx"></span><b>Shipping Temp</b></div>
                   </div>
                   <div class="row" data-step="4">
-                    <div class="it"><b>충방전기
-(Formation)</b><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /></div>
-                    <div class="it w2"><b>Selector</b><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /></div>
+                    <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>충방전기
+(Formation)</b></div>
+                    <div class="it w2"><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /><b>Selector</b></div>
                   </div>
                   <div class="row" data-step="5">
-                    <div class="it"><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b><img class="gx" src="../assets/equip-dcir.svg" alt="" decoding="async" /></div>
-                    <div class="it"><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b><img class="gx" src="../assets/equip-ir-ocv.svg" alt="" decoding="async" /></div>
-                    <div class="it"><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b><img class="gx" src="../assets/equip-ocv.svg" alt="" decoding="async" /></div>
+                    <div class="it"><img class="gx" src="../assets/equip-dcir.svg" alt="" decoding="async" /><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b></div>
+                    <div class="it"><img class="gx" src="../assets/equip-ir-ocv.svg" alt="" decoding="async" /><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b></div>
+                    <div class="it"><img class="gx" src="../assets/equip-ocv.svg" alt="" decoding="async" /><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b></div>
                   </div>
                   <div class="row" data-step="6">
-                    <div class="it is-blank"><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b><span class="gx"></span></div>
+                    <div class="it is-blank"><span class="gx"></span><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b></div>
                   </div>
               </div>
-              <span class="floor"></span>
             </div>
           </div>
         </figure>
