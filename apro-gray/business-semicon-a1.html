@@ -501,7 +501,7 @@
        눈금 가로 300 → 200 · 세로 500 → 300 · 목록 윗선 300 → 200 · 칸선 200 → 100
      좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
      .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
-  @media(min-width:901px){
+  @media(min-width:1181px){
     .js .sf-sec:not(.is-on) .sf-txt{
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
       --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
@@ -520,6 +520,25 @@
     .sf-ph,.sf-ph.is-on{transition:none}
   }
 
+  /* ── 아코디언 제목 줄 ──────────────────────────────────────────────────
+     모바일(767 이하)에서 장을 열고 닫는 줄이다. 스크립트(business-layout.js)가
+     장마다 한 줄씩 만들어 두고, 폭에 따라 CSS 가 보이고 감출 뿐이라 창을 늘였다
+     줄여도 되돌릴 것이 없다. 넓은 화면에서는 아예 그려지지 않는다 */
+  .sf-acc-hd{display:none;margin:0}
+  .sf-acc-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;
+              width:100%;padding:20px 0;background:none;border:0;text-align:left;
+              font-family:var(--suit);font-weight:800;font-size:var(--t-lg);
+              line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--sf-txt);
+              cursor:pointer;transition:color .3s var(--ease)}
+  /* 열림 표시는 GNB 메뉴와 같은 열십자다 — 열리면 45도 돌아 X 가 된다 */
+  .sf-acc-ic{flex-shrink:0;width:20px;height:20px;color:var(--sf-ter);
+             transition:transform .3s var(--ease),color .3s var(--ease)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-btn{color:var(--brand)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(45deg);color:var(--brand)}
+  @media(prefers-reduced-motion:reduce){
+    .sf-acc-btn,.sf-acc-ic{transition:none}
+  }
+
   /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
   @media(max-width:1400px){
     :root{--txt-pad-l:clamp(20px,2.8vw,40px)}
@@ -536,11 +555,13 @@
     .sf-nav{padding:40px 24px}
     .sf-nav .cols{grid-template-columns:repeat(3,1fr);gap:28px}
   }
-  @media(max-width:900px){
-    :root{--t-sm:var(--fs-body)}
-    /* 세 기둥을 세로로 눕힌다 — 인덱스가 화면 위 가로 띠, 그 아래 그림이 붙박이 띠,
-       그 밑으로 글이 흐른다. 붙어 있는 것과 흐르는 것의 관계는 넓은 화면과 같다.
-       --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
+  /* ── 태블릿(768~1180) — 그림이 장 안 왼쪽으로 ─────────────────────────
+     붙박이 둘을 푼다. 인덱스는 화면 위 가로 띠로 눕고, 그림 기둥은 통째로 접는다
+     — 겹쳐 있던 그림은 스크립트(business-layout.js)가 제 장 안으로 옮겨서, 장마다
+     그림이 왼쪽 · 글이 오른쪽인 두 칸이 된다. 그림이 스크롤을 따라 갈리는 연출은
+     여기서 멈춘다(장과 그림이 한 덩어리로 같이 흐르므로 갈릴 것이 없다).
+     --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
+  @media(max-width:1180px){
     :root{--subnav-h:47px}
     .sf-main{display:block;padding-left:0}
     .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
@@ -548,7 +569,7 @@
                  display:block;background:rgba(255,255,255,.94);
                  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
                  border-bottom:1px solid var(--sf-line)}
-    .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 16px;
+    .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 24px;
              scrollbar-width:none;-ms-overflow-style:none}
     .sf-rail::-webkit-scrollbar{display:none}
     .sf-grp{flex-direction:row;flex-shrink:0}
@@ -556,21 +577,53 @@
     .sf-rail a{border-bottom:0;padding:14px 12px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
-    /* 그림 띠 — 인덱스 띠 바로 밑에 붙는다. 화면의 30% 를 넘지 않게 묶어야
-       밑으로 흐르는 글이 읽을 만큼 남는다 */
-    .sf-figwrap{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h));z-index:15;
-                height:auto;padding:12px 16px;background:#fff;
-                border-bottom:1px solid var(--sf-line)}
-    .sf-figcol{height:auto;min-height:0;gap:12px}
-    .sf-figstack{aspect-ratio:16/9;max-height:30svh}
+    /* 빈 기둥만 남으므로 접는다 */
+    .sf-figwrap{display:none}
+    /* 장 — 왼쪽 그림 · 오른쪽 글 */
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-secs>.sf-sec+.sf-sec{margin-top:0}
-    .sf-sec{min-height:0;padding:32px 16px 56px;
-            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 30svh + 26px)}
-    /* 눕혀 놓으면 앞뒤 장이 겹쳐 보이지 않으므로 흐리지 않는다 */
+    .sf-sec{min-height:0;display:flex;flex-direction:row;align-items:flex-start;gap:24px;
+            padding:40px 24px 56px;border-top:1px solid var(--sf-line);
+            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 1px)}
+    .sf-secs>.sf-sec:first-child{border-top:0}
+    /* 기둥에서 나온 그림 — 겹쳐 두려고 걸어 둔 절대 위치 · 자리 · 배율을 모두 푼다.
+       스크립트가 얹었던 인라인 값은 옮길 때 지우므로 여기 !important 가 필요 없다 */
+    .sf-sec>.sf-ph{position:relative;inset:auto;flex:0 0 34%;max-width:380px;
+                   aspect-ratio:4/3;transform:none;visibility:visible;--zoom:1}
+    .sf-sec>.sf-txt{flex:1;min-width:0}
     .sf-txt{min-height:0}
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
+  }
+
+  /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
+     가로 띠 인덱스는 걷는다. 장마다 제목 줄 하나가 서고, 누르면 그 장의 글과
+     그림이 열린다. 첫 장은 열린 채로 시작한다(스크립트가 .is-open 을 준다).
+     열린 장 안은 글이 먼저, 그림이 그 아래 가로로 눕는다 — 좁은 폭에서 그림을
+     옆에 두면 둘 다 읽히지 않는다 */
+  @media(max-width:767px){
+    .sf-railwrap{display:none}
+    /* align-items 는 위 태블릿 규칙에서 flex-start 로 와 있다 — 세로로 세울 때는
+       제목 줄이 폭을 꽉 채워야 열림 표시가 오른쪽 끝에 선다 */
+    .sf-secs>.sf-sec{display:flex;flex-direction:column;align-items:stretch;gap:0;
+                     padding:0 16px;border-top:1px solid var(--sf-line);
+                     scroll-margin-top:var(--gnb-h)}
+    /* 닫힌 장은 제목 줄만 남는다 — 안에 무엇이 들었든(글 · 그림 · 제품 판) 함께 접힌다.
+       장마다 속이 달라 하나씩 짚는 대신, 제목 줄이 아닌 것을 통째로 접는다 */
+    .sf-sec>*{order:2}
+    .sf-sec>.sf-acc-hd{display:block;order:1}
+    .sf-sec:not(.is-open)>*:not(.sf-acc-hd){display:none}
+    .sf-sec>.sf-txt{padding-bottom:12px}
+    /* 그림은 글 아래로 — 좁은 폭에서 옆에 두면 둘 다 읽히지 않는다 */
+    .sf-sec>.sf-ph{order:3;flex:0 0 auto;width:100%;max-width:none;
+                   aspect-ratio:16/9;margin-bottom:28px}
+    /* 줄 이름과 같은 말인 제목만 접는다 — 스크립트가 .sf-acc-dup 로 짚어 준다.
+       에너지 인프라처럼 줄은 소분류 이름 · 안은 장 제목으로 갈리는 곳은 그대로 둔다 */
+    .sf-sec.sf-acc-dup h2:not(.sf-acc-hd){display:none}
+  }
+
+  @media(max-width:900px){
+    :root{--t-sm:var(--fs-body)}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
     .sf-herocap{gap:20px;padding-top:28px}
     .sf-herocap h1{gap:12px}
@@ -1169,7 +1222,10 @@
     rOff = parseFloat(getComputedStyle(document.documentElement)
                       .getPropertyValue('--rule-off')) || 0;
   }
+  /* 좁은 화면(1180 이하)은 그림이 기둥을 떠나 장 안에 있다 — 밀 것이 없다 */
+  var wideMq = window.matchMedia('(min-width:1181px)');
   function slide(){
+    if(!wideMq.matches) return;
     var stack = figs.length ? figs[0].parentNode : null;
     if(!stack) return;
     var sr = stack.getBoundingClientRect(), H = sr.height;
@@ -1263,7 +1319,7 @@
      · 전체 메뉴가 열려 있을 때 — 그 판이 자기 스크롤을 갖는다
      · 키보드(Space·PageDown·화살표) — 손대지 않는다. 어긋나면 다음 휠이 맞춘다 */
 (function(){
-  var narrow = window.matchMedia('(max-width:900px)');
+  var narrow = window.matchMedia('(max-width:1180px)');
   var steps  = [].slice.call(document.querySelectorAll('.sf-step'));
   var nav    = document.getElementById('sfNav');
   if(steps.length < 2) return;

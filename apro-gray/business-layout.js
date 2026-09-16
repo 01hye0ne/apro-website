@@ -854,3 +854,117 @@
     });
   }
 })();
+
+/* ── 사업영역 세부 A-1 · 좁은 화면 본문 재배치 ──────────────────────────────
+   넓은 화면(1181 이상)은 세 기둥이다 — 좌측 인덱스 · 붙박이 그림 기둥 · 흐르는 글.
+   그 아래 두 단계로 갈라진다.
+
+     태블릿(768~1180)  그림 기둥을 접고, 그림을 제 장 안 왼쪽으로 옮긴다.
+                       인덱스는 화면 위 가로 띠로 눕는다(CSS).
+     모바일(767 이하)   인덱스를 아예 걷고, 장마다 제목 줄을 눌러 열고 닫는다.
+                       그림은 열린 장 안에서 글 밑에 가로로 눕는다(CSS).
+
+   그림 옮기기만 DOM 을 건드린다 — 붙박이 기둥의 겹친 칸(.sf-figstack)과 장 안은
+   자리가 아예 다르므로 CSS 로는 옮길 수 없다. 사진을 한 벌 더 두는 대신 옮기는
+   이유: 공정 맵 · 지구본(canvas) · 제품 갈아 끼우는 칸처럼 스크립트가 붙은 칸이
+   섞여 있어, 복제하면 두 벌이 각각 움직인다.
+
+   아코디언은 DOM 을 옮기지 않는다 — 제목 줄(h2.sf-acc-hd)을 한 번 만들어 두고
+   폭에 따라 CSS 가 보이고 감출 뿐이라, 창을 늘였다 줄여도 되돌릴 것이 없다. */
+(function(){
+  var main = document.querySelector('.sf-main');
+  if(!main) return;
+  var stack = document.querySelector('.sf-figstack');
+  var secs  = [].slice.call(document.querySelectorAll('.sf-secs .sf-sec'));
+  if(!secs.length) return;
+
+  /* 장 ↔ 그림 짝 — 그림의 data-for 가 장의 id 다. 짝 없는 장은 그림이 없다 */
+  var pairs = [];
+  secs.forEach(function(sec){
+    var ph = stack && stack.querySelector('.sf-ph[data-for="' + sec.id + '"]');
+    if(ph) pairs.push({ sec: sec, ph: ph });
+  });
+
+  /* 붙박이 기둥이 돌 때 스크립트가 얹어 둔 자리·배율을 걷는다 —
+     장 안으로 옮긴 그림은 제자리에 그대로 서 있어야 한다 */
+  function clearSlide(ph){
+    ph.style.transform = '';
+    ph.style.visibility = '';
+    ph.style.removeProperty('--zoom');
+  }
+
+  var moved = false;
+  function place(inSection){
+    if(inSection === moved) return;
+    moved = inSection;
+    pairs.forEach(function(p){
+      if(inSection){
+        p.sec.insertBefore(p.ph, p.sec.firstChild);
+        clearSlide(p.ph);
+      }else if(stack){
+        stack.appendChild(p.ph);
+      }
+    });
+    /* 기둥으로 돌아갔으면 붙박이 스크립트가 다음 프레임에 자리를 다시 잡는다 */
+    if(!inSection) window.dispatchEvent(new Event('scroll'));
+  }
+
+  /* ── 아코디언 제목 줄 — 폭과 상관없이 한 번만 만든다 ──────────────────── */
+  secs.forEach(function(sec, i){
+    /* 장의 첫 제목을 그대로 옮겨 적는다 — 소분류 장(.sf-texts h2)이든 제품 장
+       (.sf-ptexts h2, 에너지 인프라)이든 같은 줄이 된다. 원래 제목은 CSS 가
+       좁은 화면에서만 접으므로 aria-labelledby 가 가리키는 자리는 그대로다 */
+    var h2 = sec.querySelector('h2');
+    if(!h2 || !sec.id) return;
+    /* 줄 이름은 인덱스에 적힌 소분류 이름을 그대로 쓴다 — 장마다 반드시 다르고,
+       인덱스를 걷어 낸 자리를 대신하는 줄이라 이름도 그쪽을 따라야 한다.
+       (에너지 인프라의 UPS 두 장은 장 제목 h2 가 서로 같다 — 제목을 쓰면 같은
+        줄이 둘 선다.) 인덱스에 없는 장만 제목으로 물러난다 */
+    var link = document.querySelector('.sf-rail a[href="#' + sec.id + '"]');
+    var name = ((link ? link.textContent : h2.textContent) || '').trim();
+    if(!name) return;
+    /* 줄 이름과 장 제목이 같은 말이면 장 안의 제목은 접는다(같은 줄이 두 번 선다).
+       다르면 그대로 둔다 — 에너지 인프라는 줄이 소분류 이름, 안이 그 장의 제목이다 */
+    if(h2.textContent.trim() === name) sec.classList.add('sf-acc-dup');
+
+    var hd = document.createElement('h2');
+    hd.className = 'sf-acc-hd';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sf-acc-btn';
+    /* 접히는 것이 장 하나라서 장을 통째로 가리킨다 — 장 안이 글 한 덩어리인
+       페이지도 있고 글 + 제품 판 둘인 페이지도 있다 */
+    btn.setAttribute('aria-controls', sec.id);
+    btn.setAttribute('aria-expanded', i ? 'false' : 'true');
+    var label = document.createElement('span');
+    label.className = 'sf-acc-t';
+    label.textContent = name;
+    btn.appendChild(label);
+    btn.insertAdjacentHTML('beforeend',
+      '<svg class="sf-acc-ic" viewBox="0 0 20 20" fill="none" aria-hidden="true">' +
+      '<path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="1.4"/></svg>');
+    hd.appendChild(btn);
+    sec.insertBefore(hd, sec.firstChild);
+    if(!i) sec.classList.add('is-open');
+
+    btn.addEventListener('click', function(){
+      var on = !sec.classList.contains('is-open');
+      sec.classList.toggle('is-open', on);
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+      /* 닫으면 제목 줄이 GNB 밑으로 사라질 수 있다 — 눌린 줄을 화면에 붙들어 둔다 */
+      if(!on){
+        var top = parseFloat(getComputedStyle(document.documentElement)
+                             .getPropertyValue('--gnb-h')) || 0;
+        var y = hd.getBoundingClientRect().top;
+        if(y < top) window.scrollBy(0, y - top);
+      }
+    });
+  });
+
+  /* ── 폭 감시 ──────────────────────────────────────────────────────────── */
+  var wide = window.matchMedia('(min-width:1181px)');
+  function sync(){ place(!wide.matches); }
+  if(wide.addEventListener) wide.addEventListener('change', sync);
+  else if(wide.addListener) wide.addListener(sync);
+  sync();
+})();
