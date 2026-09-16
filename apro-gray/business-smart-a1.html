@@ -420,10 +420,18 @@
   .sf-map .ring{--bw:8px;
                 width:100%;height:100%;display:grid;gap:4px;list-style:none;
                 grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
-  .sf-map .ring li{position:relative;display:flex;flex-direction:column;gap:8px;
-                   padding:32px 20px;
+  .sf-map .ring li{position:relative;display:flex;
                    overflow:hidden;font-family:var(--suit);color:var(--sf-ter);
                    background-repeat:no-repeat}
+  /* 칸 하나가 통째로 누를 자리다 — 안쪽 여백과 정렬은 단추가 받는다(굵은 띠는
+     칸의 바탕 그림이고 차오르는 몫은 칸의 ::before/::after 라, 그 둘은 칸에
+     그대로 남는다). 글꼴 · 색은 칸에서 물려받는다 — 공정이 바뀔 때 칸의 색이
+     흐르면 단추 속 글자도 함께 흐른다 */
+  .sf-map .ring button{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;
+                       padding:32px 20px;text-align:left;
+                       font:inherit;color:inherit;background:none;border:0;
+                       cursor:pointer;-webkit-appearance:none;appearance:none}
+  .sf-map .ring button:focus-visible{outline:2px solid var(--brand);outline-offset:-6px}
   .sf-map .ring b{font-family:var(--ald);font-weight:400;font-size:var(--t-xs);
                   line-height:var(--lh-tight)}
   .sf-map .ring i{font-style:normal;font-weight:400;font-size:var(--t-xs);
@@ -438,12 +446,12 @@
   .sf-map .ring li:nth-child(4),.sf-map .ring li:nth-child(6)
     {background-image:linear-gradient(var(--sf-line),var(--sf-line)),
                       linear-gradient(var(--sf-line),var(--sf-line))}
-  .sf-map .ring li:nth-child(-n+3){padding-top:calc(32px + var(--bw))}
-  .sf-map .ring li:nth-child(n+4){padding-bottom:calc(32px + var(--bw));
-                                  justify-content:flex-end;text-align:right}
-  .sf-map .ring li:nth-child(1),.sf-map .ring li:nth-child(4)
+  .sf-map .ring li:nth-child(-n+3)>button{padding-top:calc(32px + var(--bw))}
+  .sf-map .ring li:nth-child(n+4)>button{padding-bottom:calc(32px + var(--bw));
+                                         justify-content:flex-end;text-align:right}
+  .sf-map .ring li:nth-child(1)>button,.sf-map .ring li:nth-child(4)>button
     {padding-left:calc(20px + var(--bw))}
-  .sf-map .ring li:nth-child(3),.sf-map .ring li:nth-child(6)
+  .sf-map .ring li:nth-child(3)>button,.sf-map .ring li:nth-child(6)>button
     {padding-right:calc(20px + var(--bw))}
   .sf-map .ring li:nth-child(1){background-size:100% var(--bw),var(--bw) 100%;
                                 background-position:left top,left top}
@@ -493,7 +501,9 @@
   .sf-map .ring li:nth-child(6).is-out::after{transform-origin:center bottom}
   /* 공정이 넘어갈 때 색·굵기·크기가 함께 흐른다 — SUIT 는 가변 글꼴이라
      굵기도 중간값으로 이어진다 */
-  .sf-map .ring li{transition:color var(--slide) var(--soft)}
+  .sf-map .ring li{transition:color var(--slide) var(--soft),
+                   background-color .3s var(--ease)}
+  .sf-map .ring li:not(.is-on):hover{background-color:var(--sf-gray100)}
   .sf-map .ring i{transition:font-size var(--slide) var(--soft),
                   font-weight var(--slide) var(--soft),
                   letter-spacing var(--slide) var(--soft)}
@@ -860,7 +870,7 @@
     /* 공정 맵은 사진이 아니라 도식이라 그냥 줄이면 글자가 뭉갠다 — 짜임은 그대로
        두고 여백과 설비 카드만 줄인다(넓은 화면 그림 기둥의 절반 폭에 들어간다) */
     .sf-map .ring{--bw:5px}
-    .sf-map .ring li{padding:12px 10px;gap:4px}
+    .sf-map .ring button{padding:12px 10px;gap:4px}
     /* 칸과 사이가 모두 비율이라(위 --eu · --eg) 설비는 따로 줄일 게 없다 —
        아래 여백만 좁힌다 */
     .sf-map .kit{padding:0 0 16px}
@@ -1182,42 +1192,42 @@
       <div class="sf-figstack">
         <figure class="sf-ph is-on has-map" data-for="sf01-1" aria-label="활성화 공정 여섯 단계와 각 단계에 쓰이는 설비">
           <div class="sf-map">
-            <ol class="ring">
-              <li class="is-on" data-step="1"><b>01</b><i>1차 충전</i></li>
-              <li data-step="2"><b>02</b><i>디개싱 공정</i></li>
-              <li data-step="3"><b>03</b><i>에이징 공정</i></li>
-              <li data-step="6"><b>06</b><i>불량 선별</i></li>
-              <li data-step="5"><b>05</b><i>품질 검사</i></li>
-              <li data-step="4"><b>04</b><i>충&middot;방전</i></li>
+            <ol class="ring" role="tablist" aria-label="이차전지 활성화 여섯 공정">
+              <li class="is-on" data-step="1" role="presentation"><button type="button" role="tab" id="sfmap-t1" aria-controls="sfmap-p1" aria-selected="true" tabindex="0"><b>01</b><i>1차 충전</i></button></li>
+              <li data-step="2" role="presentation"><button type="button" role="tab" id="sfmap-t2" aria-controls="sfmap-p2" aria-selected="false" tabindex="-1"><b>02</b><i>디개싱 공정</i></button></li>
+              <li data-step="3" role="presentation"><button type="button" role="tab" id="sfmap-t3" aria-controls="sfmap-p3" aria-selected="false" tabindex="-1"><b>03</b><i>에이징 공정</i></button></li>
+              <li data-step="6" role="presentation"><button type="button" role="tab" id="sfmap-t6" aria-controls="sfmap-p6" aria-selected="false" tabindex="-1"><b>06</b><i>불량 선별</i></button></li>
+              <li data-step="5" role="presentation"><button type="button" role="tab" id="sfmap-t5" aria-controls="sfmap-p5" aria-selected="false" tabindex="-1"><b>05</b><i>품질 검사</i></button></li>
+              <li data-step="4" role="presentation"><button type="button" role="tab" id="sfmap-t4" aria-controls="sfmap-p4" aria-selected="false" tabindex="-1"><b>04</b><i>충&middot;방전</i></button></li>
             </ol>
             <div class="kit">
               <span class="floor"></span>
               <div class="rail">
-                  <div class="row is-on" data-step="1">
+                  <div class="row is-on" data-step="1" id="sfmap-p1" role="tabpanel" aria-labelledby="sfmap-t1" tabindex="0">
                     <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>Pre-Formation</b></div>
                     <div class="it w2"><img class="gx" src="../assets/equip-hot-press-formation.svg" alt="" decoding="async" /><b><abbr title="High-Temperature Pressurized Formation">고온가압
 충방전기</abbr></b></div>
                     <div class="it w2"><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /><b>Selector</b></div>
                   </div>
-                  <div class="row" data-step="2">
+                  <div class="row" data-step="2" id="sfmap-p2" role="tabpanel" aria-labelledby="sfmap-t2" tabindex="0">
                     <div class="it w3"><img class="gx" src="../assets/equip-degas.svg" alt="" decoding="async" /><b>Degas</b></div>
                   </div>
-                  <div class="row" data-step="3">
+                  <div class="row" data-step="3" id="sfmap-p3" role="tabpanel" aria-labelledby="sfmap-t3" tabindex="0">
                     <div class="it is-blank"><span class="gx"></span><b>High Temp</b></div>
                     <div class="it is-blank"><span class="gx"></span><b>Normal Temp</b></div>
                     <div class="it is-blank"><span class="gx"></span><b>Shipping Temp</b></div>
                   </div>
-                  <div class="row" data-step="4">
+                  <div class="row" data-step="4" id="sfmap-p4" role="tabpanel" aria-labelledby="sfmap-t4" tabindex="0">
                     <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>충방전기
 (Formation)</b></div>
                     <div class="it w2"><img class="gx" src="../assets/equip-selector.svg" alt="" decoding="async" /><b>Selector</b></div>
                   </div>
-                  <div class="row" data-step="5">
+                  <div class="row" data-step="5" id="sfmap-p5" role="tabpanel" aria-labelledby="sfmap-t5" tabindex="0">
                     <div class="it"><img class="gx" src="../assets/equip-dcir.svg" alt="" decoding="async" /><b><abbr title="DC Internal Resistance Tester">DCIR</abbr></b></div>
                     <div class="it"><img class="gx" src="../assets/equip-ir-ocv.svg" alt="" decoding="async" /><b><abbr title="Internal Resistance &amp; Open Circuit Voltage Tester">IR-OCV</abbr></b></div>
                     <div class="it"><img class="gx" src="../assets/equip-ocv.svg" alt="" decoding="async" /><b><abbr title="Open Circuit Voltage Tester">OCV</abbr></b></div>
                   </div>
-                  <div class="row" data-step="6">
+                  <div class="row" data-step="6" id="sfmap-p6" role="tabpanel" aria-labelledby="sfmap-t6" tabindex="0">
                     <div class="it is-blank"><span class="gx"></span><b><abbr title="Double Side Folding / End Of Line">DSF / EOL</abbr></b></div>
                   </div>
               </div>
@@ -1977,19 +1987,27 @@
 })();
 </script>
 <script>
-/* ── 공정 맵 — 여섯 공정이 2초씩 차례로 켜진다 ───────────────────────────
+/* ── 공정 맵 — 여섯 공정이 차례로 켜지고, 눌러서 고를 수도 있다 ──────────
    격자는 01·02·03 / 06·05·04 로 놓여 있어 자리 순서가 곧 차례는 아니다 —
-   칸마다 적어 둔 data-step 으로 돈다. 설비 카드도 그 공정의 설비로 갈린다.
-   다른 탭에 가 있는 동안에는 세지 않는다. 움직임을 줄인 설정에서는 첫 공정에
-   그대로 선다 */
+   칸마다 적어 둔 data-step 으로 돈다. 설비 벌도 그 공정의 설비로 갈린다.
+   다른 탭에 가 있는 동안에는 세지 않는다.
+
+   고리는 tablist 다 : 칸 하나가 tab, 그 공정의 설비 벌이 tabpanel 이다.
+   눌러서 고르고 화살표로 옮겨 다닌다 — 04-1 제품 고르기와 같은 약속이다.
+
+   맵에 손이 닿아 있는 동안(마우스가 위에 있거나 키보드 초점이 안에 있는
+   동안)에는 저절로 넘어가지 않는다. 고른 공정을 읽으려던 참인데 3.6초 뒤에
+   끌려가면 고른 보람이 없다. 손이 떠나면 고른 자리에서 다시 돈다.
+   움직임을 줄인 설정에서는 아예 돌지 않는다 — 그때는 누르는 것만 남는다 */
 (function(){
   var map = document.querySelector('.sf-map');
   if(!map) return;
   var cells = [].slice.call(map.querySelectorAll('.ring li'));
   var rows  = [].slice.call(map.querySelectorAll('.row'));
   if(!cells.length || !rows.length) return;
+  var tabs  = cells.map(function(li){ return li.querySelector('[role="tab"]'); });
 
-  var LAST = cells.length, at = 1, timer = null;
+  var LAST = cells.length, at = 1, timer = null, held = false;
   var slow = window.matchMedia('(prefers-reduced-motion:reduce)');
   /* 머무는 시간과 미끄러지는 시간은 CSS 에 적어 둔 것을 그대로 읽는다 —
      한쪽만 고쳐서 어긋나는 일이 없다 */
@@ -2006,6 +2024,10 @@
       var lit = +cells[i].getAttribute('data-step') === n;
       if(!lit && cells[i].classList.contains('is-on')) leave(cells[i]);
       cells[i].classList.toggle('is-on', lit);
+      if(tabs[i]){
+        tabs[i].setAttribute('aria-selected', lit ? 'true' : 'false');
+        tabs[i].tabIndex = lit ? 0 : -1;
+      }
     }
     for(i=0;i<rows.length;i++){
       var me = +rows[i].getAttribute('data-step') === n;
@@ -2022,12 +2044,44 @@
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
   function run(){
     stop();
-    if(slow.matches){ show(1); return; }
-    if(!document.hidden) timer = setInterval(tick, ms('--dwell', 3600));
+    if(slow.matches || held || document.hidden) return;
+    timer = setInterval(tick, ms('--dwell', 3600));
   }
+  function hold(on){ held = on; run(); }
+
   document.addEventListener('visibilitychange', run);
   if(slow.addEventListener) slow.addEventListener('change', run);
   else if(slow.addListener) slow.addListener(run);
+
+  map.addEventListener('mouseenter', function(){ hold(true); });
+  map.addEventListener('mouseleave', function(){ hold(false); });
+  map.addEventListener('focusin',  function(){ hold(true); });
+  map.addEventListener('focusout', function(e){
+    if(!map.contains(e.relatedTarget)) hold(false);
+  });
+
+  /* 누르면 그 공정으로 간다. 그 자리에 머무는 건 hold 가 맡는다 —
+     누른 뒤에도 손이 맵 위에 있으니 저절로 넘어가지 않는다 */
+  function at_(i){ return +cells[i].getAttribute('data-step'); }
+  for(var i=0;i<tabs.length;i++)(function(i){
+    if(!tabs[i]) return;
+    tabs[i].addEventListener('click', function(){ show(at_(i)); run(); });
+    /* 화살표로 옮겨 다니는 건 tablist 의 약속이다 */
+    tabs[i].addEventListener('keydown', function(e){
+      var n;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End')  n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      show(at_(n));
+      tabs[n].focus();
+      run();
+    });
+  })(i);
+
+  show(at);
   run();
 })();
 </script>
