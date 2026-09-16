@@ -525,6 +525,12 @@
      장마다 한 줄씩 만들어 두고, 폭에 따라 CSS 가 보이고 감출 뿐이라 창을 늘였다
      줄여도 되돌릴 것이 없다. 넓은 화면에서는 아예 그려지지 않는다 */
   .sf-acc-hd{display:none;margin:0}
+  /* 소분류 묶음 이름 — 인덱스를 걷는 모바일에서 줄 사이에 끼는 띠다.
+     인덱스의 묶음 머리(.sf-grp>.hd)와 같은 회색 띠 · 같은 글자다 */
+  .sf-acc-grp{display:none;align-items:center;gap:4px;margin:0;
+              padding:10px 16px;background:var(--sf-gray100);
+              font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+              line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter)}
   .sf-acc-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;
               width:100%;padding:20px 0;background:none;border:0;text-align:left;
               font-family:var(--suit);font-weight:800;font-size:var(--t-lg);
@@ -603,6 +609,9 @@
      옆에 두면 둘 다 읽히지 않는다 */
   @media(max-width:767px){
     .sf-railwrap{display:none}
+    /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
+    .sf-acc-grp{display:flex}
+    .sf-acc-grp+.sf-sec{border-top:0}
     /* align-items 는 위 태블릿 규칙에서 flex-start 로 와 있다 — 세로로 세울 때는
        제목 줄이 폭을 꽉 채워야 열림 표시가 오른쪽 끝에 선다 */
     .sf-secs>.sf-sec{display:flex;flex-direction:column;align-items:stretch;gap:0;
