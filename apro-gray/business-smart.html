@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APRO | 에이프로 — 스마트 제조</title>
-<meta name="description" content="에이프로(APRO) 스마트 제조 — 이차전지 활성화, 신뢰성 검사 장비, 자동화 시스템, 이차전지 소재." />
+<meta name="description" content="에이프로(APRO) 스마트 제조 — 이차전지 활성화, Cycler(Cell&amp;Module), 자동화 시스템, 이차전지 소재." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -403,7 +403,7 @@
      word-break:keep-all 로 어절 중간에서 끊기는 것만 막고 줄바꿈은 허용한다.
      ⚠ 이 카드는 위아래 2단이라(아래 flex-direction:column 블록) 제목이 두 줄이
        되면 그만큼 지도 칸이 낮아진다 — 문구를 더 늘릴 때는 지도 쪽도 같이 볼 것 */
-  .hcard[data-tab="해외 거점"] .hleft h3{white-space:normal;word-break:keep-all}
+  .hcard[data-tab="글로벌 에이프로 네트워크"] .hleft h3{white-space:normal;word-break:keep-all}
   .hleft>.pict{margin-top:auto}   /* 픽토그램은 "필요에 따라" 본문 아래, 열 바닥에 붙인다 */
   /* 아이콘+키워드 박스 — 기본(business-layout.css)은 4칸을 가로로 한 줄에 늘어놓고
      칸마다 흰 카드+그림자+모서리 점 장식을 넣는 방식인데, 카드 폭이 이제 열 하나
@@ -581,13 +581,13 @@
      (.hcard ul{gap:var(--para-gap)}, 8px)이 특정도가 더 높아(.hcard 클래스
      +ul 타입 vs .pmap-spec 클래스 하나) 그대로 씹혔다(2026-08-22 확인,
      계산된 gap 이 8px 그대로였다) — 여기서도 같은 특정도로 다시 0 을 준다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:0}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li{
+  .hcard[data-tab*="활성화 공정"]>.hright .pmap-spec{gap:0}
+  .hcard[data-tab*="활성화 공정"]>.hright .pmap-spec li{
     font-weight:500;font-size:13px;line-height:1.4;
     letter-spacing:-.2px;color:var(--g900);background:var(--secondary-bg);
     border:1px solid var(--border-g);border-radius:0;padding:6px 10px}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li+li{border-top:none}
-  .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec li::before{content:none}
+  .hcard[data-tab*="활성화 공정"]>.hright .pmap-spec li+li{border-top:none}
+  .hcard[data-tab*="활성화 공정"]>.hright .pmap-spec li::before{content:none}
   /* 마스크(2026-08-21 요청) — 그림이 이따금 카드 밑변을 넘어 다음 카드(예:
      "해외 거점" 제목)까지 침범해 보이는 문제가 있었다. rig 겹의 높이는
      본문 열 폭(RIG_SCALE) 기준으로만 정해져 카드에 실제로 남은 세로 공간과
@@ -647,7 +647,7 @@
      여기 또 40px를 얹으면 이 칸(탭·이미지)만 본문(.hleft, 좌우 패딩이 hcard
      것 하나뿐)보다 양쪽 40px씩 더 안으로 들어가 보였다(2026-08-21 지적 — 단계
      탭 줄 폭이 본문 폭과 안 맞음). 위아래 패딩만 남긴다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright{flex-direction:column;
+  .hcard[data-tab*="활성화 공정"]>.hright{flex-direction:column;
     /* padding-top 5px — 이 칸의 테두리 1px 과 더해 본문 밑변에서 단계탭까지
        6px 이 된다(2026-08-24 요청, 종전 12px 의 절반). 아래 낮은 화면용
        규칙도 같은 값을 쓴다 — 두 곳이 갈리면 화면 높이에 따라 간격이 튄다 */
@@ -667,9 +667,9 @@
      아래 max-height:820px 블록이 낮은 화면에서만 쓰던 값을 그대로 올린 것이고,
      이유도 같다 — 작아질지언정 순서·구역이 다 보이는 편이 낫다.
      .is-plate(object-fit:contain)라 줄어들어도 잘리지 않고 통째로 축소된다 */
-  .hcard[data-tab*="프로세스 맵"]>.hright img{width:100%;height:auto;
+  .hcard[data-tab*="활성화 공정"]>.hright img{width:100%;height:auto;
     flex:0 1 auto;min-height:0}
-  .hcard[data-tab*="프로세스 맵"]>.hright .fsteps{width:100%;margin:0}
+  .hcard[data-tab*="활성화 공정"]>.hright .fsteps{width:100%;margin:0}
 
   /* 우측이 사진이 아니라 자리표시 그리드인 카드들 (제품 카탈로그·아이콘) */
   .hgal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%;padding:40px}
@@ -680,6 +680,21 @@
      여백은 .gmap 이 아니라 바깥 .hright 이 든다(패딩을 상자에 주면 종횡비가 어긋나
      지도 그림 위아래가 잘린다. 그쪽 ⚠ 주석 참고) */
   .hright .gmap{margin:0}
+
+  /* 여러 장짜리 비주얼(.hph--slides) — 에너지 인프라 A(business-energy.html)와 같은 두 줄.
+     넘기기·하단 막대는 business-layout.js 가 맡는다. 2026-09-16 A-1(04-1 · 04-2)의
+     제품 그림을 옮기면서 탄소 나노 튜브(제품 셋)·LiFSI 전해염(대표 사진 + 제품 둘)이 쓴다 */
+  .hcard>.hright.hph--slides img{position:absolute;inset:0;opacity:0;
+    transition:opacity .6s var(--ease)}
+  .hcard>.hright.hph--slides img.is-on{opacity:1}
+  /* 잘리면 안 되는 모식도 한 장만 통째로 담는다 — 카드 전체가 판(.is-plate)은 아니라서 */
+  .hcard>.hright img.is-contain{object-fit:contain}
+  /* 문의하기 — A-1 소재 네 장의 단추(.sf-cta)와 같은 글. 줄글 열 맨 아래 왼쪽에 선다 */
+  .hcta{align-self:flex-start;display:inline-flex;align-items:center;padding:12px 20px;
+    background:var(--brand);color:#fff;font-family:var(--suit);font-weight:800;
+    font-size:var(--fs-body);line-height:1.2;letter-spacing:var(--ls);white-space:nowrap;
+    transition:background-color .3s var(--ease)}
+  .hcta:hover{background:var(--point-900)}
 
   /* ── 카드 3종 개별 레이아웃 — [좌:본문/우:비주얼] 2열 대신 [상:본문/하:비주얼]
      2행으로 바꾼다. data-tab 값으로 이 카드만 콕 집어 오버라이드한다(마크업
@@ -694,27 +709,27 @@
      특정도는 연산자와 무관하게 같으므로 규칙 순서는 종전 그대로다.
      PLC/MES 는 data-tab 이 약어만 남은 뒤에도 ^= 로 그대로 걸린다 */
   @media(min-width:901px){
-    .hcard[data-tab="해외 거점"],
+    .hcard[data-tab="글로벌 에이프로 네트워크"],
     .hcard[data-tab^="PLC"],
     .hcard[data-tab^="MES"],
-    .hcard[data-tab*="프로세스 맵"]{flex-direction:column}
+    .hcard[data-tab*="활성화 공정"]{flex-direction:column}
 
-    .hcard[data-tab="해외 거점"]>.hleft,
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft,
-    .hcard[data-tab*="프로세스 맵"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
+    .hcard[data-tab*="활성화 공정"]>.hleft{flex:0 0 auto;width:100%;margin-left:0;
       padding:40px 48px 24px;overflow:visible}
 
-    .hcard[data-tab="해외 거점"]>.hright,
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hright,
     .hcard[data-tab^="PLC"]>.hright,
     .hcard[data-tab^="MES"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{flex:1 1 auto;width:100%;border-left:0}
+    .hcard[data-tab*="활성화 공정"]>.hright{flex:1 1 auto;width:100%;border-left:0}
 
     /* 지도 카드(해외 거점)·프로세스 맵 카드만 상단(본문)-하단(비주얼)
        사이 구분선을 남긴다 — 둘 다 비주얼이 통짜 이미지(지도/구성도)라 그 경계가
        곧 콘텐츠 전환점이다 */
-    .hcard[data-tab="해외 거점"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{border-top:1px solid var(--border-g)}
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hright,
+    .hcard[data-tab*="활성화 공정"]>.hright{border-top:1px solid var(--border-g)}
 
     /* PLC·MES 그리드 박스 — 본문 카드가 다른 곳에서 쓰는
        좌우하단 여백(48px, 세 값 모두 동일)만큼 안쪽으로 줄어들게 한다. .hright
@@ -749,7 +764,7 @@
        계산해 잘림·마커 어긋남이 둘 다 없어진다. .hright 는 이미
        align-items/justify-content:center 라 남는 위아래 공간은 자동으로
        가운데 정렬된다 */
-    .hcard[data-tab="해외 거점"]>.hright{padding:32px}
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hright{padding:32px}
   }
 
   /* PLC·MES — 4개 기능을 2열×2행 아이콘+국문+줄글 그리드로(요청으로 4×1 에서 바꿨다.
@@ -983,10 +998,10 @@
     body{--stack-gap:20px}
     .hcard{background:none;border:0}
     .hcard>.hleft{margin-left:0;padding:40px 48px 0 0}
-    .hcard[data-tab="해외 거점"]>.hleft,
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft,
-    .hcard[data-tab*="프로세스 맵"]>.hleft{padding:40px 0 24px}
+    .hcard[data-tab*="활성화 공정"]>.hleft{padding:40px 0 24px}
 
     /* ⑤ 바탕색 — 비주얼 칸(.hright)에 깔려 있던 회색(--secondary-bg, #f4f6f8)을
        걷고 그 색을 페이지 바탕으로 올린다. ④ 에서 카드 상자를 이미 걷어낸 뒤라
@@ -1021,8 +1036,8 @@
        회색 판이 사라지기 전에는 [흰 글 면 | 회색 그림 면]의 경계에 선이 얹혀
        면을 갈랐지만, 두 면이 같은 바탕색이 된 지금은 선 하나만 덩그러니 남는다 */
     .hcard>.hright{background:none;border-left:0}
-    .hcard[data-tab="해외 거점"]>.hright,
-    .hcard[data-tab*="프로세스 맵"]>.hright{border-top:0}
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hright,
+    .hcard[data-tab*="활성화 공정"]>.hright{border-top:0}
 
     /* ⑥ 픽토그램 판(.pict) — 2열 2행 흰 판에서 1열 4행 목록으로.
        판(흰 배경 + 테두리)을 걷고 행 사이에만 가로선을 긋는다. ④·⑤ 와 같은
@@ -1090,12 +1105,12 @@
        ⚠ 위 "본문/비주얼 구분선 없애기"가 이 카드의 border-top 을 0 으로 두었다 —
          특정도가 같으므로 이 규칙은 반드시 그보다 뒤에 있어야 윗변이 살아난다.
          살아난 윗변은 이제 '두 면을 가르는 금'이 아니라 '상자의 윗변'으로 읽힌다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright{border:1px solid var(--border-g)}
+    .hcard[data-tab*="활성화 공정"]>.hright{border:1px solid var(--border-g)}
     /* 그림이 화면 끝까지 번지는 동안(is-pmap-bled, 아래 스크립트가 토글)은 이 선이
        "임시 영역"이 아니라 화면 밖으로 빠져나간 그림 밑에 남은 상자 테두리처럼
        보인다(2026-08-21 지적) — 두께는 그대로 두고 색만 지운다. border:0 으로
        걷으면 테두리 두께만큼 패딩 상자가 흔들리므로 border-color 만 바꾼다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright.is-pmap-bled{border-color:transparent}
+    .hcard[data-tab*="활성화 공정"]>.hright.is-pmap-bled{border-color:transparent}
 
     /* ⑧ PLC·MES 그리드 — 칸 사이 간격을 없애 네 칸을 한 판으로 묶고, 좌우 여백도
        걷어 판의 좌우 끝이 제목 줄(4열)과 소분류 탭 오른쪽 끝(11열)에 맞게 한다.
@@ -1409,12 +1424,12 @@
     /* 위 여백은 기본 규칙과 같은 5px — 종전에는 24px 이라 낮은 화면에서만
        본문·탭 간격이 25px 로 벌어졌다. 아래 24px 은 세로를 아끼려고 줄여 둔
        값이라 그대로 둔다 */
-    .hcard[data-tab*="프로세스 맵"]>.hright{padding:5px 0 24px;gap:10px}
-    .hcard[data-tab*="프로세스 맵"]>.hright img{flex:0 1 auto;min-height:0}
-    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-tab{padding:6px 6px 6px 8px}
-    .hcard[data-tab*="프로세스 맵"]>.hright .pmap-spec{gap:2px}
-    .hcard[data-tab*="프로세스 맵"]>.hleft,
-    .hcard[data-tab="해외 거점"]>.hleft,
+    .hcard[data-tab*="활성화 공정"]>.hright{padding:5px 0 24px;gap:10px}
+    .hcard[data-tab*="활성화 공정"]>.hright img{flex:0 1 auto;min-height:0}
+    .hcard[data-tab*="활성화 공정"]>.hright .pmap-tab{padding:6px 6px 6px 8px}
+    .hcard[data-tab*="활성화 공정"]>.hright .pmap-spec{gap:2px}
+    .hcard[data-tab*="활성화 공정"]>.hleft,
+    .hcard[data-tab="글로벌 에이프로 네트워크"]>.hleft,
     .hcard[data-tab^="PLC"]>.hleft,
     .hcard[data-tab^="MES"]>.hleft{padding:24px 0 12px}
   }
@@ -1485,9 +1500,9 @@
     <div class="hrail"></div>
     <div class="htrack">
 
-      <article class="hcard" data-tab="공정 프로세스 맵">
+      <article class="hcard" data-tab="활성화 공정 &amp; 설비">
         <div class="hleft">
-          <h3>공정 프로세스 맵</h3>
+          <h3>활성화 공정 &amp; 설비</h3>
           <p>독보적인 기술력으로 완성하는 이차전지 활성화 통합 솔루션</p>
           <div class="hlead">
             <p>에이프로는 이차전지 활성화(Formation) 공정 전체 설비의 자체 제작 기술을 보유한 리딩 기업입니다. 공정에 필요한 모든 설비를 직접 생산하여 국내외 유수의 고객사에 안정적으로 공급하고 있습니다.</p>
@@ -1522,14 +1537,11 @@
         </div>
       </article>
 
-      <!-- 2026-08-14 : 임시 제목 "수정 필요"를 걷고 원래 문구를 되살린다. 끝에 붙은
-           (*수정 예정)은 아직 확정 전이라는 표시이므로 문구가 굳으면 그 괄호만 뗀다.
-           data-tab 은 제목이 아니라 "이 카드가 무엇에 대한 카드인가"로 둔다 — 왼쪽
-           인덱스에 서는 글이라 형제 카드(공정 프로세스 맵)와 길이가 비슷해야 하고,
-           <style> 의 선택자 아홉 줄이 이 값을 훅으로 쓰기 때문이다. 제목처럼 문구가
-           흔들리는 값을 훅으로 두면 한 글자 고칠 때마다 그 아홉 줄이 조용히 풀린다
-           (PLC/MES 가 약어만 남긴 것과 같은 이유) -->
-      <article class="hcard" data-tab="해외 거점">
+      <!-- 2026-09-16 : 인덱스 글(data-tab)을 A-1 왼쪽 인덱스와 같은 글로 맞췄다
+           ("공정 프로세스 맵" → "활성화 공정 & 설비", "해외 거점" → "글로벌 에이프로 네트워크").
+           <style> 과 맨 아래 스크립트가 이 값을 훅으로 쓰므로 선택자도 함께 바꿨다 —
+           첫 카드는 *="활성화 공정" 부분 일치라 뒤 문구가 다듬어져도 풀리지 않는다 -->
+      <article class="hcard" data-tab="글로벌 에이프로 네트워크">
         <div class="hleft">
           <h3>글로벌 에이프로 네트워크</h3>
           <p>전 세계 배터리 생산의 중심, 에이프로 글로벌 네트워크</p>
@@ -1539,7 +1551,7 @@
           </div>
         </div>
         <div class="hright">
-          <div class="gmap" role="img" aria-label="에이프로 해외 거점 — 캐나다 온타리오, 미시간(북미법인), 오하이오, 테네시, 조지아, 독일, 폴란드(유럽법인), 중국 남경(중국법인), 인도네시아 카라왕(인도네시아법인)">
+          <div class="gmap" role="img" aria-label="한국 본사와 미국 미시간·폴란드·중국 남경·인도네시아 카라왕 현지 법인, 독일·캐나다 온타리오·오하이오·테네시·조지아 거점을 짚은 지도">
             <!-- 태평양 중심 지도 (2026-08-11 요청). world-map-pacific.svg 는
                  world-map.svg 와 같은 path 를 두 벌 그려 11°W 에서 이어 붙인 것이라
                  좌표계가 바뀌었다 — 원본은 lon −180..180, 이 파일은 lon −11..349.
@@ -1560,6 +1572,7 @@
               <polyline points="7.79,23.27 15.00,16 21,16" />
               <polyline points="36.06,36.92 40.00,47 42,47" />
               <polyline points="32.87,64.41 27.50,79 25,79" />
+              <polyline points="38.33,32.97 42.00,26 44,26" />
             </svg>
 
             <span class="gdot" style="left:81.01%;top:28.62%"></span>
@@ -1571,16 +1584,20 @@
             <span class="gdot gdot--corp" style="left:7.79%;top:23.27%;--pd:-.7s"></span>
             <span class="gdot gdot--corp" style="left:36.06%;top:36.92%;--pd:-1.4s"></span>
             <span class="gdot gdot--corp" style="left:32.87%;top:64.41%;--pd:-2.1s"></span>
+            <!-- 한국 본사 (A-1 지구의 HUB, 37.57N 126.98E) — 위 머리말 식 그대로:
+                 x = (126.98 + 11) / 360, y 는 이웃 점들의 위도 눈금(1° = 0.7165%)으로 셈했다 -->
+            <span class="gdot gdot--corp" style="left:38.33%;top:32.97%;--pd:-2.8s"></span>
 
             <span class="glab glab--r" style="left:65%;top:14%">캐나다 온타리오</span>
-            <span class="glab glab--r" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:65%;top:22%">미시간<em>(북미법인)</em></span>
+            <span class="glab glab--r" data-pop="mi" tabindex="0" role="button" aria-describedby="gpop-mi" style="left:65%;top:22%">미국 미시간</span>
             <span class="glab glab--r" style="left:65%;top:30%">오하이오</span>
             <span class="glab glab--r" style="left:65%;top:42%">테네시</span>
             <span class="glab glab--r" data-pop="ga" tabindex="0" role="button" aria-describedby="gpop-ga" style="left:65%;top:50%">조지아</span>
             <span class="glab" style="left:13%;top:12%">독일</span>
-            <span class="glab" style="left:21%;top:16%">폴란드<em>(유럽법인)</em></span>
-            <span class="glab" style="left:42%;top:47%">중국 남경<em>(중국법인)</em></span>
-            <span class="glab glab--r" style="left:25%;top:79%">인도네시아 카라왕<em>(인도네시아법인)</em></span>
+            <span class="glab" style="left:21%;top:16%">폴란드</span>
+            <span class="glab" style="left:42%;top:47%">중국 남경</span>
+            <span class="glab glab--r" style="left:25%;top:79%">인도네시아 카라왕</span>
+            <span class="glab" style="left:44%;top:26%">한국 본사</span>
 
           </div>
         </div>
@@ -1654,18 +1671,31 @@
     <div class="hrail"></div>
     <div class="htrack">
 
-      <article class="hcard" data-tab="탄소나노튜브">
+      <article class="hcard" data-tab="탄소 나노 튜브">
         <div class="hleft">
-          <h3>탄소나노튜브</h3>
+          <h3>탄소 나노 튜브</h3>
           <div class="hlead">
             <p>A-PRO Materials의 글로벌 소싱 네트워크를 활용하여 고품질의 탄소나노튜브(CNT) 소재를 안정적으로 공급합니다.</p>
             <p>엄격한 품질 검증을 거친 CNT 소재를 통해 고객사의 배터리 에너지 밀도 향상과 고속 충전 성능 구현을 지원합니다.</p>
           </div>
+          <!-- 2026-09-16 : A-1 04-1 의 제품 셋(고르기 단추 이름 + 사진 밑 설명).
+               줄 꼴은 같은 섹션 HNBR 바인더 제품 두 줄과 같다 — 이름 / 설명 (수치) -->
+          <ul>
+            <li><b>SW/FW-CNT Powder</b> 단일벽/소수벽 CNT 분말 (비표면적 ≥ 300~1,000 m&sup2;/g)</li>
+            <li><b>SW/FW-CNT Slurry</b> 단일벽/소수벽 CNT 분산액 (CNT 함량 0.2 ~ 4.0 wt%)</li>
+            <li><b>Carbon Black</b> 전도성 카본블랙 (비표면적 60 ~ 150 m&sup2;/g)</li>
+          </ul>
+          <a class="hcta" href="#" aria-label="탄소 나노 튜브 문의하기">문의하기</a>
         </div>
-        <!-- 투명 픽셀 없는 실사(SEM 촬영본) — 슬롯을 cover 로 꽉 채운다 -->
-        <div class="hright">
-          <img src="../assets/carbon-nanotube-sem.png" width="433" height="325" loading="lazy"
-               alt="탄소나노튜브 나노입자 주사전자현미경(SEM) 사진 — 입자 지름 20.4~40.3nm 실측 표기" />
+        <!-- 제품 사진 세 장 — A-1 은 단추로 골라 갈아 끼우고, 여기서는 에너지 인프라 A 의
+             여러 장짜리 비주얼(.hph--slides)로 차례로 넘긴다 -->
+        <div class="hright hph--slides">
+          <img src="../assets/cnt-powder.jpg" loading="lazy"
+               alt="유리 접시에 담긴 단일벽·소수벽 CNT 분말" />
+          <img src="../assets/cnt-slurry.jpg" loading="lazy"
+               alt="메스실린더에 담긴 단일벽·소수벽 CNT 분산액" />
+          <img src="../assets/cnt-carbon-black.jpg" loading="lazy"
+               alt="유리 접시에 담긴 전도성 카본블랙" />
         </div>
       </article>
 
@@ -1676,17 +1706,31 @@
             <p>A-PRO Materials는 엄선된 공급망을 통해 고순도 LiFSI 전해염 소재를 안정적으로 공급합니다.</p>
             <p>우수한 화학적 안정성을 바탕으로 고객사 배터리의 수명 연장과 고온 안정성 및 출력 향상을 지원합니다.</p>
           </div>
+          <!-- 2026-09-16 : A-1 04-2 의 제품 두 장(Figma 1302:46436). HNBR 바인더와 같은 짜임 —
+               제품 줄 / .hblock 가로선 / 특징 줄 -->
           <ul>
-            <li>High Purity</li>
-            <li>Thermal Stability</li>
-            <li>Long Cycle Life</li>
-            <li>Fast Charging</li>
-            <li>Low Resistance &amp; Low Viscosity</li>
+            <li><b>LiFSI 전해질</b> 고출력 · 수명연장용 차세대 전해염 (비표면적 ≥300~1,000 m&sup2;/g)</li>
+            <li><b>산화물계 전해질</b> 산화물계 LLZMO · LATP (이온 전도도 0.2~1.0 mS/cm)</li>
           </ul>
+          <div class="hblock">
+            <ul>
+              <li>High Purity</li>
+              <li>Thermal Stability</li>
+              <li>Long Cycle Life</li>
+              <li>Fast Charging</li>
+              <li>Low Resistance &amp; Low Viscosity</li>
+            </ul>
+          </div>
+          <a class="hcta" href="#" aria-label="LiFSI 전해염 문의하기">문의하기</a>
         </div>
-        <div class="hright">
-          <img src="../assets/lifsi-salt.jpg" width="498" height="438" loading="lazy"
-               alt="유리 용기 두 개에 담긴 백색 분말 형태의 LiFSI 전해염" />
+        <!-- 대표 사진(A-1 그림 칸) + 제품 두 장의 그림(A-1 제품 칸). 모식도는 잘리지 않게 담는다 -->
+        <div class="hright hph--slides">
+          <img src="../assets/lifsi-electrolyte-salt.jpg" loading="lazy"
+               alt="플라스크에 담긴 LiFSI 전해염 분말" />
+          <img src="../assets/lifsi-electrolyte-sem.jpg" width="900" height="600" loading="lazy"
+               alt="LiFSI 전해염 입자 표면의 주사전자현미경 사진 — 크고 작은 구멍이 촘촘한 다공성 구조" />
+          <img class="is-contain" src="../assets/oxide-electrolyte-diagram.jpg" width="900" height="450" loading="lazy"
+               alt="산화물계 전해질 모식도 — 왼쪽은 결정 격자, 오른쪽은 고체 전해질 막을 가로지르는 이온 이동" />
         </div>
       </article>
 
@@ -1715,6 +1759,7 @@
               <li><b>SWCNT 분산 최적화</b> 단일벽 탄소나노튜브의 응집 해소, 점도 감소.</li>
             </ul>
           </div>
+          <a class="hcta" href="#" aria-label="HNBR 바인더 문의하기">문의하기</a>
         </div>
         <div class="hright">
           <img src="../assets/hnbr-binder.jpg" width="2100" height="1800" loading="lazy"
@@ -1736,6 +1781,7 @@
             <li><b>04</b> 화성 공정</li>
             <li><b>05</b> 제품 출하</li>
           </ul>
+          <a class="hcta" href="#" aria-label="파우치셀 제조 문의하기">문의하기</a>
         </div>
         <div class="hright">
           <img src="../assets/pouch-cell.jpg" width="2100" height="1800" loading="lazy"
@@ -1744,7 +1790,7 @@
       </article>
 
       <!-- 줄글은 A-1 04-5 "차세대 기술 개발" 문안. 사진은 아직 없어 사진 칸만 자리표시로 남긴다 -->
-      <article class="hcard hcard--tbd" data-tab="에이프로 머티리얼즈">
+      <article class="hcard hcard--tbd" data-tab="에이프로머티리얼즈">
         <div class="hleft">
           <h3>차세대 기술 개발</h3>
           <div class="hlead">
@@ -1986,12 +2032,12 @@
   // SVG(activation-process-map.svg)에 진행 라인이 추가되면서, 01~06 단계를
   // 2초마다 자동으로 넘겨가며 탭·스펙·진행 라인을 함께 갱신한다
   var STEP_INFO = [
-    { label: '01 1차 충전', spec: ['Pre-formation', '고온가압 충방전기 (High Temperature, Pressure, Formation)', 'Selector'] },
+    { label: '01 1차 충전', spec: ['Pre-Formation', '고온가압 충방전기 (High-Temperature Pressurized Formation)', 'Selector'] },
     { label: '02 디개싱 공정', spec: ['Degas'] },
-    { label: '03 에이징 공정', spec: ['High Temp Aging', 'Normal Temp Aging', 'Shipping Temp Aging'] },
+    { label: '03 에이징 공정', spec: ['High Temp', 'Normal Temp', 'Shipping Temp'] },
     { label: '04 충·방전', spec: ['충방전기 (Formation)', 'Selector'] },
     { label: '05 품질 검사', spec: ['DCIR (DC Internal Resistance Tester)', 'IR-OCV (Internal Resistance & Open Circuit Voltage Tester)', 'OCV (Open Circuit Voltage Tester)'] },
-    { label: '06 불량 선별', spec: ['DSF/EOL (Double Side Folding / End Of Line)'] }
+    { label: '06 불량 선별', spec: ['DSF / EOL (Double Side Folding / End Of Line)'] }
   ];
   var STEP_DWELL = 2000;   // 단계당 재생 시간(ms)
 
@@ -2019,7 +2065,7 @@
   // 속성을 쓴다 — ensureRigClone() 참고)
   var LINE_PATH_D = 'M0.5 584.5H117.551C120.292 584.5 122.523 582.293 122.551 579.551L124.593 379.449C124.621 376.708 126.851 374.5 129.593 374.5H283.092C285.874 374.5 288.12 376.77 288.092 379.551L286.052 579.449C286.023 582.23 288.27 584.5 291.051 584.5H463.051C465.792 584.5 468.023 582.293 468.051 579.551L470.093 379.449C470.121 376.708 472.351 374.5 475.093 374.5H484.592C487.374 374.5 489.62 376.77 489.592 379.551L487.552 579.449C487.523 582.23 489.77 584.5 492.551 584.5H644.551C647.292 584.5 649.523 582.293 649.551 579.551L651.593 379.449C651.621 376.708 653.851 374.5 656.593 374.5L1096.59 374.5C1099.37 374.5 1101.62 376.77 1101.59 379.551L1099.55 579.449C1099.52 582.23 1101.77 584.5 1104.55 584.5H1161.25C1164.01 584.5 1166.25 582.262 1166.25 579.5V379.5C1166.25 376.739 1168.49 374.5 1171.25 374.5H2136.87C2139.64 374.5 2141.88 376.739 2141.88 379.5V462C2141.88 464.762 2139.64 467 2136.87 467H1214C1211.24 467 1209 469.239 1209 472V579.5C1209 582.262 1211.24 584.5 1214 584.5H2245.88';
 
-  var img = document.querySelector('.hcard[data-tab*="프로세스 맵"]>.hright img');
+  var img = document.querySelector('.hcard[data-tab*="활성화 공정"]>.hright img');
   if (!img) return;
   var track = img.closest('.htrack');
   var hright = img.closest('.hright');

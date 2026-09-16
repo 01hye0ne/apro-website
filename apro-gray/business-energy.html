@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APRO | 에이프로 — 에너지 인프라</title>
-<meta name="description" content="에이프로(APRO) 에너지 인프라 — Grid 에너지 저장 장치(ESS·UPS·BMS)와 우주 발사체·무인 이동체/수상정." />
+<meta name="description" content="에이프로(APRO) 에너지 인프라 — ESS(GRID·Renewable·C&amp;I), UPS(데이터 센터·산업용·주요 전력망), 솔루션(Module·Rack·Container·BMS)." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -171,6 +171,12 @@
   .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
     line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
   .hleft>.pict{margin-top:auto}
+  /* 영문 제목 한 줄 (2026-09-16) — A-1 ESS · UPS 장의 큰 영문 제목(h2)을 옮긴 것이다.
+     A 는 국문 이름(h3)이 제목이라 그 밑에 딸린 부제로 둔다 : 단락 사이 간격만큼만
+     띄워 h3 에 붙이고, 색은 --brand 로 줄글과 가른다. 불릿 점은 달지 않는다
+     (.hcard>p 가 아니라 .hleft>p 라 공용 점 규칙에 안 걸린다) */
+  .hleft>.hen{margin-top:calc(var(--para-gap) - var(--stack-gap));
+    font-weight:700;font-size:var(--fs-lead);color:var(--brand)}
 
   .hcard>.hright.hph--slides img{position:absolute;inset:0;opacity:0;
     transition:opacity .6s var(--ease)}
@@ -197,7 +203,10 @@
 
   @media(max-width:900px){
     .hcard{flex-direction:column}
-    .hcard>.hleft{margin-left:0;padding:32px}
+    /* flex:0 0 auto (2026-09-16) — 세로로 풀린 카드에서 50% 기준값이 글 칸을 줄여
+       아랫줄이 잘렸다(솔루션 네 장은 전부터, 영문 제목을 더한 ESS·UPS 도 몇 px).
+       글 칸은 제 내용 높이를 다 갖는다 */
+    .hcard>.hleft{margin-left:0;padding:32px;flex:0 0 auto}
     .hcard>.hright{border-left:0;border-top:1px solid var(--border-g);min-height:260px}
   }
 
@@ -740,10 +749,16 @@
       <!-- ESS 도입 줄글 — 세 카드(Grid · Renewable Energy · C&amp;I)를 묶는 말이라
            카드 안이 아니라 트랙 맨 위, 첫 카드 앞에 둔다. 트랙의 스크롤 차례 하나를
            차지하므로 섹션에 닿았을 때 보이고 한 번 더 굴리면 걷힌다.
-           UPS(#s2)도 같은 자리에 같은 띠를 둔다 -->
+           UPS(#s2) · 솔루션(#s3)도 같은 자리에 같은 띠를 둔다.
+           2026-09-16 : A-1 소개 장의 소분류 카드 설명(.d)이 이 문안이라 다시 싣는다 -->
+      <div class="hintro">
+        <p>다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
+        <p>배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
+      </div>
       <article class="hcard" data-tab="GRID ESS">
         <div class="hleft">
           <h3>GRID ESS</h3>
+          <p class="hen">Power Grid Stability</p>
           <div class="hlead">
             <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
           </div>
@@ -763,6 +778,7 @@
       <article class="hcard" data-tab="Renewable ESS">
         <div class="hleft">
           <h3>Renewable ESS</h3>
+          <p class="hen">Renewable Energy Integration</p>
           <div class="hlead">
             <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
           </div>
@@ -781,6 +797,7 @@
       <article class="hcard" data-tab="C&amp;I ESS">
         <div class="hleft">
           <h3>C&amp;I ESS</h3>
+          <p class="hen">Commercial &amp; Industrial Energy Storage</p>
           <div class="hlead">
             <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
           </div>
@@ -805,10 +822,16 @@
     <div class="hrail"></div>
     <div class="htrack">
       <!-- UPS 도입 줄글 — ESS(#s1)와 같은 자리·같은 규칙이다. 다른 것은 첫 줄뿐 —
-           약칭을 풀어 쓴 이름이라 문장이 아니고, 그래서 문장 둘과 무게를 나눈다 -->
+           약칭을 풀어 쓴 이름이라 문장이 아니고, 그래서 문장 둘과 무게를 나눈다.
+           2026-09-16 : 다시 실으면서 그 첫 줄(Uninterruptible Power Supply)은 뺐다 — A-1 소개 장에 없다 -->
+      <div class="hintro">
+        <p>고출력과 높은 신뢰성이 요구되는 Data Center 및 Critical Infrastructure를 위한 배터리 시스템 솔루션을 제공합니다.</p>
+        <p>빠른 전력 응답과 안정적인 시스템 운영을 고려하여 Application에 최적화된 UPS Battery System을 설계합니다.</p>
+      </div>
       <article class="hcard" data-tab="데이터 센터 전용 UPS">
         <div class="hleft">
           <h3>데이터 센터 전용 UPS</h3>
+          <p class="hen">Reliable Power for Data Infrastructure</p>
           <div class="hlead">
             <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
           </div>
@@ -828,6 +851,8 @@
       <article class="hcard" data-tab="산업용 UPS">
         <div class="hleft">
           <h3>산업용 UPS</h3>
+          <!-- A-1 문안 그대로 — 데이터 센터 전용 UPS 와 같은 영문 제목이다(A-1 머리말: 오버라이드 누락으로 보인다) -->
+          <p class="hen">Reliable Power for Data Infrastructure</p>
           <div class="hlead">
             <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
           </div>
@@ -847,6 +872,7 @@
       <article class="hcard" data-tab="주요 전력망 UPS">
         <div class="hleft">
           <h3>주요 전력망 UPS</h3>
+          <p class="hen">Continuous Power for Critical Infrastructure</p>
           <div class="hlead">
             <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
           </div>
@@ -867,10 +893,17 @@
 
   <!-- 03 — 2026-09-15 : A-1(business-energy-a1.html 03 솔루션)에만 있던 소분류. 제품 넷을 카드 넷으로,
        제품마다 인증 · 적용 분야 · 타입별 기능 키워드를 싣고 타입 사진을 2초마다 넘긴다.
-       기능 설명 문장(A-1 의 .d)은 카드 칸에 다 싣지 않았다 -->
+       기능 설명 문장(A-1 의 .d)은 카드 칸에 다 싣지 않았다.
+       2026-09-16 : ESS · UPS 와 같은 도입 띠를 둔다 — 문안은 A-1 소개 장의 "솔루션" 카드 설명 세 줄 -->
   <section class="hsec" id="s3">
+    <span class="hintro-bg" aria-hidden="true"></span>
     <div class="hrail"></div>
     <div class="htrack">
+      <div class="hintro">
+        <p>Scalable Battery System Architecture</p>
+        <p>From Module to Container</p>
+        <p>A-PRO는 고객의 Application과 시스템 요구사항에 따라 다양한 Level의 Battery System을 제공합니다.</p>
+      </div>
       <article class="hcard" data-tab="Module">
         <div class="hleft">
           <h3>Module</h3>
@@ -1143,7 +1176,7 @@
      인덱스는 붙박이다 — 바에 물린 뒤로는 늘 같은 자리에 선다.
    높이는 글이 몇 줄로 접히느냐에 따라 달라지므로 화면 크기가 바뀔 때만 다시 잰다.
 
-   띠를 가진 섹션을 전부 훑는다 — ESS(#s1)와 UPS(#s2) 둘이다. 띠가 없는 섹션은
+   띠를 가진 섹션을 전부 훑는다 — ESS(#s1) · UPS(#s2) · 솔루션(#s3) 셋이다. 띠가 없는 섹션은
    건너뛴다.
 
    그리고 하나 더 — 띠가 바 밑에 닿아 있는 동안 body 에 .intro-flush 를 단다.

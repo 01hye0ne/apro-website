@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APRO | 에이프로 — 인공지능 플랫폼</title>
-<meta name="description" content="에이프로(APRO) 인공지능 플랫폼 — 로봇 플랫폼, 배터리 진단, 전기자동차 충전·제어 플랫폼." />
+<meta name="description" content="에이프로(APRO) 인공지능 플랫폼 — 로봇 플랫폼, 배터리 진단 플랫폼, 전기자동차 충전 플랫폼, 전기자동차 제어 플랫폼." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -14,7 +14,8 @@
      v3.1 레이아웃 전면 적용 — business-smart-v3.1.html 목업(스마트 제조 페이지로
      먼저 검증한 버전)에서 굳어진 규칙을 이 페이지에 그대로 옮긴다. business-layout.css
      / .js 는 그대로 두고 이 문서에만 인라인으로 얹는 관례를 유지한다.
-     A-1(business-ai-a1.html)은 이 파일에서 _gen-a1.py 로 생성되므로 이 파일만 고친다.
+     A-1(business-ai-a1.html)은 이제 _gen-a1.py 가 만들지 않는다 — 디자인이 갈라져
+     손으로 고친다. 문안·사진은 A-1 쪽이 기준이다(2026-09-16 에 이 파일을 거기 맞췄다).
 
      목업과 달리 옮기지 않은 것 — 카드별 전용 그리드(.kwgrid/.descgrid 등)와
      data-tab 전용 오버라이드는 스마트 제조 카드 내용(9종 설비, PLC/MES 4기능)에만
@@ -165,9 +166,13 @@
   .hleft h3{font-family:var(--suit);font-weight:800;font-size:clamp(22px,2vw,30px);
     line-height:1.3;letter-spacing:-.6px;color:var(--g900);white-space:nowrap}
   .hleft>.pict{margin-top:auto}
+  /* 제목 밑 제품명 한 줄(.hsub) — A-1 의 줄글 머리 소제목(.sf-body .sub)과 같은 문안.
+     제목(h3)보다 한 단 작고 줄글보다 진하다. 점(불릿)은 달지 않는다 — .hlead 밖이다 */
+  .hleft>.hsub{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+    line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900)}
 
   /* 여러 장짜리 비주얼(.hph--slides) — 목업엔 선례가 없다(전부 사진 1장). 이 페이지엔
-     4종(산업 안전 진단 솔루션·건강 상태 진단·이상 상태 진단·EV 제어기) 있어 새로 짠다. JS(business-layout.js)는
+     2종(EV 배터리 안전 진단·EV 배터리 성능 진단) 있어 새로 짠다. JS(business-layout.js)는
      .hph--slides 안의 img 를 찾아 2초마다 .is-on 클래스를 옮기며 넘길 뿐이라, .hright
      자신에 이 클래스를 달고 이미지를 겹쳐 쌓기만 하면 그대로 작동한다. 진행 막대
      (.hslide-bar)는 business-layout.css 기본 스타일을 그대로 쓴다(특정 부모에
@@ -687,14 +692,10 @@
             <p>작업자의 위험 노출을 줄이고 점검의 일관성을 높여 선제적이고 스마트한 산업 운영을 지원합니다.</p>
           </div>
         </div>
-        <!-- 3장 — 사진이라 칸을 꽉 채우고(cover) 2초마다 넘어간다 -->
-        <div class="hright hph--slides">
-          <img src="../assets/robot-mobed.jpg" width="1200" height="675" loading="lazy"
-               alt="현대차 MobED 기반 이동형 점검 로봇이 산업 현장 통로를 주행하는 모습" />
-          <img src="../assets/robot-spot-1.jpg" width="1200" height="675" loading="lazy"
-               alt="보스턴다이나믹스 SPOT 4족 보행 로봇이 설비 사이를 점검하는 모습" />
-          <img src="../assets/robot-spot-2.jpg" width="1200" height="675" loading="lazy"
-               alt="보스턴다이나믹스 SPOT 로봇에 진단 센서를 얹어 현장 점검을 수행하는 모습" />
+        <!-- 사진 1장 — 칸을 꽉 채운다(cover). A-1 과 같은 사진이다 -->
+        <div class="hright">
+          <img src="../assets/industrial-safety-diagnostics.jpg" width="2100" height="1800" loading="lazy"
+               alt="이차전지 설비 앞을 도는 바퀴형 안전 진단 로봇" />
         </div>
       </article>
 
@@ -705,12 +706,11 @@
             <p>별도의 조작 없이 자유로운 이동과, 좁은 공간이나 사람이 닿기 위험한 공간에도 접근해 정밀 점검을 수행할 수 있습니다.</p>
             <p>에이프로 산업안전 AI 플랫폼은 딥러닝 기반 이미지 분석 기술을 통해 이상 징후나 결함을 감지하고 데이터를 실시간으로 관리 시스템에 전송해 즉각적 대응이 가능합니다.</p>
           </div>
-          <ul>
         </div>
-        <!-- 배경이 뚫린 PNG → is-plate(통째로 담기) -->
-        <div class="hright is-plate">
-          <img src="../assets/robot-khnp-field-test.png" width="1200" height="657" loading="lazy"
-               alt="한수원 양수발전소 지하 수로에서 실증 운영 중인 안전진단 AI 로봇" />
+        <!-- 사진 1장 — 칸을 꽉 채운다(cover). A-1 과 같은 사진이다 -->
+        <div class="hright">
+          <img src="../assets/industrial-safety-robot-platform.jpg" width="2100" height="1800" loading="lazy"
+               alt="펌프 설비를 점검하는 네 발 보행 로봇" />
         </div>
       </article>
 
@@ -734,10 +734,10 @@
           </div>
         </div>
         <div class="hright is-plate hph--slides">
-          <img src="../assets/battery-safety-dashboard.png" width="1200" height="645" loading="lazy"
-               alt="배터리 안전 진단 관제 대시보드 화면 — 셀 전압·모듈 온도 실시간 모니터링" />
-          <img src="../assets/battery-safety-mobile.png" width="700" height="1518" loading="lazy"
-               alt="배터리 안전 진단 모바일 앱 화면 — 충전 중 배터리 상태와 이상 알림" />
+          <img src="../assets/ev-safety-dashboard.png" width="1920" height="1032" loading="lazy"
+               alt="배터리 셀 안전 분류 결과를 표와 히트맵으로 보여 주는 대시보드 화면" />
+          <img src="../assets/ev-safety-mobile.png" width="393" height="852" loading="lazy"
+               alt="안전 진단 리포트를 등급과 막대로 보여 주는 모바일 화면" />
         </div>
       </article>
 
@@ -751,12 +751,12 @@
           <!-- 원래 이 자리에 있던 "선별 · 자원순환" 레이블(.lbl)은 v3.1 픽토그램 박스에
                해당 자리가 없어 뺀다 — 카드 제목이 이미 맥락을 잡아 준다 -->
         </div>
-        <!-- 2장 — 전주기 관리 화면 캡처, 잘리면 안 되므로 is-plate(contain) -->
+        <!-- 2장 — 진단 결과 · 진단 준비 화면 캡처, 잘리면 안 되므로 is-plate(contain) -->
         <div class="hright is-plate hph--slides">
-          <img src="../assets/battery-lifecycle-1.png" width="1200" height="680" loading="lazy"
-               alt="전기자동차 배터리 전주기 관리 화면 1 — 부분 방전 데이터 기반 SOH 예측" />
-          <img src="../assets/battery-lifecycle-2.png" width="1200" height="680" loading="lazy"
-               alt="전기자동차 배터리 전주기 관리 화면 2 — 셀·모듈 편차와 재사용 등급 판정" />
+          <img src="../assets/ev-performance-report.png" width="1859" height="1053" loading="lazy"
+               alt="배터리 진단 결과를 항목별 백분율과 레이더 도표로 보여 주는 화면" />
+          <img src="../assets/ev-performance-input.png" width="1859" height="1054" loading="lazy"
+               alt="업체와 차량, 배터리 제원을 입력하는 진단 준비 화면" />
         </div>
       </article>
 
@@ -772,10 +772,12 @@
            그 시절엔 이 소분류에 카드가 하나뿐이라 충전 솔루션 전체를 한 장이 다뤘고,
            v4.0 에서 급속 / 완속으로 갈리면서 그 자리를 급속 충전기가 받는다.
            제목만 새 체계의 이름을 쓰고(같은 브랜드인 완속 카드와 겹치면 안 된다)
-           줄글·키워드·사진은 원문 그대로다 — 제품명 PICKLE Station 은 줄글 첫 줄에 있다 -->
+           줄글은 원문 그대로다. 제품명 PICKLE Station 은 A-1 처럼 제목 밑 한 줄(.hsub)로
+           따로 세우고, 사진은 A-1 과 같은 급속 충전기 사진으로 바꿨다(2026-09-16) -->
       <article class="hcard" data-tab="급속 충전기">
         <div class="hleft">
           <h3>급속 충전기</h3>
+          <p class="hsub">PICKLE Station</p>
           <div class="hlead">
             <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소와 상용 플릿까지 다양한 운영 환경에 대응하는 안정적인 충전 인프라입니다.</p>
             <!-- 원문 둘째 단락 첫 문장이 "하드웨어 / 전력변환·제어 / 통신 / 인증·안전관리" 네 항목을
@@ -787,8 +789,8 @@
                자리가 없어 그때 뺐다. 지금 골격도 같으므로 되살리지 않는다 -->
         </div>
         <div class="hright">
-          <img src="../assets/pickle-station-gen2.jpg" width="1200" height="675" loading="lazy"
-               alt="에이프로 2세대 충전기 PICKLE Station이 늘어선 옥외 충전소 전경" />
+          <img src="../assets/ev-fast-charger.jpg" width="2100" height="1800" loading="lazy"
+               alt="건물 앞 충전소에 나란히 선 에이프로 전기자동차 급속 충전기 세 대" />
         </div>
       </article>
 
@@ -829,15 +831,11 @@
             <p>에이프로는 국내 공급과 기술 지원을 통해 전기차·자율주행·무인 이동체·로봇 분야 고객의 제어기 도입을 지원합니다.</p>
           </div>
         </div>
-        <!-- 3장 — 제품컷(배경 뚫린 PNG)이 섞여 있어 한 벌 모두 통째로 담는다(is-plate).
-             한 장만 잘라 채우면 같은 자리에서 장마다 프레임이 달라져 넘어갈 때 튄다 -->
-        <div class="hright is-plate hph--slides">
-          <img src="../assets/ecotron-lineup.jpg" width="1200" height="499" loading="lazy"
-               alt="ECOTRON 차량·자율주행 제어기 라인업 — VCU, ZCU, EVCC" />
-          <img src="../assets/ecotron-products.png" width="1000" height="280" loading="lazy"
-               alt="ECOTRON 제어기 제품 이미지" />
-          <img src="../assets/ecotron-ev-platform.jpg" width="1200" height="900" loading="lazy"
-               alt="ECOTRON 협력사의 전기차 플랫폼에 제어기가 적용된 모습" />
+        <!-- 사진 1장 — 칸을 꽉 채운다(cover). A-1 과 같은 사진이다
+             (예전 ECOTRON 라인업·제품컷·협력사 플랫폼 3장 슬라이드는 A-1 을 따라 걷었다) -->
+        <div class="hright">
+          <img src="../assets/ev-controller.jpg" width="2100" height="1800" loading="lazy"
+               alt="제어기를 얹은 전기자동차 구동 플랫폼" />
         </div>
       </article>
 

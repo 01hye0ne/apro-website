@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>APRO | 에이프로 — 화합물 전력 반도체</title>
-<meta name="description" content="에이프로(APRO) 화합물 전력 반도체 — GaN Epi-Wafer, GaN Power Device, 에이프로 세미콘." />
+<meta name="description" content="에이프로(APRO) 화합물 전력 반도체 — GaN Epi-Wafer, GaN Power Device, 에이프로세미콘." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -14,8 +14,8 @@
      v3.1 레이아웃 전면 적용 — business-smart-v3.1.html 목업(스마트 제조 페이지로
      먼저 검증한 버전)에서 굳어진 규칙을 이 페이지에도 옮긴다. business-layout.css
      / .js 는 그대로 두고 이 문서에만 인라인으로 얹는 관례를 유지한다.
-     A-1(business-semicon-a1.html)은 이 파일에서 _gen-a1.py 로 생성되므로 이
-     파일만 고친다.
+     A-1(business-semicon-a1.html)은 2026-09-09 부터 생성기에서 빠져 손으로
+     고친다. 내용(문안·그림)은 A-1 이 기준이다 — 2026-09-16 에 A 를 A-1 에 맞췄다.
 
      이 페이지는 소분류가 3개라 히어로 상태 탭 4등분 그리드(목업 기준)를 3등분으로
      고쳐 썼다. 픽토그램(.pict) 카드가 없어 그 그리드 규칙은 옮기지 않았다 -->
@@ -639,16 +639,11 @@
             <p>균일한 에피층 두께·조성 제어와 차별화된 기술 개발로 고효율·고전력밀도 전력변환을 구현합니다.</p>
           </div>
         </div>
-        <!-- 4장 — 웨이퍼·패키지 컷과 MOCVD 장비 모두 배경이 뚫린 PNG → is-plate(통째로) -->
-        <div class="hright is-plate hph--slides">
-          <img src="../assets/gan-epi-wafer.png" width="309" height="195" loading="lazy"
-               alt="8인치 GaN Epi-Wafer" />
-          <img src="../assets/gan-discrete-package.png" width="416" height="416" loading="lazy"
-               alt="GaN Discrete 패키징 제품" />
-          <img src="../assets/mocvd-aixtron-g10.png" width="1000" height="1036" loading="lazy"
-               alt="MOCVD 장비 — 독일 엑스트론 AIXTRON G10" />
-          <img src="../assets/mocvd-veeco-propel.png" width="1000" height="755" loading="lazy"
-               alt="MOCVD 장비 — Veeco Propel" />
+        <!-- 2026-09-16 : A-1 과 같은 사진 한 장으로 바꿨다(종전 웨이퍼·패키지·MOCVD 누끼 4장 슬라이드).
+             배경이 꽉 찬 사진이라 is-plate 없이 칸을 채운다 -->
+        <div class="hright">
+          <img src="../assets/gan-epi-wafer-equipment.jpg" width="2120" height="1818" loading="lazy"
+               alt="GaN 에피웨이퍼를 키우는 MOCVD 장비 한 벌" />
         </div>
       </article>
 
@@ -669,14 +664,10 @@
             <p>GaN Power Device는 전력 손실과 발열을 줄이고 수동소자 및 냉각 시스템의 소형화를 가능하게 하여, 전력변환 시스템 전체의 크기와 무게를 절감하고 에너지 효율을 향상시킵니다.</p>
           </div>
         </div>
-        <!-- 3장 — 모듈 컷과 적용 예시 -->
-        <div class="hright is-plate hph--slides">
-          <img src="../assets/gan-power-module.png" width="400" height="300" loading="lazy"
-               alt="GaN 전력변환 모듈" />
-          <img src="../assets/gan-module-power-system.png" width="600" height="400" loading="lazy"
-               alt="GaN 전력변환 모듈 적용 예시 — 전력 변환 시스템" />
-          <img src="../assets/gan-module-micro-inverter.jpg" width="1200" height="613" loading="lazy"
-               alt="GaN 전력변환 모듈 적용 예시 — 마이크로 인버터" />
+        <!-- 2026-09-16 : A-1 과 같은 사진 한 장으로 바꿨다(종전 모듈 컷·적용 예시 3장 슬라이드) -->
+        <div class="hright">
+          <img src="../assets/gan-power-device.jpg" width="2120" height="1818" loading="lazy"
+               alt="에이프로세미콘 GaN 전력반도체 패키지 두 종" />
         </div>
       </article>
 
@@ -688,11 +679,9 @@
     <!-- 카드가 하나뿐이라 JS(buildIndex)는 인덱스를 만들지 않는다 → 위 두 섹션과
          같은 요령으로 유일한 카드 제목을 직접 적어 둔다.
          (2026-08-14 '국내/외 협력' 카드를 걷어내면서 이 섹션도 한 장이 됐다)
-         소속 뱃지는 여기 적고 business-layout.js 의 placeBadge 가 카드 제목 옆으로
-         옮긴다 — 목록이 아니라 카드에 붙으므로 위 ol 과는 상관이 없다.
-         href 는 아직 자리만 — 에이프로 세미콘 사이트가 열리면 푸터 패밀리 사이트
-         목록과 같은 주소로 채운다 -->
-    <div class="hrail"><ol class="hidx"><li><button type="button" aria-current="true">에이프로세미콘</button></li></ol><a class="hbadge" href="#" target="_blank" rel="noopener">에이프로 세미콘</a></div>
+         소속 뱃지("에이프로 세미콘", .hbadge)는 2026-09-16 에 걷었다 — A-1 에 없다.
+         패밀리 사이트 링크는 푸터에 그대로 있다 -->
+    <div class="hrail"><ol class="hidx"><li><button type="button" aria-current="true">에이프로세미콘</button></li></ol></div>
     <div class="htrack">
 
       <article class="hcard" data-tab="에이프로세미콘">
@@ -705,8 +694,8 @@
           </div>
         </div>
         <div class="hright">
-          <img src="../assets/apro-semicon-plant.jpg" width="1200" height="799" loading="lazy"
-               alt="경북 구미 제5국가산업단지의 에이프로 세미콘 공장 전경" />
+          <img src="../assets/apro-semicon-plant.jpg" width="2120" height="1818" loading="lazy"
+               alt="해 질 무렵 불을 밝힌 에이프로세미콘 공장 외관" />
         </div>
       </article>
 
