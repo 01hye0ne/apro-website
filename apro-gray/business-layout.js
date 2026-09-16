@@ -961,6 +961,24 @@
     });
   });
 
+  /* ── 소분류 묶음 이름 ────────────────────────────────────────────────────
+     모바일은 인덱스를 통째로 걷는다 — 그러면 장 아홉이 한 줄로 이어져 어디서
+     묶음이 갈리는지 보이지 않는다. 인덱스의 묶음 머리(.sf-grp>.hd)를 그대로 옮겨
+     묶음의 첫 장 위에 띠로 끼운다. 넓은 화면에서는 CSS 가 감춘다.
+     묶음 머리가 없거나 첫 장을 못 찾으면 그 묶음은 그냥 건너뛴다 */
+  [].forEach.call(document.querySelectorAll('.sf-rail .sf-grp'), function(grp){
+    var hd = grp.querySelector('.hd');
+    var a  = grp.querySelector('a[href^="#"]');
+    if(!hd || !a) return;
+    var first = document.getElementById(a.getAttribute('href').slice(1));
+    if(!first || !first.parentNode || !first.parentNode.classList.contains('sf-secs')) return;
+    var band = document.createElement('p');
+    band.className = 'sf-acc-grp';
+    band.setAttribute('aria-hidden', 'true');   /* 인덱스에 같은 말이 이미 있다 */
+    band.innerHTML = hd.innerHTML;
+    first.parentNode.insertBefore(band, first);
+  });
+
   /* ── 폭 감시 ──────────────────────────────────────────────────────────── */
   var wide = window.matchMedia('(min-width:1181px)');
   function sync(){ place(!wide.matches); }
