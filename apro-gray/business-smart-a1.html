@@ -636,6 +636,10 @@
             -webkit-user-select:none;user-select:none}
   .sf-globe.is-grab{cursor:grabbing}
   .sf-globe canvas{display:block;width:100%;height:100%}
+  /* 지구 위 흰 로고(2026-09-17) — 구 꼭대기 위 빈 하늘 가운데에 띄운다. 끌기를 막지 않게 손은 받지 않는다.
+     .sf-ph img 의 확대(transform)를 이겨야 가운데 맞춤이 살아서 클래스를 하나 더 붙여 둔다 */
+  .sf-ph.has-globe .sf-globe-logo{position:absolute;z-index:2;left:50%;top:6%;width:21%;height:auto;
+    transform:translateX(-50%);pointer-events:none}
   /* 구의 아랫도리는 바탕에 잠기게 둔다 — 칸 위로 바탕(--sf-sky)을 한 장 더
      깔고, 위는 비워 두고 아래로 갈수록 드러나게 가림막을 씌운다. 덮개가 바탕과
      같은 배열을 그대로 쓰므로 자리마다 색이 정확히 겹친다 — 맨 아래에서는 구가
@@ -1406,6 +1410,7 @@
                aria-label="한국 본사와 미국 미시간·폴란드·중국 남경·인도네시아 카라왕 현지 법인, 독일·캐나다 온타리오·오하이오·테네시·조지아 거점을 짚은 지구 도식 — 끌거나 화살표 키로 돌려 볼 수 있습니다">
             <canvas aria-hidden="true"></canvas>
           </div>
+          <img class="sf-globe-logo" src="../assets/logo-apro-white.svg" width="78" height="17" alt="" aria-hidden="true" decoding="async" />
         </figure>
         <figure class="sf-ph has-img" data-for="sf02-1"><img src="../assets/reliability-test-equipment.jpg" alt="신뢰성 검사 장비 외관" decoding="async" /></figure>
         <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/automation-equipment.jpg" alt="안전 펜스 안의 다관절 로봇과 제어반으로 이루어진 자동화 설비" decoding="async" /></figure>
