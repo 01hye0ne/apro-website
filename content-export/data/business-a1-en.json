@@ -8,14 +8,14 @@
   },
   {
    "role": "개요 리드 1",
-   "ko": "이차전지 활성화 중요 공정 설비를 자체 기술로 만듭니다.",
-   "en": "We manufacture nine pieces of equipment for the secondary battery activation process using our own technology.",
+   "ko": "이차전지 활성화 공정의 주요 설비를 자체 기술로 만듭니다.",
+   "en": "We develop and manufacture core equipment for the secondary battery activation process using our proprietary technologies.",
    "at": "/html/body/section[2]/p/span[1]"
   },
   {
    "role": "개요 리드 2",
-   "ko": "셀의 성능과 품질을 결정하는 마지막 공정을 책임집니다.",
-   "en": "We are responsible for the final process that determines the performance and quality of the cells.",
+   "ko": "셀의 성능과 품질을 결정짓는 마지막 공정까지, A-PRO가 책임집니다.",
+   "en": "A-PRO takes full ownership of the final process that determines cell performance and quality.",
    "at": "/html/body/section[2]/p/span[2]"
   },
   {
@@ -200,8 +200,14 @@
   },
   {
    "role": "본문",
-   "ko": "당사는 독보적인 정밀 충·방전 기술과 고도화된 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 '통합 자동화 솔루션'을 제공합니다. 더불어 각 공정에서 발생하는 전압, 전류, 온도 등의 핵심 데이터를 정밀하게 측정하고 체계적으로 관리함으로써, 배터리 셀의 완성도 높은 품질과 생산 안정성을 극대화합니다.",
-   "en": "Based on our unrivaled precision charge-discharge technology and advanced automation capabilities, we deliver comprehensive 'integrated automation solutions' that encompass the entire battery cell formation process. Furthermore, we precisely measure and systematically manage critical data—such as voltage, current, and temperature generated during each stage—to maximize the seamless quality and production stability of battery cells.",
+   "ko": "에이프로는 이차전지 활성화(Formation) 공정의 전 설비를 자체 기술로 완성하는 리딩 기업입니다. 공정 내 모든 설비를 직접 생산하여 국내외 유수의 기업에 안정적인 공급을 제공하고 있습니다.",
+   "en": "A-PRO is a leading company with proprietary manufacturing capabilities for the entire range of equipment used in the secondary battery activation (Formation) process. We manufacture all essential process equipment in-house and reliably supply it to leading customers in Korea and around the world.",
+   "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "당사는 독보적인 정밀 충방전 기술과 고도화된 자동화 역량을 기반으로, 배터리 셀 활성화 공정 전반을 아우르는 '통합 자동화 솔루션'을 제공합니다. 더불어 각 공정에서 발생하는 전압, 전류, 온도 등의 핵심 데이터를 정밀 측정 및 제어함으로써 배터리 셀의 품질 완성도와 생산 안정성을 극대화합니다.",
+   "en": "Built on our unparalleled precision charge/discharge technology and advanced automation capabilities, A-PRO provides a fully integrated automation solution covering the entire battery cell activation process. In addition, we precisely measure and systematically manage critical process data—including voltage, current, and temperature—generated throughout each stage, maximizing cell quality and production stability.",
    "at": "/html/body/div[8]/div[3]/section[1]/div/div[2]/div/div/p[3]"
   },
   {
@@ -212,39 +218,69 @@
   },
   {
    "role": "본문",
-   "ko": "글로벌 시장을 선도하는 고객사를 위해 미국 미시간, 폴란드, 중국 남경, 인도네시아에 현지 법인을 구축했습니다.",
-   "en": "To support our global market-leading customers, we have established local subsidiaries in Michigan (USA), Poland, Nanjing (China), and Indonesia.",
+   "ko": "글로벌 시장을 선도하는 고객사의 성공적인 비즈니스를 지원하기 위해 미국 미시간, 폴란드, 중국 남경, 인도네시아에 현지 법인을 구축하고 있습니다.",
+   "en": "To support the business success of our world-leading clients, we are establishing local subsidiaries across key global hubs, including Michigan (USA), Poland, Nanjing (China), and Indonesia.",
    "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[2]"
   },
   {
    "role": "본문",
-   "ko": "현지에 상주하는 전문 엔지니어들이 셋업부터 유지보수까지 원스톱(One-stop)으로 지원하며, 안정적인 해외 거점을 바탕으로 고객사의 성공을 함께합니다.",
-   "en": "Our on-site expert engineers provide one-stop service from setup to maintenance, ensuring customer success through our robust global network.",
+   "ko": "현지에 상주하는 전문 엔지니어들이 셋업부터 유지보수까지 원스톱(One-stop)으로 지원하며, 안정적인 해외 거점을 바탕으로 고객과의 성장을 함께 이뤄 나갑니다.",
+   "en": "Our on-site professional engineers provide seamless, one-stop support from initial setup to ongoing maintenance, driving mutual growth with our clients through reliable global hubs.",
    "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[3]"
   },
   {
    "role": "작은 제목",
    "ko": "배터리의 미래를 검증하는 고효율 친환경 사이클러",
-   "en": "High-Efficiency Eco-Friendly Cyclers Validating the Future of Batteries",
+   "en": "High-Efficiency, Eco-Friendly Cyclers Validating the Future of Batteries",
    "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[1]"
   },
   {
    "role": "본문",
-   "ko": "에이프로의 이차전지 사이클러(Battery Cycler)는 독보적인 양방향 전력 제어와 에너지 회생 기술을 통해 배터리의 성능 평가를 최적화하고, 완벽한 제조 안정성을 확보합니다.",
-   "en": "A-PRO’s Battery Cycler optimizes battery performance evaluation and ensures flawless manufacturing stability through unrivaled bidirectional power control and energy regeneration technology.",
+   "ko": "에이프로의 Cycler는 독보적인 양방향 전력 제어와 에너지 회생 기술을 통해 배터리의 성능 평가를 최적화하고, 완벽한 제조 안정성을 확보합니다.",
+   "en": "With proprietary bidirectional power control and energy regeneration technology, A-PRO’s Cycler optimizes battery performance evaluation and ensures uncompromising manufacturing reliability.",
    "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[2]"
   },
   {
    "role": "본문",
-   "ko": "에이프로의 이차전지 사이클러는 배터리를 반복적으로 충·방전하여 성능, 효율성, 수명을 정밀하게 평가하는 핵심 테스트 장비입니다. 용량, 수명 주기(Cycle Life), 내부 저항을 정밀 측정하고 실제 사용 환경을 완벽히 시뮬레이션하여, 연구 개발 및 제조 단계에서 발생할 수 있는 열화 현상과 안전 문제를 사전에 빈틈없이 검출합니다.",
-   "en": "A-PRO’s Battery Cycler is an essential testing solution that precisely evaluates battery performance, efficiency, and lifespan through continuous charge and discharge cycles. By accurately measuring capacity, cycle life, and internal resistance, our cyclers replicate real-world operating conditions to flawlessly detect degradation and safety issues during the R&D and manufacturing stages.",
+   "ko": "성능 평가 및 신뢰성 검증 : 배터리를 반복적으로 충·방전하여 용량, 수명 주기, 내부 저항을 정밀 측정하고 실제 사용 환경을 완벽히 시뮬레이션하여 연구 개발 및 제조 단계에서 발생할 수 있는 열화 현상과 안전 문제를 사전에 빈틈없이 검출합니다.",
+   "en": "Performance Evaluation & Reliability Validation: Precisely measures capacity, cycle life, and internal resistance through repetitive charge-discharge cycles. By seamlessly simulating real-world conditions, it proactively detects degradation and safety risks across both R&D and production stages.",
    "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[3]"
   },
   {
    "role": "본문",
-   "ko": "특히 에이프로의 Cycler는 전류 공급(충전)과 흡수(방전)가 모두 가능한 양방향 전력 시스템과 혁신적인 에너지 회생(Regenerative) 기능을 탑재하고 있습니다. 방전 시 버려지는 에너지를 회수하여 전력망으로 되돌려주는 이 기술은 공장의 전력 낭비를 획기적으로 줄이고 냉각 부하를 저감하여, 가장 경제적이고 친환경적인 생산 환경을 완성합니다.",
-   "en": "In particular, A-PRO’s Cycler features an advanced bidirectional system capable of both supplying (charging) and absorbing (discharging) current, integrated with innovative energy regeneration technology. By capturing energy released during discharge and feeding it back into the power grid, this technology drastically reduces power waste and cooling loads, enabling an exceptionally economical and eco-friendly production environment.",
+   "ko": "양방향 전력 시스템 : 전류 공급(충전)과 흡수(방전)가 모두 가능한 양방향 전력 시스템을 기반으로 안정적인 테스트 환경을 제공합니다.",
+   "en": "Bidirectional Power System: Provides an exceptionally stable testing environment powered by a bidirectional architecture capable of both supplying (charging) and sinking (discharging) electrical current.",
    "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[4]"
+  },
+  {
+   "role": "본문",
+   "ko": "친환경 에너지 회생 기술 : 방전 시 버려지는 에너지를 회수하여 전력망으로 되돌려주는 기술을 활용합니다. 이는 전력 낭비를 획기적으로 줄이고 냉각 부하를 저감하여 경제적이고 친환경적인 생산 환경을 완성합니다.",
+   "en": "Eco-Friendly Energy Regeneration: Captures surplus energy released during discharge and feeds it back into the power grid. This drastically cuts power consumption and minimizes cooling loads, delivering an economical and sustainable manufacturing environment.",
+   "at": "/html/body/div[8]/div[3]/section[3]/div/div[2]/div/div/p[5]"
+  },
+  {
+   "role": "작은 제목",
+   "ko": "스마트 자동화 공정 솔루션",
+   "en": "Smart Automated Process Solutions",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "에이프로의 2차전지 활성화 설비는 최첨단 자동화 시스템을 통해 Cell 및 Module 공정의 생산 효율성을 극대화합니다.",
+   "en": "A-PRO's secondary battery formation equipment maximizes production efficiency across both Cell and Module processes through cutting-edge automation systems.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "다관절 로봇, 물류 컨베이어, 스태커 크레인, AMR(자율주행로봇) 등 고성능 물류 설비를 유기적으로 연계하여, 상위 시스템(MES, FCS)에서 전달받은 실시간 공정 정보에 따라 자율적이고 정확하게 정밀 이송·투입·배출을 수행합니다.",
+   "en": "By seamlessly integrating high-performance logistics equipment—including articulated robots, conveyors, stacker cranes, and AMRs (Autonomous Mobile Robots)—our systems autonomously execute precise transfer, loading, and unloading based on real-time process data from host systems (MES, FCS).",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[3]"
+  },
+  {
+   "role": "본문",
+   "ko": "단순 이송을 넘어, 상위 데이터에 기반한 자율적 판단으로 주어진 업무를 완벽하게 자동 처리함으로써 인적 오차를 줄이고, 최상의 공정 안정성과 데이터 기반의 스마트 팩토리를 실현합니다.",
+   "en": "Moving beyond simple material handling, our equipment autonomously processes operations through data-driven decisions. This minimizes human error, ensures superior process stability, and realizes a truly data-centric smart factory.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[4]"
   },
   {
    "role": "표 왼쪽",
@@ -971,16 +1007,28 @@
    "at": "/html/body/div[8]/div[1]/nav/div[3]/p/span[2]"
   },
   {
-   "role": "개요 카드 · 인덱스 그룹 이름",
+   "role": "개요 카드 · 인덱스 그룹 이름 · 인덱스 항목 · 장 제목",
    "ko": "전기자동차 제어 플랫폼",
    "en": "EV Control Platform",
    "at": "/html/body/section[2]/ul/li[4]/p"
   },
   {
-   "role": "개요 카드 · 인덱스 그룹 이름",
+   "role": "개요 카드 · 인덱스 그룹 이름 · 인덱스 항목 · 장 제목",
    "ko": "전기자동차 제어 플랫폼",
    "en": "EV Control Platform",
    "at": "/html/body/div[8]/div[1]/nav/div[4]/p/span[2]"
+  },
+  {
+   "role": "개요 카드 · 인덱스 그룹 이름 · 인덱스 항목 · 장 제목",
+   "ko": "전기자동차 제어 플랫폼",
+   "en": "EV Control Platform",
+   "at": "/html/body/div[8]/div[1]/nav/div[4]/a"
+  },
+  {
+   "role": "개요 카드 · 인덱스 그룹 이름 · 인덱스 항목 · 장 제목",
+   "ko": "전기자동차 제어 플랫폼",
+   "en": "EV Control Platform",
+   "at": "/html/body/div[8]/div[3]/section[6]/div/div[2]/div/h2"
   },
   {
    "role": "인덱스 항목 · 장 제목",
@@ -1043,18 +1091,6 @@
    "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/h2"
   },
   {
-   "role": "인덱스 항목 · 장 제목",
-   "ko": "전기자동차 제어 플랫폼",
-   "en": "EV Control Platform",
-   "at": "/html/body/div[8]/div[1]/nav/div[4]/a"
-  },
-  {
-   "role": "인덱스 항목 · 장 제목",
-   "ko": "전기자동차 제어 플랫폼",
-   "en": "EV Control Platform",
-   "at": "/html/body/div[8]/div[3]/section[6]/div/div[2]/div/h2"
-  },
-  {
    "role": "본문",
    "ko": "에이프로의 산업 안전 진단 로봇 솔루션은 이동형 로봇, AI, 원격 관제 기술을 결합하여 위험 산업 현장의 안전 점검을 자율화·지능화합니다.",
    "en": "APRO’s Industrial Safety Diagnostic Robot Solution combines mobile robots, AI, and remote monitoring technologies to automate and enhance safety inspections in hazardous industrial environments.",
@@ -1080,9 +1116,15 @@
   },
   {
    "role": "본문",
-   "ko": "객체 검출, VLM, 시계열 데이터 분석 등 다양한 AI 기술을 기반으로 현장에서 수집되는 영상·센서·설비 데이터를 분석하고, 에이프로의 LLM 기반 지능형 통신 모델 DELTA가 이를 해석·요약하여 로봇, 현장 설비, 관제실을 하나의 정보 체계로 연결합니다.\nAPRISM은 지하 발전소, 변전소, 산업 플랜트, 데이터센터 등 사람이 상시 접근하기 어렵거나 위험한 산업 현장에서 무인 순찰, 이상 감지, 상태 진단 및 예지보전을 지원합니다.",
-   "en": "Using AI technologies such as object detection, Vision-Language Models (VLM), and time-series data analysis, APRISM processes video, sensor, and equipment data collected from the field. APRO’s LLM-based intelligence engine, DELTA, interprets and summarizes this information, connecting robots, industrial sites, and control rooms through a unified information framework.\nAPRISM supports unmanned patrol, anomaly detection, condition monitoring, and predictive maintenance in hazardous or hard-to-access industrial environments such as underground power plants, substations, industrial plants, and data centers.",
+   "ko": "객체 검출, VLM, 시계열 데이터 분석 등 다양한 AI 기술을 기반으로 현장에서 수집되는 영상·센서·설비 데이터를 분석하고, 에이프로의 LLM 기반 지능형 통신 모델 DELTA가 이를 해석·요약하여 로봇, 현장 설비, 관제실을 하나의 정보 체계로 연결합니다.",
+   "en": "Using AI technologies such as object detection, Vision-Language Models (VLM), and time-series data analysis, APRISM processes video, sensor, and equipment data collected from the field. APRO’s LLM-based intelligence engine, DELTA, interprets and summarizes this information, connecting robots, industrial sites, and control rooms through a unified information framework.",
    "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[2]"
+  },
+  {
+   "role": "본문",
+   "ko": "APRISM은 지하 발전소, 변전소, 산업 플랜트, 데이터센터 등 사람이 상시 접근하기 어렵거나 위험한 산업 현장에서 무인 순찰, 이상 감지, 상태 진단 및 예지보전을 지원합니다.",
+   "en": "APRISM supports unmanned patrol, anomaly detection, condition monitoring, and predictive maintenance in hazardous or hard-to-access industrial environments such as underground power plants, substations, industrial plants, and data centers.",
+   "at": "/html/body/div[8]/div[3]/section[2]/div/div[2]/div/div/p[3]"
   },
   {
    "role": "본문",
@@ -1098,39 +1140,39 @@
   },
   {
    "role": "본문",
-   "ko": "전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.\n배터리의 부분 방전 데이터를 기존 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.",
-   "en": "This AI-based diagnostic solution rapidly evaluates the performance and residual value of used EV batteries.\nBy comparing and analyzing partial discharge data with previously trained battery datasets, the solution predicts the maximum available capacity and State of Health (SOH) of battery cells within 10 minutes.",
+   "ko": "전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.",
+   "en": "This AI-based diagnostic solution rapidly evaluates the performance and residual value of used EV batteries.",
    "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[1]"
+  },
+  {
+   "role": "본문",
+   "ko": "배터리의 부분 방전 데이터를 기존 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.",
+   "en": "By comparing and analyzing partial discharge data with previously trained battery datasets, the solution predicts the maximum available capacity and State of Health (SOH) of battery cells within 10 minutes.",
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[2]"
   },
   {
    "role": "본문",
    "ko": "이를 통해 중고 전기차 및 사용후 배터리의 상태를 빠르고 정량적으로 평가하고, 재사용·재제조·재활용 등 배터리 활용 의사결정을 지원합니다.",
    "en": "It enables fast and quantitative battery condition assessment, supporting informed decisions for battery reuse, remanufacturing, and recycling.",
-   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[2]"
-  },
-  {
-   "role": "작은 제목",
-   "ko": "PICKLE Station",
-   "en": "PICKLE Station",
-   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[1]"
+   "at": "/html/body/div[8]/div[3]/section[4]/div/div[2]/div/div/p[3]"
   },
   {
    "role": "본문",
    "ko": "에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소, 상용 플릿까지 다양한 운영 환경에 대응하는 통합 충전 인프라 솔루션입니다.",
    "en": "APRO’s electric vehicle charging solution, PICKLE Station, is an integrated charging infrastructure solution designed for a wide range of applications, from residential charging to public charging stations and commercial fleets.",
-   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[2]"
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[1]"
   },
   {
    "role": "본문",
    "ko": "원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템(EMS)과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.",
    "en": "It supports remote monitoring, charger operation, and maintenance, while integrating with charging management platforms and Energy Management Systems (EMS) for efficient operation and scalable infrastructure expansion.",
-   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[3]"
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[2]"
   },
   {
    "role": "본문",
    "ko": "에이프로가 축적해 온 전력전자 및 배터리 시스템 기술을 기반으로, 안전하고 안정적인 충전 환경과 지속 가능한 전기 모빌리티 생태계를 제공합니다.",
    "en": "Built on APRO’s expertise in power electronics and battery systems, PICKLE Station delivers safe and reliable charging infrastructure for a sustainable electric mobility ecosystem.",
-   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[4]"
+   "at": "/html/body/div[8]/div[3]/section[5]/div/div[2]/div/div/p[3]"
   },
   {
    "role": "본문",
