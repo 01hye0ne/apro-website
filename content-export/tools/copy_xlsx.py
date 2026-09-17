@@ -3,7 +3,7 @@
 import io, json, os, re, sys
 from collections import Counter
 from lxml import html as LH
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
@@ -43,7 +43,74 @@ def rail_map(path):
     return out
 
 
-def build():
+def carry(path):
+    """앞 판 엑셀에서 사람이 채운 칸(영문 · 변경 · 비고)을 문구 기준으로 모은다.
+
+    새 판은 줄 순서도 자리표도 달라지므로 '같은 현재 문구'로만 잇는다.
+    자동으로 단 비고(묶음 …)는 버리고 사람이 쓴 것만 남긴다"""
+    keep = {}
+    if not path or not os.path.exists(path):
+        return keep
+    wb = load_workbook(path)
+    for ws in wb.worksheets:
+        head = [str(c.value or "").strip() for c in ws[1]]
+        if "현재 문구" not in head:
+            continue
+        ix = {k: head.index(k) for k in ("현재 문구", "변경 문구", "영문 문구", "비고") if k in head}
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            cur = row[ix["현재 문구"]]
+            if not cur:
+                continue
+            cur = str(cur).replace("\r", "").strip()
+            got = keep.setdefault((ws.title, cur), {})
+            new = row[ix["변경 문구"]] if "변경 문구" in ix else None
+            en = row[ix["영문 문구"]] if "영문 문구" in ix else None
+            note = row[ix["비고"]] if "비고" in ix else None
+            if new and not got.get("new"):
+                got["new"] = str(new)
+            # 영문뿐인 줄을 그대로 옮겨 적은 자동 채움은 사람이 쓴 것으로 치지 않는다
+            if en and str(en).strip() != cur and not got.get("en"):
+                got["en"] = str(en)
+            if note and not re.match(r"^(묶음|같은 문구)", str(note)) and not got.get("note"):
+                got["note"] = str(note)
+    return keep
+
+
+def merge(rows, rmap):
+    """한 장 안에서 같은 문구를 한 줄로 합친다.
+
+    번호(01, 02 …)는 자리마다 뜻이 달라 합치지 않는다. 합친 줄은 섹션 · 자리를
+    이어 적고, 자리표는 줄을 바꿔 전부 담는다 — 되돌려 넣을 때 모든 자리에 넣는다"""
+    out, seen = [], {}
+    for r in rows:
+        sec = r["sec"]
+        if sec:
+            label = rmap.get(sec, sec)
+        elif r["role"].startswith("히어로"):
+            label = "히어로"
+        elif r["role"].startswith("개요"):
+            label = "개요"
+        else:
+            label = "좌측 인덱스"
+        kind = KIND.get(r["role"], "문구")
+        loc = r["xp"] + "|" + r["kind"]
+        key = (r["text"], r["kind"])
+        if kind != "번호" and key in seen:
+            m = seen[key]
+            for fld, v in (("labels", label), ("roles", r["role"])):
+                if v not in m[fld]:
+                    m[fld].append(v)
+            m["locs"].append(loc)
+            continue
+        m = {"text": r["text"], "kind": kind, "labels": [label], "roles": [r["role"]], "locs": [loc]}
+        out.append(m)
+        if kind != "번호":
+            seen[key] = m
+    return out
+
+
+def build(out=OUT, prev=OUT):
+    old = carry(prev)
     wb = Workbook()
     guide = wb.active
     guide.title = "안내"
@@ -55,26 +122,26 @@ def build():
     bfill = PatternFill("solid", fgColor="E8F1FB")
     gfill = PatternFill("solid", fgColor="F4F6F8")
 
-    # 같은 글자끼리 묶음 번호를 매긴다 — 한 곳만 채우면 나머지도 함께 바꿔 준다
+    # 장마다 같은 문구를 먼저 한 줄로 합치고, 그래도 여러 장에 걸친 문구에만 묶음 번호를 단다
     data = {}
     for key, name in AREAS:
-        data[key] = pull("apro-gray/business-%s-a1.html" % key)
+        path = "apro-gray/business-%s-a1.html" % key
+        data[key] = merge(pull(path), rail_map(path))
     tally = Counter()
     for rows in data.values():
-        for r in rows:
-            tally[r["text"]] += 1
+        for t in {m["text"] for m in rows if m["kind"] != "번호"}:
+            tally[t] += 1
     gid, gmap = 0, {}
     for rows in data.values():
-        for r in rows:
-            t = r["text"]
-            if tally[t] > 1 and t not in gmap:
+        for m in rows:
+            t = m["text"]
+            if m["kind"] != "번호" and tally[t] > 1 and t not in gmap:
                 gid += 1
                 gmap[t] = gid
 
-    total = 0
+    total = kept_en = kept_new = kept_note = 0
     for key, name in AREAS:
         ws = wb.create_sheet(name)
-        rmap = rail_map("apro-gray/business-%s-a1.html" % key)
         ws.append(HEAD)
         for i, w in enumerate(W, 1):
             ws.column_dimensions[get_column_letter(i)].width = w
@@ -86,29 +153,31 @@ def build():
         ws.row_dimensions[1].height = 24
 
         n = 0
-        for r in data[key]:
+        for m in data[key]:
             n += 1
             total += 1
-            sec = r["sec"]
-            if sec:
-                label = rmap.get(sec, sec)
-            elif r["role"].startswith("히어로"):
-                label = "히어로"
-            elif r["role"].startswith("개요"):
-                label = "개요"
-            else:
-                label = "좌측 인덱스"
-            g = gmap.get(r["text"], "")
-            kind = KIND.get(r["role"], "문구")
-            note = "묶음 %d — 같은 문구 %d 곳" % (g, tally[r["text"]]) if g else ""
-            # 이미 영문(또는 숫자·기호)뿐인 줄은 영문 칸을 미리 채워 둔다 —
-            # 손볼 게 없으면 그대로 두면 된다. 묶음에 든 줄은 비워 둔다:
-            # 미리 채워 두면 '한 줄만 채우면 나머지에도' 규칙과 부딪힌다
-            en = r["text"] if not HAN.search(r["text"]) else None
-            if kind == "번호" or g:
-                en = None
-            ws.append([n, label, r["role"], kind, g,
-                       r["text"], None, en, note, r["xp"] + "|" + r["kind"]])
+            t, kind = m["text"], m["kind"]
+            g = gmap.get(t, "")
+            notes = []
+            if len(m["locs"]) > 1:
+                notes.append("같은 문구 %d 곳 — 한 줄로 합침" % len(m["locs"]))
+            if g:
+                notes.append("묶음 %d — 다른 사업영역 %d 장에도 있음" % (g, tally[t] - 1))
+            prev_row = old.get((name, t), {})
+            if prev_row.get("note"):
+                notes.append(prev_row["note"])
+                kept_note += 1
+            new = prev_row.get("new")
+            kept_new += bool(new)
+            en = prev_row.get("en")
+            if en:
+                kept_en += 1
+            elif kind != "번호" and not g and not HAN.search(t):
+                # 이미 영문(또는 숫자·기호)뿐인 줄은 영문 칸을 미리 채워 둔다
+                en = t
+            ws.append([n, " · ".join(m["labels"]), " · ".join(m["roles"]), kind, g,
+                       t, new, en if kind != "번호" else None, "\n".join(notes) or None,
+                       "\n".join(m["locs"])])
             row = ws[ws.max_row]
             for c in row:
                 c.border = bd
@@ -155,10 +224,11 @@ def build():
               "손볼 게 없으면 그대로 두시면 됩니다."),
         ("p", "한글만 고치고 영문은 나중에 하셔도 됩니다. 두 칸은 서로 기다리지 않습니다."),
         ("", ""),
-        ("h", "묶음 칸"),
-        ("p", "같은 문구가 여러 곳에 있으면 같은 묶음 번호를 달아 두었습니다. 그중 한 줄만 채우면 나머지도 "
-              "같이 바꿔 넣습니다. 한글과 영문 모두 그렇습니다."),
-        ("p", "굳이 여러 번 쓰지 않으셔도 됩니다."),
+        ("h", "겹치는 문구 · 묶음 칸"),
+        ("p", "한 사업영역 안에서 같은 문구가 여러 자리에 있으면(개요 카드와 좌측 인덱스의 소분류 이름 등) "
+              "한 줄로 합쳐 두었습니다. 섹션 · 자리 칸에 그 자리들을 이어 적었고, 한 번만 고치시면 모든 자리에 들어갑니다."),
+        ("p", "다른 사업영역 시트에도 같은 문구가 있으면 같은 묶음 번호를 달아 두었습니다. 그중 한 줄만 채우면 나머지 시트에도 "
+              "같이 바꿔 넣습니다. 한글과 영문 모두 그렇습니다. 01, 02 같은 번호는 자리마다 뜻이 달라 합치지 않았습니다."),
         ("p", "소분류 이름을 바꾸시면 좌측 인덱스 · 띠지 · 메가 메뉴 · 푸터에 있는 같은 이름도 제가 함께 고칩니다."),
         ("", ""),
         ("h", "구분 칸"),
@@ -167,7 +237,7 @@ def build():
         ("p", "대체글은 화면에 보이지 않지만 검색과 접근성에 쓰입니다. 손대지 않으셔도 제가 문구에 맞춰 다듬습니다."),
         ("", ""),
         ("h", "마지막 칸(자리표)"),
-        ("p", "제가 그 문구를 페이지에서 찾는 데 쓰는 주소입니다. 지우거나 고치면 그 줄을 넣을 수 없습니다."),
+        ("p", "제가 그 문구를 페이지에서 찾는 데 쓰는 주소입니다. 합친 줄은 자리 수만큼 줄을 바꿔 담았습니다. 지우거나 고치면 그 줄을 넣을 수 없습니다."),
         ("p", "돌려주실 때는 이 파일을 그대로 저장해서 주시면 됩니다. 시트 이름과 열 순서만 지켜 주세요."),
     ]
     for kind, txt in lines:
@@ -183,9 +253,10 @@ def build():
         guide.row_dimensions[guide.max_row].height = 30 if kind == "p" else 22
     guide.sheet_view.showGridLines = False
 
-    wb.save(OUT)
-    print("썼다", OUT, total, "줄")
+    wb.save(out)
+    print("썼다", out, total, "줄 — 앞 판에서 옮긴 영문 %d · 변경 %d · 비고 %d" % (kept_en, kept_new, kept_note))
 
 
 if __name__ == "__main__":
-    build()
+    # python copy_xlsx.py [새 파일 경로] — 주지 않으면 원래 자리에 덮어쓴다(앞 판의 채운 칸은 옮긴다)
+    build(sys.argv[1] if len(sys.argv) > 1 else OUT)

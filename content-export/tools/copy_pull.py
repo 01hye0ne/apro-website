@@ -45,6 +45,7 @@ def role(el):
     if t == "img":
         if anc(el, "sf-introfig"): return "개요 그림 대체글"
         if anc(el, "sf-prod"):     return "제품 사진 대체글"
+        if anc(el, "sf-prods"):    return "제품 사진 대체글"   # 스마트 04-2 제품 칸 그림
         if anc(el, "sf-figstack"): return "그림 대체글"
         return None
 
@@ -56,6 +57,11 @@ def role(el):
     if "a" in c and "sf-lead" in pcls(el): return "개요 리드 1"
     if "b" in c and "sf-lead" in pcls(el): return "개요 리드 2"
     if t == "p" and anc(el, "sf-cards"):   return "개요 카드"
+    # 개요 소분류 카드 — 2026-09 에 .sf-cards 에서 .sf-subs 로 바뀌었다
+    if t == "p" and anc(el, "sf-subs"):
+        if "nm" in c: return "개요 카드"
+        if "d" in c:  return "개요 카드 설명"
+        return None
 
     # ── 좌측 인덱스 ──
     if anc(el, "sf-rail"):
@@ -85,6 +91,8 @@ def role(el):
 
     # ── 그림 칸 ──
     if anc(el, "sf-figstack"):
+        # 공정 맵 설비 이름(스마트 01-1) — 약어는 <abbr> 에 싸여 있어 <b> 째로 담는다
+        if t == "b" and "it" in pcls(el) and anc(el, "sf-map"): return "공정 맵 설비"
         if t == "span" and "sf-ph" in pcls(el): return "그림 자리표시 문구"
         if anc(el, "sf-cnt"):
             if t == "b" and "cap" in pcls(el):    return "사진 설명 제목"
@@ -95,6 +103,13 @@ def role(el):
     # ── 장 본문 ──
     if anc(el, "sf-sec"):
         if "nm" in c and anc(el, "sf-picks"): return "제품 단추 이름"
+        if "sf-cta" in c: return "문의 단추"
+        # 제품 칸(스마트 04-2 .sf-prods) — 에너지 03 의 .sf-prod 와는 다른 부품이다
+        if anc(el, "sf-prods") and not anc(el, "sf-prod"):
+            if "k" in c:   return "제품 이름"
+            if "d" in c:   return "제품 설명"
+            if "cap" in c: return "제품 수치"
+            return None
         if anc(el, "sf-num"):
             if t == "b":    return "번호 목록 번호"
             if t == "span": return "번호 목록 항목"
@@ -106,6 +121,7 @@ def role(el):
         if anc(el, "sf-dl"):
             if "k" in c: return "표 왼쪽"
             if "d" in c: return "표 오른쪽"
+            if "v" in c: return "표 값"
             return None
         if t == "h2":   return "장 제목"
         if "en" in c:   return "장 영문 제목"
