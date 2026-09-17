@@ -608,14 +608,14 @@
                    line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-ttl)}
   /* Certification — 왼쪽에 이름, 오른쪽 끝에 인증 표시. 파란 띠였던 것을
      흰 바탕 한 줄로 바꿨다(와이어프레임 개정) */
-  .sf-cert{display:flex;align-items:center;gap:16px;padding:8px 0}
+  .sf-cert{display:flex;align-items:center;gap:12px;padding:8px 0}
   .sf-cert .ttl{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
                 line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-ttl)}
   /* 인증 표시는 이름 바로 옆에 붙는다 — 오른쪽 끝으로 밀어 두었더니 넓은
      화면에서 둘 사이가 1000 넘게 벌어져 한 줄로 읽히지 않았다 */
   .sf-cert ul{display:flex;list-style:none}
   .sf-cert li:first-child{padding-left:0}
-  .sf-cert li{display:flex;align-items:center;gap:8px;padding:0 12px;
+  .sf-cert li{display:flex;align-items:center;gap:12px;padding:0 0 0 12px;
               font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
               line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-body);
               white-space:nowrap}
@@ -623,8 +623,8 @@
      (네모 점 하나를 대신한다). 선 하나짜리 요소를 둘 넣는 대신 배경 두 겹으로 그린다 —
      ::before 하나가 텍스트 앞에 서야 하고, ::after 는 글 뒤로 가 버린다 */
   .sf-cert li::before{content:"";width:10px;height:10px;flex-shrink:0;
-                      background:linear-gradient(var(--c-num),var(--c-num)) left/1px 100% no-repeat,
-                                 linear-gradient(var(--c-num),var(--c-num)) right/1px 100% no-repeat}
+                      background:linear-gradient(var(--sf-line),var(--sf-line)) left/1px 100% no-repeat,
+                                 linear-gradient(var(--sf-line),var(--sf-line)) right/1px 100% no-repeat}
   /* 이 장에 제품이 몇이고 지금 몇째인지 — 인증 표시가 있던 오른쪽 끝에 둔다.
      인공지능 플랫폼의 캐러셀 표시와 같은 모양이다(모난 사각, 지금 것만 길쭉) */
   .sf-cert .dots{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px}
