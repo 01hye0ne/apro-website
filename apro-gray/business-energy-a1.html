@@ -515,6 +515,7 @@
           --c-ttl:var(--sf-txt);     /* 900 제목        */
           --c-body:var(--sf-sec);    /* 600 줄글        */
           --c-num:var(--brand);      /* 목록 번호       */
+          --c-tagbg:var(--point-200);/* 이름 태그 판    */
           --c-tick:var(--sf-ter);    /* 태그 · 눈금     */
           --c-bd:var(--sf-line);     /* 200 칸선        */
           --c-bd-s:var(--sf-line-s)} /* 300 굵은 선     */
@@ -625,6 +626,14 @@
   .sf-cert li::before{content:"";width:10px;height:10px;flex-shrink:0;
                       background:linear-gradient(var(--sf-line),var(--sf-line)) left/1px 100% no-repeat,
                                  linear-gradient(var(--sf-line),var(--sf-line)) right/1px 100% no-repeat}
+  /* UL 9540A 는 화재 · 열폭주 시험 인증이라 나머지와 무게가 다르다 — 한 줄 안에서
+     이것만 이름표로 세운다. 스마트 제조 A-1 의 제품 이름 태그(.sf-prods .k)와 같은
+     벌이다(옅은 파랑 판 + 파랑 글씨, 안쪽 여백 4/8). 판이 스스로 항목을 가르므로
+     앞의 세로선 두 개는 걷고, 앞 항목과의 12 는 판 바깥 여백으로 되돌려 받는다 */
+  .sf-cert li.em{margin-left:12px;padding:4px 8px;gap:0;
+                 background:var(--c-tagbg);color:var(--c-num);font-weight:800;
+                 line-height:var(--lh-tight)}
+  .sf-cert li.em::before{display:none}
   /* 이 장에 제품이 몇이고 지금 몇째인지 — 인증 표시가 있던 오른쪽 끝에 둔다.
      인공지능 플랫폼의 캐러셀 표시와 같은 모양이다(모난 사각, 지금 것만 길쭉) */
   .sf-cert .dots{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px}
@@ -716,7 +725,7 @@
   @media(min-width:1181px){
     .js .sf-sec:not(.is-on){
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
-      --c-tick:var(--sf-line);
+      --c-tick:var(--sf-line);--c-tagbg:var(--sf-gray100);
       --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
     .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
     .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
@@ -737,6 +746,8 @@
   .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
   .sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
   .sf-prod>.side,.sf-prod .lbl,.sf-prod .use{transition:border-color .5s var(--ease)}
+  /* 이름표 판도 장이 흐려질 때 글자와 함께 내려간다 */
+  .sf-cert li.em{transition:color .5s var(--ease),background-color .5s var(--ease)}
   .sf-feat .ic{transition:color .5s var(--ease)}
   .sf-prod>.shot{transition:opacity .5s var(--ease)}
   .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,.sf-phead::after,
@@ -746,7 +757,7 @@
     .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
   .sf-cert .ttl,.sf-cert li,.sf-feat .k,.sf-feat .d,
     .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
-    .sf-cert .ttl,.sf-cert li,.sf-cert li::before,
+    .sf-cert .ttl,.sf-cert li,.sf-cert li.em,.sf-cert li::before,
     .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-ph.is-on,.sf-phead::after,
     .sf-feat .ic,.sf-prod>.shot,
     .sf-prod .lbl{transition:none}
@@ -1301,7 +1312,7 @@
               <p class="ttl">Certification</p>
               <ul>
                 <li>KC / IEC / UL</li>
-                <li>UL 9540A</li>
+                <li class="em">UL 9540A</li>
               </ul>
               <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
             </div>
@@ -1354,7 +1365,7 @@
               <p class="ttl">Certification</p>
               <ul>
                 <li>KC / IEC / UL</li>
-                <li>UL 9540A</li>
+                <li class="em">UL 9540A</li>
               </ul>
               <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
             </div>
