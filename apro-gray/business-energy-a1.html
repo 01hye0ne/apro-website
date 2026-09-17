@@ -619,8 +619,12 @@
               font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
               line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-body);
               white-space:nowrap}
-  .sf-cert li::before{content:"";width:4px;height:4px;flex-shrink:0;
-                      background:var(--c-num)}
+  /* 항목 앞 구분 — 히어로 띠지에서 이름을 가르던 1px 세로선 두 개와 같은 모양이다
+     (네모 점 하나를 대신한다). 선 하나짜리 요소를 둘 넣는 대신 배경 두 겹으로 그린다 —
+     ::before 하나가 텍스트 앞에 서야 하고, ::after 는 글 뒤로 가 버린다 */
+  .sf-cert li::before{content:"";width:10px;height:10px;flex-shrink:0;
+                      background:linear-gradient(var(--c-num),var(--c-num)) left/1px 100% no-repeat,
+                                 linear-gradient(var(--c-num),var(--c-num)) right/1px 100% no-repeat}
   /* 이 장에 제품이 몇이고 지금 몇째인지 — 인증 표시가 있던 오른쪽 끝에 둔다.
      인공지능 플랫폼의 캐러셀 표시와 같은 모양이다(모난 사각, 지금 것만 길쭉) */
   .sf-cert .dots{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px}
