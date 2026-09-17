@@ -674,13 +674,23 @@
   /* 띠가 자라면 카드도 자란다 — 특징 줄을 위에 붙여 두면 아래가 뻥 빈다.
      남는 세로를 위아래로 똑같이 나눠 특징 줄을 카드 가운데에 띄운다
      (margin:auto 0). '주요 적용 분야'는 그대로 카드 바닥에 붙는다 */
-  .sf-feat{flex:0 0 auto;margin:auto 0;display:flex;gap:0;list-style:none}
-  .sf-feat li{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px;
-              padding:16px}
+  /* 칸을 가르는 선이 특징 줄 높이만큼만 서서 카드 위아래가 허전했다 — 줄을
+     이름 띠 아래부터 '주요 적용 분야' 위까지 늘려 선이 칸을 끝까지 가른다.
+     늘어난 줄 안에서 아이콘 · 글의 자리는 그대로여야 하므로 subgrid 를 쓴다 :
+     위아래 1fr 여백과 아이콘 줄 · 글 줄을 네 칸이 함께 쓰므로, 글이 한 줄 더
+     접힌 칸이 있어도 아이콘이 서로 어긋나지 않는다(칸마다 가운데를 맞추면 어긋난다) */
+  .sf-feat{flex:1 1 auto;margin:0;display:grid;grid-auto-flow:column;
+           grid-auto-columns:minmax(0,1fr);grid-template-rows:1fr auto auto 1fr;
+           list-style:none}
+  .sf-feat li{grid-row:1/-1;min-width:0;display:grid;grid-template-rows:subgrid;
+              gap:16px;padding:16px}
   /* 칸을 가르는 가는 선 — 좌측 인덱스의 밑줄과 같은 200 칸선이다.
      칸 사이를 벌리는 대신 그 자리에 선을 두었다(양옆 여백 16 으로 같다) */
   .sf-feat li+li{border-left:1px solid var(--c-bd,var(--sf-line))}
   /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 인트로 카드와 같은 크기·색이다 */
+  /* 넷이 함께 쓰는 두 줄에 앉힌다 — 자동 배치에 맡기면 위 여백 줄로 올라간다 */
+  .sf-feat .ic{grid-row:2}
+  .sf-feat .t{grid-row:3}
   .sf-feat .ic{width:44px;height:44px;flex-shrink:0;color:var(--brand)}
   .sf-feat .ic svg{display:block;width:100%;height:100%}
   .sf-feat .t{display:flex;flex-direction:column;gap:8px}
@@ -773,8 +783,8 @@
      두 줄이 되면 오른쪽이 사진보다 훨씬 길어진다 → 이 구간에서만 사진이 1:1 을
      놓고 카드 높이를 채운다. 가운데에 세워 두면 이름 띠 옆이 하얗게 파여 보인다 */
   @media(max-width:1280px){
-    .sf-feat{flex-wrap:wrap;gap:0}
-    .sf-feat li{flex:1 1 50%;padding:12px 8px}
+    .sf-feat{display:flex;flex-wrap:wrap;gap:0}
+    .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
     .sf-feat li:nth-child(odd){border-left:0}
     .sf-prod>.shot{align-self:stretch;aspect-ratio:auto}
   }
@@ -839,8 +849,8 @@
     .sf-prods{display:flex;flex-direction:column;gap:24px}
     .sf-prod{margin-right:0;margin-top:0;flex-direction:column}
     .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
-    .sf-feat{flex-wrap:wrap;gap:0}
-    .sf-feat li{flex:1 1 50%;padding:12px 8px}
+    .sf-feat{display:flex;flex-wrap:wrap;gap:0}
+    .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
   }
 
   /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
