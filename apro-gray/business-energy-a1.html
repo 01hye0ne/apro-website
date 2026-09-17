@@ -914,6 +914,11 @@
   .sf-burger[aria-expanded="true"] .a{opacity:0}
   .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
   .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+  /* 하단 다른 사업영역 마을(.bhop) — A-1 은 격자 1~12열 전체를 쓴다(2026-09-17).
+     공용 규칙은 --maxw(1440)에 묶여 넓은 화면에서 가운데로 모였다. 좌우 여백은 GNB · 푸터와 같은
+     44, 900 아래는 16 */
+  .bhop-town{width:calc(100% - var(--grid-m) * 2)}
+  @media(max-width:900px){.bhop-town{width:calc(100% - 32px)}}
 </style>
 </head>
 <body>
