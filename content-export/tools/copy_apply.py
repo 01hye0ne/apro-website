@@ -132,11 +132,15 @@ def read_book(path=BOOK):
             loc = g("loc")
             if not loc:
                 continue
-            xp, _, nk = str(loc).partition("|")
-            all_rows.append({
-                "key": key, "sheet": sheet, "n": g("n"), "role": g("role"),
-                "grp": g("grp"), "cur": cell(g("cur")), "new": cell(g("new")),
-                "en": cell(g("en")), "xp": xp, "nk": nk or "text"})
+            # 한 장 안의 같은 문구는 한 줄로 합쳐 두었다 — 자리표가 줄마다 하나씩 들어 있다
+            for one in str(loc).replace("\r", "").split("\n"):
+                if not one.strip():
+                    continue
+                xp, _, nk = one.strip().partition("|")
+                all_rows.append({
+                    "key": key, "sheet": sheet, "n": g("n"), "role": g("role"),
+                    "grp": g("grp"), "cur": cell(g("cur")), "new": cell(g("new")),
+                    "en": cell(g("en")), "xp": xp, "nk": nk or "text"})
 
     box = {}
     for r in all_rows:
