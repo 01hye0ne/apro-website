@@ -310,9 +310,14 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
 .cgrid p{margin:12px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--body-lh);
   letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
-/* 제목 없이 글만 있는 장(윤리헌장 넉 줄) — 눈금 바로 밑에서 시작한다 */
-.cgrid>li>p:first-of-type{margin-top:0}
-.cgrid h3+p{margin-top:12px}
+/* 제목 없이 글만 있는 장(윤리헌장 넉 줄) — 눈금 바로 밑(또는 칸 맨 위)에서 시작한다.
+   :first-of-type 으로 짚던 것을 눈금 · 칸의 첫머리로 바꾼다 (2026-09-18) — 제목이 있는
+   카드에서도 h3 뒤 글이 곧 '첫 p' 여서, 이 규칙이 아래 h3+p 를 특정도로 이기고
+   제목과 본문을 0 으로 붙여 놓고 있었다 */
+.cgrid>li>.mark+p,.cgrid>li>p:first-child{margin-top:0}
+/* 제목과 본문 사이 — 12 는 눈금 · 제목 · 본문 셋이 한 덩어리로 뭉쳐 보였다.
+   16 으로 벌려 제목이 제 줄로 선다(2026-09-18) */
+.cgrid h3+p{margin-top:16px}
 /* 좁은 화면에서는 장이 정한 열 수를 무시하고 줄여 나간다 */
 @media(max-width:900px){.cgrid{--col:2}}
 @media(max-width:560px){.cgrid{--col:1}}
