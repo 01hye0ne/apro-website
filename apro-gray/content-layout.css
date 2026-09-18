@@ -782,9 +782,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 
    섬네일 자리는 비어 있다. 원본 글의 그림이 전부 언론사 서버에 있어 그대로 끌어다
    쓸 수 없다(끊기면 깨지고, 남의 대역폭·저작물이다). <img> 가 들어오면 그 자리를 채운다 */
-/* 좌우 틈은 지속가능경영 격자 카드(.cgrid)와 같은 16 — 위아래 틈은 제목 · 날짜 밑에 숨을 두려 그대로 둔다 */
+/* 좌우 틈은 지속가능경영 격자 카드(.cgrid)와 같은 16. 위아래 틈은 그 곱절 넘게 벌린다 —
+   날짜 밑이 다음 줄 섬네일에 붙어 보여 카드 한 장이 어디서 끝나는지 흐렸다(20~28 → 40~56) */
 .cnews{margin-top:28px;list-style:none;display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.4vw,28px) 16px}
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(40px,4.8vw,56px) 16px}
 .cnews>li>a{display:flex;flex-direction:column;height:100%}
 /* 16:9 — 기사 사진이 대체로 가로가 긴 판이라 그 비율에 맞춘다 */
 .cnews .thumb{aspect-ratio:16/9;overflow:hidden;
