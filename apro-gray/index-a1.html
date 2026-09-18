@@ -496,40 +496,54 @@
   .hm-arrows button:disabled{opacity:.4;cursor:default}
   .hm-arrows svg{display:block;width:24px;height:24px}
 
-  /* ── Who we are — 핵심역량 네 판 (Figma 1337:8243) ─────────────────────────
-     회사소개 AAA 전략(.co-val)의 두 겹 판 짜임을 하늘 사진 위에 옮겼다. 판은 위와 [화면 안쪽 옆]에만
+  /* ── Who we are — 핵심역량 네 판, 계단 배치 (Figma 1338:8490) ──────────────────
+     회사소개 AAA 전략(.co-val)의 두 겹 판을 하늘 사진 위에 계단처럼 쌓는다. 판은 위와 [붙지 않은 옆]에만
      흰 20% 선이 있고, 바깥 판 모서리 60 · 그 안 20 들어간 안쪽 판 모서리 40 이다.
-     네 판 모두 폭 1002/1440 이고 1 · 3 번째는 왼쪽, 2 · 4 번째는 오른쪽에 붙는다. 글은 판의
-     화면 안쪽 절반에 서고, 제목부터 목록까지 모두 가운데 정렬이다(2026-09-18, 점 목록 → 가운데 줄글).
-     판끼리는 틈 없이 이어져 선이 지그재그로 내려간다. 회사소개와 달리 번호 · 사진 · 선 그리기 동작은 없다.
-     한 판은 [이름 → 영문 · 국문 한 줄(밑선으로 닫는다)] 아래 줄글 목록이다.
-     바탕 사진은 시안처럼 높이에 맞춰 덮고 가로 34% 자리를 붙든다(바다 · 수평선이 판 아래쪽에 온다) */
+     1 · 2 번째 판은 왼쪽에(폭 733 · 960 /1440), 3 · 4 번째 판은 오른쪽에(729 · 1232) 붙는다.
+     글은 모두 왼쪽 정렬이고, 1 · 2 · 4 번째 판의 글은 제목 'Who we are' 와 같은 세로줄(화면 273/1440)에,
+     3 번째 판의 글만 화면 오른쪽 절반에 선다. 3 · 4 번째 판 사이만 10 을 띄운다.
+     자리는 섹션 폭 기준(cqw)으로 잡아 화면이 줄어도 시안 비율 그대로 따라온다.
+     한 판은 [이름 → 영문 · 국문 한 줄(밑선으로 닫는다)] 아래 줄글 목록이다 — 첫 판의 목록은 머리말이 굵다.
+     바탕 사진은 높이에 맞춰 덮고 가로 34% 자리를 붙든다(바다 · 수평선이 판 아래쪽에 온다).
+     앞 시안(가운데 정렬 · 같은 폭 지그재그)은 브랜치 gray/home-who-center 에 있다 */
   /* 키는 네 판이 정한다 — 장 공통의 한 화면 높이(min-height)를 풀어, 화면이 판보다 길어도
      마지막 판 아래에 빈 바탕이 늘어나지 않게 한다 */
-  .hm-who{--who-line:rgba(255,255,255,.2);justify-content:flex-start;gap:96px;padding:120px 0 0;min-height:0;
+  .hm-who{--who-line:rgba(255,255,255,.2);--who-x:18.96cqw;container-type:inline-size;
+          justify-content:flex-start;gap:96px;padding:120px 0 0;min-height:0;
           background:var(--brand-2) url(../assets/blue-sky-horizon.jpg) 34% 0/cover no-repeat;
           border-bottom-color:var(--brand-2);color:#fff}
-  .hm-who .hm-ttl{padding-inline:var(--hm-m);color:#fff;text-align:center}
+  .hm-who .hm-ttl{padding-left:19.31cqw;color:#fff}
   .hm-who-list{list-style:none;display:flex;flex-direction:column}
-  .hm-wv{width:69.58%}
-  .hm-wv:nth-child(even){margin-left:auto}
+  /* 왼쪽에 붙는 판(1 · 2) */
   .hm-wv .out{border-top:1px solid var(--who-line);border-right:1px solid var(--who-line);
               border-top-right-radius:60px;padding:20px 20px 0 0}
   .hm-wv .in{border-top:1px solid var(--who-line);border-right:1px solid var(--who-line);
-             border-top-right-radius:40px;padding:88px 44px 88px 51.07%;
-             display:flex;flex-direction:column;gap:28px;text-align:center}
-  .hm-wv:nth-child(even) .out{border-right:0;border-left:1px solid var(--who-line);
+             border-top-right-radius:40px;padding:88px 44px 88px var(--who-x)}
+  .hm-wv:nth-child(1){width:50.9cqw}
+  .hm-wv:nth-child(2){width:66.67cqw}
+  /* 오른쪽에 붙는 판(3 · 4) */
+  .hm-wv:nth-child(n+3){margin-left:auto}
+  .hm-wv:nth-child(n+3) .out{border-right:0;border-left:1px solid var(--who-line);
               border-radius:60px 0 0 0;padding:20px 0 0 20px}
-  .hm-wv:nth-child(even) .in{border-right:0;border-left:1px solid var(--who-line);
-              border-radius:40px 0 0 0;padding:88px 51.07% 88px 44px}
+  .hm-wv:nth-child(n+3) .in{border-right:0;border-left:1px solid var(--who-line);border-radius:40px 0 0 0}
+  .hm-wv:nth-child(3){width:50.63cqw}
+  .hm-wv:nth-child(3) .in{padding:88px 19.31cqw 88px 44px}
+  .hm-wv:nth-child(4){width:85.56cqw;margin-top:10px}
+  /* 넷째 판의 글도 --who-x 에 맞춘다 — 판 왼쪽 끝(화면 폭 - 판 폭) + 바깥 여백 20 + 선 1 을 뺀다 */
+  .hm-wv:nth-child(4) .in{padding:88px 44px 88px calc(var(--who-x) - 14.44cqw - 21px)}
+  .hm-wv .body{display:flex;flex-direction:column;gap:28px}
+  /* 2 · 4 번째 판은 글 기둥이 378 로 좁고, 이름 밑선은 그보다 짧은 323 까지다(시안 그대로) */
+  .hm-wv:nth-child(2n) .body{max-width:378px}
+  .hm-wv:nth-child(2n) .hd{width:85.45%}
   .hm-wv .hd{display:flex;flex-direction:column;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--who-line)}
   .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-head);
             letter-spacing:var(--ls)}
   .hm-wv .msg{display:flex;flex-direction:column;gap:12px;font-family:var(--suit);font-weight:600;
               font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls)}
-  .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:20px}
+  .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:16px}
   .hm-wv li{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
             line-height:var(--lh-body);letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
+  .hm-wv li b{font-weight:700}
 
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
@@ -583,9 +597,6 @@
     .hm-tabs{flex:none;width:100%}
     /* 탭이 제목 아래로 내려가 폭을 다 쓰면 띠가 맞출 짝이 없다 — 띠는 본문의 12.5% 로 돌아간다 */
     .hm-track{--fold:calc(100cqi * .125)}
-    /* 판 폭이 줄면 글 기둥이 너무 좁아진다 — 글이 서는 절반을 넓힌다 */
-    .hm-wv .in{padding-left:36%}
-    .hm-wv:nth-child(even) .in{padding-right:36%}
   }
   @media(max-width:900px){
     :root{--hm-m:16px;--hm-pad:128px}
@@ -613,11 +624,15 @@
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:var(--fs-meta)}
-    /* 좁은 화면 — 판은 화면의 92% 로 번갈아 붙고, 글은 판 안을 다 쓴다 */
+    /* 좁은 화면 — 계단을 접는다. 판은 화면의 92% 로 앞 둘은 왼쪽, 뒤 둘은 오른쪽에 붙고
+       글은 판 안을 다 쓴다 */
     .hm-who{gap:56px;padding-top:96px}
-    .hm-wv,.hm-wv:nth-child(even){width:92%}
-    .hm-wv .in{padding:56px 24px 56px var(--hm-m)}
-    .hm-wv:nth-child(even) .in{padding:56px var(--hm-m) 56px 24px}
+    .hm-who .hm-ttl{padding-left:var(--hm-m)}
+    .hm-wv:nth-child(n){width:92%}
+    .hm-wv:nth-child(n) .in{padding:56px 24px 56px var(--hm-m)}
+    .hm-wv:nth-child(n+3) .in{padding:56px var(--hm-m) 56px 24px}
+    .hm-wv:nth-child(2n) .body{max-width:none}
+    .hm-wv:nth-child(2n) .hd{width:auto}
     .hm-wv h3{font-size:var(--fs-h1)}
     .hm-ncards{grid-template-columns:1fr}
     /* 좁은 화면은 날짜를 제목 아래로 내리고, 오른쪽엔 화살표만 남긴다. 제목은 두 줄까지 */
@@ -869,24 +884,24 @@
     </div>
   </section>
 
-  <!-- ===================== WHO WE ARE (Figma 1337:8243) ===================== -->
-  <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임. 글은 Figma 그대로다 -->
+  <!-- ===================== WHO WE ARE (Figma 1338:8490) ===================== -->
+  <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임을 계단으로 쌓았다. 글은 Figma 그대로다 -->
   <section class="hm-sec hm-who" aria-labelledby="hm-who-t">
     <h2 class="hm-ttl" id="hm-who-t">Who we are</h2>
     <ol class="hm-who-list">
-      <li class="hm-wv"><div class="out"><div class="in">
+      <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
           <h3>진보된 기술력</h3>
           <p class="msg"><span lang="en">Applied Electronics, Electric and Mechatronics</span><span>첨단 전자·전기·메카트로닉스 기술력</span></p>
         </div>
         <ul>
-          <li>전원 변환: 고효율 변환 및 사용자 정의</li>
-          <li>소프트웨어: 수집된 데이터 분석</li>
-          <li>제어 및 측정: 고정밀 I-V-L 측정, 고속 제어, 하드웨어 펌웨어 개발</li>
-          <li>기계 메커니즘: 확장성 설계, 간편한 유지관리 설계, 사용자 친화적 설계</li>
+          <li><b>전원 변환:</b> 고효율 변환 및 사용자 정의</li>
+          <li><b>소프트웨어:</b> 수집된 데이터 분석</li>
+          <li><b>제어 및 측정:</b> 고정밀 I-V-L 측정, 고속 제어, 하드웨어 펌웨어 개발</li>
+          <li><b>기계 메커니즘:</b> 확장성 설계, 간편한 유지관리 설계, 사용자 친화적 설계</li>
         </ul>
-      </div></div></li>
-      <li class="hm-wv"><div class="out"><div class="in">
+      </div></div></div></li>
+      <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
           <h3>고객 맞춤 제작</h3>
           <p class="msg"><span lang="en">Diversification &amp; Customization</span><span>다양한 요구에 대응하는 맞춤형 제작</span></p>
@@ -894,8 +909,8 @@
         <ul>
           <li>사양에 따라 맞춤 제작 가능</li>
         </ul>
-      </div></div></li>
-      <li class="hm-wv"><div class="out"><div class="in">
+      </div></div></div></li>
+      <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
           <h3>통합설계</h3>
           <p class="msg"><span lang="en">Our founding philosophy has always been focused on optimization</span><span>최적화를 지향하는 통합설계</span></p>
@@ -904,8 +919,8 @@
           <li>A-PRO의 창업 철학은 항상 품질과 안전 제일 개념에 중점을 두어 모든 기기의 디자인을 최적화하는 설계에 중점을 두었습니다.</li>
           <li>A-PRO는 제품 성능, 재료 선택, 사이클 수명, 시뮬레이션, 검증, 공급망, 제품, 비용 등과 같은 요소를 고려하여 고객에게 최적의 통합 솔루션을 통해 장비 개발 및 품질을 구현 하고 있습니다.</li>
         </ul>
-      </div></div></li>
-      <li class="hm-wv"><div class="out"><div class="in">
+      </div></div></div></li>
+      <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
           <h3>자동화 공정</h3>
           <p class="msg"><span lang="en">Advanced flexibility and a high level of specialization</span><span>높은 유연성과 전문성을 갖춘 자동화 공정</span></p>
@@ -913,7 +928,7 @@
         <ul>
           <li>A-PRO의 스마트 제조 시스템은 제품이 생산되는 모든 과정을 항상 모니터링 할 수 있도록 지능형 추적 시스템을 고객에게 제공하고 있습니다. 고객 맞춤형 제작 프로세스와 스마트 제조 시스템은 우수한 품질 관리를 유지하면서, 고객의 요구사항을 즉각 수용할 수 있는 A-PRO의 특화된 서비스입니다.</li>
         </ul>
-      </div></div></li>
+      </div></div></div></li>
     </ol>
   </section>
 
