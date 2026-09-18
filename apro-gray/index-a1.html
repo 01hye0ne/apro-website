@@ -582,7 +582,11 @@
      줄 굵기는 한 줄짜리 기울기로 박아 두었다(스크립트 없음). 좁은 화면은 띠를 눌러 담는다(아래 900 이하) */
   /* 아래 여백은 반(160→80 · 좁은 화면 128→64) — 줄무늬 띠가 이음매를 맡아 흰 빈자리가 길 까닭이 없다 */
   .hm-biz{border-bottom:0;padding-bottom:calc(var(--hm-pad) / 2)}
+  /* 스크롤하면 띠가 위로 접혀 사라진다 — 스크립트가 --seam(0 → 1)을 섹션 윗변이 화면 60% → 맨 위(GNB 아래)로
+     오는 동안 올린다. 세로 배율 --seam-k(좁은 화면 .4)에 (1 - --seam) 을 곱한다.
+     불투명도는 건드리지 않는다 — 옅어지면 띠 윗줄이 흰 바탕과 갈라져 금이 보인다 */
   .hm-who::before{content:"";position:absolute;left:0;right:0;top:0;height:120px;pointer-events:none;
+                  transform-origin:0 0;transform:scaleY(calc(var(--seam-k,1) * (1 - var(--seam,0))));
                   background:0 100%/100% 120px no-repeat linear-gradient(to bottom,rgba(255,255,255,1.0) 0px,rgba(255,255,255,1.0) 4.0px,transparent 4.0px,transparent 4px,rgba(255,255,255,0.973) 4px,rgba(255,255,255,0.973) 7.9px,transparent 7.9px,transparent 8px,rgba(255,255,255,0.946) 8px,rgba(255,255,255,0.946) 11.8px,transparent 11.8px,transparent 12px,rgba(255,255,255,0.919) 12px,rgba(255,255,255,0.919) 15.7px,transparent 15.7px,transparent 16px,rgba(255,255,255,0.892) 16px,rgba(255,255,255,0.892) 19.59px,transparent 19.59px,transparent 20px,rgba(255,255,255,0.864) 20px,rgba(255,255,255,0.864) 23.49px,transparent 23.49px,transparent 24px,rgba(255,255,255,0.837) 24px,rgba(255,255,255,0.837) 27.38px,transparent 27.38px,transparent 28px,rgba(255,255,255,0.809) 28px,rgba(255,255,255,0.809) 31.28px,transparent 31.28px,transparent 32px,rgba(255,255,255,0.78) 32px,rgba(255,255,255,0.78) 35.17px,transparent 35.17px,transparent 36px,rgba(255,255,255,0.752) 36px,rgba(255,255,255,0.752) 39.06px,transparent 39.06px,transparent 40px,rgba(255,255,255,0.723) 40px,rgba(255,255,255,0.723) 42.95px,transparent 42.95px,transparent 44px,rgba(255,255,255,0.694) 44px,rgba(255,255,255,0.694) 46.84px,transparent 46.84px,transparent 48px,rgba(255,255,255,0.665) 48px,rgba(255,255,255,0.665) 50.73px,transparent 50.73px,transparent 52px,rgba(255,255,255,0.635) 52px,rgba(255,255,255,0.635) 54.61px,transparent 54.61px,transparent 56px,rgba(255,255,255,0.605) 56px,rgba(255,255,255,0.605) 58.5px,transparent 58.5px,transparent 60px,rgba(255,255,255,0.574) 60px,rgba(255,255,255,0.574) 62.38px,transparent 62.38px,transparent 64px,rgba(255,255,255,0.544) 64px,rgba(255,255,255,0.544) 66.26px,transparent 66.26px,transparent 68px,rgba(255,255,255,0.512) 68px,rgba(255,255,255,0.512) 70.14px,transparent 70.14px,transparent 72px,rgba(255,255,255,0.48) 72px,rgba(255,255,255,0.48) 74.01px,transparent 74.01px,transparent 76px,rgba(255,255,255,0.448) 76px,rgba(255,255,255,0.448) 77.88px,transparent 77.88px,transparent 80px,rgba(255,255,255,0.415) 80px,rgba(255,255,255,0.415) 81.75px,transparent 81.75px,transparent 84px,rgba(255,255,255,0.382) 84px,rgba(255,255,255,0.382) 85.62px,transparent 85.62px,transparent 88px,rgba(255,255,255,0.347) 88px,rgba(255,255,255,0.347) 89.48px,transparent 89.48px,transparent 92px,rgba(255,255,255,0.312) 92px,rgba(255,255,255,0.312) 93.34px,transparent 93.34px,transparent 96px,rgba(255,255,255,0.276) 96px,rgba(255,255,255,0.276) 97.2px,transparent 97.2px,transparent 100px,rgba(255,255,255,0.238) 100px,rgba(255,255,255,0.238) 101.04px,transparent 101.04px,transparent 104px,rgba(255,255,255,0.2) 104px,rgba(255,255,255,0.2) 104.88px,transparent 104.88px,transparent 108px,rgba(255,255,255,0.158) 108px,rgba(255,255,255,0.158) 108.71px,transparent 108.71px,transparent 112px,rgba(255,255,255,0.115) 112px,rgba(255,255,255,0.115) 112.52px,transparent 112.52px,transparent 116px,rgba(255,255,255,0.066) 116px,rgba(255,255,255,0.066) 116.5px,transparent 116.5px,transparent 120px),
                     linear-gradient(to bottom,rgba(255,255,255,.92),rgba(255,255,255,.62) 35%,rgba(255,255,255,.24) 70%,rgba(255,255,255,0))}
 
@@ -673,7 +677,7 @@
        글은 판 안을 다 쓴다. 제목과 첫 판 사이는 40 을 띄운다(판이 화면 폭을 거의 다 써 겹친다) */
     .hm-who{padding-top:80px}
     /* 위 여백이 48 이라 띠를 세로로 0.4 배 눌러 같은 결을 48 안에 담는다 */
-    .hm-who::before{transform:scaleY(.4);transform-origin:0 0}
+    .hm-who{--seam-k:.4}
     .hm-who .hm-ttl{margin-bottom:40px;padding-left:var(--hm-m)}
     .hm-wv:nth-child(n){width:92%}
     /* 글이 화면 끝 여백(16)까지 오므로 흐리는 폭도 그만큼만 */
@@ -1594,6 +1598,25 @@
   else window.addEventListener('resize', redo);
   window.addEventListener('load', redo);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(redo);
+})();
+/* ── 비즈니스 · Who we are 이음매 — 섹션 윗변이 화면 60% 에서 GNB 아래(53)로 오는 동안 --seam 을 0 → 1 로 올린다.
+   띠(.hm-who::before)가 그 값만큼 위로 접힌다. 되올리면 다시 펼쳐진다. 움직임 줄이기면 건너뛴다 */
+(function(){
+  var sec = document.getElementById('hmWho');
+  if(!sec) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var raf = 0, last = -1;
+  function upd(){
+    raf = 0;
+    var top = sec.getBoundingClientRect().top, a = innerHeight * .6, b = 53;
+    var s = Math.max(0, Math.min(1, (a - top) / (a - b)));
+    s = Math.round(s * 1000) / 1000;
+    if(s !== last){ sec.style.setProperty('--seam', s); last = s; }
+  }
+  function req(){ if(!raf) raf = requestAnimationFrame(upd); }
+  upd();
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
 })();
 </script>
 </body>
