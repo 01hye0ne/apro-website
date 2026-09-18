@@ -541,8 +541,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    ===================================================================== */
 /* 5개년 × 10행이라 좁은 화면에서 반드시 넘친다. 표 자체를 줄이지 않고 가로 스크롤을
    허용하되 계정과목 열은 왼쪽에 붙여 둔다 — 숫자만 남으면 무슨 줄인지 알 수 없다 */
-.ctable-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g);
-  border-radius:var(--r)}
+/* 모서리는 각지다 — 그림 판과 맞붙어 한 덩어리로 서므로 둥글릴 자리가 없다 */
+.ctable-wrap{margin-top:24px;overflow-x:auto;border:1px solid var(--border-g)}
 .ctable{width:100%;min-width:760px;border-collapse:collapse;
   font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900)}
 .ctable th,.ctable td{position:relative;padding:14px 20px;border-bottom:1px solid var(--border-g);
@@ -643,7 +643,6 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    손익계산서 탭에는 이 그림을 두지 않는다 — 영업이익·당기순이익이 해에 따라
    음수라(연결 제26기 -5,835) 쌓는 방식이 성립하지 않는다 */
 .cchart{margin-top:20px;padding:clamp(20px,3vw,36px);border:1px solid var(--border-g);
-  border-radius:var(--r);
   background:var(--secondary-bg)}
 .cchart-legend{display:flex;justify-content:flex-end;gap:16px;
   font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--sec)}
@@ -703,9 +702,6 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cboard th,.cboard td{padding:18px 16px;border-bottom:1px solid var(--border-g);
   font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec);text-align:center}
 .cboard thead th{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);color:var(--g900)}
-/* 제목 칸은 머리와 내용이 같은 쪽으로 붙는다 — 머리만 가운데면 글 시작점과 어긋나
-   열이 두 줄로 보인다 (2026-09-18) */
-.cboard th.ttl{text-align:left}
 .cboard td.ttl{text-align:left;color:var(--g900);font-weight:600;word-break:keep-all}
 /* 공지 고정 글 */
 .cboard tr.pin td{background:var(--secondary-bg)}
