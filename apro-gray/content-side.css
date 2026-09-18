@@ -127,6 +127,13 @@
    들어오면서 제목 · 소개를 카드 위로 올리고(좁은 화면 배치와 같다) 여백을 다른 장과 맞춘다 */
 .cs-body>.cgov-board{--gm:var(--cs-m);grid-template-columns:minmax(0,1fr);row-gap:24px;
   padding:var(--cs-pad) var(--cs-m);border-bottom:0}
+/* 사람 카드도 격자 카드(.cgrid)와 한 벌로 선다(2026-09-18) — 회색 바탕 · 안쪽 여백 · 카드 사이 16.
+   약력 줄 수가 달라도(2 · 3 · 5) 세 장의 키를 맞춘다(stretch). 윗단의 위 여백 24 는 카드 안쪽
+   여백이 대신하므로 걷고, 마지막 약력 줄의 밑선은 카드 가장자리와 겹쳐 걷는다 */
+.cs-body .cpeople{gap:16px;align-items:stretch}
+.cs-body .cperson{padding:clamp(24px,2.4vw,32px);background:var(--secondary-bg)}
+.cs-body .cperson .top{padding-top:0}
+.cs-body .cperson li:last-child{border-bottom:0}
 
 /* 좁은 화면 — Figma 에 모바일 판이 없다. 히어로를 본문 위로 올려 붙박이를 풀고 여백을 줄인다 */
 @media(max-width:900px){
@@ -138,6 +145,9 @@
   .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
   .cs-body>.cblock,.cs-body>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
+  /* 사람 카드는 안쪽 여백만큼 글 폭이 줄어 세 칸이면 약력이 줄마다 접힌다. 격자 카드는 여기서
+     두 칸이 되지만 세 장을 2 + 1 로 나누면 한 장이 외톨이가 되어 곧장 한 칸으로 쌓는다 */
+  .cs-body .cpeople{grid-template-columns:minmax(0,1fr)}
 }
 
 /* ── 규정 전문 팝업 (.cmodal) ────────────────────────────────────────────
