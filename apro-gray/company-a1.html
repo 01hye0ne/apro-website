@@ -322,7 +322,8 @@
   .co-vband .imgs li>img{display:block;width:100%;height:100%;object-fit:cover}
 
   /* ── AAA 전략 — AAA 세 장과 닫는 카드가 --vgap 간격으로 쌓인다. 위아래 여백은 --vpad ─────────── */
-  .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);--vpad:240px;padding:var(--vpad) 0;
+  /* 아래 여백은 없다 — 마지막 자식인 사진 판이 섹션 바닥(= 푸터 윗변)에 그대로 붙는다 */
+  .co-vision{background:#fff;border-bottom:1px solid var(--co-rule);--vpad:240px;padding:var(--vpad) 0 0;
              display:flex;flex-direction:column;--vgap:120px;gap:var(--vgap);overflow:hidden}
 
   /* AAA 세 장 — 화면 폭의 68%(1440 중 981) 판이 오른쪽 · 왼쪽 끝에 번갈아 붙는다(1 · 3 오른쪽, 2 왼쪽).
@@ -409,14 +410,19 @@
 
   /* 닫는 카드 — 격자 2~11열, 밤하늘 사옥 사진(Figma 1212:7744). 안쪽 20 에 흰 20% 선 상자를 두고
      위는 6대 핵심가치 3×2 칸, 아래는 왼쪽 정렬 세 줄 문구. 하늘이 짙어 막은 덮지 않는다 */
-  .co-apro{padding-inline:calc(var(--co-m) + 20px + (100% - 308px) / 12)}
-  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px;aspect-ratio:1124/607;
-                display:flex;padding:20px;background:var(--g900);border:1px solid var(--border-g)}
+  /* 사진 판은 화면 폭을 꽉 채우고 아래로는 푸터에 바로 붙는다 (Figma 1222:7797).
+     격자는 그 안쪽 44 에 선다 — 시안에서 잰 값이다(좌 44 · 우 45 · 하 46).
+     비율도 시안 프레임 1440:655 로 맞춘다(예전 1124:607 은 좁게 들어가 있던 판의 것이라,
+     폭을 화면만큼 넓히면 높이가 770 까지 자란다) */
+  .co-apro{padding-inline:0}
+  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
+                display:flex;padding:44px;background:var(--g900)}
   .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
   .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:space-between;
                  border:1px solid rgba(255,255,255,.2);color:#fff}
   .co-apro .vals{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  .co-apro .vals li{display:flex;align-items:center;justify-content:center;padding:20px 16px;text-align:center;
+  /* 키워드는 칸 왼쪽에 붙는다 — 아래 문단의 들여쓰기(20)와 같은 자리에서 시작한다 */
+  .co-apro .vals li{display:flex;align-items:center;justify-content:flex-start;padding:20px;text-align:left;
                     border-bottom:1px solid rgba(255,255,255,.2);font-family:var(--suit);font-weight:800;
                     font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:break-word}
   .co-apro .vals li:not(:nth-child(3n)){border-right:1px solid rgba(255,255,255,.2)}
@@ -435,14 +441,13 @@
     .co-val:nth-child(odd){margin-left:var(--co-m)}
     .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
     .co-val h3{font-size:var(--fs-h1)}
-    .co-apro{padding-inline:var(--co-m)}
-    .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:12px}
+    .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:16px}
     .co-apro .fig>img{object-position:70% 50%}
     /* 좁은 화면은 문구가 사옥 위에 얹혀 묻힌다 — 아래에서만 짙어지는 막을 깐다 */
     .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
     .co-apro .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .co-apro .vals li{padding:16px 8px;font-size:var(--fs-body);letter-spacing:var(--ls)}
+    .co-apro .vals li{padding:16px;font-size:var(--fs-body);letter-spacing:var(--ls)}
     .co-apro .vals li:not(:nth-child(3n)){border-right:0}
     .co-apro .vals li:nth-child(odd){border-right:1px solid rgba(255,255,255,.2)}
     .co-apro p{padding:16px;font-size:var(--fs-body);letter-spacing:var(--ls)}
