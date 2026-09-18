@@ -447,16 +447,9 @@
                 -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
                 mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
   .hm-card .cap a{pointer-events:auto}
-  /* 위층 — 이름 · 설명은 왼쪽, 사업영역 픽토그램은 오른쪽. 픽토그램은 바닥선이 캔버스 맨 아래에
-     있으므로, 글 띠의 층 사이 간격(16)만큼 아래로 내리면 띠지 윗선에 딱 붙어 선다 */
-  .hm-card .crow{display:flex;align-items:flex-end;gap:24px;padding:0 20px}
+  /* 위층 — 이름 · 설명. 2026-09-18 까지는 오른쪽에 사업영역 픽토그램(.vec)이 함께 섰다 */
+  .hm-card .crow{display:flex;align-items:flex-end;padding:0 20px}
   .hm-card .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-  /* 픽토그램 — 사업영역 페이지 아래 마을(.bhop)의 그림을 그대로 쓴다. 원본은 짙은 회색
-     선이라 어두운 유리 판에서 묻히므로 filter 로 흰 선을 만든다(<img> 로 부른 SVG 는
-     CSS 로 선 색을 못 바꾼다). 높이만 정하고 폭은 캔버스 비율(--ar)로 미리 잡아, 그림이
-     늦게 들어와도 글이 밀리지 않는다 */
-  .hm-card .vec{display:block;flex-shrink:0;height:120px;width:auto;aspect-ratio:var(--ar);margin-bottom:-16px;
-                filter:brightness(0) invert(1);opacity:.92}
   /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
   .hm-card h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls)}
   /* 카드 어디를 눌러도 세부 페이지로 간다 — 사진 위에 카드 크기 링크(.hit)를 한 장
@@ -772,8 +765,7 @@
     .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
     .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:var(--fs-h3)}
     .hm-card .cap{gap:12px;padding-top:32px}
-    .hm-card .crow{gap:12px;padding:0 16px}
-    .hm-card .vec{height:72px;margin-bottom:-12px}
+    .hm-card .crow{padding:0 16px}
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:var(--fs-meta)}
@@ -968,7 +960,6 @@
                 <h3><a href="business-smart-a1.html">스마트 제조</a></h3>
                 <p class="d">이차전지 활성화 공정의 주요 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정짓는 마지막 공정까지, A-PRO가 책임집니다.</p>
               </div>
-              <img class="vec" data-src="../assets/vec-smart.svg" style="--ar:251/177" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="스마트 제조 소분류">
               <li><a href="business-smart-a1.html#sf01-1">이차전지 활성화</a></li>
@@ -988,7 +979,6 @@
                 <h3><a href="business-energy-a1.html">에너지 인프라</a></h3>
                 <p class="d">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.<br />그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</p>
               </div>
-              <img class="vec" data-src="../assets/vec-energy.svg" style="--ar:251/179" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="에너지 인프라 소분류">
               <li><a href="business-energy-a1.html#sf01-1">ESS</a></li>
@@ -1007,7 +997,6 @@
                 <h3><a href="business-ai-a1.html">인공지능 플랫폼</a></h3>
                 <p class="d">AI로 배터리와 설비의 상태를 읽어냅니다.<br />진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</p>
               </div>
-              <img class="vec" data-src="../assets/vec-ai.svg" style="--ar:267/176" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="인공지능 플랫폼 소분류">
               <li><a href="business-ai-a1.html#sf01-1">로봇 플랫폼</a></li>
@@ -1027,7 +1016,6 @@
                 <h3><a href="business-semicon-a1.html">화합물 전력 반도체</a></h3>
                 <p class="d">질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.<br />국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다</p>
               </div>
-              <img class="vec" data-src="../assets/vec-semicon.svg" style="--ar:251/180" alt="" aria-hidden="true" />
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="화합물 전력 반도체 소분류">
               <li><a href="business-semicon-a1.html#sf01-1">GaN Epi-Wafer</a></li>
@@ -1501,22 +1489,16 @@
    접힌 띠를 누르면 페이지로 가지 않고 그 카드를 편다. 제목 줄 화살표도 같은 go() 를 부른다.
    접힌 띠의 .hit 는 키보드 '펼치기' 단추로 바꿔 둔다(role=button · 이름 · aria-expanded).
    키보드로 폈을 때만 초점을 새로 펴진 카드의 이름 링크로 옮겨, 이어서 Tab 으로 읽어 갈 수 있게 한다.
-   픽토그램은 선 그리기 애니메이션이 SVG 파일 안에 있어 불러오는 순간 한 번만 재생한다 —
-   섹션이 보인 뒤, 카드가 펴지고 글 띠가 드러날 즈음 그 카드 것만 붙인다 */
+   (2026-09-18 까지는 카드가 펴질 즈음 픽토그램을 늦게 붙이는 장치가 여기 함께 있었다 —
+    그림을 걷으면서 섹션 관찰자 · 지연 타이머도 같이 걷었다) */
 (function(){
   var root = document.getElementById('hmBiz');
   if(!root) return;
   var cards = [].slice.call(root.querySelectorAll('.hm-card'));
   var prev  = root.querySelector('[data-go="-1"]');
   var next  = root.querySelector('[data-go="1"]');
-  var at = 0, seen = false, timer = 0;
+  var at = 0;
 
-  function attach(im){
-    if(!im || !im.hasAttribute('data-src')) return;
-    im.src = im.getAttribute('data-src');
-    im.removeAttribute('data-src');
-  }
-  function load(c){ attach(c.querySelector('.vec')); }
   function go(i){
     at = Math.max(0, Math.min(cards.length - 1, i));
     cards.forEach(function(c, k){
@@ -1538,8 +1520,6 @@
     });
     prev.disabled = at === 0;
     next.disabled = at === cards.length - 1;
-    clearTimeout(timer);
-    if(seen) timer = setTimeout(function(){ load(cards[at]); }, 450);
   }
   prev.addEventListener('click', function(){ go(at - 1); });
   next.addEventListener('click', function(){ go(at + 1); });
@@ -1558,16 +1538,6 @@
     });
   });
 
-  if(!('IntersectionObserver' in window)){ seen = true; }
-  else {
-    var io = new IntersectionObserver(function(es){
-      if(!es[0].isIntersecting) return;
-      seen = true;
-      load(cards[at]);
-      io.disconnect();
-    }, { threshold: .3 });
-    io.observe(root.querySelector('.hm-track'));
-  }
   go(0);
 })();
 
