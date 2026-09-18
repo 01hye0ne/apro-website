@@ -43,10 +43,11 @@
    판이 사진보다 납작해지면 세로가 잘리는데, 사옥 · 패널이 아래에 있으므로 아래를 붙든다 */
 .cs-hero-bg{position:absolute;inset:0;z-index:-1;display:block;width:100%;height:100%;
   object-fit:cover;object-position:var(--pos,10% 100%)}
-/* 밝은 낮 하늘 사진(커뮤니티 노을 사옥) — 흰 글자가 구름에 묻힌다. 글이 앉는 위쪽만 남색으로 누른다.
+/* 밝은 사진(커뮤니티 라운지 책장, 2026-09-18 노을 사옥에서 바꿨다) — 나무 책장이 온통 밝아 흰 글자가
+   묻힌다. 글이 앉는 위쪽을 남색으로 누른다(노을 하늘 때 .62 → .38 에서 한 단 짙게).
    밤하늘(투자정보) · 풍력 발전기(지속가능경영) 사진은 하늘이 짙어 걸지 않는다(Figma 에도 없다) */
 .cs-hero.is-bright::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(6,20,48,.62) 0%,rgba(6,20,48,.38) 38%,rgba(6,20,48,0) 66%)}
+  background:linear-gradient(180deg,rgba(6,20,48,.72) 0%,rgba(6,20,48,.52) 42%,rgba(6,20,48,0) 72%)}
 .cs-hero-page{display:flex;flex-direction:column;gap:24px}
 .cs-hero h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-tight);
   letter-spacing:var(--ls);color:#fff}
@@ -142,6 +143,8 @@
   /* 판이 가로로 넓어져 사진이 폭에 맞춰 커진다 — 아래를 붙들면 사옥 · 패널이 글 바로 뒤에 와서
      흰 글자가 묻힌다. 위(하늘)를 붙든다 */
   .cs-hero-bg{object-position:var(--pos-m,10% 0)}
+  /* 판이 낮은 띠가 되어 글이 판 전체에 앉는다 — 위만 누르던 기울기 대신 고르게 누른다 */
+  .cs-hero.is-bright::after{background:rgba(6,20,48,.55)}
   .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
   .cs-body>.cblock,.cs-body>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
