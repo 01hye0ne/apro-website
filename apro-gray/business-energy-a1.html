@@ -57,15 +57,17 @@
     --sf-ph-bd:#c7c9cc;
     --sf-ph-tx:#73757a;
     /* ── 글자 사다리 ────────────────────────────────────────────────────
-       역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 일곱 칸과
+       역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 칸들과
        굵기 세 단(800 제목·이름 / 600 줄글 / 500 메타)만으로 짜인다.
+       이 장만 여덟 칸이다 — 카드 바닥 꼬리말이 쓰는 메타 14 가 하나 더 있다.
        글꼴은 둘뿐이다 — 글은 전부 SUIT, 숫자와 히어로 영문만 Aldrich */
     --t-xl:var(--fs-h1); /* 장 제목                    */
     --t-lg:var(--fs-h2);   /* 인트로 리드                */
     --t-md:var(--fs-h3);/* 제품 이름 · 카드 라벨      */
     --t-sm:var(--fs-body);                   /* 소분류 이름 · 목록 항목    */
     --t-xs:var(--fs-body);                   /* 줄글 · 인덱스 · 특징 · 표  */
-    --t-2xs:var(--fs-tag);                  /* 번호 · 그룹 머리 · 꼬리    */
+    --t-meta:var(--fs-meta);                /* 주요 적용 분야             */
+    --t-2xs:var(--fs-tag);                  /* 번호 · 그룹 머리 · 그림 설명 */
     --t-tag:var(--fs-tag);                  /* 숫자 태그                  */
     --ald:"Aldrich",var(--rc),sans-serif;
     /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
@@ -715,7 +717,7 @@
      접히게 둔다 — 카드가 그만큼 자란다 */
   .sf-prod .use{display:flex;gap:10px;padding:12px 16px;
                 border-top:1px solid var(--c-bd);font-family:var(--suit);
-                font-size:var(--t-2xs);line-height:var(--lh-body);letter-spacing:var(--ls-num)}
+                font-size:var(--t-meta);line-height:var(--lh-body);letter-spacing:var(--ls-num)}
   .sf-prod .use b{flex-shrink:0;font-weight:800;color:var(--sf-sec)}
   .sf-prod .use span{min-width:0;font-weight:600;color:var(--sf-ter)}
 
