@@ -553,6 +553,15 @@
   .hm-wv li{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
             line-height:var(--lh-body);letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
   .hm-wv li b{font-weight:700}
+  /* 스크롤 등장 — 판이 화면에 들어오면 [이름 → 영문 → 국문 → 밑선 → 목록 줄] 차례로 떠오른다.
+     스크립트가 .is-rv 를 걸고 글마다 순번(--i)을 매긴 뒤, 판이 20% 보이면 .is-in 을 붙인다.
+     사업영역 세부 번호 목록(.sf-num)의 등장과 같은 결이다 — 옅게 · 짧게 올라온다.
+     스크립트가 없거나 움직임 줄이기를 켜면 처음부터 다 보인다 */
+  .hm-who.is-rv .rv{opacity:0;transform:translateY(16px);
+                    transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i) * 80ms)}
+  .hm-who.is-rv .hm-wv.is-in .rv{opacity:1;transform:none}
+  .hm-who.is-rv .hd{border-bottom-color:transparent;transition:border-color .7s var(--ease);transition-delay:calc(var(--i) * 80ms)}
+  .hm-who.is-rv .hm-wv.is-in .hd{border-bottom-color:var(--who-line)}
 
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
@@ -660,6 +669,7 @@
     .hm-card,.hm-card::after,.hm-card .cap,.hm-card .fold,
     .hm-hl .en .ln>span,.hm-hl .ko{transition:none!important}
     .hm-tab .gauge{animation:none!important}
+    .hm-who.is-rv .rv,.hm-who.is-rv .hd{transition:none!important}
   }
 </style>
 </head>
@@ -1414,6 +1424,32 @@
   go(0);
 })();
 
+/* ── Who we are 등장 — 판마다 글을 차례로 띄운다 ─────────────────────────────────
+   글 조각에 .rv 와 순번(--i)을 달고, 밑선은 국문 한 줄 다음 순번을 받는다.
+   판이 20% 보이면 한 번만 .is-in 을 붙인다. 움직임 줄이기 · IntersectionObserver 없음이면 건너뛴다 */
+(function(){
+  var sec = document.getElementById('hmWho') || document.querySelector('.hm-who');
+  if(!sec || !('IntersectionObserver' in window)) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cards = [].slice.call(sec.querySelectorAll('.hm-wv'));
+  cards.forEach(function(card){
+    var i = 0;
+    function mark(el){ el.classList.add('rv'); el.style.setProperty('--i', i++); }
+    mark(card.querySelector('h3'));
+    [].forEach.call(card.querySelectorAll('.msg>span'), mark);
+    card.querySelector('.hd').style.setProperty('--i', i++);
+    [].forEach.call(card.querySelectorAll('li'), mark);
+  });
+  sec.classList.add('is-rv');
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    });
+  }, { threshold: .2 });
+  cards.forEach(function(c){ io.observe(c); });
+})();
 </script>
 </body>
 </html>
