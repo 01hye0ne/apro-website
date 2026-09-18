@@ -20,11 +20,22 @@
 
    content-layout.css 뒤에 불러야 한다 — 같은 부품의 여백을 덮어쓰는 규칙이 있다.
    ===================================================================== */
-.cs-split{--cs-m:44px;--cs-pad:88px;display:flex;align-items:flex-start}
+/* 사이트 12열 격자를 이 틀에서도 세운다 — 식은 .bnav-wrap(business-layout.css)이 쓰는 것과
+   같다(--maxw 1440 · 좌우 44 · 거터 24). --g-x5 는 다섯째 열이 시작하는 x 다.
+   히어로가 1~4열, 본문이 5~12열을 덮게 하려고 둔다 (2026-09-18) */
+.cs-split{--cs-m:44px;--cs-pad:88px;
+  --g-w:min(calc(var(--maxw) - 88px),calc(100% - 88px));
+  --g-col:calc((var(--g-w) - 11 * var(--grid-gutter)) / 12);
+  --g-x5:calc((100% - var(--g-w)) / 2 + 4 * var(--g-col) + 4 * var(--grid-gutter));
+  display:flex;align-items:flex-start}
 
 /* ① 히어로 */
+/* 폭은 격자가 정한다 — 본문 글(안쪽 여백 44 뒤)이 다섯째 열 머리에 서도록 x5 에서 44 를 뺀다.
+   1440 에서 458.67 로, 눈대중 비율이던 32.71%(471)보다 12 좁다. 하한 340 · 상한 560 은 그대로 —
+   1550 쯤부터는 상한이 걸려 격자에서 풀린다(그 위에서는 격자가 가운데 1352 로 고정되는데
+   이 틀은 화면 폭을 꽉 쓰므로 어차피 축이 갈린다) */
 .cs-hero{position:sticky;top:53px;isolation:isolate;overflow:hidden;
-  flex:0 0 clamp(340px,32.71%,560px);height:calc(100vh - 53px);min-height:560px;
+  flex:0 0 clamp(340px,calc(var(--g-x5) - var(--cs-m)),560px);height:calc(100vh - 53px);min-height:560px;
   display:flex;flex-direction:column;gap:56px;padding:var(--cs-pad) var(--cs-m);
   background:#0b1b3d;color:#fff;word-break:keep-all}
 /* 사진 자리는 페이지가 --pos 로 정한다. 기본값은 투자정보 밤하늘 사옥 —
