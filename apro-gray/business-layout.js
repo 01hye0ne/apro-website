@@ -1019,3 +1019,34 @@
     if(m)close(m);
   });
 })();
+
+/* 탭 (.cfin-tabs + .cfin-panel) — 재무정보의 표 넷과 공시정보의 두 갈래가 함께 쓴다.
+   패널은 미리 다 깔아 두고 고른 하나만 남긴다(서버를 타지 않으므로 즉시 바뀐다).
+   왼쪽 목차가 숨은 패널을 가리키는 자리가 있어(공시정보의 전자공고 · 공시 자료)
+   그 링크를 누르면 탭을 먼저 연다 — 숨은 것으로는 스크롤이 가지 않는다 */
+(function(){
+  var bars=[].slice.call(document.querySelectorAll('.cfin-tabs'));
+  if(!bars.length)return;
+  var panels=[].slice.call(document.querySelectorAll('.cfin-panel'));
+  function show(k,tabs){
+    tabs.forEach(function(b){
+      if(b.getAttribute('data-fin')===k){b.setAttribute('aria-current','true');}
+      else{b.removeAttribute('aria-current');}
+    });
+    panels.forEach(function(p){
+      if(p.getAttribute('data-fin')!=null) p.hidden=(p.getAttribute('data-fin')!==k);
+    });
+  }
+  bars.forEach(function(bar){
+    var tabs=[].slice.call(bar.querySelectorAll('button'));
+    tabs.forEach(function(b){
+      b.addEventListener('click',function(){show(b.getAttribute('data-fin'),tabs);});
+    });
+    /* 목차 → 탭 */
+    [].slice.call(document.querySelectorAll('.cs-toc a[href^="#"]')).forEach(function(a){
+      var t=document.getElementById(a.getAttribute('href').slice(1));
+      if(!t||!t.classList.contains('cfin-panel'))return;
+      a.addEventListener('click',function(){show(t.getAttribute('data-fin'),tabs);});
+    });
+  });
+})();
