@@ -425,12 +425,10 @@
                  justify-content:flex-end;padding:20px;color:#fff;pointer-events:none;
                  opacity:0;transition:opacity .2s var(--ease)}
   .hm-card:not(.is-open) .fold{opacity:1;transition:opacity .5s var(--ease) .45s}
-  /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다).
-     크기는 펴진 카드의 이름(h3)과 같은 --fs-h1 — 좁은 화면(가로 띠)에서도 같다.
-     카드 높이에 다 안 들면(GaN Power Semiconductors) 낱말 사이에서 두 줄로 접는다 */
+  /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다) */
   .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
-                     transform:rotate(180deg);font-family:var(--ald);font-weight:400;font-size:var(--fs-h1);
-                     line-height:var(--lh-tight);letter-spacing:var(--ls-num);max-height:100%}
+                     transform:rotate(180deg);font-family:var(--ald);font-weight:400;font-size:var(--fs-h2);
+                     line-height:var(--lh-tight);letter-spacing:var(--ls-num);white-space:nowrap}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
@@ -673,7 +671,7 @@
     .hm-card .cap{right:0;width:auto}
     .hm-card+.hm-card{border-left:0;border-top:1px solid #fff}
     .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
-    .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none}
+    .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:var(--fs-h3)}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{padding:0 16px}
     .hm-card .sub{gap:20px;padding:10px 16px}
