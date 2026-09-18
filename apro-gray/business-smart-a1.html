@@ -415,13 +415,10 @@
                display:flex;align-items:center}
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
-  /* 묶음 머리는 띠를 깔지 않는다(2026-09-18) — 회색 판이 인덱스 항목보다 먼저 눈에
-     걸렸다. 항목과 같은 회색 글자로 두고, 번호만 한 칸 옅게 해 뒤로 물린다 */
   .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
-              font-family:var(--suit);font-weight:600;
+              background:var(--sf-gray100);font-family:var(--suit);font-weight:600;
               font-size:var(--t-2xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter);
               white-space:nowrap}
-  .sf-grp>.hd>span:first-child{color:var(--sf-line-s)}
   .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
              border-bottom:1px solid var(--sf-line);font-family:var(--suit);
              font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);
@@ -765,6 +762,8 @@
           --c-body:var(--sf-sec);    /* 600 줄글        */
           --c-num:var(--brand);      /* 목록 번호·점    */
           --c-tagbg:var(--point-200);/* 이름 태그 판    */
+          --c-eqbg:var(--sf-gray100);/* 설비 이름표 판  */
+          --c-eqtx:var(--sf-ter);    /* 설비 이름표 글  */
           --c-rule:var(--sf-line-s); /* 300 눈금 가로선 */
           --c-tick:var(--sf-ter);    /* 500 눈금 세로   */
           --c-bd-s:var(--sf-line-s); /* 300 목록 윗선   */
@@ -868,13 +867,18 @@
   /* 이름 태그 — 제품 목록(.sf-dl--row)과 제품 카드(.sf-prods)가 한 벌을 같이 쓴다.
      둘 다 "이 줄/칸이 무슨 제품인가"를 다는 이름표라 색도 크기도 갈릴 이유가 없다.
      .sf-dl .k 와 클래스 수가 같으므로(둘 다 2개) 반드시 그 뒤에 와야 이긴다 */
-  .sf-dl--row .k,.sf-prods .k,.sf-num .k{align-self:flex-start;padding:4px 8px;
+  .sf-dl--row .k,.sf-prods .k{align-self:flex-start;padding:4px 8px;
                  background:var(--c-tagbg);color:var(--c-num);
                  font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
                  line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
-  /* 01-1 공정 목록의 설비 이름 — 같은 이름표를 줄 오른쪽 끝에 모아 세운다(2026-09-18).
-     설비가 여럿인 공정은 오른쪽부터 채우고, 모자라면 다음 줄로 내린다 */
+  /* 01-1 공정 목록의 설비 이름 — 줄 오른쪽 끝에 모아 세운다(2026-09-18).
+     설비가 여럿인 공정은 오른쪽부터 채우고, 모자라면 다음 줄로 내린다.
+     모양은 파랑 제품 이름표가 아니라 좌측 인덱스의 묶음 머리(.sf-grp>.hd)를 따른다 —
+     공정 이름보다 앞에 나서지 않는 회색 띠 · 작은 글자다 */
   .sf-num .eq{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+  .sf-num .k{padding:4px 8px;background:var(--c-eqbg);color:var(--c-eqtx);
+             font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+             line-height:var(--lh-label);letter-spacing:var(--ls-num)}
   .sf-num .k,.sf-num b+span{white-space:nowrap}
   .sf-dl--row .k::before{display:none}
   .sf-dl--row .v{justify-self:end;white-space:nowrap}
@@ -948,7 +952,7 @@
   @media(min-width:1181px){
     .js .sf-sec:not(.is-on) .sf-txt{
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
-      --c-tagbg:var(--sf-gray100);
+      --c-tagbg:var(--sf-gray100);--c-eqtx:var(--sf-line-s);
       --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
       --c-bd-s:var(--sf-line);--c-bd:var(--sf-gray100)}
   }
