@@ -865,10 +865,14 @@
   /* 이름 태그 — 제품 목록(.sf-dl--row)과 제품 카드(.sf-prods)가 한 벌을 같이 쓴다.
      둘 다 "이 줄/칸이 무슨 제품인가"를 다는 이름표라 색도 크기도 갈릴 이유가 없다.
      .sf-dl .k 와 클래스 수가 같으므로(둘 다 2개) 반드시 그 뒤에 와야 이긴다 */
-  .sf-dl--row .k,.sf-prods .k{align-self:flex-start;padding:4px 8px;
+  .sf-dl--row .k,.sf-prods .k,.sf-num .k{align-self:flex-start;padding:4px 8px;
                  background:var(--c-tagbg);color:var(--c-num);
                  font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
                  line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  /* 01-1 공정 목록의 설비 이름 — 같은 이름표를 줄 오른쪽 끝에 모아 세운다(2026-09-18).
+     설비가 여럿인 공정은 오른쪽부터 채우고, 모자라면 다음 줄로 내린다 */
+  .sf-num .eq{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+  .sf-num .k,.sf-num b+span{white-space:nowrap}
   .sf-dl--row .k::before{display:none}
   .sf-dl--row .v{justify-self:end;white-space:nowrap}
   /* 정보 값 — 제품 목록의 값(포화도 · 고형분)과 제품 카드의 그림 설명(비표면적 ·
@@ -949,7 +953,7 @@
   .sf-texts h2,.sf-texts .en,.sf-body p,
   .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v,
   .sf-prods .k,.sf-prods .d,.sf-prods .cap{transition:color .5s var(--ease)}
-  .sf-dl--row .k,.sf-prods .k{transition:background-color .5s var(--ease)}
+  .sf-dl--row .k,.sf-prods .k,.sf-num .k{transition:background-color .5s var(--ease),color .5s var(--ease)}
   .sf-prods,.sf-prods li,.sf-prods .box{transition:border-color .5s var(--ease)}
   .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
   /* 공정 목록은 장이 제자리에 서면 위에서부터 한 줄씩 올라온다 — 원본 도식의
@@ -969,7 +973,7 @@
   @media(prefers-reduced-motion:reduce){
     .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,.sf-dl .v,
     .sf-prods,.sf-prods li,.sf-prods .k,.sf-prods .d,.sf-prods .cap,.sf-prods .box,
-    .sf-num,.sf-dl,.sf-num li,.sf-dl li,
+    .sf-num,.sf-dl,.sf-num li,.sf-dl li,.sf-num .k,
     .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
     .sf-ph,.sf-ph.is-on{transition:none}
     .js .sf-num li{opacity:1;transform:none;transition:none}
@@ -1455,12 +1459,12 @@
             </div>
           </div>
           <ol class="sf-num">
-            <li><b>01</b><span>1차 충전</span></li>
-            <li><b>02</b><span>디개싱 공정</span></li>
-            <li><b>03</b><span>에이징 공정</span></li>
-            <li><b>04</b><span>충·방전</span></li>
-            <li><b>05</b><span>품질 검사</span></li>
-            <li><b>06</b><span>불량 선별</span></li>
+            <li><b>01</b><span>1차 충전</span><span class="eq"><span class="k">Pre-Formation</span><span class="k">고온가압 충방전기</span><span class="k">Selector</span></span></li>
+            <li><b>02</b><span>디개싱 공정</span><span class="eq"><span class="k">Degas</span></span></li>
+            <li><b>03</b><span>에이징 공정</span><span class="eq"><span class="k">High Temp</span><span class="k">Normal Temp</span><span class="k">Shipping Temp</span></span></li>
+            <li><b>04</b><span>충·방전</span><span class="eq"><span class="k">충방전기</span><span class="k">Selector</span></span></li>
+            <li><b>05</b><span>품질 검사</span><span class="eq"><span class="k">DCIR</span><span class="k">IR-OCV</span><span class="k">OCV</span></span></li>
+            <li><b>06</b><span>불량 선별</span><span class="eq"><span class="k">DSF / EOL</span></span></li>
           </ol>
         </div>
       </div>
