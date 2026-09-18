@@ -11,6 +11,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
      지속가능경영 > ESG 게시판
 
@@ -26,7 +27,10 @@
      갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
      열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
      A-1(esg-board-a1.html)은 2026-09-15 부터 왼쪽 세로 히어로 틀(content-side.css)로 갈라져
-     손으로 고친다 — 이 파일을 고쳐도 A-1 로 넘어가지 않는다 -->
+     손으로 고친다 — 이 파일을 고쳐도 A-1 로 넘어가지 않는다.
+     2026-09-18 부터 본문(<main> 안)은 A-1 과 똑같다 — 장 · 탭 · 카드 · 규정 팝업을 A-1 에서 옮겨 왔고,
+     본문 규칙은 content-side.css 가 .cbody.cs-a 로 함께 잡는다. 히어로 · GNB · 본문 폭은 A 것 그대로다.
+     본문을 고치면 A-1 에도 같이 넣어야 한다 -->
 </head>
 <body>
 
@@ -62,77 +66,78 @@
 </section>
 
 <!-- ===================== 본문 ===================== -->
-<main class="cbody cbody--mid">
+<main class="cbody cbody--mid cs-a">
   <div class="cwrap">
-    <section class="cblock">
-      <h2>ESG 게시판</h2>
-      <div class="clist-hd">
-        <p class="count">총 <b>9</b>건</p>
-        <form class="csearch" role="search">
-          <label class="sr-only" for="q-esg">ESG 게시판 검색</label>
-          <input type="search" id="q-esg" placeholder="검색어를 입력하세요" />
-          <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
-        </form>
-      </div>
-      <table class="cboard">
-        <thead><tr><th>번호</th><th>제목</th><th>작성일</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="no">9</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=16" target="_blank" rel="noopener">폐기물 발생 현황 (2023~2025)</a></td>
-            <td>2026-06-23</td>
-          </tr>
-          <tr>
-            <td class="no">8</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=15" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2025)</a></td>
-            <td>2026-06-23</td>
-          </tr>
-          <tr>
-            <td class="no">7</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=14" target="_blank" rel="noopener">용수 사용량 (2022~2025)</a></td>
-            <td>2026-06-23</td>
-          </tr>
-          <tr>
-            <td class="no">6</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=13" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2025)</a></td>
-            <td>2026-06-23</td>
-          </tr>
-          <tr>
-            <td class="no">5</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=9" target="_blank" rel="noopener">폐기물 발생 현황 (2024)</a></td>
-            <td>2025-07-28</td>
-          </tr>
-          <tr>
-            <td class="no">4</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=8" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2024)</a></td>
-            <td>2025-07-28</td>
-          </tr>
-          <tr>
-            <td class="no">3</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=4" target="_blank" rel="noopener">환경경영시스템 (ISO 14001:2015)</a></td>
-            <td>2025-07-25</td>
-          </tr>
-          <tr>
-            <td class="no">2</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=3" target="_blank" rel="noopener">용수 사용량 (2022~2024)</a></td>
-            <td>2025-07-24</td>
-          </tr>
-          <tr>
-            <td class="no">1</td>
-            <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=2" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2024)</a></td>
-            <td>2025-07-24</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="cempty" hidden>검색 결과가 없습니다.</p>
-      <div class="cnote">
-        <p><strong>글 본문은 아직 옮기지 못했습니다.</strong>
-          아홉 편 모두 본문이 글이 아니라 표를 찍은 이미지 한 장이라, 텍스트로 가져올 것이
-          없습니다. 제목을 누르면 기존 사이트의 원본 글이 새 창으로 열립니다.</p>
-        <p>수치를 주시면 HTML 표로 다시 세우겠습니다 — 지금 형태로는 검색도, 영문 전환도,
-          좁은 화면 대응도 되지 않습니다.</p>
-      </div>
-    </section>
+  <section class="cblock" id="list">
+    <h2>ESG 게시판</h2>
+    <div class="clist-hd">
+      <p class="count">총 <b>9</b>건</p>
+      <form class="csearch" role="search">
+        <label class="sr-only" for="q-esg">ESG 게시판 검색</label>
+        <input type="search" id="q-esg" placeholder="검색어를 입력하세요" />
+        <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+      </form>
+    </div>
+    <table class="cboard">
+      <thead><tr><th>번호</th><th>제목</th><th>작성일</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="no">9</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=16" target="_blank" rel="noopener">폐기물 발생 현황 (2023~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">8</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=15" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">7</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=14" target="_blank" rel="noopener">용수 사용량 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">6</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=13" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">5</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=9" target="_blank" rel="noopener">폐기물 발생 현황 (2024)</a></td>
+          <td>2025-07-28</td>
+        </tr>
+        <tr>
+          <td class="no">4</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=8" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2024)</a></td>
+          <td>2025-07-28</td>
+        </tr>
+        <tr>
+          <td class="no">3</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=4" target="_blank" rel="noopener">환경경영시스템 (ISO 14001:2015)</a></td>
+          <td>2025-07-25</td>
+        </tr>
+        <tr>
+          <td class="no">2</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=3" target="_blank" rel="noopener">용수 사용량 (2022~2024)</a></td>
+          <td>2025-07-24</td>
+        </tr>
+        <tr>
+          <td class="no">1</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=2" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2024)</a></td>
+          <td>2025-07-24</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="cempty" hidden>검색 결과가 없습니다.</p>
+    <div class="cnote">
+      <p><strong>글 본문은 아직 옮기지 못했습니다.</strong>
+        아홉 편 모두 본문이 글이 아니라 표를 찍은 이미지 한 장이라, 텍스트로 가져올 것이
+        없습니다. 제목을 누르면 기존 사이트의 원본 글이 새 창으로 열립니다.</p>
+      <p>수치를 주시면 HTML 표로 다시 세우겠습니다 — 지금 형태로는 검색도, 영문 전환도,
+        좁은 화면 대응도 되지 않습니다.</p>
+    </div>
+  </section>
+  
   </div>
 </main>
 
