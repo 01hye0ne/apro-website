@@ -662,7 +662,9 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cchart .seg{display:grid;place-items:center;min-height:0;
   font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls-num);
   color:#fff;font-variant-numeric:tabular-nums}
-.cchart .seg-debt{background:linear-gradient(180deg,var(--brand-2),var(--brand))}
+/* 부채 칸은 단색이다 — 위아래로 흐리던 그라데이션(brand-2 → brand)은 막대 높이가
+   값이 아니라 색으로도 읽히는 것처럼 보였다. 범례 점과 같은 --brand-2 를 쓴다 */
+.cchart .seg-debt{background:var(--brand-2)}
 .cchart .seg-cap{background:var(--point-900)}
 /* 칸이 얕으면 숫자가 넘쳐 두 겹으로 보인다 — 안 보이게 접는다 */
 .cchart .seg span{padding:0 4px}
