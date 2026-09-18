@@ -427,13 +427,15 @@
                  justify-content:space-between;color:#fff}
   /* 핵심가치 — 번호 붙은 여섯 줄. 번호는 CSS 가 센다(01 · 02 …).
      폭은 가장 긴 이름(Aggressiveness)에 맞춘 고정값이다 : 줄 끝의 가는 선이 들쭉날쭉하면
-     여섯이 한 묶음으로 보이지 않는다. 첫 줄 위에도 선을 그어 묶음을 닫는다 */
+     여섯이 한 묶음으로 보이지 않는다. 첫 줄 위에도 선을 그어 묶음을 닫는다.
+     이름 글자는 사업영역 세부의 키워드(.sf-subs .nm — SUIT 800 · --fs-h3 · --lh-head · --ls-num)와 같다(2026-09-18).
+     색만 다르다 — 밤하늘 사진 위라 브랜드 파랑 대신 흰색이다 */
   .co-apro .vals{width:min(250px,42%);list-style:none;counter-reset:val;
                  border-top:1px solid rgba(255,255,255,.28)}
   .co-apro .vals li{display:flex;align-items:baseline;gap:14px;padding:5px 2px;
                     border-bottom:1px solid rgba(255,255,255,.28);
-                    font-family:var(--suit);font-weight:500;font-size:var(--fs-body);
-                    line-height:var(--lh-label);letter-spacing:var(--ls)}
+                    font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+                    line-height:var(--lh-head);letter-spacing:var(--ls-num)}
   .co-apro .vals li::before{counter-increment:val;content:counter(val,decimal-leading-zero);
                     flex:none;font-family:var(--suit);font-weight:700;font-size:var(--fs-tag);
                     letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
