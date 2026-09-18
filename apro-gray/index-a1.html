@@ -575,6 +575,15 @@
   .hm-who-dot .head{fill:#fff}
   .hm-who-dot .halo{fill:url(#hmWhoHalo)}
 
+  /* 비즈니스 → Who we are 이음매 — 흰 바탕 아래쪽에 하늘 맨 윗줄 색(--who-top)의 가로 줄 40 개를 4px 간격으로 깔아
+     아래로 갈수록 줄이 굵어져(굵기 비율 ((i+1)/40)^1.6) 하늘로 녹아든다. 레퍼런스 evolveprivatewealth.com.
+     띠(160px)는 Who we are 위로 올라가 비즈니스 아래 여백(--hm-pad 160 · 좁은 화면 128) 안에 들고,
+     둘 사이 구분선은 걷는다. 줄 굵기는 한 줄짜리 기울기로 박아 두었다(스크립트 없음) */
+  .hm-biz{border-bottom:0}
+  .hm-who{--who-top:#3070c5}
+  .hm-who::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:160px;pointer-events:none;
+                  background:0 100%/100% 160px no-repeat linear-gradient(to bottom,transparent 0px,var(--who-top) 0px,var(--who-top) 0.4px,transparent 0.4px,transparent 4px,var(--who-top) 4px,var(--who-top) 4.4px,transparent 4.4px,transparent 8px,var(--who-top) 8px,var(--who-top) 8.4px,transparent 8.4px,transparent 12px,var(--who-top) 12px,var(--who-top) 12.4px,transparent 12.4px,transparent 16px,var(--who-top) 16px,var(--who-top) 16.4px,transparent 16.4px,transparent 20px,var(--who-top) 20px,var(--who-top) 20.4px,transparent 20.4px,transparent 24px,var(--who-top) 24px,var(--who-top) 24.4px,transparent 24.4px,transparent 28px,var(--who-top) 28px,var(--who-top) 28.4px,transparent 28.4px,transparent 32px,var(--who-top) 32px,var(--who-top) 32.4px,transparent 32.4px,transparent 36px,var(--who-top) 36px,var(--who-top) 36.44px,transparent 36.44px,transparent 40px,var(--who-top) 40px,var(--who-top) 40.51px,transparent 40.51px,transparent 44px,var(--who-top) 44px,var(--who-top) 44.58px,transparent 44.58px,transparent 48px,var(--who-top) 48px,var(--who-top) 48.66px,transparent 48.66px,transparent 52px,var(--who-top) 52px,var(--who-top) 52.75px,transparent 52.75px,transparent 56px,var(--who-top) 56px,var(--who-top) 56.83px,transparent 56.83px,transparent 60px,var(--who-top) 60px,var(--who-top) 60.92px,transparent 60.92px,transparent 64px,var(--who-top) 64px,var(--who-top) 65.02px,transparent 65.02px,transparent 68px,var(--who-top) 68px,var(--who-top) 69.11px,transparent 69.11px,transparent 72px,var(--who-top) 72px,var(--who-top) 73.22px,transparent 73.22px,transparent 76px,var(--who-top) 76px,var(--who-top) 77.32px,transparent 77.32px,transparent 80px,var(--who-top) 80px,var(--who-top) 81.43px,transparent 81.43px,transparent 84px,var(--who-top) 84px,var(--who-top) 85.54px,transparent 85.54px,transparent 88px,var(--who-top) 88px,var(--who-top) 89.65px,transparent 89.65px,transparent 92px,var(--who-top) 92px,var(--who-top) 93.77px,transparent 93.77px,transparent 96px,var(--who-top) 96px,var(--who-top) 97.89px,transparent 97.89px,transparent 100px,var(--who-top) 100px,var(--who-top) 102.01px,transparent 102.01px,transparent 104px,var(--who-top) 104px,var(--who-top) 106.13px,transparent 106.13px,transparent 108px,var(--who-top) 108px,var(--who-top) 110.26px,transparent 110.26px,transparent 112px,var(--who-top) 112px,var(--who-top) 114.39px,transparent 114.39px,transparent 116px,var(--who-top) 116px,var(--who-top) 118.52px,transparent 118.52px,transparent 120px,var(--who-top) 120px,var(--who-top) 122.66px,transparent 122.66px,transparent 124px,var(--who-top) 124px,var(--who-top) 126.8px,transparent 126.8px,transparent 128px,var(--who-top) 128px,var(--who-top) 130.94px,transparent 130.94px,transparent 132px,var(--who-top) 132px,var(--who-top) 135.08px,transparent 135.08px,transparent 136px,var(--who-top) 136px,var(--who-top) 139.23px,transparent 139.23px,transparent 140px,var(--who-top) 140px,var(--who-top) 143.38px,transparent 143.38px,transparent 144px,var(--who-top) 144px,var(--who-top) 147.53px,transparent 147.53px,transparent 148px,var(--who-top) 148px,var(--who-top) 151.68px,transparent 151.68px,transparent 152px,var(--who-top) 152px,var(--who-top) 155.84px,transparent 155.84px,transparent 156px,var(--who-top) 156px,var(--who-top) 160.0px,transparent 160.0px)}
+
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
   .hm-nhead{display:flex;align-items:flex-start;gap:8px}
@@ -661,6 +670,8 @@
     /* 좁은 화면 — 계단을 접는다. 판은 화면의 92% 로 2 번째만 왼쪽, 나머지는 오른쪽에 붙고
        글은 판 안을 다 쓴다. 제목과 첫 판 사이는 40 을 띄운다(판이 화면 폭을 거의 다 써 겹친다) */
     .hm-who{padding-top:48px}
+    /* 비즈니스 아래 여백이 128 로 줄어 이음매 띠도 120 으로 — 옅은 윗줄부터 잘린다 */
+    .hm-who::before{height:120px}
     .hm-who .hm-ttl{margin-bottom:40px;padding-left:var(--hm-m)}
     .hm-wv:nth-child(n){width:92%}
     /* 글이 화면 끝 여백(16)까지 오므로 흐리는 폭도 그만큼만 */
