@@ -415,13 +415,10 @@
                display:flex;align-items:center}
   .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
   .sf-grp{display:flex;flex-direction:column}
-  /* 묶음 머리는 띠를 깔지 않는다(2026-09-18) — 회색 판이 인덱스 항목보다 먼저 눈에
-     걸렸다. 항목과 같은 회색 글자로 두고, 번호만 한 칸 옅게 해 뒤로 물린다 */
   .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
-              font-family:var(--suit);font-weight:600;
+              background:var(--sf-gray100);font-family:var(--suit);font-weight:600;
               font-size:var(--t-2xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter);
               white-space:nowrap}
-  .sf-grp>.hd>span:first-child{color:var(--sf-line-s)}
   .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
              border-bottom:1px solid var(--sf-line);font-family:var(--suit);
              font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);
