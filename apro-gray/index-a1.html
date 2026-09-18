@@ -562,6 +562,17 @@
   .hm-who.is-rv .hm-wv.is-in .rv{opacity:1;transform:none}
   .hm-who.is-rv .hd{border-bottom-color:transparent;transition:border-color .7s var(--ease);transition-delay:calc(var(--i) * 80ms)}
   .hm-who.is-rv .hm-wv.is-in .hd{border-bottom-color:var(--who-line)}
+  /* 흐르는 점 — 네 판의 선을 한 줄로 이어 흰 점이 스크롤을 따라 내려간다(사업장 지도 이동 점의 빛꼬리와 같은 짜임).
+     첫 판 윗선의 화면 오른쪽 끝에서 들어와 모서리를 돌고, 판이 바뀌는 자리에서 다음 판 윗선을 타고 옆으로 건너간다.
+     점은 화면 60% 높이를 따라가되 조금 늦게 붙어(부드럽게 따라잡기) 옆 선에서는 미끄러지듯 건너간다.
+     꼬리는 같은 길을 대시 여덟 겹으로 겹쳐 머리 쪽이 진하고 굵다. 화면 양 끝은 판 선처럼 흐린다.
+     길은 스크립트가 판 자리를 재어 그린다. 움직임 줄이기를 켜면 걷는다 */
+  .hm-who-dot{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none;
+              -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--who-fade),#000 calc(100% - var(--who-fade)),transparent);
+              mask-image:linear-gradient(to right,transparent,#000 var(--who-fade),#000 calc(100% - var(--who-fade)),transparent)}
+  .hm-who-dot .tail{fill:none;stroke:#fff;stroke-linecap:round}
+  .hm-who-dot .head{fill:#fff}
+  .hm-who-dot .halo{fill:url(#hmWhoHalo)}
 
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
@@ -579,7 +590,10 @@
   /* 카드 글자는 커뮤니티 > 보도자료 카드(content-layout.css 의 .cnews)와 같은 규칙이다 —
      그림 → 제목 16, 제목은 두 줄에서 자르고, 날짜는 카드 밑변에 붙는다(제목에서 최소 12) */
   .hm-ncards a{display:flex;flex-direction:column;height:100%;color:inherit;text-decoration:none}
-  .hm-ncards .th{display:block;aspect-ratio:16/9;background:var(--hm-ph);border:1px solid var(--border-g)}
+  .hm-ncards .th{display:block;aspect-ratio:16/9;overflow:hidden;background:var(--hm-ph);border:1px solid var(--border-g)}
+  /* 섬네일은 보도자료 목록과 같은 그림(press-<글번호>.jpg)이다. 커서를 올리면 아주 조금 다가온다 */
+  .hm-ncards .th img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+  .hm-ncards a:hover .th img{transform:scale(1.04)}
   .hm-ncards .txt{flex:1;display:flex;flex-direction:column;padding-top:16px}
   .hm-ncards .ttl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
                   font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
@@ -670,6 +684,7 @@
     .hm-hl .en .ln>span,.hm-hl .ko{transition:none!important}
     .hm-tab .gauge{animation:none!important}
     .hm-who.is-rv .rv,.hm-who.is-rv .hd{transition:none!important}
+    .hm-who-dot{display:none}
   }
 </style>
 </head>
@@ -907,7 +922,8 @@
 
   <!-- ===================== WHO WE ARE (Figma 1338:8490, 2026-09-18 갱신) ===================== -->
   <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임을 계단으로 쌓았다. 글은 Figma 그대로다 -->
-  <section class="hm-sec hm-who" aria-labelledby="hm-who-t">
+  <section class="hm-sec hm-who" id="hmWho" aria-labelledby="hm-who-t">
+    <svg class="hm-who-dot" aria-hidden="true"><defs><radialGradient id="hmWhoHalo"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g class="trail"></g><circle class="halo" r="12"/><circle class="head" r="3"/></svg>
     <h2 class="hm-ttl" id="hm-who-t">Who we are</h2>
     <ol class="hm-who-list">
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
@@ -954,7 +970,7 @@
   </section>
 
   <!-- ===================== NEWS (Figma 991:102) ===================== -->
-  <!-- 글과 날짜는 보도자료 목록(community-press)과 같은 기록이다. 섬네일은 그 목록처럼 아직 비어 있다 -->
+  <!-- 글 · 날짜 · 섬네일은 보도자료 목록(community-press)과 같은 기록이다 -->
   <section class="hm-sec hm-news" aria-labelledby="hm-news-t">
     <div class="hm-nhead">
       <div class="tt">
@@ -966,19 +982,19 @@
     <ul class="hm-ncards">
       <li>
         <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=85" target="_blank" rel="noopener">
-          <span class="th" aria-hidden="true"></span>
+          <span class="th" aria-hidden="true"><img src="../assets/press-085.jpg" alt="" loading="lazy" decoding="async" /></span>
           <span class="txt"><span class="ttl">에이프로세미콘, ‘1200V급 GaN 에피웨이퍼’로 스케일업팁스 선정</span><span class="date">2026-08-18</span></span>
         </a>
       </li>
       <li>
         <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=84" target="_blank" rel="noopener">
-          <span class="th" aria-hidden="true"></span>
+          <span class="th" aria-hidden="true"><img src="../assets/press-084.jpg" alt="" loading="lazy" decoding="async" /></span>
           <span class="txt"><span class="ttl">에이프로-클로봇, AI·로봇 융합 산업현장 안전점검 MOU</span><span class="date">2026-06-30</span></span>
         </a>
       </li>
       <li>
         <a href="https://aproele.com/bbs/board.php?bo_table=press&amp;wr_id=80" target="_blank" rel="noopener">
-          <span class="th" aria-hidden="true"></span>
+          <span class="th" aria-hidden="true"><img src="../assets/press-080.jpg" alt="" loading="lazy" decoding="async" /></span>
           <span class="txt"><span class="ttl">에이프로, 각형 배터리 양산 장비 수주…제품 라인업 확장</span><span class="date">2026-02-23</span></span>
         </a>
       </li>
@@ -1449,6 +1465,120 @@
     });
   }, { threshold: .2 });
   cards.forEach(function(c){ io.observe(c); });
+})();
+
+/* ── Who we are 흐르는 점 — 판 선을 이은 길을 스크롤 따라 내려간다 ─────────────────────
+   길: 첫 판 윗선의 화면 오른쪽 끝 → 판 모서리(반지름 59.5, 테두리 선 한가운데) → 세로 선 →
+   다음 판 윗선에 닿으면(모서리 16 으로 굴려) 옆으로 꺾어 그 판 모서리로 → … → 마지막 판 세로 선이 섹션 바닥까지.
+   목표: 화면 60% 높이가 닿은 길 위 자리(옆 선은 그 높이를 지나는 순간 끝까지 넘어간다).
+   점은 목표를 매 프레임 14% 씩 따라잡아 옆 선에서는 미끄러지듯 건너간다. 멈추면 프레임도 쉰다 */
+(function(){
+  var sec = document.getElementById('hmWho');
+  if(!sec) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var svg = sec.querySelector('.hm-who-dot'), trail = svg.querySelector('.trail');
+  var head = svg.querySelector('.head'), halo = svg.querySelector('.halo');
+  var outs = [].slice.call(sec.querySelectorAll('.hm-wv .out'));
+  var NS = 'http://www.w3.org/2000/svg', TAIL = 140, LAYERS = 8;
+  var tails = [], path = null, segs = [], y00 = 0, total = 0, cur = 0, target = 0, raf = 0;
+  for(var k = 0; k < LAYERS; k++){
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('class', 'tail');
+    p.setAttribute('stroke-width', (1 + k * 1.2 / (LAYERS - 1)).toFixed(3));
+    p.setAttribute('stroke-opacity', '.14');
+    trail.appendChild(p); tails.push(p);
+  }
+  svg.style.visibility = 'hidden';
+
+  /* 모서리 점 목록 [x, y, 반지름] → 직선 + 원호 길. 각 조각의 끝 길이와 끝 높이를 남긴다(목표 찾기용) */
+  function build(){
+    var box = sec.getBoundingClientRect(), W = box.width, H = box.height;
+    if(!W || getComputedStyle(svg).display === 'none') return false;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    var rs = outs.map(function(el){
+      var r = el.getBoundingClientRect();
+      return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top };
+    });
+    /* 판 선이 왼쪽에 있으면(오른쪽에 붙은 판) 세로 선은 왼 테두리, 아니면 오른 테두리 */
+    var xs = rs.map(function(r, i){ return getComputedStyle(outs[i]).borderLeftWidth !== '0px' ? r.l + .5 : r.r - .5; });
+    var pts = [[W, rs[0].t + .5, 0]];
+    rs.forEach(function(r, i){
+      var y = r.t + .5;
+      if(i) pts.push([xs[i - 1], y, 16]);
+      pts.push([xs[i], y, 59.5]);
+    });
+    pts.push([xs[xs.length - 1], H, 0]);
+    var d = 'M' + pts[0][0] + ' ' + pts[0][1], len = 0, x0 = pts[0][0], y0 = pts[0][1];
+    segs = []; y00 = y0;
+    for(var i = 1; i < pts.length; i++){
+      var P = pts[i], A = pts[i - 1], C = pts[i + 1];
+      var ux = Math.sign(P[0] - A[0]), uy = Math.sign(P[1] - A[1]);
+      if(!C){ /* 끝 */
+        len += Math.hypot(P[0] - x0, P[1] - y0); d += ' L' + P[0] + ' ' + P[1];
+        segs.push({ len: len, y: P[1] }); break;
+      }
+      var vx = Math.sign(C[0] - P[0]), vy = Math.sign(C[1] - P[1]);
+      var r = Math.min(P[2], Math.hypot(P[0] - A[0], P[1] - A[1]) / 2, Math.hypot(C[0] - P[0], C[1] - P[1]) / 2);
+      var ax = P[0] - ux * r, ay = P[1] - uy * r, bx = P[0] + vx * r, by = P[1] + vy * r;
+      len += Math.hypot(ax - x0, ay - y0); d += ' L' + ax + ' ' + ay;
+      segs.push({ len: len, y: ay });
+      if(r > 0){
+        len += Math.PI * r / 2;
+        d += ' A' + r + ' ' + r + ' 0 0 ' + (ux * vy - uy * vx > 0 ? 1 : 0) + ' ' + bx + ' ' + by;
+        segs.push({ len: len, y: by });
+      }
+      x0 = bx; y0 = by;
+    }
+    path = tails[0];
+    tails.forEach(function(t){ t.setAttribute('d', d); });
+    total = path.getTotalLength();
+    /* 원호 길이 셈과 실제 길이가 조금 다를 수 있어 비율로 맞춘다 */
+    var f = total / len;
+    segs.forEach(function(s){ s.len *= f; });
+    svg.style.visibility = '';
+    return true;
+  }
+  /* 화면 60% 높이(섹션 좌표)가 닿은 길 위 자리 — 조각 끝 높이 사이를 곧게 나눈다. 가로 조각(높이가 같은)은 건너뛴다 */
+  function aim(){
+    var y = innerHeight * .6 - sec.getBoundingClientRect().top, prevLen = 0, prevY = y00;
+    if(y <= y00) return 0;
+    for(var i = 0; i < segs.length; i++){
+      var s = segs[i];
+      if(y < s.y) return prevLen + (s.len - prevLen) * (y - prevY) / (s.y - prevY);
+      prevLen = s.len; prevY = s.y;
+    }
+    return total;
+  }
+  function paint(){
+    var at = Math.max(0, Math.min(total, cur));
+    tails.forEach(function(t, k){
+      var dl = Math.min(at, TAIL * (LAYERS - k) / LAYERS);
+      t.setAttribute('stroke-dasharray', dl + ' ' + (total + TAIL));
+      t.setAttribute('stroke-dashoffset', -(at - dl));
+    });
+    var pt = path.getPointAtLength(at);
+    head.setAttribute('cx', pt.x); head.setAttribute('cy', pt.y);
+    halo.setAttribute('cx', pt.x); halo.setAttribute('cy', pt.y);
+  }
+  function tick(){
+    raf = 0;
+    cur += (target - cur) * .14;
+    if(Math.abs(target - cur) < .5) cur = target;
+    paint();
+    if(cur !== target) raf = requestAnimationFrame(tick);
+  }
+  function onScroll(){
+    if(!path) return;
+    target = aim();
+    if(!raf && cur !== target) raf = requestAnimationFrame(tick);
+  }
+  function redo(){ if(build()){ target = cur = aim(); paint(); } }
+  redo();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  if('ResizeObserver' in window) new ResizeObserver(redo).observe(sec);
+  else window.addEventListener('resize', redo);
+  window.addEventListener('load', redo);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(redo);
 })();
 </script>
 </body>
