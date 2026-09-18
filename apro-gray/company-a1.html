@@ -437,8 +437,10 @@
   .co-apro .vals li::before{counter-increment:val;content:counter(val,decimal-leading-zero);
                     flex:none;font-family:var(--suit);font-weight:700;font-size:var(--fs-tag);
                     letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
-  .co-apro p{max-width:764px;font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);
-             line-height:var(--lh-label);letter-spacing:var(--ls);word-break:keep-all}
+  /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
+     SUIT 400 · --fs-h2 · --lh-head. 줄 끊김은 <span> 이 정하므로 폭 상한은 두지 않는다 */
+  .co-apro p{font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
+             line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all}
   .co-apro p span{display:block}
 
   @media(max-width:700px){ .co-vband .imgs{grid-template-columns:minmax(0,1fr)} }
@@ -459,7 +461,7 @@
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
     .co-apro .vals{width:min(240px,72%)}
     .co-apro .vals li{padding:7px 2px;font-size:var(--fs-meta);letter-spacing:var(--ls)}
-    .co-apro p{font-size:var(--fs-body);letter-spacing:var(--ls)}
+    .co-apro p{font-size:var(--fs-h2);letter-spacing:var(--ls)}
     .co-apro p span{display:inline}
   }
 </style>
