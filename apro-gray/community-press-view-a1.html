@@ -26,7 +26,15 @@
 <style>
   /* 상세는 왼쪽 세로 히어로 없이 본문만 선다(2026-09-18) — 본문이 사이트 격자 폭(--maxw) 안 가운데에 놓인다 */
   .cs-solo .cs-body{max-width:var(--maxw);margin-inline:auto}
-  .cpost-hd{padding-bottom:24px;border-bottom:2px solid var(--g900)}
+  /* 머리 — 왼쪽에 제목 · 날짜, 오른쪽에 [목록으로 · 기사 원문 보기]. 좁은 화면은 버튼이 날짜 밑으로 내려간다 */
+  .cpost-hd{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:32px;align-items:center;
+    padding-bottom:24px;border-bottom:2px solid var(--g900)}
+  .cpost-hd>h1,.cpost-hd>.cpost-meta{grid-column:1}
+  .cpost-hd>.cbtns{grid-column:2;grid-row:1/3;margin-top:0;flex-wrap:nowrap}
+  @media(max-width:900px){
+    .cpost-hd{grid-template-columns:minmax(0,1fr)}
+    .cpost-hd>.cbtns{grid-column:1;grid-row:auto;margin-top:20px;flex-wrap:wrap}
+  }
   .cpost-hd h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
@@ -43,6 +51,8 @@
   .cpost-bd p+p{margin-top:8px}
   .cs-body>.cblock>.cpost-hd+*{margin-top:0}
   .cpost-empty{color:var(--teritary)}
+  /* 버튼이 머리로 올라가 본문 밑줄과 이전 · 다음 글 윗줄이 바로 만난다 — 틈(장 안 24)을 없애고 선은 하나만 */
+  :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cpost-nav{margin-top:0;border-top:0}
   .cpost-nav{border-top:1px solid var(--border-g)}
   .cpost-nav a{display:flex;gap:24px;padding:16px 8px;border-bottom:1px solid var(--border-g);
     font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
@@ -151,12 +161,12 @@
     <header class="cpost-hd">
       <h1 id="post-t">보도자료</h1>
       <p class="cpost-meta"><span data-f="date"></span><span data-f="src"></span></p>
+      <div class="cbtns">
+        <a class="cbtn" href="community-press-a1.html">목록으로</a>
+        <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기사 원문 보기</a>
+      </div>
     </header>
     <div class="cpost-bd" id="postBody"></div>
-    <div class="cbtns">
-      <a class="cbtn" href="community-press-a1.html">목록으로</a>
-      <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기사 원문 보기</a>
-    </div>
     <nav class="cpost-nav" aria-label="이전 · 다음 글">
       <a data-f="prev" hidden><span class="k">이전 글</span><span class="v"></span></a>
       <a data-f="next" hidden><span class="k">다음 글</span><span class="v"></span></a>
