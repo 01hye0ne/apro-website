@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APRO | 에이프로 — 주식정보</title>
-<meta name="description" content="에이프로(APRO) 주식정보 — 주식 현황·주가 정보와 IR 문의처." />
+<title>APRO | 에이프로 — 보도자료 상세</title>
+<meta name="description" content="에이프로(APRO) 보도자료 상세 — 임시 페이지." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="content-layout.css" />
 <link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
-     투자정보 > 재무정보
+     커뮤니티 > 보도자료
 
      글과 수치는 content-export/ 에서 그대로 옮겨 온 것이다(원본: 구 apro_home).
      본문 레이아웃은 아직 시안 전이라 content-layout.css 의 공용 블록만 쓴다 —
@@ -26,11 +26,35 @@
      형제 페이지로 가는 소분류 탭 줄은 두지 않는다 — 대분류 안에서 어디로
      갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
      열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
-     A-1(ir-stock-a1.html)은 2026-09-15 부터 왼쪽 세로 히어로 틀(content-side.css)로 갈라져
+     A-1(community-press-a1.html)은 2026-09-15 부터 왼쪽 세로 히어로 틀(content-side.css)로 갈라져
      손으로 고친다 — 이 파일을 고쳐도 A-1 로 넘어가지 않는다.
      2026-09-18 부터 본문(<main> 안)은 A-1 과 똑같다 — 장 · 탭 · 카드 · 규정 팝업을 A-1 에서 옮겨 왔고,
      본문 규칙은 content-side.css 가 .cbody.cs-a 로 함께 잡는다. 히어로 · GNB · 본문 폭은 A 것 그대로다.
      본문을 고치면 A-1 에도 같이 넣어야 한다 -->
+<!-- 보도자료 상세 (2026-09-18) — 한 장의 틀이 주소의 ?id=<글번호> 로 press-data.js 에서 내용을 채운다.
+     목록 카드 85장이 모두 이 장으로 온다. A-1(community-press-view-a1.html)과 본문이 같고 틀(배너 히어로 · GNB)만 A 것이다. 상세 페이지를 제대로 짤 때 이 <style> 은 content-layout.css 로 옮긴다 -->
+<style>
+  .cpost-hd{padding-bottom:24px;border-bottom:2px solid var(--g900)}
+  .cpost-hd h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
+    line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--teritary)}
+  .cpost-bd{padding:32px 0 40px;border-bottom:1px solid var(--border-g)}
+  .cpost-bd figure{margin:0}
+  .cpost-bd img{display:block;width:100%;max-width:800px;height:auto}
+  .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-bd p+p{margin-top:8px}
+  :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cpost-hd+*{margin-top:0}
+  .cpost-empty{color:var(--teritary)}
+  .cpost-nav{border-top:1px solid var(--border-g)}
+  .cpost-nav a{display:flex;gap:24px;padding:16px 8px;border-bottom:1px solid var(--border-g);
+    font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
+  .cpost-nav a[hidden]{display:none}
+  .cpost-nav .k{flex:0 0 64px;font-weight:600;color:var(--teritary)}
+  .cpost-nav .v{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cpost-nav a:hover .v{color:var(--brand)}
+</style>
 </head>
 <body>
 
@@ -49,74 +73,40 @@
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 인프라</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
     <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
-    <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html" aria-current="page">주식정보</a></div>
+    <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a></div>
     <div class="m-col" data-i="3"><a href="esg-environment.html">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
-    <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
+    <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html" aria-current="page">보도자료</a></div>
   </div><span class="m-globe"></span></div></div>
   <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
 </div>
 
 <!-- ===================== 히어로 ===================== -->
 <section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 8%"><img src="../assets/hq-exterior.jpg" alt="" aria-hidden="true" /></span>
+  <span class="dhero-bg" style="--hero-pos:50% 50%"><img src="../assets/hq-sunset.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <h1>주식정보</h1>
-    <p class="dhero-lead">A-PRO의 미래 가치와 투명한 기업 정보를 공유합니다.</p>
+    <h1>보도자료</h1>
+    <p class="dhero-lead">A-PRO의 언론 보도 자료를 확인하세요.</p>
   </div>
 </section>
 
 <!-- ===================== 본문 ===================== -->
 <main class="cbody cs-a">
   <div class="cwrap">
-  <section class="cblock" id="status">
-    <h2>주식 현황</h2>
-    <!-- 자본금은 단위가 백만원이라 원 단위를 절사한 값이다 —
-         15,077,660주 x 액면 500원 = 7,538,830,000원 -> 7,538 백만원 -->
-    <div class="cstock-wrap">
-      <table class="cstock">
-        <thead>
-          <tr><th scope="col">구분</th><th scope="col">발행주식총수</th><th scope="col">자본금</th><th scope="col">비고</th></tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">보통주식</th><td>15,077,660</td><td>7,538</td><td>2026-06-22 기준</td></tr>
-          <tr class="sum"><th scope="row">합계</th><td>15,077,660</td><td>7,538</td><td>총 발행한도: 1억주</td></tr>
-        </tbody>
-      </table>
+  <article class="cblock" id="post" aria-labelledby="post-t">
+    <header class="cpost-hd">
+      <h2 id="post-t">보도자료</h2>
+      <p class="cpost-meta"><span data-f="date"></span><span data-f="src"></span></p>
+    </header>
+    <div class="cpost-bd" id="postBody"></div>
+    <div class="cbtns">
+      <a class="cbtn" href="community-press.html">목록으로</a>
+      <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기사 원문 보기</a>
     </div>
-    <div class="cstock-foot">
-      <span>* 주식발행내역 (1주의 액면금액 : 500원)</span>
-      <span>(단위 : 주/백만원)</span>
-    </div>
-  </section>
-
-  <section class="cblock" id="price">
-    <h2>주가 정보</h2>
-    <div class="cnote">
-      <p><strong>아직 붙이지 않았습니다.</strong> 시세는 계속 변하는 값이라 거래소나 증권사 시세 API 를 불러와야 하고, 그러려면 서버가 필요합니다.</p>
-      <p>실시간이 꼭 필요한 것이 아니라면 종가 기준 하루 한 번 갱신하는 쪽이 훨씬 간단합니다.</p>
-    </div>
-  </section>
-
-  <section class="cblock" id="contact">
-    <h2>IR Contact</h2>
-    <p class="ctagline">Partnership for Future</p>
-    <!-- 법정동은 관양동이다 — 받은 원고에 "관영동" 으로 적혀 있었으나 회사 주소와
-         푸터·공고문 표기 모두 관양동이라 그쪽에 맞춘다 -->
-    <div class="cways">
-      <div class="cway">
-        <p class="k">Address</p>
-        <p class="v">경기도 안양시 동안구 부림로170번길 41-14<small>관양동, 에이프로 글로벌센터</small></p>
-      </div>
-      <div class="cway">
-        <p class="k">Email</p>
-        <p class="v"><a href="mailto:ir@aproele.com">ir@aproele.com</a></p>
-      </div>
-      <div class="cway">
-        <p class="k">Contact</p>
-        <p class="v"><a href="tel:031-689-3963">031-689-3963</a></p>
-      </div>
-    </div>
-  </section>
+    <nav class="cpost-nav" aria-label="이전 · 다음 글">
+      <a data-f="prev" hidden><span class="k">이전 글</span><span class="v"></span></a>
+      <a data-f="next" hidden><span class="k">다음 글</span><span class="v"></span></a>
+    </nav>
+  </article>
   
   </div>
 </main>
@@ -135,7 +125,7 @@
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
-        <ul><li><a href="ir-finance.html">재무정보</a></li><li><a href="ir-disclosure.html">공시정보</a></li><li><a href="ir-stock.html" aria-current="page">주식정보</a></li></ul>
+        <ul><li><a href="ir-finance.html">재무정보</a></li><li><a href="ir-disclosure.html">공시정보</a></li><li><a href="ir-stock.html">주식정보</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">지속가능경영</p>
@@ -143,7 +133,7 @@
       </div>
       <div class="f-col">
         <p class="head">커뮤니티</p>
-        <ul><li><a href="community-notice.html">공지사항</a></li><li><a href="community-press.html">보도자료</a></li></ul>
+        <ul><li><a href="community-notice.html">공지사항</a></li><li><a href="community-press.html" aria-current="page">보도자료</a></li></ul>
       </div>
     </nav>
 
@@ -207,7 +197,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
-      <div class="ov-links"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html" aria-current="page">주식정보</a></div>
+      <div class="ov-links"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">지속가능경영</div>
@@ -215,7 +205,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">커뮤니티</div>
-      <div class="ov-links"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
+      <div class="ov-links"><a href="community-notice.html">공지사항</a><a href="community-press.html" aria-current="page">보도자료</a></div>
     </div>
   </nav>
 </div>
@@ -230,25 +220,48 @@
 
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
-<script src="business-layout.js"></script>
+<script src="press-data.js"></script>
 <script>
-/* 재무제표 4종 전환 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
-   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
+/* 보도자료 상세 — ?id=<글번호> 로 press-data.js 에서 글을 찾아 채운다.
+   번호가 없거나 틀리면 가장 최근 글을 보인다. 이전 글은 더 오래된 글, 다음 글은 더 새 글이다 */
 (function(){
-  var tabs = [].slice.call(document.querySelectorAll('.cfin-tabs button'));
-  var panels = [].slice.call(document.querySelectorAll('.cfin-panel'));
-  if(!tabs.length){ return; }
-  tabs.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var k = btn.getAttribute('data-fin');
-      tabs.forEach(function(b){
-        if(b === btn){ b.setAttribute('aria-current','true'); }
-        else { b.removeAttribute('aria-current'); }
-      });
-      panels.forEach(function(p){ p.hidden = (p.getAttribute('data-fin') !== k); });
-    });
+  var list = window.PRESS || [];
+  if(!list.length) return;
+  var id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+  var at = 0;
+  for(var i = 0; i < list.length; i++){ if(list[i].id === id){ at = i; break; } }
+  var p = list[at], root = document.getElementById('post');
+  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+  function pad(n){ return ('00' + n).slice(-3); }
+
+  document.getElementById('post-t').textContent = p.t;
+  document.title = 'APRO | 에이프로 — ' + p.t;
+  root.querySelector('[data-f="date"]').textContent = p.d;
+  var src = root.querySelector('[data-f="src"]');
+  if(p.s) src.textContent = '출처 ' + p.s; else src.remove();
+
+  var bd = document.getElementById('postBody');
+  if(p.i){
+    var fig = el('figure'), img = el('img');
+    img.src = '../assets/press-' + pad(p.id) + '.jpg'; img.alt = ''; img.decoding = 'async';
+    fig.appendChild(img); bd.appendChild(fig);
+  }
+  p.p.forEach(function(t){ bd.appendChild(el('p', null, t)); });
+  if(!p.i && !p.p.length) bd.appendChild(el('p', 'cpost-empty', '요약 없이 원문 링크만 있는 글입니다.'));
+
+  /* 기사 원문 — 없으면 기존 사이트의 원본 글로 보낸다 */
+  var go = document.getElementById('postLink');
+  go.href = p.u || ('https://aproele.com/bbs/board.php?bo_table=press&wr_id=' + p.id);
+  go.textContent = p.u ? '기사 원문 보기' : '기존 사이트에서 보기';
+  go.hidden = false;
+
+  [['prev', list[at + 1]], ['next', list[at - 1]]].forEach(function(x){
+    var a = root.querySelector('[data-f="' + x[0] + '"]');
+    if(!x[1]) return;
+    a.href = '?id=' + x[1].id; a.querySelector('.v').textContent = x[1].t; a.hidden = false;
   });
 })();
 </script>
+<script src="business-layout.js"></script>
 </body>
 </html>

@@ -62,80 +62,88 @@
 .cs-toc a:hover{background:rgba(255,255,255,.08)}
 .cs-toc a:focus-visible{outline:2px solid #fff;outline-offset:-2px}
 
+/* A (배너 히어로 틀)도 본문 안은 이 틀과 똑같이 짠다 (2026-09-18) — 히어로 · GNB · 본문 폭(.cwrap)은
+   A 것 그대로 두고, 장의 띠(위아래 88 · 장 사이 가는 선)와 장 안 부품 규칙만 함께 쓴다.
+   A 에서 .cs-body 자리는 .cbody.cs-a>.cwrap 이다. 아래 규칙들이 :is(.cs-body,:where(.cs-a>.cwrap)) 로
+   두 자리를 함께 잡는다 — :where 로 감싸 A-1 쪽 특이도는 예전(.cs-body 하나)과 같다.
+   A 는 좌우 여백을 .cwrap 이 이미 쥐고 있어 --cs-m 을 0 으로 둔다 */
+.cbody.cs-a{--cs-m:0px;--cs-pad:88px;padding:0}
+@media(max-width:900px){.cbody.cs-a{--cs-pad:48px}}
+
 /* ② 본문 */
 .cs-body{flex:1 1 0;min-width:0}
-.cs-body>.cblock{padding:var(--cs-pad) var(--cs-m)}
-.cs-body>.cblock+.cblock{margin-top:0}
-.cs-body>*+*{border-top:1px solid var(--border-g)}
-.cs-body>.cblock>h2{font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock{padding:var(--cs-pad) var(--cs-m)}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock+.cblock{margin-top:0}
+:is(.cs-body,:where(.cs-a>.cwrap))>*+*{border-top:1px solid var(--border-g)}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>h2{font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
 /* 장 안의 세로 간격도 한 값(24)으로 — content-layout.css 는 부품마다 윗여백을 따로 들고 있어
    (.ccards 32 · .cboard 28 · .ccreed 24 …) 한 장 안에서 24 · 28 · 32 가 뒤섞여 있었다.
    2026-09-15 에 제목 밑 첫 부품만 24 로 맞췄던 것을, 2026-09-16 에 형제 전부로 넓힌다.
    이 틀을 쓰는 열한 장에만 건다 — 위 히어로 없는 A 쪽 .cbody 는 예전 값 그대로다 */
-.cs-body>.cblock>*+*{margin-top:24px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>*+*{margin-top:24px}
 /* 장 제목(h2)과 바로 밑 본문은 한 덩어리다 — 형제 간격 24 의 반(12)으로 붙인다(2026-09-16).
    이사회 판은 제목 · 소개가 .hd 안에 따로 서 있어 그 간격(20)을 같은 비율로 10 으로 줄인다 */
-.cs-body>.cblock>h2+*{margin-top:12px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>h2+*{margin-top:12px}
 /* 화면에서 걷은 제목(.sr-only)은 자리를 차지하지 않는다 — 그 밑 간격까지 걷어야
    본문이 장 맨 위에서 시작한다 */
-.cs-body>.cblock>h2.sr-only+*{margin-top:0}
-.cs-body>.cgov-board .hd{gap:10px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>h2.sr-only+*{margin-top:0}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cgov-board .hd{gap:10px}
 /* 예외 ① 윗것에 딸린 꼬리말 — 표 밑 단위 · 그림 밑 설명 · 보낸 뒤 알림. 붙어 있어야 읽힌다 */
-.cs-body>.cblock>.cstock-foot,.cs-body>.cblock>.cframe-out,.cs-body>.cblock>.cform-msg{margin-top:12px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cstock-foot,:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cframe-out,:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cform-msg{margin-top:12px}
 /* 예외 ② 탭 칸(.cfin-panel)은 탭 줄 바로 밑에 붙어야 한다 — 탭의 밑줄이 그 칸의 머리선이다.
    칸 안의 첫 부품도 마찬가지다 : 게시판 표(.cboard)와 표 묶음은 제 윗여백을 들고 있어
    탭과 목록 사이가 28 씩 벌어졌다 (2026-09-18) */
-.cs-body>.cblock>.cfin-panel{margin-top:0}
-.cs-body>.cblock>.cfin-panel>:first-child{margin-top:0}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cfin-panel{margin-top:0}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cfin-panel>:first-child{margin-top:0}
 /* 게시판 표(.cboard)는 제 머리선으로 2px 짙은 선을 들고 있다 — 탭 밑에 붙으면
    탭의 회색 밑줄 위에 검은 줄이 덮여, 같은 탭인데 재무정보와 다른 꼴이 된다.
    탭이 그은 선이 곧 표의 머리선이므로 표 쪽 선을 걷는다 */
-.cs-body>.cblock>.cfin-panel>.cboard:first-child{border-top:0}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cfin-panel>.cboard:first-child{border-top:0}
 /* 단위 표기(.cfin-unit)만은 탭 줄에서 떨어져야 한다 — 붙여 두면 탭의 일부처럼 보인다.
    위를 넓게 · 아래를 좁게 주어 아래 자료(그림 · 표)의 머리로 읽히게 한다 (2026-09-18) */
-.cs-body>.cblock>.cfin-panel>.cfin-unit:first-child{margin-top:20px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cfin-panel>.cfin-unit:first-child{margin-top:20px}
 /* 예외 ③ 장 안의 작은 제목은 앞 부품과 떨어져야 새 묶음으로 읽힌다(content-layout 의 44 를 지킨다) */
-.cs-body>.cblock>h3{margin-top:44px}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock>h3{margin-top:44px}
 /* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
 .cs-body>[id]{scroll-margin-top:53px}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 
 /* 폭 상한 풀기 — 줄글 상자(.cdoc 900 등)의 상한이 본문 열보다 좁아 오른쪽만 비던 것을,
    예전 좁은 본문(.cbody--mid/--narrow)이 하던 대로 본문 열에 맡긴다. 표와 오른쪽 끝이 맞는다 */
-.cs-body .cdoc,.cs-body .ctoc,.cs-body .cnote,.cs-body .cdetails,.cs-body .cblock>.lead{max-width:none}
+:is(.cs-body,:where(.cs-a)) .cdoc,:is(.cs-body,:where(.cs-a)) .ctoc,:is(.cs-body,:where(.cs-a)) .cnote,:is(.cs-body,:where(.cs-a)) .cdetails,:is(.cs-body,:where(.cs-a)) .cblock>.lead{max-width:none}
 
 /* 판(.cblock--plate) — 원래는 그림자를 사방 100vmax 로 퍼뜨려 화면 폭을 칠한다. 이 틀에서는
    왼쪽으로 퍼진 판이 히어로를 덮으므로(clip-path 가 쌓임 맥락을 만들어 히어로 위에 그려진다)
    본문 열 안에서만 칠한다 */
-.cs-body>.cblock--plate{box-shadow:none;clip-path:none}
+:is(.cs-body,:where(.cs-a>.cwrap))>.cblock--plate{box-shadow:none;clip-path:none}
 
 /* 카드 — 테두리 · 둥근 모서리 없이 바탕색만으로 선다(2026-09-16). 격자 카드(.cgrid)는 부품 자체가
    이 틀 전용이라 content-layout.css 에서 직접 뺐고, A 와 함께 쓰는 두 부품은 여기서만 덮는다.
    연락처 줄(.cways)은 1px 틈 + 배경색으로 테두리를 흉내 내던 것을 풀고 .cgrid 와 같은 꼴(틈 16 ·
    회색 바탕 칸)로 세운다. 보도자료 카드(.cnews)는 테두리가 섬네일에만 있었다 */
-.cs-body .cways{gap:16px;background:none;border:0;border-radius:0;overflow:visible}
-.cs-body .cway{background:var(--secondary-bg)}
+:is(.cs-body,:where(.cs-a)) .cways{gap:16px;background:none;border:0;border-radius:0;overflow:visible}
+:is(.cs-body,:where(.cs-a)) .cway{background:var(--secondary-bg)}
 /* 이름과 값 사이도 격자 카드(.cgrid)와 같은 8 로 붙인다 — A 쪽 12 는 그대로 둔다 */
-.cs-body .cway .v{margin-top:8px}
-.cs-body .cnews .thumb{border:0;border-radius:0}
+:is(.cs-body,:where(.cs-a)) .cway .v{margin-top:8px}
+:is(.cs-body,:where(.cs-a)) .cnews .thumb{border:0;border-radius:0}
 /* 제보하기(.cform-submit, 내/외부 신고채널) — 검정 바탕을 브랜드 파랑으로(2026-09-18). 커서를 올리면
    채운 단추(.cbtn.fill)와 같은 짙은 남색으로 간다. A 는 검정 → 파랑 그대로다 */
-.cs-body .cform-submit{background:var(--brand)}
-.cs-body .cform-submit:hover{background:var(--point-900)}
+:is(.cs-body,:where(.cs-a)) .cform-submit{background:var(--brand)}
+:is(.cs-body,:where(.cs-a)) .cform-submit:hover{background:var(--point-900)}
 /* 접어 둔 전문(.cdetails, '… 펼쳐보기') — 테두리는 두고 모서리만 각지게 */
-.cs-body .cdetails{border-radius:0}
+:is(.cs-body,:where(.cs-a)) .cdetails{border-radius:0}
 
 /* 이사회 판(.cgov-board, 지배구조) — 원래 본문 상자 밖 화면 폭 판이다. 본문 열 안의 첫 장으로
    들어오면서 제목 · 소개를 카드 위로 올리고(좁은 화면 배치와 같다) 여백을 다른 장과 맞춘다 */
-.cs-body>.cgov-board{--gm:var(--cs-m);grid-template-columns:minmax(0,1fr);row-gap:24px;
+:is(.cs-body,:where(.cs-a>.cwrap))>.cgov-board{--gm:var(--cs-m);grid-template-columns:minmax(0,1fr);row-gap:24px;
   padding:var(--cs-pad) var(--cs-m);border-bottom:0}
 /* 사람 카드도 격자 카드(.cgrid)와 한 벌로 선다(2026-09-18) — 회색 바탕 · 안쪽 여백 · 카드 사이 16.
    약력 줄 수가 달라도(2 · 3 · 5) 세 장의 키를 맞춘다(stretch). 윗단의 위 여백 24 는 카드 안쪽
    여백이 대신하므로 걷고, 마지막 약력 줄의 밑선은 카드 가장자리와 겹쳐 걷는다 */
-.cs-body .cpeople{gap:16px;align-items:stretch}
-.cs-body .cperson{padding:clamp(24px,2.4vw,32px);background:var(--secondary-bg)}
-.cs-body .cperson .top{padding-top:0}
-.cs-body .cperson li:last-child{border-bottom:0}
+:is(.cs-body,:where(.cs-a)) .cpeople{gap:16px;align-items:stretch}
+:is(.cs-body,:where(.cs-a)) .cperson{padding:clamp(24px,2.4vw,32px);background:var(--secondary-bg)}
+:is(.cs-body,:where(.cs-a)) .cperson .top{padding-top:0}
+:is(.cs-body,:where(.cs-a)) .cperson li:last-child{border-bottom:0}
 
 /* 좁은 화면 — Figma 에 모바일 판이 없다. 히어로를 본문 위로 올려 붙박이를 풀고 여백을 줄인다 */
 @media(max-width:900px){
@@ -146,10 +154,10 @@
   .cs-hero-bg{object-position:var(--pos-m,10% 0)}
   .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
-  .cs-body>.cblock,.cs-body>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
+  :is(.cs-body,:where(.cs-a>.cwrap))>.cblock,:is(.cs-body,:where(.cs-a>.cwrap))>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
   /* 사람 카드는 안쪽 여백만큼 글 폭이 줄어 세 칸이면 약력이 줄마다 접힌다. 격자 카드는 여기서
      두 칸이 되지만 세 장을 2 + 1 로 나누면 한 장이 외톨이가 되어 곧장 한 칸으로 쌓는다 */
-  .cs-body .cpeople{grid-template-columns:minmax(0,1fr)}
+  :is(.cs-body,:where(.cs-a)) .cpeople{grid-template-columns:minmax(0,1fr)}
 }
 
 /* ── 규정 전문 팝업 (.cmodal) ────────────────────────────────────────────

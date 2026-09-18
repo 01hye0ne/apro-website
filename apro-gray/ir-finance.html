@@ -11,6 +11,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
      투자정보 > 재무정보
 
@@ -26,7 +27,10 @@
      갈지는 메가메뉴·전체메뉴·푸터가 이미 다 보여 주고 있고, 한 페이지를
      열었을 때는 그 한 장만 보이는 편이 낫다는 판단이다(2026-08-21 요청).
      A-1(ir-finance-a1.html)은 2026-09-15 부터 왼쪽 세로 히어로 틀(content-side.css)로 갈라져
-     손으로 고친다 — 이 파일을 고쳐도 A-1 로 넘어가지 않는다 -->
+     손으로 고친다 — 이 파일을 고쳐도 A-1 로 넘어가지 않는다.
+     2026-09-18 부터 본문(<main> 안)은 A-1 과 똑같다 — 장 · 탭 · 카드 · 규정 팝업을 A-1 에서 옮겨 왔고,
+     본문 규칙은 content-side.css 가 .cbody.cs-a 로 함께 잡는다. 히어로 · GNB · 본문 폭은 A 것 그대로다.
+     본문을 고치면 A-1 에도 같이 넣어야 한다 -->
 </head>
 <body>
 
@@ -62,168 +66,259 @@
 </section>
 
 <!-- ===================== 본문 ===================== -->
-<main class="cbody">
+<main class="cbody cs-a">
   <div class="cwrap">
-    <section class="cblock">
-      <h2>재무제표</h2>
-      <!-- 탭 넷이 표 한 자리를 나눠 쓴다. 재무상태표 두 탭에는 최근 3개년 막대그래프를
-           함께 얹는다 — 부채 위에 자본을 쌓으면 그 높이가 곧 자산총계다.
-           손익계산서에는 두지 않는다(위 CSS 의 .cchart 주석 참고) -->
-      <div class="cfin-tabs" role="tablist"><button type="button" data-fin="CONSOLIDATED_BALANCE" aria-current="true">연결 재무상태표</button><button type="button" data-fin="SEPARATE_BALANCE">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button></div>
-      <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE">
-        <p class="cfin-unit">(단위: 백만원)</p>
-        <div class="cchart" role="img" aria-label="연결 재무상태표 — 2025 자산총계 327,517, 부채총계 266,206, 자본총계 61,311">
-          <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
-          <div class="cchart-plot">
-          <div class="col">
-            <div class="track" style="--h:59.4%">
-              <p class="total">246,397</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:174139 1 0"><span>174,139</span></div>
-                <div class="seg seg-cap" style="flex:72258 1 0"><span>72,258</span></div>
-              </div>
+  <section class="cblock" id="statements">
+    <h2 class="sr-only">재무정보</h2>
+    <!-- 탭 넷이 표 한 자리를 나눠 쓴다. 재무상태표 두 탭에는 최근 3개년 막대그래프를
+         함께 얹는다 — 부채 위에 자본을 쌓으면 그 높이가 곧 자산총계다.
+         손익계산서에는 두지 않는다(위 CSS 의 .cchart 주석 참고) -->
+    <div class="cfin-tabs" role="tablist"><button type="button" data-fin="CONSOLIDATED_BALANCE" aria-current="true">연결 재무상태표</button><button type="button" data-fin="SEPARATE_BALANCE">별도 재무상태표</button><button type="button" data-fin="CONSOLIDATED_INCOME">연결 손익계산서</button><button type="button" data-fin="SEPARATE_INCOME">별도 손익계산서</button></div>
+    <div class="cfin-panel" data-fin="CONSOLIDATED_BALANCE">
+      <p class="cfin-unit">(단위: 백만원)</p>
+      <div class="cchart" role="img" aria-label="연결 재무상태표 — 2025 자산총계 327,517, 부채총계 266,206, 자본총계 61,311">
+        <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
+        <div class="cchart-plot">
+        <div class="col">
+          <div class="track" style="--h:59.4%">
+            <p class="total">246,397</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:174139 1 0"><span>174,139</span></div>
+              <div class="seg seg-cap" style="flex:72258 1 0"><span>72,258</span></div>
             </div>
-            <p class="yr">2023</p>
           </div>
-          <div class="col">
-            <div class="track" style="--h:100.0%">
-              <p class="total">414,653</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:341590 1 0"><span>341,590</span></div>
-                <div class="seg seg-cap" style="flex:73063 1 0"><span>73,063</span></div>
-              </div>
-            </div>
-            <p class="yr">2024</p>
-          </div>
-          <div class="col">
-            <div class="track" style="--h:79.0%">
-              <p class="total">327,517</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:266206 1 0"><span>266,206</span></div>
-                <div class="seg seg-cap" style="flex:61311 1 0"><span>61,311</span></div>
-              </div>
-            </div>
-            <p class="yr">2025</p>
-          </div>
-          </div>
+          <p class="yr">2023</p>
         </div>
-        <div class="ctable-wrap">
-          <table class="ctable">
-            <caption class="sr-only">연결 재무상태표</caption>
-            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
-            <tbody>
-              <tr><th scope="row">유동자산</th><td>134,492</td><td>252,354</td><td>174,767</td><td>104,082</td><td>73,666</td></tr>
-              <tr><th scope="row">비유동자산</th><td>193,025</td><td>162,299</td><td>71,630</td><td>36,172</td><td>26,463</td></tr>
-              <tr class="sum"><th scope="row">자산총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
-              <tr><th scope="row">유동부채</th><td>206,734</td><td>278,830</td><td>163,634</td><td>78,760</td><td>40,661</td></tr>
-              <tr><th scope="row">비유동부채</th><td>59,472</td><td>62,760</td><td>10,505</td><td>1,572</td><td>123</td></tr>
-              <tr class="sum"><th scope="row">부채총계</th><td>266,206</td><td>341,590</td><td>174,139</td><td>80,332</td><td>40,784</td></tr>
-              <tr class="sum"><th scope="row">자본총계</th><td>61,311</td><td>73,063</td><td>72,258</td><td>59,922</td><td>59,345</td></tr>
-              <tr class="sum"><th scope="row">자본과부채총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
-            </tbody>
-          </table>
+        <div class="col">
+          <div class="track" style="--h:100.0%">
+            <p class="total">414,653</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:341590 1 0"><span>341,590</span></div>
+              <div class="seg seg-cap" style="flex:73063 1 0"><span>73,063</span></div>
+            </div>
+          </div>
+          <p class="yr">2024</p>
+        </div>
+        <div class="col">
+          <div class="track" style="--h:79.0%">
+            <p class="total">327,517</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:266206 1 0"><span>266,206</span></div>
+              <div class="seg seg-cap" style="flex:61311 1 0"><span>61,311</span></div>
+            </div>
+          </div>
+          <p class="yr">2025</p>
+        </div>
         </div>
       </div>
-      <div class="cfin-panel" data-fin="SEPARATE_BALANCE" hidden>
-        <p class="cfin-unit">(단위: 백만원)</p>
-        <div class="cchart" role="img" aria-label="별도 재무상태표 — 2025 자산총계 278,081, 부채총계 190,137, 자본총계 87,944">
-          <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
-          <div class="cchart-plot">
-          <div class="col">
-            <div class="track" style="--h:66.2%">
-              <p class="total">237,001</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:156998 1 0"><span>156,998</span></div>
-                <div class="seg seg-cap" style="flex:80003 1 0"><span>80,003</span></div>
-              </div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <caption class="sr-only">연결 재무상태표</caption>
+          <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
+          <tbody>
+            <tr><th scope="row">유동자산</th><td>134,492</td><td>252,354</td><td>174,767</td><td>104,082</td><td>73,666</td></tr>
+            <tr><th scope="row">비유동자산</th><td>193,025</td><td>162,299</td><td>71,630</td><td>36,172</td><td>26,463</td></tr>
+            <tr class="sum"><th scope="row">자산총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
+            <tr><th scope="row">유동부채</th><td>206,734</td><td>278,830</td><td>163,634</td><td>78,760</td><td>40,661</td></tr>
+            <tr><th scope="row">비유동부채</th><td>59,472</td><td>62,760</td><td>10,505</td><td>1,572</td><td>123</td></tr>
+            <tr class="sum"><th scope="row">부채총계</th><td>266,206</td><td>341,590</td><td>174,139</td><td>80,332</td><td>40,784</td></tr>
+            <tr class="sum"><th scope="row">자본총계</th><td>61,311</td><td>73,063</td><td>72,258</td><td>59,922</td><td>59,345</td></tr>
+            <tr class="sum"><th scope="row">자본과부채총계</th><td>327,517</td><td>414,653</td><td>246,397</td><td>140,254</td><td>100,129</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cfin-panel" data-fin="SEPARATE_BALANCE" hidden>
+      <p class="cfin-unit">(단위: 백만원)</p>
+      <div class="cchart" role="img" aria-label="별도 재무상태표 — 2025 자산총계 278,081, 부채총계 190,137, 자본총계 87,944">
+        <p class="cchart-legend"><span class="l-debt">부채</span><span class="l-cap">자본</span></p>
+        <div class="cchart-plot">
+        <div class="col">
+          <div class="track" style="--h:66.2%">
+            <p class="total">237,001</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:156998 1 0"><span>156,998</span></div>
+              <div class="seg seg-cap" style="flex:80003 1 0"><span>80,003</span></div>
             </div>
-            <p class="yr">2023</p>
           </div>
-          <div class="col">
-            <div class="track" style="--h:100.0%">
-              <p class="total">357,921</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:269907 1 0"><span>269,907</span></div>
-                <div class="seg seg-cap" style="flex:88014 1 0"><span>88,014</span></div>
-              </div>
-            </div>
-            <p class="yr">2024</p>
-          </div>
-          <div class="col">
-            <div class="track" style="--h:77.7%">
-              <p class="total">278,081</p>
-              <div class="bar">
-                <div class="seg seg-debt" style="flex:190137 1 0"><span>190,137</span></div>
-                <div class="seg seg-cap" style="flex:87944 1 0"><span>87,944</span></div>
-              </div>
-            </div>
-            <p class="yr">2025</p>
-          </div>
-          </div>
+          <p class="yr">2023</p>
         </div>
-        <div class="ctable-wrap">
-          <table class="ctable">
-            <caption class="sr-only">별도 재무상태표</caption>
-            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
-            <tbody>
-              <tr><th scope="row">유동자산</th><td>134,187</td><td>246,847</td><td>175,687</td><td>102,744</td><td>68,792</td></tr>
-              <tr><th scope="row">비유동자산</th><td>143,894</td><td>111,074</td><td>61,314</td><td>40,137</td><td>29,889</td></tr>
-              <tr class="sum"><th scope="row">자산총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
-              <tr><th scope="row">유동부채</th><td>154,303</td><td>232,864</td><td>155,741</td><td>78,210</td><td>38,271</td></tr>
-              <tr><th scope="row">비유동부채</th><td>35,834</td><td>37,043</td><td>1,257</td><td>36</td><td>73</td></tr>
-              <tr class="sum"><th scope="row">부채총계</th><td>190,137</td><td>269,907</td><td>156,998</td><td>78,246</td><td>38,344</td></tr>
-              <tr class="sum"><th scope="row">자본총계</th><td>87,944</td><td>88,014</td><td>80,003</td><td>64,635</td><td>60,337</td></tr>
-              <tr class="sum"><th scope="row">자본과부채총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
-            </tbody>
-          </table>
+        <div class="col">
+          <div class="track" style="--h:100.0%">
+            <p class="total">357,921</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:269907 1 0"><span>269,907</span></div>
+              <div class="seg seg-cap" style="flex:88014 1 0"><span>88,014</span></div>
+            </div>
+          </div>
+          <p class="yr">2024</p>
+        </div>
+        <div class="col">
+          <div class="track" style="--h:77.7%">
+            <p class="total">278,081</p>
+            <div class="bar">
+              <div class="seg seg-debt" style="flex:190137 1 0"><span>190,137</span></div>
+              <div class="seg seg-cap" style="flex:87944 1 0"><span>87,944</span></div>
+            </div>
+          </div>
+          <p class="yr">2025</p>
+        </div>
         </div>
       </div>
-      <div class="cfin-panel" data-fin="CONSOLIDATED_INCOME" hidden>
-        <p class="cfin-unit">(단위: 백만원)</p>
-        <div class="ctable-wrap">
-          <table class="ctable">
-            <caption class="sr-only">연결 손익계산서</caption>
-            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
-            <tbody>
-              <tr class="sum"><th scope="row">매출액</th><td>147,080</td><td>200,156</td><td>235,952</td><td>79,393</td><td>61,532</td></tr>
-              <tr class="sum"><th scope="row">매출원가</th><td>124,195</td><td>168,493</td><td>196,928</td><td>66,472</td><td>54,869</td></tr>
-              <tr class="sum"><th scope="row">매출총이익</th><td>22,885</td><td>31,663</td><td>39,024</td><td>12,921</td><td>6,663</td></tr>
-              <tr class="sum"><th scope="row">판매비와관리비</th><td>28,719</td><td>28,302</td><td>23,510</td><td>15,435</td><td>11,490</td></tr>
-              <tr class="sum"><th scope="row">영업이익(손실)</th><td class="minus">(5,835)</td><td>3,361</td><td>15,514</td><td class="minus">(2,514)</td><td class="minus">(4,827)</td></tr>
-              <tr class="sum"><th scope="row">기타수익(비용)</th><td>1,829</td><td>860</td><td class="minus">(604)</td><td>76</td><td>268</td></tr>
-              <tr class="sum"><th scope="row">지분법손익</th><td>149</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-              <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">(4,345)</td><td class="minus">(1,988)</td><td class="minus">(620)</td><td class="minus">(108)</td><td>1,010</td></tr>
-              <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td class="minus">(8,202)</td><td>2,233</td><td>14,290</td><td class="minus">(2,546)</td><td class="minus">(3,549)</td></tr>
-              <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,551</td><td class="minus">(524)</td><td>2,222</td><td class="minus">(864)</td><td class="minus">(2,266)</td></tr>
-              <tr class="sum"><th scope="row">당기순이익(손실)</th><td class="minus">(10,753)</td><td>2,757</td><td>12,068</td><td class="minus">(1,682)</td><td class="minus">(1,283)</td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <caption class="sr-only">별도 재무상태표</caption>
+          <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
+          <tbody>
+            <tr><th scope="row">유동자산</th><td>134,187</td><td>246,847</td><td>175,687</td><td>102,744</td><td>68,792</td></tr>
+            <tr><th scope="row">비유동자산</th><td>143,894</td><td>111,074</td><td>61,314</td><td>40,137</td><td>29,889</td></tr>
+            <tr class="sum"><th scope="row">자산총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
+            <tr><th scope="row">유동부채</th><td>154,303</td><td>232,864</td><td>155,741</td><td>78,210</td><td>38,271</td></tr>
+            <tr><th scope="row">비유동부채</th><td>35,834</td><td>37,043</td><td>1,257</td><td>36</td><td>73</td></tr>
+            <tr class="sum"><th scope="row">부채총계</th><td>190,137</td><td>269,907</td><td>156,998</td><td>78,246</td><td>38,344</td></tr>
+            <tr class="sum"><th scope="row">자본총계</th><td>87,944</td><td>88,014</td><td>80,003</td><td>64,635</td><td>60,337</td></tr>
+            <tr class="sum"><th scope="row">자본과부채총계</th><td>278,081</td><td>357,921</td><td>237,001</td><td>142,881</td><td>98,681</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
-        <p class="cfin-unit">(단위: 백만원)</p>
-        <div class="ctable-wrap">
-          <table class="ctable">
-            <caption class="sr-only">별도 손익계산서</caption>
-            <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
-            <tbody>
-              <tr class="sum"><th scope="row">매출액</th><td>141,602</td><td>197,497</td><td>234,330</td><td>78,468</td><td>58,836</td></tr>
-              <tr class="sum"><th scope="row">매출원가</th><td>122,036</td><td>167,555</td><td>197,286</td><td>66,298</td><td>52,758</td></tr>
-              <tr class="sum"><th scope="row">매출총이익</th><td>19,566</td><td>29,942</td><td>37,044</td><td>12,170</td><td>6,078</td></tr>
-              <tr class="sum"><th scope="row">판매비와관리비</th><td>16,457</td><td>20,828</td><td>18,222</td><td>10,282</td><td>8,931</td></tr>
-              <tr class="sum"><th scope="row">영업이익(손실)</th><td>3,109</td><td>9,114</td><td>18,822</td><td>1,888</td><td class="minus">(2,853)</td></tr>
-              <tr class="sum"><th scope="row">기타수익(비용)</th><td>2,144</td><td>121</td><td class="minus">(1,949)</td><td>71</td><td>34</td></tr>
-              <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">(1,509)</td><td>440</td><td>501</td><td class="minus">(714)</td><td>1,027</td></tr>
-              <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td>3,744</td><td>9,675</td><td>17,374</td><td>1,245</td><td class="minus">(1,792)</td></tr>
-              <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,550</td><td class="minus">(524)</td><td>2,222</td><td class="minus">(883)</td><td class="minus">(2,151)</td></tr>
-              <tr class="sum"><th scope="row">당기순이익(손실)</th><td>1,194</td><td>10,199</td><td>15,152</td><td>2,128</td><td>359</td></tr>
-            </tbody>
-          </table>
-        </div>
+    </div>
+    <div class="cfin-panel" data-fin="CONSOLIDATED_INCOME" hidden>
+      <p class="cfin-unit">(단위: 백만원)</p>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <caption class="sr-only">연결 손익계산서</caption>
+          <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
+          <tbody>
+            <tr class="sum"><th scope="row">매출액</th><td>147,080</td><td>200,156</td><td>235,952</td><td>79,393</td><td>61,532</td></tr>
+            <tr class="sum"><th scope="row">매출원가</th><td>124,195</td><td>168,493</td><td>196,928</td><td>66,472</td><td>54,869</td></tr>
+            <tr class="sum"><th scope="row">매출총이익</th><td>22,885</td><td>31,663</td><td>39,024</td><td>12,921</td><td>6,663</td></tr>
+            <tr class="sum"><th scope="row">판매비와관리비</th><td>28,719</td><td>28,302</td><td>23,510</td><td>15,435</td><td>11,490</td></tr>
+            <tr class="sum"><th scope="row">영업이익(손실)</th><td class="minus">(5,835)</td><td>3,361</td><td>15,514</td><td class="minus">(2,514)</td><td class="minus">(4,827)</td></tr>
+            <tr class="sum"><th scope="row">기타수익(비용)</th><td>1,829</td><td>860</td><td class="minus">(604)</td><td>76</td><td>268</td></tr>
+            <tr class="sum"><th scope="row">지분법손익</th><td>149</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">(4,345)</td><td class="minus">(1,988)</td><td class="minus">(620)</td><td class="minus">(108)</td><td>1,010</td></tr>
+            <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td class="minus">(8,202)</td><td>2,233</td><td>14,290</td><td class="minus">(2,546)</td><td class="minus">(3,549)</td></tr>
+            <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,551</td><td class="minus">(524)</td><td>2,222</td><td class="minus">(864)</td><td class="minus">(2,266)</td></tr>
+            <tr class="sum"><th scope="row">당기순이익(손실)</th><td class="minus">(10,753)</td><td>2,757</td><td>12,068</td><td class="minus">(1,682)</td><td class="minus">(1,283)</td></tr>
+          </tbody>
+        </table>
       </div>
-    </section>
+    </div>
+    <div class="cfin-panel" data-fin="SEPARATE_INCOME" hidden>
+      <p class="cfin-unit">(단위: 백만원)</p>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <caption class="sr-only">별도 손익계산서</caption>
+          <thead><tr><th scope="col">계정과목</th><th scope="col">제 26 기<br /><small>(2025)</small></th><th scope="col">제 25 기<br /><small>(2024)</small></th><th scope="col">제 24 기<br /><small>(2023)</small></th><th scope="col">제 23 기<br /><small>(2022)</small></th><th scope="col">제 22 기<br /><small>(2021)</small></th></tr></thead>
+          <tbody>
+            <tr class="sum"><th scope="row">매출액</th><td>141,602</td><td>197,497</td><td>234,330</td><td>78,468</td><td>58,836</td></tr>
+            <tr class="sum"><th scope="row">매출원가</th><td>122,036</td><td>167,555</td><td>197,286</td><td>66,298</td><td>52,758</td></tr>
+            <tr class="sum"><th scope="row">매출총이익</th><td>19,566</td><td>29,942</td><td>37,044</td><td>12,170</td><td>6,078</td></tr>
+            <tr class="sum"><th scope="row">판매비와관리비</th><td>16,457</td><td>20,828</td><td>18,222</td><td>10,282</td><td>8,931</td></tr>
+            <tr class="sum"><th scope="row">영업이익(손실)</th><td>3,109</td><td>9,114</td><td>18,822</td><td>1,888</td><td class="minus">(2,853)</td></tr>
+            <tr class="sum"><th scope="row">기타수익(비용)</th><td>2,144</td><td>121</td><td class="minus">(1,949)</td><td>71</td><td>34</td></tr>
+            <tr class="sum"><th scope="row">금융수익(비용)</th><td class="minus">(1,509)</td><td>440</td><td>501</td><td class="minus">(714)</td><td>1,027</td></tr>
+            <tr class="sum"><th scope="row">법인세차감전순이익(비용)</th><td>3,744</td><td>9,675</td><td>17,374</td><td>1,245</td><td class="minus">(1,792)</td></tr>
+            <tr class="sum"><th scope="row">법인세비용(수익)</th><td>2,550</td><td class="minus">(524)</td><td>2,222</td><td class="minus">(883)</td><td class="minus">(2,151)</td></tr>
+            <tr class="sum"><th scope="row">당기순이익(손실)</th><td>1,194</td><td>10,199</td><td>15,152</td><td>2,128</td><td>359</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="cregul"><button type="button" class="cmodal-open" data-modal="m-acc">내부회계관리규정 전문 보기<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></button></p>
+  </section>
+  
   </div>
 </main>
+
+<!-- 내부회계관리규정 전문 — 내부규정 페이지를 걷으면서 이 장으로 옮겨 왔다(2026-09-18). 조문이 길어
+     장에 펼쳐 두는 대신 팝업으로 연다 -->
+<div class="cmodal" id="m-acc" role="dialog" aria-modal="true" aria-labelledby="m-acc-t" hidden>
+  <div class="cmodal-back" data-close></div>
+  <div class="cmodal-panel">
+    <div class="cmodal-hd">
+      <h2 id="m-acc-t">내부회계관리규정</h2>
+      <button type="button" class="cmodal-x" data-close aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+    </div>
+    <div class="cmodal-bd">
+    <nav class="ctoc" aria-label="규정 목차">
+      <p>목차</p>
+      <ol><li><a href="#acc-ch1">제1장 총칙</a></li><li><a href="#acc-ch2">제2장 회계정보의 관리</a></li><li><a href="#acc-ch3">제3장 내부회계관리제도 관련 임직원의 업무 및 교육 등</a></li><li><a href="#acc-ch5">제5장 내부회계관리제도 평가 및 보고</a></li><li><a href="#acc-ch6">제6장 규정 위반시 조치사항 등</a></li><li><a href="#acc-ch7">제7장 보칙</a></li><li><a href="#acc-sec">부칙</a></li></ol>
+    </nav>
+
+    <div class="cdoc">
+    <h3 id="acc-ch1">제1장 총칙</h3>
+    <h4>제1조(목적)</h4>
+    <p>이 규정은 「주식회사 등의 외부감사에 관한 법률(이하 '법'이라 한다)」 제8조 및 동법 시행령(이하 '영'이라 한다) 제9조, 외부감사 및 회계 등에 관한 규정(이하 ‘외감규정'이라 한다) 제6조가 정하는 바에 따라 회사의 내부회계관리제도(이하 '내부회계관리제도’라 한다)를 설계/운영/평가/보고하는데 필요한 정책과 절차를 정하여 합리적이고 효과적인 내부회계관리제도를 설계/운영함으로써 재무제표 신뢰성을 제고하는데 필요한 사항을 정함을 목적으로 한다.</p>
+    <h4>제2조 (적용범위)</h4>
+    <ol><li>내부회계관리제도에 관한 사항은 법령 또는 정관에 정하여진 것 이외에는 이 규정이 정하는 바에 의한다.</li><li>연결재무제표에 관한 회계정보를 작성 공시하기 위하여 필요한 사항에 관하여는 이 규정을 적용한다.</li></ol>
+    <h4>제3조 (용어의 정의)</h4>
+    <p>이 규정에서 사용하고 있는 용어의 정의는 다음과 같다.</p>
+    <ol><li>‘내부회계관리제도’라 함은 내부회계관리의 목적을 달성하기 위하여 회사의 재무제표가 일반적으로 인정되는 회계처리기준에 따라 작성/공시되었는지 여부에 대한 합리적 확신을 제공하기 위해 설계/운영되는 내부통제제도로서, 이 규정과 이를 관리 운영하는 조직을 포함한 모든 조직 구성원들에 의해 지속적으로 실행되는 과정을 말한다.</li><li>‘내부회계관리자’라 함은 법 제8조 제3항에 따라 내부회계관리제도의 관리 및 운영을 책임지는 자로서 대표이사에 의해 지정된 자를 말한다.</li><li>‘내부회계관리제도 평가'라 함은 일정기간동안 내부회계관리제도의 설계와 운영이 효과적인지를 확인하는 절차로서 대표이사의 내부회계관리제도의 효과성 점검절차 및 감사(위원회)의 내부 회계관리제도 운영실태 평가절차를 포함한다.</li><li>‘감사인’이라 함은 법 제2조 제7호 가목에 따른 회계법인을 말한다.</li></ol>
+    <h3 id="acc-ch2">제2장 회계정보의 관리</h3>
+    <h4>제4조 (회계정보처리의 일반원칙)</h4>
+    <ol><li>회사는 내부회계관리제도에 의하지 아니하고 회계정보를 작성하거나 내부회계관리제도에 따라 작성된 회계정보를 위조, 변조, 훼손 및 파기해서는 아니된다.</li><li>회계정보의 식별, 측정, 분류, 기록 및 보고 등 회계처리에 관 하여는 법 제5조 제1항에서 정하는 회계처리기준에 따른다.</li></ol>
+    <h4>제5조 (회계정보의 식별, 측정, 분류, 기록 및 보고)</h4>
+    <ol><li>회계정보에 대한 식별 측정 분류 보고 등 회계처리방법 및 회계기록에 관한 사항은 제4조의 일반원칙에 따라 처리하되 다음 각 호의 요건을 충족하여야 한다.<ol><li>재무상태표에 기록되어 있는 자산, 부채 및 자본은 보고기간 종료일 현재 실제로 존재하여야 한다.</li><li>재무상태표에 표시된 자산은 회사의 소유이며, 부채는 회사가 변제하여야 할 채무이어야 한다.</li><li>거래나 사건은 회계기간 동안에 실제로 발생한 것이어야 한다.</li><li>재무제표에 기록되지 않은 자산, 부채, 거래나 사건 혹은 공시되지 않은 항목이 없어야 한다.</li><li>재무제표상의 자산, 부채, 자본, 수익과 비용 항목은 제4조의 일반원칙에 따라 적정한 금액으로 표시되어야 한다.</li><li>회계 거래나 사건은 적절한 금액으로 재무제표에 기록되어야 하며, 수익이나 비용은 발생주의 원칙에 따라 적절한 회계기간에 배분되어야 한다.</li><li>재무제표의 구성항목은 제4조의 일반원칙에 따라 분류, 기술 및 공시되어야 한다.</li></ol></li><li>회사의 모든 회계정보는 원본서류 등과 함께 전표(전산시설을 포함)에 기록하여야 한다.</li><li>내부회계관리제도에 의하여 작성된 회계정보는 정기적으로 내부회계관리자에게 보고되어야 한다.</li></ol>
+    <h4>제6조 (회계정보의 오류통제, 수정 및 내부검증)</h4>
+    <p>회사와 감사(위원회)는 회계정보를 처리하는 과정에서 오류가 발생하지 않도록 회사의 회계정보가 제4조 및 제5조에 따라 작성되었는지 여부를 제17조에 의한 점검 및 제18조에 의한 평가를 통해 확인한다.</p>
+    <h4>제7조 (회계기록의 관리 및 보존)</h4>
+    <p>전표, 회계보조부, 회계장부 등 모든 회계기록은 다음 각호와 같은 요령으로 관리, 보존하여야 한다.</p>
+    <ol><li>회계장부는 보조원장, 총계정원장 등의 회계보조장부와 재무제표로 구성되며, 동 장부는 실물 및 전산으로 관리한다.</li><li>실물 회계장부는 회계부서가 지정하는 문서창고에 보관하며, 열람 및 이관/폐기 등의 관리는 회계부서의 통제 하에 수행한다. 또한, 전산 회계장부는 전산운영시스템에 의한 전산장치에 보관하며, 권한 있는 자에 한해 접근 및 수정을 허용하고, 그 기록을 보관한다.</li><li>회사는 내부회계관리제도에 의하지 아니하고 회계정보를 작성하거나 내부회계관리제도에 의해 작성된 회계정보를 위조, 변조, 훼손 및 파기하거나 그러한 행위를 지시하여서는 아니된다.</li><li>회사는 회계정보의 위조, 변조, 훼손 및 파기를 방지하기 위한 보안절차, 접근통제절차 등 필요한 절차를 수립하여 운영하여야 한다.</li></ol>
+    <h3 id="acc-ch3">제3장 내부회계관리제도 관련 임직원의 업무 및 교육 등</h3>
+    <h4>제8조 (업무분장 및 책임)</h4>
+    <p>회사는 신뢰할 수 있는 회계정보의 작성/공시를 담당하는 부서 임직원의 업무를 적절히 분장하고, 권한과 책임을 규정하여야 한다.</p>
+    <h4>제9조 (대표이사)</h4>
+    <ol><li>대표이사는 내부회계관리제도의 관리/운영을 책임지고, 이에 필요한 제반 사항을 지원한다.</li><li>대표이사는 제10조의2에 따라 내부회계관리자를 지정한다.</li><li>대표이사는 제17조에 따라 내부회계관리제도 운영실태를 점검하고 보고한다. 단, 대표이사가 필요하다고 판단하는 경우 이사회 및 감사(위원회)에 대한 보고는 내부회계관리자에게 위임할 수 있다.</li><li>대표이사는 제3항 단서에 따라 내부회계관리자에게 보고를 위임하고자 하는 경우 보고 전에 그 사유를 이사회 및 감사(위원회)에 문서로 제출하여야 한다.</li><li>대표이사는 제11조 제4항에 따른 감사(위원회)의 요청 또는 감사인의 요청이 있을 경우 지체 없이 따라야 한다. 다만, 특별한 사유가 존재할 경우 당해 요청을 거부할 수 있으며, 이 경우 해당 사유를 감사(위원회) 또는 감사인에게 문서로 제출한다.</li></ol>
+    <h4>제10조 (내부회계관리자)</h4>
+    <ol><li>내부회계관리자는 내부회계관리제도의 설계 및 운영을 총괄하고 이에 필요한 제반 사항을 지원한다.</li><li>내부회계관리자는 내부회계관리제도 설계 및 운영의 효과성을 점검한다.</li><li>내부회계관리자는 제9조 제3항 단서에 따라 이사회 및 감사(위원회)에 내부회계관리제도 운영실태를 보고한다.</li></ol>
+    <h4>제10조의2 (내부회계관리자의 자격요건과 임면절차)</h4>
+    <ol><li>내부회계관리자는 다음 각 호의 요건을 모두 갖추어야 한다.<ol><li>회계 또는 내부통제에 관해 전문성을 갖출 것</li><li>상근이사일 것</li></ol></li><li>제1항에도 불구하고 제1항 제2호의 요건을 충족하는 자가 없는 경우 제2호는 ‘해당 이사의 업무를 집행하는 자’로 보아 이를 적용한다.</li><li>대표이사는 인사발령 등의 사유로 내부회계관리제도 관련 업무의 수행이 불가능하거나 부적합하다고 판단하는 경우 내부회계관리자를 다시 지정한다.</li><li>내부회계관리자의 임면절차는 인사관리규정 등 관련규정을 따른다.</li></ol>
+    <h4>제11조 (감사 또는 감사위원회)</h4>
+    <ol><li>감사(위원회)는 제18조에 따라 내부회계관리제도 운영실태를 평가하고 보고한다.</li><li>감사(위원회)는 회사의 회계처리 위반사실을 감사인으로부터 통보받은 경우 외부전문가를 선임하여 위반사실 등을 조사하고, 그 결과에 따라 대표이사에게 위반내용의 시정 등을 요구한다.</li><li>감사(위원회)는 제1항에 따른 조사결과 및 제2항에 따른 회사의 시정조치 결과 등을 즉시 증권선물위원회와 감사인에게 제출한다.</li><li>감사(위원회)는 제1항 내지 제3항의 직무를 수행할 때 대표이사에게 필요한 자료, 정보 및 비용의 제공을 문서로 요청할 수 있다.</li><li>감사(위원회)는 이사의 직무수행에 관하여 부정행위 또는 법령이나 정관에 위반되는 중대한 사실을 발견하면 감사인에게 통보한다.</li></ol>
+    <h4>제12조 (교육계획의 수립 및 실시 등)</h4>
+    <ol><li>회사는 대표이사, 내부회계관리자, 감사(위원회) 및 회계정보를 작성, 공시하는 임직원(이하 ‘대표이사 등’이라 한다)을 대상으로 내부회계관리제도 관련 법령 및 이 규정에서 정하는 사항 등의 이해에 필요한 교육계획을 수립하고, 필요한 교육을 실시한다.</li><li>회사는 제1항에 따른 교육의 성과평가를 실시하며, 그 결과는 차기 사업연도 교육계획에 반영한다.</li><li>제2항의 평가결과는 제13조 제1항에서 정한 보상정책과 연계하여 운영할 수 있다.</li></ol>
+    <h4>제13조 (감사 평가결과와 보상정책의 연계)</h4>
+    <ol><li>회사는 제18조에 따른 감사(위원회)의 평가결과를 대표이사 등의 인사/보수 및 차기 사업연도 내부회계관리제도 운영계획 수립에 반영한다.</li><li>제1항을 적용하기 위한 세부적인 사항은 대표이사가 정하는 별도의 규정에 따른다.</li></ol>
+    <h3 id="acc-ch5">제5장 내부회계관리제도 평가 및 보고</h3>
+    <h4>제16조 (내부회계관리제도 평가 및 보고의 준거기준)</h4>
+    <p>대표이사, 내부회계관리자 및 감사(위원회)는 영위원회에서 발표한 '내부회계관리제도 평가 및 보고 모범규준(이하 ‘모범규준’이라 한다)'에 따라 제17조에 따른 점검 및 제18조에 따른 평가를 수행한다.</p>
+    <h4>제17조 (대표이사의 운영실태 평가보고의 기준 및 절차)</h4>
+    <ol><li>회사는 내부회계관리제도의 효과성을 점검하기 위한 객관적인 성과지표를 마련한다.</li><li>대표이사는 사업연도마다 내부회계관리제도의 효과성에 대한 점검을 수행하고, 주주총회, 이사회 및 감사(위원회)에 보고한다.</li><li>대표이사는 제2항에 따라 이사회 및 감사(위원회)에 점검결과를 보고할 경우 문서(이하 ‘내부회계관리제도 운영실태보고서’라 한다)로 작성하여 대면(對面) 보고하여야 한다.</li><li>제2항에 따른 점검, 보고의 세부 기준 및 절차는 다음 각 호를 고려하여 정한다.<ol><li>내부회계관리제도가 회사에 적합한 형태로 설계/운영될 것</li><li>신뢰할 수 있는 회계정보의 작성과 공시를 저해하는 위험을 예방하거나 적시에 발견하여 조치할 수 있는 상시적/정기적인 점검체계를 갖출 것</li><li>제1항에 따른 성과지표</li><li>대표이사가 제3호에 따른 성과지표 및 내부회계관리제도에 취약사항이 있는지에 대한 점검결과 등을 고려하여 회사의 내부회계관리제도가 효과적인지에 대한 의견을 제시할 것</li><li>내부회계관리제도 대하여 감리를 받은 경우 그 감리에 따른 시정조치 계획을 내부회계 관리제도 시정조치 계획에 반영할 것</li><li>운영실태점검 계획의 수립</li><li>운영실태점검 수행</li><li>미비점 평가 및 개선방안 수립</li><li>운영실태보고</li></ol></li><li>제2항에 따른 점검, 보고는 다음의 각 호의 절차에 따른다.</li></ol>
+    <h4>제18조 (감사의 운영실태 평가/보고의 기준 및 절차)</h4>
+    <ol><li>감사(위원회)는 제17조 제3항에 따른 내부회계관리제도의 운영실태보고서를 평가하고, 그 평가결과를 문서(이하 ‘내부회계관리제도 평가보고서’라 한다)로 작성하여 이사회에 사업연도마다 보고한다. 이 경우 내부회계관리제도의 관리/운영에 대하여 시정 의견이 있으면 그 의견을 포함하여 보고한다.</li><li>제1항에 따른 평가를 위해 감사(위원회)는 대면(對面)회의를 개최하여야 한다.</li><li>감사(위원회)는 정기총회 개최 1주 전까지 내부회계관리제도 평가보고서를 이사회에 대면(對面) 보고하여야 한다.</li><li>제1항에 따른 평가, 보고의 세부 기준 및 절차는 다음 각 호를 고려하여 정한다.<ol><li>경영진 및 회사 경영에 사실상 영향력을 미칠 수 있는 자가 회계정보의 작성/공시 과정에 부당하게 개입할 수 없도록 내부회계관리제도가 설계 및 운영되는지를 평가할 것</li><li>내부회계관리규정이 실질적으로 운영되는지를 평가할 것</li><li>대표이사가 내부회계관리제도 운영실태보고서 작성에 관한 기준 및 절차를 준수하는지를 평가할 것</li></ol></li></ol>
+    <h4>제19조 (평가보고서 비치)</h4>
+    <p>감사(위원회)는 내부회계관리제도 평가보고서를 본점에 5년간 비치한다.</p>
+    <h4>제20조 (평가결과 공시)</h4>
+    <ol><li>대표이사 및 내부회계관리자는 「자본시장과 금융투자업에 관한 법률」 제159조에 따라 제출하는 사업보고서에 다음 각 호의 사항을 기재한 서류(이하 ‘내부회계관리제도 운영보고서’라 한다)를 첨부하여야 한다.<ol><li>법 제8조제1항에 따른 내부회계관리규정과 이를 관리/운영하는 조직 및 인력에 관한 사항</li><li>법 제8조제6항에 따른 감사인의 검토의견 또는 감사의견</li><li>내부회계관리제도 운영실태보고서</li><li>내부회계관리제도 평가보고서</li></ol></li><li>제1항의 사업보고서에 첨부할 내부회계관리제도 운영보고서는 '외부감사 및 회계 등에 관한 규정 시행세칙' 별지 제3호의 양식을 참조한다.</li></ol>
+    <h3 id="acc-ch6">제6장 규정 위반시 조치사항 등</h3>
+    <h4>제21조 (관련 규정 위반의 조치 등)</h4>
+    <p>다음 각 호의 사항을 포함하여 내부회계관리규정을 위반한 임직원의 징계에 관하여는 ‘상벌 규정’에서 정한 바를 따른다.</p>
+    <ol><li>규정에 위반한 회계정보를 작성하는 경우</li><li>회계정보를 위조, 변조, 훼손 및 파기하는 경우</li><li>규정에 위반한 내부회계관리제도를 설계/운영 및 평가/보고하는 경우</li><li>상기 각호를 지시하는 경우</li></ol>
+    <h4>제22조 (규정 위반에 대한 대처방안)</h4>
+    <ol><li>회사의 대표자 또는 기타 임직원이 이 규정을 위반하여 회계정보를 작성하게 하거나 공시할 것을 지시하는 경우 해당 임직원은 이를 내부회계관리자에게 서면 또는 구두로 보고한다.</li><li>내부회계관리규정 위반을 지시한 임직원 또는 회사는 회사의 임직원이 내부회계관리규정에 위반한 지시를 거부하더라도 그와 관련하여 불이익한 대우를 하지 않는다.</li><li>제1항을 적용함에 있어 다음 각 호에 해당하는 경우에는 감사(위원회)에 보고하거나 내부신고제도에 신고한다.<ol><li>내부회계관리자가 내부회계관리규정 위반을 지시하거나 그와 관련되어 있는 경우</li><li>제1항에 따라 보고하는 것이 부적절하다고 판단되는 경우</li><li>제2항에 불구하고 불이익한 대우를 하는 경우</li></ol></li><li>내부회계관리자가 제1항에 따라 보고를 받은 경우 또는 감사(위원회)가 제3항에 따라 보고를 받은 경우 내부회계관리자와 감사(위원회)는 보고 받은 내용을 검토하여 필요한 조치를 하고, 보고자의 신분 등에 관한 비밀을 유지한다.</li></ol>
+    <h4>제23조 (내부신고제도의 운영)</h4>
+    <ol><li>내부신고제도는 신고자의 신원을 보호하여야 하며, 신고와 관련하여 직접 또는 간접적인 방법으로 신고자 등에게 불이익한 대우를 해서는 아니된다.</li></ol>
+    <h3 id="acc-ch7">제7장 보칙</h3>
+    <h4>제24조 (규정의 제·개정 및 세부사항)</h4>
+    <ol><li>이 규정의 제정 및 개정은 감사(위원회)의 승인 및 이사회의 결의를 거쳐야 한다.</li><li>제1항에 불구하고 법령, 다른 규정 등의 변경 및 조직체계의 변경 등에 의한 단순한 자구수정 및 용어변경 등 경미한 내용은 이사회 및 감사(위원회) 사후 보고로 갈음할 수 있다.</li><li>감사(위원회)와 이사회는 제정 및 개정의 사유를 문서(전자문서 포함)로 작성·관리하여야 한다.</li><li>이 규정의 효율적인 운영을 위한 세부적인 사항은 이사회의 위임을 받아 대표이사가 정한다.</li></ol>
+    <h3 id="acc-sec">부칙</h3>
+    <h4>제1조 (시행일)</h4>
+    <p>이 규정은 2023년 회계연도부터 적용한다.</p>
+    <h4>제2조 (내부회계관리제도 설계운영 및 평가보고 준거 기준에 관한 적용례)</h4>
+    <p>제14조 및 제16조의 ‘개념체계’와 ‘모범규준’은 2023년 회계연도부터 적용한다.</p>
+    </div>
+
+    <div class="cnote">
+      <p><strong>원문에 제4장이 없습니다.</strong> 제3장 다음이 제5장이고,
+        제14조·제15조도 비어 있습니다. 기존 사이트도 같은 상태라 그대로 옮겼습니다 —
+        원본 규정을 확인해 보시는 편이 좋겠습니다.</p>
+    </div>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
@@ -335,42 +430,5 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
-<script>
-/* 재무제표 탭 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
-   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
-(function(){
-  var bar=document.querySelector('.cfin-tabs');if(!bar)return;
-  var tabs=[].slice.call(bar.querySelectorAll('button'));
-  var panels=[].slice.call(document.querySelectorAll('.cfin-panel'));
-  tabs.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var k=btn.getAttribute('data-fin');
-      tabs.forEach(function(b){
-        if(b===btn){b.setAttribute('aria-current','true');}else{b.removeAttribute('aria-current');}
-      });
-      panels.forEach(function(p){p.hidden=(p.getAttribute('data-fin')!==k);});
-    });
-  });
-})();
-</script>
-<script>
-/* 재무제표 4종 전환 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
-   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
-(function(){
-  var tabs = [].slice.call(document.querySelectorAll('.cfin-tabs button'));
-  var panels = [].slice.call(document.querySelectorAll('.cfin-panel'));
-  if(!tabs.length){ return; }
-  tabs.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var k = btn.getAttribute('data-fin');
-      tabs.forEach(function(b){
-        if(b === btn){ b.setAttribute('aria-current','true'); }
-        else { b.removeAttribute('aria-current'); }
-      });
-      panels.forEach(function(p){ p.hidden = (p.getAttribute('data-fin') !== k); });
-    });
-  });
-})();
-</script>
 </body>
 </html>
