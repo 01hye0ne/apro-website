@@ -415,8 +415,17 @@
      비율도 시안 프레임 1440:655 로 맞춘다(예전 1124:607 은 좁게 들어가 있던 판의 것이라,
      폭을 화면만큼 넓히면 높이가 770 까지 자란다) */
   .co-apro{padding-inline:0}
-  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
-                display:flex;padding:88px 44px 44px;background:var(--g900)}
+  .co-apro .fig{--apro-seam-k:1;position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
+                display:flex;padding:calc(48px + 120px * var(--apro-seam-k)) 44px 44px;background:var(--g900)}
+  /* 윗변 이음매 — 홈 비즈니스 → Who we are 이음매(index-a1 .hm-who::before)와 같은 흰 줄무늬 띠.
+     위 흰 바탕이 밤하늘을 파고든다 : 맨 위는 꽉 찬 흰색, 아래로 흰 줄 30 개(4px 간격)가 가늘고 옅어진다
+     (굵기 (1 - i/30)^0.75 · 불투명도 (1 - i/30)^0.8). 줄 밑에 흰색이 옅어지는 바탕을 한 겹 깐다.
+     위 여백은 [띠 120 + 48](88 → 168)이라 문구가 띠에 닿지 않는다 — 늘어난 자리는 빈 밤하늘이다.
+     좁은 화면은 --apro-seam-k .5 로 띠를 반(60)으로 누르고 위 여백은 60 + 16 이다. */
+  .co-apro .fig::before{content:"";position:absolute;left:0;right:0;top:0;z-index:1;height:120px;pointer-events:none;
+                  transform-origin:0 0;transform:scaleY(var(--apro-seam-k));
+                  background:0 0/100% 120px no-repeat linear-gradient(to bottom,rgba(255,255,255,1.0) 0px,rgba(255,255,255,1.0) 4.0px,transparent 4.0px,transparent 4px,rgba(255,255,255,0.973) 4px,rgba(255,255,255,0.973) 7.9px,transparent 7.9px,transparent 8px,rgba(255,255,255,0.946) 8px,rgba(255,255,255,0.946) 11.8px,transparent 11.8px,transparent 12px,rgba(255,255,255,0.919) 12px,rgba(255,255,255,0.919) 15.7px,transparent 15.7px,transparent 16px,rgba(255,255,255,0.892) 16px,rgba(255,255,255,0.892) 19.59px,transparent 19.59px,transparent 20px,rgba(255,255,255,0.864) 20px,rgba(255,255,255,0.864) 23.49px,transparent 23.49px,transparent 24px,rgba(255,255,255,0.837) 24px,rgba(255,255,255,0.837) 27.38px,transparent 27.38px,transparent 28px,rgba(255,255,255,0.809) 28px,rgba(255,255,255,0.809) 31.28px,transparent 31.28px,transparent 32px,rgba(255,255,255,0.78) 32px,rgba(255,255,255,0.78) 35.17px,transparent 35.17px,transparent 36px,rgba(255,255,255,0.752) 36px,rgba(255,255,255,0.752) 39.06px,transparent 39.06px,transparent 40px,rgba(255,255,255,0.723) 40px,rgba(255,255,255,0.723) 42.95px,transparent 42.95px,transparent 44px,rgba(255,255,255,0.694) 44px,rgba(255,255,255,0.694) 46.84px,transparent 46.84px,transparent 48px,rgba(255,255,255,0.665) 48px,rgba(255,255,255,0.665) 50.73px,transparent 50.73px,transparent 52px,rgba(255,255,255,0.635) 52px,rgba(255,255,255,0.635) 54.61px,transparent 54.61px,transparent 56px,rgba(255,255,255,0.605) 56px,rgba(255,255,255,0.605) 58.5px,transparent 58.5px,transparent 60px,rgba(255,255,255,0.574) 60px,rgba(255,255,255,0.574) 62.38px,transparent 62.38px,transparent 64px,rgba(255,255,255,0.544) 64px,rgba(255,255,255,0.544) 66.26px,transparent 66.26px,transparent 68px,rgba(255,255,255,0.512) 68px,rgba(255,255,255,0.512) 70.14px,transparent 70.14px,transparent 72px,rgba(255,255,255,0.48) 72px,rgba(255,255,255,0.48) 74.01px,transparent 74.01px,transparent 76px,rgba(255,255,255,0.448) 76px,rgba(255,255,255,0.448) 77.88px,transparent 77.88px,transparent 80px,rgba(255,255,255,0.415) 80px,rgba(255,255,255,0.415) 81.75px,transparent 81.75px,transparent 84px,rgba(255,255,255,0.382) 84px,rgba(255,255,255,0.382) 85.62px,transparent 85.62px,transparent 88px,rgba(255,255,255,0.347) 88px,rgba(255,255,255,0.347) 89.48px,transparent 89.48px,transparent 92px,rgba(255,255,255,0.312) 92px,rgba(255,255,255,0.312) 93.34px,transparent 93.34px,transparent 96px,rgba(255,255,255,0.276) 96px,rgba(255,255,255,0.276) 97.2px,transparent 97.2px,transparent 100px,rgba(255,255,255,0.238) 100px,rgba(255,255,255,0.238) 101.04px,transparent 101.04px,transparent 104px,rgba(255,255,255,0.2) 104px,rgba(255,255,255,0.2) 104.88px,transparent 104.88px,transparent 108px,rgba(255,255,255,0.158) 108px,rgba(255,255,255,0.158) 108.71px,transparent 108.71px,transparent 112px,rgba(255,255,255,0.115) 112px,rgba(255,255,255,0.115) 112.52px,transparent 112.52px,transparent 116px,rgba(255,255,255,0.066) 116px,rgba(255,255,255,0.066) 116.5px,transparent 116.5px,transparent 120px),
+                    linear-gradient(to bottom,rgba(255,255,255,.92),rgba(255,255,255,.62) 35%,rgba(255,255,255,.24) 70%,rgba(255,255,255,0))}
   /* 사진은 16:9 인데 판은 1440:655 라 세로 155 가 잘린다 — 아래를 붙들어 사옥 발치의
      'A-PRO 글로벌 센터' 간판까지 담는다(시안이 그렇게 잘라 두었다). 위로 잘리는 것은
      빈 밤하늘뿐이다 */
@@ -456,7 +465,7 @@
     .co-val:nth-child(odd){margin-left:var(--co-m)}
     .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
     .co-val h3{font-size:var(--fs-h1)}
-    .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:16px}
+    .co-apro .fig{--apro-seam-k:.5;aspect-ratio:auto;min-height:480px;padding:calc(16px + 120px * var(--apro-seam-k)) 16px 16px}
     .co-apro .fig>img{object-position:70% 50%}
     /* 좁은 화면은 문구가 사옥 위에 얹혀 묻힌다 — 아래에서만 짙어지는 막을 깐다 */
     .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
