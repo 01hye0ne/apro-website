@@ -93,8 +93,8 @@
    회색 바탕 칸)로 세운다. 보도자료 카드(.cnews)는 테두리가 섬네일에만 있었다 */
 .cs-body .cways{gap:16px;background:none;border:0;border-radius:0;overflow:visible}
 .cs-body .cway{background:var(--secondary-bg)}
-/* 이름과 값 사이도 격자 카드(.cgrid)와 같은 16 으로 벌린다 — A 쪽 12 는 그대로 둔다 */
-.cs-body .cway .v{margin-top:16px}
+/* 이름과 값 사이도 격자 카드(.cgrid)와 같은 8 로 붙인다 — A 쪽 12 는 그대로 둔다 */
+.cs-body .cway .v{margin-top:8px}
 .cs-body .cnews .thumb{border:0;border-radius:0}
 /* 접어 둔 전문(.cdetails, '… 펼쳐보기') — 테두리는 두고 모서리만 각지게 */
 .cs-body .cdetails{border-radius:0}
