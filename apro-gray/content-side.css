@@ -69,18 +69,7 @@
 .cs-body>.cblock{padding:var(--cs-pad) var(--cs-m)}
 .cs-body>.cblock+.cblock{margin-top:0}
 .cs-body>*+*{border-top:1px solid var(--border-g)}
-/* 장 머리 — 제목만 있는 장과, 제목 오른쪽에 딸린 단추가 서는 장(.chd)이 있다.
-   둘의 제목 크기 · 제목 밑 간격은 같아야 하므로 규칙을 나란히 적는다 */
-.cs-body>.cblock>h2,.cs-body>.cblock>.chd>h2{font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
-/* 규정 전문 단추는 장 이름 오른쪽 끝에 선다 — 장에 딸린 자료지 장의 내용이 아니라
-   본문 흐름의 맨 끝보다 머리에 두는 편이 찾기 쉽다 (2026-09-18).
-   좁아지면 단추가 제목 아래로 내려온다(wrap) */
-/* 장 이름은 화면에서 걷었다(히어로의 페이지 이름과 같은 말이다) — .sr-only 가 된
-   제목은 흐름에서 빠지므로 줄에는 단추만 남아 오른쪽 끝에 선다 (2026-09-18) */
-.cs-body>.cblock>.chd{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;
-  column-gap:24px;row-gap:12px}
-.cs-body>.cblock>.chd>h2{margin:0}
-.cs-body>.cblock>.chd>.cregul{margin:0}
+.cs-body>.cblock>h2{font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
 /* 장 안의 세로 간격도 한 값(24)으로 — content-layout.css 는 부품마다 윗여백을 따로 들고 있어
    (.ccards 32 · .cboard 28 · .ccreed 24 …) 한 장 안에서 24 · 28 · 32 가 뒤섞여 있었다.
    2026-09-15 에 제목 밑 첫 부품만 24 로 맞췄던 것을, 2026-09-16 에 형제 전부로 넓힌다.
@@ -88,12 +77,18 @@
 .cs-body>.cblock>*+*{margin-top:24px}
 /* 장 제목(h2)과 바로 밑 본문은 한 덩어리다 — 형제 간격 24 의 반(12)으로 붙인다(2026-09-16).
    이사회 판은 제목 · 소개가 .hd 안에 따로 서 있어 그 간격(20)을 같은 비율로 10 으로 줄인다 */
-.cs-body>.cblock>h2+*,.cs-body>.cblock>.chd+*{margin-top:12px}
+.cs-body>.cblock>h2+*{margin-top:12px}
+/* 화면에서 걷은 제목(.sr-only)은 자리를 차지하지 않는다 — 그 밑 간격까지 걷어야
+   본문이 장 맨 위에서 시작한다 */
+.cs-body>.cblock>h2.sr-only+*{margin-top:0}
 .cs-body>.cgov-board .hd{gap:10px}
 /* 예외 ① 윗것에 딸린 꼬리말 — 표 밑 단위 · 그림 밑 설명 · 보낸 뒤 알림. 붙어 있어야 읽힌다 */
 .cs-body>.cblock>.cstock-foot,.cs-body>.cblock>.cframe-out,.cs-body>.cblock>.cform-msg{margin-top:12px}
-/* 예외 ② 재무 표(.cfin-panel)는 탭 줄 바로 밑에 붙어야 한다 — 탭의 밑줄이 표의 머리선이다 */
+/* 예외 ② 탭 칸(.cfin-panel)은 탭 줄 바로 밑에 붙어야 한다 — 탭의 밑줄이 그 칸의 머리선이다.
+   칸 안의 첫 부품도 마찬가지다 : 게시판 표(.cboard)와 표 묶음은 제 윗여백을 들고 있어
+   탭과 목록 사이가 28 씩 벌어졌다 (2026-09-18) */
 .cs-body>.cblock>.cfin-panel{margin-top:0}
+.cs-body>.cblock>.cfin-panel>:first-child{margin-top:0}
 /* 예외 ③ 장 안의 작은 제목은 앞 부품과 떨어져야 새 묶음으로 읽힌다(content-layout 의 44 를 지킨다) */
 .cs-body>.cblock>h3{margin-top:44px}
 /* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
