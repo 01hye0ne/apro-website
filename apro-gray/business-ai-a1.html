@@ -467,6 +467,10 @@
   .sf-ph img{transform:scale(var(--zoom,1.04));transform-origin:50% 50%;
              will-change:transform;backface-visibility:hidden}
   @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
+  /* 화면 캡처(.is-ui)는 잘리면 안 되는 양옆 패널이 있어 칸에 통째로 담는다(contain).
+     남는 위아래 자리는 캡처 바탕색(#070a10)으로 채워 한 장으로 읽힌다 */
+  .sf-ph.is-ui{background:#070a10}
+  .sf-ph.is-ui img{object-fit:contain}
 
   /* 오른쪽 글 기둥은 한 장씩 끊기지 않고 이어 흐른다 — 지금 장 바로 밑에 다음
      장이 붙어 있고, 지금 장만 진하고 앞뒤는 옅게 남는다.
@@ -1038,7 +1042,7 @@
       <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
       <div class="sf-figstack">
         <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/industrial-safety-diagnostics.jpg" alt="이차전지 설비 앞을 도는 바퀴형 안전 진단 로봇" decoding="async" /></figure>
-        <figure class="sf-ph" data-for="sf01-2"><span>도표 or 이미지</span></figure>
+        <figure class="sf-ph has-img is-ui" data-for="sf01-2"><img src="../assets/aprism-robot-ops-ui.jpg" alt="로봇 통합 운영 플랫폼 APRISM 관제 화면 — 3D 현장 지도 위 로봇 위치와 미션 진행 목록" decoding="async" /></figure>
         <figure class="sf-ph has-panes" data-for="sf02-1">
           <div class="sf-cnt is-on" role="tabpanel" id="ev-dash" aria-labelledby="ev-dash-t" tabindex="0">
             <div class="shot"><img src="../assets/ev-safety-dashboard.png" alt="배터리 셀 안전 분류 결과를 표와 히트맵으로 보여 주는 대시보드 화면" decoding="async" /></div>
