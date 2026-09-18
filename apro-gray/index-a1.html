@@ -497,9 +497,9 @@
   .hm-arrows svg{display:block;width:24px;height:24px}
 
   /* ── Who we are — 핵심역량 네 판, 계단 배치 · 유리 판 (Figma 1338:8490, 2026-09-18 갱신) ─────────
-     회사소개 AAA 전략(.co-val)의 두 겹 판을 하늘 사진 위에 계단처럼 쌓는다. 판은 위와 [붙지 않은 옆]에만
-     흰 20% 선이 있고, 바깥 판 모서리 60 · 그 안 20 들어간 안쪽 판 모서리 40 이다.
-     안쪽 판은 유리다 — 뒤 사진을 5px 흐리고, 위 흰 10% 에서 아래 0 으로 옅어진다.
+     회사소개 AAA 전략(.co-val)의 판을 하늘 사진 위에 계단처럼 쌓는다. 바깥 판은 위와 [붙지 않은 옆]에만
+     흰 20% 선이 있고 모서리 60, 그 안 20 들어간 안쪽 판은 모서리 40 이다.
+     선은 바깥 판 한 겹뿐이고, 안쪽 판은 선 없이 뒤 사진을 5px 흐린다. 글 기둥은 모두 503 이다.
      2 번째 판만 왼쪽에(폭 960/1440), 1 · 3 · 4 번째 판은 오른쪽에(729 · 729 · 1232) 붙고 틈 없이 이어진다.
      글은 모두 왼쪽 정렬이고, 1 · 3 번째 판의 글은 화면 오른쪽 절반(776/1440)에,
      2 · 4 번째 판의 글은 한 세로줄(273/1440)에 선다. 제목 'Who we are' 는 격자 마진(44)에 서고
@@ -507,11 +507,12 @@
      자리는 섹션 폭 기준(cqw)으로 잡아 화면이 줄어도 시안 비율 그대로 따라온다.
      한 판은 [이름 → 영문 · 국문 한 줄(밑선으로 닫는다)] 아래 줄글 목록이다 — 첫 판의 목록은 머리말이 굵다.
      바탕 사진은 높이에 맞춰 덮고 가로 34% 자리를 붙든다(바다 · 수평선이 판 아래쪽에 온다).
-     앞 시안: 가운데 정렬 gray/home-who-center · 앞 계단 gray/home-who-stair · 한 줄의 길 gray/home-who-path */
+     앞 시안: 가운데 정렬 gray/home-who-center · 앞 계단 gray/home-who-stair · 한 줄의 길 gray/home-who-path ·
+     두 겹 유리 판 gray/home-who-glass */
   /* 키는 네 판이 정한다 — 장 공통의 한 화면 높이(min-height)를 풀어, 화면이 판보다 길어도
      마지막 판 아래에 빈 바탕이 늘어나지 않게 한다 */
   .hm-who{--who-line:rgba(255,255,255,.2);--who-x:18.96cqw;container-type:inline-size;
-          justify-content:flex-start;gap:0;padding:120px 0 0;min-height:0;
+          justify-content:flex-start;gap:0;padding:240px 0 0;min-height:0;
           background:var(--brand-2) url(../assets/blue-sky-horizon.jpg) 34% 0/cover no-repeat;
           border-bottom-color:var(--brand-2);color:#fff}
   .hm-who .hm-ttl{padding-left:var(--hm-m);color:#fff}
@@ -520,9 +521,8 @@
   .hm-wv{margin-left:auto}
   .hm-wv .out{border-top:1px solid var(--who-line);border-left:1px solid var(--who-line);
               border-top-left-radius:60px;padding:20px 0 0 20px}
-  .hm-wv .in{border-top:1px solid var(--who-line);border-left:1px solid var(--who-line);
-             border-top-left-radius:40px;padding:88px 19.31cqw 88px 44px;
-             background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,0));
+  /* 안쪽 판은 선 없이 뒤 사진만 5px 흐린다(2026-09-18 갱신 — 두 겹 선 · 흰 기울기를 걷었다) */
+  .hm-wv .in{border-top-left-radius:40px;padding:88px 11.11cqw 88px 44px;
              -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
   .hm-wv:nth-child(1),.hm-wv:nth-child(3){width:50.63cqw}
   .hm-wv:nth-child(4){width:85.56cqw}
@@ -532,12 +532,12 @@
   .hm-wv:nth-child(2){width:66.67cqw;margin-left:0}
   .hm-wv:nth-child(2) .out{border-left:0;border-right:1px solid var(--who-line);
               border-radius:0 60px 0 0;padding:20px 20px 0 0}
-  .hm-wv:nth-child(2) .in{border-left:0;border-right:1px solid var(--who-line);
-              border-radius:0 40px 0 0;padding:88px 44px 88px var(--who-x)}
-  .hm-wv .body{display:flex;flex-direction:column;gap:28px}
-  /* 2 · 4 번째 판은 글 기둥이 378 로 좁고, 이름 밑선은 그보다 짧은 323 까지다(시안 그대로) */
-  .hm-wv:nth-child(2n) .body{max-width:378px}
-  .hm-wv:nth-child(2n) .hd{width:85.45%}
+  .hm-wv:nth-child(2) .in{border-radius:0 40px 0 0;padding:88px 44px 88px var(--who-x)}
+  /* 글 기둥은 네 판 모두 503 — 2 번째 판만 이름 밑선이 그보다 짧은 323 까지다(시안 그대로) */
+  .hm-wv .body{display:flex;flex-direction:column;gap:28px;max-width:503px}
+  .hm-wv:nth-child(2) .hd{width:64.2%}
+  /* 3 번째 판의 두 문단은 한 덩어리로 붙인다(시안 2) */
+  .hm-wv:nth-child(3) ul{gap:2px}
   .hm-wv .hd{display:flex;flex-direction:column;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--who-line)}
   .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-head);
             letter-spacing:var(--ls)}
@@ -634,8 +634,8 @@
     .hm-wv:nth-child(n){width:92%}
     .hm-wv:nth-child(n) .in{padding:56px var(--hm-m) 56px 24px}
     .hm-wv:nth-child(2) .in{padding:56px 24px 56px var(--hm-m)}
-    .hm-wv:nth-child(2n) .body{max-width:none}
-    .hm-wv:nth-child(2n) .hd{width:auto}
+    .hm-wv .body{max-width:none}
+    .hm-wv:nth-child(2) .hd{width:auto}
     .hm-wv h3{font-size:var(--fs-h1)}
     .hm-ncards{grid-template-columns:1fr}
     /* 좁은 화면은 날짜를 제목 아래로 내리고, 오른쪽엔 화살표만 남긴다. 제목은 두 줄까지 */
