@@ -560,7 +560,10 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .ctable tr.sum td{background:rgba(44,87,144,.05);font-weight:800}
 .ctable tr.sum td:first-child{background:rgba(44,87,144,.05)}
 /* 음수는 붉게 — 영업손실·당기순손실이 한눈에 갈린다 */
-.ctable td.minus{color:#c0392b}
+/* 음수는 괄호로 적는다(회계 관례) — 붉은 글씨로 세우던 것을 본문과 같은 검정으로
+   되돌린다. 표 한 장에 스물다섯 칸이 붉으면 손실난 해가 아니라 표가 경고처럼 보였다.
+   괄호는 글자이므로 마크업에 적혀 있다(ctable td.minus 는 이제 자리 표시만 한다) */
+.ctable td.minus{color:var(--g900)}
 .ctable-unit{margin-top:10px;text-align:right;font-family:var(--suit);font-size:var(--fs-meta);
   letter-spacing:var(--ls);color:var(--teritary)}
 
@@ -570,7 +573,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
    "지금 보고 있는 표"가 탭 줄에서 바로 읽힌다.
    밑줄은 box-shadow 로 그린다 : border-bottom 을 쓰면 활성 칸만 1px 높아져
    줄 전체가 흔들린다(inset 이라 칸 안쪽에 그려져 자리를 차지하지 않는다) */
-.cfin-tabs{margin-top:28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+/* 칸 수는 쓰는 쪽이 --tabs 로 알린다 — 재무정보는 표 넷(기본값), 공시정보는 둘이다 */
+.cfin-tabs{margin-top:28px;display:grid;grid-template-columns:repeat(var(--tabs,4),minmax(0,1fr));
   border-bottom:1px solid var(--border-g)}
 .cfin-tabs button{padding:16px 12px;border:0;background:none;
   font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--teritary);
@@ -654,9 +658,16 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   background-image:repeating-linear-gradient(to top,var(--border-g) 0 1px,transparent 1px 60px);
   pointer-events:none}
 .cchart .col{position:relative;flex:1 1 0;max-width:180px;text-align:center}
-.cchart .total{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+/* 자산총계는 막대 꼭대기 바로 위에 붙는다 — 칸 맨 위에 두면 막대가 짧은 해일수록
+   숫자와 막대가 멀어져 어느 막대의 값인지 눈으로 잇기 어려웠다 (2026-09-18).
+   막대 높이(--h)는 이제 칸(.track)이 들고 있고, 막대는 그 값을 물려받는다 —
+   숫자를 그 높이에 맞춰 띄우려면 같은 값을 두 곳에서 읽어야 하기 때문이다.
+   위 여백 37 은 예전에 [숫자 27 + 사이 10]이 차지하던 자리다. 그대로 두면
+   100% 막대의 숫자가 눈금 띠 위로 넘친다 */
+.cchart .total{position:absolute;left:0;right:0;bottom:var(--h);margin-bottom:8px;
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
   letter-spacing:var(--ls-num);color:var(--g900);font-variant-numeric:tabular-nums}
-.cchart .track{margin-top:10px;height:240px;display:flex;flex-direction:column;
+.cchart .track{position:relative;margin-top:37px;height:240px;display:flex;flex-direction:column;
   justify-content:flex-end}
 .cchart .bar{width:100%;height:var(--h);display:flex;flex-direction:column;overflow:hidden}
 .cchart .seg{display:grid;place-items:center;min-height:0;
