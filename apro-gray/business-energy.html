@@ -574,9 +574,11 @@
        칸 나누는 방식(타일 반복)과 칸 수는 위 규칙 값을 그대로 쓴다 */
     .bnav-wrap:not(.is-fixed) .bnav-tabs::after{top:16px;bottom:2px;
       --bnav-line:rgba(255,255,255,.2);
-      background-image:linear-gradient(var(--bnav-line),var(--bnav-line));
-      background-size:1px 100%;
-      background-position:calc((100% + 1px) * 1 / 2) 0;
+      background-image:linear-gradient(var(--bnav-line),var(--bnav-line)),
+        linear-gradient(var(--bnav-line),var(--bnav-line));
+      background-size:1px 100%,1px 100%;
+      background-position:calc((100% + 1px) * 1 / 3) 0,
+        calc((100% + 1px) * 2 / 3) 0;
       background-repeat:no-repeat}
     /* 글자 — 유리 위라 흰 계열. 홈과 같은 값(600 / 흰 72%, 활성·호버는 흰색) */
     .bnav-wrap:not(.is-fixed) .bnav-tabs a,
