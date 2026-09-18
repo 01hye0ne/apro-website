@@ -986,3 +986,36 @@
   else if(wide.addListener) wide.addListener(sync);
   sync();
 })();
+
+/* 규정 전문 팝업 (.cmodal) — 투자정보 두 장(재무정보 · 공시정보)이 쓴다.
+   여는 단추는 [data-modal="팝업 id"], 닫는 것은 판 안의 [data-close](× 단추와 뒷막)다.
+   전체 메뉴(.navover)와 같은 방식으로 문서 스크롤을 잠그고 Esc 로 닫는다 */
+(function(){
+  var opens=[].slice.call(document.querySelectorAll('[data-modal]'));
+  if(!opens.length)return;
+  var back=null;
+  function close(m){
+    m.hidden=true;
+    document.documentElement.style.overflow='';
+    if(back){back.focus();back=null;}
+  }
+  function open(m,btn){
+    back=btn; m.hidden=false;
+    document.documentElement.style.overflow='hidden';
+    var bd=m.querySelector('.cmodal-bd'); if(bd)bd.scrollTop=0;
+    var x=m.querySelector('.cmodal-x'); if(x)x.focus();
+  }
+  opens.forEach(function(b){
+    var m=document.getElementById(b.getAttribute('data-modal'));
+    if(!m)return;
+    b.addEventListener('click',function(){open(m,b);});
+    [].slice.call(m.querySelectorAll('[data-close]')).forEach(function(x){
+      x.addEventListener('click',function(){close(m);});
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    var m=document.querySelector('.cmodal:not([hidden])');
+    if(m)close(m);
+  });
+})();
