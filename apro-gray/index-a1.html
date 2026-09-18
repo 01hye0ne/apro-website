@@ -497,37 +497,39 @@
   .hm-arrows svg{display:block;width:24px;height:24px}
 
   /* ── Who we are — 핵심역량 네 판 (Figma 1337:8243) ─────────────────────────
-     회사소개 AAA 전략(.co-val)의 두 겹 판 짜임을 파랑 바탕에 옮겼다. 판은 위와 [화면 안쪽 옆]에만
+     회사소개 AAA 전략(.co-val)의 두 겹 판 짜임을 하늘 사진 위에 옮겼다. 판은 위와 [화면 안쪽 옆]에만
      흰 20% 선이 있고, 바깥 판 모서리 60 · 그 안 20 들어간 안쪽 판 모서리 40 이다.
-     1 · 3 번째 판은 왼쪽에 붙고(폭 934/1440) 글은 판 오른쪽 절반에, 2 · 4 번째 판은 오른쪽에
-     붙고(981/1440) 글은 판 왼쪽 절반에 선다. 판끼리는 틈 없이 이어져 선이 지그재그로 내려간다.
-     회사소개와 달리 번호 · 사진 · 선 그리기 동작은 없다.
-     한 판은 [이름 → 영문 · 국문 한 줄(밑선으로 닫는다)] 아래 점 목록이다 */
-  .hm-who{--who-line:rgba(255,255,255,.2);justify-content:flex-start;gap:96px;
-          padding:120px 0 0;background:var(--brand-2);border-bottom-color:var(--brand-2);color:#fff}
-  .hm-who .hm-ttl{padding-inline:var(--hm-m);color:#fff}
+     네 판 모두 폭 1002/1440 이고 1 · 3 번째는 왼쪽, 2 · 4 번째는 오른쪽에 붙는다. 글은 판의
+     화면 안쪽 절반에 서고, 제목부터 목록까지 모두 가운데 정렬이다(2026-09-18, 점 목록 → 가운데 줄글).
+     판끼리는 틈 없이 이어져 선이 지그재그로 내려간다. 회사소개와 달리 번호 · 사진 · 선 그리기 동작은 없다.
+     한 판은 [이름 → 영문 · 국문 한 줄(밑선으로 닫는다)] 아래 줄글 목록이다.
+     바탕 사진은 시안처럼 높이에 맞춰 덮고 가로 34% 자리를 붙든다(바다 · 수평선이 판 아래쪽에 온다) */
+  /* 키는 네 판이 정한다 — 장 공통의 한 화면 높이(min-height)를 풀어, 화면이 판보다 길어도
+     마지막 판 아래에 빈 바탕이 늘어나지 않게 한다 */
+  .hm-who{--who-line:rgba(255,255,255,.2);justify-content:flex-start;gap:96px;padding:120px 0 0;min-height:0;
+          background:var(--brand-2) url(../assets/blue-sky-horizon.jpg) 34% 0/cover no-repeat;
+          border-bottom-color:var(--brand-2);color:#fff}
+  .hm-who .hm-ttl{padding-inline:var(--hm-m);color:#fff;text-align:center}
   .hm-who-list{list-style:none;display:flex;flex-direction:column}
-  .hm-wv{width:64.86%}
-  .hm-wv:nth-child(even){width:68.125%;margin-left:auto}
+  .hm-wv{width:69.58%}
+  .hm-wv:nth-child(even){margin-left:auto}
   .hm-wv .out{border-top:1px solid var(--who-line);border-right:1px solid var(--who-line);
               border-top-right-radius:60px;padding:20px 20px 0 0}
   .hm-wv .in{border-top:1px solid var(--who-line);border-right:1px solid var(--who-line);
-             border-top-right-radius:40px;padding:88px 44px 88px 54.87%;
-             display:flex;flex-direction:column;gap:28px}
+             border-top-right-radius:40px;padding:88px 44px 88px 51.07%;
+             display:flex;flex-direction:column;gap:28px;text-align:center}
   .hm-wv:nth-child(even) .out{border-right:0;border-left:1px solid var(--who-line);
               border-radius:60px 0 0 0;padding:20px 0 0 20px}
   .hm-wv:nth-child(even) .in{border-right:0;border-left:1px solid var(--who-line);
-              border-radius:40px 0 0 0;padding:88px 52.19% 88px 44px}
+              border-radius:40px 0 0 0;padding:88px 51.07% 88px 44px}
   .hm-wv .hd{display:flex;flex-direction:column;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--who-line)}
   .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-head);
             letter-spacing:var(--ls)}
   .hm-wv .msg{display:flex;flex-direction:column;gap:12px;font-family:var(--suit);font-weight:600;
               font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls)}
   .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:20px}
-  .hm-wv li{display:flex;gap:8px;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
+  .hm-wv li{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
             line-height:var(--lh-body);letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
-  /* 점은 첫 줄 글자 높이 가운데에 선다 */
-  .hm-wv li::before{content:"";flex:0 0 4px;height:4px;margin-top:calc((var(--lh-body) * 1em - 4px) / 2);background:#fff}
 
   /* ── News — 최근 보도자료 세 건 ─────────────────────────────────────────── */
   .hm-news{gap:28px}
@@ -583,7 +585,7 @@
     .hm-track{--fold:calc(100cqi * .125)}
     /* 판 폭이 줄면 글 기둥이 너무 좁아진다 — 글이 서는 절반을 넓힌다 */
     .hm-wv .in{padding-left:36%}
-    .hm-wv:nth-child(even) .in{padding-right:32%}
+    .hm-wv:nth-child(even) .in{padding-right:36%}
   }
   @media(max-width:900px){
     :root{--hm-m:16px;--hm-pad:128px}
