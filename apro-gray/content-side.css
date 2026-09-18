@@ -89,6 +89,10 @@
    탭과 목록 사이가 28 씩 벌어졌다 (2026-09-18) */
 .cs-body>.cblock>.cfin-panel{margin-top:0}
 .cs-body>.cblock>.cfin-panel>:first-child{margin-top:0}
+/* 게시판 표(.cboard)는 제 머리선으로 2px 짙은 선을 들고 있다 — 탭 밑에 붙으면
+   탭의 회색 밑줄 위에 검은 줄이 덮여, 같은 탭인데 재무정보와 다른 꼴이 된다.
+   탭이 그은 선이 곧 표의 머리선이므로 표 쪽 선을 걷는다 */
+.cs-body>.cblock>.cfin-panel>.cboard:first-child{border-top:0}
 /* 예외 ③ 장 안의 작은 제목은 앞 부품과 떨어져야 새 묶음으로 읽힌다(content-layout 의 44 를 지킨다) */
 .cs-body>.cblock>h3{margin-top:44px}
 /* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
