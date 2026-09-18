@@ -601,7 +601,8 @@
                   font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
                   color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
   .hm-ncards a:hover .ttl{color:var(--brand)}
-  .hm-ncards .date{margin-top:auto;padding-top:12px;font-family:var(--suit);font-weight:400;
+  /* 날짜는 Aldrich — 숫자만 도는 자리는 한 글꼴로 맞춘다 */
+  .hm-ncards .date{margin-top:auto;padding-top:12px;font-family:var(--ald);font-weight:400;
                    font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
   /* 목록 — 한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 아래 선. 제목과 날짜 칸을 같은 폭으로
      나눠 날짜가 본문 가운데쯤에서 선다. 제목이 길면 한 줄에서 말줄임한다.
@@ -614,7 +615,7 @@
   .hm-nlist .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
                  font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
                  color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
-  .hm-nlist .date{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
+  .hm-nlist .date{font-family:var(--ald);font-weight:400;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);color:var(--teritary)}
   .hm-nlist .go{display:flex;align-items:center;gap:6px;font-family:var(--suit);font-weight:400;
                 font-size:var(--fs-body);line-height:var(--lh-body);color:var(--g900);white-space:nowrap}
   .hm-nlist .go svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}

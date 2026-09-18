@@ -1,4 +1,5 @@
 @import url("type-scale.css");
+@import url("https://fonts.googleapis.com/css2?family=Aldrich&display=swap");
 /* APRO 콘텐츠 페이지 공용 레이아웃
    투자정보 · 지속가능경영 · 커뮤니티 아래 아홉 페이지가 함께 쓴다.
 
@@ -1090,3 +1091,12 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
   .ccard,.cway{padding:24px}
   .cdoc h3{margin-top:40px}
 }
+
+/* =====================================================================
+   날짜 · 글 번호 · 쪽 번호는 Aldrich (2026-09-18)
+   숫자만 도는 자리라 홈 뉴스 · 회사소개 번호와 한 글꼴로 맞춘다. 자간은 각 자리의 것을 그대로 둔다.
+   글꼴은 맨 위 @import 가 부른다. 게시판 칸은 [번호 | 제목 | 날짜] 셋이라 제목 칸만 빼면 번호 · 날짜다.
+   파일 맨 끝에 두는 까닭 — .cnews .date 와 겨루는 무게가 같아 뒤에 있어야 이긴다
+   ===================================================================== */
+.cboard tbody td:not(.ttl),.cnews .date,.cpager button:not(.arw),.cpost-meta [data-f="date"]{
+  font-family:"Aldrich",var(--suit);font-weight:400}
