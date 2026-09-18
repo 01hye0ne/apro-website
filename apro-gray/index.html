@@ -206,7 +206,7 @@
      레이어 안에 들어오는 x)이 마침 4.1/24 이라 두 선의 끝이 y=--bh 에서 맞닿는다.
      유리의 실루엣(--floor-shape)은 건드리지 않는다 — 달라지는 건 선 한 겹의 길이뿐이다.
 
-     띠 농도는 판과 같은 5% 다. 한동안 순백이었다 — 다음 장(.v2who)이 흰 바탕이라 이 띠가
+     띠 농도는 판과 같은 5% 다. 한동안 순백이었다 — 다음 장(.v2bizsec)이 흰 바탕이라 이 띠가
      곧 그 장의 첫 줄이 되어 스크롤이 매끄럽게 이어졌다. 그런데 게이지가 면에서 선으로
      바뀌면서 흰 띠 위에 흰 선을 얹는 꼴이 됐고, 선이 눈금이 아니라 띠의 이음매처럼 보였다.
      유리로 내리면 밑단에서 밝은 것은 그 선 하나뿐이라 위계가 선다.
@@ -255,7 +255,7 @@
      양끝이 S커브로 닫힌 흰 패널 위에 탭 줄이 놓인다. 다만 여기서는 상단에 고정되지
      않고 히어로 안에만 머문다(스크롤하면 히어로와 같이 올라간다).
 
-     흰색이 맞는 이유 : 히어로 바로 뒤 장(.v2who)이 흰 바탕이라, 이 띠는 "본문이
+     흰색이 맞는 이유 : 히어로 바로 뒤 장(.v2bizsec)이 흰 바탕이라, 이 띠는 "본문이
      히어로 밑변까지 올라와 첫 줄을 내민 것"으로 읽힌다 — 세부 페이지에서 같은 부품이
      성립하는 것과 똑같은 이유다. 영상 프레임이 밝든 어둡든 글자가 늘 읽히는 건 덤.
 
@@ -355,7 +355,7 @@
   /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
      the sticky's scroll container and break the pin. Clipping is handled by .who-sticky instead. */
-  .v2who{height:600vh;background:#fff;position:relative;overflow:visible;z-index:1}   /* z-index:1 contains its high-z children so News (z:2) can slide over it; keyword → A-PRO morph → 5-business coverflow */
+  .v2who{height:400vh;background:#fff;position:relative;overflow:visible;z-index:1}   /* z-index:1 contains its high-z children so News (z:2) can slide over it; keyword cycle → A-PRO wordmark. 마지막 100vh 는 News 가 덮는다 */
   .who-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;transition:background .6s var(--ease)}
   .who-sticky[data-phase="3"]{background:#04070c}
   /* Layered composition rebuilt at the exact Figma frame (1280x586), scaled to the viewport.
@@ -429,15 +429,15 @@
   .who-sticky[data-phase="3"] .who-dots{color:#fff}
   .who-dots i.on{opacity:1;transform:scale(1.5)}
 
-  /* ===================== WHO + BUSINESS MERGED — one pinned section ===================== */
-  /* The Business coverflow lives INSIDE .who-sticky. .who-cards carries the .v2biz class so all the
-     Business card/UI styles below apply, and doubles as the biz-stage (centred 900px). The section runs:
-     keyword cycle → A-PRO "A" morph → the SAME cards become the coverflow and rotate. (No separate section.) */
-  .who-cards{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px;z-index:6;opacity:0;transition:opacity .45s var(--ease)}   /* -10px nudges the whole Business layer up; opacity fades in once tiles appear */
-  .who-cards.on{opacity:1}
-  .who-caret{position:absolute;z-index:0;pointer-events:none}              /* the "A"; below the cards so the rising centre card absorbs it */
+  /* ===================== BUSINESS (static 4 tiles) ===================== */
+  /* 홈 순서 : 히어로 → Business → who we are → News. 예전엔 who we are 핀 안에 들어 있어
+     A-PRO "A" 가 네 타일로 갈라지는 모핑으로 이어졌는데, 순서를 바꾸면서 모핑을 걷고 독립 장으로 뺐다.
+     높이·900px 무대는 핀 시절(.who-sticky 100vh/min 900 + .who-cards 900 중앙)과 같게 둬서
+     타일 자리가 그대로다 */
+  .v2bizsec{position:relative;height:100vh;min-height:900px;background:#fff;overflow:hidden}
+  .biz-stage{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px}   /* -10px nudges the whole Business layer up */
 
-  /* Business coverflow styles (scoped to .v2biz — which is now the .who-cards wrapper) */
+  /* Business coverflow styles (scoped to .v2biz — the .biz-stage wrapper) */
   /* background collage — full-width stage; card geometry is computed responsively in JS (24px gutters) */
   .v2biz .biz-collage{position:absolute;left:0;top:0;width:100%;height:900px;pointer-events:none;z-index:1}
   /* coverflow cards — one per business; they slide + resize between the 5 slots as the active business rotates.
@@ -451,8 +451,7 @@
   .v2biz .bcard[data-idx="03"] img{object-position:48% 62%}   /* 로고 아래 로봇 */
   .v2biz .bcard[data-idx="04"] img{object-position:52% 55%}   /* 웨이퍼를 든 인물 */
   /* step-top dissolve — each card's top edge melts into white via the scanline stripe pattern,
-     so the A-staircase steps read as dissolving stripes rather than hard edges. Height tunable via --stepfade.
-     Hidden during the A-PRO→carousel morph; fades in only once the carousel has settled (data-phase="biz"). */
+     so the A-staircase steps read as dissolving stripes rather than hard edges. Height tunable via --stepfade. */
   .v2biz .bcard::after{content:"";position:absolute;left:0;top:0;width:100%;height:var(--stepfade);z-index:2;pointer-events:none;
     opacity:0;transition:opacity .5s var(--ease);
     background:
@@ -473,11 +472,10 @@
      특이도를 올려 두면 순서와 무관하게 이 규칙이 이긴다 */
   .v2biz.v2biz .biz-nav,.v2biz.v2biz .biz-body,.v2biz.v2biz .biz-lists{display:none}
   .v2biz .bcard{cursor:pointer;background:#d9d9d9}
-  /* 타일은 자리를 잡은 뒤(biz 단계)에만 클릭·호버를 받는다 — 모핑 중 네모에 호버가 걸리면 안 된다.
-     되살려 주는 게 반드시 필요하다: 코버플로우 시절 .biz-collage 는 장식 배경이라
-     pointer-events:none 이고 이 속성은 상속되므로, 그대로 두면 자리를 잡은 뒤에도 카드가
+  /* 되살려 주는 게 반드시 필요하다: 코버플로우 시절 .biz-collage 는 장식 배경이라
+     pointer-events:none 이고 이 속성은 상속되므로, 그대로 두면 카드가
      히트테스트에서 빠진다 — 호버가 아예 안 걸리고 상세 페이지 링크도 죽는다 */
-  .who-sticky[data-phase="biz"] .v2biz .biz-collage{pointer-events:auto}
+  .v2biz .biz-collage{pointer-events:auto}
   /* 톤 막 — 사업영역 페이지(business.html .pbg::after)의 5-stop 구조를 쓰되 값을 밝혔다.
      그 페이지는 호버해야 사진이 드러나므로 막이 진해도 되지만, 홈 타일은 사진이 늘 보여서
      같은 값(.82/.66/.34/.54/.90)이면 평상시가 너무 어둡다. 상단은 사업명칭이 흰 글자로
@@ -491,17 +489,10 @@
      타일이 좁아도 국문이 한 줄에 들어가도록 clamp 로 상한을 둔다(1440 기준 28px —
      상세 페이지 카드 제목 .hcard h3 24px 보다 한 단 크다). 영문은 상세 페이지의 보조
      라벨 관례(Roboto Condensed)를 따른다.
-     자체 그라디언트는 뺐다 — 위 톤 막이 이미 상단을 가장 진하게 덮는다.
-     모핑 중에는 감춘다 — 네모가 작을 때 28px 캡션이 박스를 넘치기 때문. 타일이 자리를
-     잡은 뒤(biz 단계) 떠오르며, 이 페이드가 "사업영역 4개가 나타나는" 마지막 박자다.
-     전환은 biz 규칙에만 달았다(들어올 때만 부드럽게, 나갈 때는 즉시): CSS 전환은 값이
-     바뀐 뒤의 상태에 적힌 transition 을 따르므로, biz 를 벗어나면 transition 이 없는
-     기본 상태가 되어 페이드 없이 사라진다 — 비즈니스 → who we are 로 되돌아갈 때
-     줄어드는 네모 안에서 글자가 남아 보이는 걸 막는다 */
+     자체 그라디언트는 뺐다 — 위 톤 막이 이미 상단을 가장 진하게 덮는다. */
   .v2biz .bcard .bcap{position:absolute;left:0;right:0;top:0;z-index:3;
     display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;
-    padding:70px 18px 22px;color:#fff;opacity:0}
-  .who-sticky[data-phase="biz"] .v2biz .bcard .bcap{opacity:1;transition:opacity .55s var(--ease) .1s}
+    padding:70px 18px 22px;color:#fff}
   .v2biz .bcap .bcap-ko{font-family:var(--suit);font-weight:800;font-size:clamp(22px,1.95vw,28px);line-height:1.26;letter-spacing:-.56px;word-break:keep-all}
   .v2biz .bcap .bcap-en{margin-top:5px;font-family:var(--rc);font-weight:400;font-size:12px;line-height:1.3;letter-spacing:.04em;color:rgba(255,255,255,.62)}
 
@@ -510,16 +501,12 @@
      4px 브랜드 닷 · 계열사 태그)과 열림 연출(opacity + translateY(10px) + max-height, .4s)이 같다.
      캡션(.bcap)이 아니라 카드의 직계 자식이어야 bottom 기준이 타일 밑변이 된다 —
      캡션은 상단에 고정된 박스라 그 안에 두면 bottom 이 캡션 밑변을 가리킨다.
-     타일은 <a> 하나라 행은 링크가 아니다(중첩 링크 금지) — 어디를 눌러도 상세 페이지로 간다.
-     캡션과 같은 이유로 열림 조건과 전환을 biz 단계에 묶었다: 호버한 채로 스크롤을 되돌리면
-     모핑 중에도 목록이 남아 보였다(줄어드는 네모 안에 글자가 삐져나온다). 이 단계 조건이
-     호버를 죽이지는 않는다 — 어차피 타일은 biz 에서만 pointer-events 가 살아 있다 */
+     타일은 <a> 하나라 행은 링크가 아니다(중첩 링크 금지) — 어디를 눌러도 상세 페이지로 간다. */
   .v2biz .bcard .bsub{position:absolute;z-index:3;left:27px;right:27px;bottom:27px;
     display:flex;flex-direction:column;gap:4px;pointer-events:none;
-    opacity:0;transform:translateY(10px);max-height:0;overflow:hidden}
-  .who-sticky[data-phase="biz"] .v2biz .bcard .bsub{
+    opacity:0;transform:translateY(10px);max-height:0;overflow:hidden;
     transition:opacity .4s var(--ease) .05s,transform .4s var(--ease) .05s,max-height .5s var(--ease)}
-  .who-sticky[data-phase="biz"] .v2biz .bcard:hover .bsub{opacity:1;transform:none;max-height:220px}
+  .v2biz .bcard:hover .bsub{opacity:1;transform:none;max-height:220px}
   .v2biz .bsub .li{height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;
     background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
   .v2biz .bsub .dot{width:4px;height:4px;border-radius:50%;background:var(--brand-2);flex-shrink:0;margin-right:4px}
@@ -529,16 +516,14 @@
     font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px}
   /* 호버 막 — 평상시 톤 막을 밝히면서 하단 대비를 여기로 넘겼다. 균일한 막이 아니라
      아래로 갈수록 진해지는 그라디언트라, 사진은 계속 보이면서 소분류가 앉는 하단만 어두워진다
-     (행 바탕이 .08 로 거의 투명해서 글자 대비는 이 막이 만든다).
-     소분류와 같이 켜지고 꺼져야 하므로 조건·전환도 같이 biz 단계에 묶는다 */
+     (행 바탕이 .08 로 거의 투명해서 글자 대비는 이 막이 만든다). */
   .v2biz .bcard::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;
-    background:linear-gradient(to bottom,rgba(9,14,20,.10) 0%,rgba(9,14,20,.22) 38%,rgba(11,17,24,.62) 62%,rgba(11,17,24,.86) 100%)}
-  .who-sticky[data-phase="biz"] .v2biz .bcard::before{transition:opacity .42s var(--ease)}
-  .who-sticky[data-phase="biz"] .v2biz .bcard:hover::before{opacity:1}
+    background:linear-gradient(to bottom,rgba(9,14,20,.10) 0%,rgba(9,14,20,.22) 38%,rgba(11,17,24,.62) 62%,rgba(11,17,24,.86) 100%);
+    transition:opacity .42s var(--ease)}
+  .v2biz .bcard:hover::before{opacity:1}
   @media (prefers-reduced-motion: reduce){
-    .who-sticky[data-phase="biz"] .v2biz .bcard .bcap,
-    .who-sticky[data-phase="biz"] .v2biz .bcard .bsub,
-    .who-sticky[data-phase="biz"] .v2biz .bcard::before{transition:none}
+    .v2biz .bcard .bsub,
+    .v2biz .bcard::before{transition:none}
     .v2biz .bcard .bsub{transform:none}
   }
 
@@ -632,7 +617,7 @@
 
   /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
   /* overflow:visible overrides .section{overflow:hidden} so the sticky pin isn't trapped */
-  /* margin-top:-100vh pulls News up so it slides over the last 100vh of the pinned Business section (sticky-reveal) */
+  /* margin-top:-100vh pulls News up so it slides over the last 100vh of the pinned who-we-are section (sticky-reveal) */
   .v2news{height:240vh;background:var(--secondary-bg);position:relative;overflow:visible;z-index:2;margin-top:-100vh}
   .news-sticky{position:sticky;top:0;height:100vh;min-height:820px;overflow:hidden;background:var(--secondary-bg)}
   /* left: fixed heading */
@@ -1008,6 +993,38 @@
     </div>
   </section>
 
+  <!-- ===================== BUSINESS (static 4 tiles) ===================== -->
+  <section class="section v2bizsec" id="bizSection">
+    <div class="biz-stage v2biz" id="bizStage">
+      <div class="biz-collage"><!-- cards injected by JS --></div>
+      <div class="biz-content">
+        <div class="biz-head">
+          <span class="ttl">Business</span>
+          <div class="biz-nav"><!-- 정적 4타일에서는 쓰지 않는다(CSS로 숨김). JS가 참조하므로 마크업만 남긴다 --></div>
+        </div>
+        <div class="biz-body">
+          <!-- corner pixels: frame the full Business content box (header-bar width) down to the image top -->
+          <div class="hframe"><i></i><i></i><i></i><i></i></div>
+          <div class="biz-center">
+            <div class="biz-hero">
+              <span class="biz-num"><!-- step counter, centred above the title -->
+                <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i></span></span>
+                <span class="tot">/04</span>
+              </span>
+              <div class="hero-main">
+                <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="hero-texts"><!-- active business title (JS) --></div>
+                <button class="ic" data-dir="1" aria-label="다음"><svg viewBox="0 0 24 24" fill="none"><path d="M10 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- sub-menu: absolutely overlaid on the centre image (positioned by JS) -->
+      <div class="biz-lists"><!-- active business sub-items (JS) --></div>
+    </div>
+  </section>
+
   <!-- ===================== WHO WE ARE (pinned scroll interaction) ===================== -->
   <section class="section v2who" id="whoSection">
     <div class="who-sticky" id="whoSticky" data-phase="0">
@@ -1033,40 +1050,6 @@
       <div class="who-eye"><p>who we are</p></div>
 
       <div class="who-dots"><i data-dot="0"></i><i data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i></div>
-
-      <!-- Business coverflow (merged in): hidden during keywords, revealed by the A-PRO morph, then rotates.
-           .v2biz class carries all the Business card/UI styling; #whoCards doubles as the biz-stage. -->
-      <div class="who-cards v2biz" id="whoCards">
-        <svg class="who-caret" id="whoCaret" viewBox="0 0 126 126" fill="none">
-          <path d="M65.1243 36.3482C64.7598 35.2421 64.0166 34.682 62.9089 34.682C61.9834 34.682 61.058 35.2421 60.8757 36.3482L35.2017 114H11L40.3758 24.7271C42.0304 17.5303 51.2708 11.9998 62.9089 11.9998C74.547 11.9998 83.9557 17.5303 85.6243 24.7271L115 114H90.7983L65.1243 36.3482Z" fill="#fff"/>
-        </svg>
-        <div class="biz-collage"><!-- cards injected by JS --></div>
-        <div class="biz-content">
-          <div class="biz-head">
-            <span class="ttl">Business</span>
-            <div class="biz-nav"><!-- 정적 4타일에서는 쓰지 않는다(CSS로 숨김). JS가 참조하므로 마크업만 남긴다 --></div>
-          </div>
-          <div class="biz-body">
-            <!-- corner pixels: frame the full Business content box (header-bar width) down to the image top -->
-            <div class="hframe"><i></i><i></i><i></i><i></i></div>
-            <div class="biz-center">
-              <div class="biz-hero">
-                <span class="biz-num"><!-- step counter, centred above the title -->
-                  <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i></span></span>
-                  <span class="tot">/04</span>
-                </span>
-                <div class="hero-main">
-                  <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                  <div class="hero-texts"><!-- active business title (JS) --></div>
-                  <button class="ic" data-dir="1" aria-label="다음"><svg viewBox="0 0 24 24" fill="none"><path d="M10 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- sub-menu: absolutely overlaid on the centre image (positioned by JS) -->
-        <div class="biz-lists"><!-- active business sub-items (JS) --></div>
-      </div>
     </div>
   </section>
 
@@ -1290,46 +1273,19 @@
     els.forEach(function(el){ io.observe(el); });
   })();
 
-  // who-we-are + Business MERGED into ONE pinned section. Progress p over the section:
-  //   [0,KW)   keyword cycle → A-PRO logo (the real s-apro)
-  //   [KW,MO)  the A-PRO "A" morphs into the 5 cards (they rise from the baseline)
-  //   [MO,1]   the SAME cards become the Business coverflow and rotate through the 5 businesses
+  // Business — static 4 tiles (links to the detail pages; sub-items open on hover).
+  // 예전엔 who we are 핀 안에서 A-PRO "A" 가 네 타일로 갈라지는 모핑으로 등장했는데,
+  // 홈 순서를 Business → who we are 로 바꾸면서 모핑을 걷고 독립 장으로 뺐다.
   (function(){
-    var section = document.getElementById('whoSection');
-    var sticky  = document.getElementById('whoSticky');
-    if(!section || !sticky){ return; }
-    var kws     = sticky.querySelectorAll('.s-kw');
-    var layers  = sticky.querySelectorAll('.lyr-fg');   // foreground cut-outs keyed to each keyword phase (0/1/2)
-    // split each keyword into per-glyph masks so it rises in letter-by-letter on change
-    kws.forEach(function(el){
-      var txt = el.textContent, frag = document.createDocumentFragment();
-      for(var i=0;i<txt.length;i++){
-        var ch = document.createElement('span'); ch.className = 'kw-ch';
-        var gl = document.createElement('i'); gl.textContent = txt[i]; gl.style.setProperty('--i', i);
-        ch.appendChild(gl); frag.appendChild(ch);
-      }
-      el.textContent = ''; el.appendChild(frag);
-    });
-    var dots    = sticky.querySelectorAll('.who-dots i');
-    var dotsWrap= sticky.querySelector('.who-dots');
-    var stage   = sticky.querySelector('.who-stage');
-    var eye     = sticky.querySelector('.who-eye');
-    var cardsWrap = document.getElementById('whoCards');
-    var caret   = document.getElementById('whoCaret');
-    var caretPath = caret.querySelector('path');
-    var content = sticky.querySelector('.biz-content');
-    var collage = sticky.querySelector('.biz-collage');
-    var navEl   = sticky.querySelector('.biz-nav');
-    var heroEl  = sticky.querySelector('.hero-texts');
-    var listsEl = sticky.querySelector('.biz-lists');
-    var reel    = sticky.querySelector('.biz-num .reel');
+    var stage   = document.getElementById('bizStage');
+    if(!stage){ return; }
+    var collage = stage.querySelector('.biz-collage');
+    var navEl   = stage.querySelector('.biz-nav');
+    var heroEl  = stage.querySelector('.hero-texts');
+    var listsEl = stage.querySelector('.biz-lists');
+    var reel    = stage.querySelector('.biz-num .reel');
     var reelCol = reel.querySelector('.col');
-    // keyword end / morph end / outro start (섹션 스크롤에 대한 비율).
-    // 모핑이 "A → 네모 → 네모 넷 → 사업영역 4개" 네 박자를 밟으므로 구간을 넓게 뒀다(≈1.2 화면).
-    // 타일은 정적이라 biz 구간은 짧아도 된다 — 아웃트로 동안에도 타일은 그대로 남아 호버가 된다
-    var PHASES = 4, KW = 0.42, MO = 0.66, OUT = 0.782;
 
-    // ---------- Business data + coverflow (moved in from the old Business section) ----------
     var BIZ = [
       { kor:'스마트 제조', eng:'Smart Factory', img:'carousel-battery.jpg', href:'business-smart.html',
         lists:[ {nm:'이차전지 활성화', href:'business-smart.html', tags:['충방전기','DCIR','고온·가압 충방전기','Degas','Pre-formation','OCV','IR-OCV','DSF/EOL','Selector']},
@@ -1358,8 +1314,8 @@
     // 안에서 뷰포트 폭(vw)마다 다시 계산한다(아래 참고, CSS --sec-inset 과 같은 식) */
     var MAXCW=Infinity, GAP=12, LISTW=299;
     var WF=(LISTW-GAP)/2, BASE=860;
-    var centerEl = sticky.querySelector('.biz-center');
-    var heroBlock = sticky.querySelector('.biz-hero');
+    var centerEl = stage.querySelector('.biz-center');
+    var heroBlock = stage.querySelector('.biz-hero');
     var SLOT=[];
     function computeSlots(){
       // static 4-tile layout: four equal tiles filling the container, below the "Business" label bar
@@ -1372,7 +1328,7 @@
       // 소분류 목록이 쓰는 값. 사업영역 페이지의 붙은 4패널 쪽으로 한 걸음 당긴 간격이다
       // 타일 윗변 = "Business" 라벨 밑변 + GAPH. 두 곳에 숫자를 박아 두면 라벨을 옮길 때마다
       // 어긋나므로 라벨을 실제로 재서 쓴다 — 라벨은 .biz-content, 타일은 .biz-collage 안이지만
-      // 둘 다 .who-cards 의 같은 레이어라 collage 기준으로 환산하면 같은 좌표계가 된다
+      // 둘 다 .biz-stage 의 같은 레이어라 collage 기준으로 환산하면 같은 좌표계가 된다
       var GAPH = 28;                     // 라벨 밑변 ↔ 타일 윗변 (라벨이 타일에 붙어 읽히는 거리)
       var cTop = collage.getBoundingClientRect().top;
       var headBottom = headEl ? Math.round(headEl.getBoundingClientRect().bottom - cTop) : 200;
@@ -1382,11 +1338,11 @@
       for(var i=0;i<4;i++){ SLOT.push({x:ox+i*(tw+TG), y:top, w:tw, h:th}); }
       positionOverlay();
     }
-    var hframeEl = sticky.querySelector('.hframe');
-    var bodyEl = sticky.querySelector('.biz-body');
-    var headEl = sticky.querySelector('.biz-head');
-    var numEl  = sticky.querySelector('.biz-num');
-    var heroMainEl = sticky.querySelector('.hero-main');
+    var hframeEl = stage.querySelector('.hframe');
+    var bodyEl = stage.querySelector('.biz-body');
+    var headEl = stage.querySelector('.biz-head');
+    var numEl  = stage.querySelector('.biz-num');
+    var heroMainEl = stage.querySelector('.hero-main');
     // overlay the sub-list on the centre image top, then centre the title + nav
     // in the band between the header bottom and the image top
     function positionOverlay(){
@@ -1475,11 +1431,35 @@
       navBtns.forEach(function(btn,j){ btn.classList.toggle('on', j===i); });
     }
 
-    // ---------- keyword phases ----------
+    function onResize(){ computeSlots(); place(true); }
+    window.addEventListener('resize', onResize);
+    window.addEventListener('load', onResize);
+    computeSlots(); setActive(0);
+  })();
+
+  // who we are — pinned keyword cycle. Progress p over the section:
+  //   [0,KW)  advanced → aggressive → agile → A-PRO wordmark (dark), one quarter each
+  //   [KW,1]  wordmark holds; News slides up over the last 100vh (.v2news margin-top:-100vh)
+  (function(){
+    var section = document.getElementById('whoSection');
+    var sticky  = document.getElementById('whoSticky');
+    if(!section || !sticky){ return; }
+    var kws     = sticky.querySelectorAll('.s-kw');
+    var layers  = sticky.querySelectorAll('.lyr-fg');   // foreground cut-outs keyed to each keyword phase (0/1/2)
+    // split each keyword into per-glyph masks so it rises in letter-by-letter on change
+    kws.forEach(function(el){
+      var txt = el.textContent, frag = document.createDocumentFragment();
+      for(var i=0;i<txt.length;i++){
+        var ch = document.createElement('span'); ch.className = 'kw-ch';
+        var gl = document.createElement('i'); gl.textContent = txt[i]; gl.style.setProperty('--i', i);
+        ch.appendChild(gl); frag.appendChild(ch);
+      }
+      el.textContent = ''; el.appendChild(frag);
+    });
+    var dots    = sticky.querySelectorAll('.who-dots i');
+    var PHASES = 4, KW = 0.7;
+
     var current = -1;
-    // current 는 data-phase 에 마지막으로 써 넣은 값. setMode('biz') 도 이 속성을 직접 쓰므로
-    // 거기서 current 를 함께 갱신해야 한다 — 안 하면 되돌아올 때 setPhase(3) 가
-    // "이미 3이다" 라고 판단해 건너뛰고 data-phase 가 "biz" 로 남는다
     function setPhase(p){
       if(p === current){ return; } current = p;
       sticky.setAttribute('data-phase', p);
@@ -1489,120 +1469,21 @@
     }
     function fit(){ sticky.style.setProperty('--who-s', Math.min(window.innerWidth/1280, window.innerHeight/586)); }
 
-    // ---------- morph helpers (the "A" that overlays s-apro, then descends into the centre card) ----------
-    function clamp01(x){ return x<0?0:x>1?1:x; }
-    function seg(p,a,b){ return clamp01((p-a)/(b-a)); }
-    function ease(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
-    function mix(a,b,t){ return Math.round(a+(b-a)*t); }
-    var BG0=[4,7,12], BG1=[255,255,255];
-    function bgCol(t){ return 'rgb('+mix(BG0[0],BG1[0],t)+','+mix(BG0[1],BG1[1],t)+','+mix(BG0[2],BG1[2],t)+')'; }
-    var AWc=[233,238,244], ADc=[11,11,10];
-    function aCol(t){ return 'rgb('+mix(AWc[0],ADc[0],t)+','+mix(AWc[1],ADc[1],t)+','+mix(AWc[2],ADc[2],t)+')'; }
-    var M={};
-    function caretLayout(){   // the A-PRO "A" on-screen box (in stage coords): the carousel starts compressed to THIS, then widens
-      var vw=window.innerWidth, vh=window.innerHeight;
-      var s=Math.min(vw/1280, vh/586), stageTop=(vh-900)/2, acx=vw/2, acy=vh/2+41*s, aw=104*s, ah=102*s;
-      M={ bx:acx-aw/2, by:(acy-stageTop)-ah/2, bw:aw, bh:ah };
-    }
-    function lerpRect(a,b,t){
-      return { x:a.x+(b.x-a.x)*t, y:a.y+(b.y-a.y)*t, w:a.w+(b.w-a.w)*t, h:a.h+(b.h-a.h)*t };
-    }
-    // 네모 하나 → 네모 넷 → 사업영역 4개. 두 단으로 나눈 이유:
-    // 한 단으로 A 박스에서 최종 슬롯까지 x·width 를 같이 보간하면, 카드가 겹친 채로 자라다가
-    // 거의 다 커진 뒤에야(g>0.91) 틈이 벌어진다 — "쪼개진다"가 안 읽히고 한 덩어리가 커지는 것으로 보인다.
-    // 그래서 중간 배치 Q 를 둔다: A 자리에서 네모가 가로로 조금 벌어지며 네 조각으로 갈라지는 단계(gSplit).
-    // 그 다음 네 조각이 각자 슬롯으로 커지며 흩어진다(gGrow). Q 를 거치면 틈이 8px → 12px 로만
-    // 변하므로 한 번 갈라진 뒤에는 다시 붙지 않는다.
-    // cop = 네모가 나타나는 페이드(A-PRO 로고가 빠지는 자리에서), reveal = 어두운 네모 → 사진.
-    function expandCards(gSplit, gGrow, reveal, cop){
-      var A={ x:M.bx, y:M.by, w:M.bw, h:M.bh };
-      var QW=M.bw*1.9, QG=8, qw=(QW-QG*3)/4, qx=M.bx+M.bw/2-QW/2;   // 네 조각이 A 보다 살짝 넓게 벌어진다
-      for(var b=0;b<N;b++){
-        var card=cards[b];
-        var q={ x:qx+b*(qw+QG), y:M.by, w:qw, h:M.bh };
-        var r=lerpRect(lerpRect(A,q,gSplit), SLOT[b], gGrow);
-        card.style.transition='none';
-        card.style.opacity=cop;
-        card.style.left=r.x+'px';
-        card.style.top=r.y+'px';
-        card.style.width=r.w+'px';
-        card.style.height=r.h+'px';
-        card.style.background=(reveal>=1)?'':'#0b0b0a';
-        card.firstChild.style.opacity=reveal;
-        card._pos=b;
-      }
-    }
-
-    // ---------- mode machine (kw → morph → biz) ----------
-    var mode='';
-    function setMode(m){
-      if(m===mode){ return; } mode=m;
-      cardsWrap.classList.toggle('on', m!=='kw');               // 카드 레이어는 모핑부터 보인다 (키워드 구간에서만 숨김)
-      cardsWrap.style.pointerEvents = (m==='biz') ? 'auto' : 'none';
-      caret.style.display = 'none';                              // the A-PRO "A" no longer detaches/moves
-      if(m==='kw'){
-        sticky.style.background=''; stage.style.opacity=''; eye.style.opacity=''; dotsWrap.style.opacity='';
-        content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }   // sub-menu hidden with the content
-      } else if(m==='biz'){
-        sticky.setAttribute('data-phase','biz'); current='biz';   // setPhase 의 기억값도 같이 옮긴다 (위 주석 참고)
-        sticky.style.background='#fff';
-        stage.style.opacity='0'; eye.style.opacity='0'; dotsWrap.style.opacity='0';
-        cards.forEach(function(c){ c.style.background=''; c.style.opacity=''; c.firstChild.style.opacity=''; });
-        content.style.opacity=''; if(listsEl){ listsEl.style.opacity=''; } active=-1;   // let the carousel take clean control
-      }
-    }
-    // who-we-are → Business 전환. 네 박자:
-    //   0.05~0.22  A-PRO 로고가 제자리에서 빠진다 (움직이지 않는다) + 배경 어둠 → 흰색
-    //   0.16~0.28  그 "A" 자리에 어두운 네모가 떠오른다
-    //   0.30~0.52  네모가 가로로 벌어지며 네 조각으로 쪼개진다
-    //   0.52~0.96  네 조각이 각자 슬롯으로 커지며 흩어지고, 도중에 사진이 드러난다
-    // 사업명칭은 자리를 다 잡은 뒤(biz 단계) CSS 가 페이드로 올린다 — 마지막 박자.
-    function morph(mp){
-      sticky.style.background = bgCol(ease(seg(mp,0.05,0.30)));                 // dark → white
-      var lf=(1-seg(mp,0.05,0.22)).toFixed(3);                                  // A-PRO logo fades IN PLACE (never moves)
-      stage.style.opacity=lf; eye.style.opacity=lf; dotsWrap.style.opacity=lf;
-      var cop=clamp01((mp-0.16)/0.12);                                          // 네모가 A 자리에 떠오른다
-      var gSplit=ease(clamp01((mp-0.30)/0.22));                                 // 네모 → 네 조각
-      var gGrow=ease(clamp01((mp-0.52)/0.44));                                  // 네 조각 → 각자 슬롯
-      var reveal=clamp01((gGrow-0.15)/0.55);                                    // 어두운 네모 → 사진
-      expandCards(gSplit, gGrow, reveal, cop);
-      content.style.opacity='0'; if(listsEl){ listsEl.style.opacity='0'; }     // Business content stays hidden until tiles appear
-    }
-
-    // ---------- outro: entering News, only the carousel HEIGHT lowers — the cards sink toward the
-    // baseline while the text stays put; the sub-menu rides the shrinking centre card down and fades. ----------
-    var OUTK=0.15, outroOn=false;   // OUTK = how far the cards collapse (0.15 → a slight ~15% dip; News rises over the rest)
-    function outro(o){ outroOn=true; }   // static tiles: no card movement — News simply slides up over them
-    function clearOutro(){
-      if(!outroOn){ return; }
-      outroOn=false;
-      place(true);                      // restore full card heights/positions
-      if(listsEl){ listsEl.style.opacity=''; }
-      positionOverlay();                // restore the sub-menu overlay position
-    }
-
     var ticking=false;
     function update(){
       ticking=false;
       var total = section.offsetHeight - window.innerHeight;
       var scrolled = -section.getBoundingClientRect().top;
       var p = total>0 ? scrolled/total : 0; p=Math.max(0, Math.min(0.9999, p));
-      if(p < KW){ clearOutro(); setMode('kw'); setPhase(Math.floor((p/KW)*PHASES)); }
-      else if(p < MO){ clearOutro(); setMode('morph'); setPhase(3); morph((p-KW)/(MO-KW)); }
-      else if(p < OUT){ clearOutro(); setMode('biz'); if(active<0){ setActive(0); } }   // tiles placed once, then static
-      else { setMode('biz'); if(active<0){ setActive(0); } outro((p-OUT)/(1-OUT)); }
+      setPhase(Math.min(PHASES-1, Math.floor((p/KW)*PHASES)));
     }
     function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
-    function onResize(){ fit(); computeSlots(); caretLayout(); if(mode==='biz' && active>=0){ place(true); } update(); }
-
-    function scrollToIdx(i){ i=((i%N)+N)%N; var total=section.offsetHeight-window.innerHeight; var top=section.offsetTop + (MO + ((i+0.5)/N)*(OUT-MO))*total; window.scrollTo({ top: top, behavior: 'smooth' }); }
-    navBtns.forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx(+btn.getAttribute('data-i')); }); });
-    sticky.querySelectorAll('.hero-main .ic').forEach(function(btn){ btn.addEventListener('click', function(){ scrollToIdx((active<0?0:active) + (+btn.getAttribute('data-dir'))); }); });
+    function onResize(){ fit(); update(); }
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    window.addEventListener('load', function(){ fit(); computeSlots(); caretLayout(); update(); });
-    fit(); computeSlots(); caretLayout(); update();
+    window.addEventListener('load', onResize);
+    fit(); update();
   })();
 
   // News: pinned section — the card masonry scrolls vertically with page scroll, then unpins to the footer
@@ -1685,6 +1566,7 @@
   (function(){
     var group  = document.querySelector('.gnb-group');
     if(!group){ return; }
+    var bizSec = document.getElementById('bizSection');
     var whoSec = document.getElementById('whoSection');
     var whoSt  = document.getElementById('whoSticky');
     var news   = document.querySelector('.v2news');
@@ -1701,7 +1583,8 @@
     }
     // true → light background → use dark nav text
     function wantDark(){
-      if(spans(whoSec)){ return lum(getComputedStyle(whoSt).backgroundColor) > 0.55; }  // reads live bg (kw/morph/biz/phase3)
+      if(spans(bizSec)){ return true; }      // white
+      if(spans(whoSec)){ return lum(getComputedStyle(whoSt).backgroundColor) > 0.55; }  // reads live bg (white kw ↔ dark wordmark)
       if(spans(news)){ return true; }        // #f4f6f8
       if(spans(footer)){ return false; }     // dark
       return false;                          // banner (video) / default → white text
