@@ -318,6 +318,9 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 제목과 본문 사이 — 제목과 그 밑 글은 한 덩어리라 눈금 · 제목 사이(16)의 절반으로
    붙인다. 16 까지 벌렸더니 카드 안이 세 토막으로 흩어졌다 (2026-09-18) */
 .cgrid h3+p{margin-top:8px}
+/* 열 수는 수식어 클래스로 정한다 — 인라인 style="--col:…" 은 아래 좁은 화면 규칙보다 세서
+   줄지 않는다. 수식어는 같은 세기라 뒤에 오는 미디어 규칙이 이긴다 (2026-09-18) */
+.cgrid--4{--col:4}
 /* 좁은 화면에서는 장이 정한 열 수를 무시하고 줄여 나간다 */
 @media(max-width:900px){.cgrid{--col:2}}
 @media(max-width:560px){.cgrid{--col:1}}
