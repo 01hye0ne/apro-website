@@ -417,7 +417,10 @@
   .co-apro{padding-inline:0}
   .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
                 display:flex;padding:44px;background:var(--g900)}
-  .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+  /* 사진은 16:9 인데 판은 1440:655 라 세로 155 가 잘린다 — 아래를 붙들어 사옥 발치의
+     'A-PRO 글로벌 센터' 간판까지 담는다(시안이 그렇게 잘라 두었다). 위로 잘리는 것은
+     빈 밤하늘뿐이다 */
+  .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%}
   .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:space-between;
                  border:1px solid rgba(255,255,255,.2);color:#fff}
   .co-apro .vals{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -608,7 +611,7 @@
 
     <div class="co-apro">
       <div class="fig">
-        <img src="../assets/hq-night-sky.jpg" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
+        <img src="../assets/hq-night-sky-wide.jpg" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
         <div class="line">
           <ul class="vals" aria-label="6대 핵심가치">
             <li>Advance</li><li>Aggressiveness</li><li>Agility</li>
