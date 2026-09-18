@@ -416,20 +416,28 @@
      폭을 화면만큼 넓히면 높이가 770 까지 자란다) */
   .co-apro{padding-inline:0}
   .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
-                display:flex;padding:44px;background:var(--g900)}
+                display:flex;padding:88px 44px 44px;background:var(--g900)}
   /* 사진은 16:9 인데 판은 1440:655 라 세로 155 가 잘린다 — 아래를 붙들어 사옥 발치의
      'A-PRO 글로벌 센터' 간판까지 담는다(시안이 그렇게 잘라 두었다). 위로 잘리는 것은
      빈 밤하늘뿐이다 */
   .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%}
-  .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:space-between;
-                 border:1px solid rgba(255,255,255,.2);color:#fff}
-  .co-apro .vals{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  /* 키워드는 칸 왼쪽에 붙는다 — 아래 문단의 들여쓰기(20)와 같은 자리에서 시작한다 */
-  .co-apro .vals li{display:flex;align-items:center;justify-content:flex-start;padding:20px;text-align:left;
-                    border-bottom:1px solid rgba(255,255,255,.2);font-family:var(--suit);font-weight:800;
-                    font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:break-word}
-  .co-apro .vals li:not(:nth-child(3n)){border-right:1px solid rgba(255,255,255,.2)}
-  .co-apro p{padding:20px;max-width:calc(764px + 40px);font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);
+  /* 글은 판 왼쪽에 모인다 — 문구가 위, 6대 핵심가치가 아래다(2026-09-18 시안).
+     판을 가르던 3×2 격자와 테두리는 걷었다 : 사진 위에 선을 긋는 대신 글만 얹는다 */
+  .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
+                 justify-content:space-between;color:#fff}
+  /* 핵심가치 — 번호 붙은 여섯 줄. 번호는 CSS 가 센다(01 · 02 …).
+     폭은 가장 긴 이름(Aggressiveness)에 맞춘 고정값이다 : 줄 끝의 가는 선이 들쭉날쭉하면
+     여섯이 한 묶음으로 보이지 않는다. 첫 줄 위에도 선을 그어 묶음을 닫는다 */
+  .co-apro .vals{width:min(250px,42%);list-style:none;counter-reset:val;
+                 border-top:1px solid rgba(255,255,255,.28)}
+  .co-apro .vals li{display:flex;align-items:baseline;gap:14px;padding:5px 2px;
+                    border-bottom:1px solid rgba(255,255,255,.28);
+                    font-family:var(--suit);font-weight:500;font-size:var(--fs-body);
+                    line-height:var(--lh-label);letter-spacing:var(--ls)}
+  .co-apro .vals li::before{counter-increment:val;content:counter(val,decimal-leading-zero);
+                    flex:none;font-family:var(--suit);font-weight:700;font-size:var(--fs-tag);
+                    letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
+  .co-apro p{max-width:764px;font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);
              line-height:var(--lh-label);letter-spacing:var(--ls);word-break:keep-all}
   .co-apro p span{display:block}
 
@@ -449,11 +457,9 @@
     /* 좁은 화면은 문구가 사옥 위에 얹혀 묻힌다 — 아래에서만 짙어지는 막을 깐다 */
     .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
-    .co-apro .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .co-apro .vals li{padding:16px;font-size:var(--fs-body);letter-spacing:var(--ls)}
-    .co-apro .vals li:not(:nth-child(3n)){border-right:0}
-    .co-apro .vals li:nth-child(odd){border-right:1px solid rgba(255,255,255,.2)}
-    .co-apro p{padding:16px;font-size:var(--fs-body);letter-spacing:var(--ls)}
+    .co-apro .vals{width:min(240px,72%)}
+    .co-apro .vals li{padding:7px 2px;font-size:var(--fs-meta);letter-spacing:var(--ls)}
+    .co-apro p{font-size:var(--fs-body);letter-spacing:var(--ls)}
     .co-apro p span{display:inline}
   }
 </style>
@@ -613,11 +619,11 @@
       <div class="fig">
         <img src="../assets/hq-night-sky-wide.jpg" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
         <div class="line">
-          <ul class="vals" aria-label="6대 핵심가치">
+          <p><span>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, </span><span>6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 </span><span>글로벌 종합 에너지 솔루션 기업으로 나아갑니다</span></p>
+          <ol class="vals" aria-label="6대 핵심가치">
             <li>Advance</li><li>Aggressiveness</li><li>Agility</li>
             <li>Pioneer</li><li>Remarkability</li><li>Organism</li>
-          </ul>
-          <p><span>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, </span><span>6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 </span><span>글로벌 종합 에너지 솔루션 기업으로 나아갑니다</span></p>
+          </ol>
         </div>
       </div>
     </div>
