@@ -26,7 +26,7 @@
    굵기는 투자정보 세로 히어로 문장(.cs-hero .sub, content-side.css)과 같은 400 —
    ExtraBold 800 은 두 틀의 첫 화면이 서로 다른 목소리로 읽혔다 */
 .ci-hero .sub{margin:0;font-family:"SUIT Variable","Pretendard",sans-serif;font-weight:400;font-size:var(--fs-h2);
-  line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
+  line-height:var(--lh-label);letter-spacing:var(--ls);color:#fff}
 .ci-hero .sub span{display:block}
 
 .ci-band{position:relative;flex:1 1 0;min-height:0;color:#fff}
