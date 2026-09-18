@@ -18,6 +18,17 @@
   /* 사진 아래 끝에 수평선과 바다가 있다 — 아래를 붙들어 잘리지 않게 한다 */
   background:#4a84d4 url("../assets/blue-sky-horizon.jpg") 50% 100% / cover no-repeat}
 
+/* 첫 화면 바닥 이음매 — 홈 비즈니스 → Who we are 이음매(index-a1 .hm-who::before)를 위아래로 뒤집은 것.
+   아래 흰 본문이 하늘을 파고든다 : 바닥은 꽉 찬 흰색, 위로 갈수록 흰 줄 24 개(4px 간격)가 가늘고 옅어진다
+   (굵기 (1 - i/24)^0.75 · 불투명도 (1 - i/24)^0.8). 줄 밑에는 흰색이 아래에서 위로 옅어지는 바탕을 한 겹 깔아
+   줄과 틈의 톤 차이를 줄인다. 바닥까지 내용(사진 · 지도 · 카드)이 차 있어 띠 자리(96, 좁은 화면은 --ci-seam-k .5 로 눌러 48)를
+   아래 여백으로 따로 비운다 — 첫 화면 높이는 그대로라 띠(.ci-band) 안 그림이 그만큼 줄어든다 */
+.ci-top{--ci-seam-k:1;padding-bottom:calc(96px * var(--ci-seam-k))}
+.ci-top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:96px;pointer-events:none;
+  transform-origin:0 100%;transform:scaleY(var(--ci-seam-k));
+  background:0 100%/100% 96px no-repeat linear-gradient(to top,rgba(255,255,255,1.0) 0px,rgba(255,255,255,1.0) 4.0px,transparent 4.0px,transparent 4px,rgba(255,255,255,0.967) 4px,rgba(255,255,255,0.967) 7.87px,transparent 7.87px,transparent 8px,rgba(255,255,255,0.933) 8px,rgba(255,255,255,0.933) 11.75px,transparent 11.75px,transparent 12px,rgba(255,255,255,0.899) 12px,rgba(255,255,255,0.899) 15.62px,transparent 15.62px,transparent 16px,rgba(255,255,255,0.864) 16px,rgba(255,255,255,0.864) 19.49px,transparent 19.49px,transparent 20px,rgba(255,255,255,0.83) 20px,rgba(255,255,255,0.83) 23.36px,transparent 23.36px,transparent 24px,rgba(255,255,255,0.794) 24px,rgba(255,255,255,0.794) 27.22px,transparent 27.22px,transparent 28px,rgba(255,255,255,0.759) 28px,rgba(255,255,255,0.759) 31.09px,transparent 31.09px,transparent 32px,rgba(255,255,255,0.723) 32px,rgba(255,255,255,0.723) 34.95px,transparent 34.95px,transparent 36px,rgba(255,255,255,0.687) 36px,rgba(255,255,255,0.687) 38.81px,transparent 38.81px,transparent 40px,rgba(255,255,255,0.65) 40px,rgba(255,255,255,0.65) 42.67px,transparent 42.67px,transparent 44px,rgba(255,255,255,0.612) 44px,rgba(255,255,255,0.612) 46.53px,transparent 46.53px,transparent 48px,rgba(255,255,255,0.574) 48px,rgba(255,255,255,0.574) 50.38px,transparent 50.38px,transparent 52px,rgba(255,255,255,0.536) 52px,rgba(255,255,255,0.536) 54.23px,transparent 54.23px,transparent 56px,rgba(255,255,255,0.496) 56px,rgba(255,255,255,0.496) 58.07px,transparent 58.07px,transparent 60px,rgba(255,255,255,0.456) 60px,rgba(255,255,255,0.456) 61.92px,transparent 61.92px,transparent 64px,rgba(255,255,255,0.415) 64px,rgba(255,255,255,0.415) 65.75px,transparent 65.75px,transparent 68px,rgba(255,255,255,0.373) 68px,rgba(255,255,255,0.373) 69.59px,transparent 69.59px,transparent 72px,rgba(255,255,255,0.33) 72px,rgba(255,255,255,0.33) 73.41px,transparent 73.41px,transparent 76px,rgba(255,255,255,0.285) 76px,rgba(255,255,255,0.285) 77.23px,transparent 77.23px,transparent 80px,rgba(255,255,255,0.238) 80px,rgba(255,255,255,0.238) 81.04px,transparent 81.04px,transparent 84px,rgba(255,255,255,0.189) 84px,rgba(255,255,255,0.189) 84.84px,transparent 84.84px,transparent 88px,rgba(255,255,255,0.137) 88px,rgba(255,255,255,0.137) 88.62px,transparent 88.62px,transparent 92px,rgba(255,255,255,0.079) 92px,rgba(255,255,255,0.079) 92.5px,transparent 92.5px,transparent 96px),
+    linear-gradient(to top,rgba(255,255,255,.92),rgba(255,255,255,.62) 35%,rgba(255,255,255,.24) 70%,rgba(255,255,255,0))}
+
 .ci-hero{display:flex;flex-direction:column;align-items:flex-start;gap:24px;
   padding:88px 20px 40px var(--ci-m);border-bottom:1px solid rgba(255,255,255,.2);word-break:keep-all}
 .ci-hero h1{margin:0;font-family:"Aldrich",sans-serif;font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);
@@ -34,7 +45,7 @@
 
 /* 좁은 화면 — Figma 에 모바일 판이 없다. 여백을 줄이고 문장 줄 끊김을 풀어 흐르게 한다 */
 @media(max-width:900px){
-  .ci-top{--ci-m:16px;height:auto;min-height:0}
+  .ci-top{--ci-m:16px;--ci-seam-k:.5;height:auto;min-height:0}
   .ci-band{flex:none}
   .ci-hero{padding:48px var(--ci-m) 32px}
   .ci-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
