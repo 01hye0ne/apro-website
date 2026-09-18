@@ -697,6 +697,9 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cboard th,.cboard td{padding:18px 16px;border-bottom:1px solid var(--border-g);
   font-family:var(--suit);font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--sec);text-align:center}
 .cboard thead th{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);color:var(--g900)}
+/* 제목 칸은 머리와 내용이 같은 쪽으로 붙는다 — 머리만 가운데면 글 시작점과 어긋나
+   열이 두 줄로 보인다 (2026-09-18) */
+.cboard th.ttl{text-align:left}
 .cboard td.ttl{text-align:left;color:var(--g900);font-weight:600;word-break:keep-all}
 /* 공지 고정 글 */
 .cboard tr.pin td{background:var(--secondary-bg)}
