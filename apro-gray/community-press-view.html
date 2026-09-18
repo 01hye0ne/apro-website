@@ -40,8 +40,12 @@
   .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
     line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--teritary)}
   .cpost-bd{padding:32px 0 40px;border-bottom:1px solid var(--border-g)}
+  /* 그림이 있는 글은 [그림 | 글] 두 칸 — 그림은 800 까지, 글은 남은 폭. 좁은 화면은 위아래로 쌓는다 */
+  .cpost-bd.has-fig{display:grid;grid-template-columns:minmax(0,800px) minmax(0,1fr);gap:24px 48px;align-items:start}
   .cpost-bd figure{margin:0}
   .cpost-bd img{display:block;width:100%;max-width:800px;height:auto}
+  .cpost-bd.has-fig .txt>p:first-child{margin-top:0}
+  @media(max-width:900px){ .cpost-bd.has-fig{grid-template-columns:minmax(0,1fr)} }
   .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
     letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   .cpost-bd p+p{margin-top:8px}
@@ -245,9 +249,11 @@
     var fig = el('figure'), img = el('img');
     img.src = '../assets/press-' + pad(p.id) + '.jpg'; img.alt = ''; img.decoding = 'async';
     fig.appendChild(img); bd.appendChild(fig);
+    bd.classList.add('has-fig');
   }
-  p.p.forEach(function(t){ bd.appendChild(el('p', null, t)); });
-  if(!p.i && !p.p.length) bd.appendChild(el('p', 'cpost-empty', '요약 없이 원문 링크만 있는 글입니다.'));
+  var txt = el('div', 'txt'); bd.appendChild(txt);
+  p.p.forEach(function(t){ txt.appendChild(el('p', null, t)); });
+  if(!p.i && !p.p.length) txt.appendChild(el('p', 'cpost-empty', '요약 없이 원문 링크만 있는 글입니다.'));
 
   /* 기사 원문 — 없으면 기존 사이트의 원본 글로 보낸다 */
   var go = document.getElementById('postLink');

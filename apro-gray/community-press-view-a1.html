@@ -24,14 +24,20 @@
 <!-- 보도자료 상세 (2026-09-18) — 한 장의 틀이 주소의 ?id=<글번호> 로 press-data.js 에서 내용을 채운다.
      목록 카드 85장이 모두 이 장으로 온다. 상세 페이지를 제대로 짤 때 이 <style> 은 content-layout.css 로 옮긴다 -->
 <style>
+  /* 상세는 왼쪽 세로 히어로 없이 본문만 선다(2026-09-18) — 본문이 사이트 격자 폭(--maxw) 안 가운데에 놓인다 */
+  .cs-solo .cs-body{max-width:var(--maxw);margin-inline:auto}
   .cpost-hd{padding-bottom:24px;border-bottom:2px solid var(--g900)}
-  .cpost-hd h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+  .cpost-hd h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
     line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--teritary)}
   .cpost-bd{padding:32px 0 40px;border-bottom:1px solid var(--border-g)}
+  /* 그림이 있는 글은 [그림 | 글] 두 칸 — 그림은 800 까지, 글은 남은 폭. 좁은 화면은 위아래로 쌓는다 */
+  .cpost-bd.has-fig{display:grid;grid-template-columns:minmax(0,800px) minmax(0,1fr);gap:24px 48px;align-items:start}
   .cpost-bd figure{margin:0}
   .cpost-bd img{display:block;width:100%;max-width:800px;height:auto}
+  .cpost-bd.has-fig .txt>p:first-child{margin-top:0}
+  @media(max-width:900px){ .cpost-bd.has-fig{grid-template-columns:minmax(0,1fr)} }
   .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
     letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   .cpost-bd p+p{margin-top:8px}
@@ -139,19 +145,11 @@
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
 <!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
-<div class="cs-split">
-  <header class="cs-hero" style="--pos:50% 50%;--pos-m:50% 45%">
-    <img class="cs-hero-bg" src="../assets/community-hero.jpg" width="1200" height="1669" alt="" aria-hidden="true" decoding="async" />
-    <div class="cs-hero-page">
-      <h1>보도자료</h1>
-      <p class="sub">A-PRO의 언론 보도 자료를 확인하세요.</p>
-    </div>
-  </header>
-
+<div class="cs-split cs-solo">
   <main class="cs-body">
   <article class="cblock" id="post" aria-labelledby="post-t">
     <header class="cpost-hd">
-      <h2 id="post-t">보도자료</h2>
+      <h1 id="post-t">보도자료</h1>
       <p class="cpost-meta"><span data-f="date"></span><span data-f="src"></span></p>
     </header>
     <div class="cpost-bd" id="postBody"></div>
@@ -301,9 +299,11 @@
     var fig = el('figure'), img = el('img');
     img.src = '../assets/press-' + pad(p.id) + '.jpg'; img.alt = ''; img.decoding = 'async';
     fig.appendChild(img); bd.appendChild(fig);
+    bd.classList.add('has-fig');
   }
-  p.p.forEach(function(t){ bd.appendChild(el('p', null, t)); });
-  if(!p.i && !p.p.length) bd.appendChild(el('p', 'cpost-empty', '요약 없이 원문 링크만 있는 글입니다.'));
+  var txt = el('div', 'txt'); bd.appendChild(txt);
+  p.p.forEach(function(t){ txt.appendChild(el('p', null, t)); });
+  if(!p.i && !p.p.length) txt.appendChild(el('p', 'cpost-empty', '요약 없이 원문 링크만 있는 글입니다.'));
 
   /* 기사 원문 — 없으면 기존 사이트의 원본 글로 보낸다 */
   var go = document.getElementById('postLink');
