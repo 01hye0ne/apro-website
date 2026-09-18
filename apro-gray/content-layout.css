@@ -689,6 +689,8 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 /* 표·그림 위 오른쪽 단위 표기 */
 .cfin-unit{margin-top:24px;text-align:right;font-family:var(--suit);font-size:var(--fs-meta);
   letter-spacing:var(--ls);color:var(--teritary)}
+/* 단위는 바로 밑 자료에 딸린 꼬리표다 — 그 사이를 윗여백보다 좁게 둔다 */
+.cfin-unit+*{margin-top:8px}
 @media(max-width:760px){
   .cchart .track{height:180px}
   .cchart-plot::before{height:180px;background-image:repeating-linear-gradient(
