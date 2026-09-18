@@ -427,8 +427,8 @@
   .hm-card:not(.is-open) .fold{opacity:1;transition:opacity .5s var(--ease) .45s}
   /* 이름은 옆으로 눕혀 아래에서 위로 읽는다(글자를 세워 쌓으면 띄어쓰기가 벌어져 보인다) */
   .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
-                     transform:rotate(180deg);font-family:var(--ald);font-weight:400;font-size:var(--fs-h2);
-                     line-height:var(--lh-tight);letter-spacing:var(--ls-num);white-space:nowrap}
+                     transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+                     line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
@@ -453,8 +453,7 @@
   .hm-card .crow{display:flex;align-items:flex-end;padding:0 20px}
   .hm-card .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   /* 사업영역 이름은 Figma 의 두 배(20→40)로 키웠다. 소분류 목록과 설명글은 Figma 그대로다 */
-  /* 이름은 영문 Aldrich(2026-09-18) — 국문 이름은 소분류 띠지 맨 앞(.sub .ko)으로 내렸다 */
-  .hm-card h3{font-family:var(--ald);font-weight:400;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls-num)}
+  .hm-card h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls)}
   /* 카드 어디를 눌러도 세부 페이지로 간다 — 사진 위에 카드 크기 링크(.hit)를 한 장
      깔고, 글 띠는 손을 받지 않게 비워 링크만 받는다. 읽기와 초점은 이름 링크가
      맡으므로 .hit 는 가려 둔다 */
@@ -485,9 +484,6 @@
                   letter-spacing:var(--ls);color:var(--on-dark-body);white-space:nowrap;
                   text-decoration:none;transition:color .2s var(--ease)}
   .hm-card .sub a:hover,.hm-card .sub a:focus-visible{color:#fff}
-  /* 띠지 맨 앞 국문 사업영역 이름 — 링크가 아닌 머리말이라 흰색으로 소분류(흰 80%)보다 한 단 또렷하다 */
-  .hm-card .sub .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-label);
-                    letter-spacing:var(--ls);color:#fff;white-space:nowrap}
   /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
      화살표를 레일 아래 오른쪽에 두면 화면 오른쪽 아래에 떠 있는 '맨 위로' 단추와 겹친다.
      아코디언은 네 카드가 늘 다 보이므로 몇 번째인지 알리던 점 표시는 두지 않는다 */
@@ -868,16 +864,15 @@
         <li class="hm-card is-open">
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm" lang="en">Smart Factory</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">스마트 제조</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
-                <h3><a href="business-smart-a1.html" lang="en">Smart Factory</a></h3>
+                <h3><a href="business-smart-a1.html">스마트 제조</a></h3>
                 <p class="d">이차전지 활성화 공정의 주요 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정짓는 마지막 공정까지, A-PRO가 책임집니다.</p>
               </div>
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="스마트 제조 소분류">
-              <li class="ko">스마트 제조</li>
               <li><a href="business-smart-a1.html#sf01-1">이차전지 활성화</a></li>
               <li><a href="business-smart-a1.html#sf02-1">Cycler(Cell&amp;Module)</a></li>
               <li><a href="business-smart-a1.html#sf03-1">자동화 시스템</a></li>
@@ -888,16 +883,15 @@
         <li class="hm-card">
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm" lang="en">Energy Infrastructure</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">에너지 인프라</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
-                <h3><a href="business-energy-a1.html" lang="en">Energy Infrastructure</a></h3>
+                <h3><a href="business-energy-a1.html">에너지 인프라</a></h3>
                 <p class="d">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.<br />그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</p>
               </div>
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="에너지 인프라 소분류">
-              <li class="ko">에너지 인프라</li>
               <li><a href="business-energy-a1.html#sf01-1">ESS</a></li>
               <li><a href="business-energy-a1.html#sf02-1">UPS</a></li>
               <li><a href="business-energy-a1.html#sf03-1">솔루션</a></li>
@@ -907,16 +901,15 @@
         <li class="hm-card">
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm" lang="en">AI Platform</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">인공지능 플랫폼</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
-                <h3><a href="business-ai-a1.html" lang="en">AI Platform</a></h3>
+                <h3><a href="business-ai-a1.html">인공지능 플랫폼</a></h3>
                 <p class="d">AI로 배터리와 설비의 상태를 읽어냅니다.<br />진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</p>
               </div>
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="인공지능 플랫폼 소분류">
-              <li class="ko">인공지능 플랫폼</li>
               <li><a href="business-ai-a1.html#sf01-1">로봇 플랫폼</a></li>
               <li><a href="business-ai-a1.html#sf02-1">배터리 진단 플랫폼</a></li>
               <li><a href="business-ai-a1.html#sf03-1">전기자동차 충전 플랫폼</a></li>
@@ -927,16 +920,15 @@
         <li class="hm-card">
           <img src="../assets/carousel-gan.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-a1.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm" lang="en">GaN Power Semiconductors</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">화합물 전력 반도체</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
-                <h3><a href="business-semicon-a1.html" lang="en">GaN Power Semiconductors</a></h3>
+                <h3><a href="business-semicon-a1.html">화합물 전력 반도체</a></h3>
                 <p class="d">질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.<br />국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다</p>
               </div>
             </div>
             <div class="hm-strip"><ul class="sub" aria-label="화합물 전력 반도체 소분류">
-              <li class="ko">화합물 전력 반도체</li>
               <li><a href="business-semicon-a1.html#sf01-1">GaN Epi-Wafer</a></li>
               <li><a href="business-semicon-a1.html#sf02-1">GaN Power Device</a></li>
               <li><a href="business-semicon-a1.html#sf03-1">에이프로 세미콘</a></li>
