@@ -126,3 +126,43 @@
   .cs-hero .sub br{display:none}
   .cs-body>.cblock,.cs-body>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
 }
+
+/* ── 규정 전문 팝업 (.cmodal) ────────────────────────────────────────────
+   투자정보 '내부규정' 페이지를 걷으면서 그 안의 규정 둘을 제 주제의 장 밑으로
+   옮겼다 (2026-09-18) — 내부회계관리규정은 재무정보, 내부정보관리규정은 공시정보.
+   조문이 9,200 · 6,100 자라 장에 펼쳐 두면 그 장이 규정 페이지가 되어 버린다.
+   장에는 단추 하나만 두고, 전문은 팝업에서 제 스크롤로 읽게 한다. */
+.cregul{margin-top:24px}
+.cmodal-open{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;
+  background:#fff;border:1px solid var(--border-g);cursor:pointer;
+  font-family:var(--suit);font-weight:800;font-size:var(--fs-body);letter-spacing:var(--ls);color:var(--g900);
+  transition:border-color .2s var(--ease),color .2s var(--ease)}
+.cmodal-open:hover{border-color:var(--brand);color:var(--brand)}
+.cmodal-open svg{width:20px;height:20px;flex-shrink:0}
+.cmodal-open:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+.cmodal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+  padding:clamp(16px,4vw,48px)}
+.cmodal[hidden]{display:none}
+.cmodal-back{position:absolute;inset:0;background:rgba(14,22,30,.6)}
+/* 판은 화면보다 커지지 않는다 — 넘치는 조문은 판 안(.cmodal-bd)에서 구른다 */
+.cmodal-panel{position:relative;display:flex;flex-direction:column;
+  width:min(900px,100%);max-height:100%;background:#fff;box-shadow:0 24px 64px rgba(14,22,30,.28)}
+.cmodal-hd{flex:none;display:flex;align-items:center;gap:16px;padding:24px 28px;
+  border-bottom:1px solid var(--border-g)}
+.cmodal-hd h2{flex:1;min-width:0;margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+  line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900)}
+.cmodal-x{flex:none;display:grid;place-items:center;width:40px;height:40px;
+  background:none;border:0;cursor:pointer;color:var(--sec);transition:color .2s var(--ease)}
+.cmodal-x:hover{color:var(--g900)}
+.cmodal-x svg{width:24px;height:24px}
+.cmodal-x:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
+.cmodal-bd{flex:1;min-height:0;overflow:auto;padding:0 28px 32px;overscroll-behavior:contain}
+/* 팝업 안에서는 목차 · 조문이 판 폭을 그대로 쓴다(바깥 본문 열에 맞춘 상한을 푼다) */
+.cmodal-bd .ctoc,.cmodal-bd .cdoc{max-width:none}
+@media(max-width:600px){
+  .cmodal{padding:0}
+  .cmodal-panel{max-height:100%;height:100%}
+  .cmodal-hd{padding:16px}
+  .cmodal-bd{padding:0 16px 24px}
+}
