@@ -816,6 +816,103 @@
     .gnb .logo{padding:var(--gnb-logo-pad) 0}
     .gnb .logo::after{inset:var(--gnb-logo-pad) 0}
   }
+
+  /* ══ 사업영역 띠 — 기본은 사업명만, 호버하면 펼친다 (Figma 1390:41031) ═══
+     2026-09-21. 종전에는 넉 장이 모두 펼쳐진 채였다 — 사업명 · 설명글 · 소분류
+     목록이 한 화면에 스물 몇 줄로 깔려 무엇을 먼저 보라는 것인지 읽히지 않았다.
+
+     ── 세로로만 움직인다 ────────────────────────────────────────────
+     처음에는 사업명을 띠 한가운데에서 왼쪽 위로 옮겼다. 그런데 그 거리가
+     대각선 700px 가까이(가로 669 · 세로 208)라, 곡선이 아무리 부드러워도
+     "다듬어진다"가 아니라 "달아난다"로 읽혔다. 두 구성이 서로 다른 짜임이기
+     때문이다 — 기본은 가운데 정렬 표지, 호버는 왼쪽 정렬 편집 레이아웃.
+     그래서 기본 상태의 사업명도 왼쪽(글이 40px)에 세우고 세로만 가운데로
+     둔다. 호버하면 위로 208 만 올라가 제자리에 선다 — 가로로는 안 움직인다.
+     시안의 "가운데 정렬"은 포기하지만, 움직임이 1/3 로 줄고 두 구성이 같은
+     세로선 위에 서서 한 덩이가 제자리를 찾아가는 것으로 읽힌다.
+
+     움직이는 것은 transform 하나뿐이다.
+       · 자리는 늘 펼친 쪽(left:20 top:48)에 두고 기본만 아래로 내린다.
+         left:20 + 안쪽 여백 20 = 글이 40, top:48 + 16 = 64 — 펼친 자리 그대로다
+       · 안쪽 여백(16/20)과 줄 사이(10)는 두 상태가 같다. 칩이 사라지는 일은
+         배경색만 옅어지면 되므로 여백이 움직일 이유가 없다. left · top ·
+         padding 을 함께 움직이면 프레임마다 배치를 다시 계산한다
+       · 내려가는 거리는 계산식이다 — 띠 키(640)에서 이름표 키를 뺀 절반에서
+         펼친 자리(48)를 뺀다. 글자 크기를 바꾸면 이 값도 따라온다
+       · 영문 줄은 두 상태 모두 국문에 왼쪽을 맞춘다. 시안은 칩 안에서 가운데
+         정렬이지만, 그러면 호버로 넘어갈 때 그 줄만 가로로 튄다
+         (align-items 는 전환이 걸리지 않는다)
+
+     ⚠ hover 가 없는 기기(터치)와 좁은 화면에는 걸지 않는다 — 펼칠 방법이
+       없으므로 종전처럼 처음부터 다 보이는 편이 낫다 */
+  @media(hover:hover) and (min-width:901px){
+    .v2bizsec .bizband{
+      /* 이름표 키 = 안쪽 여백 16 둘 + 국문 48×1.2 + 줄 사이 10 + 영문 20×1.4 */
+      --bz-nh:calc(16px * 2 + 48px * 1.2 + 10px + 20px * 1.4);
+      --bz-dy:calc((640px - var(--bz-nh)) / 2 - 48px)}
+    .v2bizsec .bizband .bz-name{position:absolute;z-index:2;left:20px;top:48px;
+      display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+      padding:16px 20px;background:rgba(255,255,255,.2);
+      transform:translate3d(0,var(--bz-dy),0);
+      transition:transform .7s var(--ease),background-color .45s var(--ease)}
+    /* 네 귀의 ㄱ자 표식 — a-common.css 의 이름표(.chero-tag)와 같은 방법이다.
+       칩 둘레를 한 바퀴 두른 1px 테두리를 네 귀의 8×8 자리만 남기고 마스크로
+       지운다. 글자 길이가 달라져도 위아래·좌우가 저절로 따라온다 */
+    .v2bizsec .bizband .bz-name::before{content:"";position:absolute;inset:-4px;
+      border:1px solid #fff;--fm:linear-gradient(#000,#000);
+      -webkit-mask:var(--fm) left top/8px 8px no-repeat,var(--fm) right top/8px 8px no-repeat,
+        var(--fm) left bottom/8px 8px no-repeat,var(--fm) right bottom/8px 8px no-repeat;
+      mask:var(--fm) left top/8px 8px no-repeat,var(--fm) right top/8px 8px no-repeat,
+        var(--fm) left bottom/8px 8px no-repeat,var(--fm) right bottom/8px 8px no-repeat;
+      transition:opacity .45s var(--ease)}
+    .v2bizsec .bizband:hover .bz-name,
+    .v2bizsec .bizband:focus-visible .bz-name{transform:translate3d(0,0,0);
+      background:rgba(255,255,255,0)}
+    .v2bizsec .bizband:hover .bz-name::before,
+    .v2bizsec .bizband:focus-visible .bz-name::before{opacity:0}
+
+    /* 펼친 뒤에는 같은 ㄱ자 표식이 카드 네 귀로 옮겨 간다 — 칩을 감싸던 틀이
+       카드 전체를 감싸는 틀로 열리는 셈이라, 초점이 이름 하나에서 카드 한 장으로
+       넓어지는 이야기가 이어진다.
+       열리는 느낌은 inset 이 아니라 scale 로 낸다 — inset 을 움직이면 프레임마다
+       배치를 다시 계산한다. 팔 길이 20 은 시안의 8(254 짜리 칩에 붙던 값)을
+       1632 짜리 카드에 맞춰 키운 값이다 */
+    .v2bizsec .bizband::after{content:"";position:absolute;z-index:2;inset:20px;
+      pointer-events:none;border:1px solid rgba(255,255,255,.7);
+      --fm2:linear-gradient(#000,#000);
+      -webkit-mask:var(--fm2) left top/20px 20px no-repeat,var(--fm2) right top/20px 20px no-repeat,
+        var(--fm2) left bottom/20px 20px no-repeat,var(--fm2) right bottom/20px 20px no-repeat;
+      mask:var(--fm2) left top/20px 20px no-repeat,var(--fm2) right top/20px 20px no-repeat,
+        var(--fm2) left bottom/20px 20px no-repeat,var(--fm2) right bottom/20px 20px no-repeat;
+      opacity:0;transform:scale(.97);transform-origin:50% 50%;
+      transition:opacity .4s var(--ease),transform .5s var(--ease)}
+    .v2bizsec .bizband:hover::after,
+    .v2bizsec .bizband:focus-visible::after{opacity:1;transform:none;
+      transition-delay:.15s}
+
+    /* 세로선 · 정보 바는 사업명이 자리를 잡아 갈 무렵 뒤따라 온다 */
+    .v2bizsec .bizband .bz-top{border-color:transparent;
+      transition:border-color .4s var(--ease)}
+    .v2bizsec .bizband .bz-rule{opacity:0;transition:opacity .4s var(--ease)}
+    .v2bizsec .bizband .bz-info{opacity:0;transform:translate3d(0,16px,0);
+      transition:opacity .4s var(--ease),transform .5s var(--ease)}
+    .v2bizsec .bizband:hover .bz-top,
+    .v2bizsec .bizband:focus-visible .bz-top{border-color:rgba(255,255,255,.2);
+      transition-delay:.15s}
+    .v2bizsec .bizband:hover .bz-rule,
+    .v2bizsec .bizband:focus-visible .bz-rule{opacity:1;transition-delay:.15s}
+    .v2bizsec .bizband:hover .bz-info,
+    .v2bizsec .bizband:focus-visible .bz-info{opacity:1;transform:none;
+      transition-delay:.15s}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v2bizsec .bizband .bz-name,
+    .v2bizsec .bizband .bz-name::before,
+    .v2bizsec .bizband .bz-top,
+    .v2bizsec .bizband .bz-rule,
+    .v2bizsec .bizband .bz-info,
+    .v2bizsec .bizband::after{transition:none}
+  }
 </style>
 <script>document.documentElement.classList.add('js-anim');</script>
 </head>
