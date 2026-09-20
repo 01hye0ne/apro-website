@@ -34,7 +34,7 @@ HERE = Path(__file__).parent
 # A-1 짝이 있는 페이지. 이 이름들의 링크를 A-1 안에서 -a1 로 바꿔 준다.
 # 페이지 이름이 바뀌면 이 목록만 고치면 된다.
 PAGES = ['business-smart', 'business-energy', 'business-ai', 'business-semicon',
-         'business', 'company', 'network', 'index',
+         'business', 'company', 'network', 'locations', 'index',
          # 투자정보 · 지속가능경영 · 커뮤니티 (content-layout.css 를 함께 쓰는 콘텐츠 페이지)
          'ir-finance', 'ir-disclosure', 'ir-stock', 'ir-policy',
          'esg-environment', 'esg-social', 'esg-governance', 'esg-report', 'esg-board',
@@ -149,8 +149,9 @@ def build(src_text, want_body=False):
         out, k = re.subn(r'href="%s\.html(#[^"]*)?"' % re.escape(page),
                          lambda m, p=page: 'href="%s-a1.html%s"' % (p, m.group(1) or ''), out)
         n_link += k
-    # 사업장소재는 A-1 에만 페이지가 있다(locations-a1.html, 2026-09-14) — A 원본의 빈 링크(href="#")를
-    # A-1 에서만 그 페이지로 잇는다. A 는 계속 "#" 이다
+    # 2026-09-20 까지는 사업장소재가 A-1 에만 있어서(locations-a1.html) A 원본의 빈 링크(href="#")를
+    # A-1 에서만 그 페이지로 이어 주었다. 이제 A 에도 locations.html 이 있어 위 PAGES 루프가
+    # locations.html → locations-a1.html 로 바꾼다. 아래 줄은 혹시 남아 있는 빈 링크를 위한 보루다
     out, k = re.subn(r'href="#">사업장소재', 'href="locations-a1.html">사업장소재', out)
     n_link += k
     return out, (n_body, n_title, n_link)

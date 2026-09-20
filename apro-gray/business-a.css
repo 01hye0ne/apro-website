@@ -1,0 +1,167 @@
+/* =====================================================================
+   사업영역 세부 — A 시안 본문 틀 (Figma 1356:8, 2026-09-20)
+     예전 A 본문은 화면을 꽉 채운 채 카드가 가로로 넘어가는 캐러셀(.hsec)이었다.
+     새 시안은 세로로 쌓이는 섹션이고, 한 섹션이 세 칸으로 갈린다.
+
+       251        20   661            20   681
+       소분류 탭   ·   글(제목·리드·본문)  ·   사진
+       (왼쪽 목록)     (오른쪽 여백 128 → 글 폭 533)
+
+     섹션마다 위아래 120 여백과 밑변 실선(#e4e8ed) 하나. 소분류가 여럿인 묶음은
+     카드가 세로로 쌓이고, 왼쪽 목록이 그 차례를 비추면서 누르면 해당 카드로
+     굴러가는 길잡이가 된다(business-a.js, 2026-09-20 개편 — 종전에는 탭이라
+     한 번에 한 카드만 보였다).
+
+     ⚠ A 전용이다. .hsec / .htrack / .hrail 은 A-1 열네 장이 함께 쓰는
+       business-layout.css · business-layout.js 의 캐러셀 이름이라, 여기서는
+       섹션을 .bsec / .bsec-main / .bsec-rail 로 갈아 끼워 그 규칙과 스크립트가
+       아예 걸리지 않게 했다. 카드 속(.hcard > .hleft · .hright)은 그대로 두고
+       배치와 글자만 이 파일이 덮는다.
+   ===================================================================== */
+
+/* 왼쪽 목록 칸의 폭과 글 칸까지의 틈. 본문이 쓰는 값이자 고정 탭 바가 자기
+   두 칸(사업명 · 소분류 탭)을 맞추는 값이다(2026-09-20 요청) — 페이지 <style>
+   의 .bnav 규칙이 이 두 변수를 읽는다. 한쪽만 고치면 바와 본문이 어긋난다 */
+:root{--rail-w:251px;--rail-gap:20px}
+@media(max-width:1200px){:root{--rail-w:200px}}
+
+.bsec{
+  /* 좌우 마진은 GNB·탭 바와 같은 --gm 을 쓴다(1800 에서 84 → 1632).
+     예전 캐러셀의 1440 캡 격자가 아니다. 섹션이 .wrap(1352 캡) 안에 들어 있으므로
+     음수 마진으로 그 밖까지 넓힌다. 에너지 인프라 '솔루션'처럼 그대로 둔 캐러셀
+     섹션은 .wrap 폭을 계속 쓴다.
+     ⚠ 한동안 168px 을 박아 뒀는데, --gm 은 화면이 좁아지면 단계로 줄어드는 값이라
+       (1600 에서 64, 1280 에서 40) 1600 아래서 바와 본문의 좌우 끝이 어긋났다.
+       이제 바가 본문 칸에 맞춰 서므로(2026-09-20) 기준이 하나여야 한다 */
+  width:calc(100vw - 2 * var(--gm,84px));max-width:none;
+  margin-inline:calc((100% - (100vw - 2 * var(--gm,84px))) / 2);
+  display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr);gap:var(--rail-gap);align-items:start;
+  padding:120px 0;border-bottom:1px solid var(--border-g);
+  /* 캐러셀 시절의 화면 높이·스냅을 푼다 */
+  height:auto;min-height:0;overflow:visible;
+}
+.bsec+.bsec{border-top:0}
+
+/* ── 왼쪽 소분류 목록 ────────────────────────────────────────────── */
+/* top:168px — 고정 탭 바(128) + 그 밑 가로선(12) + 숨(28). 카드가 굴러와 서는
+   선과 같은 값이라(business-a.js 의 OFFSET, .hcard 의 scroll-margin-top)
+   목록 첫 줄과 그 카드 제목이 한 줄에 선다 */
+.bsec-rail{display:flex;flex-direction:column;position:sticky;top:168px}
+.bsec-rail button{display:flex;align-items:center;gap:12px;min-height:39px;padding:9px 0;
+  background:none;border:0;cursor:pointer;text-align:left;
+  font-family:var(--suit);font-weight:500;font-size:18px;line-height:1.15;letter-spacing:-.32px;
+  color:var(--teritary);transition:color .2s var(--ease)}
+.bsec-rail button::before{content:"–";flex:none}
+.bsec-rail button:hover{color:var(--sec)}
+.bsec-rail button[aria-current="true"]{font-weight:700;color:var(--brand)}
+/* 소분류가 하나면 탭이랄 것이 없지만, 자리는 그대로 둬 글 시작선이 흔들리지 않게 한다 */
+
+/* 묶음 머리글(.hintro) — 캐러셀 시절엔 카드 위에 가로로 눕던 띠였다.
+   새 틀에서는 글 칸과 같은 줄(2열)에 서서 첫 카드 위에 붙는다.
+   ⚠ 섹션의 바로 밑 자식이어야 한다(에너지 인프라 마크업, 2026-09-20). 글 칸
+     (.bsec-main) 안에 두면 왼쪽 목록이 이 줄글 높이만큼 위로 올라가 붙어,
+     목록·제목·그림 세 칸의 시작선이 어긋난다. 격자의 1행 2열에 따로 앉히고
+     목록과 글 칸을 2행으로 내려 셋이 같은 줄에서 시작하게 한다 */
+.bsec>.hintro{grid-column:2;grid-row:1;padding:0 0 40px;max-width:1362px}
+.bsec>.hintro p{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.6;letter-spacing:-.96px;color:#5a6675}
+.bsec:has(>.hintro)>.bsec-rail,
+.bsec:has(>.hintro)>.bsec-main{grid-row:2}
+.bsec:has(>.hintro)>.bsec-rail{grid-column:1}
+.bsec:has(>.hintro)>.bsec-main{grid-column:2}
+.bsec>.hintro-bg{display:none}
+
+/* ── 카드 — 글 칸과 사진 칸 ──────────────────────────────────────── */
+.bsec-main{min-width:0}
+.bsec .hcard{display:grid;grid-template-columns:minmax(0,661fr) minmax(0,681fr);gap:20px;
+  align-items:start;height:auto;min-height:0;padding:0;margin:0;overflow:visible;
+  flex:none;background:none;border:0}
+.bsec .hcard[hidden]{display:none}
+/* 카드가 전부 펼쳐져 세로로 쌓인다(2026-09-20). 사이 여백은 섹션 위아래 여백
+   (120)과 같은 값 — 같은 묶음 안의 카드 사이가 섹션 사이보다 좁아 보이도록
+   섹션에는 밑변 실선이 하나 더 있다.
+   scroll-margin-top 은 앵커·스크립트가 카드를 굴려 세울 때 위에 남기는 자리다.
+   고정 탭 바(128) + 가로선(12) + 숨(28) = 168 */
+.bsec .hcard+.hcard{margin-top:120px}
+.bsec,.bsec .hcard{scroll-margin-top:168px}
+.bsec .hcard>.hleft{flex:none;width:auto;min-width:0;margin:0;padding:0 128px 0 0;
+  background:none;border:0;overflow:visible;display:flex;flex-direction:column;gap:20px;
+  /* 글 칸을 카드 높이(= 그림 높이)만큼 늘린다 — 아래 목록을 그림 밑선까지
+     내려 붙이기 위한 자리다. 카드 자체는 align-items:start 라 그림 칸은
+     제 비율(681:623)대로 남는다 */
+  align-self:stretch}
+/* 줄글 끝에 오는 목록은 그림 밑선에 맞춰 세운다 (2026-09-20 요청) — 종전에는
+   줄글 바로 밑에 붙어, 그림이 그보다 300px 넘게 내려가는 카드에서는 왼쪽만
+   위쪽에 몰려 있었다. margin-top:auto 가 남는 자리를 전부 위로 밀어낸다.
+   글이 그림보다 긴 카드(LiFSI 전해염 등)에서는 남는 자리가 없어 그대로 있다.
+   ⚠ 마지막 자식일 때만 건다 — 목록 뒤에 또 무엇이 오면(탄소 나노 튜브의 사진
+     띠) 그 사이가 벌어져 두 덩이가 갈라진다 */
+.bsec .hcard>.hleft>:last-child:is(ul,ol,.sf-picks){margin-top:auto}
+.bsec .hcard>.hright{flex:none;width:auto;min-width:0;margin:0;padding:0;
+  background:none;border:0;overflow:hidden;display:block;aspect-ratio:681/623}
+.bsec .hcard>.hright>img,
+.bsec .hcard>.hright>picture>img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ── 세 칸의 윗변을 한 선에 (2026-09-20 요청) ─────────────────────────
+   캐러셀 시절 카드에는 "제목 위 숨" 40px 이 여기저기 붙어 있었다 — 글 칸의
+   padding-top, 그림 판의 margin-top, 옛 인덱스 레일(.hrail)의 padding-top.
+   상자가 있던 시절 테두리에서 내용을 띄우려던 값이라, 상자를 걷고 세 칸이
+   나란히 선 지금은 칸마다 시작선이 40px 씩 어긋나 보인다.
+   (s1 은 글만 40 내려가고, 카드가 하나뿐인 s2·s3 은 레일만 40 내려가 있었다)
+   ⚠ 특정도 — 지우려는 규칙들이 페이지 <style> 안에 있고 이 파일보다 뒤에 오므로
+     같은 점수로는 진다. 일부러 한 단씩 올려 잡았다:
+       .hcard[data-tab*="…"]>.hleft  ↔  .bsec .hcard[data-tab]>.hleft
+       .hcard:has(.pict)>.hright     ↔  .bsec .hcard:has(.pict)>.hright */
+.bsec .hcard>.hleft,
+.bsec .hcard[data-tab]>.hleft{padding-top:0}
+/* 오른쪽 128 도 같은 사정이다 — 본문 폭은 카드마다 같아야 한다(글 칸 661 에서
+   128 을 비운 533). 스마트 제조의 두 장(활성화 공정 · 글로벌 에이프로 네트워크)만
+   세로로 쌓던 시절의 규칙(padding:40px 0 24px)이 그 여백을 0 으로 되돌려,
+   같은 자리에서 글줄만 128 더 길었다. 2026-09-20 요청으로 통일한다 */
+.bsec .hcard[data-tab]>.hleft{padding-right:128px}
+.bsec .hcard>.hright,
+.bsec .hcard:has(.pict)>.hright{margin-top:0}
+.bsec .hrail{padding-top:0}
+/* 그림 대신 판(공정 맵 · 지도 · 화면 캡처)이 들어가는 칸은 비율을 풀고 내용이 높이를 정하게 둔다 —
+   틀에 억지로 맞추면 도식의 글자가 잘린다 */
+.bsec .hcard>.hright.is-plate{aspect-ratio:auto;display:flex;flex-direction:column;justify-content:center;gap:16px;background:none}
+.bsec .hcard>.hright.is-plate>img{height:auto;object-fit:contain}
+/* 사진을 겹쳐 두고 갈아 끼우는 칸(.hph--picks · .hph--slides)은 속 판이 absolute 라
+   바깥이 높이를 쥐고 있어야 한다 — 비율을 유지하고 기준 상자로 세운다 */
+.bsec .hcard>.hright.hph--picks,
+.bsec .hcard>.hright.hph--slides{position:relative;aspect-ratio:681/623;display:block;background:var(--secondary-bg)}
+.bsec .hcard>.hright.hph--slides>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+/* 캐러셀 시절엔 공정 맵 같은 그림이 카드 밖으로 번져 나가도 됐다(화면을 꽉 채우는 장이었다).
+   이제는 오른쪽 칸 안에 들어와야 한다 */
+.bsec .hcard>.hright img,
+.bsec .hcard>.hright svg{max-width:100%}
+.bsec .hcard>.hright.is-plate>img{width:100%}
+
+/* ── 글 위계 — 제목 30 · 리드 20 · 본문 16 ───────────────────────── */
+.bsec .hcard h3{font-size:30px;line-height:1.3;letter-spacing:-.6px;color:var(--g900)}
+/* h3 바로 밑의 한 줄이 리드다 (본문 묶음 .hlead 보다 굵고 크다) */
+.bsec .hcard>.hleft>p{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;
+  letter-spacing:-1.2px;color:var(--g900);padding-left:0}
+.bsec .hcard>.hleft>p::before{display:none}
+.bsec .hlead{display:flex;flex-direction:column;gap:8px}
+.bsec .hlead p{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1.6;
+  letter-spacing:-.96px;color:#5a6675;padding-left:0}
+.bsec .hlead p::before{display:none}
+/* 불릿 목록(소제목 + 설명)은 점을 살린다 — 시안의 Cycler 칸과 같은 모양 */
+.bsec .hcard ul li{font-size:16px;line-height:1.6;letter-spacing:-.96px;color:#5a6675}
+.bsec .hcard ul li b{font-weight:700;color:var(--g900)}
+
+@media(max-width:1200px){
+  /* 레일 폭은 위 :root 의 --rail-w 가 이미 200px 로 줄여 놓았다(바도 함께 따라온다).
+     [data-tab] 까지 함께 적는 이유 — 위에서 128 을 박을 때 한 단 올려 잡았으므로,
+     여기서도 같은 무게라야 좁은 화면에서 128 이 그대로 남지 않는다 */
+  .bsec .hcard>.hleft,
+  .bsec .hcard[data-tab]>.hleft{padding-right:48px}
+}
+@media(max-width:900px){
+  .bsec{width:auto;margin-inline:0;grid-template-columns:minmax(0,1fr);gap:32px;padding:80px 0}
+  .bsec-rail{position:static;flex-direction:row;flex-wrap:wrap;gap:0 20px}
+  .bsec .hcard{grid-template-columns:minmax(0,1fr);gap:24px}
+  .bsec .hcard>.hleft,
+  .bsec .hcard[data-tab]>.hleft{padding-right:0}
+  .bsec .hcard>.hright{aspect-ratio:16/10}
+}

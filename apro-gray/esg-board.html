@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
 <link rel="stylesheet" href="content-side.css" />
+<link rel="stylesheet" href="a-common.css" />
 <!-- ============================================================
      지속가능경영 > ESG 게시판
 
@@ -48,7 +49,7 @@
   </nav>
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 인프라</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a></div>
     <div class="m-col" data-i="3"><a href="esg-environment.html">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html" aria-current="page">ESG 게시판</a></div>
     <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
@@ -57,11 +58,16 @@
 </div>
 
 <!-- ===================== 히어로 ===================== -->
-<section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 78%"><img src="../assets/vision-solar-farm.jpg" alt="" aria-hidden="true" /></span>
+<!-- 히어로 — 회사소개와 같은 꼴(a-common.css 의 .dhero--co).
+     h1 이 [이름표]가 되고, 아래 한 줄이 슬로건 자리에 선다 -->
+<section class="dhero dhero--co">
+  <!-- 풍력 발전기 (2026-09-20 사용자 제공, satyam-kapoor-Ti2Iq4aWt-0-unsplash.jpg 를
+         2560×1920 으로 줄여 웹용으로 둔 것). 55% 는 위 날개 끝과 아래 지평선이
+         모두 띠 안에 들어오는 지점이다 — 글이 서는 왼쪽은 빈 하늘이라 흰 글이 읽힌다 -->
+    <span class="dhero-bg" style="--hero-pos:50% 55%"><img src="../assets/esg-wind-turbine.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <h1>ESG 게시판</h1>
-    <p class="dhero-lead">책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.</p>
+    <h1 class="chero-tag"><span>ESG 게시판</span></h1>
+    <p class="dhero-lead">책임 있는 경영을 통해<br />더 나은 가치를 실현하겠습니다.</p>
   </div>
 </section>
 
@@ -151,7 +157,7 @@
       </div>
       <div class="f-col">
         <p class="head">회사 정보</p>
-        <ul><li><a href="company.html">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+        <ul><li><a href="company.html">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="locations.html">사업장소재</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
@@ -171,7 +177,7 @@
       <div class="f-links">
         <a href="network.html">글로벌 네트워크</a><i class="sep"></i>
         <a href="#">Contact us</a><i class="sep"></i>
-        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="locations.html">사업장소재</a><i class="sep"></i>
         <a href="#">이메일무단수집거부</a><i class="sep"></i>
         <a href="#" class="strong">개인정보처리방침</a>
       </div>
@@ -223,7 +229,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">회사 정보</div>
-      <div class="ov-links"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+      <div class="ov-links"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>

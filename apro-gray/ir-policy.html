@@ -14,6 +14,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
 <link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="a-common.css" />
 <!-- ============================================================
      투자정보 > 재무정보
 
@@ -47,7 +48,7 @@
   </nav>
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 인프라</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    <div class="m-col" data-i="1"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a><a href="ir-policy.html" aria-current="page">내부규정</a></div>
     <div class="m-col" data-i="3"><a href="esg-environment.html">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
     <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
@@ -56,11 +57,17 @@
 </div>
 
 <!-- ===================== 히어로 ===================== -->
-<section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 8%"><img src="../assets/hq-exterior.jpg" alt="" aria-hidden="true" /></span>
+<!-- 히어로 — 회사소개와 같은 꼴(a-common.css 의 .dhero--co).
+     h1 이 [이름표]가 되고, 아래 한 줄이 슬로건 자리에 선다.
+     사진은 2026-09-20 에 hq-exterior 에서 hq-campus(사옥 원경)로 갈았다.
+     --hero-pos 의 56% 는 A-PRO 간판이 붙은 동을 화면 가운데 가까이 두려는 값
+     (좁은 화면에서 가로로 잘려도 사옥이 남는다), 45% 는 하늘을 조금 더 남겨
+     흰 글씨가 앉을 자리를 비우는 값이다 -->
+<section class="dhero dhero--co">
+  <span class="dhero-bg" style="--hero-pos:56% 45%"><img src="../assets/hq-campus.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <h1>내부규정</h1>
-    <p class="dhero-lead">재무 보고의 신뢰성과 공정한 정보 공개를 뒷받침하는 회사의 내부 규정입니다.</p>
+    <h1 class="chero-tag"><span>내부규정</span></h1>
+    <p class="dhero-lead">재무 보고의 신뢰성과 공정한 정보 공개를<br />뒷받침하는 회사의 내부 규정입니다.</p>
   </div>
 </section>
 
@@ -230,7 +237,7 @@
       </div>
       <div class="f-col">
         <p class="head">회사 정보</p>
-        <ul><li><a href="company.html">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+        <ul><li><a href="company.html">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="locations.html">사업장소재</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
@@ -250,7 +257,7 @@
       <div class="f-links">
         <a href="network.html">글로벌 네트워크</a><i class="sep"></i>
         <a href="#">Contact us</a><i class="sep"></i>
-        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="locations.html">사업장소재</a><i class="sep"></i>
         <a href="#">이메일무단수집거부</a><i class="sep"></i>
         <a href="#" class="strong">개인정보처리방침</a>
       </div>
@@ -302,7 +309,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">회사 정보</div>
-      <div class="ov-links"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+      <div class="ov-links"><a href="company.html">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>

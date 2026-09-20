@@ -8,8 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<!-- 회사소개 A 의 큰 글(Vision 제목 · 장 이름 · AAA 키워드)은 Roboto 다 —
+     좁은 Roboto Condensed 와 다른 서체이므로 따로 받는다 (2026-09-20 시안) -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
+<link rel="stylesheet" href="a-common.css" />
+<link rel="stylesheet" href="info-a.css" />
 <!-- ============================================================
      회사소개 — 구성(뼈대)만 잡아둔 초안. 세부 디자인은 아직 정해지지 않았다.
 
@@ -235,7 +240,7 @@
        글자는 판 한가운데에 놓인다 (홈 밑단 탭이 칸을 5등분해 쓰는 것과 같은 짜임) */
     .cnav-tabs{position:absolute;left:var(--sec-inset);right:var(--sec-inset);top:0;bottom:0;
       width:auto;height:auto;
-      display:grid;grid-template-columns:repeat(3,1fr);column-gap:0;
+      display:grid;grid-template-columns:repeat(2,1fr);column-gap:0;
       justify-items:center;align-items:center;overflow:visible}
     /* 굵기 600, 크기 clamp(12px,1.3vw,20px) — 홈 밑단 탭과 같은 값이다
        (1728px 에서 20px. 폭이 좁아지면 세 이름이 칸을 넘치지 않게 같이 줄어든다) */
@@ -291,7 +296,7 @@
     .cnav-wrap.is-fixed .cnav-tabs::after{top:12px;bottom:4px;
       background-image:linear-gradient(to right,
         transparent 0 calc(100% - 1px),var(--cnav-line) calc(100% - 1px) 100%);
-      background-size:calc(100% / 3) 100%;background-repeat:repeat-x}
+      background-size:calc(100% / 2) 100%;background-repeat:repeat-x}
     /* 탭 줄 아래를 가로지르는 선 — 여기서부터 본문이라는 경계. 고정 상태 전용이다:
        히어로 위에서는 유리가 제 테두리로 띠의 위·아래를 이미 말하고 있다.
        고정되면 바 아래로 12px 흰 띠를 이어 붙이고 그 밑에 선을 긋는다 — 탭 구분선이
@@ -2404,7 +2409,7 @@
   </nav>
   <div class="gnb-mega"><div class="inner"><span class="m-logo"></span><div class="m-cols">
     <div class="m-col" data-i="0"><a href="business-smart.html">스마트 제조</a><a href="business-energy.html">에너지 인프라</a><a href="business-ai.html">인공지능 플랫폼</a><a href="business-semicon.html">화합물 전력 반도체</a></div>
-    <div class="m-col" data-i="1"><a href="company.html" aria-current="page">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+    <div class="m-col" data-i="1"><a href="company.html" aria-current="page">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a></div>
     <div class="m-col" data-i="3"><a href="esg-environment.html">환경</a><a href="esg-social.html">사회</a><a href="esg-governance.html">지배구조</a><a href="esg-report.html">내/외부 신고채널</a><a href="esg-board.html">ESG 게시판</a></div>
     <div class="m-col" data-i="4"><a href="community-notice.html">공지사항</a><a href="community-press.html">보도자료</a></div>
@@ -2412,336 +2417,123 @@
   <div class="lang-menu" id="langMenu"><a href="#" class="on">KOR</a><a href="#">ENG</a></div>
 </div>
 
-<!-- ===================== HERO ===================== -->
-<!-- [임시] 배경은 본사 사옥 사진. 전력변환·배터리·에너지를 담은 영상으로 갈아 끼울
-     자리이며, 그때는 <img> 를 <video autoplay muted loop playsinline> 로 바꾸면
-     위 CSS 는 그대로 쓴다. --hero-pos 는 이 크롭에서의 기준점 -->
-<section class="dhero">
-  <span class="dhero-bg" style="--hero-pos:50% 46%"><img src="../assets/hq-exterior.jpg" width="2560" height="1446" alt="" aria-hidden="true" /></span>
-  <div class="in">
-    <!-- 문안은 영문 슬로건 한 줄뿐이고, 그 줄이 곧 이름표 자리(h1)에 선다.
-         잠깐 세부 페이지처럼 [이름표 "회사 소개" + 문장 슬로건] 두 덩어리로 세워 봤는데
-         (2026-08-14), 페이지 이름보다 슬로건이 더 중요한 자리라 되돌렸다 — "회사 소개"는
-         GNB·목차 탭·고정 바 좌측 명칭이 이미 세 번 말하고 있어 히어로에서 가장 큰 글을
-         내줄 만큼은 아니다. 세부 페이지와 덩어리 수가 달라지는 것은 감수한다.
-         국문 두 문안(미래에너지를 만드는… / 공정 장비의…)은 그대로 About 줄글 머리에 있다.
-         줄바꿈은 뜻의 마디에서 끊는다 — [electrical engineering] / [solution provider] -->
-    <h1>THE BEST ELECTRICAL ENGINEERING<br />SOLUTION PROVIDER</h1>
+<!-- ===================== HERO (Figma 1354:419) =====================
+     사진 히어로에서 단색 판으로 바뀌었다 (2026-09-20). 사옥 사진과 영문 슬로건
+     한 줄이 화면을 꽉 채우던 자리에, 이름표 + 슬로건 두 줄이 730px 짜리 어두운
+     판 위에 선다. 밑단 100px 은 목차 탭 바가 음수 마진으로 올라와 덮는다 -->
+<section class="chero">
+  <!-- 사옥 항공 사진 (2026-09-20 사용자 제공, DJI 원본 3840×2160 PNG 7.7MB 를
+       2560×1440 JPEG 195KB 로 줄였다). 시안 히어로는 단색 판이지만 사진을 깔기로
+       했고, 흰 글이 하늘 위에서도 읽히도록 왼쪽을 어둡게 덮는다(.chero::after) -->
+  <img class="chero-bg" src="../assets/hq-aerial.jpg" width="2560" height="1440"
+       alt="" aria-hidden="true" />
+  <p class="chero-tag crv"><span>회사 소개</span></p>
+  <h1 class="crv">The Best Electrical Engineering<br />Solution Provider</h1>
+</section>
+
+<!-- 2026-09-20 : 목차 탭 바를 걷었다(요청). 시안(1354:2)에 없던 것이고, 장이 둘뿐이라
+     목차가 할 일도 크지 않다. 규칙(.cnav-*)과 그 자리를 비우던 값(--cnav-clear)은
+     <style> 에 그대로 남겨 둔다 — 회사소개 A-1 이 같은 <style> 을 물려받은 형제다 -->
+
+<!-- ===================== 01 · VISION 2030 (Figma 1354:7) ===================== -->
+<section class="cvis2" id="vision">
+  <p class="lbl crv">Vision 2030</p>
+  <div class="cvis-body crv">
+    <h2>Global Top 5<br />Total Energy - Solution Provider</h2>
+    <div class="lead">
+      <p>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p>
+      <p>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p>
+    </div>
   </div>
 </section>
 
-<!-- ==== 목차 탭 바 — 히어로 밑단에 얹힌다 (고정 상태는 쓰지 않는다) ==== -->
-<div class="cnav-wrap">
-  <nav class="cnav" aria-label="회사소개 목차">
-    <!-- 바가 상단에 고정될 때만 보이는 좌측 명칭. 사업영역 세부 페이지 고정 바에서
-         대분류(사업명)가 서는 자리와 같다 — 히어로가 화면 밖으로 나간 뒤 "여기가 어디인지"를
-         잇는 줄이라, 읽어 주는 순서에서는 빠뜨려도 그만이다(aria-hidden) -->
-    <p class="cnav-ttl" aria-hidden="true">회사 소개</p>
-    <div class="cnav-tabs">
-      <a href="#vision" aria-current="true">Vision 2030</a>
-      <a href="#aaa">AAA Strategy</a>
-      <a href="#about">About A-PRO</a>
+<!-- ===================== 02 · AAA STRATEGY (Figma 1377:37554 · 1377:37508) =====================
+     한 줄 = [키워드 글][그림]. 줄마다 좌우가 뒤집히고 바탕이 옅은 파랑 ↔ 흰색으로 갈린다.
+     뒤집기는 CSS 가 자리만 바꾸므로 마크업은 세 줄 모두 [글][그림] 순서다.
+     사진 셋은 예전 A 무대에서 세 A 의 다리에 깔려 있던 것을 그대로 옮겼다 —
+     신뢰성 실험실 / 수상 진열장 / 사무 공간이 각각 선진화 · 적극성 · 민첩성이다 -->
+<div class="aaasec" id="aaa">
+
+  <p class="aaa-hd crv">AAA Strategy</p>
+
+  <section class="aaarow">
+    <div class="aaa-txt crv">
+      <div class="strategy">
+        <p class="kn">Advanced</p>
+        <div class="say">
+          <p class="t">앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+          <p class="d">핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로<br />남보다 먼저 새로운 영역을 열어갑니다.</p>
+        </div>
+      </div>
+      <div class="keys">
+        <span class="key"><b>Advance</b><i>진보</i></span>
+        <span class="key"><b>Pioneer</b><i>개척</i></span>
+      </div>
     </div>
-  </nav>
-  <span class="cnav-rule" aria-hidden="true"></span>
+    <div class="aaa-img crv">
+      <img src="../assets/aaa-reliability-lab.jpg" width="1100" height="1631" loading="lazy"
+           alt="계측 장비가 늘어선 에이프로 신뢰성 실험실" />
+    </div>
+  </section>
+
+  <section class="aaarow">
+    <div class="aaa-txt crv">
+      <div class="strategy">
+        <p class="kn">Aggressive</p>
+        <div class="say">
+          <p class="t">도전적이고 과감한 자세로 시장을 확대합니다.</p>
+          <p class="d">Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로<br />눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p>
+        </div>
+      </div>
+      <div class="keys">
+        <span class="key"><b>Aggressiveness</b><i>적극성</i></span>
+        <span class="key"><b>Remarkability</b><i>탁월함</i></span>
+      </div>
+    </div>
+    <div class="aaa-img crv">
+      <img src="../assets/aaa-award-shelf.jpg" width="1100" height="1527" loading="lazy"
+           alt="수상 기념패와 인증서가 놓인 진열장" />
+    </div>
+  </section>
+
+  <section class="aaarow">
+    <div class="aaa-txt crv">
+      <div class="strategy">
+        <p class="kn">Agile</p>
+        <div class="say">
+          <p class="t">빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+          <p class="d">Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼<br />민첩하고 능동적으로 움직이는 조직을 지향합니다.</p>
+        </div>
+      </div>
+      <div class="keys">
+        <span class="key"><b>Agility</b><i>민첩성</i></span>
+        <span class="key"><b>Organism</b><i>유기적 조직</i></span>
+      </div>
+    </div>
+    <div class="aaa-img crv">
+      <img src="../assets/aaa-office-floor.jpg" width="1100" height="1520" loading="lazy"
+           alt="구성원들이 일하는 에이프로 사무 공간" />
+    </div>
+  </section>
+
 </div>
-<!-- 바 밑변의 안개 띠 — 밑으로 흘러 들어가는 글이 칼로 자른 듯 끊기지 않게 뒤를 흐린다.
-     바 안이 아니라 바로 다음 형제여야 한다 : 바는 고정되면 제 상자가 화면 위 128px 뿐이라
-     그 안에 두면 아래로 삐져나온 이 띠가 바와 함께 잘린다. 살고 죽는 것은 CSS 가
-     .is-fixed 를 옆에서 읽어 정한다 -->
-<span class="cnav-fog" aria-hidden="true"></span>
 
-<!-- ===================== 01 · VISION 2030 ===================== -->
-<!-- 스크롤이 이 장을 지나는 동안 단계(data-step 0~4)가 올라가며 한 장면씩 놓인다.
-     data-at 은 그 요소가 몇 번째 단계에 놓이는지다 (표와 큰 문장 둘은 표가 열리며 함께 드러난다).
-     앞뒤 밝은 섹션 사이에서 이 장만 어둡게 간다 (선·이미지 자리 색은 --vline/--vph 가 받는다) -->
-<section class="cvision" id="vision" data-step="0">
-  <div class="cvis-track">
-    <div class="cvis-stage">
-      <!-- 0단계에만 보이는 큰 제목. 1단계에서 사라지고 아래 제목이 제자리에서 올라온다 -->
-      <p class="cvis-hero" aria-hidden="true">VISION 2030</p>
-      <div class="cwrap">
-        <p class="ceyebrow" data-at="1">VISION 2030</p>
-
-        <div class="cvis-grid">
-          <div class="c c--h"><p data-at="1">Global Top 5</p></div>
-          <div class="c c--t"><p data-at="2">에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p></div>
-          <div class="c c--t"><p data-at="3">단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p></div>
-          <div class="c c--h"><p data-at="1">Total Energy - Solution Provider</p></div>
-        </div>
-
-        <!-- 네 사업영역이 한 줄기에서 갈라져 나온다는 그림. 칸 사이를 잇는 눈금만 남기고
-             위에 있던 괄호(Bidirectional Power Conversion)는 걷었다 -->
-        <div class="cvis-flow">
-          <!-- 원본은 모두 16:9 보다 세로로 길다 → 상하가 조금 잘린다(object-fit:cover).
-               주제가 모두 화면 한가운데에 있어 가운데 크롭으로 잘려 나가는 것이 없다 -->
-          <ul class="cvis-items">
-            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-smart-factory.png" width="1639" height="960" loading="lazy"
-                  alt="공정 설비들이 늘어선 자리 가운데 빛나는 장치 묶음" /></span></span><p>스마트 제조</p></li>
-            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-ess.png" width="1536" height="1024" loading="lazy"
-                  alt="컨테이너형 에너지 저장 장치가 늘어선 발전 단지" /></span></span><p>에너지 인프라</p></li>
-            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-ev-platform.png" width="1638" height="960" loading="lazy"
-                  alt="도심 도로 위에서 주변과 신호를 주고받는 전기자동차" /></span></span><p>인공지능 플랫폼</p></li>
-            <li data-at="4"><span class="ph"><span class="im"><img src="../assets/vision-power-semicon.png" width="1536" height="1024" loading="lazy"
-                  alt="소자가 새겨진 전력 반도체 웨이퍼" /></span></span><p>화합물 전력 반도체</p></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== 02 · AAA STRATEGY (+ CULTURE) ===================== -->
-<!-- 스크롤이 이 장을 지나는 동안 단계(data-step 0~6)가 올라가며 하나씩 켜진다.
-     마지막 단계에서 로고가 완성되고 Culture 문구로 장을 닫는다 (예전 Culture 섹션이 여기로 들어왔다) -->
-<section class="caaasec" id="aaa" data-step="0">
-  <div class="caaa-track">
-    <div class="caaa-stage">
-      <!-- 0단계에만 보이는 큰 제목. 1단계에서 사라지고 아래 내용이 제자리에서 올라온다 -->
-      <p class="caaa-hero" aria-hidden="true">AAA Strategy</p>
-      <div class="cwrap">
-
-        <!-- ── A 전용 : 바닥에 붙은 채 커지는 A (2026-08-13, 시안 2) ──────────────────
-             A-1 은 아래 옛 블록(워드마크 · 3행 표 · 문구 띠)을 그대로 쓴다. 두 시안이 한
-             파일에 사는 방식은 Vision 과 같다 — 서로 상대 것을 display:none 으로 덮는다.
-             display:none 이면 읽기 도구도 건너뛰므로 같은 말이 두 번 읽히지 않는다.
-             ⚠ 두 시안은 문안이 다르다. A 는 AAA 를 Advanced · Aggressive · Agile 로 적고
-               6대 가치를 왼쪽 짝으로 따로 세우지만, A-1 은 표 한 장에 다 넣는다.
-               고칠 때 A-1 쪽(.caaa-rows)도 같은 말인지 보고 판단한다.
-             ⚠ A 는 큰 것부터 적어 둔다 — 뒤에 오는 것이 위에 그려지므로, 가장 작은 A 가
-               맨 앞에 오려면 순서가 거꾸로여야 한다 (켜지는 순서는 data-at 이 갖는다) -->
-        <div class="aorb">
-          <div class="aorb-head">
-            <p class="lead" data-at="1">VISION 2030을 실현하는</p>
-            <p class="en" data-at="1">AAA Strategy</p>
-          </div>
-
-          <div class="aorb-plate">
-            <span class="aorb-a a3" data-at="4" aria-hidden="true"></span>
-            <span class="aorb-a a2" data-at="3" aria-hidden="true"></span>
-            <span class="aorb-a a1" data-at="2" aria-hidden="true"></span>
-
-            <!-- 한 뭉치 = [짝 · 키워드 + 뜻 · 문장 둘]. 키워드 하나가 6대 가치 둘을 업는
-                 구조라(A-PRO 의 A 와 PRO) 짝을 머리글로 얹고, 문장은 키워드 뜻 · 짝 뜻
-                 순으로 잇는다. 셋 다 켜진 채 남는다 -->
-            <!-- .ks 는 미끄러지는 껍질이다 — 자름선(clip-path)은 li 가 제자리에서 들고 있고
-                 글만 그 안에서 움직여야, 다리 뒤에서 나오는 것으로 보인다 -->
-            <ul class="aorb-keys">
-              <li class="k1" data-at="2"><div class="ks">
-                <span class="kn"><b>Advanced</b><i>선진화</i></span>
-                <em><span class="v">Advance</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Pioneer</span></span></em>
-                <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
-                <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p></div></li>
-              <li class="k2" data-at="3"><div class="ks">
-                <span class="kn"><b>Aggressive</b><i>적극성</i></span>
-                <em><span class="v">Aggressiveness</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Remarkability</span></span></em>
-                <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
-                <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p></div></li>
-              <li class="k3" data-at="4"><div class="ks">
-                <span class="kn"><b>Agile</b><i>민첩성</i></span>
-                <em><span class="v">Agility</span><span class="pl"><span class="x" aria-hidden="true">＋</span><span class="v">Organism</span></span></em>
-                <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
-                <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p></div></li>
-            </ul>
-          </div>
-
-          <!-- 장을 닫는 말 — 세 A 가 다 자란 뒤에 붙는다(A-1 의 .caaa-msg 와 같은 문장) -->
-          <div class="aorb-note" data-at="4">
-            <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 인프라 기업으로 나아갑니다.</p>
-          </div>
-        </div>
-
-        <div class="caaa-head">
-          <!-- 워드마크 한 벌(#apro-word)을 글자별로 잘라 다섯 겹으로 겹쳐 놓는다 —
-               조각마다 색을 따로 줄 수 있어야 "여기까지 왔다"를 색으로 말할 수 있다.
-               켜지는 순서는 A → P → R → O → '-' (하이픈이 마지막에 로고를 닫는다) -->
-          <svg class="caaa-mark" viewBox="0 0 484 103" role="img" aria-label="A-PRO">
-            <use class="l l-a" href="#apro-word" clip-path="url(#ap-a)"/>
-            <use class="l l-h" href="#apro-word" clip-path="url(#ap-h)"/>
-            <use class="l l-p" href="#apro-word" clip-path="url(#ap-p)"/>
-            <use class="l l-r" href="#apro-word" clip-path="url(#ap-r)"/>
-            <use class="l l-o" href="#apro-word" clip-path="url(#ap-o)"/>
-          </svg>
-          <div class="chead">
-            <p class="lead">VISION 2030을 실현하는</p>
-            <p class="en">AAA<br />Strategy</p>
-          </div>
-        </div>
-
-        <div class="caaa-prog" aria-hidden="true"><i></i></div>
-
-        <!-- 왼쪽 = A 의 세 키워드 / 가운데 = 그 줄이 잇는 글자(P·R·O)의 뜻 / 오른쪽 = 같은 키워드의 영문 -->
-        <ul class="caaa-rows">
-          <li class="caaa-row">
-            <span class="caaa-box caaa-key"><b>Advance</b><i>진보</i></span>
-            <i class="caaa-mid" aria-hidden="true"></i>
-            <span class="lbl"><b><em>P</em>ioneer</b><i>개척</i></span>
-            <span class="caaa-box caaa-val"><b>Advance</b><i>진보</i></span>
-          </li>
-          <li class="caaa-row">
-            <span class="caaa-box caaa-key"><b>Aggressiveness</b><i>적극성</i></span>
-            <i class="caaa-mid" aria-hidden="true"></i>
-            <span class="lbl"><b><em>R</em>emarkability</b><i>탁월함</i></span>
-            <span class="caaa-box caaa-val"><b>Aggressive</b><i>적극성</i></span>
-          </li>
-          <li class="caaa-row">
-            <span class="caaa-box caaa-key"><b>Agility</b><i>민첩성</i></span>
-            <i class="caaa-mid" aria-hidden="true"></i>
-            <span class="lbl"><b><em>O</em>rganism</b><i>유기적 조직</i></span>
-            <span class="caaa-box caaa-val"><b>Agile</b><i>민첩성</i></span>
-          </li>
-        </ul>
-
-        <!-- 단계별 문구 — 넷을 같은 칸에 겹쳐 두고 하나씩 보인다 -->
-        <div class="caaa-msg">
-          <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
-          <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
-          <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
-          <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로 6대 가치와 AAA 전략을 실천하여 글로벌 종합 에너지 인프라 기업으로 나아갑니다.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== 01–02 · BRAND STORY (A-1 갈래) =====================
-     A-1 에서 앞의 Vision(01) · AAA(02) 두 장을 이 한 장이 대신한다. 붙들거나 판을
-     넘기지 않고 그냥 흐른다 — 가운데로 세운 글 아래에 사진 한 장, 그 아래 AAA 세 줄.
-     ⚠ id 를 달지 않는다 — 앞의 두 장이 #vision · #aaa 를 이미 갖고 있어 겹친다.
-       A-1 에서는 아래 스크립트가 그 두 이름을 앞 장에서 떼어 이 장의 두 덩이로 옮긴다 -->
-<section class="story">
-
-  <!-- ===== 랜드스케이프 한 장면 (⑨-c) — 되돌리려면 이 덩이 하나만 지우면 된다 =====
-       두 판(Vision · AAA)에 걸친 붙박이 무대 한 장이다. 스크롤이 두 판 사이를 지나는
-       동안 아트가 왼쪽으로 미끄러지고 하늘이 낮에서 노을로 갈린다 — 같은 랜드스케이프를
-       카메라가 훑고 지나가는 그림이다.
-       읽을 것이 없어 aria-hidden. 움직임은 문서 끝 구동기가 내주는 값 하나(--p)가 몬다 -->
-  <div class="st-scene" aria-hidden="true">
-    <span class="st-sky"></span>
-    <span class="st-sky st-sky--dusk"></span>
-    <span class="st-art"><img src="../assets/landscape-buildings.svg"
-          width="1857" height="603" alt="" /></span>
-  </div>
-
-  <div class="cwrap">
-
-    <div class="story-vision">
-      <div class="st-head">
-        <p class="st-eye crv">VISION 2030</p>
-        <!-- ⚠ 이 두 줄의 글을 고치면 위 CSS 의 크기 계산(아랫줄 폭 = 글자 크기 × 13.55)도
-             다시 재야 한다 -->
-        <h2 class="st-big crv"><span>Global Top 5</span><span>Total Energy-Solution Provider</span></h2>
-        <div class="st-lead crv">
-          <p>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</p>
-          <p>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="story-aaa">
-      <div class="st-head">
-        <h2 class="st-ttl crv">AAA Strategy</h2>
-        <div class="st-note crv">
-          <p>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로,</p>
-          <p>6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 글로벌 종합 에너지 인프라 기업으로 나아갑니다.</p>
-        </div>
-      </div>
-
-      <!-- 줄 하나 = [핵심가치 두 낱말(dt) | 그 결과인 전략(dd)]. 격자는 <dl> 이 통째로
-           갖고 있어(위 CSS) 세 줄의 칸 선이 저절로 맞는다 — dt/dd 를 줄마다 묶지 않는 이유다 -->
-      <dl class="st-rows">
-        <dt class="st-src crv">
-          <span class="st-word"><i>진보</i><b><span class="ini">A</span>dvance</b></span>
-          <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>개척</i><b><span class="ini">P</span>ioneer</b></span>
-        </dt>
-        <dd class="st-out crv">
-          <span class="st-word"><i>선진화</i><b>Advanced</b></span>
-          <div class="st-desc">
-            <p>앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
-            <p>핵심 가치인 Advance(진보)와 Pioneer(개척) 정신으로 남보다 먼저 새로운 영역을 열어갑니다.</p>
-          </div>
-        </dd>
-
-        <dt class="st-src crv">
-          <span class="st-word"><i>적극성</i><b><span class="ini">A</span>ggressiveness</b></span>
-          <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>탁월함</i><b><span class="ini">R</span>emarkability</b></span>
-        </dt>
-        <dd class="st-out crv">
-          <span class="st-word"><i>적극성</i><b>Aggressive</b></span>
-          <div class="st-desc">
-            <p>도전적이고 과감한 자세로 시장을 확대합니다.</p>
-            <p>Aggressiveness(적극성)와 Remarkability(탁월함)를 바탕으로 눈에 띄는 성과와 차별화된 경쟁력을 만들어냅니다.</p>
-          </div>
-        </dd>
-
-        <dt class="st-src crv">
-          <span class="st-word"><i>민첩성</i><b><span class="ini">A</span>gility</b></span>
-          <span class="st-plus" aria-hidden="true">+</span>
-          <span class="st-word"><i>유기적 조직</i><b><span class="ini">O</span>rganism</b></span>
-        </dt>
-        <dd class="st-out crv">
-          <span class="st-word"><i>민첩성</i><b>Agile</b></span>
-          <div class="st-desc">
-            <p>빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
-            <p>Agility(민첩성)와 Organism(유기적 조직)을 통해 하나의 생명체처럼 민첩하고 능동적으로 움직이는 조직을 지향합니다.</p>
-          </div>
-        </dd>
-      </dl>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===================== 03 · ABOUT (회사소개 + 기업 현황) ===================== -->
-<!-- 스크롤이 이 장을 지나는 동안 화면이 붙들리고 단계(data-step 0~2)가 올라간다.
-     data-at 은 그 요소가 몇 번째 단계에 놓이는지다. 눈썹줄·헤드라인(.crv)만은 단계가
-     아니라 '화면에 들어올 때' 뜬다 — 장이 스크롤로 올라오는 동안 이미 서 있어야 한다 -->
-<section class="cabout" id="about" data-step="0">
-  <div class="cabt-track">
-    <div class="cabt-stage">
-      <div class="cwrap ccols">
-        <p class="ceyebrow crv">ABOUT A-PRO</p>
-        <!-- 확정 문안 (2026-08-03) -->
-        <!-- 줄글은 덩어리째가 아니라 문단마다 따로 올라온다 — 눈썹줄 → 헤드라인 두 줄 →
-             본문 순으로 읽는 차례대로 놓인다 (지연은 문서 끝 스크립트가 순번으로 매긴다) -->
-        <div class="ctext">
-          <!-- 히어로에서 내려온 두 줄 -->
-          <div class="cabt-lead">
-            <p class="crv">미래에너지를 만드는 에이프로 A-PRO</p>
-            <p class="crv">공정 장비의 통합 설계 능력을 바탕으로 지속 성장 기반 구축</p>
-          </div>
-          <p data-at="1">A-PRO는 이차전지 제조 공정의 핵심 장비를 글로벌 시장에 공급하는 에너지 인프라 전문기업입니다.</p>
-          <p data-at="1">독자적인 전력변환 및 정밀 제어 기술을 기반으로 전기자동차와 e-Mobility 등 다양한 배터리 응용 분야에 최적화된 통합 솔루션을 제공합니다.</p>
-          <p data-at="1">A-PRO는 고효율 전력변환 기술, 사용자 중심의 설계 역량, 축적된 생산 노하우와 체계적인 사후관리 시스템을 바탕으로 고객의 생산성과 품질 경쟁력을 높이고 있습니다. 앞으로도 첨단 전력변환·제어계측 기술을 지속적으로 고도화하여, 글로벌 친환경 에너지 산업의 성장을 선도하는 기업으로 도약하겠습니다.</p>
-        </div>
-        <!-- 숫자는 크게, 항목명은 작게 — "무엇"보다 "얼마"를 먼저 보게 한다 -->
-        <ul class="cstats">
-          <li class="cstat" data-at="2"><p class="k">코스닥 상장</p><p class="v">2020<span class="u">.07.16</span></p></li>
-          <li class="cstat" data-at="2"><p class="k">업력</p><p class="v">26<span class="u">년</span></p><p class="n">2000.06.27 설립</p></li>
-          <li class="cstat" data-at="2"><p class="k">대표이사</p><p class="v">임종현</p></li>
-          <li class="cstat" data-at="2"><p class="k">임직원</p><p class="v">270<span class="u">명</span></p></li>
-          <li class="cstat" data-at="2"><p class="k">자본금</p><p class="v">72.3<span class="u">억 원</span></p></li>
-          <li class="cstat" data-at="2"><p class="k">매출액</p><p class="v">1,416.2<span class="u">억 원</span></p><p class="n">2025년</p></li>
-          <li class="cstat" data-at="2"><p class="k">3년 평균 매출액</p><p class="v">1,944.3<span class="u">억 원</span></p></li>
-          <li class="cstat" data-at="2"><p class="k">수출 비중</p><p class="v">80<span class="u">% 이상</span></p></li>
-        </ul>
-        <!-- 장을 닫는 와이드 사진 — 바로 위 숫자 표와 같은 격자 칸(2행)에 놓여 표의
-             바탕이 된다(위 CSS). 하늘은 AAA 장의 하늘과 이어지는 그림이다
-             (노을 하늘 + 태양광 패널 하늘 합성).
-             ⚠ 표보다 뒤에 적는다 — 겹치는 순서는 z-index 로 못 박지만, 읽어 주는
-               차례에서도 숫자가 먼저인 편이 맞다.
-             ⚠ A-1 에만 나온다. 이 장은 두 갈래가 같은 마크업을 쓰므로 마크업을 나누는
-               대신 위 CSS 의 body:not(.v-a1) .cabt-photo 가 A 에서 가린다 -->
-        <figure class="cabt-photo crv">
-          <img src="../assets/hq-sunset.jpg" width="2560" height="1511" loading="lazy"
-               alt="노을이 물든 하늘 아래 선 에이프로 글로벌 센터 사옥" />
-        </figure>
-      </div>
-    </div>
-  </div>
+<!-- ===================== 마감 띠 (Figma 1377:37611) =====================
+     시안에서는 납작한 그림 한 장이지만, 안에 든 것은 장을 닫는 말과 6대 핵심가치다 —
+     글로 세운다. 사진은 회사정보 A-1 네 장이 히어로로 쓰는 사옥 야경과 같은 장이다 -->
+<section class="cclose">
+  <img src="../assets/hq-night-sky-wide.jpg" width="2560" height="1440" loading="lazy"
+       alt="" aria-hidden="true" />
+  <p class="msg crv">에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로,<br />6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여<br />글로벌 종합 에너지 솔루션 기업으로 나아갑니다</p>
+  <!-- 6대 가치 — AAA 장의 키워드 원과 같은 부품이다(글씨도 같은 짝: 영문 + 국문) -->
+  <ul class="vals crv">
+    <li><b>Advance</b><i>진보</i></li>
+    <li><b>Aggressiveness</b><i>적극성</i></li>
+    <li><b>Agility</b><i>민첩성</i></li>
+    <li><b>Pioneer</b><i>개척</i></li>
+    <li><b>Remarkability</b><i>탁월함</i></li>
+    <li><b>Organism</b><i>유기적 조직</i></li>
+  </ul>
 </section>
 
 <!-- Culture 는 독립 섹션에서 빠졌다 — 마무리 문구가 위 AAA Strategy 의 마지막 단계로 들어갔다 -->
@@ -2761,7 +2553,7 @@
       </div>
       <div class="f-col">
         <p class="head">회사 정보</p>
-        <ul><li><a href="company.html" aria-current="page">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="#">사업장소재</a></li></ul>
+        <ul><li><a href="company.html" aria-current="page">회사 소개</a></li><li><a href="network.html">글로벌 네트워크</a></li><li><a href="locations.html">사업장소재</a></li></ul>
       </div>
       <div class="f-col">
         <p class="head">투자정보</p>
@@ -2781,7 +2573,7 @@
       <div class="f-links">
         <a href="network.html">글로벌 네트워크</a><i class="sep"></i>
         <a href="#">Contact us</a><i class="sep"></i>
-        <a href="#">사업장소재</a><i class="sep"></i>
+        <a href="locations.html">사업장소재</a><i class="sep"></i>
         <a href="#">이메일무단수집거부</a><i class="sep"></i>
         <a href="#" class="strong">개인정보처리방침</a>
       </div>
@@ -2838,7 +2630,7 @@
     </div>
     <div class="ov-row">
       <div class="ov-cat">회사 정보</div>
-      <div class="ov-links"><a href="company.html" aria-current="page">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="#">사업장소재</a></div>
+      <div class="ov-links"><a href="company.html" aria-current="page">회사 소개</a><a href="network.html">글로벌 네트워크</a><a href="locations.html">사업장소재</a></div>
     </div>
     <div class="ov-row">
       <div class="ov-cat">투자정보</div>
@@ -2867,279 +2659,15 @@
      (카드 캐러셀·소분류 탭 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
 <script>
-/* A-1 : 목차 탭이 가리키는 두 자리를 BRAND STORY 장으로 옮긴다.
-   A-1 에서는 Vision·AAA 두 장이 display:none 이고 그 자리를 이 장 하나가 대신하는데,
-   #vision · #aaa 라는 이름은 여전히 안 보이는 두 장이 쥐고 있다. 아래 스크립트들이
-   모두 그 이름으로 장을 찾으므로(탭 바 · 단계 구동기 · 스냅), 여기서 먼저 넘겨준다.
-   ⚠ 다른 스크립트보다 앞에 서야 한다 */
-(function(){
-  if(!document.body.classList.contains('v-a1'))return;
-  var st=document.querySelector('.story');if(!st)return;
-  var v=document.getElementById('vision'),a=document.getElementById('aaa');
-  var sv=st.querySelector('.story-vision'),sa=st.querySelector('.story-aaa');
-  if(v)v.removeAttribute('id');
-  if(a)a.removeAttribute('id');
-  if(sv)sv.id='vision';
-  if(sa)sa.id='aaa';
-})();
+/* 2026-09-20 : 무대를 걷으면서 스크립트도 함께 걷었다 —
+   · A-1 브랜드 스토리로 탭 자리를 옮기던 이음
+   · 장마다 단계(data-step)를 올리던 구동기
+   · 휠 한 번에 한 장을 넘기던 섹션 스냅
+   · 기업 현황 숫자 오르기 (그 장이 없어졌다)
+   · 랜드스케이프 모핑과 Vision↔AAA 무대 이음 둘
+   · 목차 탭 바 구동기 (2026-09-20 에 바 자체를 걷었다)
+   남은 것은 순번 지연 · 진입 연출 · 맨 위로 셋이다 */
 
-/* 목차 탭 바 — 히어로 상태 ↔ 상단 고정 전환 + 현재 섹션 표시.
-
-   전환 시점 : 히어로 밑변이 (바가 설 자리 --cnav-top + 히어로 밑단에서 내려온 거리
-   --cnav-drop) 까지 올라오는 순간. 두 값은 CSS 가 갖고 있고 화면 폭에 따라 달라지므로
-   여기서 읽어 쓴다 — 값이 한 곳(CSS)에만 있어야 전환 순간에 바가 튀지 않는다.
-
-   현재 섹션 : 화면 세로 중앙을 점유한 섹션. 풀스크린 판이 겹쳐 지나가는 페이지라
-   "위에서 몇 px" 같은 기준보다 중앙 한 점으로 묻는 편이 흔들리지 않는다
-   (business-layout.js 의 섹션 판정과 같은 기준) */
-(function(){
-  var wrap=document.querySelector('.cnav-wrap'),hero=document.querySelector('.dhero');
-  if(!wrap||!hero)return;
-  var tabs=[].slice.call(wrap.querySelectorAll('.cnav-tabs a[href^="#"]'));
-  var secs=tabs.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
-  var photo=document.querySelector('.cabt-photo');
-  var top=0,drop=0,fixed=null,cur=-1,shot=false;
-
-  function measure(){
-    var cs=getComputedStyle(wrap);
-    top=parseFloat(cs.getPropertyValue('--cnav-top'))||0;
-    drop=parseFloat(cs.getPropertyValue('--cnav-drop'))||0;
-  }
-  function paint(){
-    var v=hero.getBoundingClientRect().bottom-drop<=top+0.5;
-    /* 붙었다 떨어졌다만 여기서 한다 — 그동안 GNB 를 접고 꺼내는 일은 공용
-       스크립트(business-layout.js)가 이 바까지 같이 보고 처리한다. 한때 여기서
-       body.cnav-stuck 을 달아 이 페이지 CSS 로 접었는데, 사업영역 바와 같은
-       방식(.nav-hide)으로 통일하면서 그 클래스는 쓰는 곳이 없어졌다 */
-    if(v!==fixed){
-      fixed=v;
-      wrap.classList.toggle('is-fixed',v);
-    }
-
-    /* About 을 닫는 와이드 사진이 지금 안개 띠 뒤에 있는가 (2026-08-14).
-       그 띠(③ .cnav-fog)는 흐림에 밝기 1.35배를 얹어 글자를 바닥색으로 녹이는데,
-       그게 성립하는 근거가 "바닥이 흰 종이라 255 에서 잘린다" 였다. 중간 밝기의
-       사진이 뒤로 지나가면 그 밝기가 그대로 보여 사진을 가로지르는 흰 띠가 된다
-       (하늘 배경에서 겪은 것과 같은 일 — 위 CSS ⑨-b 의 [data-sky-bar] 참고).
-       띠의 자리는 바 밑변에서 잰다 : 윗변 +13(흰 띠 12 + 선 1), 아랫변 +39(키 26) */
-    if(photo){
-      var b=wrap.getBoundingClientRect().bottom,pr=photo.getBoundingClientRect();
-      var over=v&&pr.top<b+39&&pr.bottom>b+13;
-      if(over!==shot){shot=over;document.documentElement.toggleAttribute('data-photo-bar',over);}
-    }
-    var mid=window.innerHeight/2,best=-1;
-    for(var i=0;i<secs.length;i++){
-      if(!secs[i])continue;
-      var r=secs[i].getBoundingClientRect();
-      if(r.top<=mid&&r.bottom>=mid)best=i;   /* 겹쳐 있으면 뒤엣것(위에 올라온 판)이 이긴다 */
-    }
-    if(best<0||best===cur)return;
-    cur=best;
-    tabs.forEach(function(a,i){
-      if(i===best)a.setAttribute('aria-current','true');
-      else a.removeAttribute('aria-current');
-    });
-  }
-
-  var t=false;
-  window.addEventListener('scroll',function(){
-    if(t)return;t=true;
-    requestAnimationFrame(function(){t=false;paint();});
-  },{passive:true});
-  window.addEventListener('resize',function(){measure();paint();});
-  measure();paint();
-})();
-
-/* About · Vision 2030 · AAA Strategy — 장이 화면에 들어오면 단계를 하나씩 올린다.
-   나머지(무엇이 언제 놓이고, 어느 글자가 파랗고, 막대가 얼마나 차는지)는 전부 CSS 가
-   data-step 하나를 보고 정한다. 여기서 하는 일은 그 숫자를 옮기는 것뿐이다.
-   세 장이 같은 구조라 구동부도 하나다 — 아래 표에 (섹션 id, 단계 수)만 적는다.
-
-   한동안 이 숫자를 스크롤 위치가 옮겼다 — 장마다 화면 몇 장 높이의 트랙을 두고 무대를
-   그 안에 붙여(sticky) 두는 방식이었다. 2026-08-11 요청으로 시간이 옮기는 방식으로
-   바꿨다: 장이 화면 가운데에 들어오면 아래 표의 걸음(첫 단계까지 · 그 뒤 간격)으로
-   마지막 단계까지 올라간다.
-   한 번 다 오른 장은 다시 내려가지 않는다(되돌아와도 완성된 모습 그대로다).
-
-   화면에 들어왔는지는 IntersectionObserver 가 본다 — 스크롤마다 계산하지 않는다.
-   그 장치가 없는 브라우저이거나 모션을 줄여 달라는 설정이면 곧바로 마지막 단계로 세운다.
-
-   숫자가 바뀔 때 섹션에 알림(cstep)도 띄운다 — 기업 현황 숫자 세기가 이걸 듣는다 */
-(function(){
-  /* [섹션 id, 단계 수, 들어오고 첫 단계까지(ms), 그 뒤 한 단계 간격(ms)]
-
-     장마다 걸음이 다르다. About·Vision 은 빠른 걸음(450 / 700) — 놓이는 것이 글과 표라
-     한 번에 읽히고, 느리게 끌면 기다리는 시간이 된다. AAA 는 느린 걸음(1000 / 1400) —
-     로고 조각이 하나씩 켜지며 쌓이는 장이라 한 조각씩 눈으로 따라갈 시간이 필요하다.
-     (2026-08-11 : 셋 다 느리게 했다가 앞의 두 장만 원래 속도로 되돌렸다)
-
-     간격은 CSS 쪽 등장 전환과 한 벌이다 — 간격만 늘리면 놓이는 동작은 그대로 빠른 채
-     사이 정적만 길어져 오히려 뚝뚝 끊긴다. 그래서 AAA 를 늦출 때 그 장의 전환값(.5s →
-     .75s 등)도 같이 늦췄고, 앞의 두 장은 전환값도 원래대로다.
-     Vision 1단계처럼 긴 갈래(표가 .9s 동안 열리고 큰 문장 둘이 .62s 지연으로 따라온다)는
-     다음 단계와 조금 겹치는데, 그건 이어 붙는 것이라 어색하지 않다 */
-  /* A-1 은 Vision·AAA 자리를 BRAND STORY 한 장이 대신한다 — 그 장은 판마다 제 감시자가
-     있어(아래) 여기서는 About 하나만 본다. #vision 은 이 시점에 이미 그 장으로 넘어가
-     있으므로, 이름으로 찾으면 단계 없는 장에 헛도는 걸음을 매게 된다 */
-  var A1=document.body.classList.contains('v-a1');
-  var LIST=A1?[['about',3,450,700]]
-             :[['about',3,450,700],['vision',4,450,700],['aaa',5,1000,1400]];
-  var stages=[];
-  LIST.forEach(function(d){
-    var sec=document.getElementById(d[0]);
-    if(sec)stages.push({sec:sec,n:d[1],start:d[2],step:d[3],cur:0,timer:0});
-  });
-  if(!stages.length)return;
-
-  function set(s,v){
-    if(v===s.cur)return;
-    s.cur=v;
-    s.sec.setAttribute('data-step',v);
-    s.sec.dispatchEvent(new CustomEvent('cstep',{detail:v}));
-  }
-  function run(s){
-    if(s.timer||s.cur>=s.n-1)return;
-    s.timer=setTimeout(function tick(){
-      set(s,s.cur+1);
-      if(s.cur<s.n-1){s.timer=setTimeout(tick,s.step);}
-      else{s.timer=0;io.unobserve(s.sec);}   /* 다 오른 장은 더 볼 일이 없다 */
-    },s.start);
-  }
-
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if(reduce||!('IntersectionObserver'in window)){
-    stages.forEach(function(s){set(s,s.n-1);});
-    return;
-  }
-  /* 화면 위아래를 35%씩 잘라낸 가운데 띠에 장이 걸리면 시작한다 — "화면 한가운데에 왔다"를
-     비율(threshold)로 묻지 않는 이유: 장이 화면보다 훨씬 높아지는 경우(낮은 화면에서
-     내용 높이대로 흐를 때) 보이는 비율이 절반에 못 미쳐 영영 안 걸릴 수 있다 */
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      stages.forEach(function(s){if(s.sec===e.target)run(s);});
-    });
-  },{rootMargin:'-35% 0px -35% 0px',threshold:0});
-  stages.forEach(function(s){
-    io.observe(s.sec);
-    /* 이 장을 곧바로 마지막 단계로 세운다 — 이음(⑪)이 이 장을 떠나기 직전에 부른다.
-       ⚠ 속으로 세던 숫자(s.cur)까지 같이 옮기지 않으면, 뒤이어 도는 제 타이머가 한 칸
-         낮은 값을 다시 적어 놓은 것이 도로 사라진다. 감시도 끊는다 — 다 오른 장이다 */
-    s.sec.addEventListener('cstep-all',function(){
-      clearTimeout(s.timer);s.timer=0;
-      set(s,s.n-1);
-      io.unobserve(s.sec);
-    });
-  });
-})();
-
-/* 섹션 스냅 — 휠 한 번에 한 장. 사업영역 세부 페이지의 그 동작에서 이 페이지 몫만 옮겼다
-   (공용 JS 의 것은 .hsec + 카드 트랙 전용이라 이 페이지에서는 아무것도 잡지 않는다).
-
-   CSS scroll-snap 을 쓰지 않는 이유 — 지속시간도 이징도 정할 수 없어 자석에 끌리듯 붙고,
-   프레임마다 위치를 되잡아채 무대 안 연출과 부딪힌다. 그래서 직접 굴린다
-   (공용 CSS 가 html{scroll-behavior:auto} 로 브라우저 쪽 매끄러운 이동을 이미 꺼 두었다).
-
-   PAGE  : 한 장 이동에 걸리는 시간(ms) / REARM : 이동 뒤 휠이 이만큼 멎어야 다음 장
-   GAP   : 장이 이만큼 넘게 어긋나 있으면 다음 장이 아니라 제자리 맞추기부터 한다
-   셋 다 세부 페이지와 같은 값이다 — 두 페이지의 손맛이 갈리면 안 된다.
-   좁은 화면은 잡지 않는다(터치는 제 관성이 있다). 모션을 줄여 달라는 설정이면 즉시 이동 */
-(function(){
-  /* A-1 은 휠을 잡지 않는다(secs 가 빈다) — BRAND STORY 가 화면 한 장짜리 판을 넘기던
-     시절엔 판 하나가 곧 한 걸음이었지만, 지금 그 장은 그냥 흐르는 글이라 한 장씩 끊으면
-     글 중간이 잘린다. 목차 탭을 눌렀을 때의 매끄러운 이동은 그대로 남는다(이 함수 끝) */
-  var secs=document.body.classList.contains('v-a1') ? []
-           : ['vision','aaa','about'].map(function(i){return document.getElementById(i);})
-               .filter(Boolean);
-  var narrow=window.matchMedia('(max-width:900px)'),
-      reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var PAGE=820,REARM=180,GAP=24;
-  var paging=false,raf=null,armed=true,quiet=null;
-
-  function ease(p){return .5-.5*Math.cos(Math.PI*p);}   /* easeInOutSine — 세부 페이지와 같다 */
-  function arm(){clearTimeout(quiet);quiet=setTimeout(function(){armed=true;},REARM);}
-  function topOf(s){return window.scrollY+s.getBoundingClientRect().top;}
-  function pageTo(y){
-    y=Math.max(0,Math.min(document.documentElement.scrollHeight-window.innerHeight,y));
-    var from=window.scrollY,delta=y-from,t0=0;
-    if(Math.abs(delta)<1)return;
-    if(reduce){window.scrollTo(0,y);return;}
-    paging=true;cancelAnimationFrame(raf);
-    (function step(){
-      raf=requestAnimationFrame(function(ts){
-        if(!t0)t0=ts;
-        var p=Math.min(1,(ts-t0)/PAGE);
-        window.scrollTo(0,from+delta*ease(p));
-        if(p<1)step();else{paging=false;raf=null;}
-      });
-    })();
-  }
-  function go(y){armed=false;pageTo(y);}
-  /* 화면 세로 중앙을 점유한 장 = 지금 보고 있는 장 (탭 바의 현재 표시와 같은 기준) */
-  function current(){
-    var mid=window.innerHeight/2;
-    for(var i=0;i<secs.length;i++){
-      var r=secs[i].getBoundingClientRect();
-      if(r.top<=mid&&r.bottom>=mid)return i;
-    }
-    return -1;
-  }
-
-  window.addEventListener('wheel',function(e){
-    if(!secs.length||narrow.matches||!e.deltaY)return;
-    arm();                                   /* 입력이 이어지는 동안 재무장을 미룬다 */
-    if(paging){e.preventDefault();return;}   /* 이동 중에는 입력을 받지 않는다 */
-    var dir=e.deltaY>0?1:-1,i=current();
-
-    /* 장 밖 — 위쪽(히어로)인지 아래쪽(푸터)인지 갈라야 한다. 한쪽으로는 잡아 주고
-       반대쪽(히어로 위로 · 푸터 아래로)은 기본 스크롤에 맡긴다 */
-    if(i<0){
-      if(secs[0].getBoundingClientRect().top>window.innerHeight/2){
-        if(dir>0){e.preventDefault();if(armed)go(topOf(secs[0]));}
-        return;
-      }
-      if(dir<0){e.preventDefault();if(armed)go(topOf(secs[secs.length-1]));}
-      return;
-    }
-
-    var top=secs[i].getBoundingClientRect().top;
-    /* 마지막 장에서 아래로 빠져나가는 길(= 푸터로 가는 길)은 기본 스크롤에 맡긴다.
-       장 밑변이 화면 중앙을 지나기 전까지 current() 가 계속 이 장을 가리키므로,
-       아래 정렬 규칙이 그 구간을 되잡으면 굴려도 굴려도 푸터로 못 내려간다 */
-    if(i===secs.length-1&&dir>0&&top<=0)return;
-    if(Math.abs(top)>GAP){                   /* 어긋나 있으면 먼저 제자리에 맞춘다 */
-      e.preventDefault();
-      if(armed)go(window.scrollY+top);
-      return;
-    }
-    var nx=i+dir,y=null;
-    if(nx>=0&&nx<secs.length)y=topOf(secs[nx]);
-    else if(dir<0)y=0;                       /* 첫 장 위로 → 히어로 */
-    if(y===null)return;
-    e.preventDefault();
-    if(!armed)return;
-    /* 장을 넘기기 전에 한 번 묻는다 — 이 장이 이 걸음을 쓰겠다고 하면 넘기지 않는다.
-       지금 이 물음을 받는 것은 ⑪ 이음뿐이다 : 비전에서 아래로 굴린 첫 걸음을 가져가
-       장은 세워 둔 채 글만 AAA 자리로 보내고 갈아 낸다. 그다음 걸음은 사양하므로
-       그때 여기서 장이 넘어간다 (그동안 글은 화면에 못 박혀 서 있다).
-       ⚠ 받는 쪽이 없으면 아무 일도 없다 — 이 세 줄을 지워도 스냅은 그대로 돈다 */
-    var ask=new CustomEvent('csnap-step',{cancelable:true,detail:{from:secs[i].id,dir:dir}});
-    window.dispatchEvent(ask);
-    if(ask.defaultPrevented){armed=false;return;}
-    go(y);
-  },{passive:false});
-
-  /* 목차 탭도 같은 이동을 태운다 — 앵커 점프로 뚝 끊기면 휠과 손맛이 갈린다
-     (세부 페이지 소분류 탭도 같은 이유로 pageTo 를 쓴다) */
-  [].slice.call(document.querySelectorAll('.cnav-tabs a[href^="#"]')).forEach(function(a){
-    var t=document.getElementById(a.getAttribute('href').slice(1));
-    a.addEventListener('click',function(e){
-      if(!t||narrow.matches)return;          /* 좁은 화면은 기본 앵커 이동에 맡긴다 */
-      e.preventDefault();
-      pageTo(topOf(t));
-    });
-  });
-})();
 
 /* 한 덩어리 안의 순번 = 지연(--crd). 같은 단계에 켜지는 것들이 통째로 튀어나오지
    않게 한 박자씩 늦춘다. 켜는 방식(.crv 는 화면 진입, [data-at] 은 스크롤 단계)과는
@@ -3190,643 +2718,6 @@
   els.forEach(function(el){io.observe(el);});
 })();
 
-/* 기업 현황 숫자 오르기 — 칸이 드러나는 순간 0 에서 제 값까지 굴러 올라간다 (2026-08-04).
-   칸이 올라오는 것과 같은 시점·같은 지연(--crd)을 쓴다 — 그래야 한 동작으로 읽힌다.
-   셈이 끝나면 HTML 에 적힌 값 그대로 앉는다(반올림 오차 없음).
-
-   시작 조건이 둘인 이유 — 붙드는 화면에서는 표가 처음부터 무대 안에 있어(투명할 뿐)
-   '화면에 들어왔는지'만 보면 2단계가 오기 전에 세어 버린다. 반대로 안 붙드는 화면
-   (좁거나 낮은)에서는 단계가 로드 때 이미 끝 값이라 '단계'만 보면 표가 화면 밖에
-   있는 동안 다 세고 만다. 그래서 둘 다 만족할 때 센다.
-
-   IntersectionObserver 가 없으면 손대지 않는다 — 숫자를 0 으로 되돌리는 것은 칸이
-   아직 안 보일 때라야 안전한데, 그걸 알 방법이 없기 때문이다 (이때는 제 값으로 보인다) */
-(function(){
-  var box=document.querySelector('.cstats'),sec=document.getElementById('about');
-  if(!box||!sec||!('IntersectionObserver' in window))return;
-  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-
-  /* 값 칸(.v)의 첫 글자 조각만 센다 — 뒤에 붙은 단위(.u)는 건드리지 않는다.
-     대상은 '천 단위 쉼표까지 지킨 수'뿐이다. 이 규칙 하나로 수량(26 · 270 · 1,416.2)과
-     수량이 아닌 칸이 갈린다 — 상장일의 2020 은 네 자리인데 쉼표가 없어 걸리지 않고,
-     대표이사 이름은 애초에 숫자가 아니다 */
-  var NUM=/^\d{1,3}(?:,\d{3})*(?:\.\d+)?$/, DUR=1100, jobs=[];
-  [].slice.call(box.querySelectorAll('.cstat .v')).forEach(function(v){
-    var node=v.firstChild;
-    if(!node || node.nodeType!==3)return;
-    var raw=node.nodeValue.trim();
-    if(!NUM.test(raw))return;
-    var to=parseFloat(raw.replace(/,/g,''));
-    if(!(to>0))return;
-    jobs.push({node:node,card:v.parentNode,to:to,
-      dec:(raw.split('.')[1]||'').length, comma:raw.indexOf(',')>=0});
-    node.nodeValue='0';
-  });
-  if(!jobs.length)return;
-
-  /* 소수 자릿수와 쉼표는 원래 표기 그대로 따라간다 — 세는 동안 표기가 흔들리면 안 된다 */
-  function fmt(n,j){
-    var s=j.dec ? n.toFixed(j.dec) : String(Math.round(n));
-    if(!j.comma)return s;
-    var p=s.split('.');
-    p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
-    return p.join('.');
-  }
-
-  function run(j){
-    var t0=0;
-    requestAnimationFrame(function frame(now){
-      if(!t0)t0=now;
-      var p=(now-t0)/DUR; if(p>1)p=1;
-      /* 처음에 빠르게 나갔다가 끝에서 천천히 앉는다 — 멈추는 자리가 또렷해진다 */
-      j.node.nodeValue=fmt(j.to * (1 - Math.pow(1-p,3)), j);
-      if(p<1){requestAnimationFrame(frame);return;}
-      j.node.nodeValue=fmt(j.to,j);
-    });
-  }
-
-  var STEP=2,seen=false,stepped=false,done=false;
-  function maybe(){
-    if(!seen||!stepped||done)return;
-    done=true;
-    jobs.forEach(function(j){
-      setTimeout(function(){run(j);}, parseFloat(j.card.style.getPropertyValue('--crd'))||0);
-    });
-  }
-
-  var io=new IntersectionObserver(function(es){
-    if(!es[0].isIntersecting)return;
-    io.disconnect();seen=true;maybe();
-  },{rootMargin:'0px 0px -12% 0px'});
-  io.observe(box);
-
-  sec.addEventListener('cstep',function(e){
-    if(e.detail<STEP)return;
-    stepped=true;maybe();
-  });
-  /* 모션을 줄여 달라는 설정에서는 위 구동부가 곧바로 마지막 단계로 세우는데, 그 일이
-     이 줄보다 먼저 끝난다(구동부가 문서에서 앞선다) → 지금 값도 한 번 본다 */
-  if(+sec.getAttribute('data-step')>=STEP){stepped=true;maybe();}
-})();
-
-/* 랜드스케이프 모핑 구동기 (⑨-c) — 되돌리려면 이 덩이 하나만 지우면 된다.
-
-   하는 일은 값 하나를 내주는 것뿐이다. AAA 판이 화면 아래에서 얼마나 올라왔는지를
-   0~1 로 적어 .story 에 --p 로 건다. 아트가 얼마나 미끄러지고 노을이 얼마나 짙은지는
-   전부 CSS 가 그 값 하나를 보고 정한다.
-
-     p = 0   AAA 판 윗변이 화면 밑변에            낮 하늘, 아트 제자리 (사옥 오른쪽)
-     p = 1   AAA 판 윗변이 화면 30% 지점에        노을, 아트 왼쪽 65.48% (사옥이 글줄에)
-
-   ⚠ 끝점을 화면 윗변이 아니라 30% 지점에 둔다 (2026-08-25). 윗변에 두면 그림이
-     멈추는 순간이 곧 AAA 판이 제자리에 앉는 순간이라, 조금만 더 굴려도 제목이
-     바 뒤로 사라진다 — 그림이 다 멎은 화면에는 글이 없다. 끝점을 앞당기면 남은
-     30% 를 굴리는 동안 그림은 멎은 채로 있고 글만 제자리로 올라온다.
-
-   ⚠ 기준을 "Vision 판 윗변에서 AAA 판 윗변까지" 로 잡으면 안 된다 (2026-08-25).
-     Vision 판은 위 여백이 300px 쯤 되므로, 글이 제자리에 앉아 보이는 순간에는 이미
-     그 구간의 3분의 1을 지나 있다 — 사옥이 화면 한가운데까지 끌려와 있었다.
-     AAA 판이 올라오는 것을 기준으로 삼으면 Vision 을 읽는 동안은 p 가 0 이고,
-     떠날 때 비로소 미끄러진다.
-   ⚠ 좌표를 미리 재 두지 않고 매번 다시 잰다 — 앞 장(About)의 키가 단계에 따라
-     자라므로 한 번 재 둔 값은 곧 어긋난다. getBoundingClientRect 한 번은 프레임당
-     비용이 거의 없다.
-   ⚠ requestAnimationFrame 으로 한 프레임에 한 번만 그린다. scroll 은 프레임보다
-     자주 온다.
-   ⚠ 값이 거의 안 바뀌면 손대지 않는다 — 매 프레임 style 을 쓰면 그때마다 새 값이라
-     브라우저가 다시 계산한다. */
-(function(){
-  var st=document.querySelector('.story');if(!st)return;
-  var a=st.querySelector('.story-aaa');
-  if(!a)return;
-  var LEAD=0.7,last=-1,tick=false;
-  function paint(){
-    tick=false;
-    var vh=window.innerHeight||document.documentElement.clientHeight;
-    if(!vh)return;
-    /* LEAD — 굴림의 몇 할을 그림에 쓰는가. 나머지는 그림이 멎은 채로 글이 앉는 시간이다 */
-    var p=(vh-a.getBoundingClientRect().top)/(vh*LEAD);
-    p=p<0?0:(p>1?1:p);
-    if(Math.abs(p-last)<0.0015)return;
-    last=p;
-    st.style.setProperty('--p',p.toFixed(4));
-  }
-  function onScroll(){if(!tick){tick=true;requestAnimationFrame(paint);}}
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',onScroll);
-  window.addEventListener('load',onScroll);
-  paint();
-})();
-/* 이음 ⑫ (CSS ⑫) — A-1 에서 AAA 가 About 이 된다.
-   되돌리려면 이 덩이와 CSS ⑫, 그리고 바로 위 하늘 구동기에 심어 둔 네 곳
-   (paint 첫 줄의 손 떼기 · paint 끝의 값 내주기 · wheel/scroll 의 빗장)을 걷으면 된다.
-
-   A 갈래의 ⑪ 과 같은 이야기인데 훨씬 단순하다. ⑪ 은 두 장의 무대가 서로 달라서 글을
-   화면에 못 박은 겹으로 옮겨야 했지만, 여기서는 무대(.st-sky)가 이미 position:fixed 다 —
-   스크롤이 어디로 가든 화면에 그대로 서 있다. 그래서 옮길 것은 그 위의 내용뿐이다.
-
-   ▶ 내려갈 때 (AAA 가 앉아 있을 때 휠 한 번 · 그 뒤는 자동)
-       0ms   겹을 세운다 — AAA 의 제목·본문·세 줄을 지금 화면 자리 그대로.
-             하늘 구동기를 얼리고 scrollY 를 About 자리로 옮긴다. 화면에 있는 것은
-             전부 붙박이거나 겹이라 이 순간 아무것도 움직이지 않는다.
-             흰 바닥이 자라기 시작하고(AAA 키 → About 띠 윗변), 하늘 창의 밑변이
-             띠 밑변까지 올라온다. 겹은 위로 밀리며 흐려진다.
-     120ms   사옥 사진이 배어 든다 (하늘이 있던 자리에서 그대로 갈린다)
-     200ms   About 의 제목·본문이 아래에서 오른다
-     400ms   여덟 칸이 든다 — 흰 바닥이 거의 다 자란 뒤다
-    1080ms   겹을 걷고 구동기를 녹인다. 구동기가 제 값을 되찾으며 하늘을 마저 닫는다.
-   ▶ 올라갈 때 — 같은 길을 거꾸로 간다. 다른 것은 자리를 바꿔치기하는 시점뿐이다 :
-     화면이 'AAA 로 보이는' 순간이라야 하므로 내려갈 때는 맨 처음, 올라갈 때는 맨 끝이다.
-
-   ⚠ 떠나는 쪽(AAA)만 겹으로 복사한다. 받는 쪽(About)은 자리를 옮긴 뒤라 진짜가 이미
-     제자리에 서 있다 — 켜기만 하면 된다. ⑪ 이 양쪽을 다 겹으로 들었던 것과 다른 점이다.
-   ⚠ T·Q 같은 상수를 여기에 다시 적지 않는다. AAA 가 앉는 자리와 그때의 흰 바닥 키는
-     하늘 구동기가 data-rest / data-restSheet 로 내준다 (둘 다 스크롤과 무관한 값이다).
-*/
-(function(){
-  var body=document.body,root=document.documentElement;
-  if(!body.classList.contains('v-a1'))return;
-  var st=document.querySelector('.story'),
-      ahead=document.querySelector('.story-aaa .st-head'),
-      rows=document.querySelector('.st-rows'),
-      stage=document.querySelector('.cabt-stage'),
-      photo=document.querySelector('.cabt-photo'),
-      sky=document.querySelector('.st-sky'),
-      sheet=sky&&sky.querySelector('.st-sheet'),
-      sun=sky&&sky.querySelector('.st-sun'),
-      hq=sky&&sky.querySelector('.st-hq'),
-      wash=sky&&sky.querySelector('.st-wash');
-  if(!st||!ahead||!rows||!stage||!photo||!sky||!sheet||!sun||!hq||!wash)return;
-  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  /* 하늘이 뜨는 화면에서만 든다 — 좁은 화면은 배너 갈래라 이을 무대가 아예 없다 */
-  var wide=window.matchMedia('(min-width:901px)');
-
-  var DUR=1080,REARM=200;
-  var layer=null,busy=false,raf=0,quiet=null,armed=true;
-
-  /* ── 카메라 ─────────────────────────────────────────────────────
-     두 사진은 한 장면이다 : hq-sunset 의 위쪽 하늘이 vision-solar-farm 의 하늘을
-     그대로 합성한 것이라, 아래 한 줄이 둘을 맞물린다.
-
-       vision-solar-farm 의 SEAM(191) 행  =  hq-sunset 의 0 행
-       가로 어긋남 0 · 배율 1.00 · 상관 0.999 · 겹치는 구간 평균 색차 0.3~1.3/255
-
-     그래서 이음은 배경을 갈아 끼우지 않는다. 두 사진을 이 어긋남만큼 떨어뜨려 한 장면에
-     세워 두고, 카메라(배율 k · 화면 자리 x,y)만 하늘에서 띠로 내린다. 내려가면 hq 의
-     450 행쯤에서 사옥 옥상이 오른쪽에 들어오고, 600 행 아래로 노을이 깔린다.
-     앞쪽 XF 구간에서 두 사진이 갈리는데, 그 동안 화면에 있는 것은 아직 '겹치는 하늘'
-     이라 갈리는 것이 보이지 않는다 — 이 연출이 성립하는 이유가 그 한 가지다.
-
-     ⚠ 사진을 갈면 SEAM 을 다시 재야 한다. 재는 법 : 두 그림을 회색조로 놓고 hq 의 위쪽
-       하늘 한 조각(예: 200,40~1800,440)을 태양광 쪽에서 정규상호상관으로 찾는다.
-       배율이 1.00 이 아니게 나오면 이 방식 자체를 다시 봐야 한다(여기서는 배율도 함께
-       맞아떨어져서 k 하나로 두 사진을 같이 몰 수 있다).
-     ⚠ 띠에 앉는 자리는 진짜 사진(.cabt-photo)의 상자에서 그때그때 잰다 — 그쪽 CSS 가
-       cover + object-position:50% 100% 인 것과 아래 camBand 가 짝이다. 한쪽을 고치면
-       마지막 프레임에서 그림이 튄다 */
-  var SEAM=191,NW=2560,NHQ=1511;
-  var XF=.34;                        /* 두 사진이 갈리는 구간 (앞쪽 · 겹치는 하늘 안에서) */
-
-  function ease(q){return .5-.5*Math.cos(Math.PI*q);}   /* 이 페이지의 모든 걸음과 같은 곡선 */
-  function lerp(a,b,e){return a+(b-a)*e;}
-  function sunK(){return parseFloat(sun.style.width)/NW;}   /* 하늘 구동기가 잡아 둔 배율 */
-
-  /* 하늘에 서 있을 때의 카메라 — 태양광 사진이 지금 놓인 그대로다.
-     y 는 hq 의 0 행이 설 자리 : 태양광의 SEAM 행이 있는 곳이다 */
-  function camSky(){
-    var k=sunK();
-    return {k:k,x:parseFloat(sun.style.left)||0,y:SEAM*k};
-  }
-  /* 창이 사진의 어디를 보는가 — CSS 의 object-position 을 그대로 읽어 온다.
-     여기에 값을 다시 적으면 크롭을 옮길 때 마지막 프레임에서 그림이 튄다 */
-  function objPos(){
-    var v=getComputedStyle(photo.querySelector('img')).objectPosition.split(/\s+/);
-    return {x:(parseFloat(v[0])||0)/100,y:(parseFloat(v[1])||0)/100};
-  }
-  /* 띠에 앉을 때의 카메라 — 진짜 사진이 그 상자에서 하는 것과 똑같이 잡는다
-     (object-fit:cover 로 넘치는 몫을 object-position 비율만큼 위·왼쪽에 준다) */
-  function camBand(){
-    var r=photo.getBoundingClientRect(),o=objPos();
-    var k=Math.max(r.width/NW,r.height/NHQ);
-    return {k:k,x:r.left-(NW*k-r.width)*o.x,y:r.top-(NHQ*k-r.height)*o.y};
-  }
-  /* 카메라를 화면에 적는다. 태양광 사진은 SEAM 만큼 위로 물러난 자리에 같이 선다 —
-     두 사진이 한 장면인 것이 이 두 줄에 들어 있다 */
-  function aim(c,fade){
-    hq.style.transform='translate('+c.x.toFixed(1)+'px,'+c.y.toFixed(1)+'px) scale('+c.k.toFixed(4)+')';
-    sun.style.transform='translate('+(c.x-(parseFloat(sun.style.left)||0)).toFixed(1)+'px,'
-      +(c.y-SEAM*c.k).toFixed(1)+'px) scale('+(c.k/sunK()).toFixed(4)+')';
-    hq.style.opacity=fade.toFixed(3);sun.style.opacity=(1-fade).toFixed(3);
-  }
-  /* 이음이 끝나면 두 사진을 구동기에게 돌려준다 — 배열은 구동기가 매 프레임 다시 적고,
-     hq 는 CSS 기본값(opacity:0)으로 되돌아간다 */
-  function giveBack(){
-    hq.style.opacity='';hq.style.transform='';sun.style.opacity='';
-  }
-  function rearm(){clearTimeout(quiet);quiet=setTimeout(function(){armed=true;},REARM);}
-  function aboutY(){return Math.round(window.scrollY+stage.getBoundingClientRect().top);}
-  function aaaY(){return +st.dataset.rest;}
-  function aaaSheet(){return +st.dataset.restSheet;}
-  function at(y){return isFinite(y)&&Math.abs(window.scrollY-y)<6;}
-
-  /* 겹 세우기 — 원본의 모양은 조상 사슬(.story > .cwrap > .story-aaa)과 그 자리의
-     토큰에서 나온다. 그래서 클래스만 떼어 오지 않고 사슬째 다시 세운다.
-     인라인으로 적는 것은 세로 자리 둘뿐이다 :
-       무대의 윗여백  = 제목이 설 화면 좌표
-       --st-mt        = 제목 밑변에서 세 줄 윗변까지 (원본에서 그대로 잰다) */
-  function build(top){
-    var hr=ahead.getBoundingClientRect(),rr=rows.getBoundingClientRect();
-    var l=document.createElement('div');
-    l.className='amorph';l.setAttribute('aria-hidden','true');
-    var s=document.createElement('div');s.className='story';
-    var w=document.createElement('div');w.className='cwrap';
-    var a=document.createElement('div');a.className='story-aaa';
-    a.style.paddingTop=Math.round(top)+'px';
-    var h=ahead.cloneNode(true);h.className+=' am-i am-head';
-    var r=rows.cloneNode(true);r.className+=' am-i am-rows';
-    r.style.setProperty('--st-mt',Math.round(rr.top-hr.bottom)+'px');
-    a.appendChild(h);a.appendChild(r);w.appendChild(a);s.appendChild(w);l.appendChild(s);
-    body.appendChild(l);
-    return l;
-  }
-  function drop(){if(layer&&layer.parentNode)layer.parentNode.removeChild(layer);layer=null;}
-
-  /* 흰 바닥 · 하늘 창 · 카메라 · 워시를 한 곡선에 태운다 — 그동안 구동기는 손을 떼고
-     있다(data-morph). 창은 밑변만 움직인다 : 화면 전체 ↔ 띠 밑변. 그 아래는 About 의
-     흰 바탕이 받는다.
-     ⚠ 두 사진이 갈리는 것만 다른 곡선이다 — 앞쪽 XF 안에서 곧게 지나간다. 이징을 태우면
-       갈리는 순간이 뒤로 밀려, 이미 겹치지 않는 자리까지 내려간 뒤에 갈린다 */
-  function play(A,B,fwd,done){
-    var t0=0;cancelAnimationFrame(raf);
-    (function step(){
-      raf=requestAnimationFrame(function(ts){
-        if(!t0)t0=ts;
-        var q=Math.min(1,(ts-t0)/DUR),e=ease(q);
-        sheet.style.height=Math.round(lerp(A.sh,B.sh,e))+'px';
-        sky.style.clipPath='inset(0px 0px '+Math.round(lerp(A.bot,B.bot,e))+'px 0px)';
-        wash.style.opacity=lerp(A.w,B.w,e).toFixed(3);
-        aim({k:lerp(A.c.k,B.c.k,e),x:lerp(A.c.x,B.c.x,e),y:lerp(A.c.y,B.c.y,e)},
-            Math.min(1,Math.max(0,(fwd?q:1-q)/XF)));
-        if(q<1)step();else done();
-      });
-    })();
-  }
-  /* 띠가 화면에서 차지하는 자리 — 흰 바닥이 자랄 곳(윗변)과 창이 멈출 곳(밑변) */
-  function band(){
-    var r=photo.getBoundingClientRect();
-    return {top:Math.round(r.top),bot:Math.round(Math.max(0,window.innerHeight-r.bottom))};
-  }
-
-  function down(){
-    busy=true;
-    var s0=parseFloat(sheet.style.height)||0,w0=parseFloat(wash.style.opacity)||0;
-    var A={sh:s0,bot:0,w:w0,c:camSky()};   /* 하늘에 선 지금 — 자리를 옮기기 전에 잰다 */
-    layer=build(ahead.getBoundingClientRect().top);
-    root.setAttribute('data-morph','');
-    body.classList.add('amorph-on');
-    window.scrollTo(0,aboutY());          /* 여기서부터 About 자리다 — 화면은 그대로다 */
-    var b=band();
-    aim(A.c,0);                            /* 사옥 사진을 한 장면 안에 세워 둔다(아직 안 보인다) */
-    /* 처음 모습을 한 번 굳힌다 — 그래야 아래 두 클래스가 전환으로 걸린다 */
-    layer.getBoundingClientRect();
-    layer.classList.add('is-out');
-    body.classList.add('amorph-go','amorph-in');
-    play(A,{sh:b.top,bot:b.bot,w:0,c:camBand()},true,function(){
-      /* 넘겨받을 진짜 사진이 등장 연출을 아직 안 지났을 수 있다 — 지나간 것으로 해 둔다.
-         안 그러면 넘기는 프레임에 사진이 한 번 비었다가 뒤늦게 떠오른다 */
-      photo.classList.add('is-in');
-      drop();giveBack();
-      body.classList.remove('amorph-on','amorph-go','amorph-in');
-      root.removeAttribute('data-morph');
-      window.dispatchEvent(new Event('scroll'));   /* 구동기가 제 값을 되찾는다 */
-      busy=false;
-    });
-  }
-
-  function up(){
-    busy=true;
-    var b=band(),y=aaaY(),s1=aaaSheet(),w0=parseFloat(wash.style.opacity)||0;
-    root.setAttribute('data-morph','');
-    /* 구동기는 이 자리에서 하늘을 다 닫아 두었다 — 띠 자리에 다시 세운다 */
-    sheet.style.height=b.top+'px';
-    sky.style.clipPath='inset(0px 0px '+b.bot+'px 0px)';
-    wash.style.opacity='0';
-    aim(camBand(),1);                      /* 카메라를 띠에 앉힌다 — 지금 화면 그대로다 */
-    body.classList.add('amorph-on','amorph-in','amorph-rev');
-    layer=build(ahead.getBoundingClientRect().top+window.scrollY-y);
-    layer.classList.add('is-out');
-    layer.getBoundingClientRect();
-    layer.classList.remove('is-out');     /* 겹이 든다 */
-    body.classList.add('amorph-go');
-    body.classList.remove('amorph-in');   /* About 이 스러진다 */
-    play({sh:b.top,bot:b.bot,w:0,c:camBand()},
-         {sh:s1,bot:0,w:w0,c:camSky()},false,function(){
-      window.scrollTo(0,y);               /* 다시 AAA 다 — 여기서 자리를 바꿔치기한다 */
-      drop();giveBack();
-      body.classList.remove('amorph-on','amorph-go','amorph-rev');
-      root.removeAttribute('data-morph');
-      window.dispatchEvent(new Event('scroll'));
-      busy=false;
-    });
-  }
-
-  /* 휠 한 번이 한 걸음이다. A-1 은 섹션 스냅이 잡지 않는 갈래라(그쪽 secs 가 빈다)
-     이 두 자리에서는 이 구동부가 유일하게 걸음을 가져간다.
-     ⚠ 관성 때문에 REARM 을 둔다 — 하늘 구동기가 쓰는 것과 같은 방식이다 */
-  window.addEventListener('wheel',function(e){
-    if(!wide.matches||!e.deltaY)return;
-    if(busy||!armed){e.preventDefault();rearm();return;}
-    /* 내려가기 : AAA 가 제자리에 앉아 있을 때만 */
-    if(e.deltaY>0&&at(aaaY())){
-      e.preventDefault();armed=false;rearm();down();return;
-    }
-    /* 올라가기 : About 이 제자리에 앉아 있고, 하늘이 열려 있을 때만.
-       하늘이 닫힌 채로(되불러오기 등) 되짚어 올라가면 끝에서 창이 배너로 튄다 */
-    if(e.deltaY<0&&at(aboutY())&&st.hasAttribute('data-open')&&isFinite(aaaY())){
-      e.preventDefault();armed=false;rearm();up();
-    }
-  },{passive:false});
-})();
-/* 이음 (CSS ⑪) — Vision 과 AAA 를 한 무대처럼 잇는다. 되돌리려면 이 덩이와 CSS ⑪ 만 지운다.
-
-   두 장은 서로 다른 스크롤 페이지인데, 그 사이를 스크롤로 건너면 무대가 통째로 밀려
-   올라가 "다른 장으로 옮겨 갔다"가 그대로 보인다. 그래서 여기서는 아예 스크롤로 넘지
-   않는다 — 글은 화면에 못 박은 겹이 옮기고, 자리(scrollY)는 두 화면이 똑같이 빈 흰 판이
-   되는 한순간에 소리 없이 바꿔치기한다. 보는 쪽에는 글이 움직이고 사진이 오른쪽에서
-   들고 나는 것만 남는다.
-
-   ▶ 내려갈 때 (휠 한 번 · 그 뒤는 자동)
-       0ms   겹을 세우고 비전 제목 셋을 감춘다. 줄글 두 문단은 스러진다.
-             제목이 AAA 자리로 날기 시작한다(820ms) — 가운데에서 왼쪽으로 모인다.
-       460ms 두 화면이 다 빈 흰 판이다 → scrollY 를 AAA 로 옮긴다 (안 보인다).
-       960ms 제목이 앉았다 → 글을 간다(780ms). 짝 없는 줄은 여기서 스러진다.
-      1740ms 진짜 AAA 제목에 넘기고, 무대 바닥에 그라데이션이 배고, 닫는 말이 뜬다.
-             사진 세 면은 제 단계에 오른쪽에서 하나씩 들어온다(단계 구동기 몫).
-   ▶ 올라갈 때 (휠 한 번 · 그 뒤는 자동) — 같은 길을 거꾸로 간다
-       0ms   사진 면들이 오른쪽으로 빠지고, 그라데이션과 닫는 말이 걷힌다(1.25s).
-             겹이 AAA 제목을 들고 선다(진짜 글은 감춘다).
-       250ms 제목을 비전 문안으로 되돌린다(780ms) — 짝 없던 줄이 다시 뜬다.
-      1250ms AAA 것이 다 빠졌다 → scrollY 를 비전으로 옮긴다 (안 보인다).
-             제목이 가운데로 돌아간다(820ms).
-      2070ms 비전 원본에 넘긴다 — 스러졌던 줄글도 같이 돌아온다.
-
-   ⚠ 자리를 옮기는 순간이 이 연출의 전부다. 그때 두 화면이 조금이라도 다르면 그 차이가
-     '툭' 하고 드러난다. 그래서 AAA 무대 바닥은 이음이 드나드는 동안 비전과 같은 흰
-     판으로 두고(CSS ⑪), 그 위의 것들은 전부 감춰 둔다.
-   ⚠ 겹의 글꼴·색·그라데이션은 원본에서 그대로 베껴 온다. 클래스를 다시 주지 않는 이유 —
-     원본의 모양은 조상 선택자(.cvis-grid .c--h p 같은 것)가 만든 것이라 떼어 오면
-     따라오지 않는다. 베껴 오면 원본을 고칠 때 겹이 저절로 따라온다.
-   ⚠ 원본을 떼어 내지 않고 대역을 세우는 이유 — 되돌릴 때 원상복구가 클래스 하나다.
-   ⚠ 잇는 기준은 상자가 아니라 글줄이다(아래 textRect). 눈썹줄과 AAA 제목은 상자가 본문
-     폭을 통째로 먹는 블록이라, 상자 왼끝으로 이으면 둘 다 x 가 같아 글자가 제자리에 선
-     채 갈리기만 한다. 가운데 정렬과 왼쪽 정렬의 차이는 그 안의 글줄에 있다.
-   ⚠ 두 자리는 '제 장이 화면 맨 위에 왔을 때의 화면 좌표'로 적는다(V·A). 두 무대가 같은
-     여백을 쓰는 100vh 라 이 값은 스크롤과 무관하다 — 그래서 비전에 서서도 AAA 자리를
-     알 수 있고, 자리를 바꿔치기해도 다시 잴 일이 없다.
-   ⚠ 문안은 textContent 로 옮긴다. 세 줄 다 순수한 글이라 그것으로 족한데, 나중에 안에
-     태그(<br>·<em>)를 넣으면 그 태그의 모양은 따라오지 않는다.
-*/
-(function(){
-  var body=document.body;
-  if(body.classList.contains('v-a1'))return;
-  var vis=document.getElementById('vision'),aaa=document.getElementById('aaa');
-  if(!vis||!aaa)return;
-
-  /* [Vision 쪽 원본, AAA 쪽 갈 자리, (짝이 없으면) 따라갈 줄의 번호]
-     위에서부터 한 줄씩이다. 셋째 줄(Total Energy)은 AAA 에 짝이 없지만 큰 문장 둘이
-     한 덩이로 읽히므로 같이 데려간다 — 혼자 남아 스러지면 짝인 줄만 쏙 빠져나가는
-     것으로 보인다. 같이 날아간 뒤 글이 갈릴 때 스러진다.
-     ⚠ 따라가는 줄은 반드시 앞에 오는 줄을 가리켜야 한다(자리를 그 줄에서 끌어온다).
-     ⚠ 줄글(본문)은 한때 여기 짝으로 있었는데, 긴 문단이 자리를 옮기며 갈리면 눈이
-       제목과 본문 둘로 갈려 어느 쪽도 못 읽는다 — 본문은 그냥 스러지고 AAA 것이
-       제자리에서 뜨는 편이 낫다(2026-08-14). 그래서 아래 LEAVE 로 내려갔다 */
-  var PAIR=[['.ceyebrow','.aorb-head .lead'],
-            ['.cvis-grid .c--h:first-child p','.aorb-head .en'],
-            ['.cvis-grid .c--h:last-child p',null,1]];
-  /* 따라가지 않고 스러지는 줄 — 줄글 두 문단이다 */
-  var LEAVE=['.cvis-grid .c--t p'];
-  /* 겹에 베껴 갈 모양값. 여기 없는 것은 겹에서 기본값이 된다 */
-  var COPY=['font-family','font-size','font-weight','font-style','line-height',
-            'letter-spacing','color','text-align','text-transform','word-break',
-            'white-space','text-shadow','background-image','background-size',
-            'background-position','background-repeat',
-            '-webkit-background-clip','background-clip','-webkit-text-fill-color'];
-
-  var pairs=[],i,s,d;
-  for(i=0;i<PAIR.length;i++){
-    s=vis.querySelector(PAIR[i][0]);
-    d=PAIR[i][1]?aaa.querySelector(PAIR[i][1]):null;
-    if(!s||(PAIR[i][1]&&!d))return;        /* 문안 구조가 바뀌었다 — 조용히 물러난다 */
-    s.classList.add('vm-fly');
-    pairs.push({src:s,dst:d,follow:PAIR[i].length>2?PAIR[i][2]:-1,g:null,V:null,A:null});
-  }
-  /* 줄글은 두 문단이 한 선택자에 걸린다 → 하나씩 말고 다 집는다 */
-  for(i=0;i<LEAVE.length;i++){
-    var ls=vis.querySelectorAll(LEAVE[i]);
-    for(var j=0;j<ls.length;j++)ls[j].classList.add('vm-leave');
-  }
-
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  /* AAA 의 그림 배치가 성립하는 화면에서만 든다 — 좁거나 낮으면 그쪽은 세로 목록으로
-     펴져 갈 자리가 아예 다르고, 장을 한 장씩 끊는 스냅도 걸리지 않는다.
-     조건은 CSS ⑦-A 의 되돌림 질의와 글자 그대로 짝이다 (한쪽만 고치면 어긋난다) */
-  var mq=window.matchMedia('(max-width:1100px),(max-height:699px),(max-aspect-ratio:3/2)');
-
-  /* 걸음의 길이. 나는 시간과 곡선은 장을 넘기는 스냅(PAGE 820)과 같은 값이다 —
-     이음이 없는 다른 장의 손맛과 갈리지 않게 하려는 것이다 */
-  var DUR=820,                              /* 글이 나는 시간 */
-      MORPH=520+90*(pairs.length-1)+80,     /* 글이 갈리는 시간 (줄마다 90ms 씩 늦다) */
-      SWAP=460,                             /* 내려갈 때 자리를 바꿔치기하는 시점 */
-      OUT=1250;                             /* AAA 의 것들이 오른쪽으로 다 빠지는 시간 */
-  function ease(q){return .5-.5*Math.cos(Math.PI*q);}   /* easeInOutSine — 스냅과 같다 */
-
-  var on=false,box=null,busy=false,dir=1,at='vision',
-      moving=false,t0=0,raf=0,tmr=[];
-  /* ⚠ 판이 다 앉기 전에는 아무 판단도 하지 않는다. 이 스크립트는 body 끝에서 도는데
-     그때는 위 히어로의 그림이 아직 자리를 안 잡아 문서가 짧다 — 어느 장에 서 있는지를
-     엉뚱하게 읽는다. load 를 기다렸다가 그때부터 본다 */
-  var ready=document.readyState==='complete';
-
-  function later(ms,fn){tmr.push(setTimeout(fn,ms));}
-  function clear(){for(var k=0;k<tmr.length;k++)clearTimeout(tmr[k]);tmr=[];}
-  function topOf(sec){return window.scrollY+sec.getBoundingClientRect().top;}
-
-  /* ── 자리 재기 ─────────────────────────────────────────────
-     V·A 는 각각 [그 장이 화면 맨 위에 왔을 때의 화면 좌표]다. ox·oy 는 상자를
-     글줄 기준으로 되미는 값이고, w 는 상자 폭이다(폭이 그대로여야 줄바꿈이 같다) */
-  function textRect(el){
-    var rg=document.createRange();rg.selectNodeContents(el);
-    var r=rg.getBoundingClientRect();
-    return (r.width||r.height)?r:el.getBoundingClientRect();
-  }
-  function spot(el,base){
-    var r=el.getBoundingClientRect(),t=textRect(el);
-    return {x:t.left,y:t.top-base,w:r.width,ox:r.left-t.left,oy:r.top-t.top};
-  }
-  function measure(){
-    var vb=vis.getBoundingClientRect().top,ab=aaa.getBoundingClientRect().top,k,f;
-    for(k=0;k<pairs.length;k++){
-      pairs[k].V=spot(pairs[k].src,vb);
-      if(pairs[k].dst){pairs[k].A=spot(pairs[k].dst,ab);continue;}
-      /* 짝이 없는 줄은 앞줄에서 자리를 끌어온다 : 왼끝은 앞줄과 나란히 서고
-         (가운데 정렬이 왼쪽 정렬로 바뀌는 것이 이 연출의 요지다), 위아래 사이는
-         비전에서 갖고 있던 그대로 둔다 — 그래야 두 줄이 한 덩이로 움직인다 */
-      f=pairs[pairs[k].follow];
-      pairs[k].A={x:f.A.x,y:f.A.y+(pairs[k].V.y-f.V.y),
-                  w:pairs[k].V.w,ox:pairs[k].V.ox,oy:pairs[k].V.oy};
-    }
-  }
-
-  /* ── 겹 세우기 ───────────────────────────────────────────── */
-  function dress(el,from,at){
-    var c=getComputedStyle(from),k,v;
-    for(k=0;k<COPY.length;k++){
-      v=c.getPropertyValue(COPY[k]);
-      if(v)el.style.setProperty(COPY[k],v);
-    }
-    el.style.width=at.w+'px';el.style.left=at.ox+'px';el.style.top=at.oy+'px';
-  }
-  function build(morphed){
-    kill();
-    box=document.createElement('div');
-    box.className='vmorph'+(morphed?' is-morphed':'');
-    box.setAttribute('aria-hidden','true');
-    for(var k=0;k<pairs.length;k++){
-      var g=document.createElement('span'),
-          a=document.createElement('span'),b;
-      g.className='vm-g';a.className='vm-a';
-      a.textContent=pairs[k].src.textContent;
-      dress(a,pairs[k].src,pairs[k].V);
-      /* 세 줄이 한꺼번에 갈리면 화면이 한 번 번쩍인다 — 위에서부터 한 박자씩 늦춘다 */
-      a.style.transitionDelay=(k*90)+'ms';
-      g.appendChild(a);
-      /* 짝이 없는 줄은 새 글 겹이 아예 없다 — 갈릴 때 그냥 스러진다 */
-      if(pairs[k].dst){
-        b=document.createElement('span');b.className='vm-b';
-        b.textContent=pairs[k].dst.textContent;
-        dress(b,pairs[k].dst,pairs[k].A);
-        b.style.transitionDelay=(k*90)+'ms';
-        g.appendChild(b);
-      }
-      box.appendChild(g);
-      pairs[k].g=g;
-    }
-    document.body.appendChild(box);
-  }
-  function kill(){
-    if(!box)return;
-    var b=box;box=null;
-    /* 진짜 글이 켜진 다음 프레임에 걷는다 — 같은 그림이 한 프레임 겹칠 뿐 사이가
-       비지 않는다(같은 프레임에 지우면 한 칸이 빈다) */
-    requestAnimationFrame(function(){if(b.parentNode)b.parentNode.removeChild(b);});
-  }
-  /* e=0 이 비전 자리, e=1 이 AAA 자리다 */
-  function place(e){
-    for(var k=0;k<pairs.length;k++){
-      var f=pairs[k].V,t=pairs[k].A;
-      pairs[k].g.style.transform='translate3d('
-        +(f.x+(t.x-f.x)*e).toFixed(2)+'px,'
-        +(f.y+(t.y-f.y)*e).toFixed(2)+'px,0)';
-    }
-  }
-  function loop(ts){
-    raf=0;
-    if(!moving||!box)return;
-    if(!t0)t0=ts;
-    var q=(ts-t0)/DUR;
-    if(q>=1){q=1;moving=false;}
-    place(dir>0?ease(q):1-ease(q));
-    if(moving)raf=requestAnimationFrame(loop);
-  }
-  function fly(){moving=true;t0=0;if(!raf)raf=requestAnimationFrame(loop);}
-
-  /* ── 내려간다 : 비전 → AAA ───────────────────────────────── */
-  function forward(){
-    clear();busy=true;dir=1;
-    vis.dispatchEvent(new CustomEvent('cstep-all'));   /* 비전을 다 놓인 모습으로 */
-    measure();
-    build(false);                                      /* 비전 문안으로 선다 */
-    vis.classList.add('is-handing');
-    aaa.classList.remove('is-arrived');                /* 받을 쪽은 빈 흰 판이어야 한다 */
-    aaa.classList.add('is-leaving');
-    place(0);fly();
-    later(SWAP,function(){window.scrollTo(0,topOf(aaa));});
-    later(DUR+140,function(){if(box)box.classList.add('is-morphed');});
-    later(DUR+140+MORPH,function(){
-      at='aaa';busy=false;
-      aaa.classList.add('is-arrived');                 /* 진짜 글 · 그라데이션 */
-      aaa.classList.remove('is-leaving');              /* 사진 면들이 오른쪽에서 든다 */
-      vis.classList.remove('is-handing');
-      kill();
-    });
-  }
-
-  /* ── 올라간다 : AAA → 비전 (같은 길을 거꾸로) ────────────── */
-  function backward(){
-    clear();busy=true;dir=-1;
-    measure();
-    build(true);                                       /* AAA 문안으로 선다 */
-    aaa.classList.remove('is-arrived');                /* 진짜 글과 그라데이션이 걷힌다 */
-    aaa.classList.add('is-leaving');                   /* 사진 면들이 오른쪽으로 빠진다 */
-    vis.classList.add('is-handing');
-    place(1);
-    later(250,function(){if(box)box.classList.remove('is-morphed');});
-    later(OUT,function(){window.scrollTo(0,topOf(vis));fly();});
-    later(OUT+DUR,function(){
-      at='vision';busy=false;
-      vis.classList.remove('is-handing');
-      kill();
-    });
-  }
-
-  /* ── 어느 장에 서 있는지 지켜본다 ─────────────────────────
-     이음을 안 거치고 옮겨 갔을 때(목차 탭 · 키보드 · 되불러오기) 두 장의 모습을
-     지금 자리에 맞춰 둔다. ⚠ 비전 쪽에 서면 AAA 는 반드시 '아직 안 온' 모습이어야
-     한다 — 안 그러면 다음에 내려갈 때 자리를 바꿔치기하는 순간 사진이 튀어나온다 */
-  function watch(){
-    if(!on||busy||!ready)return;
-    var vh=window.innerHeight,
-        now=(vh-aaa.getBoundingClientRect().top)/vh>=.5?'aaa':'vision';
-    if(now===at)return;
-    at=now;
-    if(at==='aaa'){aaa.classList.add('is-arrived');aaa.classList.remove('is-leaving');}
-    else{aaa.classList.remove('is-arrived');aaa.classList.add('is-leaving');}
-    vis.classList.remove('is-handing');
-    kill();
-  }
-
-  /* 스냅 구동부(위)가 장을 넘기기 직전에 묻는다 — 이 한 걸음을 쓰겠느냐고.
-     비전에서 아래로 · AAA 에서 위로, 두 경우만 받는다. 받으면 장은 스크롤되지 않고
-     위 순서가 자동으로 다 돈다 */
-  window.addEventListener('csnap-step',function(e){
-    if(!on||busy||!ready||!e.detail)return;
-    if(e.detail.from==='vision'&&e.detail.dir>0&&at==='vision'){e.preventDefault();forward();}
-    else if(e.detail.from==='aaa'&&e.detail.dir<0&&at==='aaa'){e.preventDefault();backward();}
-  });
-
-  function sync(){
-    var ok=!reduce&&!mq.matches;
-    if(ok===on)return;
-    on=ok;
-    if(ok){body.classList.add('vmorph-on');watch();}
-    else{
-      body.classList.remove('vmorph-on');
-      clear();busy=false;moving=false;kill();
-      vis.classList.remove('is-handing');
-      aaa.classList.remove('is-leaving');
-    }
-  }
-
-  window.addEventListener('scroll',watch,{passive:true});
-  /* 나는 도중에 창이 바뀌면 잰 좌표가 전부 무효다 — 그 자리에 앉힌 것으로 치고 끝낸다 */
-  window.addEventListener('resize',function(){
-    if(busy){clear();busy=false;moving=false;kill();
-      vis.classList.remove('is-handing');at='';}
-    sync();watch();
-  });
-  window.addEventListener('load',function(){ready=true;watch();});
-  sync();
-})();
 
 /* 맨 위로 가기 (사업영역 세부 페이지와 동일) */
 (function(){

@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<!-- 숫자 글꼴 — A 판 공통(a-common.css 의 --rb). 홈은 그 파일을 부르지 않아 여기서 직접 세운다 -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
   @font-face{
@@ -15,6 +17,8 @@
     src:url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2-variations");
     font-weight:100 900;font-display:swap;
   }
+  /* 숫자 글꼴 — A 판 공통(a-common.css 의 --rb 와 같은 값). 홈은 그 파일을 부르지 않는다 */
+  :root{--rb:"Roboto",var(--rc),sans-serif}
   :root{
     --g900:#1b2733;--g950:#0e161e;--secondary-bg:#f4f6f8;
     --brand:#2c5790;--brand-2:#4077b7;--point-300:#9ab9df;--point-200:#c9d9ee;
@@ -352,308 +356,165 @@
     .v2banner .bnav .b.active .bt{color:#fff}
   }
 
-  /* ===================== WHO WE ARE (pinned scroll interaction) ===================== */
-  /* overflow:visible overrides .section{overflow:hidden} — that hidden would make this section
-     the sticky's scroll container and break the pin. Clipping is handled by .who-sticky instead. */
-  .v2who{height:400vh;background:#fff;position:relative;overflow:visible;z-index:1}   /* z-index:1 contains its high-z children so News (z:2) can slide over it; keyword cycle → A-PRO wordmark. 마지막 100vh 는 News 가 덮는다 */
-  .who-sticky{position:sticky;top:0;height:100vh;min-height:900px;overflow:hidden;background:#fff;transition:background .6s var(--ease)}
-  .who-sticky[data-phase="3"]{background:#04070c}
-  /* Layered composition rebuilt at the exact Figma frame (1280x586), scaled to the viewport.
-     Each phase = background (behind) -> text/wordmark (middle) -> cut-out foreground (front). */
-  .v2who .who-stage{position:absolute;top:50%;left:50%;width:1280px;height:586px;overflow:hidden;
-    transform:translate(-50%,-50%) scale(var(--who-s,1));transform-origin:center;font-family:var(--suit)}
-  .v2who .who-stage img,.v2who .who-stage svg,.v2who .who-stage span,.v2who .who-stage div,.v2who .who-stage p{position:absolute}
+  /* ===================== BUSINESS (가로 띠 4단) =====================
+     Figma 1353:82 (26.09.07 v5.0-시안 A). 예전엔 코버플로우로 넘기는 4타일이었는데,
+     네 사업이 한 화면에서 위아래로 다 보이도록 가로 띠 4단으로 풀었다.
+     띠 하나 = 사진 + 사업명(48/20) + 아래 정보 바(설명 2줄 + 소분류 목록).
+     섹션 여백은 위아래 120 · 좌우 84(= 격자 A/Grid/01)이고, 제목과 목록 사이는 32 다 */
+  /* 좌우 여백 84 — 띠가 GNB 와 같은 1~12열을 덮는다 (Who we are · News 와도 같은 선) */
+  .v2bizsec{background:#fff;padding:120px 84px;display:flex;flex-direction:column;align-items:center;gap:32px}
+  .v2bizsec .sec-ttl{width:100%;font-family:var(--rb);font-weight:400;font-size:24px;line-height:1;letter-spacing:-.72px;color:var(--g900)}
+  .biz-list{width:100%;display:flex;flex-direction:column;gap:8px}
 
-  /* background + foreground image layers — positioned at the Figma layer coords, cross-fade per phase */
-  /* foreground cut-outs live in a copy of the stage frame that's anchored to the viewport floor
-     (scaled from bottom-centre), so each subject keeps its original lower-right placement and sits
-     flush against the bottom — no manual cropping needed, the PNGs are already transparent cut-outs */
-  .v2who .who-fg{position:absolute;left:50%;bottom:0;width:1280px;height:586px;overflow:hidden;z-index:3;
-    transform:translateX(-50%) scale(var(--who-s,1));transform-origin:bottom center;pointer-events:none}
-  .v2who .who-fg img{position:absolute}
-  /* subtle cross-fade: each cut-out fades while drifting up a touch, and sinks back as it leaves */
-  .v2who .lyr-fg{opacity:0;transform:translateY(16px);transition:opacity 1s var(--ease-io),transform 1s var(--ease-io);max-width:none}
-  .v2who .lyr-fg.active{opacity:1;transform:none}
-  .v2who .fg-0{left:403px;top:34px;width:898px;height:599px}
-  .v2who .fg-1{left:499px;top:-48px;width:1145px;height:763px}
-  .v2who .fg-2{left:93px;top:202px;width:1752px;height:985px}
+  /* 띠 (Figma 1351:36733) — 사진이 바탕이고 글이 그 위에 얹힌다. 높이 640.
+     위(431)는 사업명, 아래(209)는 정보 바다. 좌우 폭은 1242 : 390 으로 갈리고
+     그 경계에 흰 세로선이 내려온다 — 위 칸에서는 빈 칸(.bz-rule)의 왼쪽 선이,
+     아래 칸에서는 소분류 목록의 왼쪽 선이 같은 자리를 잇는다.
+     자리표시 배경(#d9d9d9)을 깔아 사진이 늦게 떠도 글이 흰 바닥에 뜨지 않는다 */
+  /* --bz-s : 스크롤을 따라 0.85 → 1 로 커지는 배율(아래 스크립트가 넣는다).
+     기본값 1 이라 스크립트가 없거나 모션을 줄이는 설정이면 처음부터 제 크기다 */
+  .bizband{position:relative;display:flex;flex-direction:column;
+    height:640px;overflow:hidden;background:#d9d9d9;color:#fff;text-decoration:none;isolation:isolate;
+    transform:scale(var(--bz-s,1));transform-origin:50% 50%;will-change:transform}
+  .bizband>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+  /* 검정 20% 한 겹 — 예전엔 아래 바에만 깔렸는데 카드 전체를 덮는다.
+     사진 위 흰 글자(사업명 · 설명 · 소분류)가 어느 자리에서나 같은 대비로 읽힌다 */
+  .bizband::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.2)}
 
-  /* "who we are" — pulled out of the scaled stage so it aligns to the GNB left line
-     (same 1440 container as the nav), while its size/vertical position track the stage scale */
-  .v2who .who-eye{position:absolute;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;
-    width:calc(100% - 168px - 2 * var(--sec-inset));top:calc(50% - 104px * var(--who-s,1))}
-  /* "who we are" matches the Business section label (SUIT 800 / 20px / -.4px), scaled to the stage */
-  .v2who .who-eye p{padding-left:0;font-family:var(--suit);font-weight:800;line-height:1.2;letter-spacing:-.4px;
-    color:var(--g900);font-size:calc(20px * var(--who-s,1));white-space:nowrap;transition:color .6s var(--ease)}
-  .who-sticky[data-phase="3"] .who-eye p{color:#fff}
+  /* 위 칸 — 좌우 가장자리에 흰 선 20% 가 한 줄씩 선다 */
+  .bizband .bz-top{flex:1;min-height:0;display:flex;
+    border-left:1px solid rgba(255,255,255,.2);border-right:1px solid rgba(255,255,255,.2)}
+  .bizband .bz-name{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:64px 40px 20px}
+  .bizband .bz-name .kor{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px}
+  .bizband .bz-name .eng{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:rgba(255,255,255,.7)}
+  /* 오른쪽 390 은 글 없이 비운다 — 아래 소분류 칸과 같은 폭이라 세로선이 이어진다 */
+  .bizband .bz-rule{flex:none;width:390px;border-left:1px solid rgba(255,255,255,.2)}
 
-  /* text/wordmark layer (between bg and fg) */
-  .v2who .s-txt{z-index:2}
-  /* Global Top 5 headline: sized to match the new "who we are" (20px) and set in the brand blue */
-  .v2who .s-h{left:577px;top:189px;width:679px;font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--brand);transition:color .6s var(--ease)}
-  .v2who .s-a{left:577px;top:271px;width:126px;height:126px;transition:opacity .5s var(--ease)}
-  .v2who .s-kw{left:701px;top:358.5px;transform:translateY(-50%);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:var(--g900);white-space:nowrap;transition:opacity .45s var(--ease),color .6s var(--ease)}
-  /* keyword change → each glyph rises out of its own clip-mask, staggered left→right (delicate, in sync with the "A") */
-  .v2who .s-kw .kw-ch{position:relative;display:inline-block;overflow:hidden;vertical-align:top}
-  .v2who .s-kw .kw-ch i{display:inline-block;font-style:normal;transform:translateY(115%);transition:transform .6s var(--ease-io)}
-  .v2who .s-kw.active .kw-ch i{transform:translateY(0);transition-delay:calc(var(--i,0)*.035s)}
-  @media (prefers-reduced-motion:reduce){
-    .v2who .s-kw{opacity:0;transition:opacity .3s var(--ease),color .6s var(--ease)}
-    .v2who .s-kw.active{opacity:1}
-    .v2who .s-kw .kw-ch{overflow:visible}
-    .v2who .s-kw .kw-ch i{transform:none;transition:none;transition-delay:0s}
+  /* 아래 정보 바 — 바탕색 없이 유리 흐림과 윗선(흰 20%)만. 높이 209 고정.
+     어둡게 하는 일은 카드 전체를 덮는 .bizband::before 가 맡는다.
+     흐림은 시안(10)의 절반인 5 — 사진이 덜 뭉개져 무엇을 찍은 띠인지 남는다 */
+  .bizband .bz-info{flex:none;height:209px;display:flex;
+    border-top:1px solid rgba(255,255,255,.2);
+    -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  /* 설명글은 제목용 SUIT 굵은체가 아니라 본문용 Pretendard 20 이다 */
+  .bizband .bz-desc{flex:1;min-width:0;padding:32px 40px 20px;text-align:left;
+    font-family:var(--pre);font-weight:400;font-size:20px;line-height:1.6;letter-spacing:-.4px}
+  .bizband .bz-desc span{display:block}
+  .bizband .bz-subs{flex:none;width:390px;padding:20px;display:flex;flex-direction:column;gap:8px;
+    border-left:1px solid rgba(255,255,255,.2)}
+  /* 이름은 왼쪽 설명글과 같은 스타일이되 행간만 120% 로 좁힌다 — 네 줄이 한 덩어리로 보인다.
+     번호는 원래대로 SUIT Medium 14 (이름보다 작고 조용한 표지) */
+  .bizband .bz-subs li{display:flex;align-items:center;gap:8px;padding:4px 8px;white-space:nowrap;
+    font-family:var(--pre);font-weight:400;font-size:20px;line-height:1.2;letter-spacing:-.4px}
+  .bizband .bz-subs .no{font-family:var(--suit);font-weight:500;font-size:14px;line-height:1.35;
+    letter-spacing:-.28px;font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:no-preference){
+    .bizband>img{transition:transform .6s var(--ease)}
+    .bizband:hover>img{transform:scale(1.03)}
   }
-  /* APRO wordmark: scaled/positioned so its "A" glyph exactly overlays the keyword "A" (s-a) —
-     s-a A box is 104px wide at top 283; Logo.svg A is 102.64u wide → width 484*104/102.64 = 490.41, top 283 */
-  .v2who .s-apro{left:588px;top:283px;width:490.41px;height:auto;overflow:visible;opacity:0;transition:opacity .35s var(--ease)}
-  /* the wordmark "draws itself in": the outline traces on, then the fill floods in */
-  .v2who .s-apro path{fill:#fff;stroke:#fff;stroke-width:.8;stroke-linejoin:round;
-    stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0}
-  .who-sticky[data-phase="3"] .s-h{color:#fff}
-  .who-sticky[data-phase="3"] .s-a,.who-sticky[data-phase="3"] .s-kw{opacity:0}
-  .who-sticky[data-phase="3"] .s-apro{opacity:1}
-  .who-sticky[data-phase="3"] .s-apro path{animation:apro-draw .95s var(--ease-io) forwards}
-  @keyframes apro-draw{
-    0%{stroke-dashoffset:1;fill-opacity:0}
-    58%{stroke-dashoffset:0;fill-opacity:0}
-    100%{stroke-dashoffset:0;fill-opacity:1}
+  @media(max-width:1200px){
+    /* 오른쪽 390 칸을 접는다 — 위 칸의 빈 칸은 사라지고, 소분류는 설명 아래로 내려온다 */
+    .bizband{height:auto}
+    .bizband .bz-top{min-height:320px}
+    .bizband .bz-rule{display:none}
+    .bizband .bz-info{height:auto;flex-direction:column}
+    .bizband .bz-subs{width:100%;border-left:0;border-top:1px solid rgba(255,255,255,.2);
+      flex-direction:row;flex-wrap:wrap;gap:4px 16px}
   }
-  @media (prefers-reduced-motion:reduce){
-    .v2who .s-apro path{stroke:none;stroke-dashoffset:0;fill-opacity:1}
-    .who-sticky[data-phase="3"] .s-apro path{animation:none}
-  }
-
-  /* progress dots */
-  .who-dots{position:absolute;right:24px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:10px}
-  .who-dots i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.28;transition:opacity .3s,transform .3s;color:var(--g900)}
-  .who-sticky[data-phase="3"] .who-dots{color:#fff}
-  .who-dots i.on{opacity:1;transform:scale(1.5)}
-
-  /* ===================== BUSINESS (static 4 tiles) ===================== */
-  /* 홈 순서 : 히어로 → Business → who we are → News. 예전엔 who we are 핀 안에 들어 있어
-     A-PRO "A" 가 네 타일로 갈라지는 모핑으로 이어졌는데, 순서를 바꾸면서 모핑을 걷고 독립 장으로 뺐다.
-     높이·900px 무대는 핀 시절(.who-sticky 100vh/min 900 + .who-cards 900 중앙)과 같게 둬서
-     타일 자리가 그대로다 */
-  .v2bizsec{position:relative;height:100vh;min-height:900px;background:#fff;overflow:hidden}
-  .biz-stage{position:absolute;left:0;top:50%;transform:translateY(calc(-50% - 10px));width:100%;height:900px}   /* -10px nudges the whole Business layer up */
-
-  /* Business coverflow styles (scoped to .v2biz — the .biz-stage wrapper) */
-  /* background collage — full-width stage; card geometry is computed responsively in JS (24px gutters) */
-  .v2biz .biz-collage{position:absolute;left:0;top:0;width:100%;height:900px;pointer-events:none;z-index:1}
-  /* coverflow cards — one per business; they slide + resize between the 5 slots as the active business rotates.
-     ease-in-out (not ease-out) so the grow/shrink accelerates then settles — the middle of the motion stays visible */
-  .v2biz .bcard{position:absolute;background:#d9d9d9;overflow:hidden;--stepfade:66px;
-    transition:left .9s var(--ease-io),top .9s var(--ease-io),width .9s var(--ease-io),height .9s var(--ease-io)}
-  .v2biz .bcard img{width:100%;height:100%;object-fit:cover;object-position:50% 55%;display:block}
-  /* 세로로 좁게 잘리므로 타일마다 피사체가 살아남는 지점으로 맞춘다 —
-     사업영역 페이지(business.html .panel[data-idx] .pbg img)와 같은 값 */
-  .v2biz .bcard[data-idx="02"] img{object-position:50% 52%}   /* 통로 소실점 */
-  .v2biz .bcard[data-idx="03"] img{object-position:48% 62%}   /* 로고 아래 로봇 */
-  .v2biz .bcard[data-idx="04"] img{object-position:52% 55%}   /* 웨이퍼를 든 인물 */
-  /* step-top dissolve — each card's top edge melts into white via the scanline stripe pattern,
-     so the A-staircase steps read as dissolving stripes rather than hard edges. Height tunable via --stepfade. */
-  .v2biz .bcard::after{content:"";position:absolute;left:0;top:0;width:100%;height:var(--stepfade);z-index:2;pointer-events:none;
-    opacity:0;transition:opacity .5s var(--ease);
-    background:
-      repeating-linear-gradient(to bottom,rgba(255,255,255,.92) 0px,rgba(255,255,255,.92) 1px,rgba(255,255,255,0) 1px,rgba(255,255,255,0) 5px),
-      linear-gradient(to bottom,#fff 0%,rgba(255,255,255,.55) 42%,rgba(255,255,255,0) 100%);
-    -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 26%,rgba(0,0,0,0) 100%);
-    mask-image:linear-gradient(to bottom,#000 0%,#000 26%,rgba(0,0,0,0) 100%)}
-  /* 정적 4타일에서는 이 스트라이프 대신 ::after 를 톤 막으로 재사용한다 (아래 블록 참고) */
-  .v2biz .bcard.jin{animation:bcardIn .55s var(--ease)}   /* fade-in when a card wraps edge→edge */
-  @keyframes bcardIn{from{opacity:0}to{opacity:1}}
-  @media (prefers-reduced-motion: reduce){ .v2biz .bcard{transition:none} .v2biz .bcard.jin{animation:none} }
-
-  /* ---- static 4-tile mode: hide the rotating coverflow chrome, show captioned clickable tiles ---- */
-  /* 코버플로우 시절의 UI(중앙 사업명칭 탭 줄·히어로·프로스티드 소분류 패널)를 모두 접는다.
-     .v2biz 를 두 번 겹쳐 쓴 이유: 아래쪽 코버플로우 규칙들이 .biz-nav / .biz-lists 에
-     display:flex 를 다시 지정하는데, 특이도가 같으면 나중에 나온 쪽이 이겨서 패널이
-     3번째 타일 위에 되살아났다(호버도 그 패널이 가로막았다). 클래스를 하나 더 얹어
-     특이도를 올려 두면 순서와 무관하게 이 규칙이 이긴다 */
-  .v2biz.v2biz .biz-nav,.v2biz.v2biz .biz-body,.v2biz.v2biz .biz-lists{display:none}
-  .v2biz .bcard{cursor:pointer;background:#d9d9d9}
-  /* 되살려 주는 게 반드시 필요하다: 코버플로우 시절 .biz-collage 는 장식 배경이라
-     pointer-events:none 이고 이 속성은 상속되므로, 그대로 두면 카드가
-     히트테스트에서 빠진다 — 호버가 아예 안 걸리고 상세 페이지 링크도 죽는다 */
-  .v2biz .biz-collage{pointer-events:auto}
-  /* 톤 막 — 사업영역 페이지(business.html .pbg::after)의 5-stop 구조를 쓰되 값을 밝혔다.
-     그 페이지는 호버해야 사진이 드러나므로 막이 진해도 되지만, 홈 타일은 사진이 늘 보여서
-     같은 값(.82/.66/.34/.54/.90)이면 평상시가 너무 어둡다. 상단은 사업명칭이 흰 글자로
-     앉으므로 어둡게 남기고(.62), 사진의 몸통인 중단·하단을 크게 걷어냈다(.10 / .30).
-     하단 대비는 호버 때 ::before 가 만든다 — 소분류가 그때만 하단에 열리므로.
-     코버플로우 시절의 상단 스캔라인 스트라이프가 이 자리를 쓰던 흔적(mask·height)을 되돌린다 */
-  .v2biz .bcard::after{content:"";position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none;
-    opacity:1;transition:none;-webkit-mask-image:none;mask-image:none;
-    background:linear-gradient(to bottom,rgba(14,22,30,.62) 0%,rgba(14,22,30,.44) 22%,rgba(14,22,30,.10) 46%,rgba(14,22,30,.10) 72%,rgba(14,22,30,.30) 100%)}
-  /* 캡션 — 타일 하단에서 상단 중앙으로 옮겼다. 넘버링 없이 사업명칭 한 덩어리만 있고,
-     타일이 좁아도 국문이 한 줄에 들어가도록 clamp 로 상한을 둔다(1440 기준 28px —
-     상세 페이지 카드 제목 .hcard h3 24px 보다 한 단 크다). 영문은 상세 페이지의 보조
-     라벨 관례(Roboto Condensed)를 따른다.
-     자체 그라디언트는 뺐다 — 위 톤 막이 이미 상단을 가장 진하게 덮는다. */
-  .v2biz .bcard .bcap{position:absolute;left:0;right:0;top:0;z-index:3;
-    display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;
-    padding:70px 18px 22px;color:#fff}
-  .v2biz .bcap .bcap-ko{font-family:var(--suit);font-weight:800;font-size:clamp(22px,1.95vw,28px);line-height:1.26;letter-spacing:-.56px;word-break:keep-all}
-  .v2biz .bcap .bcap-en{margin-top:5px;font-family:var(--rc);font-weight:400;font-size:12px;line-height:1.3;letter-spacing:.04em;color:rgba(255,255,255,.62)}
-
-  /* 호버 시 소분류 — 사업영역 페이지 패널의 소분류 목록(.p-lists / .li)을 자리까지 그대로 옮겼다.
-     타일 하단 27px 프레임에 붙고(좌우도 27px), 행 규격(40px · rgba(255,255,255,.08) 바탕 ·
-     4px 브랜드 닷 · 계열사 태그)과 열림 연출(opacity + translateY(10px) + max-height, .4s)이 같다.
-     캡션(.bcap)이 아니라 카드의 직계 자식이어야 bottom 기준이 타일 밑변이 된다 —
-     캡션은 상단에 고정된 박스라 그 안에 두면 bottom 이 캡션 밑변을 가리킨다.
-     타일은 <a> 하나라 행은 링크가 아니다(중첩 링크 금지) — 어디를 눌러도 상세 페이지로 간다. */
-  .v2biz .bcard .bsub{position:absolute;z-index:3;left:27px;right:27px;bottom:27px;
-    display:flex;flex-direction:column;gap:4px;pointer-events:none;
-    opacity:0;transform:translateY(10px);max-height:0;overflow:hidden;
-    transition:opacity .4s var(--ease) .05s,transform .4s var(--ease) .05s,max-height .5s var(--ease)}
-  .v2biz .bcard:hover .bsub{opacity:1;transform:none;max-height:220px}
-  .v2biz .bsub .li{height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
-  .v2biz .bsub .dot{width:4px;height:4px;border-radius:50%;background:var(--brand-2);flex-shrink:0;margin-right:4px}
-  .v2biz .bsub .nm{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1.2;letter-spacing:-.3px;
-    color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .v2biz .bsub .tag{margin-left:auto;flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:1px 8px;
-    font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px}
-  /* 호버 막 — 평상시 톤 막을 밝히면서 하단 대비를 여기로 넘겼다. 균일한 막이 아니라
-     아래로 갈수록 진해지는 그라디언트라, 사진은 계속 보이면서 소분류가 앉는 하단만 어두워진다
-     (행 바탕이 .08 로 거의 투명해서 글자 대비는 이 막이 만든다). */
-  .v2biz .bcard::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;
-    background:linear-gradient(to bottom,rgba(9,14,20,.10) 0%,rgba(9,14,20,.22) 38%,rgba(11,17,24,.62) 62%,rgba(11,17,24,.86) 100%);
-    transition:opacity .42s var(--ease)}
-  .v2biz .bcard:hover::before{opacity:1}
-  @media (prefers-reduced-motion: reduce){
-    .v2biz .bcard .bsub,
-    .v2biz .bcard::before{transition:none}
-    .v2biz .bcard .bsub{transform:none}
+  @media(max-width:900px){
+    .v2bizsec{padding:80px 24px;gap:24px}
+    .bizband .bz-top{min-height:240px}
+    .bizband .bz-name{padding:32px 20px 20px}
+    .bizband .bz-name .kor{font-size:32px}
+    .bizband .bz-desc{padding:24px 20px;font-size:17px}
+    .bizband .bz-subs{padding:16px 20px}
+    .bizband .bz-subs .nm{font-size:17px}
   }
 
-  /* top content — same container as the "who we are" text (maxw − 48), so the Business bar aligns to it.
-     top 을 133 → 176 으로 내렸다: 라벨 밑변(top+24)이 타일 윗변 바로 위에 오게 해서 라벨이
-     타일 4장에 붙어 읽히도록. 타일 윗변은 이 밑변에서 계산되므로(computeSlots 의 GAPH)
-     여기만 고치면 간격이 따라온다 — 타일 자리는 그대로다 */
-  .v2biz .biz-content{position:absolute;left:50%;top:176px;transform:translateX(-50%);width:calc(100% - 168px - 2 * var(--sec-inset));z-index:2;display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease)}
-
-  /* Business 라벨 바 — 중앙 "사업영역" 타이틀을 걷어내고 좌측 섹션 라벨로 돌렸다.
-     타이포는 "who we are"·푸터와 같은 섹션 라벨 규격(SUIT 800 / 20px / -.4px).
-     밑줄은 뺐다 — 아래 타일 4장의 윗변이 이미 그 선 역할을 한다.
-     사업명칭은 타일 상단으로 옮겼으므로 헤더 중앙에는 아무것도 두지 않는다.
-     밑줄과 함께 쓰던 padding-bottom 도 뺐다 — 선이 없으니 라벨 밑변과 타일 사이 간격만
-     흐려 놓는다. 그 간격은 computeSlots 의 GAPH 한 곳에서 정한다 */
-  .v2biz .biz-head{display:flex;align-items:center}
-  .v2biz .biz-head .ttl{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
-
-  /* body holds the centred hero/list column (nav moved up into the header) */
-  .v2biz .biz-body{position:relative;min-height:227px}
-
-  /* business nav — 정적 4타일에서는 쓰지 않는다. 위 .biz-nav{display:none} 을 덮어쓰지
-     않도록 display 를 건드리지 않는다(항목 스타일만 남겨 둔다) */
-  .v2biz .biz-nav .nv{font-family:var(--suit);font-weight:600;font-size:15px;line-height:1;letter-spacing:-.3px;color:var(--teritary);opacity:.5;background:none;border:none;text-align:left;padding:0;cursor:pointer;white-space:nowrap;transition:opacity .25s var(--ease),color .25s var(--ease)}
-  .v2biz .biz-nav .nv.on{opacity:1;color:var(--brand);cursor:default}
-  .v2biz .biz-nav .nv:hover{opacity:1}
-
-  /* left/right pager — flanks the title */
-  .v2biz .hero-main .ic{width:34px;height:34px;flex-shrink:0;border:1px solid var(--border-g);border-radius:0;background:#fff;cursor:pointer;display:grid;place-content:center;color:var(--g900);transition:background .2s var(--ease),transform .22s var(--ease)}
-  .v2biz .hero-main .ic svg{width:20px;height:20px;display:block}
-  .v2biz .hero-main .ic:hover{background:var(--secondary-bg)}
-  .v2biz .hero-main .ic[data-dir="-1"]:hover{transform:translateX(-2px)}
-  .v2biz .hero-main .ic[data-dir="1"]:hover{transform:translateX(2px)}
-
-  /* centred column: step counter → title/subtitle → sub-item list.
-     width is set by JS to match the centre card; the value here is just an initial fallback. */
-  .v2biz .biz-center{width:min(770px,100%);margin:0 auto;display:flex;flex-direction:column;gap:12px}
-  /* hero height is matched to the nav via JS (min-height) and its content centred vertically */
-  .v2biz .biz-hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:8px 0}
-  .v2biz .biz-num{display:flex;align-items:baseline;justify-content:center;font-family:var(--rc);font-size:16px;letter-spacing:-.32px}
-  .v2biz .biz-num .reel{display:inline-block;height:16px;overflow:hidden}
-  .v2biz .biz-num .reel .col{display:block;transition:transform .5s var(--ease)}
-  .v2biz .biz-num .reel i{display:block;height:16px;line-height:16px;font-style:normal;color:var(--brand)}
-  .v2biz .biz-num .tot{color:var(--teritary)}
-
-  /* arrows are top-aligned then nudged to the centre of the largest title line (.t1), not the whole t1+t2 block */
-  .v2biz .hero-main{display:flex;align-items:flex-start;justify-content:center;gap:24px;width:100%}
-  .v2biz .hero-main .ic{margin-top:11.8px}   /* (t1 line-box 57.6px − ic 34px) / 2 */
-  /* corner pixels — a frame spanning the full biz-body width (aligned to the header underline + nav)
-     and the vertical band down to the image top; height is set by JS in positionOverlay */
-  .v2biz .hframe{position:absolute;left:0;right:0;top:0;z-index:0;pointer-events:none}
-  .v2biz .hframe i{position:absolute;width:4px;height:4px;background:var(--border-g)}
-  .v2biz .hframe i:nth-child(1){top:34px;left:0}
-  .v2biz .hframe i:nth-child(2){top:34px;right:0}
-  .v2biz .hframe i:nth-child(3){bottom:34px;left:0}
-  .v2biz .hframe i:nth-child(4){bottom:34px;right:0}
-  .v2biz .hero-texts{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
-  .v2biz .hero-texts .hmask{overflow:hidden;padding:0 4px;margin:0 -4px}   /* clip window for the rise-up (side pad so edge glyphs aren't cut) */
-  .v2biz .hero-texts .t1{font-family:var(--suit);font-weight:800;font-size:48px;line-height:1.2;letter-spacing:-.96px;color:var(--g900)}
-  .v2biz .hero-texts .t2{font-family:var(--suit);font-weight:600;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:#445464}
-  /* masked rise-up on business change: current lines exit upward out of the mask, new lines rise in from below */
-  .v2biz .hero-texts .t1,.v2biz .hero-texts .t2{transition:transform .8s var(--ease-io)}
-  .v2biz .hero-texts.out .t1,.v2biz .hero-texts.out .t2{transform:translateY(-120%);transition:transform .5s var(--ease)}
-  .v2biz .hero-texts.enter .t1,.v2biz .hero-texts.enter .t2{transform:translateY(120%);transition:none}
-
-  /* sub-item list — frosted-glass panel absolutely overlaid on the top of the 16:9 image (left/top/width set by JS) */
-  .v2biz .biz-lists{position:absolute;z-index:3;border:1px solid rgba(255,255,255,.55);background:rgba(244,246,248,.42);
-    backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
-    padding:4px;display:flex;flex-direction:column;gap:4px;box-shadow:0 14px 34px rgba(11,22,34,.16);transition:opacity .3s var(--ease)}
-  /* each row rises + fades in, staggered by its index — replays whenever the list is rebuilt (carousel change) */
-  @keyframes liIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .v2biz .biz-lists .li{position:relative;display:flex;align-items:center;gap:4px;min-height:38px;background:rgba(255,255,255,.64);padding:9px 12px;text-decoration:none;color:inherit;transition:background .25s var(--ease);animation:liIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*.12s)}
-  .v2biz .biz-lists .dash{width:14px;height:14px;flex-shrink:0;display:grid;place-content:center}
-  .v2biz .biz-lists .dash::before{content:"";width:7px;height:2px;background:#2e3c4b;transition:background .25s}
-  .v2biz .biz-lists .nm{flex:1;min-width:0;font-family:var(--suit);font-weight:600;font-size:18px;line-height:1.4;letter-spacing:-.36px;color:#445464;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s}
-  .v2biz .biz-lists .tag{flex-shrink:0;background:var(--brand-2);color:#fff;border-radius:2px;padding:0 7px;font-family:var(--pre);font-weight:500;font-size:13px;line-height:1.6;letter-spacing:-.26px;white-space:nowrap}
-  .v2biz .biz-lists .cnt{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--brand-2);color:rgba(255,255,255,.9);font-family:var(--rc);font-size:13px;line-height:1;display:none;place-content:center}
-  .v2biz .biz-lists .op{width:18px;height:18px;flex-shrink:0;color:#445464;transition:color .25s}
-  /* every row sits in the default (light) state; only the hovered row darkens and reveals its badge */
-  .v2biz .biz-lists .li:hover{background:var(--g950)}
-  .v2biz .biz-lists .li:hover .nm{color:#fff}
-  .v2biz .biz-lists .li:hover .dash::before{background:rgba(255,255,255,.8)}
-  .v2biz .biz-lists .li:hover .op{color:rgba(255,255,255,.9)}
-  .v2biz .biz-lists .li:hover .cnt{display:grid}
-
-  .v2biz .biz-lists.fade{opacity:0}
-  @media (prefers-reduced-motion: reduce){
-    .v2biz .hero-texts .t1,.v2biz .hero-texts .t2,.v2biz .biz-lists,.v2biz .biz-num .reel .col{transition:none}
-    .v2biz .biz-lists .li{animation:none}
+  /* ===================== WHO WE ARE (3열 격자 · 카드 4장) =====================
+     Figma 1353:134. 예전엔 화면을 물고 키워드가 바뀌는 핀 구간이었는데,
+     제목이 1열에 서고 카드 넷이 2~3열에 두 줄로 놓이는 정적 격자로 바꿨다.
+     가로 간격 24 는 사이트 거터와 같고, 세로 간격만 40 으로 넓다 */
+  .v2who{background:#fff;padding:120px 84px;display:flex;flex-direction:column;align-items:center;gap:32px}
+  .who-grid{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 24px;align-items:start}
+  .who-grid .sec-ttl{grid-column:1;grid-row:1;font-family:var(--rb);font-weight:400;font-size:24px;line-height:1;letter-spacing:-.72px;color:var(--g900)}
+  .whocard{display:flex;flex-direction:column;gap:20px}
+  .whocard:nth-of-type(1){grid-column:2;grid-row:1}
+  .whocard:nth-of-type(2){grid-column:3;grid-row:1}
+  .whocard:nth-of-type(3){grid-column:2;grid-row:2}
+  .whocard:nth-of-type(4){grid-column:3;grid-row:2}
+  /* 그림 칸은 4:3 — 안에 사진 대신 도식(SVG)이 들어간다. 판이 좁아지면 도식도 같이 줄어든다 */
+  .whocard .img{aspect-ratio:160/120;background:var(--secondary-bg);border:1px solid var(--border-g);overflow:hidden}
+  .whocard .dgm{display:block;width:100%;height:100%}
+  /* 도식 공통 — 상자는 먹, 결론 상자만 브랜드 파랑, 선은 옅은 회색(되먹임만 점선) */
+  .whocard .dgm text{font-family:var(--suit)}
+  .whocard .dgm .box{fill:var(--g900)}
+  .whocard .dgm .box--brand{fill:var(--brand)}
+  .whocard .dgm .chip-o{fill:#fff;stroke:#cbd2da;stroke-width:1}
+  .whocard .dgm .bt{fill:#fff;font-size:15px;font-weight:600;text-anchor:middle}
+  .whocard .dgm .bt--lg{font-size:17px;font-weight:800}
+  .whocard .dgm .ct{fill:var(--g900);font-size:15px;font-weight:600;text-anchor:middle}
+  .whocard .dgm .no{fill:var(--teritary);font-size:13px;font-weight:600;letter-spacing:.06em}
+  .whocard .dgm .t{fill:var(--g900);font-size:17px;font-weight:800}
+  .whocard .dgm .d{fill:#445464;font-size:13px}
+  .whocard .dgm .dg-line{fill:none;stroke:var(--teritary);stroke-width:1.2}
+  .whocard .dgm .dg-loop{fill:none;stroke:var(--teritary);stroke-width:1.2;stroke-dasharray:5 5}
+  .whocard .txt{display:flex;flex-direction:column;gap:12px;text-align:center;word-break:keep-all}
+  .whocard .t{font-family:var(--suit);font-weight:800;font-size:24px;line-height:1.2;letter-spacing:-.48px;color:var(--g900)}
+  .whocard .en{font-family:var(--suit);font-weight:600;font-size:16px;line-height:1;letter-spacing:-.32px;color:var(--g900)}
+  /* 좁은 화면 — 제목이 격자에서 빠져 맨 위에 서고, 카드는 2열 → 1열로 접힌다 */
+  @media(max-width:1100px){
+    .who-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .who-grid .sec-ttl{grid-column:1 / -1}
+    .whocard:nth-of-type(1){grid-column:1;grid-row:2}
+    .whocard:nth-of-type(2){grid-column:2;grid-row:2}
+    .whocard:nth-of-type(3){grid-column:1;grid-row:3}
+    .whocard:nth-of-type(4){grid-column:2;grid-row:3}
+    .whocard .t{font-size:20px}
+    .whocard .en{font-size:15px}
+  }
+  @media(max-width:900px){
+    .v2who{padding:80px 24px;gap:24px}
+    .who-grid{grid-template-columns:minmax(0,1fr);gap:32px}
+    .whocard:nth-of-type(1),.whocard:nth-of-type(2),
+    .whocard:nth-of-type(3),.whocard:nth-of-type(4){grid-column:1;grid-row:auto}
   }
 
-  /* ===================== NEWS (Figma node 2:1447 layout + pinned vertical card scroll) ===================== */
-  /* overflow:visible overrides .section{overflow:hidden} so the sticky pin isn't trapped */
-  /* margin-top:-100vh pulls News up so it slides over the last 100vh of the pinned who-we-are section (sticky-reveal) */
-  .v2news{height:240vh;background:var(--secondary-bg);position:relative;overflow:visible;z-index:2;margin-top:-100vh}
-  .news-sticky{position:sticky;top:0;height:100vh;min-height:820px;overflow:hidden;background:var(--secondary-bg)}
-  /* left: fixed heading */
-  /* 헤딩 좌측선 — 다른 섹션들과 같은 2열(84px + --sec-inset)에 맞춘다.
-     예전엔 Business 2번째 타일 좌측 끝(+155.5px)에 맞췄었는데, 요청으로 뺐다 */
-  .v2news .news-text{position:absolute;top:0;left:calc(84px + var(--sec-inset));padding-top:200px;display:flex;flex-direction:column;gap:16px}
-  .v2news .news-text .h{font-family:var(--suit);font-weight:800;font-size:40px;line-height:1.2;letter-spacing:-.8px;color:var(--g900)}
-  .v2news .news-text .sub{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:#445464}
-  /* right: card grid (2 cols × 4 rows, diagonal stagger) that scrolls vertically during the pin */
-  /* card group: left line pinned to the window centre, right line aligned to the Business right card
-     (= right edge of the centred min(1392px,100%-48px) container). Positioned against .news-sticky (full width). */
-  .v2news .news-viewport{position:absolute;top:0;left:50%;right:calc(84px + var(--sec-inset));height:100%;overflow:hidden}
-  /* 2열 flex — 예전엔 4행 그리드(grid-template-rows:repeat(4,294px))로 대각 엇갈림을
-     만들었는데, 행 높이가 카드 높이와 무관해서 같은 열 위아래 간격이 제목 줄 수에 따라
-     103~127px 로 흔들렸다. 열을 따로 세우면 gap 이 축마다 한 값으로 확정된다.
-     엇갈림은 오른쪽 열의 padding-top 이 맡는다. transform 이 아니라 padding 인 이유는
-     아래 contentBottom() 이 offsetTop/offsetHeight 로 재기 때문 — transform 은 안 잡힌다 */
-  .v2news .news-cards{position:absolute;top:0;left:0;width:100%;display:flex;gap:40px;padding-top:200px;will-change:transform}
-  /* 세로만 가로(40px)의 두 배 — 카드가 이미지 375px 로 큰 편이라 같은 값이면 위아래가 답답했다 */
-  .v2news .ncol{flex:1;min-width:0;display:flex;flex-direction:column;gap:80px}
-  /* 세로 보폭(카드 375+28+텍스트 ≈ 485, + gap 80 = 565)의 절반. 4행 그리드 시절의
-     "오른쪽 열은 정확히 반 보폭 내려간다"는 관계를 그대로 옮긴 값이라, 세로 gap 을
-     바꾸면 이 값도 (485 + gap) / 2 로 다시 잡아야 대각선이 유지된다 */
-  .v2news .ncol-r{padding-top:282px}
-  /* align-self 를 두지 않는다 — flex 세로 열에서는 가로축을 잡는 값이라
-     start 면 카드가 열 폭을 안 채우고 글자 폭으로 쪼그라든다 */
-  .v2news .ncard{display:flex;flex-direction:column;gap:28px;cursor:pointer}
-  .v2news .ncard .img{height:375px;overflow:hidden}
-  .v2news .ncard .img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-  .v2news .ncard{transition:transform .55s var(--ease)}
-  .v2news .ncard:hover{transform:translateY(-6px)}
-  .v2news .ncard:hover .img img{transform:scale(1.05)}
-  @media (prefers-reduced-motion:reduce){ .v2news .ncard,.v2news .ncard .img img{transition:none} .v2news .ncard:hover{transform:none} }
-  .v2news .ncard .txt{display:flex;flex-direction:column;gap:8px}
-  .v2news .ncard .date{font-family:var(--pre);font-size:16px;line-height:1.6;letter-spacing:-.32px;color:#445464}
-  .v2news .ncard .title{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.2;letter-spacing:-.4px;color:var(--g900)}
+  /* ===================== NEWS (카드 3장 한 줄) =====================
+     Figma 1376:37427. 핀으로 카드를 흘려보내던 구간을 한 줄 카드 셋으로 바꿨다.
+     섹션 여백이 위아래 56 으로 앞 두 장(120)보다 좁고, 밑변에 선이 하나 있다 */
+  .v2news{background:#fff;border-bottom:1px solid #c7c9cc;padding:120px 84px;display:flex;flex-direction:column;gap:28px}
+  .v2news .news-head{display:flex;align-items:flex-start;gap:8px}
+  .v2news .news-head .ttls{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .v2news .news-head .h{font-family:var(--rb);font-weight:400;font-size:24px;line-height:1;letter-spacing:-.72px;color:var(--g900)}
+  .v2news .news-head .sub{font-family:var(--pre);font-size:15px;line-height:1.6;letter-spacing:-.3px;color:#5a6675}
+  .v2news .more{flex:none;display:inline-flex;align-items:center;gap:8px;padding:4px 8px 4px 12px;
+    background:#fff;border:1px solid var(--border-g);color:var(--g900);text-decoration:none;
+    font-family:var(--pre);font-size:15px;line-height:1.5}
+  .v2news .more img{width:20px;height:20px;display:block}
+  .v2news .more:hover{background:var(--secondary-bg)}
+  .v2news .news-row{display:flex;gap:20px}
+  .v2news .ncard{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:inherit}
+  .v2news .ncard .img{aspect-ratio:160/90;background:#e5e6e8;border:1px solid var(--border-g);overflow:hidden}
+  .v2news .ncard .img img{width:100%;height:100%;object-fit:cover}
+  /* flex:1 — 제목이 한 줄인 카드와 두 줄인 카드의 글상자 높이를 맞춘다(시안은 셋 다 132) */
+  .v2news .ncard .txt{flex:1;display:flex;flex-direction:column;gap:12px;padding:20px;background:#e7f0fc}
+  /* 제목은 두 줄까지 — 셋째 줄부터는 말줄임. 카드 셋의 글상자 높이를 맞춘다 */
+  .v2news .ncard .title{font-family:var(--suit);font-weight:800;font-size:20px;line-height:1.4;letter-spacing:-.4px;color:var(--g900);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all}
+  .v2news .ncard .date{font-family:var(--rb);font-weight:500;font-size:15px;line-height:1.6;letter-spacing:-.3px;color:#5a6675}
+  @media (prefers-reduced-motion:no-preference){
+    .v2news .ncard .img img{transition:transform .6s var(--ease)}
+    .v2news .ncard:hover .img img{transform:scale(1.05)}
+  }
+  @media(max-width:900px){
+    .v2news{padding:80px 24px}
+    .v2news .news-row{flex-wrap:wrap}
+    .v2news .ncard{flex:1 1 calc(50% - 10px)}
+  }
+  @media(max-width:560px){
+    .v2news .ncard{flex:1 1 100%}
+  }
 
   /* ===================== FOOTER ===================== */
   /* 새 그리드 — 좌우 여백은 GNB(.sf-gnb 의 --gnb-m)와 같은 44px, 900 아래는 GNB 처럼 16px.
@@ -946,7 +807,7 @@
           <div class="m-col" data-i="1">
             <a href="company.html">회사 소개</a>
             <a href="network.html">글로벌 네트워크</a>
-            <a href="#">사업장소재</a>
+            <a href="locations.html">사업장소재</a>
           </div>
           <div class="m-col" data-i="2"><a href="ir-finance.html">재무정보</a><a href="ir-disclosure.html">공시정보</a><a href="ir-stock.html">주식정보</a></div>
           <div class="m-col" data-i="3">
@@ -993,99 +854,269 @@
     </div>
   </section>
 
-  <!-- ===================== BUSINESS (static 4 tiles) ===================== -->
-  <section class="section v2bizsec" id="bizSection">
-    <div class="biz-stage v2biz" id="bizStage">
-      <div class="biz-collage"><!-- cards injected by JS --></div>
-      <div class="biz-content">
-        <div class="biz-head">
-          <span class="ttl">Business</span>
-          <div class="biz-nav"><!-- 정적 4타일에서는 쓰지 않는다(CSS로 숨김). JS가 참조하므로 마크업만 남긴다 --></div>
-        </div>
-        <div class="biz-body">
-          <!-- corner pixels: frame the full Business content box (header-bar width) down to the image top -->
-          <div class="hframe"><i></i><i></i><i></i><i></i></div>
-          <div class="biz-center">
-            <div class="biz-hero">
-              <span class="biz-num"><!-- step counter, centred above the title -->
-                <span class="reel"><span class="col"><i>01</i><i>02</i><i>03</i><i>04</i></span></span>
-                <span class="tot">/04</span>
-              </span>
-              <div class="hero-main">
-                <button class="ic" data-dir="-1" aria-label="이전"><svg viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                <div class="hero-texts"><!-- active business title (JS) --></div>
-                <button class="ic" data-dir="1" aria-label="다음"><svg viewBox="0 0 24 24" fill="none"><path d="M10 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- sub-menu: absolutely overlaid on the centre image (positioned by JS) -->
-      <div class="biz-lists"><!-- active business sub-items (JS) --></div>
+  <!-- ===================== BUSINESS (가로 띠 4단) =====================
+       Figma 1353:82. 띠 하나가 사업 하나다 — 사진 위에 사업명, 아래 바에 설명 2줄과
+       소분류 목록. 설명 문구는 각 사업 세부 페이지 히어로(.dhero-lead)와 같은 두 줄이고,
+       소분류는 그 페이지의 소분류 차례 그대로다 -->
+  <section class="section v2bizsec reveal" id="bizSection">
+    <p class="sec-ttl">Business</p>
+    <div class="biz-list">
+      <a class="bizband" href="business-smart.html">
+        <img src="../assets/carousel-battery.jpg" alt="" loading="lazy" decoding="async" />
+        <span class="bz-top">
+          <span class="bz-name"><span class="kor">스마트 제조</span><span class="eng">Smart Factory</span></span>
+          <span class="bz-rule" aria-hidden="true"></span>
+        </span>
+        <span class="bz-info">
+          <span class="bz-desc"><span>이차전지 활성화 공정의 주요 설비를 자체 기술로 만듭니다.</span><span>셀의 성능과 품질을 결정짓는 마지막 공정까지, A-PRO가 책임집니다.</span></span>
+          <ul class="bz-subs">
+            <li><span class="no">01</span><span class="nm">이차전지 활성화</span></li>
+            <li><span class="no">02</span><span class="nm">신뢰성 검사 장비</span></li>
+            <li><span class="no">03</span><span class="nm">자동화 시스템</span></li>
+            <li><span class="no">04</span><span class="nm">이차전지 소재</span></li>
+          </ul>
+        </span>
+      </a>
+      <a class="bizband" href="business-energy.html">
+        <img src="../assets/carousel-ess.jpg" alt="" loading="lazy" decoding="async" />
+        <span class="bz-top">
+          <span class="bz-name"><span class="kor">에너지 인프라</span><span class="eng">Energy Infrastructure</span></span>
+          <span class="bz-rule" aria-hidden="true"></span>
+        </span>
+        <span class="bz-info">
+          <span class="bz-desc"><span>배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.</span><span>그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</span></span>
+          <ul class="bz-subs">
+            <li><span class="no">01</span><span class="nm">Grid 에너지 저장 장치</span></li>
+            <li><span class="no">02</span><span class="nm">애플리케이션</span></li>
+          </ul>
+        </span>
+      </a>
+      <a class="bizband" href="business-ai.html">
+        <img src="../assets/carousel-safety-robot.jpg" alt="" loading="lazy" decoding="async" />
+        <span class="bz-top">
+          <span class="bz-name"><span class="kor">인공지능 플랫폼</span><span class="eng">Intelligent AI Platform</span></span>
+          <span class="bz-rule" aria-hidden="true"></span>
+        </span>
+        <span class="bz-info">
+          <span class="bz-desc"><span>AI로 배터리와 설비의 상태를 읽어냅니다.</span><span>진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</span></span>
+          <ul class="bz-subs">
+            <li><span class="no">01</span><span class="nm">로봇 플랫폼</span></li>
+            <li><span class="no">02</span><span class="nm">배터리 진단 플랫폼</span></li>
+            <li><span class="no">03</span><span class="nm">전기자동차 충전 플랫폼</span></li>
+            <li><span class="no">04</span><span class="nm">전기자동차 제어 플랫폼</span></li>
+          </ul>
+        </span>
+      </a>
+      <a class="bizband" href="business-semicon.html">
+        <img src="../assets/carousel-gan.jpg" alt="" loading="lazy" decoding="async" />
+        <span class="bz-top">
+          <span class="bz-name"><span class="kor">화합물 전력 반도체</span><span class="eng">GaN Power Semiconductors</span></span>
+          <span class="bz-rule" aria-hidden="true"></span>
+        </span>
+        <span class="bz-info">
+          <span class="bz-desc"><span>질화갈륨(GaN)을 기반으로 전력반도체와 RF반도체를 설계, 생산합니다.</span><span>국내 최대 규모의 8인치 EPI 양산 체계와 칩 설계 역량을 갖췄습니다.</span></span>
+          <ul class="bz-subs">
+            <li><span class="no">01</span><span class="nm">GaN Epi-Wafer</span></li>
+            <li><span class="no">02</span><span class="nm">GaN Power Device</span></li>
+            <li><span class="no">03</span><span class="nm">에이프로 세미콘</span></li>
+          </ul>
+        </span>
+      </a>
     </div>
   </section>
 
-  <!-- ===================== WHO WE ARE (pinned scroll interaction) ===================== -->
+  <!-- ===================== WHO WE ARE (3열 격자 · 카드 4장) =====================
+       Figma 1353:134. 제목이 1열, 카드 넷이 2~3열 두 줄.
+       그림 칸에는 사진 대신 도식을 그린다 — 네 가지 역량이 각각 어떤 얼개인지
+       한 장으로 보이게 한 것이다. 모두 같은 판(528×396)에 맞춘 인라인 SVG 라
+       칸이 줄면 글자까지 함께 줄어 비율이 흐트러지지 않는다.
+       판은 흐린 회색, 상자는 먹(#1b2733), 결론 상자만 브랜드 파랑이다 -->
   <section class="section v2who" id="whoSection">
-    <div class="who-sticky" id="whoSticky" data-phase="0">
-      <!-- foreground cut-outs, framed to the viewport floor (original lower-right placement) — advanced / aggressive / agile -->
-      <div class="who-fg">
-        <img class="lyr-fg fg-0" data-kw="0" src="../assets/front-1.png" alt="" aria-hidden="true" />
-        <img class="lyr-fg fg-1" data-kw="1" src="../assets/front-2.png" alt="" aria-hidden="true" />
-        <img class="lyr-fg fg-2" data-kw="2" src="../assets/front-3.png" alt="" aria-hidden="true" />
-      </div>
-      <div class="who-stage">
-        <!-- text / wordmark layer -->
-        <div class="s-txt s-h">Global Top 5<br/>Total Energy-Solution Provider</div>
-        <img class="s-txt s-a" src="../assets/a-logo.svg" alt="A" />
-        <span class="s-txt s-kw" data-kw="0">dvanced</span>
-        <span class="s-txt s-kw" data-kw="1">ggressive</span>
-        <span class="s-txt s-kw" data-kw="2">gile</span>
-        <svg class="s-txt s-apro" viewBox="0 0 484 103" role="img" aria-label="A-PRO" xmlns="http://www.w3.org/2000/svg">
-          <path pathLength="1" d="M373.887 79.2944L332.137 60.8892H346.169C360.935 60.8892 372.96 48.8636 372.96 34.098V27.3586C372.96 12.4131 360.935 0.373638 346.169 0.373638H290.386V21.6987H342.516C347.622 21.6987 351.635 25.7119 351.635 30.6245C351.635 35.5372 347.622 39.5503 342.516 39.5503H314.631C301.139 39.5503 290.386 50.4827 290.386 63.9752V100.799H311.531V75.1013L373.694 102.446L373.874 79.2944H373.887ZM445.155 79.4743H417.077C408.691 79.4743 401.758 66.5353 401.758 50.4827C401.758 34.4301 408.691 21.6849 417.077 21.6849H445.155C453.721 21.6849 460.475 34.4439 460.475 50.4827C460.475 66.5215 453.735 79.4743 445.155 79.4743ZM449.542 0.3598H412.898C393.759 0.3598 378.44 22.958 378.44 50.4965C378.44 78.0351 393.759 100.813 412.898 100.813H449.542C468.501 100.813 484 78.215 484 50.4965C484 22.7781 468.501 0.3598 449.542 0.3598ZM51.23 22.4183C52.3232 22.4183 53.0566 22.9718 53.4164 24.0651L78.7547 100.813H102.64L73.6483 12.5792C72.0015 5.46619 62.7159 0 51.23 0C39.744 0 30.6245 5.46619 28.9916 12.5792L0 100.813H23.8852L49.2234 24.0651C49.4033 22.9718 50.3166 22.4183 51.23 22.4183ZM197.973 0.3598V21.6849H250.296C255.403 21.6849 259.416 25.698 259.416 30.6107C259.416 35.5233 255.403 39.5365 250.296 39.5365H222.592C208.919 39.5365 197.987 50.4689 197.987 63.9613V100.785H219.312V73.8005C219.312 66.6875 225.152 60.8615 232.071 60.8615H253.77C268.535 60.8615 280.561 48.8359 280.561 34.0703V27.331C280.561 12.3854 268.535 0.345961 253.77 0.345961H197.987L197.973 0.3598ZM179.928 59.2424H108.646V37.9174H179.928V59.2424Z"/>
-        </svg>
-      </div>
+    <div class="who-grid">
+      <p class="sec-ttl">Who we are</p>
 
-      <!-- "who we are" aligned to the GNB left line (1440 container), scaled to the stage -->
-      <div class="who-eye"><p>who we are</p></div>
+      <article class="whocard">
+        <span class="img">
+          <!-- ① 진보된 기술력 — 네 갈래 기술을 상자 넷에 담아 2×2 로 펼친다(아이콘 없음) -->
+          <svg class="dgm" viewBox="0 0 528 396" role="img" aria-labelledby="dgm1t">
+            <title id="dgm1t">진보된 기술력의 네 갈래 — 전원 변환, 소프트웨어, 제어 및 측정, 기계 메커니즘</title>
+            <!-- 네 특징을 각각 상자에 담는다 — 244×150 짜리 네 칸이 8 간격 2×2 로 앉는다.
+                 상자 생김새(흰 바탕 · 회색 선)는 다른 도식의 키워드 상자와 같다 -->
+            <g class="chip-o">
+              <rect x="16" y="44" width="244" height="150" />
+              <rect x="268" y="44" width="244" height="150" />
+              <rect x="16" y="202" width="244" height="150" />
+              <rect x="268" y="202" width="244" height="150" />
+            </g>
+            <g class="dg-txt" text-anchor="middle">
+              <text class="no" x="138" y="80">01</text>
+              <text class="t" x="138" y="114">전원 변환</text>
+              <text class="d" x="138" y="140">고효율 변환</text>
+              <text class="no" x="390" y="80">02</text>
+              <text class="t" x="390" y="114">소프트웨어</text>
+              <text class="d" x="390" y="140">데이터 분석</text>
+              <text class="no" x="138" y="238">03</text>
+              <text class="t" x="138" y="272">제어 및 측정</text>
+              <text class="d" x="138" y="298">고정밀 측정</text>
+              <text class="d" x="138" y="318">고속 제어</text>
+              <text class="no" x="390" y="238">04</text>
+              <text class="t" x="390" y="272">기계 메커니즘</text>
+              <text class="d" x="390" y="298">확장성 설계</text>
+              <text class="d" x="390" y="318">유지관리 설계</text>
+            </g>
+          </svg>
+        </span>
+        <div class="txt"><p class="t">진보된 기술력</p><p class="en">Applied Electronics, Electric and Mechatronics</p></div>
+      </article>
 
-      <div class="who-dots"><i data-dot="0"></i><i data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i></div>
+      <article class="whocard">
+        <span class="img">
+          <!-- ② 고객 맞춤 제작 — 요구 하나가 셋으로 갈렸다가 다시 하나로 모인다 -->
+          <svg class="dgm" viewBox="0 0 528 396" role="img" aria-labelledby="dgm2t">
+            <title id="dgm2t">다양한 요구가 사양·기능·형태로 갈린 뒤 맞춤형 제작으로 모이는 흐름</title>
+            <defs>
+              <marker id="dgArrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 1.5 8 5 0 8.5z" fill="#96a3b3" />
+              </marker>
+            </defs>
+            <rect class="box" x="184" y="56" width="160" height="44" />
+            <text class="bt" x="264" y="84">다양한 요구</text>
+            <path class="dg-line" d="M264 100v32" />
+            <path class="dg-line" d="M96 132h336" />
+            <path class="dg-line" d="M96 132v24" marker-end="url(#dgArrow2)" />
+            <path class="dg-line" d="M264 132v24" marker-end="url(#dgArrow2)" />
+            <path class="dg-line" d="M432 132v24" marker-end="url(#dgArrow2)" />
+            <g class="chip-o">
+              <rect x="16" y="162" width="160" height="44" />
+              <rect x="184" y="162" width="160" height="44" />
+              <rect x="352" y="162" width="160" height="44" />
+            </g>
+            <g class="ct">
+              <text x="96" y="190">사양</text>
+              <text x="264" y="190">기능</text>
+              <text x="432" y="190">형태</text>
+            </g>
+            <path class="dg-line" d="M96 206v30" />
+            <path class="dg-line" d="M264 206v30" />
+            <path class="dg-line" d="M432 206v30" />
+            <path class="dg-line" d="M96 236h336" />
+            <path class="dg-line" d="M264 236v34" marker-end="url(#dgArrow2)" />
+            <rect class="box box--brand" x="184" y="276" width="160" height="44" />
+            <text class="bt bt--lg" x="264" y="304">맞춤형 제작</text>
+          </svg>
+        </span>
+        <div class="txt"><p class="t">고객 맞춤 제작</p><p class="en">Diversification &amp; Customization</p></div>
+      </article>
+
+      <article class="whocard">
+        <span class="img">
+          <!-- ③ 통합설계 — 여섯 설계 요소를 최적화로 묶어 통합 솔루션에 이른다 -->
+          <svg class="dgm" viewBox="0 0 528 396" role="img" aria-labelledby="dgm3t">
+            <title id="dgm3t">제품 성능·재료 선택·사이즈·시뮬레이션·검증·비용을 최적화해 통합 솔루션으로 잇는 흐름</title>
+            <defs>
+              <marker id="dgArrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 1.5 8 5 0 8.5z" fill="#96a3b3" />
+              </marker>
+            </defs>
+            <text class="no" x="264" y="46" text-anchor="middle">다양한 설계 요소</text>
+            <g class="chip-o">
+              <rect x="16" y="66" width="160" height="44" />
+              <rect x="184" y="66" width="160" height="44" />
+              <rect x="352" y="66" width="160" height="44" />
+              <rect x="16" y="118" width="160" height="44" />
+              <rect x="184" y="118" width="160" height="44" />
+              <rect x="352" y="118" width="160" height="44" />
+            </g>
+            <g class="ct">
+              <text x="96" y="94">제품 성능</text>
+              <text x="264" y="94">재료 선택</text>
+              <text x="432" y="94">사이즈</text>
+              <text x="96" y="146">시뮬레이션</text>
+              <text x="264" y="146">검증</text>
+              <text x="432" y="146">비용</text>
+            </g>
+            <path class="dg-line" d="M264 162v34" marker-end="url(#dgArrow3)" />
+            <rect class="box" x="184" y="200" width="160" height="44" />
+            <text class="bt" x="264" y="228">최적화</text>
+            <path class="dg-line" d="M264 244v34" marker-end="url(#dgArrow3)" />
+            <rect class="box box--brand" x="184" y="282" width="160" height="44" />
+            <text class="bt bt--lg" x="264" y="310">통합 솔루션</text>
+          </svg>
+        </span>
+        <div class="txt"><p class="t">통합설계</p><p class="en">Our founding philosophy has always been focused on optimization</p></div>
+      </article>
+
+      <article class="whocard">
+        <span class="img">
+          <!-- ④ 자동화 공정 — 다섯 단계가 한 바퀴를 돌아 다시 생산으로 되먹임된다 -->
+          <svg class="dgm" viewBox="0 0 528 396" role="img" aria-labelledby="dgm4t">
+            <title id="dgm4t">제품 생산에서 고객 요구사항 수용까지 다섯 단계를 돌고 다시 생산으로 되먹임되는 흐름</title>
+            <defs>
+              <marker id="dgArrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 1.5 8 5 0 8.5z" fill="#96a3b3" />
+              </marker>
+            </defs>
+            <g class="box">
+              <rect x="168" y="40" width="160" height="44" />
+              <rect x="168" y="108" width="160" height="44" />
+              <rect x="168" y="176" width="160" height="44" />
+              <rect x="168" y="244" width="160" height="44" />
+              <rect x="168" y="312" width="160" height="44" />
+            </g>
+            <g class="bt">
+              <text x="248" y="68">제품 생산</text>
+              <text x="248" y="136">지능형 추적 시스템</text>
+              <text x="248" y="204">공정 모니터링</text>
+              <text x="248" y="272">품질 관리</text>
+              <text x="248" y="340">고객 요구사항 수용</text>
+            </g>
+            <path class="dg-line" d="M248 84v18" marker-end="url(#dgArrow4)" />
+            <path class="dg-line" d="M248 152v18" marker-end="url(#dgArrow4)" />
+            <path class="dg-line" d="M248 220v18" marker-end="url(#dgArrow4)" />
+            <path class="dg-line" d="M248 288v18" marker-end="url(#dgArrow4)" />
+            <!-- 되먹임 — 마지막 단계에서 오른쪽으로 빠져 첫 단계로 돌아온다(점선).
+                 선이 오른쪽으로 32 나가므로 상자를 그만큼 왼쪽에 두어 도식 전체가 판 가운데에 선다 -->
+            <path class="dg-loop" d="M328 334h32V62h-28" marker-end="url(#dgArrow4)" />
+          </svg>
+        </span>
+        <div class="txt"><p class="t">자동화 공정</p><p class="en">Advanced flexibility and a high level of specialization</p></div>
+      </article>
     </div>
   </section>
 
-  <!-- ===================== NEWS (pinned scroll) ===================== -->
+  <!-- ===================== NEWS (카드 3장 한 줄) =====================
+       Figma 1376:37427. 카드 셋은 보도자료 최신 세 건(글번호 85 · 84 · 80)이고,
+       A-1 홈이 고른 것과 같다. 카드 · 더보기 모두 보도자료 쪽으로 간다 -->
   <section class="section v2news" id="newsSection">
-    <div class="news-sticky">
-      <div class="news-text">
-        <p class="h">뉴스</p>
+    <div class="news-head">
+      <div class="ttls">
+        <p class="h">News</p>
         <p class="sub">에이프로의 새로운 소식을 전해드립니다</p>
       </div>
-      <div class="news-viewport">
-        <!-- 두 열을 따로 세운다 — 대각 엇갈림은 오른쪽 열(.ncol-r)의 padding-top 몫이고,
-             열 안팎 간격은 .news-cards / .ncol 의 gap 40px 하나로 맞춘다 -->
-        <div class="news-cards" id="newsCards">
-          <div class="ncol">
-            <article class="ncard">
-              <div class="img"><img src="../assets/news-rfgan.jpg" alt="" /></div>
-              <div class="txt"><p class="date">2025.03.14</p><p class="title">에이프로세미콘, 전력 이어 RF용 GaN 에피웨이퍼 개발</p></div>
-            </article>
-            <article class="ncard">
-              <div class="img"><img src="../assets/news-robot.jpg" alt="" /></div>
-              <div class="txt"><p class="date">2025.01.31</p><p class="title">산업 현장에 스며든 ‘점검 로봇’</p></div>
-            </article>
-          </div>
-          <div class="ncol ncol-r">
-            <article class="ncard">
-              <div class="img"><img src="../assets/news-rnd.jpg" alt="" /></div>
-              <div class="txt"><p class="date">2025.02.20</p><p class="title">에이프로, 중기부 R&amp;D 우수성과</p></div>
-            </article>
-            <article class="ncard">
-              <div class="img"><img src="../assets/news-battery.jpg" alt="" /></div>
-              <div class="txt"><p class="date">2024.12.09</p><p class="title">에이프로, 각형 배터리 양산 장비 수주…제품 라인업 확장</p></div>
-            </article>
-          </div>
-        </div>
-      </div>
+      <a class="more" href="community-press.html">더보기<img src="../assets/icon-open-page.svg" alt="" aria-hidden="true" /></a>
+    </div>
+    <div class="news-row">
+      <a class="ncard" href="community-press-view.html?id=85">
+        <span class="img"><img src="../assets/press-085.jpg" alt="" loading="lazy" decoding="async" /></span>
+        <span class="txt">
+          <span class="title">에이프로세미콘, ‘1200V급 GaN 에피웨이퍼’로 스케일업팁스 선정</span>
+          <span class="date">2026-08-18</span>
+        </span>
+      </a>
+      <a class="ncard" href="community-press-view.html?id=84">
+        <span class="img"><img src="../assets/press-084.jpg" alt="" loading="lazy" decoding="async" /></span>
+        <span class="txt">
+          <span class="title">에이프로-클로봇, AI·로봇 융합 산업현장 안전점검 MOU</span>
+          <span class="date">2026-06-30</span>
+        </span>
+      </a>
+      <a class="ncard" href="community-press-view.html?id=80">
+        <span class="img"><img src="../assets/press-080.jpg" alt="" loading="lazy" decoding="async" /></span>
+        <span class="txt">
+          <span class="title">에이프로, 각형 배터리 양산 장비 수주…제품 라인업 확장</span>
+          <span class="date">2026-02-23</span>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -1108,7 +1139,7 @@
           <ul>
             <li><a href="company.html">회사 소개</a></li>
             <li><a href="network.html">글로벌 네트워크</a></li>
-            <li><a href="#">사업장소재</a></li>
+            <li><a href="locations.html">사업장소재</a></li>
           </ul>
         </div>
         <div class="f-col">
@@ -1139,7 +1170,7 @@
         <div class="f-links">
           <a href="network.html">글로벌 네트워크</a><i class="sep"></i>
           <a href="#">Contact us</a><i class="sep"></i>
-          <a href="#">사업장소재</a><i class="sep"></i>
+          <a href="locations.html">사업장소재</a><i class="sep"></i>
           <a href="#">이메일무단수집거부</a><i class="sep"></i>
           <a href="#" class="strong">개인정보처리방침</a>
         </div>
@@ -1254,6 +1285,32 @@
     });
   })();
 
+  // Business — 띠가 스크롤을 따라 0.85 → 1 로 커진다 (레퍼런스: halston-architecture-template).
+  // 진행도 p 는 "띠 윗변이 화면 밑변에 닿는 순간"(p=0)부터 "띠가 화면에 다 들어온 순간"(p=1)까지다
+  // → 거리는 띠 높이 하나. 다 보이면 제 크기이고, 아래에 반쯤 걸친 띠는 그만큼 작다.
+  // 리빌(.reveal)과 달리 한 번 켜고 끝이 아니라 스크롤 위치를 계속 따라가므로 rAF 로 묶는다
+  (function(){
+    var bands = document.querySelectorAll('.v2bizsec .bizband');
+    if(!bands.length){ return; }
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ return; }
+    var MIN = 0.85, ticking = false;
+    function update(){
+      ticking = false;
+      var vh = window.innerHeight;
+      for(var i=0;i<bands.length;i++){
+        var r = bands[i].getBoundingClientRect();
+        var p = r.height ? (vh - r.top) / r.height : 1;
+        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        bands[i].style.setProperty('--bz-s', (MIN + (1 - MIN) * p).toFixed(4));
+      }
+    }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', update);
+    update();
+  })();
+
   // Scroll reveal: sections rise/fade in one by one as they enter the viewport
   (function(){
     var els = document.querySelectorAll('.reveal, .reveal-fade, .reveal-stagger');
@@ -1273,248 +1330,6 @@
     els.forEach(function(el){ io.observe(el); });
   })();
 
-  // Business — static 4 tiles (links to the detail pages; sub-items open on hover).
-  // 예전엔 who we are 핀 안에서 A-PRO "A" 가 네 타일로 갈라지는 모핑으로 등장했는데,
-  // 홈 순서를 Business → who we are 로 바꾸면서 모핑을 걷고 독립 장으로 뺐다.
-  (function(){
-    var stage   = document.getElementById('bizStage');
-    if(!stage){ return; }
-    var collage = stage.querySelector('.biz-collage');
-    var navEl   = stage.querySelector('.biz-nav');
-    var heroEl  = stage.querySelector('.hero-texts');
-    var listsEl = stage.querySelector('.biz-lists');
-    var reel    = stage.querySelector('.biz-num .reel');
-    var reelCol = reel.querySelector('.col');
-
-    var BIZ = [
-      { kor:'스마트 제조', eng:'Smart Factory', img:'carousel-battery.jpg', href:'business-smart.html',
-        lists:[ {nm:'이차전지 활성화', href:'business-smart.html', tags:['충방전기','DCIR','고온·가압 충방전기','Degas','Pre-formation','OCV','IR-OCV','DSF/EOL','Selector']},
-                {nm:'신뢰성 검사 장비', href:'business-smart.html', tags:['Cell & Module','Pack']},
-                {nm:'자동화 시스템', href:'business-smart.html', tags:['PLC(Programmable Logic Controller)','MES(Manufacturing Execution System)']},
-                {nm:'이차전지 소재', sub:true, href:'business-smart.html', tags:['탄소나노튜브','LiFSI 전해염','에이프로 머티리얼즈']} ] },
-      { kor:'에너지 인프라', eng:'Energy Infrastructure', img:'carousel-ess.jpg', href:'business-energy.html',
-        lists:[ {nm:'Grid 에너지 저장 장치', href:'business-energy.html', tags:['ESS','UPS','BMS']},
-                {nm:'애플리케이션', href:'business-energy.html', tags:['우주 발사체','무인 이동체/수상정']} ] },
-      { kor:'인공지능 플랫폼', eng:'Intelligent AI Platform', img:'carousel-safety-robot.jpg', href:'business-ai.html',
-        lists:[ {nm:'로봇 플랫폼', href:'business-ai.html', tags:['산업 안전 진단 솔루션','통합 운영 플랫폼']},
-                {nm:'배터리 진단 플랫폼', href:'business-ai.html', tags:['건강 상태 진단','이상 상태 진단']},
-                {nm:'전기자동차 충전 플랫폼', href:'business-ai.html', tags:['PICKLE Station']},
-                {nm:'전기자동차 제어 플랫폼', href:'business-ai.html', tags:['전기자동차 제어 플랫폼']} ] },
-      { kor:'화합물 전력 반도체', eng:'GaN Power Semiconductors', img:'carousel-gan.jpg', href:'business-semicon.html',
-        lists:[ {nm:'GaN Epi-Wafer', href:'business-semicon.html', tags:['GaN Epi-Wafer']},
-                {nm:'GaN Power Device', href:'business-semicon.html', tags:['GaN Power Device']},
-                {nm:'에이프로 세미콘', sub:true, href:'business-semicon.html', tags:['A-PRO SEMICON']} ] }
-    ];
-    var N = BIZ.length;
-    // MAXCW(예전 1392px 캡) 제거 — 세부페이지처럼 GUTTER(마진)를 84px 로 고정하고
-    // 폭은 뷰포트를 따라 계속 늘어나게 한다. Infinity 를 주면 아래 Math.min(MAXCW, ...)
-    // 가 항상 두 번째 값(뷰포트 - 마진*2)을 골라, 캡이 있던 자리를 건드리지 않고
-    // "캡 없음"만 표현할 수 있다. GUTTER 는 더 이상 상수가 아니다 — 타일도 CSS
-    // --sec-inset 만큼 GNB(84px)보다 한 칸 더 좁게(2열~11열) 보이도록, computeSlots
-    // 안에서 뷰포트 폭(vw)마다 다시 계산한다(아래 참고, CSS --sec-inset 과 같은 식) */
-    var MAXCW=Infinity, GAP=12, LISTW=299;
-    var WF=(LISTW-GAP)/2, BASE=860;
-    var centerEl = stage.querySelector('.biz-center');
-    var heroBlock = stage.querySelector('.biz-hero');
-    var SLOT=[];
-    function computeSlots(){
-      // static 4-tile layout: four equal tiles filling the container, below the "Business" label bar
-      var vw = collage.clientWidth || window.innerWidth;
-      var stageH = Math.min(collage.clientHeight || Math.max(window.innerHeight,900), 900);
-      var GUTTER = 84 + (vw - 144) / 12;   // CSS --sec-inset:calc((100% - 144px)/12) 와 동일한 식
-      var CW = Math.min(MAXCW, vw-GUTTER*2), ox=(vw-CW)/2;
-      var TG=4, tw=(CW-TG*3)/4;          // 4 tiles + 3 gaps across the container
-      // 4px = 배너 탭이 상자 묶음이던 시절의 틈(.v2banner .bnav 주석 참고)이자 모바일 탭·
-      // 소분류 목록이 쓰는 값. 사업영역 페이지의 붙은 4패널 쪽으로 한 걸음 당긴 간격이다
-      // 타일 윗변 = "Business" 라벨 밑변 + GAPH. 두 곳에 숫자를 박아 두면 라벨을 옮길 때마다
-      // 어긋나므로 라벨을 실제로 재서 쓴다 — 라벨은 .biz-content, 타일은 .biz-collage 안이지만
-      // 둘 다 .biz-stage 의 같은 레이어라 collage 기준으로 환산하면 같은 좌표계가 된다
-      var GAPH = 28;                     // 라벨 밑변 ↔ 타일 윗변 (라벨이 타일에 붙어 읽히는 거리)
-      var cTop = collage.getBoundingClientRect().top;
-      var headBottom = headEl ? Math.round(headEl.getBoundingClientRect().bottom - cTop) : 200;
-      var top=headBottom+GAPH, th=stageH-top-16;     // 헤더 아래부터 baseline 까지
-      if(centerEl){ centerEl.style.width = CW+'px'; }
-      SLOT=[];
-      for(var i=0;i<4;i++){ SLOT.push({x:ox+i*(tw+TG), y:top, w:tw, h:th}); }
-      positionOverlay();
-    }
-    var hframeEl = stage.querySelector('.hframe');
-    var bodyEl = stage.querySelector('.biz-body');
-    var headEl = stage.querySelector('.biz-head');
-    var numEl  = stage.querySelector('.biz-num');
-    var heroMainEl = stage.querySelector('.hero-main');
-    // overlay the sub-list on the centre image top, then centre the title + nav
-    // in the band between the header bottom and the image top
-    function positionOverlay(){
-      if(!listsEl || !collage || !SLOT[2]){ return; }
-      var s = SLOT[2], cTop = collage.getBoundingClientRect().top;
-      listsEl.style.left = s.x + 'px';
-      listsEl.style.top = s.y + 'px';
-      listsEl.style.width = s.w + 'px';
-      if(centerEl && heroBlock && bodyEl && headEl){
-        var headBottom = headEl.getBoundingClientRect().bottom - cTop;
-        var bandCenter = (headBottom + s.y) / 2 - 4;                   // middle of header↔image, biased 4px up
-        var bodyTop = bodyEl.getBoundingClientRect().top - cTop;
-        if(hframeEl){ hframeEl.style.height = Math.max(0, Math.round(s.y - bodyTop)) + 'px'; }   // span biz-body top → image top
-        // centre on the big title line (.t1 — where the arrows now sit), not the whole block's geometry,
-        // so the arrows+title row lands at the header↔image mid-height.
-        // use offsetTop (immune to the rise-up transform) — .biz-hero is position:relative so it's the offsetParent —
-        // otherwise measuring mid-rolling reads the translated position and the block drifts down.
-        var t1El = heroEl && heroEl.querySelector('.t1');
-        var innerCenter = t1El ? (t1El.offsetTop + t1El.offsetHeight/2) : heroBlock.offsetHeight/2;
-        centerEl.style.marginTop = Math.max(0, Math.round(bandCenter - bodyTop - innerCenter)) + 'px';
-      }
-    }
-    var OP = '<svg class="op" viewBox="0 0 20 20" fill="none"><path d="M7 5h8v8M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function enc(s){ return '../assets/' + encodeURIComponent(s); }
-    var cards = BIZ.map(function(b,i){
-      var c=document.createElement('a'); c.className='bcard'; c.href=b.href;   // static tiles are clickable links to the detail pages
-      c.dataset.idx = '0' + (i+1);   // 01~04 — 사업영역 페이지 .panel[data-idx] 와 같은 번호 (이미지 프레이밍용)
-      // 호버 목록은 lists[].nm — 상세 페이지 상단 소분류 탭 바와 같은 항목이라
-      // 목록을 따로 관리하지 않는다(BIZ 하나만 고치면 둘이 같이 바뀐다).
-      // 행 구조는 사업영역 페이지(business.html .p-lists .li)와 같다 — 닷 + 이름 + 계열사 태그
-      var sub = b.lists.map(function(l){
-        return '<span class="li"><span class="dot"></span><span class="nm">'+esc(l.nm)+'</span>'+
-               (l.sub ? '<span class="tag">계열사</span>' : '')+'</span>';
-      }).join('');
-      // 소분류(.bsub)는 캡션 밖 — 카드의 직계 자식이어야 bottom 기준이 타일 밑변이 된다
-      c.innerHTML='<img src="'+enc(b.img)+'" alt="'+esc(b.kor)+'" />'+
-        '<span class="bcap">'+
-        '<span class="bcap-ko">'+esc(b.kor)+'</span>'+
-        '<span class="bcap-en">'+esc(b.eng)+'</span></span>'+
-        '<span class="bsub">'+sub+'</span>';
-      collage.appendChild(c); return c;
-    });
-    navEl.innerHTML = BIZ.map(function(b,i){ return '<button class="nv" data-i="'+i+'">'+esc(b.kor)+'</button>'; }).join('');
-    var navBtns = navEl.querySelectorAll('.nv');
-    function listItem(l, idx){
-      var tag = l.sub ? '<span class="tag">계열사</span>' : '';
-      var n = (l.tags || []).length;
-      var cnt = n ? '<span class="cnt">'+n+'</span>' : '';
-      var cls = 'li';   // every row starts in the default (light) state; hover highlights
-      var st = ' style="--i:'+idx+'"';   // stagger index for the entrance animation
-      var inner = '<span class="dash"></span><span class="nm">'+esc(l.nm)+'</span>'+tag+cnt+OP;
-      return l.href ? '<a class="'+cls+'"'+st+' href="'+l.href+'">'+inner+'</a>' : '<div class="'+cls+'"'+st+'>'+inner+'</div>';
-    }
-    var active=-1, faderTO=null;
-    function slotOf(b){ return b; }   // static tiles: each card keeps its own fixed slot (no rotation)
-    function setGeom(card,s){ card.style.left=s.x+'px'; card.style.top=s.y+'px'; card.style.width=s.w+'px'; card.style.height=s.h+'px'; }
-    function place(first){
-      cards.forEach(function(card, b){
-        var s = SLOT[b]; if(!s){ return; }
-        if(first){ card.style.transition = 'none'; setGeom(card, s); void card.offsetWidth; card.style.transition = ''; }
-        else { setGeom(card, s); }
-        card.classList.toggle('center', b === active); card._pos = b;   // the scroll-active tile shows in colour
-      });
-    }
-    function fillText(b){
-      heroEl.innerHTML = '<div class="hmask"><p class="t1">'+esc(b.kor)+'</p></div>' + '<div class="hmask"><p class="t2">'+esc(b.eng)+'</p></div>';
-      listsEl.innerHTML = b.lists.map(listItem).join('');
-      positionOverlay();   // re-align the group to the image once the hero/list content is set
-    }
-    function setActive(i){
-      if(i === active){ return; }
-      var first = active < 0; active = i; var b = BIZ[i];
-      place(first);
-      clearTimeout(faderTO);
-      if(first){ fillText(b); }
-      else {
-        heroEl.classList.add('out'); listsEl.classList.add('fade');
-        faderTO = setTimeout(function(){
-          fillText(b); listsEl.classList.remove('fade');
-          heroEl.classList.remove('out'); heroEl.classList.add('enter'); void heroEl.offsetWidth; heroEl.classList.remove('enter');
-        }, 480);
-      }
-      var dh = reelCol.children[0].getBoundingClientRect().height || 16;
-      reel.style.height = dh + 'px'; reelCol.style.transform = 'translateY(-' + (i * dh) + 'px)';
-      navBtns.forEach(function(btn,j){ btn.classList.toggle('on', j===i); });
-    }
-
-    function onResize(){ computeSlots(); place(true); }
-    window.addEventListener('resize', onResize);
-    window.addEventListener('load', onResize);
-    computeSlots(); setActive(0);
-  })();
-
-  // who we are — pinned keyword cycle. Progress p over the section:
-  //   [0,KW)  advanced → aggressive → agile → A-PRO wordmark (dark), one quarter each
-  //   [KW,1]  wordmark holds; News slides up over the last 100vh (.v2news margin-top:-100vh)
-  (function(){
-    var section = document.getElementById('whoSection');
-    var sticky  = document.getElementById('whoSticky');
-    if(!section || !sticky){ return; }
-    var kws     = sticky.querySelectorAll('.s-kw');
-    var layers  = sticky.querySelectorAll('.lyr-fg');   // foreground cut-outs keyed to each keyword phase (0/1/2)
-    // split each keyword into per-glyph masks so it rises in letter-by-letter on change
-    kws.forEach(function(el){
-      var txt = el.textContent, frag = document.createDocumentFragment();
-      for(var i=0;i<txt.length;i++){
-        var ch = document.createElement('span'); ch.className = 'kw-ch';
-        var gl = document.createElement('i'); gl.textContent = txt[i]; gl.style.setProperty('--i', i);
-        ch.appendChild(gl); frag.appendChild(ch);
-      }
-      el.textContent = ''; el.appendChild(frag);
-    });
-    var dots    = sticky.querySelectorAll('.who-dots i');
-    var PHASES = 4, KW = 0.7;
-
-    var current = -1;
-    function setPhase(p){
-      if(p === current){ return; } current = p;
-      sticky.setAttribute('data-phase', p);
-      kws.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
-      layers.forEach(function(el){ el.classList.toggle('active', parseInt(el.dataset.kw,10) === p); });
-      dots.forEach(function(d){ d.classList.toggle('on', parseInt(d.dataset.dot,10) === p); });
-    }
-    function fit(){ sticky.style.setProperty('--who-s', Math.min(window.innerWidth/1280, window.innerHeight/586)); }
-
-    var ticking=false;
-    function update(){
-      ticking=false;
-      var total = section.offsetHeight - window.innerHeight;
-      var scrolled = -section.getBoundingClientRect().top;
-      var p = total>0 ? scrolled/total : 0; p=Math.max(0, Math.min(0.9999, p));
-      setPhase(Math.min(PHASES-1, Math.floor((p/KW)*PHASES)));
-    }
-    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
-    function onResize(){ fit(); update(); }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
-    window.addEventListener('load', onResize);
-    fit(); update();
-  })();
-
-  // News: pinned section — the card masonry scrolls vertically with page scroll, then unpins to the footer
-  (function(){
-    var section = document.getElementById('newsSection');
-    var cards = document.getElementById('newsCards');
-    if(!section || !cards){ return; }
-    var vp = section.querySelector('.news-viewport');
-    var ticking = false;
-    // true content bottom — 오른쪽 열이 padding-top 만큼 내려가 있어 두 열의 밑변이 다르다.
-    // .ncard 는 .ncol 이 static 이라 offsetParent 가 그대로 .news-cards 다(padding-top:200px 포함)
-    function contentBottom(){
-      var b = 0, arr = cards.querySelectorAll('.ncard');
-      for(var i=0;i<arr.length;i++){ b = Math.max(b, arr[i].offsetTop + arr[i].offsetHeight); }
-      return b;
-    }
-    function update(){
-      ticking = false;
-      var total = section.offsetHeight - window.innerHeight;   // page-scroll distance the section stays pinned
-      var scrolled = -section.getBoundingClientRect().top;
-      var progress = total > 0 ? scrolled / total : 0;
-      progress = Math.max(0, Math.min(1, progress));
-      var maxShift = Math.max(0, contentBottom() + 40 - vp.clientHeight);
-      cards.style.transform = 'translateY(' + (-progress * maxShift).toFixed(1) + 'px)';
-    }
-    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    window.addEventListener('load', update);
-    update();
-  })();
 
   /* ===== FOOTER family-site dropdown ===== */
   (function(){
@@ -1568,24 +1383,17 @@
     if(!group){ return; }
     var bizSec = document.getElementById('bizSection');
     var whoSec = document.getElementById('whoSection');
-    var whoSt  = document.getElementById('whoSticky');
     var news   = document.querySelector('.v2news');
     var footer = document.querySelector('.footer');
     var banner = document.querySelector('.v2banner');
     var Y = 38;   // the GNB's vertical band (top:20 + ~18)
     var BARH = 80;   // .gnb-bg 높이와 같은 값 (CSS 를 고치면 여기도 같이)
     function spans(el){ if(!el){ return false; } var r=el.getBoundingClientRect(); return r.top<=Y && r.bottom>Y; }
-    function lum(str){
-      var m = String(str).match(/[\d.]+/g); if(!m){ return 1; }
-      var r=+m[0]/255, g=+m[1]/255, b=+m[2]/255, a=(m[3]!=null)?+m[3]:1;
-      if(a < 0.3){ return 1; }   // transparent → treat as light (fall through handled by caller)
-      return 0.2126*r + 0.7152*g + 0.0722*b;
-    }
     // true → light background → use dark nav text
     function wantDark(){
       if(spans(bizSec)){ return true; }      // white
-      if(spans(whoSec)){ return lum(getComputedStyle(whoSt).backgroundColor) > 0.55; }  // reads live bg (white kw ↔ dark wordmark)
-      if(spans(news)){ return true; }        // #f4f6f8
+      if(spans(whoSec)){ return true; }      // white (카드 격자로 바뀌며 바탕이 흰색 하나로 고정됐다)
+      if(spans(news)){ return true; }        // white
       if(spans(footer)){ return false; }     // dark
       return false;                          // banner (video) / default → white text
     }
@@ -1630,7 +1438,7 @@
       <div class="ov-links">
         <a href="company.html">회사 소개</a>
         <a href="network.html">글로벌 네트워크</a>
-        <a href="#">사업장소재</a>
+        <a href="locations.html">사업장소재</a>
       </div>
     </div>
     <div class="ov-row">
