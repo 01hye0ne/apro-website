@@ -43,7 +43,13 @@
   html{scroll-behavior:smooth}
   /* NOTE: no overflow-x on body/html — that (hidden OR clip) makes body the sticky scroll context
      and breaks the who-we-are pin. Horizontal overflow is clipped per-section via .section{overflow:hidden}. */
-  body{font-family:var(--pre);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
+  /* 바탕은 흰색이다(다른 장들의 business-layout.css body 와 같은 값).
+     2026-09-20 까지 --g950(#0e161e) 이었는데, 그 검정이 스크롤 중에 비쳤다 —
+     본문 장들은 .reveal 로 들어오느라 화면에 걸리기 전까지 opacity:0 이고,
+     그동안은 제 흰 바탕(.v2bizsec 등)도 같이 투명해 body 가 그대로 보였다.
+     ⚠ 맨 아래에서 더 끌어내리면(고무줄 스크롤) 어두운 푸터 밑으로 흰 띠가
+       비친다. 그게 거슬리면 body 가 아니라 html 에 --g950 을 주면 된다 */
+  body{font-family:var(--pre);background:#fff;color:var(--g900);-webkit-font-smoothing:antialiased}
   img{display:block;max-width:none}
   p{margin:0}
   button{font-family:inherit}
@@ -390,12 +396,12 @@
   /* 오른쪽 390 은 글 없이 비운다 — 아래 소분류 칸과 같은 폭이라 세로선이 이어진다 */
   .bizband .bz-rule{flex:none;width:390px;border-left:1px solid rgba(255,255,255,.2)}
 
-  /* 아래 정보 바 — 바탕색 없이 유리 흐림과 윗선(흰 20%)만. 높이 209 고정.
-     어둡게 하는 일은 카드 전체를 덮는 .bizband::before 가 맡는다.
-     흐림은 시안(10)의 절반인 5 — 사진이 덜 뭉개져 무엇을 찍은 띠인지 남는다 */
+  /* 아래 정보 바 — 바탕색도 흐림도 없이 윗선(흰 20%)만. 높이 209 고정.
+     어둡게 하는 일은 카드 전체를 덮는 .bizband::before 가 온전히 맡는다.
+     2026-09-20 에 backdrop-filter:blur(5px) 를 걷었다. 시안(10)의 절반까지
+     낮춰 뒀던 값인데도 사진이 바 안팎으로 갈려 한 장이 두 장처럼 보였다 */
   .bizband .bz-info{flex:none;height:209px;display:flex;
-    border-top:1px solid rgba(255,255,255,.2);
-    -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+    border-top:1px solid rgba(255,255,255,.2)}
   /* 설명글은 제목용 SUIT 굵은체가 아니라 본문용 Pretendard 20 이다 */
   .bizband .bz-desc{flex:1;min-width:0;padding:32px 40px 20px;text-align:left;
     font-family:var(--pre);font-weight:400;font-size:20px;line-height:1.6;letter-spacing:-.4px}
@@ -764,6 +770,52 @@
   .sf-burger[aria-expanded="true"] .a{opacity:0}
   .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
   .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+
+  /* ══ 홈 히어로 탭 — 사업영역 탭 메뉴와 같은 꼴 (2026-09-21 요청) ═════════
+     종전에는 히어로 밑단에 유리 한 장(.v2banner::after)이 [밑단 띠 + 탭 판 +
+     양끝 커브]를 통째로 그리고, 탭 줄이 그 판 위에 얹히는 구조였다.
+     새 꼴은 사업영역 히어로와 같다 — 탭 줄 자신이 1px 흰 20% 테두리와 모서리 8,
+     blur(5) 를 갖는 둥근 판이 되어 사진 위에 그대로 뜬다.
+     sticky 상태는 만들지 않는다 — 홈은 이 줄이 화면에 붙는 장치가 없다.
+     ⚠ 옛 규칙은 지우지 않고 덮는다. 커브·게이지·활성 표시가 한 덩이로 얽혀 있어
+       (마스크가 유리와 같은 도형을 쓰고, 게이지는 그 마스크 안에서 자란다)
+       되돌릴 일이 생기면 이 묶음만 걷어 내면 된다 */
+  @media(min-width:901px){
+    /* 유리 한 장(커브 판 + 밑단 띠)을 걷는다 — 새 탭이 제 테두리와 흐림을
+       갖고 있어 그대로 두면 유리가 두 겹이 된다 */
+    .v2banner::after{display:none}
+    .v2banner .bnav{height:auto;padding:0;
+      border:1px solid rgba(255,255,255,.2);border-radius:8px;
+      -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+    /* 칸 경계선은 판 높이 전체를 지난다 — 종전에는 위아래 14 를 들여 짧은 선이었다.
+       자리(20/40/60/80%)와 색(흰 20%)은 그대로다 */
+    .v2banner .bnav::after{inset:0}
+    /* 안쪽 여백을 칸이 갖는다(판이 아니라) — 그래야 칸이 판 높이를 꽉 채우고,
+       칸 윗변을 따라 자라는 게이지(.b::before)가 판 안쪽 윗선을 그대로 탄다.
+       판에 padding 을 주면 게이지가 판 속에 떠 있는 선이 된다 */
+    .v2banner .bnav .b{padding:20px}
+    /* 커브 시절 양끝 칸은 음수 마진으로 커브 위까지 넓힌 뒤 그 모양으로 오려 냈다.
+       판이 반듯한 네모가 됐으니 오릴 것도 넓힐 것도 없다 */
+    .v2banner .bnav .b:first-child,
+    .v2banner .bnav .b:last-child{margin:0;padding:20px;
+      -webkit-mask:none;mask:none}
+    /* 글자는 사업영역 탭과 같은 값 — 다만 흐림/밝힘(.72 → #fff)은 남긴다.
+       저쪽은 표시일 뿐이지만 여기서는 "지금 재생 중인 영상"을 알리는 신호다 */
+    .v2banner .bnav .bt{font-size:20px;line-height:24px;letter-spacing:-.4px}
+  }
+
+  /* ══ GNB 키 — A 판 공통 34 (2026-09-21) ══════════════════════════════
+     다른 A 장 열아홉은 a-common.css 의 같은 절이 잡아 준다. 홈은 그 파일을
+     부르지 않으므로 여기 한 벌을 둔다 — 한쪽을 고치면 다른 쪽도 함께 고친다.
+     박스만 줄이면 로고(여백 12 위아래 + 그림 17 = 41)가 삐져나오므로 여백도
+     8 로 함께 줄인다. .logo::after 의 inset 은 그 padding 과 짝이다 */
+  :root{--gnb-top:20px;--gnb-box:34px;--gnb-logo-pad:8px;
+    --gnb-bottom:calc(var(--gnb-top) + var(--gnb-box))}
+  @media(min-width:901px){
+    .gnb{top:var(--gnb-top);height:var(--gnb-box)}
+    .gnb .logo{padding:var(--gnb-logo-pad) 0}
+    .gnb .logo::after{inset:var(--gnb-logo-pad) 0}
+  }
 </style>
 <script>document.documentElement.classList.add('js-anim');</script>
 </head>

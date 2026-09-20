@@ -88,34 +88,41 @@
     /* 히어로 높이는 공용 규칙(business-layout.css)의 88vh 를 그대로 쓴다 */
   }
 
-  /* 타이틀(.in) y 위치 — GNB 밑변과 흰 네비 탭 윗변 사이의 중앙에 오도록 옮긴다.
-     탭 밴드 크기를 20px 기준(65px 높이)으로 다시 낮추면서 흰 네비 탭 윗변도
-     다시 바뀌었다. 목표 이동량 = −(패널 높이/2) − 8(.in 자체의 치우침, 이전
-     실측으로 확인한 translateY 값과 무관한 상수) = −(65/2) − 8 = −40.5px */
-  @media(min-width:901px){
-    .dhero .in{transform:translateY(-38px)}
+  /* ⚠ 2026-09-21 : 히어로가 회사정보와 같은 꼴(.dhero--co)로 갈리면서 아래 두
+     묶음을 걷었다.
+       · .dhero .in{transform:translateY(-38px)} — 글을 판 한가운데에 맞추려던
+         값이다. 새 틀은 가운데가 아니라 위(패딩 120)에서 시작한다.
+       · .dhero h1{font-size:60px} — h1 이 이제 [이름표] 칩이라 60 을 주면
+         칩이 통째로 커진다. 크기는 .chero-tag 가 쥔다. */
+
+  /* 사업영역 히어로 — 회사정보 틀(.dhero--co)에서 밑단만 다르다.
+     밑에 소분류 탭 바가 유리판으로 겹쳐 뜨므로 그만큼 자리를 비운다 :
+     바 높이(--bnav-h) + 그 위아래 숨(20 두 번) */
+  .dhero--biz{--bnav-h:64px;padding-bottom:calc(var(--bnav-h) + 40px)}
+  /* 헤드라인만 40 으로 낮춘다 (2026-09-21 요청) — 회사정보 쪽 히어로와 서체 ·
+     무게(SUIT 600) · 색 · 자리는 같고 크기만 다르다. 나르는 글이 다르기 때문이다 :
+       회사정보 계열 = 표어. 한 줄 15~18자
+       사업영역     = 설명문. 한 줄 31~35자
+     같은 48 을 주면 줄 길이가 두 배가 되어 화면을 가로지른다. 40 을 거쳐
+     2026-09-21 에 32 로 한 번 더 내렸다 — 가장 긴 문안(화합물 전력 반도체)이
+     40 에서도 화면 폭을 거의 채웠다. 28 까지 가면 표제가 아니라 본문으로 읽힌다.
+     자간은 a-common.css 와 같은 비율(-2%)이라 32 에서 -.64 다 */
+  /* 행간은 회사정보 쪽(1.2)보다 넓게 잡는다 (2026-09-21 요청) — 저쪽은 짧은
+     표어 두 줄이라 바짝 붙어야 한 덩이로 읽히지만, 이쪽은 설명문이라 줄이
+     길어 1.2 로는 두 줄이 엉겨 붙는다 */
+  .dhero--biz .dhero-lead{font-size:32px;letter-spacing:-.64px;line-height:1.45}
+  @media(max-width:1100px){
+    .dhero--biz .dhero-lead{font-size:clamp(22px,3vw,32px)}
   }
 
-  /* 히어로 타이틀 확대 + 영문 서브타이틀 + 하단 좌측 픽토그램 장식.
-     스크롤해서 탭 바가 고정되면 히어로 자체가 화면 밖으로 나가므로 "sticky일 땐
-     원래대로"는 저절로 이뤄진다 — 고정 탭 바의 "스마트 제조"(.bnav-ttl, 20px)는
-     이 히어로 타이틀과 완전히 별개의 엘리먼트라 여기서 크기를 키워도 영향이 없다 */
-  .dhero h1{font-size:60px;line-height:1.22}   /* 반투명 칩 배경은 삭제 — 순수 텍스트만 */
   /* 히어로는 A / A-1 이 같다(2026-08-10) — .v-a1 분기 규칙을 두지 않는다.
-     구성은 국문 h1 + 설명글 2줄(.dhero-lead) 두 덩어리다 — 영문 한 줄
+     구성은 [이름표] 칩 + 설명글 2줄(.dhero-lead) 두 덩어리다. 영문 한 줄
      (.dhero-en "Smart Factory")은 2026-08-11 요청으로 마크업째 뺐다.
-     .dhero-lead 의 위 여백 22px 이 이제 h1 바로 밑에 붙는다 */
 
-  /* 탭 바를 60px 끌어올려 생긴 여백 — 지금까지는 히어로 배경(사진+그늘)이 그대로
-     비쳐서 어두운 색이었다. 흰 배경으로 채운다. .dhero::after 는 이미 어두운
-     그라데이션 오버레이가 쓰고 있어서 ::before 를 대신 쓴다 — z-index 를 명시해
-     (::after 는 auto 라 암묵적으로 0 레벨) 그 위, 사진 위로 확실히 올라오게 한다.
-     탭 바(.bnav-wrap)는 이 흰 사각형보다 더 나중 DOM·z-index:90 이라 그 위에 그대로
-     겹쳐 뜬다 — 흰 배경이 탭 바를 가리지 않는다 */
-  @media(min-width:901px){
-    .dhero::before{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;
-      height:60px;background:#fff}
-  }
+     ⚠ 2026-09-21 : 히어로 밑단의 흰 사각형(.dhero::before, 높이 60)을 걷었다.
+       탭 바를 끌어올려 생긴 자리를 흰색으로 메워 바가 흰 띠 위에 서게 하던
+       장치인데, 새 시안의 바는 히어로 사진 위에 그대로 뜨는 유리판이라
+       뒤가 비쳐야 한다. 흰 띠가 남으면 유리가 비칠 것이 없다 */
 
   /* 소분류 탭 바 — --bw 는 GNB 와 같은 공식이라 뷰포트 폭과 무관하게 좌우 마진이 같다.
 
@@ -1852,6 +1859,144 @@
   .sf-cnt .cap span{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
                     line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--brand)}
   .sf-ph img{display:block;width:100%;height:100%;object-fit:cover}
+
+  /* ══ 소분류 탭 바 — 2026-09-21 시안 (Figma 1390:40992) ═══════════════
+     두 모습이 있다.
+       히어로 위 : 사진 위에 그대로 뜨는 유리판. 1px 흰 20% 테두리 + 모서리 8
+                   + blur(5). 칸은 넷이 똑같이 나눠 갖고 사이를 세로선이 가른다.
+       고정된 뒤 : 왼쪽에 대분류 이름(251)이 서고, 오른쪽이 흰 판으로 바뀌며
+                   윗모서리만 둥글다. 밑에 흰 띠 20 이 깔려 본문과 이어진다.
+
+     이 묶음은 <style> 맨 끝에 둔다 — 위쪽에 커브(.bnav-rule) 시절의 규칙이
+     여러 층 남아 있어 순서로 이겨야 한다. 그 규칙들은 지우지 않고 덮는다:
+     이 페이지에서만 갈아 보는 중이라 되돌리기 쉬워야 하고, 나머지 세 장
+     (인공지능 · 에너지 · 반도체)은 아직 옛 바를 쓴다.
+     ⚠ 선택자에 body 를 덧댄 까닭 — 덮으려는 규칙이 :not(.is-fixed) 를 달아
+       (0,3,0) 이라 같은 이름만으로는 순서가 와도 진다. 한 단 올려 잡는다.
+
+     --bnav-band : 바가 히어로 밑단에서 차지하는 키. 히어로의 padding-bottom 과
+                   바의 margin-top 이 같은 값을 써야 바가 사진 안에 딱 앉는다 —
+                   20(위 숨) + 66(판: 20 + 글 24 + 20 + 테두리 2) + 20(아래 숨) */
+  :root{--bnav-band:106px}
+  .dhero--biz{padding-bottom:var(--bnav-band)}
+
+  /* GNB 자리 — GNB 는 fixed 로 top:20 에 키 40 이라 밑변이 60 이다.
+     바를 그 밑(top:60)으로 내렸더니 0~60 이 비어 본문이 GNB 뒤로 흘렀다.
+     이제는 바를 화면 맨 위(top:0)에 붙이고 그 60 을 바 자신의 위 여백으로
+     삼는다 (2026-09-21 요청) — 남색 띠가 GNB 뒤까지 올라와 흰 로고 · 메뉴가
+     제 바탕을 갖는다.
+     ⚠ --bar-top 은 0(공용 기본값) 그대로 둔다. 바를 위로 접어 감추는 규칙
+       (.is-fixed.is-away)이 translateY(calc(-100% - var(--bar-top))) 로 이 값을
+       읽는데, 여백이 바 안쪽(padding)으로 들어왔으므로 -100% 만으로 다 접힌다.
+     좁은 화면(900 이하)은 공용 규칙이 --bar-top:72 를 써 바가 GNB 밑에 따로
+     선다 — 그쪽은 건드리지 않는다.
+
+     GNB 를 조금 낮춘다 (2026-09-21 요청). 키를 쥐고 있는 것은 로고다 —
+     공용값은 박스 40 인데 로고가 padding:12 위아래 + 그림 17 = 41 로 오히려
+     박스보다 컸다. 그래서 박스만 줄이면 로고가 삐져나올 뿐 낮아지지 않는다.
+     여백을 12 → 8 로 줄이고(로고 33) 박스를 34 로 맞춘다.
+     ⚠ .logo::after 의 inset 은 그 padding 과 짝이다(공용 CSS 주석) — 흰 로고를
+       가려 두는 판이라 한쪽만 고치면 어긋난다. 그래서 같은 변수를 쓴다.
+     ⚠ 이름을 --biz-* 로 둔 까닭 — 공용 CSS 에 --gnb-h(53px)가 이미 있다.
+       그쪽은 .sf-gnb 전용 스코프라 지금 부딪히지는 않지만, :root 에 같은 이름을
+       두면 나중에 이 페이지가 .sf-gnb 를 쓰게 될 때 조용히 엉킨다 */
+  /* 2026-09-21 : GNB 키를 A 판 전체로 통일하면서 이 페이지 몫을 걷었다 —
+     이제 a-common.css 의 0-3 절이 잡는다(--gnb-top · --gnb-box · --gnb-bottom).
+     아래 고정 바의 위 여백도 그 --gnb-bottom 을 읽는다 */
+
+  @media(min-width:901px){
+    /* ⚠ 좌우 여백은 주지 않는다 — .bnav 가 --bw(=100% − 2×--gm)로 제 폭을 잡고
+       가운데 서므로, 여기에 또 주면 84 가 두 번 들어가 1464 로 좁아진다 */
+    body .bnav-wrap,
+    body .bnav-wrap:not(.is-fixed){position:relative;z-index:90;height:auto;background:none;
+      margin-top:calc(-1 * var(--bnav-band));padding:20px 0}
+    body .bnav{display:block;padding:0}
+    /* 히어로 위에서는 대분류 이름도 커브도 쪽 번호도 없다.
+       ::before / ::after 는 커브 양끝을 흰색으로 메우던 조각이다 — 유리판에는
+       메울 것이 없다(그 흰색이 바로 사진을 가리던 것) */
+    body .bnav-ttl,body .bnav-rule,body .bnav-pager{display:none}
+    body .bnav-wrap::before,body .bnav-wrap::after,
+    body .bnav-wrap:not(.is-fixed)::before,
+    body .bnav-wrap:not(.is-fixed)::after{display:none}
+    /* 커브 시절 탭 묶음은 absolute 로 떠서 가운데↔왼쪽을 오갔다. 흐름으로 되돌린다 */
+    body .bnav-wrap:not(.is-fixed) .bnav-tabs,
+    body .bnav-wrap .bnav-tabs{position:static;left:auto;bottom:auto;transform:none;
+      width:100%;height:auto;overflow:visible;
+      display:flex;align-items:stretch;gap:0;padding:20px 0;
+      border:1px solid var(--white-300);border-radius:8px;background:none;
+      -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+    body .bnav-wrap:not(.is-fixed) .bnav-tabs a,
+    body .bnav-wrap:not(.is-fixed) .bnav-tabs a[aria-current],
+    body .bnav-wrap .bnav-tabs a{
+      flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;
+      padding:0 20px;transform:none;
+      border-right:1px solid var(--white-300);
+      font-family:var(--suit);font-weight:600;font-size:20px;line-height:24px;
+      letter-spacing:-.4px;color:#fff}
+    body .bnav-wrap .bnav-tabs a:last-child{border-right:0}
+    body .bnav-wrap:not(.is-fixed) .bnav-tabs a:hover{color:#fff;opacity:.7}
+    /* 옛 세로 구분선을 걷는다 — 판 위에 깔린 가상요소 하나가 1/4 · 2/4 · 3/4
+       자리에 흰 20% 선을 그렸다. 지금은 칸마다 border-right 가 그리므로 두 겹이
+       되고, 옛 것은 위아래를 들여 놓아(top:16 bottom:2) 길이까지 달라
+       한 칸 경계에 길고 짧은 선이 1px 어긋나 나란히 섰다 */
+    body .bnav-wrap:not(.is-fixed) .bnav-tabs::after{display:none}
+
+    /* ── 고정된 뒤 (Figma 1390:40993) ──────────────────────────────────
+       남색 띠(--point-900) 위에 흰 판이 얹히고, 판 밑변은 띠 밑의 흰 띠 20 과
+       이어져 본문으로 흘러든다. 시안 PNG 를 픽셀로 재서 옮긴 값이다 :
+         띠 키 104 = 위 숨 20 + 판 64 + 흰 띠 20
+         판 왼쪽 345 = --gm(84) + 대분류 이름 칸(251) + 틈(10)
+         판 오른쪽 1716 = 1800 − --gm
+         칸 사이 구분선만 있고 판 양끝에는 없다(셋이면 둘) */
+    body .bnav-wrap.is-fixed{height:auto;margin-top:0;
+      /* 위 여백은 GNB 영역 키 그대로다 (2026-09-21 요청) — 54 = top 20 + 박스 34.
+         종전에는 여기에 시안의 숨 20 을 더해 74 였다. 이제 흰 판 윗변이 GNB
+         밑변에 바로 닿는다 */
+      padding:var(--gnb-bottom) 0 0;
+      background:var(--point-900);border-bottom:20px solid #fff}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav{display:flex;align-items:center;gap:10px}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-ttl{display:block;flex:none;width:var(--rail-w,251px);
+      margin:0;font-family:var(--suit);font-weight:600;font-size:20px;line-height:24px;
+      letter-spacing:-.4px;color:#fff}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs{flex:1 1 0;min-width:0;width:auto;
+      background:#fff;border:0;border-radius:8px 8px 0 0;padding:20px 0;
+      /* relative 는 밑 모서리 조각(::after)의 기준 상자를 만들려는 것이다.
+         ⚠ inset:auto 를 같이 줘야 한다 — 옛 바가 이 요소를 absolute 로 띄우며
+           left:calc(--rail-w + --rail-gap) 를 걸어 뒀는데, static 일 때는 무시되던
+           그 값이 relative 가 되는 순간 271px 짜리 어긋남으로 되살아난다 */
+      position:relative;inset:auto;
+      -webkit-backdrop-filter:none;backdrop-filter:none}
+    /* 판 밑 양끝은 위와 반대로 깎는다 (2026-09-21 요청) — 위 두 모서리는 흰 판이
+       안으로 말려 들어가고(볼록), 아래 두 모서리는 남색 쪽이 말려 들어가(오목)
+       판의 흰색과 그 밑 흰 띠가 한 몸으로 이어진다. 탭이 본문에 붙어 있는 모양이다.
+       네 모서리를 다 볼록하게 깎으면 판이 띠 위에 뜬 카드가 되어 본문과 끊긴다.
+
+       그리는 법 — 판 밖 양쪽으로 8 씩 뻗은 8 짜리 띠 하나에, 원 하나씩을
+       모서리에 앉힌다. 원 안은 투명(남색이 비친다), 밖은 흰색이다. 원의 중심을
+       왼쪽은 제 상자의 왼쪽 위(0 0), 오른쪽은 오른쪽 위(100% 0)에 두는 것이
+       "좌우 반전"이다.
+       ⚠ 이 ::after 는 옛 바가 칸 구분선을 그리던 자리다 — 그 규칙이 남긴 값
+         (top · bottom · background-*)을 모두 되돌려야 한다. display:none 으로
+         끄고 새 요소를 두는 대신 여기서 받아 쓴다 */
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs::after{
+      content:"";position:absolute;pointer-events:none;
+      top:auto;bottom:0;left:-8px;right:-8px;height:8px;
+      background-image:
+        radial-gradient(circle at 0 0,transparent 8px,#fff 8px),
+        radial-gradient(circle at 100% 0,transparent 8px,#fff 8px);
+      background-size:8px 8px,8px 8px;
+      background-position:left bottom,right bottom;
+      background-repeat:no-repeat,no-repeat}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a{
+      color:#1b2733;border-right:1px solid var(--border-g);transform:none}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a:last-child{border-right:0}
+    /* 지금 보고 있는 칸은 색으로만 짚는다. 옛 바는 칸 밑에 사다리꼴 밑줄
+       (브랜드색 4px, bottom:-20)을 켰는데, 새 시안에는 그 자리가 흰 띠뿐이라
+       판 밖으로 삐져나온 조각처럼 보인다 */
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a::after,
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a[aria-current]::after{display:none}
+    body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs a[aria-current]{color:var(--brand)}
+  }
 </style>
 <!-- 카드 진입 연출 스위치. 본 스크립트는 body 끝에서 로드되므로 여기서 미리 켜야
      큰 화면에서 카드가 잠깐 보였다 숨는 깜빡임이 없다. 미지원 브라우저는 그냥 다 보인다 -->
@@ -1882,10 +2027,13 @@
 </div>
 
 <!-- ===================== HERO ===================== -->
-<section class="dhero">
+<!-- 히어로 — 회사정보와 같은 꼴(a-common.css 의 .dhero--co, 2026-09-21 요청).
+     h1 이 [이름표] 칩이 되고, 밑의 두 줄이 슬로건 자리(48/600)에 선다.
+     밑단에는 소분류 탭 바(.bnav-wrap)가 유리판으로 겹쳐 뜬다 -->
+<section class="dhero dhero--co dhero--biz">
   <span class="dhero-bg" style="--hero-pos:50% 46%"><img src="../assets/carousel-battery.jpg" alt="" aria-hidden="true" /></span>
   <div class="in">
-    <h1>스마트 제조</h1>
+    <h1 class="chero-tag"><span>스마트 제조</span></h1>
     <p class="dhero-lead">이차전지 활성화 공정의 주요 설비를 자체 기술로 만듭니다.<br />셀의 성능과 품질을 결정짓는 마지막 공정까지, A-PRO가 책임집니다.</p>
   </div>
 </section>
