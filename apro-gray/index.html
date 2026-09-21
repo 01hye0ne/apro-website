@@ -559,8 +559,30 @@
     .v2news .ncard .img img{transition:transform .6s var(--ease)}
     .v2news .ncard:hover .img img{transform:scale(1.05)}
   }
+  /* 카드 밑 목록 — A-1 .hm-nlist 와 같은 짜임이고 글꼴만 A 판 것이다(날짜 Roboto · 제목 SUIT) */
+  .v2news .news-list{list-style:none;margin:12px 0 0;padding:0}
+  .v2news .news-list a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;
+    column-gap:24px;padding:28px 0;border-bottom:1px solid var(--border-g);color:inherit;text-decoration:none}
+  .v2news .news-list .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    font-family:var(--suit);font-weight:800;font-size:18px;line-height:1.6;letter-spacing:-.36px;
+    color:var(--g900);word-break:keep-all;transition:color .2s var(--ease)}
+  .v2news .news-list .date{font-family:var(--rb);font-weight:500;font-size:15px;line-height:1.6;letter-spacing:-.3px;color:#5a6675}
+  .v2news .news-list .go{display:flex;align-items:center;gap:6px;font-family:var(--suit);font-weight:400;
+    font-size:16px;line-height:1.6;color:var(--g900);white-space:nowrap}
+  .v2news .news-list .go svg{display:block;width:20px;height:20px;color:#5a6675;transition:transform .3s var(--ease)}
+  .v2news .news-list a:hover .ttl{color:var(--brand)}
+  .v2news .news-list a:hover .go svg{transform:translateX(3px)}
+  .v2news .news-list a:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){ .v2news .news-list .go svg{transition:none} }
   @media(max-width:900px){
     .v2news{padding:80px 24px}
+    /* 좁은 화면은 날짜를 제목 밑으로, 오른쪽엔 화살표만. 제목은 두 줄까지 */
+    .v2news .news-list a{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t g" "d g";
+      row-gap:4px;column-gap:16px;padding:20px 0}
+    .v2news .news-list .ttl{grid-area:t;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+    .v2news .news-list .date{grid-area:d}
+    .v2news .news-list .go{grid-area:g}
+    .v2news .news-list .go .lb{display:none}
     .v2news .news-row{flex-wrap:wrap}
     .v2news .ncard{flex:1 1 calc(50% - 10px)}
   }
@@ -1338,6 +1360,25 @@
         </span>
       </a>
     </div>
+    <!-- 카드 셋 다음으로 최근인 다섯 건 — A-1 홈(index-a1.html .hm-nlist)과 같은 글 · 같은 짜임(2026-09-21).
+         한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 아래 선. 보도자료 상세(?id=글번호)로 간다 -->
+    <ul class="news-list">
+      <li>
+        <a href="community-press-view.html?id=83"><span class="ttl">에이프로세미콘, 8인치 GaN 에피웨이퍼 앞세워 글로벌 시장 공략</span><span class="date">2026-06-25</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></a>
+      </li>
+      <li>
+        <a href="community-press-view.html?id=82"><span class="ttl">구미시 찾은 구윤철 경제부총리…반도체·로봇·피지컬 AI 육성 방안 논의</span><span class="date">2026-06-22</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></a>
+      </li>
+      <li>
+        <a href="community-press-view.html?id=81"><span class="ttl">로봇 배터리, EV와 다르다… 기회충전·자율교환이 핵심</span><span class="date">2026-06-12</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></a>
+      </li>
+      <li>
+        <a href="community-press-view.html?id=79"><span class="ttl">에이프로, 중기부 R&amp;D 우수성과 50선 선정</span><span class="date">2026-02-04</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></a>
+      </li>
+      <li>
+        <a href="community-press-view.html?id=78"><span class="ttl">에이프로세미콘, GaN 에피웨이퍼 본격 양산…기술 고도화</span><span class="date">2026-01-21</span><span class="go"><span class="lb">자세히 보기</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.3535 11.6465C20.5488 11.8417 20.5488 12.1583 20.3535 12.3535L13.3535 19.3535L12.6465 18.6465L18.793 12.5H4V11.5H18.793L12.6465 5.35352L13.3535 4.64648L20.3535 11.6465Z" fill="currentColor"/></svg></span></a>
+      </li>
+    </ul>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
