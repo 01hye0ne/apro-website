@@ -47,9 +47,10 @@
      =====================================================================
        위 120   [Locations] 이름표 (a-common.css 의 .chero-tag — 칩은 다른 히어로와 같은 흰 20%. 2026-09-21 에 파랑을 걷었다)
          32     한 줄 문장 (SUIT 400 24/1.2)
-       아래 56  ── 여기까지가 히어로(281)
+       아래 28  ── 여기까지가 히어로(253). 히어로 밑 56 + 띠 위 56 = 112 가 너무 벌어져
+                2026-09-21 요청으로 둘 다 절반(28 + 28 = 56)으로 줄였다
 
-       띠       위아래 56 · 좌우 --a-gm. 왼쪽 글 662 고정, 오른쪽 지도(시안 1800 에서
+       띠       위 28 · 아래 56 · 좌우 --a-gm. 왼쪽 글 662 고정, 오른쪽 지도(시안 1800 에서
                 804×603). 둘 사이는 space-between 이 벌린다(최소 166).
 
      띠가 화면에서 남는 높이를 다 갖고(2026-09-21 요청 — 글로벌 네트워크처럼 첫 화면이
@@ -75,13 +76,13 @@
       url("../assets/sea-horizon.jpg") center/cover no-repeat}
 
   .lc-hero{display:flex;flex-direction:column;align-items:flex-start;gap:32px;
-    padding:120px var(--a-gm) 56px}
+    padding:120px var(--a-gm) 28px}
   .lc-sub{margin:0;font-family:var(--suit);font-weight:400;font-size:24px;line-height:1.2;
     letter-spacing:-.48px;color:#fff;word-break:keep-all}
 
   /* flex-basis 는 0 이어야 한다 — auto 면 크기 컨테이너의 첫 배치 높이가 0 이라 100cqh 가 0 으로 풀려 지도 폭이 2px 가 된다 */
   .lc-band{flex:1 1 0;min-height:0;display:flex;align-items:flex-start;justify-content:space-between;
-    gap:166px;padding:56px var(--a-gm);container-type:size}
+    gap:166px;padding:28px var(--a-gm) 56px;container-type:size}
   /* 사이 166 은 1800 을 전제로 한 값이라, 좁아지면 지도부터 쪼그라든다 — 먼저 사이를 줄인다 */
   @media(max-width:1600px){ .lc-band{gap:80px} }
   @media(max-width:1400px){ .lc-band{gap:40px} }
