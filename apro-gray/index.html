@@ -973,6 +973,10 @@
 <div id="stage">
 
   <!-- ===================== BANNER ===================== -->
+  <!-- 영상 — 2026-09-21 부터 _backup/시안 3_26.09.21.mp4 다(사옥 항공 촬영, 34.9초).
+       원본은 4K 47.7MB 라 1080p · CRF 26 · 오디오 없이(어차피 muted) 12.6MB 로 눌러 넣었다.
+       길이가 아래 스크립트의 문구 일곱 개 × 5초 = 35초와 맞아 세그먼트 표는 그대로다.
+       종전 영상(39.8초)은 assets/_unused/banner-gray-260709.mp4 에 있다 -->
   <section class="section v2banner">
     <video class="v2b-video" src="../assets/banner-gray.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="gnb-group">
@@ -1416,7 +1420,7 @@
   // Banner: the video (banner-gray.mp4) is the SINGLE source of truth for timing.
   // Headline messages swap every 5s and the bnav gauge tracks the current segment,
   // both read from video.currentTime via rAF — no setTimeout/setInterval, so nothing drifts.
-  // Placeholder copy for now; the 8 segments map to 0,5,10,…,35s of the footage.
+  // The 7 segments map to 0,5,10,…,30s of the footage (34.9s, so the last one runs to the loop).
   (function(){
     var banner = document.querySelector('.v2banner');
     if(!banner){ return; }
