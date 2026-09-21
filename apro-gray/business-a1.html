@@ -160,6 +160,14 @@
     /* 두 칸 격자에서 줄 폭이 94 안팎이라 16 은 "에이프로 세미콘" 이 말줄임된다 */
     .li .nm{font-size:var(--fs-meta)}
   }
+  /* 한 칸으로 — 두 칸을 더 끌고 가면 폰 폭(390)에서 판 하나가 195 로 줄어, 여백
+     27 둘과 줄 안쪽 여백까지 빼면 이름에 100px 남짓만 남는다. 소분류 여덟 개가
+     모두 말줄임으로 끊겼다. 480 언저리가 경계인데 한 단 위에서 미리 접는다 */
+  @media(max-width:560px){
+    .carousel{grid-template-columns:1fr;grid-template-rows:none}
+    .panel{border-right:none;border-bottom:1px solid var(--border-g)}
+    .panel:last-child{border-bottom:none}
+  }
   @media(max-width:640px){.mnote{position:fixed;bottom:0;left:0;right:0;z-index:50;display:block;padding:10px;text-align:center;font-size:var(--fs-tag);color:#8895a5;background:#0b1118;font-family:var(--suit)}}
 
   /* ---- cross-document view transitions (Figma Smart Animate–style morph) ---- */

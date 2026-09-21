@@ -136,6 +136,12 @@
   }
 
   .wrap{width:calc(9 * var(--gx) - var(--gcg));margin:0 0 0 calc(var(--gm) + 2 * var(--gx))}
+  /* 좁은 화면에서는 3열 들여쓰기를 푼다 — 왼쪽 두 열은 세로 인덱스 레일의 자리인데,
+     900 아래에서는 그 레일이 가로로 누워 카드 위로 올라간다(business-a.css). 비운 자리를
+     그대로 두면 390 짜리 화면에서 본문이 254px 로 눌리고 왼쪽에만 83px 이 남았다 */
+  @media(max-width:900px){
+    .wrap{width:calc(100% - 2 * var(--gm));margin-inline:auto}
+  }
   @media(min-width:901px){
     .hsec{grid-template-columns:1fr;grid-template-rows:auto 1fr;column-gap:0;
       padding:calc(var(--bar-rise) + var(--bar-h) + 12px) 0 24px}
