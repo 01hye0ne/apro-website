@@ -317,9 +317,7 @@
      스크립트가 못 돌면 그냥 다 보인다(.is-typing 이 안 붙는다) */
   .co-vband h2.is-typing .ch{opacity:0}
   .co-vband h2.is-typing .ch.on{opacity:1}
-  .co-vband h2 .caret{display:inline-block;width:.06em;height:.9em;margin-left:.06em;vertical-align:-.08em;
-    background:currentColor;animation:cvCaret 1s steps(1) infinite}
-  @keyframes cvCaret{50%{opacity:0}}
+  .co-vband h2 .caret{display:none}   /* 커서('|')는 걷었다(2026-09-21 요청) — 요소는 남겨 두고 줄 바뀜 판정에만 쓴다 */
   .co-vband.is-typing .lead{opacity:0;translate:0 10px}
   .co-vband.is-typed .lead{opacity:1;translate:none;transition:opacity .6s var(--ease),translate .6s var(--ease)}
   @media(prefers-reduced-motion:reduce){
