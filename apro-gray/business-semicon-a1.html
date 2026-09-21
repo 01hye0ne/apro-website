@@ -651,7 +651,11 @@
              scrollbar-width:none;-ms-overflow-style:none}
     .sf-rail::-webkit-scrollbar{display:none}
     .sf-grp{flex-direction:row;flex-shrink:0}
-    .sf-grp>.hd{display:none}
+    /* 지금 읽는 묶음만 남긴다(2026-09-22 요청) — [01 ESS | GRID ESS | Renewable ESS | C&I ESS].
+       현재 표시(aria-current)는 스크롤을 따라 옮겨 가므로 묶음도 저절로 바뀐다.
+       묶음 머리는 세로 인덱스와 같은 회색 칩으로 탭 앞에 선다 */
+    .sf-grp:not(:has(a[aria-current="true"])){display:none}
+    .sf-grp>.hd{display:flex;align-self:center;margin-right:8px}
     .sf-rail a{border-bottom:0;padding:14px 12px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
