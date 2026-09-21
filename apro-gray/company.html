@@ -2733,7 +2733,7 @@
 })();
 
 /* Vision 제목 타이핑 — 위 <style> 의 "Vision 제목 타이핑" 참고.
-   글자마다 45ms, 줄이 바뀌는 자리(<br>)에서 360ms 숨을 둔다. 한 번만 돈다 */
+   글자마다 22ms, 줄이 바뀌는 자리(<br>)에서 200ms 숨을 둔다(2026-09-21 에 45/360 에서 올렸다). 한 번만 돈다 */
 (function(){
   var root=document.documentElement;
   if(!root.hasAttribute('data-crv'))return;
@@ -2762,11 +2762,11 @@
   if(reduce){done();return;}
   var i=0;
   function tick(){
-    if(i>=chars.length){setTimeout(done,500);return;}
+    if(i>=chars.length){setTimeout(done,300);return;}
     var c=chars[i++];c.classList.add('on');
     c.parentNode.insertBefore(caret,c.nextSibling);
     /* 이 글자 다음이 <br> 이면 줄이 바뀐다 — 잠깐 쉰다 */
-    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?360:45;
+    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?200:22;
     setTimeout(tick,pause);
   }
   var io=new IntersectionObserver(function(es){
