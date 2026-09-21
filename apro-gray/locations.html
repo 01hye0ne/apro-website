@@ -73,7 +73,9 @@
   .lcpage>*{position:relative;z-index:1}
   .lcpage::before{content:"";position:absolute;inset:0;z-index:0;
     background:linear-gradient(var(--sea-tint),var(--sea-tint)),
-      url("../assets/sea-horizon.jpg") center/cover no-repeat}
+      /* 초점 세로 72% — 세로형 사진(2200×3080)이라 가운데 기준이면 1920 화면에서 수평선(사진 67%)이
+         화면 바닥에 겨우 걸려 바다가 안 보였다. 72% 면 수평선이 화면 60% 쯤에 서고 아래가 바다다(2026-09-21) */
+      url("../assets/sea-horizon.jpg") 50% 72%/cover no-repeat}
 
   .lc-hero{display:flex;flex-direction:column;align-items:flex-start;gap:32px;
     padding:120px var(--a-gm) 28px}
