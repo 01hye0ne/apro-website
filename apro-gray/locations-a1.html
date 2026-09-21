@@ -43,7 +43,8 @@
   .lc-tabs{display:flex;gap:8px}
   .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;border:0;
           background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
-  .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g)}
+  .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g);overflow:hidden}
+  .lc-tab .th img{display:block;width:100%;height:100%;object-fit:cover}
   /* 첫 화면 높이에 맞추기 — 탭 섬네일은 띠 안쪽 높이(cqh)에서 정보 칸의 나머지(약 485)를 뺀 만큼(40~99),
      오른쪽 지도는 남은 폭과 띠 안쪽 높이를 다 갖는다. 바닥 높이는 섬네일 40 기준 832 */
   .ci-top{--ci-min:832px}
@@ -194,7 +195,7 @@
       </dl>
     </div>
     <div class="lc-tabs" role="tablist" aria-label="사업장">
-      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="global"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="global"><span class="th" aria-hidden="true"><img src="../assets/hq-exterior.jpg" alt="" loading="lazy" decoding="async" /></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
       <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="sihwa"><span class="th" aria-hidden="true"></span><span class="nm"><span>시화</span><span>R&amp;D 센터</span></span></button>
       <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
     </div>
