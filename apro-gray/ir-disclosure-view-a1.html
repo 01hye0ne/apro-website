@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 공시정보 상세 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 공시정보(전자공고) 상세 — 임시 페이지." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
+<!-- ============================================================
+     투자정보 > 공시정보(전자공고) 상세 (A-1)
+
+     2026-09-15 부터 콘텐츠 페이지 공용 세로 히어로 틀(content-side.css, 투자정보 시안 Figma 1248:13870)을
+     쓴다 — 왼쪽 세로 히어로(사진 · 페이지 이름 · 문장 · 이 페이지의 장 목록)가 화면에 붙어 있고,
+     오른쪽 본문이 흐른다. 본문 부품은 A(ir-disclosure-view.html)와 같은 기존 것(content-layout.css)이다.
+
+     손으로 고치는 파일이다 — _gen-a1.py 의 SOURCES 에서 뺐다. A 는 옛 배너 히어로 그대로이고,
+     A 를 고쳐도 여기로 넘어오지 않는다. GNB · 푸터 · 전체메뉴는 business-layout.css / .js 한 벌이다 -->
+<!-- 공시정보(전자공고) 상세 (2026-09-21) — 한 장의 틀이 주소의 ?id=<글번호> 로 disclosure-data.js 에서 내용을 채운다.
+     목록(ir-disclosure-a1.html 전자공고 탭)의 열 줄이 모두 이 장으로 온다. 공지사항 상세(community-notice-view-a1.html)와
+     같은 틀이고 글이 두 꼴이다 — 사업보고서 글은 한 문장 + DART 링크 셋(.cpost-links), 결산공고 글은 A4 스캔(.cpost-scan)을
+     세로로 세운다. 본문은 기존 사이트(aproele.com info01)에서 옮겨 왔다(disclosure-data.js 참고).
+     상세 페이지를 제대로 짤 때 이 <style> 은 content-layout.css 로 옮긴다 -->
+<style>
+  /* 상세는 왼쪽 세로 히어로 없이 본문만 선다(2026-09-18) — 본문이 사이트 격자 폭(--maxw) 안 가운데에 놓인다 */
+  .cs-solo .cs-body{max-width:var(--maxw);margin-inline:auto}
+  /* 머리 — 왼쪽에 제목 · 날짜, 오른쪽에 [목록으로 · 기존 사이트에서 보기]. 좁은 화면은 버튼이 날짜 밑으로 내려간다 */
+  .cpost-hd{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:32px;align-items:center;
+    padding-bottom:24px;border-bottom:2px solid var(--g900)}
+  .cpost-hd>h1,.cpost-hd>.cpost-meta{grid-column:1}
+  .cpost-hd>.cbtns{grid-column:2;grid-row:1/3;margin-top:0;flex-wrap:nowrap}
+  @media(max-width:900px){
+    .cpost-hd{grid-template-columns:minmax(0,1fr)}
+    .cpost-hd>.cbtns{grid-column:1;grid-row:auto;margin-top:20px;flex-wrap:wrap}
+  }
+  .cpost-hd h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
+    line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--teritary)}
+  .cpost-bd{padding:32px 0 40px;border-bottom:1px solid var(--border-g)}
+  /* 사업보고서 글의 DART 링크 셋 — 본문 아래 목록 */
+  .cpost-links{margin:24px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .cpost-links a{display:inline-flex;align-items:center;gap:8px;font-family:var(--suit);font-size:var(--fs-body);
+    line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--brand);text-decoration:underline;text-underline-offset:4px}
+  .cpost-links a::after{content:"\2197";font-size:.85em}
+  /* 결산공고 스캔 — A4 장을 폭 900 까지 세로로 세운다 */
+  .cpost-scan{margin:24px auto 0;max-width:900px}
+  .cpost-bd .txt:empty{display:none}
+  .cpost-bd .txt:empty+.cpost-scan{margin-top:0}
+  .cpost-scan img{display:block;width:100%;height:auto;border:1px solid var(--border-g)}
+  .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-bd p+p{margin-top:8px}
+  .cpost-bd .txt>p:first-child{margin-top:0}
+  .cs-body>.cblock>.cpost-hd+*{margin-top:0}
+  .cpost-empty{color:var(--teritary)}
+  /* 버튼이 머리로 올라가 본문 밑줄과 이전 · 다음 글 윗줄이 바로 만난다 — 틈(장 안 24)을 없애고 선은 하나만 */
+  :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cpost-nav{margin-top:0;border-top:0}
+  .cpost-nav{border-top:1px solid var(--border-g)}
+  .cpost-nav a{display:flex;gap:24px;padding:16px 8px;border-bottom:1px solid var(--border-g);
+    font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
+  .cpost-nav a[hidden]{display:none}
+  .cpost-nav .k{flex:0 0 64px;font-weight:600;color:var(--teritary)}
+  .cpost-nav .v{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cpost-nav a:hover .v{color:var(--brand)}
+</style>
+</head>
+<body>
+
+<!-- ===================== GNB ===================== -->
+<!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-a1.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-a1.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-a1.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-a1.html" aria-current="true" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-a1.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-a1.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+    </div>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<div class="sf-mega" id="mega-biz" aria-hidden="true" aria-label="사업영역">
+  <div class="cols">
+    <div class="col">
+      <a class="hd" href="business-smart-a1.html">스마트 제조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-smart-a1.html#sf01-1">이차전지 활성화</a></li>
+        <li><a href="business-smart-a1.html#sf02-1">Cycler(Cell&amp;Module)</a></li>
+        <li><a href="business-smart-a1.html#sf03-1">자동화 시스템</a></li>
+        <li><a href="business-smart-a1.html#sf04-1">이차전지 소재</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-energy-a1.html">에너지 인프라<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-energy-a1.html#sf01-1">ESS</a></li>
+        <li><a href="business-energy-a1.html#sf02-1">UPS</a></li>
+        <li><a href="business-energy-a1.html#sf03-1">솔루션</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-ai-a1.html">인공지능 플랫폼<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-ai-a1.html#sf01-1">로봇 플랫폼</a></li>
+        <li><a href="business-ai-a1.html#sf02-1">배터리 진단 플랫폼</a></li>
+        <li><a href="business-ai-a1.html#sf03-1">전기자동차 충전 플랫폼</a></li>
+        <li><a href="business-ai-a1.html#sf04-1">전기자동차 제어 플랫폼</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <a class="hd" href="business-semicon-a1.html">화합물 전력 반도체<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+      <ul>
+        <li><a href="business-semicon-a1.html#sf01-1">GaN Epi-Wafer</a></li>
+        <li><a href="business-semicon-a1.html#sf02-1">GaN Power Device</a></li>
+        <li><a href="business-semicon-a1.html#sf03-1">에이프로 세미콘</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sf-mega card" id="mega-com" aria-hidden="true" aria-label="회사정보">
+  <div class="menu">
+    <a class="hd" href="company-a1.html">회사 소개<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="network-a1.html">글로벌 네트워크<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="locations-a1.html">사업장소재<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+  </div>
+</div>
+<div class="sf-mega card" id="mega-ir" aria-hidden="true" aria-label="투자정보">
+  <div class="menu">
+    <a class="hd" href="ir-finance-a1.html">재무정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="ir-disclosure-a1.html" aria-current="page">공시정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="ir-stock-a1.html">주식정보<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+  </div>
+</div>
+<div class="sf-mega card" id="mega-esg" aria-hidden="true" aria-label="지속가능경영">
+  <div class="menu">
+    <a class="hd" href="esg-environment-a1.html">환경<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="esg-social-a1.html">사회<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="esg-governance-a1.html">지배구조<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="esg-report-a1.html">내/외부 신고채널<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="esg-board-a1.html">ESG 게시판<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+  </div>
+</div>
+<div class="sf-mega card" id="mega-cmm" aria-hidden="true" aria-label="커뮤니티">
+  <div class="menu">
+    <a class="hd" href="community-notice-a1.html">공지사항<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+    <a class="hd" href="community-press-a1.html">보도자료<svg class="go" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 10H16M11 5.5L15.5 10L11 14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg></a>
+  </div>
+</div>
+<div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
+
+<!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
+<div class="cs-split cs-solo">
+  <main class="cs-body">
+  <article class="cblock" id="post" aria-labelledby="post-t">
+    <header class="cpost-hd">
+      <h1 id="post-t">공시정보</h1>
+      <p class="cpost-meta"><span data-f="date"></span></p>
+      <div class="cbtns">
+        <a class="cbtn" href="ir-disclosure-a1.html">목록으로</a>
+        <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기존 사이트에서 보기</a>
+      </div>
+    </header>
+    <div class="cpost-bd" id="postBody"></div>
+    <nav class="cpost-nav" aria-label="이전 · 다음 글">
+      <a data-f="prev" hidden><span class="k">이전 글</span><span class="v"></span></a>
+      <a data-f="next" hidden><span class="k">다음 글</span><span class="v"></span></a>
+    </nav>
+  </article>
+  </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul><li><a href="business-smart-a1.html">스마트 제조</a></li><li><a href="business-energy-a1.html">에너지 인프라</a></li><li><a href="business-ai-a1.html">인공지능 플랫폼</a></li><li><a href="business-semicon-a1.html">화합물 전력 반도체</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-a1.html">회사 소개</a></li><li><a href="network-a1.html">글로벌 네트워크</a></li><li><a href="locations-a1.html">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance-a1.html">재무정보</a></li><li><a href="ir-disclosure-a1.html" aria-current="page">공시정보</a></li><li><a href="ir-stock-a1.html">주식정보</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment-a1.html">환경</a></li><li><a href="esg-social-a1.html">사회</a></li><li><a href="esg-governance-a1.html">지배구조</a></li><li><a href="esg-report-a1.html">내/외부 신고채널</a></li><li><a href="esg-board-a1.html">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice-a1.html">공지사항</a></li><li><a href="community-press-a1.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network-a1.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="locations-a1.html">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-a1.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links"><a href="business-smart-a1.html">스마트 제조</a><a href="business-energy-a1.html">에너지 인프라</a><a href="business-ai-a1.html">인공지능 플랫폼</a><a href="business-semicon-a1.html">화합물 전력 반도체</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links"><a href="company-a1.html">회사 소개</a><a href="network-a1.html">글로벌 네트워크</a><a href="locations-a1.html">사업장소재</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-a1.html">재무정보</a><a href="ir-disclosure-a1.html" aria-current="page">공시정보</a><a href="ir-stock-a1.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="esg-environment-a1.html">환경</a><a href="esg-social-a1.html">사회</a><a href="esg-governance-a1.html">지배구조</a><a href="esg-report-a1.html">내/외부 신고채널</a><a href="esg-board-a1.html">ESG 게시판</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="community-notice-a1.html">공지사항</a><a href="community-press-a1.html">보도자료</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
+     (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="disclosure-data.js"></script>
+<script>
+/* 공시정보(전자공고) 상세 — ?id=<글번호> 로 disclosure-data.js 에서 글을 찾아 채운다.
+   번호가 없거나 틀리면 가장 최근 글을 보인다. 이전 글은 더 오래된 글, 다음 글은 더 새 글이다.
+   A(ir-disclosure-view.html)에 같은 것이 한 벌 있다 — 한쪽을 고치면 다른 쪽도 함께 */
+(function(){
+  var list = window.DISCLOSURE || [];
+  if(!list.length) return;
+  var id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+  var at = 0;
+  for(var i = 0; i < list.length; i++){ if(list[i].id === id){ at = i; break; } }
+  var p = list[at], root = document.getElementById('post');
+  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+
+  document.getElementById('post-t').textContent = p.t;
+  document.title = 'APRO | 에이프로 — ' + p.t + ' (A-1)';
+  root.querySelector('[data-f="date"]').textContent = p.d;
+
+  var bd = document.getElementById('postBody');
+  var txt = el('div', 'txt'); bd.appendChild(txt);
+  p.p.forEach(function(t){ txt.appendChild(el('p', null, t)); });
+  /* 사업보고서 글 — DART 링크 셋 */
+  if(p.l && p.l.length){
+    var ul = el('ul', 'cpost-links');
+    p.l.forEach(function(x){ var li = el('li'), a = el('a', null, x[0]); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); ul.appendChild(li); });
+    txt.appendChild(ul);
+  }
+  /* 결산공고 글 — A4 스캔을 순서대로 세운다 */
+  if(p.img){
+    var pad = ('0' + p.id).slice(-2);
+    for(var k = 1; k <= p.img; k++){
+      var fig = el('figure', 'cpost-scan'), img = el('img');
+      img.src = '../assets/disclosure-' + pad + '-' + k + '.jpg'; img.alt = p.t + ' ' + k + '쪽'; img.loading = 'lazy'; img.decoding = 'async';
+      fig.appendChild(img); bd.appendChild(fig);
+    }
+  }
+  if(!p.p.length && !p.img) txt.appendChild(el('p', 'cpost-empty', '본문은 기존 사이트에서 볼 수 있습니다.'));
+
+  /* 원본 글 — 기존 사이트(aproele.com) IR 공시정보 게시판이다 */
+  var go = document.getElementById('postLink');
+  go.href = 'https://aproele.com/bbs/board.php?bo_table=info01&wr_id=' + p.id;
+  go.hidden = false;
+
+  [['prev', list[at + 1]], ['next', list[at - 1]]].forEach(function(x){
+    var a = root.querySelector('[data-f="' + x[0] + '"]');
+    if(!x[1]) return;
+    a.href = '?id=' + x[1].id; a.querySelector('.v').textContent = x[1].t; a.hidden = false;
+  });
+})();
+</script>
+<script src="business-layout.js"></script>
+</body>
+</html>
