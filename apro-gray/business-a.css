@@ -83,7 +83,7 @@
    고정 탭 바(128) + 가로선(12) + 숨(28) = 168 */
 .bsec .hcard+.hcard{margin-top:120px}
 .bsec,.bsec .hcard{scroll-margin-top:168px}
-.bsec .hcard>.hleft{flex:none;width:auto;min-width:0;margin:0;padding:0 128px 0 0;
+.bsec .hcard>.hleft{flex:none;width:auto;min-width:0;margin:0;padding:0 var(--hgap) 0 0;
   background:none;border:0;overflow:visible;display:flex;flex-direction:column;gap:20px;
   /* 글 칸을 카드 높이(= 그림 높이)만큼 늘린다 — 아래 목록을 그림 밑선까지
      내려 붙이기 위한 자리다. 카드 자체는 align-items:start 라 그림 칸은
@@ -116,8 +116,11 @@
 /* 오른쪽 128 도 같은 사정이다 — 본문 폭은 카드마다 같아야 한다(글 칸 661 에서
    128 을 비운 533). 스마트 제조의 두 장(활성화 공정 · 글로벌 에이프로 네트워크)만
    세로로 쌓던 시절의 규칙(padding:40px 0 24px)이 그 여백을 0 으로 되돌려,
-   같은 자리에서 글줄만 128 더 길었다. 2026-09-20 요청으로 통일한다 */
-.bsec .hcard[data-tab]>.hleft{padding-right:128px}
+   같은 자리에서 글줄만 128 더 길었다. 2026-09-20 요청으로 통일한다.
+   값은 --hgap 하나다 — 1800 에서 128 이고 화면을 따라 줄어든다(2026-09-21 요청 : 종전에는
+   1200 까지 128 이 그대로라 1250 안팎에서 글과 그림 사이만 휑했다). 7.1vw 는 128/1800 이다 */
+.bsec{--hgap:clamp(32px, 7.1vw, 128px)}
+.bsec .hcard[data-tab]>.hleft{padding-right:var(--hgap)}
 .bsec .hcard>.hright,
 .bsec .hcard:has(.pict)>.hright{margin-top:0}
 .bsec .hrail{padding-top:0}
@@ -150,13 +153,8 @@
 .bsec .hcard ul li{font-size:16px;line-height:1.6;letter-spacing:-.96px;color:#5a6675}
 .bsec .hcard ul li b{font-weight:700;color:var(--g900)}
 
-@media(max-width:1200px){
-  /* 레일 폭은 위 :root 의 --rail-w 가 이미 200px 로 줄여 놓았다(바도 함께 따라온다).
-     [data-tab] 까지 함께 적는 이유 — 위에서 128 을 박을 때 한 단 올려 잡았으므로,
-     여기서도 같은 무게라야 좁은 화면에서 128 이 그대로 남지 않는다 */
-  .bsec .hcard>.hleft,
-  .bsec .hcard[data-tab]>.hleft{padding-right:48px}
-}
+/* 1200 아래에서 48 로 한 단 내리던 규칙은 --hgap 이 흐르게 되며 빠졌다(2026-09-21).
+   레일 폭은 위 :root 의 --rail-w 가 1200 에서 200px 로 줄인다 */
 @media(max-width:900px){
   .bsec{width:auto;margin-inline:0;grid-template-columns:minmax(0,1fr);gap:32px;padding:80px 0}
   .bsec-rail{position:static;flex-direction:row;flex-wrap:wrap;gap:0 20px}
