@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APRO | 에이프로 — 공지사항 (A-1)</title>
-<meta name="description" content="에이프로(APRO) 공지사항 — 주주총회 소집통지, 공고, 회사 소식." />
+<title>APRO | 에이프로 — 공지사항 상세 (A-1)</title>
+<meta name="description" content="에이프로(APRO) 공지사항 상세 — 임시 페이지." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
@@ -13,14 +13,55 @@
 <link rel="stylesheet" href="content-layout.css" />
 <link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
-     커뮤니티 > 공지사항 (A-1)
+     커뮤니티 > 공지사항 상세 (A-1)
 
      2026-09-15 부터 콘텐츠 페이지 공용 세로 히어로 틀(content-side.css, 투자정보 시안 Figma 1248:13870)을
      쓴다 — 왼쪽 세로 히어로(사진 · 페이지 이름 · 문장 · 이 페이지의 장 목록)가 화면에 붙어 있고,
-     오른쪽 본문이 흐른다. 본문 부품은 A(community-notice.html)와 같은 기존 것(content-layout.css)이다.
+     오른쪽 본문이 흐른다. 본문 부품은 A(community-notice-view.html)와 같은 기존 것(content-layout.css)이다.
 
      손으로 고치는 파일이다 — _gen-a1.py 의 SOURCES 에서 뺐다. A 는 옛 배너 히어로 그대로이고,
      A 를 고쳐도 여기로 넘어오지 않는다. GNB · 푸터 · 전체메뉴는 business-layout.css / .js 한 벌이다 -->
+<!-- 공지사항 상세 (2026-09-21) — 한 장의 틀이 주소의 ?id=<글번호> 로 notice-data.js 에서 내용을 채운다.
+     목록(community-notice-a1.html)의 서른네 줄이 모두 이 장으로 온다. 보도자료 상세(community-press-view-a1.html)와
+     같은 틀이고 다른 점은 셋이다 — 섬네일이 없고, 출처가 없고(메타는 작성일 한 줄), 공고문 머리글(.cpost-h)을
+     가운데 세운다. 본문이 남아 있는 글은 셋뿐이라 나머지는 "기존 사이트에서 보기" 로 보낸다(notice-data.js 참고).
+     상세 페이지를 제대로 짤 때 이 <style> 은 content-layout.css 로 옮긴다 -->
+<style>
+  /* 상세는 왼쪽 세로 히어로 없이 본문만 선다(2026-09-18) — 본문이 사이트 격자 폭(--maxw) 안 가운데에 놓인다 */
+  .cs-solo .cs-body{max-width:var(--maxw);margin-inline:auto}
+  /* 머리 — 왼쪽에 제목 · 날짜, 오른쪽에 [목록으로 · 기존 사이트에서 보기]. 좁은 화면은 버튼이 날짜 밑으로 내려간다 */
+  .cpost-hd{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:32px;align-items:center;
+    padding-bottom:24px;border-bottom:2px solid var(--g900)}
+  .cpost-hd>h1,.cpost-hd>.cpost-meta{grid-column:1}
+  .cpost-hd>.cbtns{grid-column:2;grid-row:1/3;margin-top:0;flex-wrap:nowrap}
+  @media(max-width:900px){
+    .cpost-hd{grid-template-columns:minmax(0,1fr)}
+    .cpost-hd>.cbtns{grid-column:1;grid-row:auto;margin-top:20px;flex-wrap:wrap}
+  }
+  .cpost-hd h1{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--suit);font-size:var(--fs-meta);
+    line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--teritary)}
+  .cpost-bd{padding:32px 0 40px;border-bottom:1px solid var(--border-g)}
+  /* 공고문 머리글 — 원본에서 가운데 세워 굵게 쓰던 한 줄이다 */
+  .cpost-h{margin:0 0 24px;font-family:var(--suit);font-weight:700;font-size:var(--fs-h3);line-height:var(--lh-head);
+    letter-spacing:var(--ls);color:var(--g900);text-align:center;word-break:keep-all}
+  .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
+    letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  .cpost-bd p+p{margin-top:8px}
+  .cpost-bd .txt>p:first-child{margin-top:0}
+  .cs-body>.cblock>.cpost-hd+*{margin-top:0}
+  .cpost-empty{color:var(--teritary)}
+  /* 버튼이 머리로 올라가 본문 밑줄과 이전 · 다음 글 윗줄이 바로 만난다 — 틈(장 안 24)을 없애고 선은 하나만 */
+  :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cpost-nav{margin-top:0;border-top:0}
+  .cpost-nav{border-top:1px solid var(--border-g)}
+  .cpost-nav a{display:flex;gap:24px;padding:16px 8px;border-bottom:1px solid var(--border-g);
+    font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
+  .cpost-nav a[hidden]{display:none}
+  .cpost-nav .k{flex:0 0 64px;font-weight:600;color:var(--teritary)}
+  .cpost-nav .v{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cpost-nav a:hover .v{color:var(--brand)}
+</style>
 </head>
 <body>
 
@@ -115,208 +156,23 @@
 <div class="sf-scrim" id="sfScrim" aria-hidden="true"></div>
 
 <!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
-<div class="cs-split">
-  <header class="cs-hero" style="--pos:50% 50%;--pos-m:50% 45%">
-    <img class="cs-hero-bg" src="../assets/community-hero.jpg" width="1200" height="1669" alt="" aria-hidden="true" decoding="async" />
-    <div class="cs-hero-page">
-      <h1>공지사항</h1>
-      <p class="sub">A-PRO의 새로운 소식과 공지사항을 확인하세요.</p>
-    </div>
-  </header>
-
+<div class="cs-split cs-solo">
   <main class="cs-body">
-  <section class="cblock" id="list">
-    <h2 class="sr-only">공지사항</h2>
-    <div class="clist-hd">
-      <p class="count">총 <b>34</b>건</p>
-      <form class="csearch" role="search">
-        <label class="sr-only" for="q-notice">공지사항 검색</label>
-        <input type="search" id="q-notice" placeholder="검색어를 입력하세요" />
-        <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
-      </form>
-    </div>
-    <table class="cboard">
-      <thead><tr><th>번호</th><th>제목</th><th>작성일</th></tr></thead>
-      <tbody>
-        <tr>
-          <td class="no">34</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=112">에이프로 2026년 임시주주총회 소집통지서</a></td>
-          <td>2026-06-30</td>
-        </tr>
-        <tr>
-          <td class="no">33</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=111">임시주주총회 개최를 위한 기준일 설정 공고</a></td>
-          <td>2026-06-05</td>
-        </tr>
-        <tr>
-          <td class="no">32</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=110">주식회사 에이프로 제26기 정기주주총회 소집통지서</a></td>
-          <td>2026-03-13</td>
-        </tr>
-        <tr>
-          <td class="no">31</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=109">제26기 결산배당 기준일 공고</a></td>
-          <td>2026-03-13</td>
-        </tr>
-        <tr>
-          <td class="no">30</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=108">주식회사 에이프로 제25기 정기주주총회 소집통지서</a></td>
-          <td>2025-03-12</td>
-        </tr>
-        <tr>
-          <td class="no">29</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=107">제25기 결산배당 기준일 공고</a></td>
-          <td>2025-03-07</td>
-        </tr>
-        <tr>
-          <td class="no">28</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=106">에이프로, 경기도지사 표창 수여</a></td>
-          <td>2025-02-19</td>
-        </tr>
-        <tr>
-          <td class="no">27</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=105">2025년도 제25기 정기주주총회 개최를 위한 주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2024-12-11</td>
-        </tr>
-        <tr>
-          <td class="no">26</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=103">합병종료보고 공고</a></td>
-          <td>2024-12-03</td>
-        </tr>
-        <tr>
-          <td class="no">25</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=101">채권자 이의제출 공고</a></td>
-          <td>2024-10-29</td>
-        </tr>
-        <tr>
-          <td class="no">24</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=100">소규모합병 공고</a></td>
-          <td>2024-10-11</td>
-        </tr>
-        <tr>
-          <td class="no">23</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=99">소규모합병을 위한 기준일 설정 공고</a></td>
-          <td>2024-09-26</td>
-        </tr>
-        <tr>
-          <td class="no">22</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=98">홈페이지 개편 안내</a></td>
-          <td>2024-09-25</td>
-        </tr>
-        <tr>
-          <td class="no">21</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=97">주식회사 에이프로 제24기 정기주주총회 소집통지서</a></td>
-          <td>2024-03-13</td>
-        </tr>
-        <tr>
-          <td class="no">20</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=96">(주)에이프로 제25기~제27기 외부감사인 선정 공고</a></td>
-          <td>2024-02-14</td>
-        </tr>
-        <tr>
-          <td class="no">19</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=95">(주)에이프로 제25기~제27기 외부감사인 선임을 위한 모집 공고</a></td>
-          <td>2024-01-22</td>
-        </tr>
-        <tr>
-          <td class="no">18</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=94">2024년도 제24기 정기주주총회 개최를 위한 주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2023-12-14</td>
-        </tr>
-        <tr>
-          <td class="no">17</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=78">주식회사 에이프로 제23기 정기주주총회 소집 통지서</a></td>
-          <td>2023-03-15</td>
-        </tr>
-        <tr>
-          <td class="no">16</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=76">에이프로, 2022년도 장기 근속자 포상</a></td>
-          <td>2022-12-30</td>
-        </tr>
-        <tr>
-          <td class="no">15</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=75">2023년도 제23기 정기주주총회 개최를 위한 주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2022-12-16</td>
-        </tr>
-        <tr>
-          <td class="no">14</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=61">주식회사 에이프로 제22기 정기주주총회 소집 통지서</a></td>
-          <td>2022-03-16</td>
-        </tr>
-        <tr>
-          <td class="no">13</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=58">주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2022-01-24</td>
-        </tr>
-        <tr>
-          <td class="no">12</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=57">신주발행 공고</a></td>
-          <td>2022-01-24</td>
-        </tr>
-        <tr>
-          <td class="no">11</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=56">2022년도 제22기 정기주주총회 개최를 위한 주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2021-12-16</td>
-        </tr>
-        <tr>
-          <td class="no">10</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=55">LG에너지솔루션-에이프로 감사패 수여</a></td>
-          <td>2021-12-01</td>
-        </tr>
-        <tr>
-          <td class="no">9</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=46">주식회사 에이프로 제21기 정기주주총회 소집 통지서</a></td>
-          <td>2021-03-15</td>
-        </tr>
-        <tr>
-          <td class="no">8</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=45">(주)에이프로 제22기~제24기 외부감사인 선정 공고</a></td>
-          <td>2021-02-25</td>
-        </tr>
-        <tr>
-          <td class="no">7</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=44">(주)에이프로 제22기~제24기 외부감사인 선임을 위한 모집 공고</a></td>
-          <td>2021-02-03</td>
-        </tr>
-        <tr>
-          <td class="no">6</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=42">2021년도 제21기 정기주주총회 개최를 위한 주주확정 기준일 및 주주명부 폐쇄기간 공고</a></td>
-          <td>2020-12-10</td>
-        </tr>
-        <tr>
-          <td class="no">5</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=30">에이프로, 2차전지 후공정의 핵심을 만든다</a></td>
-          <td>2020-11-13</td>
-        </tr>
-        <tr>
-          <td class="no">4</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=17">신주발행 공고</a></td>
-          <td>2020-06-23</td>
-        </tr>
-        <tr>
-          <td class="no">3</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=16">전자증권 전환 대상 주권 등의 권리자 보호를 위한 통지문</a></td>
-          <td>2020-04-23</td>
-        </tr>
-        <tr>
-          <td class="no">2</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=6">주주명부 기준일 및 주식명의개서 정지공고</a></td>
-          <td>2019-12-13</td>
-        </tr>
-        <tr>
-          <td class="no">1</td>
-          <td class="ttl"><a href="community-notice-view-a1.html?id=4">2019년 하반기 공채 채용 모집공고</a></td>
-          <td>2019-10-31</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="cempty" hidden>검색 결과가 없습니다.</p>
-    <div class="cnote">
-      <p>제목을 누르면 그 글의 <strong>상세 페이지</strong>로 갑니다 — 한 장의 틀이 글 번호(?id=)로 내용을 불러옵니다.</p>
-      <p><strong>본문이 남아 있는 글은 셋뿐입니다</strong>(합병종료보고 · 채권자 이의제출 · 소규모합병 공고).
-        나머지는 제목과 날짜만 있고, 상세에서 기존 사이트의 원본 글로 보냅니다.</p>
-    </div>
-  </section>
+  <article class="cblock" id="post" aria-labelledby="post-t">
+    <header class="cpost-hd">
+      <h1 id="post-t">공지사항</h1>
+      <p class="cpost-meta"><span data-f="date"></span></p>
+      <div class="cbtns">
+        <a class="cbtn" href="community-notice-a1.html">목록으로</a>
+        <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기존 사이트에서 보기</a>
+      </div>
+    </header>
+    <div class="cpost-bd" id="postBody"></div>
+    <nav class="cpost-nav" aria-label="이전 · 다음 글">
+      <a data-f="prev" hidden><span class="k">이전 글</span><span class="v"></span></a>
+      <a data-f="next" hidden><span class="k">다음 글</span><span class="v"></span></a>
+    </nav>
+  </article>
   </main>
 </div>
 
@@ -429,6 +285,42 @@
 
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="notice-data.js"></script>
+<script>
+/* 공지사항 상세 — ?id=<글번호> 로 notice-data.js 에서 글을 찾아 채운다.
+   번호가 없거나 틀리면 가장 최근 글을 보인다. 이전 글은 더 오래된 글, 다음 글은 더 새 글이다.
+   A(community-notice-view.html)에 같은 것이 한 벌 있다 — 한쪽을 고치면 다른 쪽도 함께 */
+(function(){
+  var list = window.NOTICE || [];
+  if(!list.length) return;
+  var id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+  var at = 0;
+  for(var i = 0; i < list.length; i++){ if(list[i].id === id){ at = i; break; } }
+  var p = list[at], root = document.getElementById('post');
+  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+
+  document.getElementById('post-t').textContent = p.t;
+  document.title = 'APRO | 에이프로 — ' + p.t + ' (A-1)';
+  root.querySelector('[data-f="date"]').textContent = p.d;
+
+  var bd = document.getElementById('postBody');
+  if(p.h) bd.appendChild(el('p', 'cpost-h', p.h));
+  var txt = el('div', 'txt'); bd.appendChild(txt);
+  p.p.forEach(function(t){ txt.appendChild(el('p', null, t)); });
+  if(!p.p.length) txt.appendChild(el('p', 'cpost-empty', '본문은 기존 사이트에서 볼 수 있습니다.'));
+
+  /* 원본 글 — 기존 사이트(aproele.com) 공지사항 게시판이다 */
+  var go = document.getElementById('postLink');
+  go.href = 'https://aproele.com/bbs/board.php?bo_table=notice&wr_id=' + p.id;
+  go.hidden = false;
+
+  [['prev', list[at + 1]], ['next', list[at - 1]]].forEach(function(x){
+    var a = root.querySelector('[data-f="' + x[0] + '"]');
+    if(!x[1]) return;
+    a.href = '?id=' + x[1].id; a.querySelector('.v').textContent = x[1].t; a.hidden = false;
+  });
+})();
+</script>
 <script src="business-layout.js"></script>
 </body>
 </html>
