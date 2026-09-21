@@ -163,5 +163,9 @@
   .bsec .hcard{grid-template-columns:minmax(0,1fr);gap:24px}
   .bsec .hcard>.hleft,
   .bsec .hcard[data-tab]>.hleft{padding-right:0}
-  .bsec .hcard>.hright{aspect-ratio:16/10}
+  /* 폭을 먼저 못박고 높이를 비율이 받게 한다. width:auto 인 채로 두면 공용
+     CSS 가 이 구간에서 주는 min-height:260 이 정의된 높이가 되어, 비율이 폭을
+     거꾸로 역산한다 — 16/10 이면 416px 이라 390 짜리 화면에서 그림이 카드를
+     26px 뚫고 나갔다(.is-plate 쪽은 681/623 이라 284px) */
+  .bsec .hcard>.hright{aspect-ratio:16/10;width:100%;min-height:0}
 }

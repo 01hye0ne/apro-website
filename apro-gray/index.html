@@ -39,6 +39,12 @@
        vw 는 컨테이닝 블록과 무관하게 항상 실제 뷰포트 폭을 가리켜 어디서 써도 같다 */
     --sec-inset:calc((100vw - 144px) / 12);
   }
+  /* GNB 줄의 좌우 여백 — 다른 A 페이지의 --a-gm(a-common.css §0-2)과 같은 사다리다.
+     홈은 그 파일을 부르지 않으므로 여기 한 벌을 따로 둔다 — 한쪽을 고치면 다른 쪽도 */
+  :root{--a-gm:84px}
+  @media(max-width:1600px){:root{--a-gm:64px}}
+  @media(max-width:1280px){:root{--a-gm:40px}}
+  @media(max-width:600px){:root{--a-gm:24px}}
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   /* NOTE: no overflow-x on body/html — that (hidden OR clip) makes body the sticky scroll context
@@ -69,7 +75,7 @@
   /* GNB text colour is theme-driven (see .nav-light below) instead of mix-blend-mode,
      which washed out on mid-tone backgrounds. Default = white (over dark/video). */
   .gnb{position:fixed;top:20px;left:50%;transform:translateX(-50%);
-    width:calc(100% - 168px);height:40px;z-index:100;
+    width:calc(100% - var(--a-gm) * 2);height:40px;z-index:100;
     display:flex;align-items:center;gap:36px;
     animation:gnbIn .9s var(--ease) both}
   /* 밝은 바닥에서는 브랜드 블루로 — 파란판(logo-apro-blue.svg)을 ::after 에 깔고
@@ -107,7 +113,17 @@
 
   /* ---- GNB mega dropdown (hover) — columns align under each nav item ---- */
   .gnb-group{position:relative;z-index:100;--mm-col:176px;--mm-gap:8px;
-    --gutter:84px}
+    --gutter:var(--a-gm)}
+  /* 메뉴 한 칸도 화면을 따라 줄인다 — .gnb .menus a 는 폭이 고정이라(플렉스 항목의
+     최소 크기가 지정 폭 그대로다) 저 혼자 줄지 않고, 그대로 두면 메뉴 줄이 로고와
+     언어 버튼을 화면 밖으로 밀어낸다. 값·경계는 a-common.css §0-3b 와 같다.
+     900 아래는 아래 규칙이 메뉴 줄 자체를 감추므로 이 값이 쓰이지 않는다 */
+  @media(max-width:1600px){.gnb-group{--mm-col:150px}}
+  @media(max-width:1280px){.gnb-group{--mm-col:112px} .gnb{gap:20px}}
+  @media(max-width:1000px){.gnb-group{--mm-col:96px}}
+  /* 메뉴 줄이 감춰지면(아래 900 규칙) 가운데를 채우던 flex:1 이 사라져 로고와
+     오른쪽 도구가 왼쪽에 나란히 붙는다 — 양끝으로 갈라 세운다 */
+  @media(max-width:900px){.gnb{justify-content:space-between}}
 
   /* ── GNB 바탕 — 히어로를 벗어나면 켜진다 ────────────────────────────────
      히어로에서는 영상이 GNB 뒤를 책임진다(어두운 한 장이라 흰 글자가 늘 읽힌다).
@@ -140,7 +156,7 @@
     opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
     transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s}
   .gnb-group.mega-open .gnb-mega,.gnb-group.mega-open .gnb-mega{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-  .gnb-mega .inner{width:calc(100% - 168px);margin-inline:auto;
+  .gnb-mega .inner{width:calc(100% - var(--a-gm) * 2);margin-inline:auto;
     display:flex;gap:36px;align-items:flex-start;padding:92px 0 32px 0}
   .gnb-mega .m-logo{width:78px;flex-shrink:0}   /* keep in sync with .gnb .logo so mega columns stay under the nav items */
   .gnb-mega .m-cols{flex:1;display:flex;gap:var(--mm-gap);justify-content:center}
@@ -250,7 +266,11 @@
   .v2banner .headline.entering .kor{animation:bnRise .7s cubic-bezier(.25,.46,.45,.94) .06s both}
   .v2banner .kor{font-family:var(--suit);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.44px;color:var(--on-white-90)}
   .v2banner .headline .en + .kor{margin-top:24px}   /* 보조문구: 강조문구 아래 간격 */
-  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:64px;line-height:1.2;letter-spacing:-1.28px;color:#fff;white-space:pre-line}
+  /* 크기 64 는 글상자가 770 쯤 될 때까지만 두 줄을 지킨다 — 안쪽 띠(.band)는 화면이
+     좁아질수록 좌우 여백이 커져 1000 에서 689, 901 에서 607 까지 줄고, 거기서 국문
+     문구("에이프로는 / 지구의 가치를 아는 기업입니다")가 글자 중간에서 세 줄로 접혔다.
+     min() 으로 1185 아래에서만 따라 줄인다(그 위는 그대로 64) */
+  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:1.2;letter-spacing:-.02em;color:#fff;white-space:pre-line}
   /* 아래 여백 = 흰 띠 높이 → 탭 띠 밑변이 그 띠의 윗변에 정확히 앉는다 */
   .v2banner .info{margin-top:auto;margin-bottom:var(--bpad);display:flex;gap:20px;align-items:flex-end}
   .v2banner .pag-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
@@ -348,6 +368,15 @@
      (세부 페이지도 ≤900px 에서 패널을 걷는다). 바탕이 다시 영상이라 색도 되돌린다 */
   @media(max-width:900px){
     .v2banner{--bpad:0px}
+    /* 12열에서 뽑은 안쪽 띠를 푼다 — 그 폭은 화면이 좁아질수록 오히려 여백이
+       커진다(1440 에서 좌우 168, 390 에서 81 씩이라 글자에 181px 밖에 안 남았다).
+       띠를 화면 폭으로 두고 여백은 .v2b-inner 의 24 가 맡는다 */
+    .band{width:100%}
+    /* 64 를 그대로 두면 "함께 나아가는 기업입니다" 가 글자 중간에서 접혀
+       여섯 줄이 됐다. 두 줄(\n 로 나눈 그대로)이 유지되는 크기까지 내린다 */
+    .v2banner .en{font-size:clamp(26px,7vw,56px);letter-spacing:-.02em}
+    /* 머리글을 밀어 내리던 340 도 화면 높이를 따라 준다 */
+    .v2banner .headline{padding-top:clamp(120px,26vh,340px)}
     .v2banner .v2b-inner{padding-bottom:24px}
     .v2banner .info{margin-bottom:20px}
     .v2banner .bnav{height:auto;grid-template-columns:repeat(2,1fr);gap:4px}
@@ -435,6 +464,11 @@
     .bizband .bz-desc{padding:24px 20px;font-size:17px}
     .bizband .bz-subs{padding:16px 20px}
     .bizband .bz-subs .nm{font-size:17px}
+  }
+  /* 가로로 흘리던 소분류를 다시 세로로 — 폰 폭에서는 한 줄에 둘이 겨우 들어가
+     "둘 · 하나 · 하나" 처럼 들쭉날쭉 끊긴다. 번호가 왼쪽에 한 줄로 서야 읽힌다 */
+  @media(max-width:600px){
+    .bizband .bz-subs{flex-direction:column;gap:8px}
   }
 
   /* ===================== WHO WE ARE (3열 격자 · 카드 4장) =====================
@@ -590,6 +624,13 @@
   /* ---- GNB right tools (lang + hamburger) ---- */
   .gnb .tools{width:78px;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
   .gnb .menu-toggle{color:#fff;filter:drop-shadow(0 1px 4px rgba(0,0,0,.28));transition:color .35s var(--ease),filter .35s var(--ease)}
+  /* 두 줄 — 다른 A 장 열아홉은 business-layout.css 의 같은 규칙이 그려 준다. 홈은 그
+     파일을 부르지 않는데, 아래 .sf-burger(A-1 판 단추)로 옮겨 가며 span 규칙이 통째로
+     빠져 줄 둘이 0×0 인 채 남았다 — 화면 어디에도 안 보이는 단추가 됐고, 900 아래에서는
+     메뉴 줄까지 감추므로 홈에서 갈 길이 사라졌다. .sf-burger 는 제 .bar 로 그리므로
+     이 규칙(.gnb .menu-toggle span)과 부딪히지 않는다 */
+  .gnb .menu-toggle span{display:block;width:24px;height:1.8px;background:currentColor;border-radius:2px}
+  .gnb .menu-toggle span+span{margin-top:6px}
   .gnb-group.nav-light .gnb .menu-toggle,
   .gnb-group.mega-open .gnb .menu-toggle,.gnb-group.mega-open .gnb .menu-toggle{color:var(--g900);filter:none}
 
@@ -800,8 +841,19 @@
     .v2banner .bnav .b:last-child{margin:0;padding:20px;
       -webkit-mask:none;mask:none}
     /* 글자는 사업영역 탭과 같은 값 — 다만 흐림/밝힘(.72 → #fff)은 남긴다.
-       저쪽은 표시일 뿐이지만 여기서는 "지금 재생 중인 영상"을 알리는 신호다 */
-    .v2banner .bnav .bt{font-size:20px;line-height:24px;letter-spacing:-.4px}
+       저쪽은 표시일 뿐이지만 여기서는 "지금 재생 중인 영상"을 알리는 신호다.
+       ⚠ 크기는 20 으로 못박지 않는다 — 다섯 칸이 화면을 나눠 쓰므로 좁아지면
+         "화합물 전력 반도체"가 칸을 넘친다(위 .bt 의 clamp 가 그 몫이었는데,
+         이 규칙이 뒤에 와서 덮어 버렸다). 1100 에서 두 칸, 901 에서 네 칸이
+         글자 중간에서 잘려 나갔다 */
+    .v2banner .bnav .bt{font-size:clamp(13px,1.5vw,20px);line-height:24px;letter-spacing:-.4px}
+    /* 칸이 좁아지면 좌우 여백부터 줄인다 — 901 에서 칸이 121 인데 여백이 40 을
+       가져가면 글자에 81 밖에 남지 않는다 */
+    @media(max-width:1280px){
+      .v2banner .bnav .b,
+      .v2banner .bnav .b:first-child,
+      .v2banner .bnav .b:last-child{padding:20px 10px}
+    }
   }
 
   /* ══ GNB 키 — A 판 공통 34 (2026-09-21) ══════════════════════════════
