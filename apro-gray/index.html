@@ -251,12 +251,21 @@
   /* ::after 보다 뒤에 놓아야 탭 줄이 유리 위에 온다 (둘 다 절대 위치라 z 로 가른다) */
   .v2banner .band{z-index:2}
   /* background video (plays clean, no overlay effect) */
-  .v2banner .v2b-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
+  .v2banner .v2b-video{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
   /* padding-bottom 0 — 아래 소분류 탭 띠가 히어로 밑변에 딱 붙어야 커브가 "히어로와
      다음 장의 경계"에 놓인다. 좁은 화면(≤900px)에서는 띠가 그냥 상자 묶음으로 풀리므로
      그때만 아래 여백을 되돌린다 */
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px 24px 0}
-  .v2banner .headline{padding-top:340px}
+  /* 왼쪽 그늘 — 문구가 위로 올라가며(아래 .headline) 영상 속 로고 · 건물과 겹치는 순간이
+     늘어 흰 글씨가 묻히지 않게 왼쪽만 옅게 어둡힌다(왼쪽 35% → 60% 지점에서 사라짐).
+     화면 폭 전체에 깔려야 경계가 안 보이므로 안쪽 상자(.band, 12열 안)가 아니라 장 자체의
+     ::before 다. 영상은 z-index -1 로 한 층 내려 그 위에 놓는다(장은 isolation 으로 제 층을 갖는다) */
+  .v2banner{isolation:isolate}
+  .v2banner::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(90deg,rgba(6,14,22,.35),rgba(6,14,22,0) 60%)}
+  /* 문구는 GNB 밑 220(첫 줄이 화면 위 170 안팎) — 2026-09-21 요청으로 340 에서 올렸다.
+     화면 가운데 아래에 서서 탭 띠와 붙어 보이고 위 절반이 비었었다 */
+  .v2banner .headline{padding-top:220px}
   .v2banner .headline .en,.v2banner .headline .kor{will-change:transform,opacity}
   /* 텍스트 전환 마이크로 모션: 현재 문구는 위로 살짝 빠지고, 새 문구가 아래에서 떠오름 (보조문구는 살짝 뒤따라옴) */
   @keyframes bnOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-6px)}}
