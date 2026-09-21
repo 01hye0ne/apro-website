@@ -80,6 +80,32 @@
    남은 둘이 왼쪽에 나란히 붙는다 — 지구본과 전체메뉴 단추가 화면 한가운데에 떴다 */
 @media(max-width:900px){.gnb{justify-content:space-between}}
 
+/* ── 0-3c. 스크롤한 뒤 GNB 뒤에 까는 판 — 홈과 같은 유리 (2026-09-21) ────
+   세 갈래였다 : 홈은 유리(.gnb-bg), 콘텐츠 열셋은 공용 CSS 의 흰 단색 판
+   (.gnb-group::before, .nav-light 일 때만), 회사소개 · 글로벌 네트워크 · 사업장소재는
+   아예 판이 없어 회사소개에서는 흰 본문 위에 흰 글씨가 얹혔다. 홈의 유리로 맞춘다.
+
+   재료는 홈 index.html 의 .gnb-bg 와 같다 — 낮은 알파 + blur 10 + 경계선 1px, 높이 80.
+   어두운 유리가 기본이고 밝은 바탕(.nav-light)이면 흰 유리다. 켜는 신호는 .scrolled —
+   공용 JS(business-layout.js ap)가 히어로 밑변이 판 높이(80) 아래로 빠지면 켠다
+   (히어로 없는 장은 80px 넘게 내려가면).
+   ⚠ 공용 CSS 의 흰 판 규칙(.gnb-group.nav-light::before, 무게 0,2,1)을 무게로 이긴다
+     (body:not(:has(.bnav-wrap)) .gnb-group::before = 0,2,2) — 그래서 여기서 opacity 를
+     전부 다시 정한다. 사업영역 세부 넷(.bnav-wrap 이 있는 장)은 뺀다 : 탭 바가 상단에
+     붙으며 GNB 를 접는 제 방식이 있다(2026-09-21 요청 — 사업영역만 그대로).
+   ⚠ 홈은 이 파일을 부르지 않는다 — 값이 index.html 의 .gnb-bg 와 짝이다 */
+body:not(:has(.bnav-wrap)) .gnb-group::before{
+  height:80px;opacity:0;box-shadow:none;
+  background:rgba(11,17,24,.42);border-bottom:1px solid rgba(255,255,255,.10);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  transition:opacity .3s var(--ease),background .35s var(--ease),border-color .35s var(--ease)}
+body:not(:has(.bnav-wrap)) .gnb-group.scrolled::before{opacity:1}
+body:not(:has(.bnav-wrap)) .gnb-group.nav-light::before{background:rgba(255,255,255,.72);border-bottom-color:var(--border-g)}
+/* 메가메뉴가 열리면 흰 패널이 이 자리를 대신한다 — 두 장을 겹치면 경계선이 두 줄 된다 */
+body:not(:has(.bnav-wrap)) .gnb-group.mega-open::before,
+body:not(:has(.bnav-wrap)) .gnb-group.nav-hide::before{opacity:0}
+@media(prefers-reduced-motion:reduce){ body:not(:has(.bnav-wrap)) .gnb-group::before{transition:none} }
+
 /* ── 0-4. 히어로 이름표 ───────────────────────────────────────────────
    회사소개에서 난 부품이라 이름이 .chero-tag 다. 지금은 A 판 히어로가 다
    이것을 쓴다 — 회사소개 · 글로벌 네트워크 · 사업장소재 · 투자정보 ·

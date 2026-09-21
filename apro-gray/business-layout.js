@@ -78,10 +78,10 @@
       paintNav();   // 메가가 닫혔으니 접힘 여부를 다시 판정
     });
   }
-  /* 한동안 여기서 .chero(콘텐츠 페이지의 낮은 띠 히어로)도 함께 찾았다. 2026-08-21
-     에 투자정보·지속가능경영·커뮤니티 아홉 장이 세부 페이지와 같은 .dhero + .bnav-wrap
-     으로 갈아타면서 그 클래스가 사이트에서 사라져 선택자를 되돌린다 */
-  var hero=document.querySelector('.dhero'),bn=document.querySelector('.bnav-wrap'),
+  /* .chero 는 회사소개 A(company.html)의 히어로다 — 2026-08-21 에 사이트에서 사라졌다가
+     2026-09-20 시안 A 로 돌아왔다. 빼 두면 그 장은 히어로가 없는 셈이 되어 흰 본문 위에서도
+     GNB 가 흰 글씨 그대로 남는다(2026-09-21 에 도로 넣었다) */
+  var hero=document.querySelector('.dhero, .chero'),bn=document.querySelector('.bnav-wrap'),
       cn=document.querySelector('.cnav-wrap'),   /* 회사소개 목차 탭 바 (아래 ap 참고) */
       ft=document.querySelector('.footer'),on=null,hid=null;
   var narrowMq=window.matchMedia('(max-width:900px)');
@@ -133,8 +133,15 @@
     /* GNB 흰 플레이트는 GNB 뒤가 흰 본문일 때만 — 넓은 화면에서 바가 고정되면
        GNB 자리가 어두운 바라서 플레이트를 깔면 안 된다 */
     var nar=narrowMq.matches;
-    var d=hb<=40&&!(fx&&!nar);
+    /* 푸터(어두운 판)가 GNB 자리까지 올라오면 밝은 바탕이 아니다 — 흰 유리를 어두운
+       유리로 되돌린다(홈 wantDark 의 footer 판정과 같다) */
+    var ftUp=!!ft&&ft.getBoundingClientRect().top<=40;
+    var d=hb<=40&&!(fx&&!nar)&&!ftUp;
     if(d!==on){on=d;g.classList.toggle('nav-light',d);}
+    /* GNB 뒤 유리 판(A 판 a-common.css §0-3c)을 켜는 신호 — 히어로가 판 높이(80) 밖으로
+       완전히 빠져나간 뒤. 히어로 없는 장(글로벌 네트워크 · 사업장소재)은 80px 넘게 내려가면.
+       A-1 껍데기(.sf-gnb)에도 붙지만 그쪽 CSS 는 이 클래스를 쓰지 않는다 */
+    g.classList.toggle('scrolled',hero?hb<=80:window.scrollY>80);
     if(!bn){
       /* 회사소개는 여기서 끝 — 바 자체(.is-fixed)는 그 페이지 스크립트가 붙인다 */
       var w2=fx&&!nar;
