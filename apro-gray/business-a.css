@@ -157,9 +157,22 @@
 
 /* 1200 아래에서 48 로 한 단 내리던 규칙은 --hgap 이 흐르게 되며 빠졌다(2026-09-21).
    레일 폭은 위 :root 의 --rail-w 가 1200 에서 200px 로 줄인다 */
+/* 소분류 머리띠 — business-a.js 가 .bsec 머리에 세운다. 넓은 화면은 탭 띠가 그 몫이라 감춘다 */
+.bsec-hd{display:none}
+
 @media(max-width:900px){
-  .bsec{width:auto;margin-inline:0;grid-template-columns:minmax(0,1fr);gap:32px;padding:80px 0}
-  .bsec-rail{position:static;flex-direction:row;flex-wrap:wrap;gap:0 20px}
+  /* A-1 모바일과 같은 짜임(2026-09-21 요청) — 소분류 탭 띠와 카드 목록(레일)을 걷고,
+     소분류 넷이 머리띠를 앞세워 세로로 이어진다. 탭 띠가 겹쳐 앉던 히어로 밑 여백도 되돌린다 */
+  .bnav-wrap{display:none}
+  /* 페이지 <style> 의 .dhero--biz{padding-bottom:var(--bnav-band)} 이 뒤에 오므로 한 단 올려 잡는다 */
+  .dhero.dhero--biz{padding-bottom:80px}
+  .bsec-rail{display:none}
+  .bsec-hd{display:flex;align-items:center;gap:10px;margin:0 calc(-1 * var(--gm)) 0;padding:12px var(--gm);
+    background:var(--secondary-bg);border-bottom:1px solid var(--border-g);
+    font-family:var(--suit);font-weight:600;font-size:14px;line-height:1.4;letter-spacing:-.28px;color:#5a6675}
+  .bsec-hd .no{font-family:var(--rb);font-weight:500;color:var(--brand)}
+  .bsec{width:auto;margin-inline:0;grid-template-columns:minmax(0,1fr);gap:32px;padding:0 0 64px}
+  .bsec+.bsec{border-top:0}
   .bsec .hcard{grid-template-columns:minmax(0,1fr);gap:24px}
   .bsec .hcard>.hleft,
   .bsec .hcard[data-tab]>.hleft{padding-right:0}

@@ -98,3 +98,23 @@
   window.addEventListener('load', onScroll);
   paint();
 })();
+
+/* ── 소분류 머리띠 (2026-09-21) ──────────────────────────────────────
+   좁은 화면(≤900)에서는 소분류 탭 띠(.bnav-wrap)를 감추고 소분류 넷이 세로로
+   이어진다(A-1 모바일과 같은 짜임). 그러면 "지금 어느 소분류인가"를 알 길이
+   탭 띠뿐이었으므로, 각 .bsec 머리에 "01 이차전지 활성화" 띠를 하나 세운다.
+   이름은 탭 띠(.bnav-tabs a)의 글자를 그대로 읽는다 — 한 곳만 고치면 된다.
+   넓은 화면에서는 CSS 가 감춘다(.bsec-hd) */
+(function () {
+  var tabs = document.querySelectorAll('.bnav-tabs a[href^="#"]');
+  tabs.forEach(function (a, i) {
+    var sec = document.querySelector(a.getAttribute('href'));
+    if (!sec || !sec.classList.contains('bsec')) { return; }
+    var h = document.createElement('h2');
+    h.className = 'bsec-hd';
+    var no = document.createElement('span'); no.className = 'no'; no.textContent = ('0' + (i + 1)).slice(-2);
+    var nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = a.textContent.trim();
+    h.appendChild(no); h.appendChild(nm);
+    sec.insertBefore(h, sec.firstChild);
+  });
+})();
