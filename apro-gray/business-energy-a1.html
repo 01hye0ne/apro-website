@@ -688,7 +688,10 @@
            display:flex;align-items:stretch;border:1px solid var(--c-bd)}
   /* 사진 칸은 폭만 받고 키는 카드에서 받는다. 정사각(aspect-ratio:1)으로 두었더니
      넓은 화면에서 사진이 카드 키를 밀어 올려(1892 에서 382) 띠를 넘겼다 */
-  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:stretch;
+  /* 사진 칸은 늘 1:1 이다(2026-09-22) — 원본이 정사각 제품 사진이라 칸이 조금만 세로로 길어도
+     cover 가 좌우를 잘라 제품이 잘려 나갔다(1440 에서 280×482, 1.72:1). 카드가 사진보다 키가
+     크면 사진은 칸 가운데에 서고, 남는 위아래는 카드 바탕색이다 */
+  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;aspect-ratio:1;
                  position:relative;overflow:hidden;background:var(--sf-ph-bg);
                  border:1px dashed var(--sf-ph-bd)}
   /* 사진이 든 칸은 자리표시 점선을 걷는다 — 원본이 1:1 이라 그대로 들어맞는다 */
@@ -819,13 +822,12 @@
   }
   /* 카드가 좁아지면 특징 넷을 2×2 로 접는다 — 한 줄에 넷이면 1280 아래에서
      한 칸이 130 밑으로 떨어져 글이 서너 자씩 끊긴다.
-     두 줄이 되면 오른쪽이 사진보다 훨씬 길어진다 → 이 구간에서만 사진이 1:1 을
-     놓고 카드 높이를 채운다. 가운데에 세워 두면 이름 띠 옆이 하얗게 파여 보인다 */
+     (한동안 이 구간에서 사진이 1:1 을 놓고 카드 높이를 채웠다 — 그래서 사진이 세로로
+     늘어나 제품이 잘렸다. 2026-09-22 부터 1:1 을 지킨다) */
   @media(max-width:1280px){
     .sf-feat{display:flex;flex-wrap:wrap;gap:0}
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
     .sf-feat li:nth-child(odd){border-left:0}
-    .sf-prod>.shot{align-self:stretch;aspect-ratio:auto}
   }
   @media(max-width:1180px){
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
@@ -885,7 +887,8 @@
     .sf-ptexts{flex:none;min-height:0;gap:24px;padding-right:0}
     .sf-prods{display:flex;flex-direction:column;gap:24px}
     .sf-prod{margin-right:0;margin-top:0;flex-direction:column}
-    .sf-prod>.shot{flex:none;width:100%;align-self:auto;aspect-ratio:16/9}
+    /* 위로 올라온 사진도 정사각 — 16:9 로 눕히면 위아래가 잘렸다. 폭은 360 까지, 가운데 */
+    .sf-prod>.shot{flex:none;width:min(100%,360px);align-self:center;aspect-ratio:1;margin:16px auto 0}
     .sf-feat{display:flex;flex-wrap:wrap;gap:0}
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
   }
