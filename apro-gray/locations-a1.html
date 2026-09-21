@@ -44,9 +44,13 @@
   .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;border:0;
           background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
   .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g);overflow:hidden}
-  /* 사옥 사진은 투자정보 히어로(ir-finance)와 같은 hq-campus 다 — 건물이 화면 가운데 오른쪽에 있어
-     히어로와 같은 초점(56% 45%)으로 잡아야 작은 칸에서도 건물이 든다 */
-  .lc-tab .th img{display:block;width:100%;height:100%;object-fit:cover;object-position:56% 45%}
+  /* 사진마다 건물이 선 자리가 달라 초점을 따로 준다 — 글로벌센터는 투자정보 히어로(hq-campus)와
+     같은 56% 45%, 시화는 건물이 가운데 오른쪽, 화성은 가운데. 작은 칸(A-1 은 40~99px)이라
+     초점이 어긋나면 하늘이나 길만 남는다 */
+  .lc-tab .th img{display:block;width:100%;height:100%;object-fit:cover}
+  .lc-tab[data-site="global"] .th img{object-position:56% 45%}
+  .lc-tab[data-site="sihwa"] .th img{object-position:55% 50%}
+  .lc-tab[data-site="hwaseong"] .th img{object-position:50% 50%}
   /* 첫 화면 높이에 맞추기 — 탭 섬네일은 띠 안쪽 높이(cqh)에서 정보 칸의 나머지(약 485)를 뺀 만큼(40~99),
      오른쪽 지도는 남은 폭과 띠 안쪽 높이를 다 갖는다. 바닥 높이는 섬네일 40 기준 832 */
   .ci-top{--ci-min:832px}
@@ -198,8 +202,8 @@
     </div>
     <div class="lc-tabs" role="tablist" aria-label="사업장">
       <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="global"><span class="th" aria-hidden="true"><img src="../assets/hq-campus.jpg" alt="" loading="lazy" decoding="async" /></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
-      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="sihwa"><span class="th" aria-hidden="true"></span><span class="nm"><span>시화</span><span>R&amp;D 센터</span></span></button>
-      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="sihwa"><span class="th" aria-hidden="true"><img src="../assets/sihwa-rnd-center.jpg" alt="" loading="lazy" decoding="async" /></span><span class="nm"><span>시화</span><span>R&amp;D 센터</span></span></button>
+      <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"><img src="../assets/hwaseong-factory.jpg" alt="" loading="lazy" decoding="async" /></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
     </div>
   </div>
   <!-- 지도 — 아래 스크립트가 고른 사업장의 구글 지도 iframe 을 넣는다 -->
