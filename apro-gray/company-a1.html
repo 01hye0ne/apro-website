@@ -311,6 +311,22 @@
                   color:var(--on-dark-body);font-feature-settings:"lnum" 1,"tnum" 1}
   .co-vband .lead span{display:block}
   .co-vband .lead span+span{margin-top:2px}
+  /* ── Vision 제목 타이핑 (2026-09-21 요청 — A 회사소개와 같은 방식) ──
+     글자를 낱개 <span class="ch"> 로 싸 두고 opacity 만 켜므로 줄이 흔들리지 않는다.
+     마지막 글자 뒤에 얇은 커서가 따라가다 다 찍히면 사라지고 그때 줄글이 떠오른다.
+     스크립트가 못 돌면 그냥 다 보인다(.is-typing 이 안 붙는다) */
+  .co-vband h2.is-typing .ch{opacity:0}
+  .co-vband h2.is-typing .ch.on{opacity:1}
+  .co-vband h2 .caret{display:inline-block;width:.06em;height:.9em;margin-left:.06em;vertical-align:-.08em;
+    background:currentColor;animation:cvCaret 1s steps(1) infinite}
+  @keyframes cvCaret{50%{opacity:0}}
+  .co-vband.is-typing .lead{opacity:0;translate:0 10px}
+  .co-vband.is-typed .lead{opacity:1;translate:none;transition:opacity .6s var(--ease),translate .6s var(--ease)}
+  @media(prefers-reduced-motion:reduce){
+    .co-vband h2.is-typing .ch{opacity:1}
+    .co-vband.is-typing .lead{opacity:1;translate:none}
+    .co-vband h2 .caret{display:none}
+  }
   .co-vband .imgs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ci-gap)}
   .co-vband .imgs li{aspect-ratio:16/9;overflow:hidden;background:#dedede}
   /* 첫 화면 높이에 맞추기 — 칸은 16:9 가 기본이고, 띠 안쪽 높이(cqh)에서 글 덩어리(202)와 사이(26)를 뺀
@@ -1169,6 +1185,49 @@
       lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
     });
   }
+})();
+</script>
+<script>
+/* Vision 제목 타이핑 — 위 <style> 의 "Vision 제목 타이핑" 참고.
+   글자마다 45ms, 줄이 바뀌는 자리(<br>)에서 360ms 숨을 둔다. 첫 화면 안이라 열자마자 돈다. 한 번만 */
+(function(){
+  var sec=document.querySelector('.co-vband'),h=sec&&sec.querySelector('h2');
+  if(!h||!('IntersectionObserver' in window))return;
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var chars=[];
+  [].slice.call(h.childNodes).forEach(function(n){
+    if(n.nodeType!==3)return;
+    var frag=document.createDocumentFragment();
+    n.textContent.split('').forEach(function(c){
+      var sp=document.createElement('span');sp.className='ch';sp.textContent=c;
+      frag.appendChild(sp);chars.push(sp);
+    });
+    h.replaceChild(frag,n);
+  });
+  if(!chars.length)return;
+  h.classList.add('is-typing');sec.classList.add('is-typing');
+  var caret=document.createElement('span');caret.className='caret';caret.setAttribute('aria-hidden','true');
+  function done(){
+    chars.forEach(function(c){c.classList.add('on');});
+    if(caret.parentNode)caret.parentNode.removeChild(caret);
+    h.classList.remove('is-typing');sec.classList.remove('is-typing');sec.classList.add('is-typed');
+  }
+  if(reduce){done();return;}
+  var i=0;
+  function tick(){
+    if(i>=chars.length){setTimeout(done,500);return;}
+    var c=chars[i++];c.classList.add('on');
+    c.parentNode.insertBefore(caret,c.nextSibling);
+    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?360:45;
+    setTimeout(tick,pause);
+  }
+  var io=new IntersectionObserver(function(es){
+    if(!es.some(function(e){return e.isIntersecting;}))return;
+    io.disconnect();
+    h.insertBefore(caret,h.firstChild);
+    setTimeout(tick,400);
+  },{rootMargin:'0px 0px -12% 0px'});
+  io.observe(sec);
 })();
 </script>
 </body>
