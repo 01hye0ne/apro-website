@@ -45,24 +45,27 @@
   .lc-tabs{display:flex;gap:8px}
   .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;border:0;
           background:#4077b7;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background-color .25s var(--ease),color .25s var(--ease)}
-  .lc-tab .th{display:block;aspect-ratio:4/3;background:#dedede;border:1px solid var(--border-g);overflow:hidden}
+  /* 16:9 로 고정한다(2026-09-21 요청) — 종전에는 첫 화면 높이에 맞추느라 띠에서 남는 높이(40~99)만 받아
+     208×47 짜리 띠가 됐다. 그 대신 띠가 첫 화면보다 조금 길어질 수 있다(900 높이 창에서 100 안팎) */
+  .lc-tab .th{display:block;aspect-ratio:16/9;background:#dedede;border:1px solid var(--border-g);overflow:hidden}
   /* 사진마다 건물이 선 자리가 달라 초점을 따로 준다 — 글로벌센터는 투자정보 히어로(hq-campus)와
-     같은 56% 45%, 시화는 건물이 가운데 오른쪽, 화성은 가운데. 작은 칸(A-1 은 40~99px)이라
+     같은 56% 45%, 시화는 건물이 가운데 오른쪽, 화성은 가운데. 작은 칸이라
      초점이 어긋나면 하늘이나 길만 남는다 */
   .lc-tab .th img{display:block;width:100%;height:100%;object-fit:cover}
   .lc-tab[data-site="global"] .th img{object-position:56% 45%}
   .lc-tab[data-site="sihwa"] .th img{object-position:55% 50%}
   .lc-tab[data-site="hwaseong"] .th img{object-position:50% 50%}
-  /* 첫 화면 높이에 맞추기 — 탭 섬네일은 띠 안쪽 높이(cqh)에서 정보 칸의 나머지(약 485)를 뺀 만큼(40~99),
-     오른쪽 지도는 남은 폭과 띠 안쪽 높이를 다 갖는다. 바닥 높이는 섬네일 40 기준 832 */
-  .ci-top{--ci-min:832px}
+  /* 오른쪽 지도는 남은 폭과 띠 안쪽 높이를 다 갖는다. 바닥 높이 880 — 정보 칸(1440 에서 560:
+     이름 96 · 주소 줄 275 · 사이 40 · 16:9 탭 169)에 띠 여백 112 와 히어로 203 을 더한 값이다.
+     900 높이 창에서는 첫 화면이 33px 길어진다 */
+  .ci-top{--ci-min:880px}
   @media(min-width:901px){
-    .lc-tab .th{aspect-ratio:auto;height:clamp(40px, calc(100cqh - 485px), 99px)}
     .lc-map{align-self:stretch;aspect-ratio:auto}
   }
   .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls)}
-  .lc-tab .nm span{display:block}
-  .lc-tab .nm span+span{margin-top:4px}
+  /* 이름은 한 줄 — "에이프로 글로벌센터"(2026-09-21 요청). 칸이 좁아 안 들면 그때만 접힌다 */
+  .lc-tab .nm span{display:inline}
+  .lc-tab .nm span+span{margin-left:.28em}
   .lc-tab[aria-selected="true"]{background:#fff;color:#2c5790}
   .lc-tab:focus-visible{outline:2px solid #fff;outline-offset:2px}
   /* 지도 칸 — 사업장마다 iframe 을 처음 고를 때 하나 만들고 이후엔 숨겼다 보인다. 불러오면 살짝 나타난다 */
