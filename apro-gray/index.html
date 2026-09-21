@@ -271,6 +271,9 @@
      문구("에이프로는 / 지구의 가치를 아는 기업입니다")가 글자 중간에서 세 줄로 접혔다.
      min() 으로 1185 아래에서만 따라 줄인다(그 위는 그대로 64) */
   .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:1.2;letter-spacing:-.02em;color:#fff;white-space:pre-line}
+  /* 영문 문구(사업영역 넷)는 Roboto 다(2026-09-21 요청) — 아래 스크립트가 글자를 갈 때
+     .headline 에 .is-en 을 함께 켠다. 국문 SUIT 800 과 무게를 맞춰 800 그대로다 */
+  .v2banner .headline.is-en .en{font-family:var(--rb)}
   /* 아래 여백 = 흰 띠 높이 → 탭 띠 밑변이 그 띠의 윗변에 정확히 앉는다 */
   .v2banner .info{margin-top:auto;margin-bottom:var(--bpad);display:flex;gap:20px;align-items:flex-end}
   .v2banner .pag-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
@@ -1438,10 +1441,11 @@
       { t:'에이프로는\n함께 나아가는 기업입니다',   s:'당신이 향하는 세상으로 우리도 같이 나아갑니다' },
       { t:'에이프로는\n지구의 가치를 아는 기업입니다', s:'우리 모두의 환경과 자원을 위해 늘 고민합니다' },
       { t:'에이프로는\n에너지 인프라 기업입니다',    s:'지속가능한 차세대 에너지 선순환을 선도합니다' },
-      { t:'Smart & Automated Manufacturing',  s:'이차전지 활성화 전 공정을 자체 기술로 완성합니다' },
-      { t:'Smart & Resilient Power Grid',     s:'BESS·UPS로 안정적인 에너지 인프라를 구축합니다' },
+      // 영문 넷은 A-1(index-a1.html .hm-hl)과 같은 자리에서 두 줄로 고정한다 — & 뒤에서 끊는다(2026-09-21)
+      { t:'Smart &\nAutomated Manufacturing',  s:'이차전지 활성화 전 공정을 자체 기술로 완성합니다' },
+      { t:'Smart &\nResilient Power Grid',     s:'BESS·UPS로 안정적인 에너지 인프라를 구축합니다' },
       { t:'Physical AI-based\nIndustrial Safety Innovation', s:'AI로 산업 현장의 안전과 효율을 높여 나갑니다' },
-      { t:'More Efficient & Reliable Power',  s:'차세대 화합물 GaN 전력반도체를 선도합니다' }
+      { t:'More Efficient &\nReliable Power',  s:'차세대 화합물 GaN 전력반도체를 선도합니다' }
     ];
     var N = MSG.length;    // 7 segments → 0,5,…,30s
 
@@ -1464,6 +1468,8 @@
       window.setTimeout(function(){
         if(enEl){ enEl.textContent = MSG[idx].t; }     // 강조문구
         if(korEl){ korEl.textContent = MSG[idx].s; }   // 보조문구
+        // 영문 문구는 Roboto 로 — 글자가 바뀌는 이 순간에 함께 갈아야 서체만 먼저 튀지 않는다
+        head.classList.toggle('is-en', /^[A-Za-z]/.test(MSG[idx].t));
         head.classList.remove('leaving');
         head.classList.remove('entering'); void head.offsetWidth;   // restart the rise-in animation
         head.classList.add('entering');
