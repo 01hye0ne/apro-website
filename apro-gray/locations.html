@@ -110,7 +110,8 @@
   .lc-tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px;margin:0;
     border:0;background:var(--brand-2);color:#fff;text-align:left;cursor:pointer;
     transition:background .2s var(--ease),color .2s var(--ease)}
-  .lc-tab .th{display:block;aspect-ratio:16/9;background:#e5e6e8;border:1px solid var(--border-g)}
+  .lc-tab .th{display:block;aspect-ratio:16/9;background:#e5e6e8;border:1px solid var(--border-g);overflow:hidden}
+  .lc-tab .th img{display:block;width:100%;height:100%;object-fit:cover}
   .lc-tab .nm{display:block;padding:12px;font-family:var(--suit);font-weight:800;font-size:16px;
     line-height:1;letter-spacing:-.32px}
   .lc-tab .nm span{display:block}
@@ -182,9 +183,9 @@
           <div><dt lang="en">Fax</dt><dd id="lc-fax">031-477-4020</dd></div>
         </dl>
       </div>
-      <!-- 섬네일은 시안대로 빈 칸이다 — 사업장 사진이 오면 .th 에 넣는다 -->
+      <!-- 섬네일 — 글로벌센터는 사옥 전면(hq-exterior)이다(2026-09-21). 시화 · 화성은 사진이 오면 .th 에 넣는다 -->
       <div class="lc-tabs" role="tablist" aria-label="사업장">
-        <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="global"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
+        <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="true" data-site="global"><span class="th" aria-hidden="true"><img src="../assets/hq-exterior.jpg" alt="" loading="lazy" decoding="async" /></span><span class="nm"><span>에이프로</span><span>글로벌센터</span></span></button>
         <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="sihwa"><span class="th" aria-hidden="true"></span><span class="nm"><span>시화</span><span>R&amp;D 센터</span></span></button>
         <button type="button" class="lc-tab" role="tab" aria-controls="lc-panel" aria-selected="false" tabindex="-1" data-site="hwaseong"><span class="th" aria-hidden="true"></span><span class="nm"><span>에이프로</span><span>화성공장</span></span></button>
       </div>
