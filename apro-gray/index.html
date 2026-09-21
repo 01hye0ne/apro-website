@@ -831,9 +831,10 @@
     .v2banner .bnav{height:auto;padding:0;
       border:1px solid rgba(255,255,255,.2);border-radius:8px;
       -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
-    /* 칸 경계선은 판 높이 전체를 지난다 — 종전에는 위아래 14 를 들여 짧은 선이었다.
-       자리(20/40/60/80%)와 색(흰 20%)은 그대로다 */
-    .v2banner .bnav::after{inset:0}
+    /* 칸 경계선은 사업영역 세부의 탭 띠처럼 위아래를 들인다 — 글줄(24) 만 잇고 판 테두리에는
+       닿지 않는다(2026-09-21 요청). 칸 안쪽 여백이 20 이라 20 을 들이면 글줄 높이와 같다.
+       한동안 판 높이 전체(inset:0)였다. 자리(20/40/60/80%)와 색(흰 20%)은 그대로다 */
+    .v2banner .bnav::after{inset:20px 0}
     /* 안쪽 여백을 칸이 갖는다(판이 아니라) — 그래야 칸이 판 높이를 꽉 채우고,
        칸 윗변을 따라 자라는 게이지(.b::before)가 판 안쪽 윗선을 그대로 탄다.
        판에 padding 을 주면 게이지가 판 속에 떠 있는 선이 된다 */
