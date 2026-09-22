@@ -280,8 +280,10 @@ body:not(:has(.bnav-wrap)) .gnb-group.nav-hide::before{opacity:0}
   .cbody .cgov-board>.hd>h2{font-size:clamp(24px,2.7vw,38px)}
 }
 
-/* 좁은 화면에서는 두 칸이 설 자리가 없다 — 다시 위아래로 쌓는다 */
-@media(max-width:900px){
+/* 태블릿 · 좁은 화면에서는 위아래로 쌓는다 — 한 칸 흐름.
+   2026-09-22 요청으로 기준을 900 → 1280 으로 올렸다 : 태블릿에서 왼쪽 4열(1024 에서 302)이
+   제목 한 줄에 비고, 본문이 오른쪽 8열(615)로 좁아져 카드 글이 여러 줄로 꺾였다 */
+@media(max-width:1280px){
   .cbody .cblock:has(>h2:not(.sr-only)){display:block}
   .cbody .cblock:has(>h2:not(.sr-only))>h2+*{margin-top:12px}
   .cbody .cgov-board{grid-template-columns:minmax(0,1fr)}
