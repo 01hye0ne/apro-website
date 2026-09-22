@@ -1702,11 +1702,13 @@
            opacity:0;visibility:hidden;transform:translateY(-8px);
            transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
   .sf-mega.open{opacity:1;visibility:visible;transform:none}
-  .sf-mega .cols{width:calc(var(--gnb-col) * 10 + 180px);margin-inline:auto;
+  .sf-mega .cols{width:calc(var(--gnb-col) * 12 + 220px);margin-inline:auto;
                  display:grid;grid-template-columns:repeat(4,1fr)}
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
                 padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
   .sf-mega .col:last-child{border-right:0}
+  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
+  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
   /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
      그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
      폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
