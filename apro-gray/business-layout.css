@@ -1562,13 +1562,16 @@
      불이 옮겨 다니는 루프와 현재 영역의 괄호 세로선은 뺀다 — 두 줄로 접힌 마을에서는
      괄호가 윗줄 · 아랫줄을 가로질러 서지 못하고, 좁은 칸에서 깜빡임은 산만하다 */
   @media(max-width:767px){
-    .bhop{--pad:40px}
+    /* 위 여백은 걷는다 — 섹션 윗선과 세로선 사이가 비어 선이 허공에서 시작했다.
+       이제 세로선이 섹션 윗선에서 곧장 내려와 ㅜ 자로 만난다. 숨은 칸 안 위 여백이 맡는다 */
+    .bhop{--pad:0px}
     /* 폭은 A 본문 여백(24)에 맞춘다 — A-1 은 페이지 쪽 규칙(여백 16)이 뒤에서 이긴다 */
     .bhop-town{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;
-      width:calc(100% - 48px)}
-    /* 픽토그램은 칸 바닥(가로선 · 푸터 윗변)에 붙인다 — 넓은 화면의 마을이 푸터에 붙어 서듯.
+      width:calc(100% - 48px);grid-auto-rows:1fr}
+    /* 두 줄은 같은 높이(1fr) — 현재 영역 칸(국 · 영문 두 줄)이 든 줄만 높아지지 않게.
+       픽토그램은 칸 바닥(가로선 · 푸터 윗변)에 붙인다 — 넓은 화면의 마을이 푸터에 붙어 서듯.
        두 칸 사이는 세로선으로 가른다(가로선과 만나 十 자가 된다) */
-    .bhlot,.bhlot[data-a="ai"]{gap:20px;padding:24px 12px 0}
+    .bhlot,.bhlot[data-a="ai"]{gap:20px;padding:32px 12px 0}
     .bhlot:nth-child(n+3){border-top:1px solid var(--border-g)}
     .bhlot:nth-child(even){border-left:1px solid var(--border-g)}
     .bhlot.is-here::before,.bhlot.is-here::after{content:none}
