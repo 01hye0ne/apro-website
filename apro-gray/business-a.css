@@ -160,6 +160,63 @@
 /* 소분류 머리띠 — business-a.js 가 .bsec 머리에 세운다. 넓은 화면은 탭 띠가 그 몫이라 감춘다 */
 .bsec-hd{display:none}
 
+/* ── 태블릿 (901~1280, 2026-09-22 요청) ─────────────────────────────
+   왼쪽 목록 칸을 걷고 그 일을 고정 탭 바에 넘긴다. 바의 두 칸이 한 단씩 내려앉는다 :
+     사업명 자리   ← 지금 읽는 소분류 이름 (.bnav-sub)
+     소분류 탭 자리 ← 그 소분류의 카드 목록 (.bnav-idx)
+   두 벌은 business-a.js 가 만들고 .bnav-wrap.is-idx 로 바꿔 낀다. 히어로 위의
+   유리 탭(소분류 넷)은 그대로다 — 바뀌는 것은 고정된 뒤뿐이다.
+   목록 칸이 빠진 자리는 본문이 가져가고, 카드는 글 | 그림 1:1 로 선다 */
+.bnav-sub,.bnav-idx{display:none}
+@media(min-width:901px) and (max-width:1280px){
+  /* ⚠ 특정도 — 페이지 <style> 의 고정 바 규칙(body:not(.v-a1) .bnav-wrap.is-fixed …,
+     0-4-1)이 이 파일보다 뒤에 오므로 html 을 앞세워 한 단 올려 잡는다 */
+  html body .bnav-wrap.is-fixed.is-idx .bnav-ttl,
+  html body .bnav-wrap.is-fixed.is-idx .bnav-tabs{display:none}
+  /* 이름 칸은 180 고정 — 가장 긴 이름(Cycler(Cell&Module))이 한 줄에 드는 폭이다.
+     본문에 목록 칸이 없으니 --rail-w(200~251)에 맞출 까닭은 없고, 남는 폭은 카드
+     목록(최대 다섯 칸)에 준다. 글자 폭에 맞추면 섹션이 바뀔 때마다 흰 판의
+     시작점이 들썩여서 고정으로 둔다 */
+  html body .bnav-wrap.is-fixed.is-idx .bnav-sub{display:block;flex:none;width:180px;
+    margin:0 4px 0 0;font-family:var(--suit);font-weight:600;font-size:20px;line-height:24px;
+    letter-spacing:-.4px;color:#fff}
+  /* 흰 판 — 고정된 소분류 탭 판(페이지 <style>)과 같은 모양을 그대로 옮겼다.
+     밑 양끝 오목 모서리(::after)도 같은 그림이다 */
+  html body .bnav-wrap.is-fixed.is-idx .bnav-idx{display:block;flex:1 1 0;min-width:0;position:relative;
+    background:#fff;border-radius:8px 8px 0 0;padding:20px 0}
+  .bnav-idx::after{content:"";position:absolute;pointer-events:none;
+    bottom:0;left:-8px;right:-8px;height:8px;
+    background-image:
+      radial-gradient(circle at 0 0,transparent 8px,#fff 8px),
+      radial-gradient(circle at 100% 0,transparent 8px,#fff 8px);
+    background-size:8px 8px,8px 8px;
+    background-position:left bottom,right bottom;
+    background-repeat:no-repeat,no-repeat}
+  .bnav-idx-set:not([hidden]){display:flex;align-items:stretch;animation:bnavIdxIn .35s var(--ease)}
+  .bnav-sub>span:not([hidden]){display:block;animation:bnavIdxIn .35s var(--ease)}
+  .bnav-idx button{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;
+    padding:0 8px;background:none;border:0;border-right:1px solid var(--border-g);cursor:pointer;
+    font-family:var(--suit);font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;
+    color:#1b2733;text-align:center;word-break:keep-all;overflow-wrap:anywhere;transition:color .2s var(--ease)}
+  .bnav-idx button:last-child{border-right:0}
+  /* 1000 아래에서 한 단 — 다섯 칸짜리(이차전지 소재)의 "에이프로머티리얼즈"가
+     901 에서도 한 줄에 들게 한다. 그래도 넘치면 overflow-wrap 이 받는다 */
+  @media(max-width:1000px){.bnav-idx button{padding:0 4px;font-size:15px;letter-spacing:-.45px}}
+  .bnav-idx button:hover,
+  .bnav-idx button[aria-current="true"]{color:var(--brand)}
+
+  /* 본문 — 목록 칸을 걷고 한 칸으로. 머리글(.hintro)이 있는 섹션도 1열로 되돌린다 */
+  .bsec{grid-template-columns:minmax(0,1fr)}
+  .bsec-rail{display:none}
+  .bsec>.hintro,
+  .bsec:has(>.hintro)>.bsec-main{grid-column:1}
+  .bsec .hcard{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+  .bsec .hcard>.hleft,
+  .bsec .hcard[data-tab]>.hleft{padding-right:0}
+}
+@keyframes bnavIdxIn{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.bnav-idx-set,.bnav-sub>span{animation:none}}
+
 @media(max-width:900px){
   /* A-1 모바일과 같은 짜임(2026-09-21 요청) — 소분류 탭 띠와 카드 목록(레일)을 걷고,
      소분류 넷이 머리띠를 앞세워 세로로 이어진다. 탭 띠가 겹쳐 앉던 히어로 밑 여백도 되돌린다 */

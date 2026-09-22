@@ -18,34 +18,73 @@
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   var groups = [];
 
+  /* 태블릿(901~1280)에서는 왼쪽 목록을 걷고, 고정 탭 바가 그 몫을 맡는다
+     (2026-09-22 요청) — 사업명 자리에 지금 읽는 소분류 이름이, 소분류 탭 자리에
+     그 소분류의 카드 목록이 선다. 두 벌을 따로 만들어 두고 CSS 가 바꿔 낀다 :
+     원래 탭(.bnav-ttl · .bnav-tabs)은 손대지 않으므로 business-layout.js 의
+     스파이·클릭은 그대로 돈다 */
+  var tablet = window.matchMedia('(min-width:901px) and (max-width:1280px)');
+  var bwrap = document.querySelector('.bnav-wrap');
+  var bnav = bwrap && bwrap.querySelector('.bnav');
+  var bsub = null, bidx = null;
+  if (bnav) {
+    bsub = document.createElement('p'); bsub.className = 'bnav-sub';
+    bidx = document.createElement('div'); bidx.className = 'bnav-idx';
+    bnav.appendChild(bsub); bnav.appendChild(bidx);
+  }
+
+  /* 목록 칸(.bsec-rail)이 없는 섹션(카드 한 장)도 고정 바에는 제 카드 이름을
+     세워야 하므로, 묶음은 카드가 있는 섹션 전부로 만든다 */
   document.querySelectorAll('.bsec').forEach(function (sec) {
     var rail = sec.querySelector('.bsec-rail');
     var cards = [].slice.call(sec.querySelectorAll('.hcard'));
-    if (!rail || !cards.length) { return; }
+    if (!cards.length) { return; }
 
-    var btns = cards.map(function (card, i) {
+    function go(i) {
+      var top = window.pageYOffset + cards[i].getBoundingClientRect().top - OFFSET;
+      /* 누른 줄을 먼저 켠다 — 부드럽게 굴러가는 동안(0.5초 남짓) 표시가 뒤늦게
+         따라오면 누름이 먹지 않은 것처럼 보인다. 굴러가 멈추면 아래 paint 가
+         같은 값을 다시 짚으므로 어긋날 일은 없다 */
+      mark(i);
+      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+    }
+    function make(parent, i) {
       var b = document.createElement('button');
       b.type = 'button';
-      b.textContent = card.getAttribute('data-tab') || ('0' + (i + 1)).slice(-2);
+      b.textContent = cards[i].getAttribute('data-tab') || ('0' + (i + 1)).slice(-2);
       b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-      rail.appendChild(b);
-      b.addEventListener('click', function () {
-        var top = window.pageYOffset + cards[i].getBoundingClientRect().top - OFFSET;
-        /* 누른 줄을 먼저 켠다 — 부드럽게 굴러가는 동안(0.5초 남짓) 표시가 뒤늦게
-           따라오면 누름이 먹지 않은 것처럼 보인다. 굴러가 멈추면 아래 paint 가
-           같은 값을 다시 짚으므로 어긋날 일은 없다 */
-        mark(i);
-        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
-      });
+      b.addEventListener('click', function () { go(i); });
+      parent.appendChild(b);
       return b;
+    }
+
+    var btns = [];
+    cards.forEach(function (c, i) {
+      if (rail) { btns.push(make(rail, i)); }
     });
 
-    var grp = { cards: cards, btns: btns, at: 0 };
+    /* 고정 바 몫 — 소분류 이름은 탭 띠의 글자를 그대로 읽는다 */
+    var name = null, set = null;
+    if (bnav) {
+      var tab = bnav.querySelector('.bnav-tabs a[href="#' + sec.id + '"]');
+      name = document.createElement('span');
+      name.textContent = tab ? tab.textContent.trim() : '';
+      name.hidden = true;
+      bsub.appendChild(name);
+      set = document.createElement('div');
+      set.className = 'bnav-idx-set';
+      set.hidden = true;
+      bidx.appendChild(set);
+      cards.forEach(function (c, i) { btns.push(make(set, i)); });
+    }
+
+    var n = cards.length;
+    var grp = { sec: sec, cards: cards, at: 0, name: name, set: set };
     function mark(i) {
       if (i === grp.at) { return; }
       grp.at = i;
       for (var j = 0; j < btns.length; j++) {
-        btns[j].setAttribute('aria-current', j === i ? 'true' : 'false');
+        btns[j].setAttribute('aria-current', j % n === i ? 'true' : 'false');
       }
     }
     grp.mark = mark;
@@ -64,6 +103,23 @@
       }
       grp.mark(at);
     }
+    if (!bwrap || !groups.length) { return; }
+    /* 고정 바가 비추는 소분류 = 윗변이 같은 기준선을 마지막으로 지나간 섹션.
+       ⚠ .bsec 가 아닌 섹션(캐러셀)에 들어서 있으면 원래 탭으로 돌아간다 */
+    var cur = null, secs = document.querySelectorAll('.wrap > section[id]');
+    for (var s = 0; s < secs.length; s++) {
+      if (secs[s].getBoundingClientRect().top <= line) { cur = secs[s]; }
+    }
+    if (!cur) { cur = groups[0].sec; }
+    var on = null;
+    for (var k = 0; k < groups.length; k++) {
+      var hit = groups[k].sec === cur;
+      if (hit) { on = groups[k]; }
+      if (groups[k].set && groups[k].set.hidden === hit) {
+        groups[k].set.hidden = !hit; groups[k].name.hidden = !hit;
+      }
+    }
+    bwrap.classList.toggle('is-idx', tablet.matches && !!on);
   }
 
   /* ── 상단 소분류 탭도 같은 선에 세운다 ──────────────────────────────
