@@ -226,7 +226,10 @@
     align-self:auto;gap:32px}
   .aaarow:nth-of-type(even) .aaa-txt{grid-template-columns:auto minmax(0,1fr)}
   .aaarow:nth-of-type(even) .aaa-txt .keys{grid-column:1;grid-row:1}
-  .aaarow:nth-of-type(even) .aaa-txt .strategy{grid-column:2;grid-row:1}
+  .aaarow:nth-of-type(even) .aaa-txt .strategy{grid-column:2;grid-row:1;
+    text-align:right;align-items:flex-end}
+  /* ↑ 짝수 줄 글은 오른쪽 정렬 (2026-09-22 요청) — 왼쪽 정렬이면 글이 칸 가운데(1024 에서 410)
+     에서 시작해 떠 보였다. 오른쪽 선에 붙어 위아래 줄(왼쪽 선)과 거울이 된다 */
   .aaa-txt .kn{font-size:clamp(36px,4vw,48px)}
 }
 /* 아주 좁은 화면 — 원 셋(534)이 들어가지 않는다. 둘씩 세 줄로 접는다 */
