@@ -915,6 +915,10 @@
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
   }
 
+  /* 인증 줄 오른쪽 도트(지금 보는 제품 표시)는 태블릿 · 모바일에서 걷는다(2026-09-22 요청) —
+     넓은 화면에서는 제품 카드가 한 자리에서 갈아 끼워져 몇째인지 알려 줄 몫이 있지만, 이 폭에서는
+     카드가 위아래로 다 펼쳐져 눈으로 보인다 */
+  @media(max-width:1180px){.sf-cert .dots{display:none}}
   /* 장 번호 태그 · 그림 기둥 몫 눈금줄 — 스크립트(business-layout.js)가 글 쪽 눈금줄 앞에
      붙여 둔다. 태블릿에서만 쓴다(넓은 화면은 그림 기둥 위 #sfTag 가, 모바일은 눈금줄을 걷는다) */
   .sf-line .sf-tag--sec,.sf-line .sf-rule--fig{display:none}
