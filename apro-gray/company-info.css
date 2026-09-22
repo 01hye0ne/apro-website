@@ -14,7 +14,7 @@
    글꼴은 부르지 않는다 — Aldrich · Pretendard · SUIT 는 각 페이지 <head> 가 부른다.
    ===================================================================== */
 .ci-top{--ci-m:44px;--ci-gap:20px;--ci-min:640px;position:relative;display:flex;flex-direction:column;
-  height:calc(100vh - 53px);height:calc(100svh - 53px);min-height:var(--ci-min);color:#fff;
+  height:calc(100vh - 64px);height:calc(100svh - 64px);min-height:var(--ci-min);color:#fff;
   /* 사진 아래 끝에 수평선과 바다가 있다 — 아래를 붙들어 잘리지 않게 한다 */
   background:#4a84d4 url("../assets/blue-sky-horizon.jpg") 50% 100% / cover no-repeat}
 

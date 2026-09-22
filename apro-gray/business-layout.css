@@ -1661,8 +1661,10 @@
      색과 치수는 이 블록 안에서만 정의한다 — 장마다 토큰 이름이 달라도 같은
      모양이 나와야 하기 때문이다. (세부 A-1 네 장은 아직 자기 <style> 에 같은
      규칙을 갖고 있어 그쪽이 이긴다 — 값은 같다) */
+  /* GNB 는 넓은 화면(901~)에서 64 · 메뉴 16 · 로고 96(높이 ≈21) — 2026-09-22 키움(53 · 14 · 78 은 화면에 비해
+     납작했다). 좁은 화면(햄버거)은 53 · 78 그대로 */
   .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{
-    --gnb-h:53px;--gnb-m:44px;
+    --gnb-h:64px;--gnb-m:44px;
     --gnb-line:#e4e8ed;--gnb-sec:#5a6675;--gnb-brand:#2c5790;--gnb-g100:#f4f6f8;
     --gnb-col:calc((100% - 308px) / 12)}
   /* 바가 화면에 붙박이라 본문을 그 높이만큼 내려 준다 — body 를 건드리지 않고
@@ -1672,7 +1674,7 @@
           display:flex;align-items:center;justify-content:space-between;gap:24px;
           padding:8px var(--gnb-m);background:#fff;
           border-bottom:1px solid var(--gnb-line)}
-  .sf-gnb .logo{flex-shrink:0;width:78px}
+  .sf-gnb .logo{flex-shrink:0;width:96px}
   .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
   /* 대분류 묶음은 화면 한가운데에 못 박는다 — 로고와 도구의 폭이 달라
      space-between 만으로는 가운데가 어긋난다 */
@@ -1681,7 +1683,7 @@
                     display:flex;align-items:center;gap:16px}
   .sf-gnb .sf-menus>li{display:flex}
   .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
-                         font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);
+                         font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
                          line-height:var(--lh-body);color:var(--gnb-sec);white-space:nowrap;
                          text-decoration:none;
                          transition:background .2s var(--ease),color .2s var(--ease)}
@@ -1763,6 +1765,8 @@
   @media(max-width:900px){
     .sf-gnb{padding-left:16px;padding-right:16px}
     .sf-gnb .sf-menus{display:none}
+    .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{--gnb-h:53px}
+    .sf-gnb .logo{width:78px}
     .sf-mega,.sf-scrim{display:none}
   }
 
