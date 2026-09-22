@@ -395,7 +395,12 @@
      뚫려 보인다. auto-flow 로 두면 항목 수가 바뀌어도 값을 고칠 데가 없다 */
   /* 태블릿(901~1180) — 인트로 문장은 두 줄로(2026-09-22 요청). 이 구간에서는 문장 옆이 비어 있는데
      5열 폭 제한에 걸려 두 문장이 각각 두 줄로 접혀 넉 줄이 됐다 */
-  @media(min-width:901px) and (max-width:1180px){ .sf-lead{max-width:none} }
+  @media(min-width:901px) and (max-width:1180px){
+    .sf-lead{max-width:none}
+    /* 소분류 카드가 셋이면 한 줄로(2026-09-22 요청) — 두 칸 격자라 셋째 카드가 홀로 한 줄을 먹었다.
+       넷이면 2×2 그대로 둔다 : 한 줄 넷은 901 에서 칸이 200 이라 "Cycler(Cell&Module)" 이 단어 중간에서 끊긴다 */
+    .sf-subs:has(>li:nth-child(3):last-child){width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
   @media(min-width:1181px){
     /* 장 아래 여백은 위(--intro-pad, 최대 120)보다 좁게 좌우 여백(44)으로 묶는다 —
        카드가 장 바닥 쪽으로 내려앉고, 줄어든 만큼은 그림 칸이 먹어 그림이 커진다 */
