@@ -48,8 +48,8 @@
      .gnb .menus a 는 폭이 고정이라(플렉스 최소 크기가 지정 폭 그대로) 좁아져도
      줄지 않아, 그대로 두면 로고·언어·전체메뉴 버튼을 화면 밖으로 밀어낸다 */
   @media(max-width:1600px){:root{--gm:64px}  .gnb-group{--mm-col:150px}}
-  @media(max-width:1280px){:root{--gm:40px}  .gnb-group{--mm-col:112px} .gnb{gap:20px}}
-  @media(max-width:1000px){.gnb-group{--mm-col:96px}}
+  @media(max-width:1280px){:root{--gm:40px}  .gnb-group{--mm-col:min(150px, calc((100vw - 356px) / 5))} .gnb{gap:20px}}
+  /* 태블릿의 메뉴 한 칸은 화면을 따라 는다 (2026-09-22 요청) — 112 · 96 고정이라 1024 에서 양옆에 150px 남짓이 비었다. 356 = GNB 좌우 여백 80 + 로고 78 + 도구 78 + 메가 판의 칸 사이 틈(36−20)×2 + 메뉴 사이 틈 8×4 + 세로 스크롤바 여유 16. 150 은 1281~1600 의 값이라 경계에서 칸이 줄지 않는다 */
   @media(max-width:600px){:root{--gm:24px}}
 
   .gnb-group{--gutter:var(--gm)}
