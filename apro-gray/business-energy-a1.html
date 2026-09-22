@@ -911,6 +911,29 @@
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
   }
 
+  /* 장 번호 태그 · 그림 기둥 몫 눈금줄 — 스크립트(business-layout.js)가 글 쪽 눈금줄 앞에
+     붙여 둔다. 태블릿에서만 쓴다(넓은 화면은 그림 기둥 위 #sfTag 가, 모바일은 눈금줄을 걷는다) */
+  .sf-line .sf-tag--sec,.sf-line .sf-rule--fig{display:none}
+  /* 태블릿(768~1180) — 넓은 화면의 짜임을 살린다(2026-09-22 요청).
+     · 그림 : 글 = 1 : 1.
+     · 눈금줄은 그림 칸 위까지 가로질러 넓은 화면처럼 [번호 태그][선][눈금 | 글 칸 시작][선] 한 줄이 된다.
+       글 칸의 줄을 왼쪽으로 그림 칸 폭 + 사이 24 만큼 끌어낸다(두 칸이 같은 폭이라 -100% - 24).
+       그림은 그 줄 아래, 제목 높이(줄 16 + 사이 24)에서 시작한다.
+     · 줄이 장 머리를 가르므로 장 사이 가로 구분선은 걷는다.
+     · 공정 맵은 글 기둥 높이를 따라 세로로 선다 — 사진이 아니라 고리 + 설비 도식이라 세로로
+       늘어도 일그러지지 않는다. 사진 칸은 4:3 그대로(cover 라 세로로 늘리면 양옆이 잘린다).
+     모바일은 글 아래로 눕는 흐름이라 뺀다 */
+  @media(min-width:768px) and (max-width:1180px){
+    .sf-secs>.sf-sec{border-top:0}
+    .sf-sec>.sf-ph{flex:1 1 0;min-width:0;max-width:none;margin-top:40px}
+    .sf-sec>.sf-txt{flex:1 1 0}
+    .sf-line .sf-tag--sec{display:flex}
+    .sf-sec:has(>.sf-ph)>.sf-txt>.sf-line{margin-left:calc(-100% - 24px)}
+    .sf-sec:has(>.sf-ph) .sf-rule--fig{display:block;flex:0 0 calc(50% + 12px - 41px)}
+    .sf-sec:has(>.sf-ph.has-map){align-items:stretch}
+    .sf-sec>.sf-ph.has-map{aspect-ratio:auto;min-height:420px}
+  }
+
   /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
      가로 띠 인덱스는 걷는다. 장마다 제목 줄 하나가 서고, 누르면 그 장이 열린다.
      첫 장은 열린 채로 시작한다(스크립트가 .is-open 을 준다) */
