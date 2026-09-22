@@ -34,8 +34,8 @@
    1440 에서 458.67 로, 눈대중 비율이던 32.71%(471)보다 12 좁다. 하한 340 · 상한 560 은 그대로 —
    1550 쯤부터는 상한이 걸려 격자에서 풀린다(그 위에서는 격자가 가운데 1352 로 고정되는데
    이 틀은 화면 폭을 꽉 쓰므로 어차피 축이 갈린다) */
-.cs-hero{position:sticky;top:53px;isolation:isolate;overflow:hidden;
-  flex:0 0 clamp(340px,calc(var(--g-x5) - var(--cs-m)),560px);height:calc(100vh - 53px);min-height:560px;
+.cs-hero{position:sticky;top:64px;isolation:isolate;overflow:hidden;
+  flex:0 0 clamp(340px,calc(var(--g-x5) - var(--cs-m)),560px);height:calc(100vh - 64px);min-height:560px;
   display:flex;flex-direction:column;gap:56px;padding:var(--cs-pad) var(--cs-m);
   background:#0b1b3d;color:#fff;word-break:keep-all}
 /* 사진 자리는 페이지가 --pos 로 정한다. 기본값은 투자정보 밤하늘 사옥 —
@@ -105,7 +105,7 @@
 /* 예외 ③ 장 안의 작은 제목은 앞 부품과 떨어져야 새 묶음으로 읽힌다(content-layout 의 44 를 지킨다) */
 :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>h3{margin-top:44px}
 /* 목록에서 건너뛰면 장의 위 여백 88 이 그대로 GNB 밑에 온다 — Figma 첫 화면과 같은 자리 */
-.cs-body>[id]{scroll-margin-top:53px}
+.cs-body>[id]{scroll-margin-top:64px}  /* GNB 높이 — 좁은 화면은 53(아래) */
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 
 /* 폭 상한 풀기 — 줄글 상자(.cdoc 900 등)의 상한이 본문 열보다 좁아 오른쪽만 비던 것을,
@@ -160,6 +160,7 @@
   .cs-hero-bg{object-position:var(--pos-m,10% 70%)}
   .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
+  .cs-body>[id]{scroll-margin-top:53px}
   /* 장 목록을 판 바닥으로 내리는 판(.cs-hero--low, 지속가능경영 다섯 장 · 2026-09-22 요청) —
      제목 · 문장은 위, 목록은 아래로 갈라 풍차가 그 사이에 드러난다(--pos-m 60% 로 허브가 빈자리에 온다).
      투자정보는 내리지 않는다 — 사옥이 사진 아래에 있어 목록이 창문 위에 얹혀 읽히지 않는다 */
