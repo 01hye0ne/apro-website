@@ -167,13 +167,16 @@
            opacity:0;visibility:hidden;transform:translateY(-8px);
            transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
   .sf-mega.open{opacity:1;visibility:visible;transform:none}
-  /* 판 안쪽은 격자 2~11 열에 앉는다 — 화면 끝까지 펼치면 칸이 너무 넓어
+  /* 판 안쪽은 격자 1~12 열(로고 ~ 햄버거)에 앉는다(2026-09-22 요청 — 2~11 열은 칸이 좁아
+     이름이 두세 줄로 접혔다). 화면 끝까지는 펼치지 않는다 — 칸이 너무 넓어
      이름 사이가 벌어진다 */
-  .sf-mega .cols{width:calc(var(--gcol) * 10 + 180px);margin-inline:auto;
+  .sf-mega .cols{width:calc(var(--gcol) * 12 + 220px);margin-inline:auto;
                  display:grid;grid-template-columns:repeat(4,1fr)}
   .sf-mega .col{display:flex;flex-direction:column;gap:20px;
                 padding:var(--grid-m);border-right:1px solid var(--sf-line)}
   .sf-mega .col:last-child{border-right:0}
+  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
+  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
   /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
      그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
      폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
@@ -871,7 +874,8 @@
        현재 표시(aria-current)는 스크롤을 따라 옮겨 가므로 묶음도 저절로 바뀐다.
        묶음 머리는 세로 인덱스와 같은 회색 칩으로 탭 앞에 선다 */
     .sf-grp:not(:has(a[aria-current="true"])){display:none}
-    .sf-grp>.hd{display:flex;align-self:center;margin-right:8px}
+    .sf-grp>.hd{display:flex;align-self:center;margin-right:8px;
+                font-size:var(--t-xs)}  /* 옆 탭 글자와 같은 크기(2026-09-22 요청) */
     .sf-rail a{border-bottom:0;padding:14px 12px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
