@@ -26,11 +26,43 @@
   var tablet = window.matchMedia('(min-width:901px) and (max-width:1280px)');
   var bwrap = document.querySelector('.bnav-wrap');
   var bnav = bwrap && bwrap.querySelector('.bnav');
-  var bsub = null, bidx = null;
+  var bsub = null, bidx = null, bbtn = null, bmenu = null;
   if (bnav) {
-    bsub = document.createElement('p'); bsub.className = 'bnav-sub';
+    /* 소분류 이름은 펼침 단추다 (2026-09-22 UX 점검) — 바가 카드 목록으로 바뀐 뒤에도
+       다른 소분류로 바로 건너갈 길을 남긴다. 펼친 목록의 항목은 원래 탭(<a>)을 대신
+       눌러 준다 : 굴러가는 자리(아래 capture 핸들러)와 스파이가 한 벌로 남는다.
+       이름 뒤 › 는 "소분류 › 그 안의 카드"라는 한 단 아래의 목록임을 알린다 */
+    bsub = document.createElement('div'); bsub.className = 'bnav-sub';
+    bbtn = document.createElement('button'); bbtn.type = 'button'; bbtn.className = 'bnav-sub-btn';
+    bbtn.setAttribute('aria-haspopup', 'true'); bbtn.setAttribute('aria-expanded', 'false');
+    var caret = document.createElement('i'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true');
+    var sep = document.createElement('span'); sep.className = 'sep'; sep.setAttribute('aria-hidden', 'true'); sep.textContent = '›';
+    bmenu = document.createElement('ul'); bmenu.className = 'bnav-sub-menu'; bmenu.hidden = true;
+    bbtn.appendChild(caret);
+    bsub.appendChild(bbtn); bsub.appendChild(sep); bsub.appendChild(bmenu);
     bidx = document.createElement('div'); bidx.className = 'bnav-idx';
     bnav.appendChild(bsub); bnav.appendChild(bidx);
+
+    bnav.querySelectorAll('.bnav-tabs a[href^="#"]').forEach(function (a, i) {
+      var li = document.createElement('li');
+      var b = document.createElement('button'); b.type = 'button';
+      b.setAttribute('data-for', a.getAttribute('href').slice(1));
+      var no = document.createElement('span'); no.className = 'no'; no.textContent = ('0' + (i + 1)).slice(-2);
+      b.appendChild(no); b.appendChild(document.createTextNode(a.textContent.trim()));
+      b.addEventListener('click', function () { openMenu(false); a.click(); });
+      li.appendChild(b); bmenu.appendChild(li);
+    });
+    bbtn.addEventListener('click', function () { openMenu(bmenu.hidden); });
+    document.addEventListener('click', function (e) {
+      if (!bmenu.hidden && !bsub.contains(e.target)) { openMenu(false); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !bmenu.hidden) { openMenu(false); bbtn.focus(); }
+    });
+  }
+  function openMenu(on) {
+    bmenu.hidden = !on;
+    bbtn.setAttribute('aria-expanded', on ? 'true' : 'false');
   }
 
   /* 목록 칸(.bsec-rail)이 없는 섹션(카드 한 장)도 고정 바에는 제 카드 이름을
@@ -69,8 +101,9 @@
       var tab = bnav.querySelector('.bnav-tabs a[href="#' + sec.id + '"]');
       name = document.createElement('span');
       name.textContent = tab ? tab.textContent.trim() : '';
+      name.className = 'nm';
       name.hidden = true;
-      bsub.appendChild(name);
+      bbtn.insertBefore(name, bbtn.lastChild);
       set = document.createElement('div');
       set.className = 'bnav-idx-set';
       set.hidden = true;
@@ -119,7 +152,16 @@
         groups[k].set.hidden = !hit; groups[k].name.hidden = !hit;
       }
     }
-    bwrap.classList.toggle('is-idx', tablet.matches && !!on);
+    /* 카드가 한 장뿐인 소분류는 목록이랄 것이 없다 — 칸 하나짜리 판에 제 이름을 한 번 더
+       세우는 대신 원래 바(사업명 + 소분류 탭)로 돌아간다 */
+    var idx = tablet.matches && !!on && on.cards.length > 1;
+    bwrap.classList.toggle('is-idx', idx);
+    if (!idx && bmenu && !bmenu.hidden) { openMenu(false); }
+    if (bmenu) {
+      bmenu.querySelectorAll('button').forEach(function (b) {
+        b.setAttribute('aria-current', on && b.getAttribute('data-for') === on.sec.id ? 'true' : 'false');
+      });
+    }
   }
 
   /* ── 상단 소분류 탭도 같은 선에 세운다 ──────────────────────────────
