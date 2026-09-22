@@ -79,6 +79,18 @@
   align-items:start;height:auto;min-height:0;padding:0;margin:0;overflow:visible;
   flex:none;background:none;border:0}
 .bsec .hcard[hidden]{display:none}
+/* 솔루션 카드(.hcard--sol, 에너지 인프라)도 같은 두 칸 · 같은 틈이다 (2026-09-22 요청).
+   페이지 <style> 이 1:1 · gap 0 으로 두고 글 칸 오른쪽 여백만으로 틈을 냈는데, 그 여백이
+   --hgap 으로 흐르게 된 뒤로 다른 카드보다 20 좁았고, 태블릿(여백 0)에서는 글과 제품 판이
+   맞붙었다. html 을 앞세운 까닭 — 페이지 <style> 이 이 파일보다 뒤에 온다
+   ⚠ 901 이상만 — 모바일은 페이지 · 이 파일의 한 칸 규칙이 맡는다(html 이 붙어 그보다 세다) */
+@media(min-width:901px){html .bsec .hcard--sol{grid-template-columns:minmax(0,661fr) minmax(0,681fr);gap:20px}}
+/* 솔루션 가림막(.hmask)은 카드 윗변 "위"에서 출발한다 (2026-09-22) — 페이지 <style> 은 막을
+   오른쪽 칸 맨 위에 두고 아래 음수 여백으로 제 키를 지웠다. 그러면 굴러가기 전(카드가 멈춤선
+   에 막 선 순간 — 탭 · 인덱스를 누르면 늘 여기다)에도 막이 첫 이름 띠 위 40(태블릿 30)을 덮어
+   이름이 반쯤 잘려 보였다. 음수 여백을 위로 옮기면 막은 카드 바로 위 빈 여백에 앉아 있다가,
+   카드가 더 올라가 바 밑에 닿는 때부터 붙어 덮는다. 흐름에서 차지하는 키는 여전히 0 이다 */
+html .bsec .hcard--sol .hmask{margin-top:calc(var(--sol-bar) - var(--sol-lbl));margin-bottom:0}
 /* 카드가 전부 펼쳐져 세로로 쌓인다(2026-09-20). 사이 여백은 섹션 위아래 여백
    (120)과 같은 값 — 같은 묶음 안의 카드 사이가 섹션 사이보다 좁아 보이도록
    섹션에는 밑변 실선이 하나 더 있다.
@@ -248,7 +260,8 @@
      CSS 변수(--bar-*)로 풀어 128 로 잡는데, 태블릿 바는 118 이라 그 사이 10px 로 굴러가는
      사진이 가림막(.hmask) 위로 비쳤다. 이름 띠 · 왼쪽 글 칸이 서는 선도 태블릿 멈춤선(148)으로.
      html 을 앞세운 까닭 — 페이지 <style> 이 이 파일보다 뒤에 온다 */
-  html .bsec .hcard--sol{--sol-bar:118px;--sol-lbl:148px}
+  html .bsec .hcard--sol{--sol-bar:118px;--sol-lbl:148px;
+    grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
   /* 밑 오목 모서리는 왼쪽 하나만 — 오른쪽은 화면 끝으로 열렸다 */
   .bnav-idx::after{content:"";position:absolute;pointer-events:none;
     bottom:0;left:-8px;width:8px;height:8px;
