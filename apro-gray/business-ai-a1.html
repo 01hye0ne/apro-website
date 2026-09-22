@@ -839,6 +839,23 @@
     .sf-subs{align-self:stretch;grid-template-columns:1fr;grid-auto-rows:auto}
     .sf-subs li{padding:16px}
     .sf-subs .ic{width:44px;height:44px}
+    /* 이름만 든 소분류 카드는 한 줄에 여럿 세운다(2026-09-22 요청) — 넷이면 2×2, 셋이면 한 줄 셋
+       (넷을 셋씩 세우면 한 장이 홀로 한 줄을 먹는다). 설명(.d)이 든 에너지 인프라는 한 줄에 한 장 */
+    .sf-subs:not(:has(.d)){grid-template-columns:repeat(2,minmax(0,1fr))}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  /* 좁은 폰에서 셋이 한 줄이면 칸이 100 남짓이다 — 여백 · 아이콘 · 이름을 한 단계씩 줄인다 */
+  @media(max-width:600px){
+    .sf-subs:not(:has(.d)) li{padding:14px 12px}
+    .sf-subs:not(:has(.d)) .ic{width:36px;height:36px}
+    .sf-subs:not(:has(.d)) .nm{font-size:var(--t-sm);word-break:keep-all}
+  }
+  /* 셋이 한 줄에 서려면 칸이 115 는 돼야 한다("에이프로세미콘" 91 + 여백) — 그 아래 폰(≈400 미만)에서는
+     이름이 낱자에서 끊긴다. 이때만 한 줄에 한 장으로 돌리되, 아이콘을 이름 왼쪽에 눕혀 카드를 낮게 둔다 */
+  @media(max-width:399px){
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:1fr}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child) li{flex-direction:row;align-items:center;gap:12px}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child) .ic{width:32px;height:32px}
   }
 
   /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
