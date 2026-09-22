@@ -186,7 +186,11 @@
   .cvis2{padding-top:120px;padding-bottom:120px}
   .cvis2 h2{font-size:clamp(30px,5vw,64px)}
   .cvis2 .lead{font-size:17px}
-  .aaarow{grid-template-columns:minmax(0,1fr);gap:24px}
+  .aaarow,
+  .aaarow:nth-of-type(even){grid-template-columns:minmax(0,1fr);gap:24px}
+  /* ⚠ 짝수 줄도 함께 적는다 (2026-09-22) — 넓은 화면의 뒤집힌 칸 폭(1080fr | 528fr)이
+     한 단 무거워(:nth-of-type) 여기서 풀리지 않고 남아, 짝수 줄(Aggressive)만 그림이
+     1080fr 칸 안에 갇혀 좁았다(1024 에서 632) */
   /* 좌우 뒤집기를 푼다 — 한 줄이 되면 글이 늘 먼저다 */
   .aaarow:nth-of-type(even)>.aaa-txt,
   .aaarow:nth-of-type(even)>.aaa-img{grid-column:1;grid-row:auto}
@@ -201,7 +205,6 @@
   .cclose .vals{margin-top:40px}
 }
 
-/* 아주 좁은 화면 — 원 셋(534)이 들어가지 않는다. 둘씩 세 줄로 접는다 */
 /* 태블릿(901~1280)의 Vision 문구 (2026-09-22 요청) — 제목 96 은 넓은 화면 값이라 1101~1280 에서는
    그대로 남아 세 줄로 꺾이고 화면을 거의 다 먹었고, 1100 아래의 5vw(1024 에서 51)도 컸다.
    4.4vw 로 1024 에서 45 · 1280 에서 56 — 두 줄("Global Top 5" / "Total Energy - Solution
@@ -209,7 +212,24 @@
 @media(min-width:901px) and (max-width:1280px){
   .cvis2 h2{font-size:clamp(36px,4.4vw,56px);letter-spacing:-.02em}
   .cvis2 .lead{font-size:17px}
+
+  /* AAA 태블릿 (2026-09-22 요청) — 윗줄 [글 | 원 둘], 아랫줄 그림 전체 폭.
+     넓은 화면의 [글 | 그림] 두 칸은 이 폭에서 글 칸이 좁아(1200 에서 360) 줄글이
+     "바탕으/로" 처럼 꺾였고, 1100 아래의 한 칸 쌓기는 원 둘이 제 줄을 따로 먹었다.
+     원을 글 옆으로 올리면 원 자리가 비고 그림이 바로 이어진다.
+     짝수 줄은 넓은 화면처럼 좌우를 뒤집어 [원 | 글] — 세 줄이 지그재그로 읽힌다 */
+  .aaarow,
+  .aaarow:nth-of-type(even){grid-template-columns:minmax(0,1fr);gap:32px}
+  .aaarow:nth-of-type(even)>.aaa-txt,
+  .aaarow:nth-of-type(even)>.aaa-img{grid-column:1;grid-row:auto}
+  .aaa-txt{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
+    align-self:auto;gap:32px}
+  .aaarow:nth-of-type(even) .aaa-txt{grid-template-columns:auto minmax(0,1fr)}
+  .aaarow:nth-of-type(even) .aaa-txt .keys{grid-column:1;grid-row:1}
+  .aaarow:nth-of-type(even) .aaa-txt .strategy{grid-column:2;grid-row:1}
+  .aaa-txt .kn{font-size:clamp(36px,4vw,48px)}
 }
+/* 아주 좁은 화면 — 원 셋(534)이 들어가지 않는다. 둘씩 세 줄로 접는다 */
 @media(max-width:620px){
   .cclose .vals{width:356px;max-width:100%}
   .cclose .vals li:nth-child(n+4){margin-top:0}
