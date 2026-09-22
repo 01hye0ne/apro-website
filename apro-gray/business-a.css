@@ -229,8 +229,10 @@
     background-size:8px 8px,8px 8px;
     background-position:left bottom,right bottom;
     background-repeat:no-repeat,no-repeat}
-  /* 칸이 판에 다 안 들면 가로로 민다 (UX 점검 ④) — 칸은 flex:1 0 auto 라 넉넉하면
-     판을 나눠 채우고, 모자라면 제 글자 폭 아래로 줄지 않고 넘친다. 스크롤바는 감추고
+  /* 칸은 글자 폭대로 왼쪽부터 붙여 선다 (2026-09-22 요청) — 한동안 flex:1 0 auto 로
+     판을 나눠 채웠는데(가운데 정렬), 칸 수가 섹션마다 달라(1~5) 글자 자리가 매번 흩어졌다.
+     왼쪽에 붙이면 첫 칸이 늘 이름 칸 바로 뒤 같은 자리에 선다.
+     칸이 판에 다 안 들면 가로로 민다 (UX 점검 ④) — 제 글자 폭 아래로 줄지 않고 넘친다. 스크롤바는 감추고
      넘친 쪽 가장자리만 흐린다(.fade-l / .fade-r, business-a.js 가 켠다) */
   .bnav-idx-set:not([hidden]){display:flex;align-items:stretch;flex:1 1 0;min-width:0;animation:bnavIdxIn .35s var(--ease);
     overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -243,10 +245,10 @@
     -webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);
     mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent)}
   .bnav-sub-btn .nm:not([hidden]){display:block;animation:bnavIdxIn .35s var(--ease)}
-  .bnav-idx-set button{flex:1 0 auto;display:flex;align-items:center;justify-content:center;
-    padding:0 20px;white-space:nowrap;background:none;border:0;border-right:1px solid var(--border-g);cursor:pointer;
+  .bnav-idx-set button{flex:none;display:flex;align-items:center;justify-content:flex-start;
+    padding:0 24px;white-space:nowrap;background:none;border:0;border-right:1px solid var(--border-g);cursor:pointer;
     font-family:var(--suit);font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;
-    color:#1b2733;text-align:center;transition:color .2s var(--ease)}
+    color:#1b2733;text-align:left;transition:color .2s var(--ease)}
   .bnav-idx-set button:last-child{border-right:0}
   .bnav-idx-set button:hover,
   .bnav-idx-set button[aria-current="true"]{color:var(--brand)}
