@@ -768,8 +768,11 @@
        글 칸의 줄을 왼쪽으로 그림 칸 폭 + 사이 24 만큼 끌어낸다(두 칸이 같은 폭이라 -100% - 24).
        그림은 그 줄 아래, 제목 높이(줄 16 + 사이 24)에서 시작한다.
      · 줄이 장 머리를 가르므로 장 사이 가로 구분선은 걷는다.
-     · 공정 맵은 글 기둥 높이를 따라 세로로 선다 — 사진이 아니라 고리 + 설비 도식이라 세로로
-       늘어도 일그러지지 않는다. 사진 칸은 4:3 그대로(cover 라 세로로 늘리면 양옆이 잘린다).
+     · 그림은 크기를 고정하고 제 장 안에서 붙박는다(sticky, 2026-09-22 요청) — 글 길이가 장마다
+       달라 그림 아래가 비는데, 글을 읽어 내리는 동안 그림이 GNB · 탭 줄 밑에 붙어 따라오고
+       장이 끝나면 함께 올라간다. 그림을 글 높이만큼 늘리면 장마다 크기가 제각각이 되고
+       사진(cover)은 양옆이 잘린다. 사진은 4:3, 공정 맵은 1:1(고리 이름 · 설비 · 설비 이름이
+       겹치지 않는 비율).
      모바일은 글 아래로 눕는 흐름이라 뺀다 */
   @media(min-width:768px) and (max-width:1180px){
     .sf-secs>.sf-sec{border-top:0}
@@ -778,8 +781,8 @@
     .sf-line .sf-tag--sec{display:flex}
     .sf-sec:has(>.sf-ph)>.sf-txt>.sf-line{margin-left:calc(-100% - 24px)}
     .sf-sec:has(>.sf-ph) .sf-rule--fig{display:block;flex:0 0 calc(50% + 12px - 41px)}
-    .sf-sec:has(>.sf-ph.has-map){align-items:stretch}
-    .sf-sec>.sf-ph.has-map{aspect-ratio:auto;min-height:420px}
+    .sf-sec>.sf-ph{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);align-self:flex-start}
+    .sf-sec>.sf-ph.has-map{aspect-ratio:1}
   }
 
   /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
