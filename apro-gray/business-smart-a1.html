@@ -1117,6 +1117,15 @@
     .sf-txtin{padding:0}
     .sf-num,.sf-dl{width:100%}
   }
+  /* 태블릿 — 공정 맵은 넓은 화면처럼 글 기둥 높이를 따라 세로로 선다(2026-09-22 요청).
+     사진이 아니라 고리 + 설비 도식이라 세로로 늘어도 일그러지지 않는다(고리 칸만 길어지고
+     설비는 제 비율로 가운데 앉는다). 위는 글 쪽 가는 선 아래에서 시작한다.
+     사진 칸은 4:3 그대로 — cover 라 세로로 늘리면 양옆이 잘린다.
+     모바일은 글 아래로 눕는 흐름이라 뺀다 */
+  @media(min-width:768px) and (max-width:1180px){
+    .sf-sec:has(>.sf-ph.has-map){align-items:stretch}
+    .sf-sec>.sf-ph.has-map{aspect-ratio:auto;min-height:420px;margin-top:32px}
+  }
 
   /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
      가로 띠 인덱스는 걷는다. 장마다 제목 줄 하나가 서고, 누르면 그 장의 글과
