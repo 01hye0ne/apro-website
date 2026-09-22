@@ -1555,6 +1555,24 @@
     .bhnow .ko{font-size:var(--fs-h3)}
     .bhnow .en{font-size:var(--fs-meta)}
   }
+  /* 모바일(767 이하) — 마을을 풀어 한 줄에 한 영역씩 세운다(2026-09-22 요청).
+     폭이 모자라 네 칸을 한 줄에 두면 그림이 손톱만 해지고 태그가 겹친다.
+     [왼쪽 이름 · 태그][오른쪽 픽토그램] 줄을 가는 선으로 가른다. 순서는 넓은 화면과 같다.
+     불이 옮겨 다니는 루프는 뺀다 — 줄로 늘어선 목록에서는 스카이라인이 아니라
+     깜빡이는 줄로 읽힌다. 현재 영역의 괄호 세로선도 뺀다(가로줄이 이미 칸을 가른다) */
+  @media(max-width:767px){
+    .bhop{--pad:40px}
+    /* 폭은 A 본문 여백(24)에 맞춘다 — A-1 은 페이지 쪽 규칙(여백 16)이 뒤에서 이긴다 */
+    .bhop-town{flex-direction:column;gap:0;width:calc(100% - 48px)}
+    .bhlot,.bhlot[data-a="ai"]{flex:none;flex-direction:row;align-items:center;
+      justify-content:space-between;gap:16px;padding:20px 0}
+    .bhlot+.bhlot{border-top:1px solid var(--border-g)}
+    .bhlot img{flex:none;width:42%;max-width:180px}
+    .bhlot.is-here::before,.bhlot.is-here::after{content:none}
+    .bhnow{align-items:flex-start;text-align:left}
+    .bhtop{justify-content:flex-start}
+    .bhop-town .bhlot .bhtag,.bhop-town .bhlot img{animation:none}
+  }
 
   /* ===================== FOOTER =====================
      apro-gray/index.html 의 푸터와 같은 마크업·수치를 그대로 쓴다. 홈에서 사업영역
