@@ -14,12 +14,10 @@
 (function () {
   /* 고정 탭 바(128) + 그 밑 가로선까지(12) + 숨(28). 카드 윗변이 이 선 아래
      로 오도록 굴린다. CSS 의 scroll-margin-top 과 같은 값이다 */
-  var OFFSET = 168;
-  /* 태블릿은 고정 바를 20px 낮췄다(business-a.css 태블릿 절) — 바 밑변 138 → 118 에
-     같은 숨 30 을 더한 148. CSS 의 태블릿 scroll-margin-top 과 같은 값이다 */
-  var OFFSET_TAB = 148;
+  /* 2026-09-22 : 바 키를 138 → 118 로 낮추며 168 → 148 (business-a.css "고정 바 키" 절) */
+  var OFFSET = 148;
   var tabletMq = window.matchMedia('(min-width:901px) and (max-width:1280px)');
-  function off() { return tabletMq.matches ? OFFSET_TAB : OFFSET; }
+  function off() { return OFFSET; }
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   var groups = [];
 
@@ -202,7 +200,7 @@
      business-layout.js 는 탭을 누르면 섹션 윗변을 화면 맨 위(y=0)로 굴린다 —
      화면을 꽉 채우던 캐러셀 시절의 기준이라, 세로로 쌓이는 A 본문에서는 섹션의
      첫 제목이 고정 바(128+12) 뒤로 숨는다. 그 자리에 왼쪽 목록과 같은 기준을
-     쓴다 — 묶음의 첫 줄(.bsec-main 윗변)이 바 밑 168px 에 선다.
+     쓴다 — 묶음의 첫 줄(.bsec-main 윗변)이 바 밑 148px 에 선다.
      document 의 capture 단계에서 잡아 세운다. 같은 <a> 에 걸린 공용 핸들러가
      먼저 등록돼 있어, 링크 자신에 얹으면 그보다 늦게 불린다 */
   document.addEventListener('click', function (e) {
