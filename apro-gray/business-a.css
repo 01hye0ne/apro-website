@@ -177,28 +177,28 @@
      0-4-1)이 이 파일보다 뒤에 오므로 html 을 앞세워 한 단 올려 잡는다 */
   html body .bnav-wrap.is-fixed.is-idx .bnav-ttl,
   html body .bnav-wrap.is-fixed.is-idx .bnav-tabs{display:none}
-  /* [이름 ▾] 은 소분류를 고르는 펼침 단추다. 한동안 그 뒤에 › 를 두어 한 단 아래
-     목록임을 알렸는데 2026-09-22 요청으로 걷었다 */
-  /* 흰 판은 본문 1:1 의 가운데 선, 곧 그림 칸 시작선에서 선다 (2026-09-22 요청).
-     바(.bnav)와 본문(.bsec)은 폭이 같으므로 여기서 100% 가 곧 본문 폭이다 :
-       그림 칸 시작 = (100% − 카드 틈 32) ÷ 2 + 32   → 이름 칸 = 그 값 − 바의 칸 사이 10
-     원래 사업명 칸(.bnav-ttl)도 같은 폭으로 둔다 — .bsec 가 아닌 자리에서 원래 바로
-     돌아와도 판 시작점이 같다 */
-  html body .bnav-wrap.is-fixed.is-idx .bnav-sub,
-  html body:not(.v-a1) .bnav-wrap.is-fixed .bnav-ttl{width:calc((100% + 32px) / 2 - 10px)}
-  html body .bnav-wrap.is-fixed.is-idx .bnav-sub{display:flex;align-items:center;gap:8px;
-    flex:none;margin:0;position:relative}
-  .bnav-sub-btn{display:flex;align-items:center;gap:6px;min-width:0;height:44px;padding:0;
+  /* 흰 판은 본문 양끝(좌우 --gm)까지 찬다 (2026-09-22 요청) — 판 시작점을 사업명 칸
+     끝(251 · 200)에 두었다가, 본문 1:1 가운데 선에 두었다가, 둘 다 아래 본문의 어느
+     선과도 한 몸으로 읽히지 않아(가운데 선은 판이 그림 칸에 딸린 것처럼 보였다)
+     본문 바깥 테두리에 맞춘다. 히어로 위 유리 탭(전체 폭)과도 같은 꼴이 된다.
+     소분류 이름은 판 안 첫 칸 [이름 ▾] 이다 — 소분류를 고르는 펼침 단추.
+     판 안 칸들보다 한 단 굵고, 뒤 구분선도 한 단 진해 "여기부터 그 안의 목록"이 읽힌다 */
+  html body .bnav-wrap.is-fixed.is-idx .bnav-sub{display:flex;align-items:center;
+    flex:none;margin:0;padding:0 24px 0 28px;position:relative;
+    border-right:1px solid var(--teritary)}
+  .bnav-sub-btn{position:relative;display:flex;align-items:center;gap:6px;min-width:0;height:24px;padding:0;
     background:none;border:0;cursor:pointer;
-    font-family:var(--suit);font-weight:600;font-size:18px;line-height:24px;letter-spacing:-.36px;color:#fff}
+    font-family:var(--suit);font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px;color:var(--g900,#1b2733)}
+  /* 누르는 자리는 판 키만큼 — 글자 줄(24)만으로는 터치가 빗나간다 */
+  .bnav-sub-btn::before{content:"";position:absolute;inset:-14px -12px}
   .bnav-sub-btn .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .bnav-sub-btn .caret{flex:none;width:8px;height:8px;margin:-4px 2px 0;
     border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
     transform:rotate(45deg);transition:transform .25s var(--ease)}
   .bnav-sub-btn[aria-expanded="true"] .caret{transform:translateY(4px) rotate(225deg)}
-  .bnav-sub-btn:hover{opacity:.8}
+  .bnav-sub-btn:hover{color:var(--brand)}
   /* 펼친 목록 — 소분류 넷. 터치 기기라 한 줄 44px 을 지킨다 */
-  .bnav-sub-menu{position:absolute;top:calc(100% + 10px);left:0;z-index:5;min-width:240px;
+  .bnav-sub-menu{position:absolute;top:calc(100% + 26px);left:16px;z-index:5;min-width:240px;
     margin:0;padding:8px;list-style:none;background:#fff;border-radius:8px;
     box-shadow:0 12px 32px -8px rgba(14,22,30,.28),0 0 0 1px var(--border-g);
     animation:bnavIdxIn .2s var(--ease)}
@@ -212,7 +212,7 @@
   .bnav-sub-menu button[aria-current="true"] .no{color:var(--brand)}
   /* 흰 판 — 고정된 소분류 탭 판(페이지 <style>)과 같은 모양을 그대로 옮겼다.
      밑 양끝 오목 모서리(::after)도 같은 그림이다 */
-  html body .bnav-wrap.is-fixed.is-idx .bnav-idx{display:block;flex:1 1 0;min-width:0;position:relative;
+  html body .bnav-wrap.is-fixed.is-idx .bnav-idx{display:flex;align-items:stretch;flex:1 1 0;min-width:0;position:relative;
     background:#fff;border-radius:8px 8px 0 0;padding:14px 0}
   /* 바 키를 20 낮춘다 (UX 점검 ⑤) — 태블릿은 세로가 귀하다(1024×768 에서 바가 18%).
      흰 판 위아래 숨 20 → 14, 판 밑 흰 띠 20 → 12 : 바 밑변 138 → 118.
@@ -232,7 +232,7 @@
   /* 칸이 판에 다 안 들면 가로로 민다 (UX 점검 ④) — 칸은 flex:1 0 auto 라 넉넉하면
      판을 나눠 채우고, 모자라면 제 글자 폭 아래로 줄지 않고 넘친다. 스크롤바는 감추고
      넘친 쪽 가장자리만 흐린다(.fade-l / .fade-r, business-a.js 가 켠다) */
-  .bnav-idx-set:not([hidden]){display:flex;align-items:stretch;animation:bnavIdxIn .35s var(--ease);
+  .bnav-idx-set:not([hidden]){display:flex;align-items:stretch;flex:1 1 0;min-width:0;animation:bnavIdxIn .35s var(--ease);
     overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .bnav-idx-set::-webkit-scrollbar{display:none}
   .bnav-idx-set.fade-r{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 48px),transparent);
@@ -243,13 +243,13 @@
     -webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);
     mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent)}
   .bnav-sub-btn .nm:not([hidden]){display:block;animation:bnavIdxIn .35s var(--ease)}
-  .bnav-idx button{flex:1 0 auto;display:flex;align-items:center;justify-content:center;
+  .bnav-idx-set button{flex:1 0 auto;display:flex;align-items:center;justify-content:center;
     padding:0 20px;white-space:nowrap;background:none;border:0;border-right:1px solid var(--border-g);cursor:pointer;
     font-family:var(--suit);font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;
     color:#1b2733;text-align:center;transition:color .2s var(--ease)}
-  .bnav-idx button:last-child{border-right:0}
-  .bnav-idx button:hover,
-  .bnav-idx button[aria-current="true"]{color:var(--brand)}
+  .bnav-idx-set button:last-child{border-right:0}
+  .bnav-idx-set button:hover,
+  .bnav-idx-set button[aria-current="true"]{color:var(--brand)}
 
   /* 본문 — 목록 칸을 걷고 한 칸으로. 머리글(.hintro)이 있는 섹션도 1열로 되돌린다 */
   .bsec{grid-template-columns:minmax(0,1fr)}

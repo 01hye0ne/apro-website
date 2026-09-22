@@ -44,7 +44,9 @@
     bbtn.appendChild(caret);
     bsub.appendChild(bbtn); bsub.appendChild(bmenu);
     bidx = document.createElement('div'); bidx.className = 'bnav-idx';
-    bnav.appendChild(bsub); bnav.appendChild(bidx);
+    /* 이름 칸은 흰 판 안 첫 칸이다 (2026-09-22 요청) — 판이 본문 양끝까지 차고,
+       판 양끝의 오목 모서리(.bnav-idx::after)도 그대로 판 바깥에 선다 */
+    bidx.appendChild(bsub); bnav.appendChild(bidx);
 
     bnav.querySelectorAll('.bnav-tabs a[href^="#"]').forEach(function (a, i) {
       var li = document.createElement('li');
@@ -142,7 +144,10 @@
     if (!set || set.hidden || set.scrollWidth <= set.clientWidth) { return; }
     var b = set.children[grp.at];
     if (!b) { return; }
-    var l = b.offsetLeft, r = l + b.offsetWidth, sl = set.scrollLeft, w = set.clientWidth;
+    /* 칸 자리는 판(set) 안쪽 기준으로 잰다 — offsetLeft 는 흰 판(.bnav-idx) 기준이라
+       판 앞의 이름 칸 폭만큼 부풀어, 첫 칸이 판 밖에 있는 줄 알고 밀어 버렸다 */
+    var sl = set.scrollLeft, w = set.clientWidth;
+    var l = b.getBoundingClientRect().left - set.getBoundingClientRect().left + sl, r = l + b.offsetWidth;
     if (l < sl || r > sl + w) {
       var to = l - (w - b.offsetWidth) / 2;
       if (set.scrollTo) { set.scrollTo({ left: to, behavior: reduce ? 'auto' : 'smooth' }); }
