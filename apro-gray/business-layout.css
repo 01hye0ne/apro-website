@@ -1555,22 +1555,20 @@
     .bhnow .ko{font-size:var(--fs-h3)}
     .bhnow .en{font-size:var(--fs-meta)}
   }
-  /* 모바일(767 이하) — 마을을 풀어 한 줄에 한 영역씩 세운다(2026-09-22 요청).
-     폭이 모자라 네 칸을 한 줄에 두면 그림이 손톱만 해지고 태그가 겹친다.
-     [왼쪽 이름 · 태그][오른쪽 픽토그램] 줄을 가는 선으로 가른다. 순서는 넓은 화면과 같다.
-     불이 옮겨 다니는 루프는 뺀다 — 줄로 늘어선 목록에서는 스카이라인이 아니라
-     깜빡이는 줄로 읽힌다. 현재 영역의 괄호 세로선도 뺀다(가로줄이 이미 칸을 가른다) */
+  /* 모바일(767 이하) — 마을을 두 줄로 접는다 : 2×2(2026-09-22 요청).
+     칸 안은 넓은 화면과 같은 짜임(위 태그 · 아래 픽토그램, 가운데 맞춤)이고, 한 줄의 두 칸은
+     바닥선이 맞아 작은 스카이라인이 두 줄 선다. 한 줄에 하나씩 세운 목록은 600 넘는 폭에서
+     이름과 그림 사이가 휑했다. 두 줄 사이만 가는 선으로 가른다.
+     불이 옮겨 다니는 루프와 현재 영역의 괄호 세로선은 뺀다 — 두 줄로 접힌 마을에서는
+     괄호가 윗줄 · 아랫줄을 가로질러 서지 못하고, 좁은 칸에서 깜빡임은 산만하다 */
   @media(max-width:767px){
     .bhop{--pad:40px}
     /* 폭은 A 본문 여백(24)에 맞춘다 — A-1 은 페이지 쪽 규칙(여백 16)이 뒤에서 이긴다 */
-    .bhop-town{flex-direction:column;gap:0;width:calc(100% - 48px)}
-    .bhlot,.bhlot[data-a="ai"]{flex:none;flex-direction:row;align-items:center;
-      justify-content:space-between;gap:16px;padding:20px 0}
-    .bhlot+.bhlot{border-top:1px solid var(--border-g)}
-    .bhlot img{flex:none;width:42%;max-width:180px}
+    .bhop-town{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;
+      width:calc(100% - 48px)}
+    .bhlot,.bhlot[data-a="ai"]{gap:20px;padding:24px 0}
+    .bhlot:nth-child(n+3){border-top:1px solid var(--border-g)}
     .bhlot.is-here::before,.bhlot.is-here::after{content:none}
-    .bhnow{align-items:flex-start;text-align:left}
-    .bhtop{justify-content:flex-start}
     .bhop-town .bhlot .bhtag,.bhop-town .bhlot img{animation:none}
   }
 
