@@ -258,7 +258,9 @@
 
   /* 본문 — 목록 칸을 걷고 한 칸으로. 머리글(.hintro)이 있는 섹션도 1열로 되돌린다 */
   .bsec{grid-template-columns:minmax(0,1fr)}
-  .bsec-rail{display:none}
+  /* 카드가 한 장인 섹션의 목록 칸은 JS 가 만드는 .bsec-rail 이 아니라 마크업에 적힌
+     옛 칸(.hrail — 항목 하나짜리 .hidx)이다. 함께 걷어야 본문 위에 한 줄로 남지 않는다 */
+  .bsec-rail,.bsec .hrail{display:none}
   .bsec>.hintro,
   .bsec:has(>.hintro)>.bsec-main{grid-column:1}
   .bsec .hcard{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
