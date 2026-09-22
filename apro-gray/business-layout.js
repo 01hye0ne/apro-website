@@ -918,6 +918,16 @@
 
   /* ── 아코디언 제목 줄 — 폭과 상관없이 한 번만 만든다 ──────────────────── */
   secs.forEach(function(sec, i){
+    /* 장 번호 태그 — 넓은 화면에서는 그림 기둥 위 눈금줄이 굴러가는 번호(#sfTag)를
+       달고 글 쪽 줄과 한 줄로 이어진다. 태블릿에서는 그 기둥을 접으므로 장마다 제
+       번호를 글 쪽 줄 앞에 붙여 둔다(보이는 폭은 CSS 가 정한다). 번호는 장 id(sf01-1)에서 읽는다 */
+    var ln = sec.querySelector('.sf-txt>.sf-line');
+    var no = /^sf(\d+-\d+)$/.exec(sec.id || '');
+    if(ln && no && !ln.querySelector('.sf-tag--sec')){
+      ln.insertAdjacentHTML('afterbegin',
+        '<span class="sf-tag sf-tag--sec" aria-hidden="true">' + no[1] + '</span>' +
+        '<i class="rule sf-rule--fig"></i>');
+    }
     /* 장의 첫 제목을 그대로 옮겨 적는다 — 소분류 장(.sf-texts h2)이든 제품 장
        (.sf-ptexts h2, 에너지 인프라)이든 같은 줄이 된다. 원래 제목은 CSS 가
        좁은 화면에서만 접으므로 aria-labelledby 가 가리키는 자리는 그대로다 */
