@@ -469,6 +469,31 @@
     .bizband .bz-subs{width:100%;border-left:0;border-top:1px solid rgba(255,255,255,.2);
       flex-direction:row;flex-wrap:wrap;gap:4px 16px}
   }
+  /* ── 태블릿 (901~1280, 2026-09-22 요청) ─────────────────────────────
+     ① 콘텐츠를 GNB 선까지 넓힌다. 넓은 화면에서 본문은 GNB 보다 한 열 안쪽(2~11열)에
+        서지만, 이 폭에서는 그 한 열이 글자 폭만 깎아 먹는다(1024 에서 히어로 글이 157,
+        본문이 84 에서 시작했고 GNB 는 40). 좌우 여백을 GNB 와 같은 --a-gm 하나로 둔다.
+          히어로 : 띠(.band) 왼쪽 + .v2b-inner 안쪽 24 = --a-gm → 띠는 --a-gm − 24 씩 비운다.
+                   밑단 유리의 --tab-x 도 같은 선이라야 탭 줄에 맞는다
+          본문   : Business · Who we are · News 의 좌우 84 → --a-gm
+        푸터(44)는 GNB 안쪽 여백에 맞춘 값이라 그대로 둔다
+     ② Business 띠의 글자를 한 단씩 낮춘다 — 48/20/20 이 넓은 화면 기준이라 이 폭의
+        띠 안에서는 사업명이 화면을 누르고 설명이 네 줄로 늘어진다 */
+  @media(min-width:901px) and (max-width:1280px){
+    .band{width:calc(100% - 2 * var(--a-gm) + 48px)}
+    .v2banner{--tab-x:var(--a-gm)}
+    /* body 를 앞세운 까닭 — Who we are · News 의 기본 규칙이 이 블록보다 뒤에 있다 */
+    body .v2bizsec,body .v2who,body .v2news{padding-left:var(--a-gm);padding-right:var(--a-gm)}
+
+    .bizband .bz-top{min-height:280px}
+    .bizband .bz-name{gap:6px;padding:40px 32px 16px}
+    .bizband .bz-name .kor{font-size:36px;letter-spacing:-.72px}
+    .bizband .bz-name .eng{font-size:16px;letter-spacing:-.32px}
+    .bizband .bz-desc{padding:24px 32px 16px;font-size:16px;letter-spacing:-.32px}
+    .bizband .bz-subs{padding:14px 24px}
+    .bizband .bz-subs li{font-size:16px;letter-spacing:-.32px}
+    .bizband .bz-subs .no{font-size:13px}
+  }
   @media(max-width:900px){
     .v2bizsec{padding:80px 24px;gap:24px}
     .bizband .bz-top{min-height:240px}
