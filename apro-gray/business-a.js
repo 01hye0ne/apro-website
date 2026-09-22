@@ -15,6 +15,11 @@
   /* 고정 탭 바(128) + 그 밑 가로선까지(12) + 숨(28). 카드 윗변이 이 선 아래
      로 오도록 굴린다. CSS 의 scroll-margin-top 과 같은 값이다 */
   var OFFSET = 168;
+  /* 태블릿은 고정 바를 20px 낮췄다(business-a.css 태블릿 절) — 바 밑변 138 → 118 에
+     같은 숨 30 을 더한 148. CSS 의 태블릿 scroll-margin-top 과 같은 값이다 */
+  var OFFSET_TAB = 148;
+  var tabletMq = window.matchMedia('(min-width:901px) and (max-width:1280px)');
+  function off() { return tabletMq.matches ? OFFSET_TAB : OFFSET; }
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   var groups = [];
 
@@ -23,23 +28,21 @@
      그 소분류의 카드 목록이 선다. 두 벌을 따로 만들어 두고 CSS 가 바꿔 낀다 :
      원래 탭(.bnav-ttl · .bnav-tabs)은 손대지 않으므로 business-layout.js 의
      스파이·클릭은 그대로 돈다 */
-  var tablet = window.matchMedia('(min-width:901px) and (max-width:1280px)');
+  var tablet = tabletMq;
   var bwrap = document.querySelector('.bnav-wrap');
   var bnav = bwrap && bwrap.querySelector('.bnav');
   var bsub = null, bidx = null, bbtn = null, bmenu = null;
   if (bnav) {
     /* 소분류 이름은 펼침 단추다 (2026-09-22 UX 점검) — 바가 카드 목록으로 바뀐 뒤에도
        다른 소분류로 바로 건너갈 길을 남긴다. 펼친 목록의 항목은 원래 탭(<a>)을 대신
-       눌러 준다 : 굴러가는 자리(아래 capture 핸들러)와 스파이가 한 벌로 남는다.
-       이름 뒤 › 는 "소분류 › 그 안의 카드"라는 한 단 아래의 목록임을 알린다 */
+       눌러 준다 : 굴러가는 자리(아래 capture 핸들러)와 스파이가 한 벌로 남는다. */
     bsub = document.createElement('div'); bsub.className = 'bnav-sub';
     bbtn = document.createElement('button'); bbtn.type = 'button'; bbtn.className = 'bnav-sub-btn';
     bbtn.setAttribute('aria-haspopup', 'true'); bbtn.setAttribute('aria-expanded', 'false');
     var caret = document.createElement('i'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true');
-    var sep = document.createElement('span'); sep.className = 'sep'; sep.setAttribute('aria-hidden', 'true'); sep.textContent = '›';
     bmenu = document.createElement('ul'); bmenu.className = 'bnav-sub-menu'; bmenu.hidden = true;
     bbtn.appendChild(caret);
-    bsub.appendChild(bbtn); bsub.appendChild(sep); bsub.appendChild(bmenu);
+    bsub.appendChild(bbtn); bsub.appendChild(bmenu);
     bidx = document.createElement('div'); bidx.className = 'bnav-idx';
     bnav.appendChild(bsub); bnav.appendChild(bidx);
 
@@ -73,7 +76,7 @@
     if (!cards.length) { return; }
 
     function go(i) {
-      var top = window.pageYOffset + cards[i].getBoundingClientRect().top - OFFSET;
+      var top = window.pageYOffset + cards[i].getBoundingClientRect().top - off();
       /* 누른 줄을 먼저 켠다 — 부드럽게 굴러가는 동안(0.5초 남짓) 표시가 뒤늦게
          따라오면 누름이 먹지 않은 것처럼 보인다. 굴러가 멈추면 아래 paint 가
          같은 값을 다시 짚으므로 어긋날 일은 없다 */
@@ -109,6 +112,7 @@
       set.hidden = true;
       bidx.appendChild(set);
       cards.forEach(function (c, i) { btns.push(make(set, i)); });
+      set.addEventListener('scroll', function () { edges(set); }, { passive: true });
     }
 
     var n = cards.length;
@@ -119,16 +123,38 @@
       for (var j = 0; j < btns.length; j++) {
         btns[j].setAttribute('aria-current', j % n === i ? 'true' : 'false');
       }
+      reveal(grp);
     }
     grp.mark = mark;
     groups.push(grp);
   });
 
+  /* 흰 판이 칸을 다 못 담으면 가로로 민다 (2026-09-22, UX 점검 ④) — 글자를 줄여 욱여넣는
+     대신 칸 폭을 지킨다. 넘친 쪽 가장자리만 흐리게 해 "더 있다"를 알린다 */
+  function edges(set) {
+    var max = set.scrollWidth - set.clientWidth;
+    set.classList.toggle('fade-l', max > 1 && set.scrollLeft > 1);
+    set.classList.toggle('fade-r', max > 1 && set.scrollLeft < max - 1);
+  }
+  /* 지금 읽는 칸이 판 밖에 있으면 판 안으로 끌어온다 — 문서 스크롤은 건드리지 않는다 */
+  function reveal(grp) {
+    var set = grp.set;
+    if (!set || set.hidden || set.scrollWidth <= set.clientWidth) { return; }
+    var b = set.children[grp.at];
+    if (!b) { return; }
+    var l = b.offsetLeft, r = l + b.offsetWidth, sl = set.scrollLeft, w = set.clientWidth;
+    if (l < sl || r > sl + w) {
+      var to = l - (w - b.offsetWidth) / 2;
+      if (set.scrollTo) { set.scrollTo({ left: to, behavior: reduce ? 'auto' : 'smooth' }); }
+      else { set.scrollLeft = to; }
+    }
+  }
+
   /* 읽고 있는 카드 = 윗변이 기준선(고정 바 밑 + 한 뼘)을 마지막으로 지나간 것.
      아직 아무 카드도 그 선을 넘지 않았으면 첫 카드를 짚는다 — 섹션에 막
      들어섰을 때 목록 첫 줄이 비어 보이지 않게 */
   function paint() {
-    var line = OFFSET + 40;
+    var line = off() + 40;
     for (var g = 0; g < groups.length; g++) {
       var grp = groups[g], at = 0;
       for (var i = 0; i < grp.cards.length; i++) {
@@ -150,12 +176,15 @@
       if (hit) { on = groups[k]; }
       if (groups[k].set && groups[k].set.hidden === hit) {
         groups[k].set.hidden = !hit; groups[k].name.hidden = !hit;
+        if (hit) { edges(groups[k].set); reveal(groups[k]); }
       }
     }
-    /* 카드가 한 장뿐인 소분류는 목록이랄 것이 없다 — 칸 하나짜리 판에 제 이름을 한 번 더
-       세우는 대신 원래 바(사업명 + 소분류 탭)로 돌아간다 */
-    var idx = tablet.matches && !!on && on.cards.length > 1;
+    /* 카드가 한 장인 소분류도 같은 규칙으로 흰 판에 그 한 장을 세운다 (2026-09-22 요청) —
+       한동안 원래 바로 되돌렸는데, 스크롤하다 바의 짜임이 섹션마다 바뀌어 규칙이
+       깨져 보였다 */
+    var idx = tablet.matches && !!on;
     bwrap.classList.toggle('is-idx', idx);
+    if (on && on.set) { edges(on.set); }
     if (!idx && bmenu && !bmenu.hidden) { openMenu(false); }
     if (bmenu) {
       bmenu.querySelectorAll('button').forEach(function (b) {
@@ -182,7 +211,7 @@
     e.preventDefault();
     e.stopPropagation();
     var head = sec.querySelector('.bsec-main') || sec;
-    var top = window.pageYOffset + head.getBoundingClientRect().top - OFFSET;
+    var top = window.pageYOffset + head.getBoundingClientRect().top - off();
     window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
   }, true);
 
