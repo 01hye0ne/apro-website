@@ -160,6 +160,10 @@
   .cs-hero-bg{object-position:var(--pos-m,10% 70%)}
   .cs-hero .sub{font-size:var(--fs-h2);letter-spacing:var(--ls)}
   .cs-hero .sub br{display:none}
+  /* 장 목록을 판 바닥으로 내리는 판(.cs-hero--low, 지속가능경영 다섯 장 · 2026-09-22 요청) —
+     제목 · 문장은 위, 목록은 아래로 갈라 풍차가 그 사이에 드러난다(--pos-m 60% 로 허브가 빈자리에 온다).
+     투자정보는 내리지 않는다 — 사옥이 사진 아래에 있어 목록이 창문 위에 얹혀 읽히지 않는다 */
+  .cs-hero--low .cs-toc{margin-top:auto}
   :is(.cs-body,:where(.cs-a>.cwrap))>.cblock,:is(.cs-body,:where(.cs-a>.cwrap))>.cgov-board{padding:var(--cs-pad) var(--cs-m)}
   /* 사람 카드는 안쪽 여백만큼 글 폭이 줄어 세 칸이면 약력이 줄마다 접힌다. 격자 카드는 여기서
      두 칸이 되지만 세 장을 2 + 1 로 나누면 한 장이 외톨이가 되어 곧장 한 칸으로 쌓는다 */
