@@ -202,6 +202,14 @@
 }
 
 /* 아주 좁은 화면 — 원 셋(534)이 들어가지 않는다. 둘씩 세 줄로 접는다 */
+/* 태블릿(901~1280)의 Vision 문구 (2026-09-22 요청) — 제목 96 은 넓은 화면 값이라 1101~1280 에서는
+   그대로 남아 세 줄로 꺾이고 화면을 거의 다 먹었고, 1100 아래의 5vw(1024 에서 51)도 컸다.
+   4.4vw 로 1024 에서 45 · 1280 에서 56 — 두 줄("Global Top 5" / "Total Energy - Solution
+   Provider")을 지키는 크기다. 줄글도 이 구간은 17 하나로 */
+@media(min-width:901px) and (max-width:1280px){
+  .cvis2 h2{font-size:clamp(36px,4.4vw,56px);letter-spacing:-.02em}
+  .cvis2 .lead{font-size:17px}
+}
 @media(max-width:620px){
   .cclose .vals{width:356px;max-width:100%}
   .cclose .vals li:nth-child(n+4){margin-top:0}
