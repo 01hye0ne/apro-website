@@ -103,6 +103,17 @@
   background:none;border:0;overflow:hidden;display:block;aspect-ratio:681/623}
 .bsec .hcard>.hright>img,
 .bsec .hcard>.hright>picture>img{width:100%;height:100%;object-fit:cover;display:block}
+/* 그림 칸은 붙박이다 (2026-09-22 요청) — 글이 그림보다 긴 카드(스마트 제조 넷 : 활성화
+   공정 · Cycler · LiFSI · HNBR, 80~260px)에서 그림 밑이 비어 보였다. 글을 읽으며 내리는
+   동안 그림이 카드가 서는 선(168, 태블릿 148)에 붙어 따라오다가 글 밑변에서 함께 멈춘다.
+   글이 그림보다 짧은 카드는 굴러갈 여지가 없어 아무 일도 없다.
+   ⚠ 솔루션(.hcard--sol)의 오른쪽 판 묶음(.hpanels)은 뺀다 — 화면보다 긴 칸이라 붙박이로
+     두면 아랫부분이 굴러 올라오지 못한다(그 카드는 왼쪽 글 칸이 붙박이다).
+   ⚠ .hph--picks · --slides 는 속 판을 absolute 로 얹는 칸이라 relative 를 쥐고 있다.
+     sticky 도 기준 상자가 되므로 그대로 갈아 끼운다 — 선택자를 그만큼 무겁게 적는다 */
+.bsec .hcard>.hright:not(.hpanels),
+.bsec .hcard>.hright.hph--picks,
+.bsec .hcard>.hright.hph--slides{position:sticky;top:168px}
 
 /* ── 세 칸의 윗변을 한 선에 (2026-09-20 요청) ─────────────────────────
    캐러셀 시절 카드에는 "제목 위 숨" 40px 이 여기저기 붙어 있었다 — 글 칸의
@@ -230,6 +241,14 @@
   html body .bnav-wrap.is-fixed{border-bottom-width:12px}
   html body:not(.v-a1) .bnav-wrap.is-fixed .bnav-tabs{padding-top:14px;padding-bottom:14px}
   .bsec,.bsec .hcard{scroll-margin-top:148px}
+  .bsec .hcard>.hright:not(.hpanels),
+  .bsec .hcard>.hright.hph--picks,
+  .bsec .hcard>.hright.hph--slides{top:148px}
+  /* 솔루션 카드의 붙박이 두 값도 이 바에 맞춘다 (2026-09-22) — 페이지 <style> 은 바 밑변을
+     CSS 변수(--bar-*)로 풀어 128 로 잡는데, 태블릿 바는 118 이라 그 사이 10px 로 굴러가는
+     사진이 가림막(.hmask) 위로 비쳤다. 이름 띠 · 왼쪽 글 칸이 서는 선도 태블릿 멈춤선(148)으로.
+     html 을 앞세운 까닭 — 페이지 <style> 이 이 파일보다 뒤에 온다 */
+  html .bsec .hcard--sol{--sol-bar:118px;--sol-lbl:148px}
   /* 밑 오목 모서리는 왼쪽 하나만 — 오른쪽은 화면 끝으로 열렸다 */
   .bnav-idx::after{content:"";position:absolute;pointer-events:none;
     bottom:0;left:-8px;width:8px;height:8px;
@@ -298,4 +317,8 @@
      거꾸로 역산한다 — 16/10 이면 416px 이라 390 짜리 화면에서 그림이 카드를
      26px 뚫고 나갔다(.is-plate 쪽은 681/623 이라 284px) */
   .bsec .hcard>.hright{aspect-ratio:16/10;width:100%;min-height:0}
+  /* 한 칸으로 쌓이면 그림이 따라올 자리가 없다 — 붙박이를 푼다 */
+  .bsec .hcard>.hright:not(.hpanels),
+  .bsec .hcard>.hright.hph--picks,
+  .bsec .hcard>.hright.hph--slides{position:relative;top:auto}
 }
