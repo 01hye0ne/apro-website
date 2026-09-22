@@ -771,8 +771,9 @@
      · 그림은 크기를 고정하고 제 장 안에서 붙박는다(sticky, 2026-09-22 요청) — 글 길이가 장마다
        달라 그림 아래가 비는데, 글을 읽어 내리는 동안 그림이 GNB · 탭 줄 밑에 붙어 따라오고
        장이 끝나면 함께 올라간다. 그림을 글 높이만큼 늘리면 장마다 크기가 제각각이 되고
-       사진(cover)은 양옆이 잘린다. 사진은 4:3, 공정 맵은 1:1(고리 이름 · 설비 · 설비 이름이
-       겹치지 않는 비율).
+       사진(cover)은 양옆이 잘린다. 비율은 사진 · 공정 맵 모두 1:1(2026-09-22 요청) — 글이 대개
+       4:3 그림보다 길어 가로형일 까닭이 없고, 넓은 화면 그림 기둥(≈0.87)이 이미 같은 사진을
+       세로로 잘라 쓰고 있다.
      모바일은 글 아래로 눕는 흐름이라 뺀다 */
   @media(min-width:768px) and (max-width:1180px){
     .sf-secs>.sf-sec{border-top:0}
@@ -782,7 +783,7 @@
     .sf-sec:has(>.sf-ph)>.sf-txt>.sf-line{margin-left:calc(-100% - 24px)}
     .sf-sec:has(>.sf-ph) .sf-rule--fig{display:block;flex:0 0 calc(50% + 12px - 41px)}
     .sf-sec>.sf-ph{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);align-self:flex-start}
-    .sf-sec>.sf-ph.has-map{aspect-ratio:1}
+    .sf-sec>.sf-ph{aspect-ratio:1}
   }
 
   /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
