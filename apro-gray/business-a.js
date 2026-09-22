@@ -226,6 +226,18 @@
   paint();
 })();
 
+/* ── 스크롤바 뺀 화면 폭 (2026-09-22) ─────────────────────────────────
+   본문(.bsec)은 화면 폭에서 좌우 여백을 뺀 폭인데, CSS 의 100vw 는 세로 스크롤바까지
+   친다. 바(.bnav)는 body 폭을 따르므로 스크롤바가 자리를 차지하는 창에서는 두 끝이
+   어긋났다. 실제 폭(clientWidth)을 --vw 로 넣어 준다(business-a.css .bsec) */
+(function () {
+  var root = document.documentElement;
+  function set() { root.style.setProperty('--vw', root.clientWidth + 'px'); }
+  set();
+  window.addEventListener('resize', set, { passive: true });
+  window.addEventListener('load', set);
+})();
+
 /* ── 소분류 머리띠 (2026-09-21) ──────────────────────────────────────
    좁은 화면(≤900)에서는 소분류 탭 띠(.bnav-wrap)를 감추고 소분류 넷이 세로로
    이어진다(A-1 모바일과 같은 짜임). 그러면 "지금 어느 소분류인가"를 알 길이
