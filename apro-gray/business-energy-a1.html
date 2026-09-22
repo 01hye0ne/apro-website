@@ -706,8 +706,10 @@
   .sf-prod>.shot.has-img{background:none;border:0;overflow:hidden}
   /* 사진은 칸에서 떼어 깔아 둔다 — 흐름에 남으면 height:100% 가 잡히지 않아
      제 비율대로 자라서 카드 키를 다시 밀어 올린다 */
-  .sf-prod>.shot img{position:absolute;inset:0;display:block;
-                     width:100%;height:100%;object-fit:cover}
+  /* 제품 PNG 는 투명 여백을 걷어 제품에 딱 맞게 잘라 두었다(2026-09-22, 사방 4% 숨) — 제품마다
+     가로세로 비율이 달라(0.88~2.44) 잘리지 않게 contain 으로 담고 칸 안쪽 16 을 띄운다 */
+  .sf-prod>.shot img{position:absolute;inset:16px;display:block;
+                     width:calc(100% - 32px);height:calc(100% - 32px);object-fit:contain}
   /* 카드 안을 가르는 선 셋 — 특징 칸을 가르는 선과 같은 200 칸선이다.
      사진 옆(카드 높이 전부) · 이름 띠 아래 · 주요 적용 분야 위 */
   .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
@@ -836,6 +838,8 @@
     .sf-feat{display:flex;flex-wrap:wrap;gap:0}
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
     .sf-feat li:nth-child(odd){border-left:0}
+    /* 두 줄로 접히면 줄 사이에도 칸선을 긋는다 — 세로선만 있어 넷이 한 판으로 뭉쳐 보였다 */
+    .sf-feat li:nth-child(n+3){border-top:1px solid var(--c-bd,var(--sf-line))}
   }
   @media(max-width:1180px){
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
@@ -899,8 +903,10 @@
     .sf-ptexts{flex:none;min-height:0;gap:24px;padding-right:0}
     .sf-prods{display:flex;flex-direction:column;gap:24px}
     .sf-prod{margin-right:0;margin-top:0;flex-direction:column}
-    /* 위로 올라온 사진도 정사각 — 16:9 로 눕히면 위아래가 잘렸다. 폭은 360 까지, 가운데 */
-    .sf-prod>.shot{flex:none;width:min(100%,360px);align-self:center;aspect-ratio:1;margin:16px auto 0}
+    /* 위로 올라온 사진 칸 — 폭은 카드 전부, 키는 240 하나. 제품 사진이 여백 없이 잘려 있어
+       contain 이 제품마다 알맞은 크기로 담는다(넓적한 모듈은 폭, 키 큰 랙은 키에 맞춘다).
+       종전의 360 정사각은 투명 여백까지 담아 제품 위아래가 휑했다(2026-09-22) */
+    .sf-prod>.shot{flex:none;width:100%;align-self:stretch;aspect-ratio:auto;height:240px;margin:0}
     .sf-feat{display:flex;flex-wrap:wrap;gap:0}
     .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
   }
@@ -942,6 +948,8 @@
   @media(max-width:900px){
     :root{--t-sm:var(--fs-body)}
     .sf-feat li:nth-child(odd){border-left:0}
+    /* 두 줄로 접히면 줄 사이에도 칸선을 긋는다 — 세로선만 있어 넷이 한 판으로 뭉쳐 보였다 */
+    .sf-feat li:nth-child(n+3){border-top:1px solid var(--c-bd,var(--sf-line))}
     .sf-cert{flex-wrap:wrap;gap:8px}
     .sf-cert ul{flex-wrap:wrap}
     .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}

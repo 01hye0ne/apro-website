@@ -899,11 +899,12 @@
     background:var(--sf-gray100);
     /* 공용 .hcard p 의 글자 값(18px · 160%)을 걷는다 — 이 <p> 는 기본값이다 */
     font-size:var(--fs-body);font-weight:400;line-height:normal;letter-spacing:normal}
-  /* 사진은 2100 정사각 원본을 16:9 로 가운데 잘라 쓴다(시안과 같다) — 제품이
-     화면 가운데 놓인 렌더라 위아래 흰 여백만 잘려 나간다 */
-  .hcard .hprod .shot{display:block;aspect-ratio:160/90;overflow:hidden;
-    background:#e5e6e8;border-bottom:1px solid var(--sf-line)}
-  .hcard .hprod .shot img{width:100%;height:100%;object-fit:cover;display:block}
+  /* 사진 칸은 16:9 — 제품 PNG 는 투명 여백을 걷어 제품에 딱 맞게 잘라 두었으므로(2026-09-22)
+     cover 로 채우면 가로 긴 제품은 좌우가, 키 큰 랙은 위아래가 잘린다 → contain 으로 담고
+     안쪽 16 을 띄운다. 바탕 회색은 배경을 뺀 사진이라 걷는다 */
+  .hcard .hprod .shot{display:block;aspect-ratio:160/90;overflow:hidden;padding:16px;
+    background:none;border-bottom:1px solid var(--sf-line)}
+  .hcard .hprod .shot img{width:100%;height:100%;object-fit:contain;display:block}
   .hcard .hprod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
     line-height:var(--lh-label);letter-spacing:-.4px;color:var(--sf-txt)}
   /* 특징 넷은 2×2 다. 두 줄이 남는 세로를 똑같이 나눠 가져(1fr) 아래 '주요 적용
