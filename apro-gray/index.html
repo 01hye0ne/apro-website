@@ -1603,6 +1603,30 @@
     update();
   })();
 
+  // Business — 기본 상태 사업명의 세로 가운데 (2026-09-22).
+  // CSS 의 --bz-dy 는 넓은 화면 띠(키 640 · 국문 48)로 푼 계산식이라, 띠 키가 내용을 따라가는
+  // 1200 아래(태블릿 364~428)와 글자가 36 으로 내려간 1280 아래에서는 같은 거리만큼 내려가
+  // 사업명이 띠 아래쪽으로 빠졌다. 띠마다 실제 키를 재서 넣는다 — offsetHeight 는 transform
+  // (스크롤 배율 --bz-s)을 타지 않는 배치 키라 배율과 무관하다.
+  // 호버로 펼치는 구간(hover · 901 이상)에서만 쓴다 — 그 밖은 사업명이 제자리(흐름 속)에 있다
+  (function(){
+    var bands = document.querySelectorAll('.v2bizsec .bizband');
+    if(!bands.length || !window.matchMedia){ return; }
+    var mq = window.matchMedia('(hover:hover) and (min-width:901px)');
+    function fit(){
+      for(var i=0;i<bands.length;i++){
+        var b = bands[i], n = b.querySelector('.bz-name');
+        if(!n || !mq.matches){ b.style.removeProperty('--bz-dy'); continue; }
+        var dy = (b.offsetHeight - n.offsetHeight) / 2 - n.offsetTop;
+        b.style.setProperty('--bz-dy', Math.max(0, dy).toFixed(1) + 'px');
+      }
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(fit); }
+    fit();
+  })();
+
   // Scroll reveal: sections rise/fade in one by one as they enter the viewport
   (function(){
     var els = document.querySelectorAll('.reveal, .reveal-fade, .reveal-stagger');
