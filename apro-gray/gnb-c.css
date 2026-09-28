@@ -145,3 +145,10 @@
 @media(prefers-reduced-motion:reduce){
   .c-mega,.sf-gnb,.sf-gnb .logo img,.sf-gnb .sf-menus>li>a,.sf-gnb .sf-tools button{transition:none}
 }
+
+/* ── 전체 메뉴(사이트맵) — 하위 메뉴를 한 줄 다섯 칸으로 (2026-09-28 피드백) ─────────────
+   A-1 은 네 칸이라 하위가 다섯인 지속가능경영만 "ESG 게시판"이 둘째 줄로 내려갔다.
+   다섯 칸으로 두면 모든 줄이 같은 칸 선에 서고 지속가능경영도 한 줄이 된다.
+   다섯 칸은 화면 1130 쯤까지 이름이 안 접히고 1084 에서 접히기 시작한다 — 여유를 두고 A-1 이 자주 쓰는
+   경계 1181 부터 다섯 칸, 그 아래는 A-1 의 네 칸 그대로다 */
+@media(min-width:1181px){ .navover .ov-links{grid-template-columns:repeat(5,minmax(0,1fr))} }
