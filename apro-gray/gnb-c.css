@@ -78,12 +78,12 @@
 
 
 /* ===================== 시안 C — 바 바탕이 뒤를 따라 바뀐다 (A 방식, 2026-09-28) =====================
-   A 의 GNB 는 세 얼굴이다 (index.html .gnb-bg · a-common.css §0-3c 와 같은 값).
-     ① 히어로 위       투명 · 흰 로고 · 흰 글자                 → .c-clear
-     ② 어두운 바탕 위  어두운 유리(.42 · blur 10) · 흰 글자    → .c-dark
-     ③ 밝은 바탕 위    흰 유리(.72 · blur 10) · 짙은 글자      → (기본)
-   메가 판이 열리면 흰 판과 한 덩이가 되도록 흰 바로 선다      → .c-open
-   어느 얼굴인지는 gnb-c.js 가 바 뒤를 재서 정한다.
+   얼굴은 둘이다(2026-09-28 — A 의 셋 중 어두운 유리를 뺐다).
+     ① 히어로 위   완전 투명 · 흰 로고 · 흰 글자             → .c-clear
+     ② 그 밖       흰 반투명(.72 · blur 10) · 짙은 글자      → (기본)
+   메가 판이 열리면 흰 판과 한 덩이가 되도록 흰 바로 선다  → .c-open
+   한동안 A 처럼 어두운 바탕(사진 · 푸터) 위에서는 어두운 유리(.c-dark)로 바뀌었는데, 스크롤 중에
+   사진 카드가 지나갈 때마다 바 색이 뒤집혀 두 가지로만 쓰기로 했다. 어느 얼굴인지는 gnb-c.js 가 정한다.
 
    ①이 되려면 히어로가 바 밑까지 올라와야 한다 — A-1 은 바 높이만큼 본문을 내려 두므로
    (빈 칸 .sf-gnb-sp 또는 body padding-top), 첫 화면 히어로만 그만큼 위로 끌어올리고
@@ -122,13 +122,11 @@
   transition:opacity .35s cubic-bezier(.22,1,.36,1)}
 .sf-gnb.c-clear::before{opacity:1}
 .sf-gnb.c-clear.c-open::before{opacity:0}
-/* ② 어두운 유리 */
-.sf-gnb.c-dark{background:rgba(11,17,24,.42);border-bottom-color:rgba(255,255,255,.10)}
-/* ①② 는 글자가 흰색이다. 로고는 파랑 한 벌뿐이라 필터로 희게 한다 */
-.sf-gnb:is(.c-clear,.c-dark) .logo img{filter:brightness(0) invert(1)}
-.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a,
-.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a[aria-current],
-.sf-gnb:is(.c-clear,.c-dark) .sf-tools button{color:#fff}
+/* ① 은 글자가 흰색이다. 로고는 파랑 한 벌뿐이라 필터로 희게 한다 */
+.sf-gnb.c-clear .logo img{filter:brightness(0) invert(1)}
+.sf-gnb.c-clear .sf-menus>li>a,
+.sf-gnb.c-clear .sf-menus>li>a[aria-current],
+.sf-gnb.c-clear .sf-tools button{color:#fff}
 .sf-gnb.c-clear .sf-menus>li>a,.sf-gnb.c-clear .sf-tools button{text-shadow:0 1px 4px rgba(0,0,0,.28)}
 .sf-gnb.c-clear .sf-tools svg{filter:drop-shadow(0 1px 4px rgba(0,0,0,.28))}
 /* 메가 판이 열리면 어느 얼굴에서든 흰 바 — 판과 한 장으로 읽힌다 (A 의 .mega-open) */
@@ -139,8 +137,8 @@
 .sf-gnb.c-open .sf-tools svg{filter:none}
 /* 대분류에 커서가 올라도 바탕을 깔지 않는다(2026-09-28 요청) — A-1 의 회색 칩(g100) 대신 A 처럼 밑줄만 */
 .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a,
-.sf-gnb:is(.c-clear,.c-dark,.c-open) .sf-menus>li>a:hover,
-.sf-gnb:is(.c-clear,.c-dark,.c-open) .sf-menus>li.is-open>a{background:transparent}
+.sf-gnb:is(.c-clear,.c-open) .sf-menus>li>a:hover,
+.sf-gnb:is(.c-clear,.c-open) .sf-menus>li.is-open>a{background:transparent}
 
 @media(prefers-reduced-motion:reduce){
   .c-mega,.sf-gnb,.sf-gnb .logo img,.sf-gnb .sf-menus>li>a,.sf-gnb .sf-tools button{transition:none}
