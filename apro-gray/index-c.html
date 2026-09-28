@@ -411,12 +411,10 @@
 
   /* ── Business — 비대칭 4열 아코디언 ─────────────────────────────────────
      켜진 카드 한 장만 펴서 크게 보이고, 나머지 셋은 세로로 긴 띠로 접힌다.
-     폭은 12열 격자 몫이다(시안 C, 2026-09-28) — 펴진 카드 6열(레일의 1/2), 접힌 띠 2열씩(1/6).
-     카드는 A-1 처럼 틈 없이 붙고 흰 선 1px 로만 가른다 — 그래서 선은 거터 한가운데쯤에 선다
-     (6열 뒤는 딱 가운데, 8 · 10열 뒤는 3px 안쪽). 레일을 컨테이너로 삼아 cqi 로 구하므로 화면 폭이
-     바뀌어도 스크립트 없이 맞는다.
-     줄 높이는 A-1 원래 키 그대로다 — 펴진 카드가 A-1 폭(레일 − 히어로 탭 폭 --hm-tabs, 1280 아래는
-     레일의 62.5%)이던 때의 779:438 비율(--open-h). 폭만 6열로 바뀌고 키는 옛 값을 지킨다.
+     띠 폭은 히어로 탭 폭(--hm-tabs 560)의 1/3, 1280 아래는 본문의 12.5% — A-1 그대로다
+     (시안 C 에서 6 · 2 · 2 · 2 열로 바꿔 봤다가 접힌 띠가 뚱뚱해 보여 2026-09-28 되돌렸다).
+     펴진 카드는 남는 폭 전부. 폭은 레일을 컨테이너로 삼아 cqi 로 구하므로 화면 폭이
+     바뀌어도 스크립트 없이 맞는다. 줄 높이는 펴진 카드의 779:438 비율을 따른다.
      띠를 누르면 그 카드가 펴지고, 펴진 카드를 누르면 세부 페이지로 간다.
      사진은 늘 펴진 폭으로 그려 가운데에 두므로, 폭이 바뀌는 동안 확대 비율이 튀지 않고
      접힌 띠에는 사진 가운데 한 줄기만 보인다 */
@@ -424,9 +422,9 @@
   .hm-rail{container-type:inline-size}
   /* 카드 사이는 틈 없이 붙이고 흰 선 1px 로만 가른다 — 선은 뒤 카드의 왼쪽 테두리다
      (box-sizing 이 border-box 라 폭 계산에 따로 넣지 않아도 된다) */
-  .hm-track{--fold:calc(100cqi / 6);--open:calc(100cqi / 2);--open-h:calc(100cqi - var(--hm-tabs));
-            display:flex;list-style:none;height:max(360px,calc(var(--open-h) * .5623))}
-  @media(max-width:1280px){ .hm-track{--open-h:calc(100cqi * .625)} }
+  .hm-track{--fold:calc(var(--hm-tabs) / 3);--open:calc(100cqi - 3 * var(--fold));
+            display:flex;list-style:none;height:max(360px,calc(var(--open) * .5623))}
+  @media(max-width:1280px){ .hm-track{--fold:calc(100cqi * .125)} }
   .hm-card+.hm-card{border-left:1px solid #fff}
   .hm-card{position:relative;flex:0 0 var(--fold);min-width:0;overflow:hidden;background:#c7c7c7;
            transition:flex-basis .8s var(--ease)}
