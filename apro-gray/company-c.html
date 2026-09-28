@@ -170,7 +170,7 @@
      규칙을 갖고 있어 그쪽이 이긴다 — 값은 같다) */
   /* GNB 는 넓은 화면(901~)에서 64 · 메뉴 16 · 로고 96(높이 ≈21) — 2026-09-22 키움(53 · 14 · 78 은 화면에 비해
      납작했다). 좁은 화면(햄버거)은 53 · 78 그대로 */
-  .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{
+  .sf-gnb,.sf-gnb-sp{
     --gnb-h:64px;--gnb-m:44px;
     --gnb-line:#e4e8ed;--gnb-sec:#5a6675;--gnb-brand:#2c5790;--gnb-g100:#f4f6f8;
     --gnb-col:calc((100% - 308px) / 12)}
@@ -224,57 +224,12 @@
   .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
   .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:800}
 
-  /* 메가 판 두 갈래 — 사업영역만 화면 폭을 다 쓰는 넓은 판이고(안쪽은 격자 2~11 열
-     띠에 앉아 네 칸으로 갈린다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card).
-     항목이 둘에서 다섯뿐인 메뉴에 흰 띠를 화면 끝까지 깔면 빈자리만 남고, 오른쪽
-     메뉴일수록 커서가 목록까지 가로로 멀리 건너야 했다 */
-  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:98;background:#fff;
-           box-shadow:0 12px 28px rgba(14,22,30,.08);
-           opacity:0;visibility:hidden;transform:translateY(-8px);
-           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
-  .sf-mega.open{opacity:1;visibility:visible;transform:none}
-  .sf-mega .cols{width:calc(var(--gnb-col) * 12 + 220px);margin-inline:auto;
-                 display:grid;grid-template-columns:repeat(4,1fr)}
-  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
-                padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
-  .sf-mega .col:last-child{border-right:0}
-  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
-  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
-  /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
-     그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
-     폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
-     카드 뒤에는 흐림막을 깔지 않는다 — 가릴 만큼 크지 않다 */
-  .sf-mega.card{right:auto;left:var(--mm-x,0px);width:max-content;min-width:200px;
-                box-shadow:0 10px 24px rgba(14,22,30,.12)}
-  .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
-  .sf-mega.card .hd{white-space:nowrap}
-  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
-               font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
-               color:var(--gnb-sec);text-decoration:none;
-               transition:color .18s var(--ease)}
-  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
-  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
-  .sf-mega ul{list-style:none;margin:0;padding:0;
-              display:flex;flex-direction:column;gap:20px}
-  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
-                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec);
-                text-decoration:none;transition:color .18s var(--ease)}
-  .sf-mega ul a:hover{color:var(--gnb-brand)}
-
-  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 */
-  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:97;
-            background:rgba(27,39,51,.16);
-            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-            opacity:0;visibility:hidden;pointer-events:none;
-            transition:opacity .24s var(--ease),visibility .24s}
-  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
 
   @media(max-width:900px){
     .sf-gnb{padding-left:16px;padding-right:16px}
     .sf-gnb .sf-menus{display:none}
-    .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{--gnb-h:53px}
+    .sf-gnb,.sf-gnb-sp{--gnb-h:53px}
     .sf-gnb .logo{width:78px}
-    .sf-mega,.sf-scrim{display:none}
   }
 
 
@@ -1034,91 +989,8 @@
 })();
 </script>
 <script>
-/* -- 공통 GNB 메가 메뉴 -----------------------------------------------------
-   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
-   둘 다 벗어나면 짧게 기다렸다 닫는다 - 사이를 지나는 동안 깜빡이지 않게 하는
-   여유다. 새 머리를 안 쓰는 장에서는 조용히 지나간다 */
+/* -- GNB 언어 선택 ------------------------------------------------------ */
 (function(){
-  var items = [].slice.call(document.querySelectorAll('.sf-gnb .sf-menus>li[data-mega]'));
-  if(!items.length) return;
-  var cur = null, t = 0;
-  var scrim = document.getElementById('sfScrim');
-  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
-  function shut(){
-    if(!cur) return;
-    var p = panel(cur);
-    cur.classList.remove('is-open');
-    cur.querySelector('a').setAttribute('aria-expanded','false');
-    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
-    if(scrim) scrim.classList.remove('open');
-    cur = null;
-  }
-  function show(li){
-    if(cur === li) return;
-    var p = panel(li);
-    if(!p) return;
-    shut();
-    li.classList.add('is-open');
-    li.querySelector('a').setAttribute('aria-expanded','true');
-    p.classList.add('open'); p.setAttribute('aria-hidden','false');
-    /* 카드는 흐림막 없이 뜬다 — 가릴 만큼 크지 않다 */
-    if(scrim && !p.classList.contains('card')) scrim.classList.add('open');
-    cur = li;
-  }
-  function hold(){ clearTimeout(t); }
-  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
-  items.forEach(function(li){
-    var p = panel(li);
-    li.addEventListener('mouseenter', function(){ hold(); show(li); });
-    li.addEventListener('mouseleave', leave);
-    li.addEventListener('focusin', function(){ hold(); show(li); });
-    if(p){
-      p.addEventListener('mouseenter', hold);
-      p.addEventListener('mouseleave', leave);
-      p.addEventListener('focusin', hold);
-    }
-  });
-  document.addEventListener('focusin', function(e){
-    if(!cur) return;
-    var p = panel(cur);
-    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
-    shut();
-  });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
-  if(scrim){
-    scrim.addEventListener('mouseenter', leave);
-    scrim.addEventListener('click', shut);
-  }
-  var burger = document.querySelector('.sf-gnb .menu-toggle');
-  if(burger) burger.addEventListener('click', shut);
-
-  /* 카드를 자기 상단 메뉴 바로 아래로 세운다 — 메뉴 글자 왼쪽 끝에 카드 글자를
-     맞추면 커서는 세로로만 내려오면 된다. 화면 폭을 다 쓰던 때는 오른쪽 메뉴일수록
-     커서가 목록까지 가로로 멀리 건너야 했고, 가는 길에 상단 띠를 스치면 옆 메뉴
-     판으로 바뀌어 버렸다. 카드 왼쪽 자리를 --mm-x 로 준다. 화면 오른쪽 끝을 넘으면
-     거기서 멈추고, 글꼴이 늦게 오면 메뉴 자리가 밀리므로 load 때 다시 잰다.
-     넓은 판을 쓰는 사업영역은 건너뛴다 */
-  function alignMega(){
-    items.forEach(function(li){
-      var p = panel(li); if(!p || !p.classList.contains('card')) return;
-      var menu = p.querySelector('.menu'); if(!menu) return;
-      var a = li.querySelector('a'); if(!a) return;
-      var w = p.offsetWidth;
-      if(!w) return;                                /* 좁은 화면에선 판이 없다 */
-      /* 글자끼리 맞춘다 — 메뉴 링크도 카드도 제 안에 여백을 두고 있어서,
-         상자 왼쪽이 아니라 여백을 걷어낸 자리를 재야 줄이 선다 */
-      var pad = parseFloat(getComputedStyle(menu).paddingLeft) || 0;
-      var apad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
-      var x = a.getBoundingClientRect().left + apad - pad;
-      var edge = document.documentElement.clientWidth - w - 16;
-      p.style.setProperty('--mm-x', Math.max(16, Math.min(x, edge)) + 'px');
-    });
-  }
-  alignMega();
-  window.addEventListener('resize', alignMega);
-  window.addEventListener('load', alignMega);
-
-  /* 언어 선택 - 세부 A-1 네 장의 스크립트와 같은 동작 */
   var lang = document.getElementById('sfLang'), lb = document.getElementById('sfLangBtn');
   if(lang && lb){
     lb.addEventListener('click', function(e){

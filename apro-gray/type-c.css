@@ -7,11 +7,11 @@
    부품마다 따로 적지 않고 본문 틀 · 푸터에 한 줄높이(--lh-label 1.4)를 깔아 물려준다 — 이미 줄높이를
    정한 글(줄글 1.6 · 제목 1.2 …)은 제 값을 그대로 쓰고, 정하지 않은 것만 1.4 를 받는다.
    버튼 · 입력칸은 브라우저가 줄높이를 따로 박아 두므로(font 줄임꼴) 물려받게 풀어 준다.
-   _gen-c.py 가 GNB 가 있는 C 장에 붙이고, 홈(index-c.html)은 손으로 붙였다. A-1 원본은 그대로다 */
+   GNB 가 있는 C 장 모두가 불러온다. A-1 원본은 그대로다 */
 .cs-body,.footer{line-height:var(--lh-label)}
 :is(.cs-body,.footer) :is(button,input,select,textarea){line-height:inherit}
 
-/* 지속가능경영 세로 히어로 — 사진 위 그늘 (2026-09-28). 그림을 가로수 길 사진(밝은 하늘)으로 바꾸면서(_gen-c.py SWAPS)
+/* 지속가능경영 세로 히어로 — 사진 위 그늘 (2026-09-28). 그림을 가로수 길 사진(밝은 하늘)으로 바꾸면서
    흰 제목 · 문장이 하늘에 묻혔다. 위(제목)와 아래(장 목록)를 짙게, 가운데(흰 차 · 줄기)는 옅게 누른다.
    그림(z -1) 뒤에 오는 ::after 를 같은 층에 두어 그림 위 · 글 아래에 깐다. .cs-hero--low 는 지속가능경영 다섯 장만 쓴다 */
 .cs-hero--low::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
