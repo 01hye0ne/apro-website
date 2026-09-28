@@ -58,10 +58,11 @@
   .band{position:absolute;inset:0;width:calc(100% - 120px - 2 * var(--sec-inset));margin-inline:auto}
 
   /* ===================== FOOTER ===================== */
-  /* 새 그리드 — 좌우 여백은 GNB(.sf-gnb 의 --gnb-m)와 같은 44px, 900 아래는 GNB 처럼 16px.
+  /* 새 그리드 — 좌우 여백은 GNB 와 같은 --c-m(시안 C: A 의 여백 사다리 84 · 64 · 44 · 16, gnb-c.css).
+     A-1 에서는 44px, 900 아래 16px 이었다.
      안쪽은 12열 전체(1~12열)를 쓴다 — 글 · 로고 · 버튼과 구분선이 같은 폭이다.
      --gnb-m 은 GNB 요소 안에서만 정의돼 있어 푸터에서 부를 수 없으므로 같은 값을 --f-m 으로 둔다 */
-  .footer{--f-m:44px;background:var(--g950);padding:80px var(--f-m) 48px;display:flex;flex-direction:column;align-items:center}
+  .footer{--f-m:var(--c-m);background:var(--g950);padding:80px var(--f-m) 48px;display:flex;flex-direction:column;align-items:center}
   .footer .container{width:100%;display:flex;flex-direction:column}
   /* --- sitemap (menu tree) --- */
   .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
@@ -297,7 +298,7 @@
      Figma 변수는 여기 토큰으로 옮겼다 — Grid/Margin 44 = --hm-m,
      Text/Secondary = --hm-sec, Icon/Primary = --hm-icon, Border/Default = --border-g,
      Primitive/Brand/400 = --brand-2. 제목 영문만 Aldrich, 나머지는 SUIT · Pretendard */
-  :root{--ald:"Aldrich",var(--rc),sans-serif;--hm-m:44px;--hm-h:calc(100svh - 64px);
+  :root{--ald:"Aldrich",var(--rc),sans-serif;--hm-m:var(--c-m);--hm-h:calc(100svh - 64px);
         --hm-rule:#c7c9cc;--hm-sec:#5a6675;--hm-icon:#445464;--hm-ph:#e5e6e8;
         /* 히어로 탭 네 개가 차지하는 폭. Business 접힌 띠 셋의 폭 합도 이 값이라
            두 줄의 오른쪽 덩어리가 위아래로 같은 폭에 선다 */
