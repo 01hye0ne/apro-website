@@ -305,13 +305,6 @@
         /* 섹션 위아래 여백. 섹션은 최소 한 화면이고 내용이 가운데에 서므로, 이 값은 내용이
            한 화면보다 긴 섹션에서 위아래 최소 간격으로 드러난다 */
         --hm-pad:160px}
-  /* 시안 C 홈 본문 띠 — 히어로 · Business · News 는 격자 2~11 열(10 열 폭)에 선다(2026-09-28).
-     2 열 시작 = 마진 + 한 열 + 거터 20, 한 열 = (100vw − 308) / 12. 마진(44)까지 다 쓰면 넓어 보였다.
-     (GNB 대분류 · 메가 판은 A 의 자리로 가운데에 모여 있어 이 띠와 따로 논다 — gnb-c.css)
-     GNB · 푸터는 1~12 열 그대로, Who we are 는 계단 구도라 대상이 아니다.
-     1280 아래는 한 열이 글자 폭만 깎으므로 마진(--hm-m)으로 돌아간다 */
-  :root{--c-in:var(--hm-m)}
-  @media(min-width:1281px){ :root{--c-in:calc(var(--hm-m) + (100vw - 308px) / 12 + 20px)} }
   body{background:#fff}
   .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
            clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -328,7 +321,8 @@
      그림은 A(index.html) 그대로다 — 사옥 영상 한 편 위에 문구 일곱 개가 5초마다 바뀌고,
      밑단 유리 탭 줄(에이프로 + 사업 넷)의 게이지가 영상 시각을 따라 찬다(아래 스크립트).
      2026-09-28 A-1 체계로 다시 짰다 —
-       격자  글과 탭 줄은 Business · News 와 같은 본문 띠(--c-in, 격자 2~11 열 · 1280 아래 마진)에 선다.
+       격자  글과 탭 줄은 A-1 마진(--hm-m)에 선다 — 격자 1~12 열, GNB 로고 선 · Business · News · 푸터와 같다.
+             (2026-09-28 한때 2~11 열로 좁혔다가 다시 1~12 열로 늘렸다)
              문구 윗자리는 바 키 + 섹션 위 여백(--hm-pad 160 · 900 아래 128)이고, 탭 줄 아래도 마진(--hm-m)이다
        글자  A-1 홈 히어로(index-a1.html .hm-hl · .hm-tab)와 같은 규칙이다(2026-09-28 요청 — 특히 영문 서체).
              영문 문구 Aldrich 400 · 줄높이 --lh-tight · 자간 --ls-num, 크기는 A-1 과 같은 식(칸 폭 ÷ 12.6, 24~64).
@@ -344,7 +338,7 @@
   /* .band 는 A-1 뼈대에 남은 옛 12열 띠 규칙(절대 위치 · 좁힌 폭)이 있어 여기서 화면 폭으로 푼다 */
   .v2banner .band{position:absolute;inset:0;z-index:2;width:auto;margin:0}
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;
-    padding:calc(var(--c-gnb-h) + var(--hm-pad)) var(--c-in) var(--hm-m)}
+    padding:calc(var(--c-gnb-h) + var(--hm-pad)) var(--hm-m) var(--hm-m)}
 
   /* 문구 — 강조(.en) + 보조(.kor). 글자는 스크립트가 갈고, 갈 때 위로 빠졌다 아래서 떠오른다 */
   .v2banner .headline{display:flex;flex-direction:column;gap:10px;container-type:inline-size}
@@ -421,18 +415,13 @@
      띠를 누르면 그 카드가 펴지고, 펴진 카드를 누르면 세부 페이지로 간다.
      사진은 늘 펴진 폭으로 그려 가운데에 두므로, 폭이 바뀌는 동안 확대 비율이 튀지 않고
      접힌 띠에는 사진 가운데 한 줄기만 보인다 */
-  .hm-biz{gap:24px;padding-left:var(--c-in);padding-right:var(--c-in)}
+  .hm-biz{gap:24px}
   .hm-rail{container-type:inline-size}
   /* 카드 사이는 틈 없이 붙이고 흰 선 1px 로만 가른다 — 선은 뒤 카드의 왼쪽 테두리다
      (box-sizing 이 border-box 라 폭 계산에 따로 넣지 않아도 된다) */
-  /* 시안 C — 레일이 2~11 열(--c-in)로 좁아져서 A-1 띠 폭(히어로 탭 560 ÷ 3)을 그대로 쓰면 펴진 카드가
-     550 까지 줄어 소분류 넷째 이름이 잘렸다. 띠는 A-1 의 좁은 화면 규칙(레일의 12.5%)으로 둔다.
-     줄 높이는 A-1 원래 키 그대로 — 레일이 1~12 열이던 때의 펴진 카드 폭(--open0)에서 구한다
-     (100cqi + 양쪽으로 줄어든 폭 = 옛 레일, 거기서 히어로 탭 폭을 뺀 것). 1440 에서 436 */
-  .hm-track{--fold:calc(100cqi * .125);--open:calc(100cqi - 3 * var(--fold));
-            --open0:calc(100cqi + 2 * (var(--c-in) - var(--hm-m)) - var(--hm-tabs));
-            display:flex;list-style:none;height:max(360px,calc(var(--open0) * .5623))}
-  @media(max-width:1280px){ .hm-track{--open0:var(--open)} }
+  .hm-track{--fold:calc(var(--hm-tabs) / 3);--open:calc(100cqi - 3 * var(--fold));
+            display:flex;list-style:none;height:max(360px,calc(var(--open) * .5623))}
+  @media(max-width:1280px){ .hm-track{--fold:calc(100cqi * .125)} }
   .hm-card+.hm-card{border-left:1px solid #fff}
   .hm-card{position:relative;flex:0 0 var(--fold);min-width:0;overflow:hidden;background:#c7c7c7;
            transition:flex-basis .8s var(--ease)}
@@ -623,7 +612,7 @@
              카드 사이는 격자 거터 20. 카드 셋이 1~12 열을 네 열씩 나눈다
        글자  제목 "News" 는 A-1 섹션 제목(.hm-ttl, Aldrich --fs-display-sm) · 날짜는 Aldrich --fs-meta(A-1 날짜 규칙).
              그 밖은 type-scale.css 토큰 — 카드 제목 --fs-h3 800 · 목록 제목 --fs-lead 800 · 줄글 --fs-body */
-  .v2news{gap:28px;padding-left:var(--c-in);padding-right:var(--c-in)}
+  .v2news{gap:28px}
   .v2news .news-head{display:flex;align-items:flex-start;gap:8px}
   .v2news .news-head .ttls{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   .v2news .news-head .sub{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);

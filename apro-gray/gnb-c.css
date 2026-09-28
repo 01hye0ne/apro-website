@@ -55,8 +55,7 @@
 /* 1180 아래는 칸이 110 안팎으로 좁아져 "화합물 전력 반도체"가 옆 칸 글자에 닿는다 — 한 칸 내린다
    (A-1 판도 같은 경계에서 칸 안 여백을 줄였다) */
 @media(max-width:1180px){ .c-mega .c-col a{font-size:var(--fs-meta)} }
-/* 커서가 머무는 열의 대분류를 바에서 함께 밝힌다 — A 의 .active 밑줄과 같은 자리다.
-   바탕(g100)은 A-1 의 .is-open 규칙이 이미 칠한다 */
+/* 커서가 머무는 열의 대분류를 바에서 함께 밝힌다 — A 의 .active 밑줄과 같은 자리다 */
 .sf-gnb .sf-menus>li.is-open>a{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:8px}
 
 /* 좁은 화면은 대분류 줄이 없다(전체메뉴 단추만) — 판도 없다 */
@@ -117,15 +116,16 @@
 .sf-gnb:is(.c-clear,.c-dark) .sf-tools button{color:#fff}
 .sf-gnb.c-clear .sf-menus>li>a,.sf-gnb.c-clear .sf-tools button{text-shadow:0 1px 4px rgba(0,0,0,.28)}
 .sf-gnb.c-clear .sf-tools svg{filter:drop-shadow(0 1px 4px rgba(0,0,0,.28))}
-.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a:hover,
-.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li.is-open>a{background:rgba(255,255,255,.12)}
 /* 메가 판이 열리면 어느 얼굴에서든 흰 바 — 판과 한 장으로 읽힌다 (A 의 .mega-open) */
 .sf-gnb.c-open{background:#fff;border-bottom-color:var(--gnb-line,#e4e8ed)}
 .sf-gnb.c-open .logo img{filter:none}
 .sf-gnb.c-open .sf-menus>li>a,.sf-gnb.c-open .sf-tools button{color:var(--gnb-sec,#5a6675);text-shadow:none}
 .sf-gnb.c-open .sf-menus>li>a[aria-current]{color:var(--gnb-brand,#2c5790)}
 .sf-gnb.c-open .sf-tools svg{filter:none}
-.sf-gnb.c-open .sf-menus>li>a:hover,.sf-gnb.c-open .sf-menus>li.is-open>a{background:var(--gnb-g100,#f4f6f8)}
+/* 대분류에 커서가 올라도 바탕을 깔지 않는다(2026-09-28 요청) — A-1 의 회색 칩(g100) 대신 A 처럼 밑줄만 */
+.sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a,
+.sf-gnb:is(.c-clear,.c-dark,.c-open) .sf-menus>li>a:hover,
+.sf-gnb:is(.c-clear,.c-dark,.c-open) .sf-menus>li.is-open>a{background:transparent}
 
 @media(prefers-reduced-motion:reduce){
   .c-mega,.sf-gnb,.sf-gnb .logo img,.sf-gnb .sf-menus>li>a,.sf-gnb .sf-tools button{transition:none}
