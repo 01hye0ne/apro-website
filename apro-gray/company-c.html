@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — 회사소개 (C)</title>
+<meta name="description" content="에이프로(APRO) 회사소개 — 미래에너지를 만드는 에이프로, Vision 2030 Global Top5 Total Energy-Solution Provider." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="company-info.css" />
+<style>
+  @font-face{
+    font-family:"SUIT Variable";
+    src:url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2-variations");
+    font-weight:100 900;font-display:swap;
+  }
+  :root{
+    --g900:#1b2733;--g950:#0e161e;--secondary-bg:#f4f6f8;
+    --brand:#2c5790;--brand-2:#4077b7;--point-300:#9ab9df;--point-200:#c9d9ee;
+    --point-900:#223858;--point-950:#17243a;--border-g:#e4e8ed;--teritary:#96a3b3;
+    --on-white-90:rgba(255,255,255,.9);--on-white-85:rgba(255,255,255,.85);
+    --white-300:rgba(255,255,255,.2);--maxw:1440px;--pad:24px;
+    --suit:"SUIT Variable","Pretendard",sans-serif;--pre:"Pretendard",sans-serif;
+    --rc:"Roboto Condensed",sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+    --ease-io:cubic-bezier(.62,0,.38,1);
+    /* GNB 는 사업영역 세부페이지의 12열 그리드 전체(1열~12열, 84px 고정 마진)를
+       그대로 쓰지만, 본문 섹션들은 그보다 한 칸 더 좁은 2열~11열로 보이게 하고
+       싶을 때 쓰는 추가 인셋. 세부페이지 그리드 공식(--bcol = (--bw - 11*거터)/12,
+       --bw = 100% - 168px, 거터 24px)에서 "1열 + 거터 1개"만큼만 뽑아낸 값 —
+       (bcol+거터) = (bw+거터)/12 로 정리되어 계산이 더 짧다.
+       GNB(.gnb, .gnb-mega .inner)에는 적용하지 않는다 — 그건 여전히 12열 전체 폭 */
+    /* 100% 대신 100vw 를 쓴다 — 컨테이닝 블록이 뷰포트가 아니라 고정폭 박스인 자리
+       (글로벌 네트워크 페이지의 1280px 무대 같은)에서 쓰면 100% 가 그 박스 기준으로 잘못 풀린다.
+       vw 는 컨테이닝 블록과 무관하게 항상 실제 뷰포트 폭을 가리켜 어디서 써도 같다 */
+    --sec-inset:calc((100vw - 144px) / 12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  /* NOTE: no overflow-x on body/html — that (hidden OR clip) makes body the sticky scroll context
+     and breaks the who-we-are pin. Horizontal overflow is clipped per-section via .section{overflow:hidden}. */
+  body{font-family:var(--suit);background:var(--g950);color:var(--g900);-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:none}
+  p{margin:0}
+  button{font-family:inherit}
+  ::selection{background:var(--point-200);color:var(--point-950)}
+
+  #stage{width:100%;position:relative}
+  .section{position:relative;width:100%;overflow:hidden}
+  /* 좌우 마진을 사업영역 세부페이지(84px 고정, business-smart.html 등의 .bnav-wrap
+     --bw:calc(100% - 168px))와 맞춘다 — 기존엔 max-width:1440px 로 캡을 씌우고 남는
+     폭을 auto 마진이 나눠 갖는 방식(1440px 이하에서는 24px, 그 이상에서는 뷰포트가
+     넓어질수록 마진도 한없이 커짐)이었는데, 세부페이지는 캡 없이 항상 84px 로 고정.
+     .v2b-inner 가 안쪽에 padding:24px 를 이미 더하고 있어(GNB·헤드라인 정렬을 맞추던
+     값), band 자체는 84-24=60px 만 남겨 합이 84px 가 되게 한다 */
+  .band{position:absolute;inset:0;width:calc(100% - 120px - 2 * var(--sec-inset));margin-inline:auto}
+
+  /* ===================== FOOTER ===================== */
+  /* 새 그리드 — 좌우 여백은 GNB(.sf-gnb 의 --gnb-m)와 같은 44px, 900 아래는 GNB 처럼 16px.
+     안쪽은 12열 전체(1~12열)를 쓴다 — 글 · 로고 · 버튼과 구분선이 같은 폭이다.
+     --gnb-m 은 GNB 요소 안에서만 정의돼 있어 푸터에서 부를 수 없으므로 같은 값을 --f-m 으로 둔다 */
+  .footer{--f-m:44px;background:var(--g950);padding:80px var(--f-m) 48px;display:flex;flex-direction:column;align-items:center}
+  .footer .container{width:100%;display:flex;flex-direction:column}
+  /* --- sitemap (menu tree) --- */
+  .footer .f-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-bottom:40px;border-bottom:1px solid var(--white-300)}
+  .footer .f-col{display:flex;flex-direction:column;gap:20px}
+  .footer .f-col .head{font-family:var(--suit);font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:#fff}
+  .footer .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .footer .f-col a{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-dark-body);text-decoration:none;opacity:.75;transition:opacity .2s}
+  .footer .f-col a:hover{opacity:1}
+  /* --- utility bar (family site + info links) --- */
+  .footer .f-util{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:32px 0;border-bottom:1px solid var(--white-300)}
+  .footer .f-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .footer .f-links a{font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-dark-body);text-decoration:none;white-space:nowrap;opacity:.85;transition:opacity .2s}
+  .footer .f-links a:hover{opacity:1}
+  .footer .f-links a.strong{font-weight:800;color:#fff;opacity:1}
+  .footer .f-links .sep{width:1px;height:12px;background:var(--white-300)}
+  .footer .f-family{position:relative;flex-shrink:0}
+  .footer .f-family > .fbtn{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:220px;padding:12px 16px;background:transparent;border:1px solid var(--white-300);border-radius:4px;font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls);color:#fff;cursor:pointer;transition:border-color .2s}
+  .footer .f-family > .fbtn:hover{border-color:rgba(255,255,255,.45)}
+  .footer .f-family .fbtn .arw{width:8px;height:8px;border-right:1.5px solid var(--on-white-85);border-bottom:1.5px solid var(--on-white-85);transform:rotate(-135deg);transition:transform .25s var(--ease)}
+  .footer .f-family.open .fbtn .arw{transform:rotate(45deg)}
+  .footer .f-family .fmenu{position:absolute;left:0;bottom:calc(100% + 8px);width:100%;background:var(--g900);border:1px solid var(--white-300);border-radius:4px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
+  .footer .f-family.open .fmenu{opacity:1;visibility:visible;transform:translateY(0)}
+  .footer .f-family .fmenu a{display:block;padding:11px 16px;font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-dark-body);text-decoration:none;transition:background .2s,color .2s}
+  .footer .f-family .fmenu a:hover{background:rgba(255,255,255,.06);color:#fff}
+  /* --- bottom (logo + legal + copyright) --- */
+  .footer .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:32px}
+  .footer .f-bottom .bl{display:flex;flex-direction:column;gap:20px}
+  .footer .f-bottom .logo{width:97px;height:auto}
+  .footer .f-bottom .infos{display:flex;flex-direction:column;gap:4px}
+  .footer .f-bottom .infos .line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .footer .f-bottom .infos .line span{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-dark-body);opacity:.75;white-space:nowrap}
+  .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
+  .footer .f-bottom .copy{font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-dark-body);opacity:.6;white-space:nowrap}
+  @media(max-width:900px){.footer{--f-m:16px}}
+  @media(max-width:960px){
+    .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
+    .footer .f-util{flex-direction:column;align-items:flex-start}
+    .footer .f-family{width:100%}
+    .footer .f-bottom{flex-direction:column;align-items:flex-start;gap:20px}
+  }
+  @media(max-width:560px){.footer .f-nav{grid-template-columns:1fr}}
+
+  .mnote{display:none}
+  @media(max-width:640px){.mnote{display:block;padding:10px;text-align:center;font-size:var(--fs-tag);color:#8895a5;background:#0b1118;font-family:var(--suit)}}
+
+  /* ===================== SHARED: hamburger + full-screen overlay ===================== */
+  .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
+    cursor:pointer;color:inherit;padding:0;flex-shrink:0}
+  /* 줄 모양은 아래 .sf-burger 가 맡는다. 예전 세 줄 단추의 span 규칙(두께 1.8 · 줄 사이
+     margin 7 · 커서 올릴 때 밀기)이 남아 있으면 둘째 · 셋째 줄이 7px 씩 아래로 밀리고,
+     커서를 올리면 .sf-burger 의 transform 까지 덮어써 모양이 틀어진다 */
+  .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
+    background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
+    color:#fff;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .45s var(--ease),visibility .45s var(--ease)}
+  .navover.open{opacity:1;visibility:visible;pointer-events:auto}
+  .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
+  .ov-logo img{height:20px;width:auto;display:block}
+  .ov-tools{display:flex;align-items:center;gap:22px}
+  .ov-lang{text-decoration:none;color:var(--on-dark-body);font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps);transition:color .2s}
+  .ov-lang:hover{color:#fff}
+  .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
+  .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .ov-close span{position:absolute;top:50%;left:11px;right:11px;height:1.6px;background:#fff}
+  .ov-close span:first-child{transform:rotate(45deg)}
+  .ov-close span:last-child{transform:rotate(-45deg)}
+  .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ov-row:first-child{border-top:none}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
+  .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+  .ov-links a{text-decoration:none;color:var(--on-dark-body);font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a:hover{color:#fff}
+  .navover .ov-row{transform:translateY(18px);opacity:0}
+  .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+  .navover.open .ov-row:nth-child(1){transition-delay:.06s}
+  .navover.open .ov-row:nth-child(2){transition-delay:.11s}
+  .navover.open .ov-row:nth-child(3){transition-delay:.16s}
+  .navover.open .ov-row:nth-child(4){transition-delay:.21s}
+  .navover.open .ov-row:nth-child(5){transition-delay:.26s}
+  @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
+  /* 맨 위로 가기 — 세부 페이지(business-*.html)와 같은 버튼을 그대로 옮겼다.
+     z-index 는 전체메뉴 오버레이(300)보다 낮게 두어 메뉴를 연 동안에는 가린다. */
+  .totop{position:fixed;right:32px;bottom:32px;z-index:150;width:52px;height:52px;
+    border-radius:50%;background:var(--g950);border:none;cursor:pointer;
+    display:grid;place-content:center;color:#fff;
+    box-shadow:0 12px 32px rgba(14,22,30,.22);
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .3s var(--ease),transform .3s var(--ease),
+      visibility 0s linear .3s,background .2s var(--ease)}
+  .totop.is-visible{opacity:1;visibility:visible;transform:none;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),background .2s var(--ease)}
+  .totop:hover{background:var(--brand)}
+  .totop svg{width:22px;height:22px}
+  @media(max-width:900px){
+    .totop{right:20px;bottom:20px;width:44px;height:44px}
+    .totop svg{width:18px;height:18px}
+  }
+
+  /* ===================== 공통 GNB (Figma 1135:7128) =====================
+     흰 바 · 가운데 대분류 다섯 · 대분류마다 다른 메가 판.
+     사업영역 세부 A-1 네 장이 쓰던 것을 여기로 옮겨 열아홉 장이 함께 쓴다.
+     색과 치수는 이 블록 안에서만 정의한다 — 장마다 토큰 이름이 달라도 같은
+     모양이 나와야 하기 때문이다. (세부 A-1 네 장은 아직 자기 <style> 에 같은
+     규칙을 갖고 있어 그쪽이 이긴다 — 값은 같다) */
+  /* GNB 는 넓은 화면(901~)에서 64 · 메뉴 16 · 로고 96(높이 ≈21) — 2026-09-22 키움(53 · 14 · 78 은 화면에 비해
+     납작했다). 좁은 화면(햄버거)은 53 · 78 그대로 */
+  .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{
+    --gnb-h:64px;--gnb-m:44px;
+    --gnb-line:#e4e8ed;--gnb-sec:#5a6675;--gnb-brand:#2c5790;--gnb-g100:#f4f6f8;
+    --gnb-col:calc((100% - 308px) / 12)}
+  /* 바가 화면에 붙박이라 본문을 그 높이만큼 내려 준다 — body 를 건드리지 않고
+     머리 바로 뒤에 같은 높이의 빈 칸을 둔다 */
+  .sf-gnb-sp{height:var(--gnb-h)}
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px var(--gnb-m);background:#fff;
+          border-bottom:1px solid var(--gnb-line)}
+  .sf-gnb .logo{flex-shrink:0;width:96px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  /* 대분류 묶음은 화면 한가운데에 못 박는다 — 로고와 도구의 폭이 달라
+     space-between 만으로는 가운데가 어긋난다 */
+  .sf-gnb .sf-menus{position:absolute;left:50%;transform:translateX(-50%);
+                    list-style:none;margin:0;padding:0;
+                    display:flex;align-items:center;gap:16px}
+  .sf-gnb .sf-menus>li{display:flex}
+  .sf-gnb .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                         font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+                         line-height:var(--lh-body);color:var(--gnb-sec);white-space:nowrap;
+                         text-decoration:none;
+                         transition:background .2s var(--ease),color .2s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover,.sf-gnb .sf-menus>li.is-open>a{background:var(--gnb-g100)}
+  .sf-gnb .sf-menus>li>a[aria-current]{color:var(--gnb-brand);font-weight:800}
+  /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다. 자리는 늘 잡아 둔다 */
+  .sf-gnb .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
+                 transition:opacity .18s var(--ease),transform .22s var(--ease)}
+  .sf-gnb .sf-menus>li>a:hover .caret,
+  .sf-gnb .sf-menus>li.is-open .caret{opacity:1}
+
+  .sf-gnb .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-gnb .sf-lang{position:relative}
+  .sf-gnb .sf-tools button{width:24px;height:24px;display:grid;place-content:center;
+                           padding:0;background:none;border:0;color:var(--gnb-sec);
+                           cursor:pointer;transition:color .2s}
+  .sf-gnb .sf-tools button:hover,
+  .sf-gnb .sf-tools button[aria-expanded="true"]{color:var(--gnb-brand)}
+  .sf-gnb .sf-tools svg{display:block;width:24px;height:24px}
+  .sf-gnb .sf-drop{position:absolute;top:100%;right:0;min-width:96px;padding:6px 0;
+                   background:#fff;border:1px solid var(--gnb-line);
+                   box-shadow:0 12px 28px rgba(14,22,30,.1);
+                   opacity:0;visibility:hidden;transform:translateY(-6px);
+                   transition:opacity .22s var(--ease),transform .22s var(--ease),
+                              visibility .22s}
+  .sf-gnb .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-gnb .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);
+                     font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
+                     color:var(--gnb-sec);white-space:nowrap;text-decoration:none;
+                     transition:background .18s,color .18s}
+  .sf-gnb .sf-drop a:hover{background:var(--gnb-g100);color:var(--gnb-brand)}
+  .sf-gnb .sf-drop a[aria-current]{color:var(--gnb-brand);font-weight:800}
+
+  /* 메가 판 두 갈래 — 사업영역만 화면 폭을 다 쓰는 넓은 판이고(안쪽은 격자 2~11 열
+     띠에 앉아 네 칸으로 갈린다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card).
+     항목이 둘에서 다섯뿐인 메뉴에 흰 띠를 화면 끝까지 깔면 빈자리만 남고, 오른쪽
+     메뉴일수록 커서가 목록까지 가로로 멀리 건너야 했다 */
+  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:98;background:#fff;
+           box-shadow:0 12px 28px rgba(14,22,30,.08);
+           opacity:0;visibility:hidden;transform:translateY(-8px);
+           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
+  .sf-mega.open{opacity:1;visibility:visible;transform:none}
+  .sf-mega .cols{width:calc(var(--gnb-col) * 12 + 220px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
+  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
+                padding:var(--gnb-m);border-right:1px solid var(--gnb-line)}
+  .sf-mega .col:last-child{border-right:0}
+  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
+  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
+  /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
+     그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
+     폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
+     카드 뒤에는 흐림막을 깔지 않는다 — 가릴 만큼 크지 않다 */
+  .sf-mega.card{right:auto;left:var(--mm-x,0px);width:max-content;min-width:200px;
+                box-shadow:0 10px 24px rgba(14,22,30,.12)}
+  .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
+  .sf-mega.card .hd{white-space:nowrap}
+  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
+               font-weight:800;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
+               color:var(--gnb-sec);text-decoration:none;
+               transition:color .18s var(--ease)}
+  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
+  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--gnb-brand)}
+  .sf-mega ul{list-style:none;margin:0;padding:0;
+              display:flex;flex-direction:column;gap:20px}
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);
+                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec);
+                text-decoration:none;transition:color .18s var(--ease)}
+  .sf-mega ul a:hover{color:var(--gnb-brand)}
+
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:97;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
+  @media(max-width:900px){
+    .sf-gnb{padding-left:16px;padding-right:16px}
+    .sf-gnb .sf-menus{display:none}
+    .sf-gnb,.sf-mega,.sf-scrim,.sf-gnb-sp{--gnb-h:53px}
+    .sf-gnb .logo{width:78px}
+    .sf-mega,.sf-scrim{display:none}
+  }
+
+
+  /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
+     누르면 짧은 눈금은 사라지고 긴 두 줄이 가운데에서 엇갈려 X 가 된다 */
+  .sf-burger{position:relative;display:block;width:24px;height:24px}
+  .sf-burger .bar{position:absolute;height:1px;background:currentColor;
+                  transition:width .3s var(--ease),transform .3s var(--ease),
+                             opacity .2s var(--ease)}
+  .sf-burger .a{left:5px;top:7px;width:3px}
+  .sf-burger .b{left:5px;top:7px;width:10px;transform:translateX(4px)}
+  .sf-burger .c{left:5px;top:16px;width:14px}
+  .sf-burger[aria-expanded="true"] .a{opacity:0}
+  .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+
+
+  /* ===================== 회사소개 A-1 (Figma 995:324) =====================
+     히어로 · Vision 2030 두 장. 머리와 푸터는 위 공용 블록 그대로다.
+     Figma 변수 — Grid/Margin 44 = --co-m, Text/Secondary = --co-sec,
+     Border/Default = --border-g, Text/Brand = --brand, 아이콘 파랑 = --brand-2 */
+  :root{--ald:"Aldrich",var(--rc),sans-serif;--co-m:44px;--co-sec:#5a6675;--co-mute:#96a3b3;
+        --co-ph:#e5e6e8;--co-rule:#c7c9cc;--co-line:var(--brand-2)}
+  body{background:#fff}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+           clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .co-vision{word-break:keep-all}
+
+  /* ── 첫 화면은 회사정보 세 페이지 공용 틀이다(company-info.css 의 .ci-top · .ci-hero, Figma 1227:7858) ── */
+
+  /* ── Vision 2030 (Figma 1227:7853) — 첫 화면 파랑 그라디언트 위, 위아래 40 · 옆 44.
+     글 덩어리(눈썹 Aldrich 16 · 비전 제목 Aldrich 48 · 본문 15, 사이 20)가 남은 높이 가운데에 서고,
+     그 아래 26 에 16:9 그림 세 칸(사이 20)이 옆 마진까지 찬다. 칸에는 AAA 세 판과 같은 사진이 든다 */
+  .co-vband{display:flex;flex-direction:column;gap:26px;padding:40px var(--ci-m);word-break:keep-all}
+  .co-vband .row{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:20px}
+  .co-vband .txt{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+  .co-vband .eyebrow{font-family:var(--ald);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .co-vband h2{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+  .co-vband .lead{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
+                  color:var(--on-dark-body);font-feature-settings:"lnum" 1,"tnum" 1}
+  .co-vband .lead span{display:block}
+  .co-vband .lead span+span{margin-top:2px}
+  /* ── Vision 제목 타이핑 (2026-09-21 요청 — A 회사소개와 같은 방식) ──
+     글자를 낱개 <span class="ch"> 로 싸 두고 opacity 만 켜므로 줄이 흔들리지 않는다.
+     마지막 글자 뒤에 얇은 커서가 따라가다 다 찍히면 사라지고 그때 줄글이 떠오른다.
+     스크립트가 못 돌면 그냥 다 보인다(.is-typing 이 안 붙는다) */
+  .co-vband h2.is-typing .ch{opacity:0}
+  .co-vband h2.is-typing .ch.on{opacity:1}
+  .co-vband h2 .caret{display:none}   /* 커서('|')는 걷었다(2026-09-21 요청) — 요소는 남겨 두고 줄 바뀜 판정에만 쓴다 */
+  .co-vband.is-typing .lead{opacity:0;translate:0 10px}
+  .co-vband.is-typed .lead{opacity:1;translate:none;transition:opacity .6s var(--ease),translate .6s var(--ease)}
+  @media(prefers-reduced-motion:reduce){
+    .co-vband h2.is-typing .ch{opacity:1}
+    .co-vband.is-typing .lead{opacity:1;translate:none}
+    .co-vband h2 .caret{display:none}
+  }
+  .co-vband .imgs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ci-gap)}
+  .co-vband .imgs li{aspect-ratio:16/9;overflow:hidden;background:#dedede}
+  /* 첫 화면 높이에 맞추기 — 칸은 16:9 가 기본이고, 띠 안쪽 높이(cqh)에서 글 덩어리(202)와 사이(26)를 뺀
+     만큼을 넘지 않는다(넘치면 높이만 줄어 사진이 잘린다, 바닥 120). 바닥 높이는 여기에 맞춘 640 */
+  .ci-top{--ci-min:640px}
+  @media(min-width:901px){
+    .co-vband .imgs li{aspect-ratio:auto;height:min(calc((100cqw - 2 * var(--ci-gap)) / 3 * 9 / 16), max(120px, calc(100cqh - 228px)))}
+  }
+  .co-vband .imgs li>img{display:block;width:100%;height:100%;object-fit:cover}
+
+  /* ── AAA 전략 — AAA 세 장과 닫는 카드가 --vgap 간격으로 쌓인다. 위아래 여백은 --vpad ─────────── */
+  /* 아래 여백은 없다 — 마지막 자식인 사진 판이 섹션 바닥(= 푸터 윗변)에 그대로 붙는다 */
+  /* 밑변 실선은 걷었다(2026-09-21 요청) — 마지막 사옥 야경 판과 어두운 푸터 사이에 회색 줄 하나가 떠 보였다 */
+  .co-vision{background:#fff;--vpad:240px;padding:var(--vpad) 0 0;
+             display:flex;flex-direction:column;--vgap:120px;gap:var(--vgap);overflow:hidden}
+
+  /* AAA 세 장 — 화면 폭의 68%(1440 중 981) 판이 오른쪽 · 왼쪽 끝에 번갈아 붙는다(1 · 3 오른쪽, 2 왼쪽).
+     아래 규칙의 기본값이 왼쪽에 붙는 판이고, :nth-child(odd) 가 오른쪽에 붙는 판이다.
+     판은 두 겹이다. 바깥 판은 모서리 60, 그 안 20 들어간 안쪽 판은 모서리 40 이고,
+     둘 다 위와 [화면 안쪽 옆]에만 선이 있다. 글과 그림은 판의 화면 안쪽 절반에 선다.
+     선은 두 겹 모두 회색이 바탕이다. 그 위에 같은 자리를 따라가는 파란 선(.co-draw)을
+     스크립트가 겹쳐 두고, 판이 화면을 지나가는 만큼 붙은 쪽 끝 → 모서리 → 옆선 순으로
+     그려 나간다. 판이 좌우로 번갈아 붙어 세 장의 파란 선이 지그재그로 이어진다.
+     (Figma 원본의 "안쪽 선 왼쪽 2/3 파랑" 그라디언트는 이 동작으로 대신한다) */
+  /* 제목 덩어리 → 판 사이 = 섹션 위 여백. 섹션 gap(--vgap)에 모자란 만큼만 더한다 */
+  .co-values{list-style:none;display:flex;flex-direction:column}
+  .co-val{position:relative;width:68.125%}
+  .co-val:nth-child(odd){margin-left:auto}
+  .co-val .out{background:#fff;border-top:1px solid var(--border-g);border-right:1px solid var(--border-g);
+               border-top-right-radius:60px;padding:20px 20px 0 0}
+  .co-val:nth-child(odd) .out{border-right:0;border-left:1px solid var(--border-g);
+               border-radius:60px 0 0 0;padding:20px 0 0 20px}
+  .co-val .in{position:relative;background:#fff;border-top:1px solid var(--border-g);
+              border-right:1px solid var(--border-g);border-top-right-radius:40px;
+              --pt:64px;padding:var(--pt) 2.08% 120px 52.13%;display:flex;flex-direction:column;gap:28px}
+  .co-val:nth-child(odd) .in{border-right:0;border-left:1px solid var(--border-g);
+              border-radius:40px 0 0 0;padding:var(--pt) 52.13% 120px 2.08%}
+  /* 파란 선 — 판 위에 겹친 SVG. 경로는 판 크기에 맞춰 스크립트가 그린다(모서리 반경이
+     px 고정이라 viewBox 늘이기로는 모서리가 찌그러진다). 채운 길이는 stroke-dashoffset */
+  .co-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .co-draw path{fill:none;stroke:var(--co-line);stroke-width:1}
+  /* 두 선 사이 틈을 채우는 면 — 틈 한가운데를 지나는 굵은 선이라 선과 같은 방식(dashoffset)으로 차오른다.
+     두께는 스크립트가 틈(바깥 테두리 아래 ~ 안쪽 테두리 위)에 맞춰 넣는다. 경로가 SVG 맨 앞이라 선 아래에 깔린다 */
+  .co-draw path.fill{stroke:#d6e3f6;stroke-width:20}
+  /* 마지막 판의 두 선(바깥 · 안쪽)을 닫는 그림 윗변까지 잇는 회색 바탕. 길이 = 판과 닫는 문구
+     사이 간격(--vgap) + 그림의 위 여백(32). 파란 선은 스크립트가 같은 길이만큼 경로를 늘려 그린다.
+     선마다 제 테두리 상자(.out · .in)에 매단다 — 판 폭이 소수점(959.875 등)이라 목록 끝에서
+     따로 자리를 잡으면 테두리와 다른 픽셀로 반올림돼 1px 어긋난다. right:-1px 은 안쪽 여백 상자
+     끝에서 테두리 한 칸 바깥, 곧 테두리 자리 그대로다.
+     :last-of-type 으로 잡는다 — 목록 끝에 다른 요소가 붙어도 마지막 판을 가리키게 */
+  .co-val:last-of-type .out{position:relative}
+  .co-val:last-of-type .out::after,
+  .co-val:last-of-type .in::after{content:"";position:absolute;top:100%;right:-1px;width:1px;
+                                  height:calc(var(--vgap) + 32px);background:var(--border-g);pointer-events:none}
+  .co-val:last-of-type:nth-of-type(odd) .out::after,
+  .co-val:last-of-type:nth-of-type(odd) .in::after{right:auto;left:-1px}
+  /* z-index 4 — 제목 · 글이 겹친 SVG(.co-draw) 위에 선다 */
+  .co-val .kw{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  /* 번호 박스 — 바깥 선과 안쪽 선 사이 20px 틈의 한가운데, 글 기둥 중앙에 얹는다.
+     흰 바탕이 두 선을 가려 선이 박스를 뚫고 지나가는 것처럼 보인다. 파란 선(바깥)이
+     박스에 닿으면 스크립트가 .is-lit 을 달아 테두리와 숫자도 파랗게 바뀐다.
+     세로 자리: 두 선의 중심은 .in 안쪽 상자 위 -21.5 / -0.5 → 가운데 -11,
+     .kw 는 거기서 --pt 만큼 아래에 있다. z-index 는 위에 겹친 SVG(.co-draw)를 덮기 위해 */
+  .co-val .no{position:absolute;left:50%;top:calc(-1 * var(--pt) - 11px);z-index:2;
+              transform:translate(-50%,-50%);min-width:40px;height:32px;padding:0 10px;
+              display:grid;place-items:center;background:#fff;border:1px solid var(--co-rule);
+              font-family:var(--ald);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-num);
+              color:var(--co-mute);transition:color .4s var(--ease),border-color .4s var(--ease)}
+  .co-val .no.is-lit{color:var(--co-line);border-color:var(--co-line)}
+  .co-val h3{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);letter-spacing:var(--ls-num);
+             color:var(--g900)}
+  /* 키워드 짝 — 머리글자만 파랑, 나머지는 옅은 회색 */
+  .co-val .pair{display:flex;align-items:center;gap:8px;height:20px;font-family:var(--suit);
+                font-weight:800;font-size:var(--fs-meta);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--co-mute)}
+  .co-val .pair b{font-weight:800;color:var(--brand)}
+  .co-val .plus{display:block;width:20px;height:20px;flex-shrink:0;color:var(--brand-2)}
+  .co-val .d{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);
+             color:var(--co-sec)}
+  .co-val .ph{display:block;aspect-ratio:4/3;background:var(--co-ph);border:1px solid var(--border-g)}
+  /* 사진은 판 안 제자리에 가만히 있다. A 회사소개 AAA 장의 세 장(세로로 잘린 원본)이라 4:3 자리에서는
+     가로 띠만 보인다 — 어느 높이를 남길지는 사진마다 object-position 으로 정한다(마크업의 style) */
+  .co-val .ph{overflow:hidden}
+  .co-val .ph>img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 사진 스택 모핑 — Vision 띠의 사진 세 장이 스크롤을 따라 가로 가운데로 모이며 스택이 되고(1단계),
+     그 스택이 아래 AAA 첫 판의 사진 자리로 내려앉는다(2단계). 스크립트가 사진 복사본(.co-fly)을
+     #stage 위에 띄워 움직이고, 그동안 원래 사진(Vision 세 장 · 첫 판)은 자리만 남긴다.
+     맨 앞 장이 첫 판과 같은 사진이라 내려앉으면 이음새 없이 제자리 사진이 된다.
+     z-index 1 — 내려앉는 동안 AAA 판의 제목 · 글(.kw 4) · 번호 박스(.no 2) 뒤로 지나가고, 판의 흰 바탕 ·
+     선 위로는 보인다. 복사본끼리는 z 가 같아 마크업 순서로 겹친다(스크립트가 앞 장을 마지막에 붙인다).
+     좁은 화면(900 이하) · 움직임 줄이기 · 스크립트 없음이면
+     html 에 .is-flying 이 붙지 않아 원래 사진이 제자리에 그대로 있다 */
+  .co-fly{position:absolute;left:0;top:0;z-index:1;overflow:hidden;pointer-events:none;
+          will-change:transform,width,height;background:#dedede}
+  .co-fly>img{display:block;width:100%;height:100%;object-fit:cover}
+  .is-flying .co-vband .imgs li{background:transparent}
+  .is-flying .co-vband .imgs li>img,.is-flying .co-val:first-child .ph>img{visibility:hidden}
+  .is-flying .co-val:first-child .ph{background:transparent}
+
+  /* 닫는 카드 — 격자 2~11열, 밤하늘 사옥 사진(Figma 1212:7744). 안쪽 20 에 흰 20% 선 상자를 두고
+     위는 6대 핵심가치 3×2 칸, 아래는 왼쪽 정렬 세 줄 문구. 하늘이 짙어 막은 덮지 않는다 */
+  /* 사진 판은 화면 폭을 꽉 채우고 아래로는 푸터에 바로 붙는다 (Figma 1222:7797).
+     격자는 그 안쪽 44 에 선다 — 시안에서 잰 값이다(좌 44 · 우 45 · 하 46).
+     비율도 시안 프레임 1440:655 로 맞춘다(예전 1124:607 은 좁게 들어가 있던 판의 것이라,
+     폭을 화면만큼 넓히면 높이가 770 까지 자란다) */
+  .co-apro{padding-inline:0}
+  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:1440/655;
+                display:flex;padding:88px 44px 44px;background:var(--g900)}
+  /* 사진은 16:9 인데 판은 1440:655 라 세로 155 가 잘린다 — 아래를 붙들어 사옥 발치의
+     'A-PRO 글로벌 센터' 간판까지 담는다(시안이 그렇게 잘라 두었다). 위로 잘리는 것은
+     빈 밤하늘뿐이다 */
+  .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%}
+  /* 글은 판 왼쪽에 모인다 — 문구가 위, 6대 핵심가치가 아래다(2026-09-18 시안).
+     판을 가르던 3×2 격자와 테두리는 걷었다 : 사진 위에 선을 긋는 대신 글만 얹는다 */
+  .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
+                 justify-content:space-between;color:#fff}
+  /* 핵심가치 — 번호 붙은 여섯 줄. 번호는 CSS 가 센다(01 · 02 …).
+     폭은 가장 긴 이름(Aggressiveness)에 맞춘 고정값이다 : 줄 끝의 가는 선이 들쭉날쭉하면
+     여섯이 한 묶음으로 보이지 않는다. 첫 줄 위에도 선을 그어 묶음을 닫는다.
+     이름 글자는 사업영역 세부의 키워드(.sf-subs .nm — SUIT 800 · --fs-h3 · --lh-head · --ls-num)와 같다(2026-09-18).
+     색만 다르다 — 밤하늘 사진 위라 브랜드 파랑 대신 흰색이다 */
+  .co-apro .vals{width:min(250px,42%);list-style:none;counter-reset:val;
+                 border-top:1px solid rgba(255,255,255,.28)}
+  .co-apro .vals li{display:flex;align-items:baseline;gap:14px;padding:10px 2px;
+                    border-bottom:1px solid rgba(255,255,255,.28);
+                    font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
+                    line-height:var(--lh-head);letter-spacing:var(--ls-num)}
+  .co-apro .vals li::before{counter-increment:val;content:counter(val,decimal-leading-zero);
+                    flex:none;font-family:var(--suit);font-weight:700;font-size:var(--fs-tag);
+                    letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
+  /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
+     SUIT 400 · --fs-h2 · --lh-label. 줄 끊김은 <span> 이 정하므로 폭 상한은 두지 않는다 */
+  .co-apro p{font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
+             line-height:var(--lh-label);letter-spacing:var(--ls);word-break:keep-all}
+  .co-apro p span{display:block}
+
+  @media(max-width:700px){ .co-vband .imgs{grid-template-columns:minmax(0,1fr)} }
+  @media(max-width:900px){
+    :root{--co-m:16px}
+    /* 좁은 화면은 한 줄로 쌓는다 — 눈썹 · 제목 · 본문 · 그림. 그림은 한 줄에 한 칸 */
+    .co-vband{padding:40px var(--ci-m)}
+    .co-vband h2{font-size:var(--fs-h1)}
+    .co-vision{--vpad:120px;--vgap:80px}
+    .co-val{width:auto;margin-inline:var(--co-m)}
+    .co-val:nth-child(odd){margin-left:var(--co-m)}
+    .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
+    .co-val h3{font-size:var(--fs-h1)}
+    .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:16px}
+    .co-apro .fig>img{object-position:70% 50%}
+    /* 좁은 화면은 문구가 사옥 위에 얹혀 묻힌다 — 아래에서만 짙어지는 막을 깐다 */
+    .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
+                         background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
+    .co-apro .vals{width:min(240px,72%)}
+    .co-apro .vals li{padding:7px 2px;font-size:var(--fs-meta);letter-spacing:var(--ls)}
+    .co-apro p{font-size:var(--fs-h2);letter-spacing:var(--ls)}
+    .co-apro p span{display:inline}
+  }
+</style>
+<link rel="stylesheet" href="gnb-c.css" />
+</head>
+<body>
+
+<!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-c.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-c.html" aria-current="true" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-c.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-c.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-c.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+    </div>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<!-- 메가 판 — 시안 C 는 A 의 방식: 한 장이 화면 폭으로 열리고, 하위 메뉴가 제 대분류 밑에 선다 (gnb-c.css) -->
+<div class="c-mega" id="cMega" aria-hidden="true" aria-label="전체 메뉴">
+  <div class="c-cols">
+    <div class="c-col"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    <div class="c-col"><a href="company-c.html" aria-current="page">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    <div class="c-col"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    <div class="c-col"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">지배구조</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html">ESG 게시판</a></div>
+    <div class="c-col"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+  </div>
+</div>
+
+<div id="stage">
+
+  <!-- ===================== 첫 화면 (Figma 1227:7858) — 회사정보 공용 틀(company-info.css) ===================== -->
+  <div class="ci-top">
+  <section class="ci-hero">
+    <h1 lang="en">About</h1>
+    <p class="sub">The Best Electrical Engineering Solution Provider</p>
+  </section>
+
+  <!-- ===================== 01 · VISION 2030 (Figma 1227:7853) ===================== -->
+  <section class="ci-band co-vband" id="vision" aria-labelledby="co-vis-t">
+    <div class="row">
+      <p class="eyebrow">VISION 2030</p>
+      <div class="txt">
+        <h2 id="co-vis-t">Global Top 5<br />Total Energy - Solution Provider</h2>
+        <p class="lead"><span>에이프로 그룹은 2030년까지 종합 에너지 인프라 분야에서 글로벌 Top5에 진입하는 것을 미래 목표로 삼고 있습니다.</span><span>단순한 부품·장비 공급을 넘어, 에너지 전 영역을 아우르는 통합 솔루션 기업으로 도약하겠다는 의지를 담고 있습니다.</span></p>
+      </div>
+    </div>
+    <!-- 그림 세 칸 — 아래 AAA 세 판과 같은 사진을 같은 차례 · 같은 자름 자리(object-position)로 쓴다 -->
+    <ul class="imgs" aria-hidden="true">
+      <li><img src="../assets/aaa-advanced.jpg" width="2400" height="1848" alt="" decoding="async" style="object-position:50% 50%" /></li>
+      <li><img src="../assets/aaa-aggressive.jpg" width="2400" height="1600" alt="" decoding="async" style="object-position:50% 50%" /></li>
+      <li><img src="../assets/aaa-agile.jpg" width="2400" height="1596" alt="" decoding="async" style="object-position:50% 50%" /></li>
+    </ul>
+  </section>
+  </div>
+
+  <!-- ===================== 02 · AAA 전략 ===================== -->
+  <section class="co-vision" aria-label="AAA 전략">
+    <!-- AAA 세 장. 그림 자리는 Figma 에서도 비어 있다(빈칸) -->
+    <ul class="co-values" aria-label="AAA 전략">
+      <li class="co-val"><div class="out"><div class="in">
+        <div class="kw">
+          <span class="no" aria-hidden="true">01</span>
+          <h3>Advanced</h3>
+          <p class="pair"><span><b>A</b>dvance</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>P</b>ioneer</span></p>
+          <p class="d">앞선 기술력과 축적된 노하우로 시장을 선도합니다.</p>
+        </div>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-advanced.jpg" width="2400" height="1848" alt="" decoding="async" style="object-position:50% 50%" /></span>
+      </div></div></li>
+      <li class="co-val"><div class="out"><div class="in">
+        <div class="kw">
+          <span class="no" aria-hidden="true">02</span>
+          <h3>Aggressive</h3>
+          <p class="pair"><span><b>A</b>ggressiveness</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>R</b>emarkability</span></p>
+          <p class="d">도전적이고 과감한 자세로 시장을 확대합니다.</p>
+        </div>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-aggressive.jpg" width="2400" height="1600" alt="" decoding="async" style="object-position:50% 50%" /></span>
+      </div></div></li>
+      <li class="co-val"><div class="out"><div class="in">
+        <div class="kw">
+          <span class="no" aria-hidden="true">03</span>
+          <h3>Agile</h3>
+          <p class="pair"><span><b>A</b>gility</span><svg class="plus" viewBox="0 0 20 20" fill="none" aria-hidden="true"><g transform="translate(4.1667 4.1667)" fill="currentColor"><path d="M11.6667 5.41667V6.25H3.33333V5.41667H11.6667Z"/><path d="M2.5 5.41667V6.25H0V5.41667H2.5Z"/><path d="M6.25 11.6667H5.41667L5.41667 0H6.25L6.25 11.6667Z"/></g></svg><span class="sr-only"> + </span><span><b>O</b>rganism</span></p>
+          <p class="d">빠르게 변화하는 에너지 환경에 유연하게 대응합니다.</p>
+        </div>
+        <span class="ph" aria-hidden="true"><img src="../assets/aaa-agile.jpg" width="2400" height="1596" alt="" decoding="async" style="object-position:50% 50%" /></span>
+      </div></div></li>
+    </ul>
+
+    <div class="co-apro">
+      <div class="fig">
+        <img src="../assets/hq-night-sky-wide.jpg" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
+        <div class="line">
+          <p><span>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, </span><span>6대 핵심가치(Core 6-Values)와 AAA 전략을 실천하여 </span><span>글로벌 종합 에너지 솔루션 기업으로 나아갑니다</span></p>
+          <ol class="vals" aria-label="6대 핵심가치">
+            <li>Advance</li><li>Aggressiveness</li><li>Agility</li>
+            <li>Pioneer</li><li>Remarkability</li><li>Organism</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container reveal-stagger">
+      <!-- 메뉴 트리 -->
+      <nav class="f-nav" aria-label="사이트맵">
+        <div class="f-col">
+          <p class="head">사업영역</p>
+          <ul>
+            <li><a href="business-smart-c.html">스마트 제조</a></li>
+            <li><a href="business-energy-c.html">에너지 인프라</a></li>
+            <li><a href="business-ai-c.html">인공지능 플랫폼</a></li>
+            <li><a href="business-semicon-c.html">화합물 전력 반도체</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">회사 정보</p>
+          <ul>
+            <li><a href="company-c.html">회사 소개</a></li>
+            <li><a href="network-c.html">글로벌 네트워크</a></li>
+            <li><a href="locations-c.html">사업장소재</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">투자정보</p>
+          <ul><li><a href="ir-finance-c.html">재무정보</a></li><li><a href="ir-disclosure-c.html">공시정보</a></li><li><a href="ir-stock-c.html">주식정보</a></li></ul>
+        </div>
+        <div class="f-col">
+          <p class="head">지속가능경영</p>
+          <ul>
+            <li><a href="esg-environment-c.html">환경</a></li>
+            <li><a href="esg-social-c.html">사회</a></li>
+            <li><a href="esg-governance-c.html">지배구조</a></li>
+            <li><a href="esg-report-c.html">내/외부 신고채널</a></li>
+            <li><a href="esg-board-c.html">ESG 게시판</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <p class="head">커뮤니티</p>
+          <ul>
+            <li><a href="community-notice-c.html">공지사항</a></li>
+            <li><a href="community-press-c.html">보도자료</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- 패밀리사이트 + 기타 정보 -->
+      <div class="f-util">
+        <div class="f-links">
+          <a href="network-c.html">글로벌 네트워크</a><i class="sep"></i>
+          <a href="#">Contact us</a><i class="sep"></i>
+          <a href="locations-c.html">사업장소재</a><i class="sep"></i>
+          <a href="#">이메일무단수집거부</a><i class="sep"></i>
+          <a href="#" class="strong">개인정보처리방침</a>
+        </div>
+        <div class="f-family" id="fFamily">
+          <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+            <span>FAMILY SITE</span><i class="arw"></i>
+          </button>
+          <div class="fmenu">
+            <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+            <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 로고 + 사업자 정보 + copyright -->
+      <div class="f-bottom">
+        <div class="bl">
+          <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+          <div class="infos">
+            <div class="line">
+              <span>주)에이프로</span><i class="sep"></i>
+              <span>대표이사 : 임 종 현</span><i class="sep"></i>
+              <span>사업자등록번호 : 123-81-58293</span>
+            </div>
+            <div class="line">
+              <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+              <span>Tel : 031-441-4001</span><i class="sep"></i>
+              <span>Fax : 031-477-4020</span>
+            </div>
+          </div>
+        </div>
+        <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /stage -->
+
+<script>
+  /* ===== FOOTER family-site dropdown ===== */
+  (function(){
+    var fam = document.getElementById('fFamily');
+    if(!fam) return;
+    var btn = fam.querySelector('.fbtn');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = fam.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(!fam.contains(e.target)){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){ fam.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
+  })();
+
+  /* ===== AAA 판 테두리 — 스크롤을 따라 파란 선이 그려진다 =====
+     판마다 SVG 하나에 경로 둘(바깥 판 · 안쪽 판). 경로는 붙은 쪽 화면 끝에서 시작해
+     윗선 → 둥근 모서리 → 옆선 아래로 간다. 진행도는 판 윗변이 화면 90% 에 닿을 때 0,
+     아랫변이 화면 55% 까지 올라올 때 1 이다. 두 선은 길이가 달라 같은 비율로 채우면
+     끝이 어긋나므로, 바깥 선의 끝 자리를 안쪽 선에 옮겨 준다 — 윗선에서는 같은 x,
+     모서리에서는 같은 각도(두 호는 중심이 같다), 옆선에서는 같은 y 에 안쪽 끝이 선다.
+     스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 목표값으로 조금씩 따라가게 한다.
+     되감으면 선도 거꾸로 지워진다.
+     두 선 사이 틈은 밝은 파랑 면(경로 pf)이 같이 차오른다 — 끝 자리는 안쪽 선과 같은 방식으로 옮긴다 */
+  (function(){
+    var cards = [].slice.call(document.querySelectorAll('.co-val'));
+    if(!cards.length || !window.SVGElement) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = cards.map(function(li){
+      var svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'co-draw');
+      svg.setAttribute('aria-hidden', 'true');
+      var pf = document.createElementNS(NS, 'path'), po = document.createElementNS(NS, 'path'), pi = document.createElementNS(NS, 'path');
+      pf.setAttribute('class', 'fill');
+      svg.appendChild(pf); svg.appendChild(po); svg.appendChild(pi);
+      li.appendChild(svg);
+      return { li:li, out:li.querySelector('.out'), inn:li.querySelector('.in'),
+               no:li.querySelector('.no'), bx:0,
+               pf:pf, po:po, pi:pi, lf:0, lo:0, lI:0, cur:0, goal:0 };
+    });
+
+    /* 상자(x,y,w,h) 의 윗선 + 옆선. 선 두께 1 의 가운데(0.5 안쪽)를 지나야 CSS 테두리와 겹친다.
+       경로(d)와 함께 끝 자리 옮기기에 쓸 치수를 돌려준다 — 출발 x(sx), 윗선 곧은 길이(H),
+       호 길이(A), 옆선이 시작하는 y(cy) */
+    function edge(x, y, w, h, r, left){
+      var t = y + .5, rr = r - .5, sx, ex, d;
+      if(!left){
+        var R = x + w - .5;
+        sx = x; ex = R - rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
+      } else {
+        var L = x + .5;
+        sx = x + w; ex = L + rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
+      }
+      return { d:d, left:left, sx:sx, H:Math.abs(ex - sx), A:Math.PI * rr / 2, cy:t + rr };
+    }
+    /* 두 선 사이 틈을 채우는 면의 가운데 길. 바깥 상자(x,y,w,h · 모서리 r)에서 m 만큼 안쪽을 지난다.
+       edge() 와 같은 치수를 돌려주어 follow() 로 끝 자리를 옮길 수 있다 */
+    function band(x, y, w, h, r, left, m){
+      var t = y + m, rr = Math.max(0, r - m), sx, ex, d;
+      if(!left){
+        var R = x + w - m;
+        sx = x; ex = R - rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 1 ' + R + ' ' + (t + rr) + 'V' + (y + h);
+      } else {
+        var L = x + m;
+        sx = x + w; ex = L + rr;
+        d = 'M' + sx + ' ' + t + 'H' + ex + 'A' + rr + ' ' + rr + ' 0 0 0 ' + L + ' ' + (t + rr) + 'V' + (y + h);
+      }
+      return { d:d, left:left, sx:sx, H:Math.abs(ex - sx), A:Math.PI * rr / 2, cy:t + rr };
+    }
+    /* 바깥 선이 s 만큼 그려졌을 때 안쪽 선이 그려져야 할 길이 */
+    function follow(go, gi, s){
+      if(s <= go.H){
+        var x = go.left ? go.sx - s : go.sx + s;
+        var d = go.left ? gi.sx - x : x - gi.sx;
+        return d < 0 ? 0 : d > gi.H ? gi.H : d;
+      }
+      s -= go.H;
+      if(s <= go.A) return gi.H + s / go.A * gi.A;
+      var y = go.cy + s - go.A;
+      return gi.H + gi.A + Math.max(0, y - gi.cy);
+    }
+    function measure(){
+      items.forEach(function(it){
+        var b = it.li.getBoundingClientRect();
+        var so = getComputedStyle(it.out), si = getComputedStyle(it.inn);
+        /* 선이 왼쪽에 있으면(홀수 장 — 오른쪽에 붙은 판) 왼쪽 테두리 두께가 잡힌다 */
+        var left = parseFloat(so.borderLeftWidth) > 0;
+        var o = it.out.getBoundingClientRect(), n = it.inn.getBoundingClientRect();
+        /* 마지막 판은 옆선을 닫는 그림 윗변까지 늘린다(회색 바탕은 CSS ::before) */
+        it.ext = 0;
+        if(it === items[items.length - 1]){
+          var fig = document.querySelector('.co-apro .fig');
+          if(fig) it.ext = Math.max(0, fig.getBoundingClientRect().top - b.bottom);
+        }
+        it.go = edge(o.left - b.left, o.top - b.top, o.width, o.height + it.ext,
+                     parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left);
+        it.gi = edge(n.left - b.left, n.top - b.top, n.width, o.bottom - n.top + it.ext,
+                     parseFloat(left ? si.borderTopLeftRadius : si.borderTopRightRadius) || 0, left);
+        /* 면 — 바깥 테두리 아래(o.top+1)부터 안쪽 테두리 위(n.top)까지가 틈이다. 그 가운데를 틈 두께로 지난다 */
+        var gap = Math.max(0, n.top - o.top - 1), mid = 1 + gap / 2;
+        it.gf = band(o.left - b.left, o.top - b.top, o.width, o.height + it.ext,
+                     parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left, mid);
+        it.pf.setAttribute('d', it.gf.d);
+        it.pf.style.strokeWidth = gap;
+        it.po.setAttribute('d', it.go.d);
+        it.pi.setAttribute('d', it.gi.d);
+        it.lf = it.pf.getTotalLength(); it.lo = it.po.getTotalLength(); it.lI = it.pi.getTotalLength();
+        it.pf.style.strokeDasharray = it.lf + ' ' + it.lf;
+        /* 번호 박스까지 바깥 선이 달려야 할 거리 — 선이 출발하는 쪽 박스 가장자리까지 */
+        if(it.no){
+          var nb = it.no.getBoundingClientRect();
+          it.bx = left ? o.right - nb.right : nb.left - o.left;
+        }
+        it.po.style.strokeDasharray = it.lo + ' ' + it.lo;
+        it.pi.style.strokeDasharray = it.lI + ' ' + it.lI;
+      });
+    }
+    function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function paint(it){
+      if(!it.go) return;
+      var so = it.lo * clamp(it.cur), si = Math.min(it.lI, follow(it.go, it.gi, so));
+      var sf = Math.min(it.lf, follow(it.go, it.gf, so));
+      it.pf.style.strokeDashoffset = it.lf - sf;
+      it.po.style.strokeDashoffset = it.lo - so;
+      it.pi.style.strokeDashoffset = it.lI - si;
+      if(it.no) it.no.classList.toggle('is-lit', it.lo > 0 && so >= it.bx);
+    }
+    function goals(){
+      var vh = window.innerHeight;
+      items.forEach(function(it){
+        var r = it.li.getBoundingClientRect();
+        it.goal = still ? 1 : clamp((vh * .9 - r.top) / (r.height + (it.ext || 0) + vh * .35));
+      });
+    }
+    var raf = 0;
+    function tick(){
+      raf = 0;
+      var moving = false;
+      items.forEach(function(it){
+        var d = it.goal - it.cur;
+        if(Math.abs(d) < .0008) it.cur = it.goal;
+        else { it.cur += d * .14; moving = true; }
+        paint(it);
+      });
+      if(moving) raf = requestAnimationFrame(tick);
+    }
+    function kick(){ goals(); if(!raf) raf = requestAnimationFrame(tick); }
+    function refit(){ measure(); goals(); items.forEach(function(it){ paint(it); }); kick(); }
+
+    measure(); goals();
+    /* 처음 열었을 때 이미 지나온 판(새로고침 · 앵커 진입)은 따라가는 동작 없이 그 자리에 둔다 */
+    items.forEach(function(it){ it.cur = it.goal; paint(it); });
+    window.addEventListener('scroll', kick, { passive:true });
+    window.addEventListener('resize', refit);
+    window.addEventListener('load', refit);
+    if(window.ResizeObserver) new ResizeObserver(refit).observe(document.querySelector('.co-values'));
+  })();
+
+  /* ===== 사진 스택 모핑 — Vision 세 장이 가운데로 모여 쌓인 뒤 AAA 첫 판 사진 자리로 내려앉는다 =====
+     진행값 p 는 0 ~ 2.
+       0 ~ 1 모여 쌓기  사진 줄 윗변이 화면 60% 에서 25% 로 올라가는 동안 세 장이 제자리에서 #stage 가로
+                        가운데(같은 높이)로 모여 스택이 된다. 뒤 장일수록 12px 씩 오른쪽으로 비껴 스택이 보인다.
+       1 ~ 2 떨어짐     이어서 첫 판 사진 자리 가운데가 화면 가운데에 올 때까지 스택이 그 자리로 옮겨 가며
+                        16:9 → 4:3 으로 모양을 바꾼다. 비낌은 0 으로 줄고 뒤 장은 끝 30% 에서 사라진다.
+     스크롤 값을 그대로 쓰면 휠 한 칸마다 툭툭 끊겨 보여 선 그리기처럼 목표값을 조금씩 따라간다.
+     되감으면 거꾸로 돌아간다.
+     확인용: <html data-co-fly="1.5"> 처럼 값을 주면 스크롤과 상관없이 그 진행값에 멈춘다 */
+  (function(){
+    var stage = document.getElementById('stage');
+    var src = [].slice.call(document.querySelectorAll('.co-vband .imgs li'));
+    var dst = document.querySelector('.co-val .ph');
+    if(!stage || src.length < 2 || !dst || !window.matchMedia) return;
+    var still = matchMedia('(prefers-reduced-motion: reduce)'), wide = matchMedia('(min-width: 901px)');
+    var root = document.documentElement, OFF = 12;
+    var flies = src.map(function(li, i){
+      var el = document.createElement('div');
+      el.className = 'co-fly';
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = li.innerHTML;
+      return el;
+    });
+    /* 모두 z-index 1 이라 나중에 붙인 것이 위 — 앞 장이 맨 위에 오도록 뒤 장부터 붙인다 */
+    flies.slice().reverse().forEach(function(el){ stage.appendChild(el); });
+    var S = [], C = null, T = null, y0 = 0, y1 = 0, y2 = 1, cur = 0, goal = 0, raf = 0, on = false;
+    /* #stage 기준 상자 — 복사본이 #stage(position:relative) 안에서 움직이므로 같은 기준으로 잰다 */
+    function box(el){
+      var r = el.getBoundingClientRect(), b = stage.getBoundingClientRect();
+      return { x:r.left - b.left, y:r.top - b.top, w:r.width, h:r.height };
+    }
+    function measure(){
+      var sy = window.scrollY || window.pageYOffset, vh = window.innerHeight;
+      S = src.map(box);
+      T = box(dst.querySelector('img') || dst);
+      /* 쌓이는 자리 — 스택(비낌 포함 폭)이 #stage 가로 가운데에 오게, 높이는 사진 줄 그대로 */
+      var span = S[0].w + OFF * (src.length - 1);
+      C = { x:(stage.clientWidth - span) / 2, y:S[0].y, w:S[0].w, h:S[0].h };
+      var st = stage.getBoundingClientRect().top + sy;
+      var rowTop = st + S[0].y, tc = st + T.y + T.h / 2;
+      y0 = rowTop - vh * .6;
+      y1 = rowTop - vh * .25;
+      y2 = Math.max(y1 + 200, tc - vh * .5);
+    }
+    function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function ease(v){ return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; }
+    function lerp(a, b, v){ return a + (b - a) * v; }
+    function target(){
+      var q = parseFloat(root.getAttribute('data-co-fly'));
+      if(!isNaN(q)) return q;
+      var y = window.scrollY || window.pageYOffset;
+      return y <= y1 ? clamp((y - y0) / (y1 - y0)) : 1 + clamp((y - y1) / (y2 - y1));
+    }
+    function paint(){
+      var a = ease(clamp(cur)), f = ease(clamp(cur - 1));
+      flies.forEach(function(el, i){
+        var s = S[i], off = i * OFF, x, y, w, h;
+        if(f > 0){   /* 2단계 — 가운데 스택 → 첫 판 사진 자리 */
+          x = lerp(C.x + off, T.x, f); y = lerp(C.y, T.y, f); w = lerp(C.w, T.w, f); h = lerp(C.h, T.h, f);
+        } else {     /* 1단계 — 제자리 → 가운데(+비낌) */
+          x = lerp(s.x, C.x + off, a); y = lerp(s.y, C.y, a); w = lerp(s.w, C.w, a); h = lerp(s.h, C.h, a);
+        }
+        el.style.width = w + 'px';
+        el.style.height = h + 'px';
+        el.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        el.style.opacity = i === 0 ? 1 : 1 - clamp((f - .7) / .3);
+      });
+    }
+    function tick(){
+      raf = 0;
+      var d = goal - cur;
+      if(Math.abs(d) < .001) cur = goal;
+      else { cur += d * .16; raf = requestAnimationFrame(tick); }
+      paint();
+    }
+    function kick(){ if(!on) return; goal = target(); if(!raf) raf = requestAnimationFrame(tick); }
+    function setup(){
+      on = wide.matches && !still.matches;
+      root.classList.toggle('is-flying', on);
+      flies.forEach(function(el){ el.style.display = on ? '' : 'none'; });
+      if(!on) return;
+      measure(); goal = cur = target(); paint();
+    }
+    setup();
+    window.addEventListener('scroll', kick, { passive:true });
+    window.addEventListener('resize', setup);
+    window.addEventListener('load', setup);
+    if(wide.addEventListener){ wide.addEventListener('change', setup); still.addEventListener('change', setup); }
+    /* 복사본은 절대 위치라 #stage 크기를 바꾸지 않는다 — 글꼴 · 사진이 늦게 와 판이 움직일 때만 다시 잰다 */
+    if(window.ResizeObserver) new ResizeObserver(function(){ if(on){ measure(); paint(); } }).observe(stage);
+    if(window.MutationObserver) new MutationObserver(kick).observe(root, { attributes:true, attributeFilter:['data-co-fly'] });
+  })();
+</script>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-c.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-smart-c.html">스마트 제조</a>
+        <a href="business-energy-c.html">에너지 인프라</a>
+        <a href="business-ai-c.html">인공지능 플랫폼</a>
+        <a href="business-semicon-c.html">화합물 전력 반도체</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links">
+        <a href="company-c.html">회사 소개</a>
+        <a href="network-c.html">글로벌 네트워크</a>
+        <a href="locations-c.html">사업장소재</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links">
+        <a href="esg-environment-c.html">환경</a>
+        <a href="esg-social-c.html">사회</a>
+        <a href="esg-governance-c.html">지배구조</a>
+        <a href="esg-report-c.html">내/외부 신고채널</a>
+        <a href="esg-board-c.html">ESG 게시판</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links">
+        <a href="community-notice-c.html">공지사항</a>
+        <a href="community-press-c.html">보도자료</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<script>
+/* hamburger -> full-screen overlay menu (shared) */
+(function(){
+  var b=document.querySelector('.menu-toggle'),o=document.getElementById('navover');
+  if(!b||!o)return;
+  var c=o.querySelector('.ov-close');
+  function open(){o.classList.add('open');o.setAttribute('aria-hidden','false');b.setAttribute('aria-expanded','true');document.documentElement.style.overflow='hidden';}
+  function close(){o.classList.remove('open');o.setAttribute('aria-hidden','true');b.setAttribute('aria-expanded','false');document.documentElement.style.overflow='';}
+  b.addEventListener('click',open);
+  if(c)c.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&o.classList.contains('open'))close();});
+})();
+</script>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+<script>
+(function(){
+  var btn = document.getElementById('totop');
+  if (!btn) return;
+  var onScroll = function(){
+    btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+<script>
+/* -- 공통 GNB 메가 메뉴 -----------------------------------------------------
+   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
+   둘 다 벗어나면 짧게 기다렸다 닫는다 - 사이를 지나는 동안 깜빡이지 않게 하는
+   여유다. 새 머리를 안 쓰는 장에서는 조용히 지나간다 */
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.sf-gnb .sf-menus>li[data-mega]'));
+  if(!items.length) return;
+  var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
+  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
+  function shut(){
+    if(!cur) return;
+    var p = panel(cur);
+    cur.classList.remove('is-open');
+    cur.querySelector('a').setAttribute('aria-expanded','false');
+    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
+    cur = null;
+  }
+  function show(li){
+    if(cur === li) return;
+    var p = panel(li);
+    if(!p) return;
+    shut();
+    li.classList.add('is-open');
+    li.querySelector('a').setAttribute('aria-expanded','true');
+    p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    /* 카드는 흐림막 없이 뜬다 — 가릴 만큼 크지 않다 */
+    if(scrim && !p.classList.contains('card')) scrim.classList.add('open');
+    cur = li;
+  }
+  function hold(){ clearTimeout(t); }
+  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
+  items.forEach(function(li){
+    var p = panel(li);
+    li.addEventListener('mouseenter', function(){ hold(); show(li); });
+    li.addEventListener('mouseleave', leave);
+    li.addEventListener('focusin', function(){ hold(); show(li); });
+    if(p){
+      p.addEventListener('mouseenter', hold);
+      p.addEventListener('mouseleave', leave);
+      p.addEventListener('focusin', hold);
+    }
+  });
+  document.addEventListener('focusin', function(e){
+    if(!cur) return;
+    var p = panel(cur);
+    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
+    shut();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
+  var burger = document.querySelector('.sf-gnb .menu-toggle');
+  if(burger) burger.addEventListener('click', shut);
+
+  /* 카드를 자기 상단 메뉴 바로 아래로 세운다 — 메뉴 글자 왼쪽 끝에 카드 글자를
+     맞추면 커서는 세로로만 내려오면 된다. 화면 폭을 다 쓰던 때는 오른쪽 메뉴일수록
+     커서가 목록까지 가로로 멀리 건너야 했고, 가는 길에 상단 띠를 스치면 옆 메뉴
+     판으로 바뀌어 버렸다. 카드 왼쪽 자리를 --mm-x 로 준다. 화면 오른쪽 끝을 넘으면
+     거기서 멈추고, 글꼴이 늦게 오면 메뉴 자리가 밀리므로 load 때 다시 잰다.
+     넓은 판을 쓰는 사업영역은 건너뛴다 */
+  function alignMega(){
+    items.forEach(function(li){
+      var p = panel(li); if(!p || !p.classList.contains('card')) return;
+      var menu = p.querySelector('.menu'); if(!menu) return;
+      var a = li.querySelector('a'); if(!a) return;
+      var w = p.offsetWidth;
+      if(!w) return;                                /* 좁은 화면에선 판이 없다 */
+      /* 글자끼리 맞춘다 — 메뉴 링크도 카드도 제 안에 여백을 두고 있어서,
+         상자 왼쪽이 아니라 여백을 걷어낸 자리를 재야 줄이 선다 */
+      var pad = parseFloat(getComputedStyle(menu).paddingLeft) || 0;
+      var apad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
+      var x = a.getBoundingClientRect().left + apad - pad;
+      var edge = document.documentElement.clientWidth - w - 16;
+      p.style.setProperty('--mm-x', Math.max(16, Math.min(x, edge)) + 'px');
+    });
+  }
+  alignMega();
+  window.addEventListener('resize', alignMega);
+  window.addEventListener('load', alignMega);
+
+  /* 언어 선택 - 세부 A-1 네 장의 스크립트와 같은 동작 */
+  var lang = document.getElementById('sfLang'), lb = document.getElementById('sfLangBtn');
+  if(lang && lb){
+    lb.addEventListener('click', function(e){
+      e.stopPropagation();
+      var on = lang.classList.toggle('open');
+      lb.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(lang.contains(e.target)) return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Escape') return;
+      lang.classList.remove('open'); lb.setAttribute('aria-expanded','false');
+    });
+  }
+})();
+</script>
+<script>
+/* Vision 제목 타이핑 — 위 <style> 의 "Vision 제목 타이핑" 참고.
+   글자마다 22ms, 줄이 바뀌는 자리(<br>)에서 200ms 숨을 둔다(2026-09-21 에 45/360 에서 올렸다). 첫 화면 안이라 열자마자 돈다. 한 번만 */
+(function(){
+  var sec=document.querySelector('.co-vband'),h=sec&&sec.querySelector('h2');
+  if(!h||!('IntersectionObserver' in window))return;
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var chars=[];
+  [].slice.call(h.childNodes).forEach(function(n){
+    if(n.nodeType!==3)return;
+    var frag=document.createDocumentFragment();
+    n.textContent.split('').forEach(function(c){
+      var sp=document.createElement('span');sp.className='ch';sp.textContent=c;
+      frag.appendChild(sp);chars.push(sp);
+    });
+    h.replaceChild(frag,n);
+  });
+  if(!chars.length)return;
+  h.classList.add('is-typing');sec.classList.add('is-typing');
+  var caret=document.createElement('span');caret.className='caret';caret.setAttribute('aria-hidden','true');
+  function done(){
+    chars.forEach(function(c){c.classList.add('on');});
+    if(caret.parentNode)caret.parentNode.removeChild(caret);
+    h.classList.remove('is-typing');sec.classList.remove('is-typing');sec.classList.add('is-typed');
+  }
+  if(reduce){done();return;}
+  var i=0;
+  function tick(){
+    if(i>=chars.length){setTimeout(done,300);return;}
+    var c=chars[i++];c.classList.add('on');
+    c.parentNode.insertBefore(caret,c.nextSibling);
+    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?200:22;
+    setTimeout(tick,pause);
+  }
+  var io=new IntersectionObserver(function(es){
+    if(!es.some(function(e){return e.isIntersecting;}))return;
+    io.disconnect();
+    h.insertBefore(caret,h.firstChild);
+    setTimeout(tick,400);
+  },{rootMargin:'0px 0px -12% 0px'});
+  io.observe(sec);
+})();
+</script>
+<script src="gnb-c.js"></script>
+</body>
+</html>

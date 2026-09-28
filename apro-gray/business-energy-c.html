@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 옅은 장 칠하기는 이 클래스가 붙어 있을 때만 건다 (아래 .js .sf-sec:not(.is-on) 참고) -->
+<script>document.documentElement.className += ' js';</script>
+<title>APRO | 에이프로 — 에너지 인프라 (C)</title>
+<meta name="description" content="에이프로(APRO) 에너지 인프라 — ESS(GRID·Renewable·C&amp;I), UPS(데이터 센터·산업용·주요 전력망), 솔루션(Module·Rack·Container·BMS)." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<!-- ============================================================
+     에너지 인프라 A-1 — Figma 994:141 "04 · 에너지 인프라" 와이어프레임 구현
+     (26.09.07 v5.0 와이어프레임 페이지, fileKey 5lJIj3AmCr20ZdgBLldb3f)
+
+     ⚠ 본문 골격이 형제 세 장(스마트 제조 · 인공지능 플랫폼 · 화합물 전력 반도체)과
+        다르다. 그쪽은 붙박이가 [좌측 인덱스 + 가운데 그림] 둘이고 글만 흘렀는데,
+        여기는 붙박이가 [좌측 인덱스 + 가운데 헤더(숫자 태그 · 소분류 이름 · 눈금
+        줄)] 둘이고 나머지가 통째로 흐른다. 그래서 내용 자리가 한 폭을 다 쓴다.
+        머리(GNB · 히어로 · 인트로 · 마을 · 푸터)와 좌측 인덱스는 형제와 같다.
+
+     ⚠ 이 페이지는 _gen-a1.py 가 만들지 않는다 — A(business-energy.html)와 디자인이
+        갈라졌다. 이로써 세부 페이지 넷이 모두 생성기에서 빠졌고, SOURCES 에는
+        허브·회사소개·콘텐츠 페이지만 남는다.
+
+     소분류는 3묶음 열 장 — 01 ESS 셋 · 02 UPS 셋 · 03 솔루션 넷.
+     장의 모양이 두 가지다.
+       · 01~02 (여섯 장) : 영문 큰 제목 + 리드 한 줄 + 오른쪽 Application 번호 목록
+                           + 아래 넓은 그림 자리
+       · 03   (네 장)   : 리드 한 줄 + 제품 카드 두세 장(사진 · 파란 라벨 · 특징 넷 ·
+                           주요 적용 분야 띠) + 오른쪽 Certification 표
+       03 쪽이 길어서 한 화면에 안 들어간다 → 휠 넘김은 "이 장의 아래가 아직
+       남아 있으면 넘기지 않는다"로 두었다(아래 스크립트 참고).
+
+     와이어프레임에서 그대로 가져오지 못한 자리(문안이 나오면 여기만 고친다)
+       · 인트로 리드 두 줄 — 스마트 것이 남아 있어 A 페이지 히어로 문안을 옮겼다
+       · 02-2 산업용 UPS 의 영문 제목이 02-1 과 같다(오버라이드 누락으로 보인다)
+       · 소분류 카드 셋 중 "솔루션" 아이콘이 스마트의 icon-automation-system 이다
+     ============================================================ -->
+<style>
+  /* ── 이 페이지 전용 토큰 ───────────────────────────────────────────────
+     값은 Figma 변수(text/·border/·primitive/) 이름 그대로 옮겼다. 사이트 공용
+     토큰(business-layout.css :root)과 겹치지 않게 --sf- 접두사를 붙인다 */
+  :root{
+    --sf-txt:#1b2733;        /* text/primary       */
+    --sf-sec:#5a6675;        /* text/secondary     */
+    --sf-ter:#96a3b3;        /* text/tertiary      */
+    --sf-line:#e4e8ed;       /* border/default     */
+    --sf-line-s:#cbd2da;     /* border/strong      */
+    --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
+    --sf-brand100:#eef4fd;   /* primitive/brand/100 — 소분류 카드 판 */
+    --sf-ph-bg:#e5e6e8;
+    --sf-ph-bd:#c7c9cc;
+    --sf-ph-tx:#73757a;
+    /* ── 글자 사다리 ────────────────────────────────────────────────────
+       역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 칸들과
+       굵기 세 단(800 제목·이름 / 600 줄글 / 500 메타)만으로 짜인다.
+       이 장만 여덟 칸이다 — 카드 바닥 꼬리말이 쓰는 메타 14 가 하나 더 있다.
+       글꼴은 둘뿐이다 — 글은 전부 SUIT, 숫자와 히어로 영문만 Aldrich */
+    --t-xl:var(--fs-h1); /* 장 제목                    */
+    --t-lg:var(--fs-h2);   /* 인트로 리드                */
+    --t-md:var(--fs-h3);/* 제품 이름 · 카드 라벨      */
+    --t-sm:var(--fs-body);                   /* 소분류 이름 · 목록 항목    */
+    --t-xs:var(--fs-body);                   /* 줄글 · 인덱스 · 특징 · 표  */
+    --t-meta:var(--fs-meta);                /* 주요 적용 분야             */
+    --t-2xs:var(--fs-tag);                  /* 번호 · 그룹 머리 · 그림 설명 */
+    --t-tag:var(--fs-tag);                  /* 숫자 태그                  */
+    --ald:"Aldrich",var(--rc),sans-serif;
+    /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
+       (히어로·장 높이·sticky 인덱스·앵커 여백)이 함께 빼는 값이다.
+       한 군데서 바꾸면 전부 따라온다 */
+    --gnb-h:64px;  /* 좁은 화면(≤900)은 53 — 아래 좁은 화면 블록 */
+    /* 장 위아래 여백. 설계값은 176(= 바깥 120 + 카드 자체 56)이고 900 높이 화면을
+       전제로 그렸는데, 고정 GNB 가 53 을 먹어 그대로 쓰면 가장 긴 장(01-1, 여섯 줄
+       목록)이 한 화면을 29px 넘긴다 — 휠 한 번이 다음 장으로 건너뛰므로 그 29px 는
+       영영 안 보인다. 그래서 본문 자리 560 을 먼저 떼고 남는 만큼을 위아래로 나누되,
+       설계값 176 을 넘지는 않게 한다. 화면이 넉넉하면(1140 이상) 그대로 176 이다 */
+    --sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 560px) / 4),88px);
+    /* 본문 띠 — 눈금 줄 + 그림이 앉는 높이. 붙박이 그림 기둥과 글 한 장이
+       이 값을 같이 쓴다(그래서 두 눈금 줄이 한 줄로 맞는다) */
+    --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
+    /* 인트로 위아래 여백. 설계값은 120 이고 900 높이 화면을 전제로 그렸는데, 고정
+       GNB 가 53 을 먹어 그대로 쓰면 카드 아랫줄이 한 화면을 넘긴다 — 휠 한 번이 다음
+       장으로 건너뛰므로 그만큼은 영영 안 보인다. 그래서 리드 두 줄(96) + 숨(64) +
+       카드 최소(400) = 560 을 먼저 떼고 남는 만큼을 위아래로 나누되, 설계값 120 을
+       넘지는 않게 한다 */
+    --intro-pad:clamp(24px,calc((100svh - var(--gnb-h) - 560px) / 2),120px);
+    /* 12컬럼 한 칸(여백 44 · 거터 20). 인트로 리드가 1~5열, 소분류 카드가 6~12열이다 */
+    --gcol:calc((100% - 308px) / 12);
+    /* 본문 세 기둥이 먹는 고정분 = 왼쪽 여백 44 + 인덱스 215 + 그 오른쪽 여백 12
+       + 기둥 사이 8 두 번. 남는 폭을 그림/글이 반씩 가져가므로 5컬럼 한 칸이
+       (100% - 287) / 2 다 — GNB 우측 메뉴도 이 폭을 그대로 쓴다 */
+    --body-fixed:287px;
+    /* 내용 오른쪽 여백 */
+    --body-pad-r:120px;
+    /* 장 하나가 쓰는 띠와 그 위아래로 비워 두는 자리. 한 화면을 다 쓰지 않고
+       위아래를 남기는 이유는 형제 페이지와 같다 — 남긴 만큼 다음 장의 머리 줄이
+       화면 밑에 걸쳐 보여서 "아래에 더 있다"가 그림 없이 전해진다.
+       560 · 176 은 형제 페이지(스마트 제조)와 같은 값이다 — 두 기둥 장이 같은
+       레이아웃이므로 띠도 같아야 한다. 화면이 낮아지면 여백부터 줄고, 16 까지
+       줄면 장이 띠를 넘겨 그냥 자란다 */
+    --sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 560px) / 4),88px);
+    --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
+    /* 03 솔루션 윗단이 쓰는 높이 = 눈금 줄 16 + 그 아래 24 + 제목·Certification
+       칸 180. 카드는 띠에서 이만큼을 뺀 나머지를 쓴다 → 윗단 + 카드 하나가
+       ESS·UPS 한 장과 정확히 같은 띠(--band-h)가 된다 */
+    --phead-h:220px;
+    --col5:calc((100% - var(--body-fixed)) / 2);
+    /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
+    --txt-pad-l:40px;
+    /* 글 단 오른쪽 여백 — 넓은 화면에서는 122 를 지키고, 화면이 좁아질수록
+       물러난다. 줄글이 16px 이라 여백을 그대로 두면 한 줄이 스무 자로
+       잘게 끊긴다(한글은 서른에서 마흔 자가 편하다) */
+    --txt-pad-r:clamp(24px,calc(122px - (1600px - 100vw) * .4),122px);
+    /* 눈금 줄 상자는 16 이고 가는 선은 그 한가운데에 놓인다. 다음 장을 이만큼
+       끌어올려야 앞 장 그림의 아래 변과 다음 장의 가는 선이 한 줄로 맞는다 */
+    /* 격자 좌우 마진 — 메가 메뉴 칸 안쪽 여백도 이 값이다 */
+    --grid-m:44px;
+    --rule-off:8px;
+    /* 장 맨 아래에 비워 두는 자리 — 글이 다음 장의 머리 줄에 닿지 않게 한다 */
+    --sec-clear:20px;
+  }
+  /* 넓은 화면에서는 휠을 가로채 한 번에 한 장씩 옮긴다(맨 아래 스크립트).
+     scroll-behavior:smooth 를 켜 두면 그 rAF 애니메이션이 브라우저 이징과 겹쳐
+     뭉개지므로 공용 CSS 의 auto 를 그대로 두고, 휠을 가로채지 않는 좁은 화면에서만
+     되살린다 — 거기서는 인덱스 띠의 앵커 이동에 쓰인다 */
+  @media(max-width:900px){html{scroll-behavior:smooth}}
+  @media(max-width:900px) and (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  /* 고정 바가 덮는 만큼 본문을 내린다 — 와이어프레임도 GNB 아래에서 Scroll 이 시작한다 */
+  body{padding-top:var(--gnb-h)}
+
+  /* ===================== 고정 GNB =====================
+     로고 · 가운데 대분류 다섯 · 오른쪽 도구 (Figma 1135:7128).
+     대분류 묶음은 화면 한가운데에 못 박는다 — 로고(78)와 도구(58)의 폭이 달라
+     space-between 만으로는 가운데가 어긋난다 */
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px var(--grid-m);background:#fff;border-bottom:1px solid var(--sf-line)}
+  .sf-gnb .logo{flex-shrink:0;width:96px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  .sf-menus{position:absolute;left:50%;transform:translateX(-50%);
+            list-style:none;display:flex;align-items:center;gap:16px}
+  .sf-menus>li{display:flex}
+  .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                 font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-body);
+                 color:var(--sf-sec);white-space:nowrap;
+                 transition:background .2s var(--ease),color .2s var(--ease)}
+  .sf-menus>li>a:hover,.sf-menus>li.is-open>a{background:var(--sf-gray100)}
+  .sf-menus>li>a[aria-current]{color:var(--brand);font-weight:800}
+  /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다(와이어프레임의 hover 상태).
+     자리는 늘 잡아 둔다 — 안 그러면 커서가 닿는 순간 메뉴 폭이 흔들린다 */
+  .sf-menus .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
+                   transition:opacity .18s var(--ease),transform .22s var(--ease)}
+  .sf-menus>li>a:hover .caret,.sf-menus>li.is-open .caret{opacity:1}
+
+
+  /* 메가 메뉴 두 갈래 — 사업영역만 GNB 밑으로 화면 폭을 다 쓰며 펼쳐지고(칸 넷을
+     왼쪽부터 채운다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card). 항목이
+     둘에서 다섯뿐인 메뉴에 흰 띠를 화면 끝까지 깔면 빈자리만 남고, 오른쪽
+     메뉴일수록 커서가 목록까지 가로로 멀리 건너야 했다 */
+  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:58;background:#fff;
+           box-shadow:0 12px 28px rgba(14,22,30,.08);
+           opacity:0;visibility:hidden;transform:translateY(-8px);
+           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
+  .sf-mega.open{opacity:1;visibility:visible;transform:none}
+  /* 판 안쪽은 격자 1~12 열(로고 ~ 햄버거)에 앉는다(2026-09-22 요청 — 2~11 열은 칸이 좁아
+     이름이 두세 줄로 접혔다). 화면 끝까지는 펼치지 않는다 — 칸이 너무 넓어
+     이름 사이가 벌어진다 */
+  .sf-mega .cols{width:calc(var(--gcol) * 12 + 220px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
+  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
+                padding:var(--grid-m);border-right:1px solid var(--sf-line)}
+  .sf-mega .col:last-child{border-right:0}
+  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
+  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
+  /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
+     그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
+     폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
+     카드 뒤에는 흐림막을 깔지 않는다 — 가릴 만큼 크지 않다 */
+  .sf-mega.card{right:auto;left:var(--mm-x,0px);width:max-content;min-width:200px;
+                box-shadow:0 10px 24px rgba(14,22,30,.12)}
+  .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
+  .sf-mega.card .hd{white-space:nowrap}
+  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
+               font-weight:800;font-size:var(--t-sm);line-height:var(--lh-head);letter-spacing:var(--ls-num);
+               color:var(--sf-sec);transition:color .18s var(--ease)}
+  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
+  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--brand)}
+  .sf-mega ul{list-style:none;display:flex;flex-direction:column;gap:20px}
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;
+                font-size:var(--t-sm);line-height:var(--lh-head);letter-spacing:var(--ls-num);
+                color:var(--sf-sec);transition:color .18s var(--ease)}
+  .sf-mega ul a:hover{color:var(--brand)}
+
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 — 판이 흰 종이라 본문이 또렷하면
+     둘이 같은 층에 있는 것처럼 보인다. GNB 밑변부터 깔고 판은 그 위에 뜬다.
+     커서가 여기 닿으면 판에서 벗어난 것이므로 곧 닫힌다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:57;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
+  /* 언어 선택 목록 — 오른쪽 도구에만 남았다 */
+  .sf-drop{position:absolute;top:100%;left:0;min-width:172px;padding:6px 0;background:#fff;
+           border:1px solid var(--sf-line);box-shadow:0 12px 28px rgba(14,22,30,.1);
+           opacity:0;visibility:hidden;transform:translateY(-6px);
+           transition:opacity .22s var(--ease),transform .22s var(--ease),visibility .22s}
+  .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);font-weight:400;
+             font-size:var(--fs-meta);line-height:var(--lh-label);color:var(--sf-sec);white-space:nowrap;
+             transition:background .18s,color .18s}
+  .sf-drop a:hover{background:var(--sf-gray100);color:var(--brand)}
+  .sf-drop a[aria-current]{color:var(--brand);font-weight:800}
+  .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-lang{position:relative}
+  .sf-lang .sf-drop{left:auto;right:0;min-width:96px}
+  .sf-tools button{width:24px;height:24px;display:grid;place-content:center;padding:0;
+                   background:none;border:0;color:var(--sf-sec);cursor:pointer;
+                   transition:color .2s}
+  .sf-tools button:hover,.sf-tools button[aria-expanded="true"]{color:var(--brand)}
+  .sf-tools svg{display:block;width:24px;height:24px}
+
+
+  /* 전체 메뉴 — 와이어프레임에 화면이 없어 푸터 사이트맵을 그대로 흰 판에 편다 */
+  /* 전체 메뉴 — 홈(index-c.html)과 같은 전면 오버레이(2026-09-18). 예전의 흰 판(.sf-nav)을
+     걷고 홈 규칙을 그대로 옮겼다. 열고 닫기는 business-layout.js 의 공용 블록이 맡는다.
+     type-scale.css 를 싣지 않는 장이라 그 토큰 둘은 같은 값을 기본값으로 둔다 */
+  .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
+    cursor:pointer;color:inherit;padding:0;flex-shrink:0}
+  /* 줄 모양은 아래 .sf-burger 가 맡는다. 예전 세 줄 단추의 span 규칙(두께 1.8 · 줄 사이
+     margin 7 · 커서 올릴 때 밀기)이 남아 있으면 둘째 · 셋째 줄이 7px 씩 아래로 밀리고,
+     커서를 올리면 .sf-burger 의 transform 까지 덮어써 모양이 틀어진다 */
+  .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
+    background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
+    color:#fff;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .45s var(--ease),visibility .45s var(--ease)}
+  .navover.open{opacity:1;visibility:visible;pointer-events:auto}
+  .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
+  .ov-logo img{height:20px;width:auto;display:block}
+  .ov-tools{display:flex;align-items:center;gap:22px}
+  .ov-lang{text-decoration:none;color:var(--on-dark-body,rgba(255,255,255,.8));font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps,.06em);transition:color .2s}
+  .ov-lang:hover{color:#fff}
+  .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
+  .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .ov-close span{position:absolute;top:50%;left:11px;right:11px;height:1.6px;background:#fff}
+  .ov-close span:first-child{transform:rotate(45deg)}
+  .ov-close span:last-child{transform:rotate(-45deg)}
+  .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ov-row:first-child{border-top:none}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
+  .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+  .ov-links a{text-decoration:none;color:var(--on-dark-body,rgba(255,255,255,.8));font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a:hover{color:#fff}
+  .navover .ov-row{transform:translateY(18px);opacity:0}
+  .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+  .navover.open .ov-row:nth-child(1){transition-delay:.06s}
+  .navover.open .ov-row:nth-child(2){transition-delay:.11s}
+  .navover.open .ov-row:nth-child(3){transition-delay:.16s}
+  .navover.open .ov-row:nth-child(4){transition-delay:.21s}
+  .navover.open .ov-row:nth-child(5){transition-delay:.26s}
+  @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
+  /* ===================== 히어로 ===================== */
+  .sf-hero{height:calc(100svh - var(--gnb-h));min-height:480px;max-height:900px;
+           background:#fff}
+  .sf-heroin{position:relative;height:100%;overflow:hidden;background:var(--sf-ph-bg)}
+  /* 크롭 지점 — 사진(3198×1800)이 가로로 길어 1440 폭에 맞추면 세로가 남지 않는다.
+     가운데로 두면 복도의 소실점이 화면 가운데에 온다 */
+  .sf-heroin>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
+                 object-fit:cover;object-position:50% 50%}
+  /* 하단 유리 띠 — 아래로 갈수록 어두워지는 그라디언트 + 블러.
+     사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다.
+     세 덩이(국문 · 영문 · 소분류 띠지)가 32 간격으로 쌓이고, 띠지는 바닥에
+     딱 붙는다(아래 여백 0).
+
+     블러를 띠 전체에 그냥 걸면 윗변에 가로줄이 그어진다 — 거기서부터 갑자기
+     흐려지기 때문이다. 그래서 블러 판을 따로 깔고 mask 로 위에서 아래로 서서히
+     드러낸다. 배경 그라디언트도 같은 판에 얹어 한 겹으로 이어지게 했다.
+     글자는 그 판 위에 오도록 z-index 를 준다.
+
+     블러 양은 2026-09-09 요청으로 절반으로 낮췄다(스마트 6→3, 여기 8→4) —
+     사진이 덜 뭉개지도록. 어두워지는 정도와 마스크 위치는 건드리지 않았다.
+
+     ⚠ 값이 스마트 제조 A-1 보다 세다(띠가 70 위에서 시작 · 30% 에서 블러 최대 ·
+       검정 .22 → .5). 그 페이지 사진은 아래가 어두워 옅은 띠로 충분하지만, 여기는
+       사진이 밝은 클린룸이라 옅은 띠로는 흰 글자가 묻힌다 — 국문 줄이 놓이는
+       높이에서 블러와 어둠이 이미 다 올라와 있어야 읽힌다 */
+  .sf-herocap{position:absolute;left:0;right:0;bottom:0;
+              display:flex;flex-direction:column;gap:32px;padding-top:40px;color:#fff}
+  .sf-herocap::before{content:"";position:absolute;inset:-70px 0 0 0;pointer-events:none;
+              background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.4) 38%,rgba(0,0,0,.5) 100%);
+              -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+              -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%);
+              mask-image:linear-gradient(180deg,transparent 0%,#000 30%)}
+  .sf-herocap>*{position:relative;z-index:1}
+  .sf-herocap h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:32px;
+                 padding:0 88px}
+  .sf-hero .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+               line-height:var(--lh-head);letter-spacing:var(--ls)}
+  .sf-hero .en{font-family:var(--ald);font-weight:400;
+               font-size:var(--fs-display);line-height:var(--lh-tight);
+               letter-spacing:var(--ls-num);text-align:center;white-space:nowrap}
+
+  /* 소분류 띠지 — 열 개가 한 줄에 못 들어가고 잘린다. 잘린 채 세워 두는 대신
+     천천히 흘려 보낸다(같은 줄 두 벌을 이어 붙여 끊김 없이 돈다).
+     읽을 거리가 아니라 분위기라서 aria-hidden 이고, 커서를 얹으면 멈춘다 */
+  .sf-ticker{overflow:hidden;border-top:1px solid rgba(255,255,255,.2)}
+  .sf-tickrow{display:flex;width:max-content}
+  .sf-tickrow>div{display:flex;align-items:center;gap:30px;padding:12px 20px;
+                  flex-shrink:0;animation:sfTick 44s linear infinite}
+  .sf-tickrow:hover>div{animation-play-state:paused}
+  .sf-tickrow b{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);
+                letter-spacing:var(--ls-num);color:var(--on-dark-sub);white-space:nowrap}
+  /* 이름 사이 구분 — 1px 세로선 두 개 */
+  .sf-tickrow i{display:flex;align-items:center;gap:8px;height:10px;flex-shrink:0}
+  .sf-tickrow i::before,.sf-tickrow i::after{content:"";width:1px;height:100%;
+                                             background:rgba(255,255,255,.7)}
+  @keyframes sfTick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+  @media(prefers-reduced-motion:reduce){
+    .sf-tickrow>div{animation:none}
+  }
+
+  /* ===================== 인트로 =====================
+     Figma 1056:4261 · 4324 · 4387 · 4450 — 한 화면에 [리드 두 줄]과 [소분류 카드]
+     둘뿐이다. 그 사이에 있던 설비 그림과 화면을 가로지르던 네 칸 띠는 함께 걷었다.
+
+     넓은 화면(1181 이상)에서 둘은 아래 본문의 두 기둥에 정확히 겹친다 —
+     리드는 그림 기둥(왼쪽 끝이 설비 그림 시작점), 카드는 글 기둥이다.
+     본문 기둥은 12컬럼이 아니라 [여백 44][인덱스 215 + 오른여백 12][간격 8][그림][간격 8][글]
+     로 놓이므로 아래 @media(min-width:1181px) 가 그 셈을 그대로 쓴다.
+     그보다 좁으면 본문이 세 기둥을 풀므로 맞출 기둥이 없다 — 그때는 아래 12컬럼 값
+     (리드 1~5열 · 카드 6~12열)으로 돌아간다. 둘이 한 줄에 놓이지 않고 위아래로 서지만,
+     양 끝이 본문과 같은 세로선 위에 서서 가운데가 비어도 장이 흐트러져 보이지 않는다.
+
+     카드 격자는 2열 고정이고 남는 세로를 다 먹는다(flex:1). 장 높이가 화면을 따라
+     달라져도 카드만 늘고 줄 뿐 리드와 여백은 흔들리지 않는다. 소분류가 셋인 장
+     (에너지 인프라 · 화합물 전력 반도체)은 넷째 칸이 빈다 — 시안도 같은 자리를 비운다 */
+  /* 여기서 --gcol 을 쓰면 안 된다 — 그 값은 100% 가 화면 폭일 때를 전제로 여백
+     44 두 번까지 빼는데, 이 장 안에서는 100% 가 이미 여백을 뺀 안쪽 폭이라 한 칸이
+     두 번 깎인다(1584 화면에서 격자가 51px 짧아졌다). 안쪽 폭 기준으로 다시 잡는다 */
+  .sf-intro{--icol:calc((100% - 220px) / 12);
+            min-height:calc(100svh - var(--gnb-h));
+            display:flex;flex-direction:column;gap:64px;
+            padding:var(--intro-pad) var(--grid-m)}
+  .sf-lead{flex-shrink:0;max-width:calc(var(--icol) * 5 + 80px);
+           font-family:var(--suit);font-size:var(--t-lg);line-height:var(--lh-body);
+           letter-spacing:var(--ls);color:var(--sf-sec)}
+  .sf-lead .a{font-weight:500}
+  .sf-lead .b{display:block;font-weight:800;color:var(--brand)}
+  /* 소분류 카드 — 옅은 파란 판 위에 [아이콘 64][이름][설명].
+     설명(.d)은 에너지 인프라에만 있다. 나머지 세 장은 이름까지만 쓰고 아래를 비운다 */
+  /* 남는 세로는 먹되(grow 1) 글이 칸보다 길면 줄어들지는 않는다(shrink 0) — 장 높이를
+     화면에 못 박으면 설명이 긴 에너지 인프라에서 카드 아랫줄이 잘린다. 장은
+     min-height 로만 한 화면을 지키고, 그보다 길어질 때만 아래로 자란다 */
+  .sf-subs{flex:1 0 auto;align-self:flex-end;list-style:none;
+           width:calc(var(--icol) * 7 + 120px);max-width:100%;
+           display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+           grid-auto-rows:minmax(min-content,1fr);gap:4px}
+  .sf-subs li{min-width:0;
+              display:flex;flex-direction:column;gap:8px;
+              padding:24px;background:var(--sf-brand100)}
+  .sf-subs .ic{width:64px;height:64px;flex-shrink:0;color:var(--brand)}
+  .sf-subs .ic svg{display:block;width:100%;height:100%}
+  .sf-subs .nm{font-family:var(--suit);font-weight:800;font-size:var(--t-md);
+               line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--brand)}
+  .sf-subs .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+              line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--brand)}
+  /* 설명 여러 줄은 한 덩어리다 — 칸 사이 8 중 6 을 당겨 2 로 좁힌다(시안과 같다).
+     아이콘 · 이름 · 설명덩어리 사이의 8 은 그대로 둔다 */
+  .sf-subs .d+.d{margin-top:calc(2px - 8px)}
+  /* 설비 그림 — 리드와 카드 사이 빈 자리에 선다. 칸이 남는 세로를 먹고 그림은
+     그 안에 비율을 지켜 들어앉되 바닥에 붙는다(contain · center bottom). 칸 모양이
+     화면마다 달라도 그림이 잘리거나 늘어나지 않는다 */
+  .sf-introfig{position:relative;flex:0 0 200px;min-height:0}
+  .sf-introfig img{position:absolute;inset:0;width:100%;height:100%;
+                   object-fit:contain;object-position:center bottom}
+  /* 바탕이 불투명한 그림(흰 하늘이 아래로 갈수록 옅은 회색)은 칸 안에서 네모 판으로
+     떠 보인다 — 위와 양옆 가장자리만 바탕으로 풀어 준다. 아래는 카드 띠에 닿는
+     바닥선이라 풀지 않는다. 투명 PNG(스마트 제조)에는 붙이지 않는다 */
+  .sf-introfig.is-plate img{
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+            mask-composite:intersect}
+  /* 본문의 세 기둥이 살아 있는 폭에서는 소개 장을 그 기둥에 맞춘다.
+     리드는 그림 기둥 폭에 맞춰 서고(왼쪽 끝이 설비 그림 시작점),
+     카드는 두 기둥을 가로질러 한 줄로 눕는다.
+     기둥 하나의 폭 = (안쪽 폭 - 인덱스 몫 235 - 기둥 간격 8) / 2
+
+     장의 오른쪽 여백은 0 이다(본문도 0 — 눈금 줄이 화면 끝까지 나간다). 그 위에서
+     카드만 --txt-pad-r 만큼 물러나 본문 글이 끝나는 선에 맞춘다 : 이 띠와 세로로
+     마주 보는 것이 본문의 눈금 줄이 아니라 그 안의 글이기 때문이다. 여백을 장에
+     주지 않고 카드에만 주는 이유는 --isplit 셈이 오른쪽 여백 0 을 전제로 서 있어서다.
+
+     칸 수는 소분류 수를 따라간다(넷이면 넷, 셋이면 셋) — 2×2 때는 빈 칸이 오른쪽
+     아래 한 귀퉁이라 눈에 안 띄었지만, 한 줄로 눕히면 그 자리가 줄 끝에 크게
+     뚫려 보인다. auto-flow 로 두면 항목 수가 바뀌어도 값을 고칠 데가 없다 */
+  /* 태블릿(901~1180) — 인트로 문장은 두 줄로(2026-09-22 요청). 이 구간에서는 문장 옆이 비어 있는데
+     5열 폭 제한에 걸려 두 문장이 각각 두 줄로 접혀 넉 줄이 됐다 */
+  @media(min-width:901px) and (max-width:1180px){
+    .sf-lead{max-width:none}
+    /* 소분류 카드가 셋이면 한 줄로(2026-09-22 요청) — 두 칸 격자라 셋째 카드가 홀로 한 줄을 먹었다.
+       넷이면 2×2 그대로 둔다 : 한 줄 넷은 901 에서 칸이 200 이라 "Cycler(Cell&Module)" 이 단어 중간에서 끊긴다 */
+    .sf-subs:has(>li:nth-child(3):last-child){width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media(min-width:1181px){
+    /* 장 아래 여백은 위(--intro-pad, 최대 120)보다 좁게 좌우 여백(44)으로 묶는다 —
+       카드가 장 바닥 쪽으로 내려앉고, 줄어든 만큼은 그림 칸이 먹어 그림이 커진다 */
+    .sf-intro{--isplit:calc((100% - 235px - 8px) / 2);padding-right:0;
+              padding-bottom:min(var(--intro-pad),var(--grid-m))}
+    .sf-lead{margin-left:235px;max-width:var(--isplit)}
+    .sf-subs{align-self:stretch;width:auto;
+             margin-left:235px;margin-right:var(--txt-pad-r);
+             grid-template-columns:none;
+             grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);
+             /* 한 줄이 된 뒤로는 남는 세로를 먹지 않는다 — 두 줄일 때는 그 세로를
+                두 줄이 나눠 가져 카드가 알맞았는데, 한 줄이 다 먹으면 아이콘과
+                이름만 든 칸이 화면 절반 높이의 빈 판이 된다. 대신 띠를 장 바닥에
+                붙이고(margin-top:auto) 남는 세로는 리드 아래로 보낸다 —
+                본문 장에서 목록이 그림 바닥선에 앉는 것과 같은 짜임이다 */
+             flex:0 0 auto;margin-top:auto;min-height:240px}
+    /* 그림 칸이 리드 아래 남는 세로를 다 먹고 카드 폭을 따라 선다. 아래 간격 64 를
+       되돌려 카드 띠 윗선에 그림 바닥을 붙인다 — 띠가 설비가 놓인 바닥선이 된다.
+       낮은 화면에서도 160 은 지키고, 그보다 모자라면 장이 아래로 자란다 */
+    .sf-introfig{flex:1 1 0;min-height:160px;
+                 margin-left:235px;margin-right:var(--txt-pad-r);margin-bottom:-64px}
+  }
+  /* ===================== 본문 — 인덱스 + 열 장 =====================
+     붙박이는 왼쪽 인덱스 하나뿐이다. 오른쪽은 머리 줄까지 장에 딸려 통째로 흐르고,
+     장 하나가 한 화면을 채우며 그 안에서 세로 가운데에 선다.
+     12컬럼 그리드(여백 24 · 거터 20) 위에 인덱스 2컬럼 · 내용 10컬럼으로 앉는다.
+       · 왼쪽 여백 24. 인덱스 기둥 215(= 2컬럼 + 거터), 그중 오른쪽 20 은 여백
+       · 내용은 남는 폭을 다 쓰고 오른쪽만 120 을 비운다(Figma pr-120) */
+  .sf-main{display:flex;align-items:flex-start;gap:8px;padding-left:var(--grid-m)}
+
+  /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
+     sticky 요소를 화면 높이로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
+     그린 와이어프레임과 같은 자리에 선다 */
+  .sf-railwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+               flex-shrink:0;width:215px;padding-right:20px;margin-right:12px;
+               display:flex;align-items:center}
+  .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
+  .sf-grp{display:flex;flex-direction:column}
+  .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
+              background:var(--sf-gray100);font-family:var(--suit);font-weight:600;
+              font-size:var(--t-2xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter);
+              white-space:nowrap}
+  .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
+             border-bottom:1px solid var(--sf-line);font-family:var(--suit);
+             font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);
+             color:var(--sf-ter);white-space:nowrap;
+             transition:background .3s var(--ease),color .3s var(--ease)}
+  .sf-rail a:hover{color:var(--brand)}
+  .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
+
+  .sf-body{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
+
+  /* 01 ESS · 02 UPS 묶음 — 가운데 그림이 화면에 붙고 오른쪽 글만 흐른다.
+     형제 페이지(스마트 제조)와 같은 방식이다. 붙박이를 이 묶음 안에 두었으므로
+     여섯 장이 끝나면 그림도 함께 흘러 나간다 — 그 아래 03 솔루션은 한 기둥이라
+     그림 열이 남아 있으면 안 된다 */
+  .sf-fix{display:flex;align-items:flex-start;gap:8px}
+  .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+              flex:1 1 0;min-width:0;display:flex;align-items:center}
+  /* 안쪽 기둥이 장의 띠와 같은 높이다 → 장이 제자리에 서면 그림 열과 글 열의
+     눈금 줄이 한 줄로 맞는다 */
+  .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
+             display:flex;flex-direction:column;gap:24px}
+  .sf-figstack{position:relative;flex:1;min-height:0;overflow:hidden}
+  /* 여섯 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다. visibility 를 같이 껐다 켜야
+     안 보이는 다섯 장이 읽기 순서에 끼지 않는다 */
+  .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
+         transform:translateY(100%);visibility:hidden}
+  /* 자리는 스크롤이 정한다 — 다음 장의 가는 선이 그림 칸을 훑고 지나가는 그
+     높이에 두 그림의 이음매를 둔다. 그래서 오른쪽 줄과 그림의 경계가 한 줄이다.
+     스크립트가 transform 을 직접 얹으므로 여기서는 전이를 걸지 않는다.
+     .is-on 은 스크립트가 돌기 전 첫 그림의 자리다 */
+  .sf-ph.is-on{transform:none;visibility:visible}
+  /* 사진이 든 칸은 자리표시 테두리를 걷는다 */
+  .sf-ph.has-img{background:none;border:0;overflow:hidden}
+  .sf-ph img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 들어오는 그림은 살짝 큰 채로 들어와 제자리 배율로 줄고, 밀려 나가는 그림은
+     제자리 배율에서 더 줄며 빠진다. 칸이 아니라 안쪽 사진만 키운다 — 그래야 두
+     그림의 이음매가 한 줄로 남는다. 배율도 자리와 같은 진행도를 쓴다.
+     제자리 배율이 1 이 아니라 1.04 인 건, 나가는 쪽이 1 아래로 내려가면 사진이
+     칸보다 작아져 가장자리에 흰 틈이 생기기 때문이다 — 그 틈을 메우는 몫이다 */
+  .sf-ph img{transform:scale(var(--zoom,1.04));transform-origin:50% 50%;
+             will-change:transform;backface-visibility:hidden}
+  @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
+  /* 다음 장은 눈금 줄 절반만큼 올라앉는다 — 그래야 앞 장 그림의 아래 변과
+     다음 장의 가는 선이 한 줄이 된다(세로 눈금은 그 선을 가로지른다) */
+  .sf-secs>.sf-sec+.sf-sec{margin-top:calc(var(--rule-off) * -1)}
+  .sf-ph span{font-family:var(--suit);font-weight:400;font-size:var(--t-2xs);line-height:var(--lh-body);
+              color:var(--sf-ph-tx)}
+
+  /* 눈금 줄 — 모양이 셋이다.
+       · 붙박이 그림 열 [태그][가는 선][눈금]       한 벌만 두고 숫자만 굴린다
+       · 01·02 글 열    [눈금][짧은 선][이름][선]   장마다 하나
+       · 03 솔루션      [태그][가는 선]             장마다 하나, 화면 끝까지 나간다
+     색은 장의 쿨그레이 토큰을 따라간다(지금 장만 진해진다) */
+  /* 눈금 줄은 한 줄로 이어진다 — 태그·눈금·가는 선 사이를 벌리지 않는다 */
+  .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center;gap:0}
+  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-bd-s,var(--sf-line-s))}
+  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
+  /* 그림 기둥의 줄은 기둥 사이 8 을 건너 글 기둥의 줄과 만난다 */
+  .sf-figcol>.sf-line{margin-right:-8px}
+  /* 숫자 태그 — 폭을 고정한다(Figma 실측 32). 글자에 맞춰 늘었다 줄었다 하면
+     장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
+     붙박이 그림 열에서는 자리마다 0~9 를 세로로 이어 둔 띠(.r)를 지금 숫자만큼
+     끌어올려, 글자가 갈리는 대신 계기판처럼 굴러가게 한다 */
+  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
+          justify-content:center;padding:2px 4px 0;background:var(--c-tick,var(--sf-ter));
+          color:#fff;
+          font-family:var(--ald);font-size:var(--t-tag);line-height:var(--lh-tight);letter-spacing:var(--ls-caps)}
+  /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
+     가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
+  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
+  .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
+  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
+  .sf-tag .s{display:block;width:5px;text-align:center}
+  @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
+
+  /* 장 — 띠 하나가 한 장이다. 띠 위아래로 남긴 --sec-pad 덕분에 다음 장의 눈금
+     줄이 화면 밑에 걸쳐 보인다. 03 솔루션처럼 내용이 띠보다 긴 장은 그냥 자란다.
+     앞뒤 장이 이어 보이므로 지금 장만 진하게 둔다 */
+  /* 장 사이를 벌리지 않는다 — 장 하나가 본문 띠와 같은 높이라, 간격이 0 이어야
+     다음 장의 머리 줄이 앞 장 그림의 아래 선과 한 줄로 맞는다 */
+  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:0;
+           padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
+  /* 03 묶음은 앞 묶음이 아래로 비워 둔 자리를 그대로 쓴다 */
+  /* 윗단이 --sec-pad 만큼 위로 나와 있으므로 장 사이와 묶음 위도 그만큼 비운다 —
+     안 그러면 다음 장의 흰 바탕이 앞 카드의 아래 변을 덮는다.
+     제품 장은 아래 여백(--sec-clear)을 쓰지 않으므로 이 값이 전부다 */
+  .sf-secs.is-prods{flex:none;gap:var(--sec-pad);padding-top:var(--sec-pad)}
+  .sf-secs.is-prods>.sf-sec{padding-bottom:0}
+  .sf-secs.is-prods>.sf-sec+.sf-sec{margin-top:0}
+  .sf-sec{min-height:var(--band-h);padding-bottom:var(--sec-clear);
+          display:flex;flex-direction:column;justify-content:center;
+          scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
+          --c-ttl:var(--sf-txt);     /* 900 제목        */
+          --c-body:var(--sf-sec);    /* 600 줄글        */
+          --c-num:var(--brand);      /* 목록 번호       */
+          --c-tagbg:var(--point-200);/* 이름 태그 판    */
+          --c-tick:var(--sf-ter);    /* 태그 · 눈금     */
+          --c-bd:var(--sf-line);     /* 200 칸선        */
+          --c-bd-s:var(--sf-line-s)} /* 300 굵은 선     */
+
+  /* ── 01·02 장 : 글 기둥만 흐른다 (Figma 1031:8920 Type=Wide) ─────────────
+     글은 기둥 안에서 왼쪽 40 을 띄우고 오른쪽 여백을 비운다(Figma pl-40 · pr-122).
+     눈금 줄은 그 여백 밖에 있어 가는 선이 화면 오른쪽 끝까지 나간다 */
+  .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
+  .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+            padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
+  /* 제목+리드 덩어리가 남는 세로를 먹어서 목록이 그림 바닥에 맞춰 앉는다 */
+  /* ── 줄바꿈 ────────────────────────────────────────────────────────────
+     한글은 낱말 가운데를 끊으면 읽기 나빠진다 — '제조 안 / 정성을' 처럼.
+     띄어쓰기에서만 끊고, 끊을 자리가 없는 긴 영문만 예외로 쪼갠다.
+     text-wrap:pretty 는 마지막 줄에 글자 하나가 남는 것을 막고,
+     balance 는 짧은 제목의 두 줄을 고르게 나눈다. 두 값 모두 모르는
+     브라우저는 그냥 지나간다 — 예전처럼 끊길 뿐 깨지지 않는다 */
+  .sf-sec,.sf-intro,.sf-herocap{word-break:keep-all;overflow-wrap:break-word;
+                                text-wrap:pretty}
+  .sf-texts h2,.sf-texts .en,.sf-body .sub,
+  .sf-ptexts h2,.sf-ptexts .lead,.sf-lead{text-wrap:balance}
+
+  .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
+  /* 소분류 이름 — 눈금 줄 안에 있던 것을 제목 위로 내렸다 */
+  .sf-texts .cat{margin-bottom:-4px;font-family:var(--suit);font-weight:800;
+                 font-size:var(--t-sm);line-height:var(--lh-head);letter-spacing:var(--ls-num);
+                 color:var(--c-ttl,var(--sf-txt))}
+  .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
+               line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--c-ttl)}
+  .sf-texts p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:var(--lh-body);
+              letter-spacing:var(--ls-num);color:var(--c-body)}
+  /* 주요 적용 분야 — 윗선만 굵다 */
+  .sf-apps{width:100%;list-style:none;border-top:2px solid var(--c-bd-s)}
+  .sf-apps li{display:flex;align-items:center;gap:8px;padding:8px;
+              border-bottom:1px solid var(--c-bd)}
+  .sf-apps b{width:18px;flex-shrink:0;font-family:var(--ald);font-weight:400;
+             font-size:var(--t-2xs);line-height:var(--lh-tight);color:var(--c-num)}
+  .sf-apps span{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:var(--lh-label);
+                letter-spacing:var(--ls-num);color:var(--c-body)}
+  /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
+     표를 닫는 테두리가 아니다 */
+  .sf-apps li:last-child{border-bottom:0}
+
+  /* ── 03 장 : 띠를 위아래 반으로 나눈다 (Figma 1032:2562) ──────────────
+     위 절반은 제목 · 리드 · Certification, 아래 절반은 제품 카드 하나다.
+     한 화면에 들어오는 양을 맞추려고 반으로 자른 것이고, 카드가 둘 이상인
+     장은 둘째부터 아래로 이어 흐른다. 눈금 줄만 화면 끝까지 나가고 나머지는
+     오른쪽 120 을 비운다 */
+  /* 윗단은 제 키를 쓰고, 남는 자리만 마저 먹는다 — 줄을 모두 1fr 로 두었더니
+     카드가 둘·셋인 장에서 윗단까지 카드 키로 늘어나, 리드와 Certification 사이가
+     100 넘게 비었다. 윗단만 1fr(첫 줄)로 두고 카드는 제 키(auto)로 흐르게 하면,
+     윗단은 ESS·UPS 한 장과 같은 띠(--band-h)를 채울 만큼만 늘어난다.
+     .sf-prods 는 display:contents 로 껍데기만 지워 카드들을 장의 줄로 올린다 —
+     마크업은 그대로 두고 격자에만 참여시키는 방법이다 */
+  .sf-sec.is-prod{justify-content:flex-start;
+                  display:grid;grid-template-rows:1fr;grid-auto-rows:auto;
+                  gap:0;align-content:start}
+  /* 윗단 — [눈금 줄 + 제목 + 리드 + Certification] 이 화면에 붙고 그 아래로
+     제품 카드만 흘러 지나간다. 다른 페이지가 그림 기둥을 붙여 두는 것과 같은
+     방식이다 : 장의 정체는 남고 세부만 움직인다. 사진까지 붙이지 않는 이유는
+     사진이 제품에 딸린 것이고(한 장에 제품이 둘·셋) 붙여 봐야 굴릴 거리가
+     162px 밖에 안 나오기 때문이다.
+     GNB 밑변에 바로 붙여야 윗단 위로 글이 비어져 나오지 않는다 — 위쪽 여백을
+     안쪽(padding)으로 두고 같은 크기의 음수 바깥 여백으로 되돌려, 흰 바탕이
+     GNB 까지 닿으면서도 눈금 줄이 놓이는 자리는 그대로다.
+     아랫변에는 파란 선 한 줄을 그어 붙박이와 흐르는 카드의 경계를 밝힌다.
+     흰 그라디언트로 흐리던 것을 선으로 바꿨다 — 카드가 선에서 딱 끊긴다.
+     선은 눈금 줄과 달리 글이 끝나는 자리(오른쪽 여백 앞)에서 멈춘다 */
+  /* 위쪽 여백을 안쪽(padding)으로 두고 같은 크기의 음수 바깥 여백으로 되돌린다 —
+     흰 바탕이 GNB 까지 닿으면서도 눈금 줄이 놓이는 자리는 그대로다. 붙었을 때
+     GNB 밑변에서 줄까지가 곧 이 값이라, 01·02 장이 띠 위로 비워 두는 --sec-pad 를
+     그대로 쓴다 — 그래야 03 의 띠도 화면 세로 가운데에 선다. 장 사이와 묶음 위도
+     같은 값이어야 다음 장의 흰 바탕이 앞 카드의 아래 변을 덮지 않는다 */
+  .sf-phead{position:sticky;top:var(--gnb-h);z-index:8;
+            display:flex;flex-direction:column;
+            padding-top:var(--sec-pad);margin-top:calc(var(--sec-pad) * -1);
+            background:#fff}
+  .sf-phead::after{content:"";position:absolute;left:0;right:var(--body-pad-r);
+                   top:100%;height:1px;pointer-events:none;background:var(--c-num)}
+  .sf-phead>.sf-line{margin-bottom:24px}
+  /* 제목·리드는 위에, Certification 은 아래 변에 붙는다 */
+  /* 윗단 안에서 제목·리드는 위, Certification 은 아래 변에 붙는다.
+     높이는 격자 줄이 정해 주므로 flex:1 로 그대로 받는다 */
+  .sf-ptexts{flex:1;min-height:calc(var(--phead-h) - 40px);
+             display:flex;flex-direction:column;justify-content:space-between;
+             padding-right:var(--body-pad-r)}
+  .sf-ptexts .txt{display:flex;flex-direction:column;gap:16px}
+  .sf-ptexts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
+                line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--c-ttl)}
+  .sf-ptexts .lead{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+                   line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-ttl)}
+  /* Certification — 왼쪽에 이름, 오른쪽 끝에 인증 표시. 파란 띠였던 것을
+     흰 바탕 한 줄로 바꿨다(와이어프레임 개정) */
+  .sf-cert{display:flex;align-items:center;gap:12px;padding:8px 0}
+  .sf-cert .ttl{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);
+                line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-ttl)}
+  /* 인증 표시는 이름 바로 옆에 붙는다 — 오른쪽 끝으로 밀어 두었더니 넓은
+     화면에서 둘 사이가 1000 넘게 벌어져 한 줄로 읽히지 않았다 */
+  .sf-cert ul{display:flex;list-style:none}
+  .sf-cert li:first-child{padding-left:0}
+  .sf-cert li{display:flex;align-items:center;gap:12px;padding:0 0 0 12px;
+              font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+              line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-body);
+              white-space:nowrap}
+  /* 항목 앞 구분 — 히어로 띠지에서 이름을 가르던 1px 세로선 두 개와 같은 모양이다
+     (네모 점 하나를 대신한다). 선 하나짜리 요소를 둘 넣는 대신 배경 두 겹으로 그린다 —
+     ::before 하나가 텍스트 앞에 서야 하고, ::after 는 글 뒤로 가 버린다 */
+  .sf-cert li::before{content:"";width:10px;height:10px;flex-shrink:0;
+                      background:linear-gradient(var(--sf-line),var(--sf-line)) left/1px 100% no-repeat,
+                                 linear-gradient(var(--sf-line),var(--sf-line)) right/1px 100% no-repeat}
+  /* UL 9540A 는 화재 · 열폭주 시험 인증이라 나머지와 무게가 다르다 — 한 줄 안에서
+     이것만 이름표로 세운다. 스마트 제조 A-1 의 제품 이름 태그(.sf-prods .k)와 같은
+     벌이다(옅은 파랑 판 + 파랑 글씨, 안쪽 여백 4/8). 판이 스스로 항목을 가르므로
+     앞의 세로선 두 개는 걷고, 앞 항목과의 12 는 판 바깥 여백으로 되돌려 받는다 */
+  .sf-cert li.em{margin-left:12px;padding:4px 8px;gap:0;
+                 background:var(--c-tagbg);color:var(--c-num);font-weight:800;
+                 line-height:var(--lh-tight)}
+  .sf-cert li.em::before{display:none}
+  /* 이 장에 제품이 몇이고 지금 몇째인지 — 인증 표시가 있던 오른쪽 끝에 둔다.
+     인공지능 플랫폼의 캐러셀 표시와 같은 모양이다(모난 사각, 지금 것만 길쭉) */
+  .sf-cert .dots{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px}
+  .sf-cert .dots i{width:6px;height:6px;background:var(--sf-line-s);
+                   transition:width .3s var(--ease),background .3s var(--ease)}
+  .sf-cert .dots i.is-on{width:40px;background:var(--brand)}
+  @media(prefers-reduced-motion:reduce){.sf-cert .dots i{transition:none}}
+  /* 제품 — 한 줄에 하나. 사진은 카드 폭의 26% 를 차지하는 정사각형이다.
+     폭을 높이에서 되돌려 받게(aspect-ratio + stretch) 두면 플렉스가 주축 크기를
+     먼저 정하느라 폭이 0 으로 주저앉는다 → 폭을 직접 주고 높이를 비율에서 받는다.
+     세로 가운데에 세운다 : 특징이 2×2 로 접히는 좁은 폭에서는 오른쪽이 더 길어지는데,
+     사진을 위에 붙여 두면 아래만 뚫린 것처럼 보인다 */
+  /* 카드는 파란 선에 딱 붙는다 — 사이를 띄우면 선이 카드에서 떨어져 보인다 */
+  .sf-prods{display:contents}
+  /* 오른쪽 여백은 .sf-prods 가 사라졌으니 카드가 직접 진다 — 테두리 바깥이라
+     padding 이 아니라 margin 이다 */
+  /* 윗단 아래 변(Certification 줄)에 첫 카드가 바로 붙고, 카드끼리도 붙는다 —
+     테두리가 겹치지 않게 1px 씩 끌어올린다. 붙어 있어야 휠 한 번에 다음 제품이
+     그 줄에 정확히 와서 선다 */
+  /* 카드 키 = 띠 − 윗단. 이래야 윗단이 화면에 붙어 있는 동안 카드 하나가
+     정확히 한 화면이 되고, ESS·UPS 한 장과 같은 높이로 읽힌다.
+     글이 더 접히는 좁은 폭에서는 min- 이라 그만큼 자란다 */
+  /* 카드와 카드가 만나는 줄만 굵은 선으로 둔다 — 다음 카드가 흐려져 있어서
+     테두리도 같이 옅어지는 바람에, 어디서 다음 제품이 시작하는지 안 보였다 */
+  .sf-prod+.sf-prod{border-top-color:var(--sf-line-s)}
+  .sf-prod{margin-right:var(--body-pad-r);margin-top:-1px;
+           min-height:calc(var(--band-h) - var(--phead-h));
+           display:flex;align-items:stretch;border:1px solid var(--c-bd)}
+  /* 사진 칸은 폭만 받고 키는 카드에서 받는다. 정사각(aspect-ratio:1)으로 두었더니
+     넓은 화면에서 사진이 카드 키를 밀어 올려(1892 에서 382) 띠를 넘겼다 */
+  /* 사진 칸은 늘 1:1 이다(2026-09-22) — 원본이 정사각 제품 사진이라 칸이 조금만 세로로 길어도
+     cover 가 좌우를 잘라 제품이 잘려 나갔다(1440 에서 280×482, 1.72:1). 카드가 사진보다 키가
+     크면 사진은 칸 가운데에 서고, 남는 위아래는 카드 바탕색이다 */
+  .sf-prod>.shot{flex:0 0 clamp(280px,26%,480px);align-self:center;aspect-ratio:1;
+                 position:relative;overflow:hidden;background:var(--sf-ph-bg);
+                 border:1px dashed var(--sf-ph-bd)}
+  /* 사진이 든 칸은 자리표시 점선을 걷는다 — 원본이 1:1 이라 그대로 들어맞는다 */
+  .sf-prod>.shot.has-img{background:none;border:0;overflow:hidden}
+  /* 사진은 칸에서 떼어 깔아 둔다 — 흐름에 남으면 height:100% 가 잡히지 않아
+     제 비율대로 자라서 카드 키를 다시 밀어 올린다 */
+  /* 제품 PNG 는 투명 여백을 걷어 제품에 딱 맞게 잘라 두었다(2026-09-22, 사방 4% 숨) — 제품마다
+     가로세로 비율이 달라(0.88~2.44) 잘리지 않게 contain 으로 담고 칸 안쪽 16 을 띄운다 */
+  .sf-prod>.shot img{position:absolute;inset:16px;display:block;
+                     width:calc(100% - 32px);height:calc(100% - 32px);object-fit:contain}
+  /* 카드 안을 가르는 선 셋 — 특징 칸을 가르는 선과 같은 200 칸선이다.
+     사진 옆(카드 높이 전부) · 이름 띠 아래 · 주요 적용 분야 위 */
+  .sf-prod>.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
+                 border-left:1px solid var(--c-bd)}
+  .sf-prod .lbl{display:flex;align-items:center;padding:12px 16px;
+                border-bottom:1px solid var(--c-bd);background:var(--sf-gray100)}
+  .sf-prod .lbl b{font-family:var(--suit);font-weight:800;font-size:var(--t-md);
+                  line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--c-ttl)}
+  .sf-prod .info{flex:1;min-height:0;display:flex;flex-direction:column}
+  /* 특징 넷이 가로로 나란히 선다. flex:1 이라 아래 '주요 적용 분야' 줄이 카드
+     바닥에 붙는다 — 글이 한 줄 더 접히는 카드가 있어도 윗변이 서로 맞는다 */
+  /* 띠가 자라면 카드도 자란다 — 특징 줄을 위에 붙여 두면 아래가 뻥 빈다.
+     남는 세로를 위아래로 똑같이 나눠 특징 줄을 카드 가운데에 띄운다
+     (margin:auto 0). '주요 적용 분야'는 그대로 카드 바닥에 붙는다 */
+  /* 칸을 가르는 선이 특징 줄 높이만큼만 서서 카드 위아래가 허전했다 — 줄을
+     이름 띠 아래부터 '주요 적용 분야' 위까지 늘려 선이 칸을 끝까지 가른다.
+     늘어난 줄 안에서 아이콘 · 글의 자리는 그대로여야 하므로 subgrid 를 쓴다 :
+     위아래 1fr 여백과 아이콘 줄 · 글 줄을 네 칸이 함께 쓰므로, 글이 한 줄 더
+     접힌 칸이 있어도 아이콘이 서로 어긋나지 않는다(칸마다 가운데를 맞추면 어긋난다) */
+  .sf-feat{flex:1 1 auto;margin:0;display:grid;grid-auto-flow:column;
+           grid-auto-columns:minmax(0,1fr);grid-template-rows:1fr auto auto 1fr;
+           list-style:none}
+  .sf-feat li{grid-row:1/-1;min-width:0;display:grid;grid-template-rows:subgrid;
+              gap:16px;padding:16px}
+  /* 칸을 가르는 가는 선 — 좌측 인덱스의 밑줄과 같은 200 칸선이다.
+     칸 사이를 벌리는 대신 그 자리에 선을 두었다(양옆 여백 16 으로 같다) */
+  .sf-feat li+li{border-left:1px solid var(--c-bd,var(--sf-line))}
+  /* 그림이 들어왔으니 자리표시 테두리를 걷는다. 인트로 카드와 같은 크기·색이다 */
+  /* 넷이 함께 쓰는 두 줄에 앉힌다 — 자동 배치에 맡기면 위 여백 줄로 올라간다 */
+  .sf-feat .ic{grid-row:2}
+  .sf-feat .t{grid-row:3}
+  .sf-feat .ic{width:44px;height:44px;flex-shrink:0;color:var(--brand)}
+  .sf-feat .ic svg{display:block;width:100%;height:100%}
+  .sf-feat .t{display:flex;flex-direction:column;gap:8px}
+  .sf-feat .k{font-family:var(--suit);font-weight:800;font-size:var(--t-sm);
+              line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--c-ttl)}
+  .sf-feat .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+              line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--c-body)}
+  /* 와이어프레임은 이 줄을 한 줄로 자르지만(말줄임) 글을 잘라 버리는 대신
+     접히게 둔다 — 카드가 그만큼 자란다 */
+  .sf-prod .use{display:flex;gap:10px;padding:12px 16px;
+                border-top:1px solid var(--c-bd);font-family:var(--suit);
+                font-size:var(--t-meta);line-height:var(--lh-body);letter-spacing:var(--ls-num)}
+  .sf-prod .use b{flex-shrink:0;font-weight:800;color:var(--sf-sec)}
+  .sf-prod .use span{min-width:0;font-weight:600;color:var(--sf-ter)}
+
+  /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
+     좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
+     .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
+  @media(min-width:1181px){
+    .js .sf-sec:not(.is-on){
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-tick:var(--sf-line);--c-tagbg:var(--sf-gray100);
+      --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
+    .js .sf-sec:not(.is-on) .sf-prod .use b{color:var(--sf-line-s)}
+    .js .sf-sec:not(.is-on) .sf-prod .use span{color:var(--sf-line)}
+    /* 카드 하나가 한 장이므로 카드도 장처럼 흐려진다 — 아직 줄에 오지 않은
+       카드를 옅게 두면 다음에 무엇이 올라오는지가 미리 보인다 */
+    .js .sf-prod:not(.is-on){
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-bd:var(--sf-gray100);--c-bd-s:var(--sf-line)}
+    .js .sf-prod:not(.is-on) .use b{color:var(--sf-line-s)}
+    .js .sf-prod:not(.is-on) .use span{color:var(--sf-line)}
+    .js .sf-prod:not(.is-on) .sf-feat .ic{color:var(--sf-line-s)}
+    .js .sf-prod:not(.is-on)>.shot{opacity:.3}
+  }
+  .sf-texts .cat,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
+  .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
+  .sf-cert .ttl,.sf-cert li,
+  .sf-feat .k,.sf-feat .d,
+  .sf-prod .use b,.sf-prod .use span{transition:color .5s var(--ease)}
+  .sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
+  .sf-prod>.side,.sf-prod .lbl,.sf-prod .use{transition:border-color .5s var(--ease)}
+  /* 이름표 판도 장이 흐려질 때 글자와 함께 내려간다 */
+  .sf-cert li.em{transition:color .5s var(--ease),background-color .5s var(--ease)}
+  .sf-feat .ic{transition:color .5s var(--ease)}
+  .sf-prod>.shot{transition:opacity .5s var(--ease)}
+  .sf-tag,.sf-line .rule,.sf-line .tick,.sf-cert li::before,.sf-phead::after,
+  .sf-prod .lbl{transition:background-color .5s var(--ease)}
+  @media(prefers-reduced-motion:reduce){
+    .sf-texts .cat,.sf-texts h2,.sf-texts p,.sf-apps b,.sf-apps span,
+    .sf-ptexts h2,.sf-ptexts .lead,.sf-prod .lbl b,
+  .sf-cert .ttl,.sf-cert li,.sf-feat .k,.sf-feat .d,
+    .sf-prod .use b,.sf-prod .use span,.sf-apps,.sf-apps li,.sf-prod,.sf-feat li,
+    .sf-cert .ttl,.sf-cert li,.sf-cert li.em,.sf-cert li::before,
+    .sf-tag,.sf-line .rule,.sf-line .tick,.sf-ph,.sf-ph.is-on,.sf-phead::after,
+    .sf-feat .ic,.sf-prod>.shot,
+    .sf-prod .lbl{transition:none}
+  }
+
+  /* ── 아코디언 제목 줄 ──────────────────────────────────────────────────
+     모바일(767 이하)에서 장을 열고 닫는 줄이다. 스크립트(business-layout.js)가
+     장마다 한 줄씩 만들어 두고, 폭에 따라 CSS 가 보이고 감출 뿐이라 창을 늘였다
+     줄여도 되돌릴 것이 없다. 넓은 화면에서는 아예 그려지지 않는다 */
+  .sf-acc-hd{display:none;margin:0}
+  /* 소분류 묶음 이름 — 인덱스를 걷는 모바일에서 줄 사이에 끼는 띠다.
+     인덱스의 묶음 머리(.sf-grp>.hd)와 같은 회색 띠 · 같은 글자다 */
+  .sf-acc-grp{display:none;align-items:center;gap:4px;margin:0;
+              padding:10px 16px;background:var(--sf-gray100);
+              font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+              line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter)}
+  .sf-acc-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;
+              width:100%;padding:20px 0;background:none;border:0;text-align:left;
+              font-family:var(--suit);font-weight:800;font-size:var(--t-lg);
+              line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--sf-txt);
+              cursor:pointer;transition:color .3s var(--ease)}
+  /* 열림 표시는 GNB 메뉴와 같은 열십자다 — 열리면 45도 돌아 X 가 된다 */
+  .sf-acc-ic{flex-shrink:0;width:20px;height:20px;color:var(--sf-ter);
+             transition:transform .3s var(--ease),color .3s var(--ease)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-btn{color:var(--brand)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(45deg);color:var(--brand)}
+  @media(prefers-reduced-motion:reduce){
+    .sf-acc-btn,.sf-acc-ic{transition:none}
+  }
+
+  /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
+  @media(max-width:1400px){
+    :root{--body-pad-r:clamp(24px,8.5vw,120px)}
+    .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
+  }
+  /* 카드가 좁아지면 특징 넷을 2×2 로 접는다 — 한 줄에 넷이면 1280 아래에서
+     한 칸이 130 밑으로 떨어져 글이 서너 자씩 끊긴다.
+     (한동안 이 구간에서 사진이 1:1 을 놓고 카드 높이를 채웠다 — 그래서 사진이 세로로
+     늘어나 제품이 잘렸다. 2026-09-22 부터 1:1 을 지킨다) */
+  @media(max-width:1280px){
+    .sf-feat{display:flex;flex-wrap:wrap;gap:0}
+    .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
+    .sf-feat li:nth-child(odd){border-left:0}
+    /* 두 줄로 접히면 줄 사이에도 칸선을 긋는다 — 세로선만 있어 넷이 한 판으로 뭉쳐 보였다 */
+    .sf-feat li:nth-child(n+3){border-top:1px solid var(--c-bd,var(--sf-line))}
+  }
+  @media(max-width:1180px){
+    .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
+    /* 카드가 7열로는 좁아진다 — 리드 아래 자리를 통째로 내준다 */
+    .sf-intro{gap:40px}
+    .sf-subs{width:100%}
+    .sf-subs li{padding:20px}
+    .sf-subs .ic{width:52px;height:52px}
+  }
+  /* ── 태블릿(768~1180) — 그림이 장 안 왼쪽으로 ─────────────────────────
+     붙박이 둘을 푼다. 인덱스는 화면 위 가로 띠로 눕고, 그림 기둥은 통째로 접는다
+     — 겹쳐 있던 그림은 스크립트(business-layout.js)가 제 장 안으로 옮겨서, 그림이
+     있는 장(01 ESS · 02 UPS)은 그림이 왼쪽 · 글이 오른쪽인 두 칸이 된다.
+     03 솔루션은 원래 그림이 없으므로 한 기둥 그대로 흐른다.
+     --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
+  @media(max-width:1180px){
+    :root{--subnav-h:47px}
+    .sf-main{display:block;padding-left:0}
+    .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
+                 padding-right:0;margin-right:0;
+                 display:block;background:rgba(255,255,255,.94);
+                 -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+                 border-bottom:1px solid var(--sf-line)}
+    .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 24px;
+             scrollbar-width:none;-ms-overflow-style:none}
+    .sf-rail::-webkit-scrollbar{display:none}
+    .sf-grp{flex-direction:row;flex-shrink:0}
+    /* 지금 읽는 묶음만 남긴다(2026-09-22 요청) — [01 ESS | GRID ESS | Renewable ESS | C&I ESS].
+       현재 표시(aria-current)는 스크롤을 따라 옮겨 가므로 묶음도 저절로 바뀐다.
+       묶음 머리는 세로 인덱스와 같은 회색 칩으로 탭 앞에 선다 */
+    .sf-grp:not(:has(a[aria-current="true"])){display:none}
+    .sf-grp>.hd{display:flex;align-self:center;margin-right:8px;
+                font-size:var(--t-xs)}  /* 옆 탭 글자와 같은 크기(2026-09-22 요청) */
+    .sf-rail a{border-bottom:0;padding:14px 12px}
+    .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
+                                    box-shadow:inset 0 -2px 0 var(--brand)}
+    /* 빈 기둥만 남으므로 접는다 */
+    .sf-fix{display:block}
+    .sf-figwrap{display:none}
+    .sf-body{padding-right:0}
+    /* 장 */
+    .sf-secs{gap:0;padding-top:0;padding-bottom:0}
+    .sf-secs.is-prods{flex:none;gap:0;padding-top:0}
+    .sf-secs>.sf-sec+.sf-sec{margin-top:0}
+    .sf-sec,.sf-sec.is-prod{min-height:0;display:block;
+            padding:40px 24px 56px;border-top:1px solid var(--sf-line);
+            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 1px)}
+    .sf-secs>.sf-sec:first-child{border-top:0}
+    /* 그림이 든 장만 두 칸 — 기둥에서 나온 그림은 겹쳐 두려고 걸어 둔 절대 위치 ·
+       자리 · 배율을 모두 푼다 */
+    .sf-sec.is-fig{display:flex;flex-direction:row;align-items:flex-start;gap:24px}
+    .sf-sec>.sf-ph{position:relative;inset:auto;flex:0 0 34%;max-width:380px;
+                   aspect-ratio:4/3;transform:none;visibility:visible;--zoom:1}
+    .sf-sec>.sf-txt{flex:1;min-width:0}
+    .sf-txt{min-height:0}
+    .sf-txtin{padding-left:0;padding-right:0}
+    .sf-num,.sf-dl{width:100%}
+    /* 제품 장 — 머리 줄은 함께 흐르고, 사진이 위로 올라오고 특징 넷이 두 줄로 접힌다 */
+    .sf-sec.is-prod>.sf-line{margin-bottom:20px}
+    .sf-phead{position:static;padding-top:0;margin-top:0}
+    .sf-phead::after{display:none}
+    .sf-ptexts{flex:none;min-height:0;gap:24px;padding-right:0}
+    .sf-prods{display:flex;flex-direction:column;gap:24px}
+    .sf-prod{margin-right:0;margin-top:0;flex-direction:column}
+    /* 위로 올라온 사진 칸 — 폭은 카드 전부, 키는 240 하나. 제품 사진이 여백 없이 잘려 있어
+       contain 이 제품마다 알맞은 크기로 담는다(넓적한 모듈은 폭, 키 큰 랙은 키에 맞춘다).
+       종전의 360 정사각은 투명 여백까지 담아 제품 위아래가 휑했다(2026-09-22) */
+    .sf-prod>.shot{flex:none;width:100%;align-self:stretch;aspect-ratio:auto;height:240px;margin:0}
+    .sf-feat{display:flex;flex-wrap:wrap;gap:0}
+    .sf-feat li{display:flex;flex-direction:column;flex:1 1 50%;padding:12px 8px}
+  }
+
+  /* 인증 줄 오른쪽 도트(지금 보는 제품 표시)는 태블릿 · 모바일에서 걷는다(2026-09-22 요청) —
+     넓은 화면에서는 제품 카드가 한 자리에서 갈아 끼워져 몇째인지 알려 줄 몫이 있지만, 이 폭에서는
+     카드가 위아래로 다 펼쳐져 눈으로 보인다 */
+  @media(max-width:1180px){.sf-cert .dots{display:none}}
+  /* 장 번호 태그 · 그림 기둥 몫 눈금줄 — 스크립트(business-layout.js)가 글 쪽 눈금줄 앞에
+     붙여 둔다. 태블릿에서만 쓴다(넓은 화면은 그림 기둥 위 #sfTag 가, 모바일은 눈금줄을 걷는다) */
+  .sf-line .sf-tag--sec,.sf-line .sf-rule--fig{display:none}
+  /* 태블릿(768~1180) — 넓은 화면의 짜임을 살린다(2026-09-22 요청).
+     · 그림 : 글 = 1 : 1.
+     · 눈금줄은 그림 칸 위까지 가로질러 넓은 화면처럼 [번호 태그][선][눈금 | 글 칸 시작][선] 한 줄이 된다.
+       글 칸의 줄을 왼쪽으로 그림 칸 폭 + 사이 24 만큼 끌어낸다(두 칸이 같은 폭이라 -100% - 24).
+       그림은 그 줄 아래, 제목 높이(줄 16 + 사이 24)에서 시작한다.
+     · 줄이 장 머리를 가르므로 장 사이 가로 구분선은 걷는다.
+     · 그림은 크기를 고정하고 제 장 안에서 붙박는다(sticky, 2026-09-22 요청) — 글 길이가 장마다
+       달라 그림 아래가 비는데, 글을 읽어 내리는 동안 그림이 GNB · 탭 줄 밑에 붙어 따라오고
+       장이 끝나면 함께 올라간다. 그림을 글 높이만큼 늘리면 장마다 크기가 제각각이 되고
+       사진(cover)은 양옆이 잘린다. 비율은 사진 · 공정 맵 모두 1:1(2026-09-22 요청) — 글이 대개
+       4:3 그림보다 길어 가로형일 까닭이 없고, 넓은 화면 그림 기둥(≈0.87)이 이미 같은 사진을
+       세로로 잘라 쓰고 있다.
+     모바일은 글 아래로 눕는 흐름이라 뺀다 */
+  @media(min-width:768px) and (max-width:1180px){
+    .sf-secs>.sf-sec{border-top:0}
+    .sf-sec>.sf-ph{flex:1 1 0;min-width:0;max-width:none;margin-top:40px}
+    .sf-sec>.sf-txt{flex:1 1 0}
+    .sf-line .sf-tag--sec{display:flex}
+    .sf-sec:has(>.sf-ph)>.sf-txt>.sf-line{margin-left:calc(-100% - 24px)}
+    .sf-sec:has(>.sf-ph) .sf-rule--fig{display:block;flex:0 0 calc(50% + 12px - 41px)}
+    .sf-sec>.sf-ph{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);align-self:flex-start}
+    .sf-sec>.sf-ph{aspect-ratio:1}
+  }
+
+  /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
+     가로 띠 인덱스는 걷는다. 장마다 제목 줄 하나가 서고, 누르면 그 장이 열린다.
+     첫 장은 열린 채로 시작한다(스크립트가 .is-open 을 준다) */
+  @media(max-width:767px){
+    /* 장식 눈금줄(.sf-line — 번호 태그 · 눈금 · 가는 선)은 걷는다(2026-09-22 요청).
+       아코디언 줄이 이미 장을 가르므로 제목 밑에 선 하나가 더 그어져 보였다 */
+    .sf-line{display:none}
+    .sf-railwrap{display:none}
+    /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
+    .sf-acc-grp{display:flex}
+    .sf-acc-grp+.sf-sec{border-top:0}
+    /* align-items 는 위 태블릿 규칙에서 flex-start 로 와 있다 — 세로로 세울 때는
+       제목 줄이 폭을 꽉 채워야 열림 표시가 오른쪽 끝에 선다 */
+    .sf-secs>.sf-sec,.sf-secs>.sf-sec.is-prod{
+                     display:flex;flex-direction:column;align-items:stretch;gap:0;
+                     padding:0 16px;border-top:1px solid var(--sf-line);
+                     scroll-margin-top:var(--gnb-h)}
+    /* 닫힌 장은 제목 줄만 남는다 — 안에 무엇이 들었든(글 · 그림 · 제품 판) 함께 접힌다.
+       장마다 속이 달라 하나씩 짚는 대신, 제목 줄이 아닌 것을 통째로 접는다 */
+    .sf-sec>*{order:2}
+    .sf-sec>.sf-acc-hd{display:block;order:1}
+    .sf-sec:not(.is-open)>*:not(.sf-acc-hd){display:none}
+    .sf-sec>.sf-txt{padding-bottom:12px}
+    /* 그림은 글 아래로 — 좁은 폭에서 옆에 두면 둘 다 읽히지 않는다 */
+    .sf-sec>.sf-ph{order:3;flex:0 0 auto;width:100%;max-width:none;
+                   aspect-ratio:16/9;margin-bottom:28px}
+    /* 줄 이름과 같은 말인 제목만 접는다 — 스크립트가 .sf-acc-dup 로 짚어 준다.
+       에너지 인프라처럼 줄은 소분류 이름 · 안은 장 제목으로 갈리는 곳은 그대로 둔다 */
+    .sf-sec.sf-acc-dup h2:not(.sf-acc-hd){display:none}
+    .sf-sec.is-prod>.sf-prods{padding-bottom:28px}
+    /* 소분류 눈썹(.cat)은 아코디언 줄과 같은 말이다 — 줄 바로 밑에 또 적지 않는다 */
+    .sf-sec .sf-texts .cat{display:none}
+  }
+
+  @media(max-width:900px){
+    :root{--t-sm:var(--fs-body)}
+    .sf-feat li:nth-child(odd){border-left:0}
+    /* 두 줄로 접히면 줄 사이에도 칸선을 긋는다 — 세로선만 있어 넷이 한 판으로 뭉쳐 보였다 */
+    .sf-feat li:nth-child(n+3){border-top:1px solid var(--c-bd,var(--sf-line))}
+    .sf-cert{flex-wrap:wrap;gap:8px}
+    .sf-cert ul{flex-wrap:wrap}
+    .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
+    .sf-herocap{gap:20px;padding-top:28px}
+    .sf-herocap h1{gap:12px}
+    .sf-hero .ko{font-size:var(--fs-h3)}
+    .sf-hero .en{white-space:normal}
+    .sf-tickrow>div{gap:20px;padding:10px 16px}
+    .sf-tickrow b{}
+    /* 한 화면에 묶어 둘 이유가 없다 — 장이 제 높이로 흐르고 카드는 한 줄에 한 장 */
+    .sf-intro{height:auto;min-height:0;gap:32px;padding:64px 24px 40px}
+    .sf-introfig{flex-basis:140px}
+    .sf-gnb{padding-left:16px;padding-right:16px}
+    .sf-mega,.sf-scrim{display:none}
+    /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
+    .sf-menus{display:none}
+    :root{--gnb-h:53px}
+    .sf-gnb .logo{width:78px}
+    .sf-tools{border-left:0;margin-left:0;padding-left:0}
+    .sf-lead{max-width:none}
+    .sf-subs{align-self:stretch;grid-template-columns:1fr;grid-auto-rows:auto}
+    .sf-subs li{padding:16px}
+    .sf-subs .ic{width:44px;height:44px}
+  }
+
+  /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
+     누르면 짧은 눈금은 사라지고 긴 두 줄이 가운데에서 엇갈려 X 가 된다 */
+  .sf-burger{position:relative;display:block;width:24px;height:24px}
+  .sf-burger .bar{position:absolute;height:1px;background:currentColor;
+                  transition:width .3s var(--ease),transform .3s var(--ease),
+                             opacity .2s var(--ease)}
+  .sf-burger .a{left:5px;top:7px;width:3px}
+  .sf-burger .b{left:5px;top:7px;width:10px;transform:translateX(4px)}
+  .sf-burger .c{left:5px;top:16px;width:14px}
+  .sf-burger[aria-expanded="true"] .a{opacity:0}
+  .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+  /* 하단 다른 사업영역 마을(.bhop) — A-1 은 격자 1~12열 전체를 쓴다(2026-09-17).
+     공용 규칙은 --maxw(1440)에 묶여 넓은 화면에서 가운데로 모였다. 좌우 여백은 GNB · 푸터와 같은
+     44, 900 아래는 16 */
+  .bhop-town{width:calc(100% - var(--grid-m) * 2)}
+  @media(max-width:900px){.bhop-town{width:calc(100% - 32px)}}
+  /* 픽토그램은 칸 폭의 70% — 칸 가운데 아래에 앉아 바닥선은 넷이 그대로 맞는다(2026-09-17).
+     칸이 1~12열로 넓어지며 그림이 함께 커져 섹션이 너무 높아졌다 */
+  .bhlot img{width:70%;margin-inline:auto}
+</style>
+<link rel="stylesheet" href="gnb-c.css" />
+</head>
+<body>
+
+<!-- ===================== 고정 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-c.html" aria-current="true" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-c.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-c.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-c.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-c.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+      <div class="sf-lang" id="sfLang">
+        <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19V20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20V19C15.866 19 19 15.866 19 12Z" fill="currentColor"/>
+<path d="M15 12C15 9.91244 14.5744 8.07164 13.9336 6.79004C13.2629 5.44895 12.5217 5 12 5C11.4783 5 10.7371 5.44895 10.0664 6.79004C9.42561 8.07164 9 9.91244 9 12C9 14.0876 9.42561 15.9284 10.0664 17.21C10.7371 18.551 11.4783 19 12 19V20C9.79086 20 8 16.4183 8 12C8 7.58172 9.79086 4 12 4C14.2091 4 16 7.58172 16 12C16 16.4183 14.2091 20 12 20V19C12.5217 19 13.2629 18.551 13.9336 17.21C14.5744 15.9284 15 14.0876 15 12Z" fill="currentColor"/>
+<path d="M19.5 12.5V11.5H8.5V12.5H19.5Z" fill="currentColor"/>
+<path d="M4.5 11.5V12.5H7V11.5H4.5Z" fill="currentColor"/></svg>
+        </button>
+        <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+      </div>
+      <button type="button" class="menu-toggle sf-burger" id="sfBurger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+
+<!-- 메가 판 — 시안 C 는 A 의 방식: 한 장이 화면 폭으로 열리고, 하위 메뉴가 제 대분류 밑에 선다 (gnb-c.css) -->
+<div class="c-mega" id="cMega" aria-hidden="true" aria-label="전체 메뉴">
+  <div class="c-cols">
+    <div class="c-col"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html" aria-current="page">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    <div class="c-col"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    <div class="c-col"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    <div class="c-col"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">지배구조</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html">ESG 게시판</a></div>
+    <div class="c-col"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+  </div>
+</div>
+
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-c.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-smart-c.html">스마트 제조</a>
+        <a href="business-energy-c.html">에너지 인프라</a>
+        <a href="business-ai-c.html">인공지능 플랫폼</a>
+        <a href="business-semicon-c.html">화합물 전력 반도체</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links">
+        <a href="company-c.html">회사 소개</a>
+        <a href="network-c.html">글로벌 네트워크</a>
+        <a href="locations-c.html">사업장소재</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links">
+        <a href="esg-environment-c.html">환경</a>
+        <a href="esg-social-c.html">사회</a>
+        <a href="esg-governance-c.html">지배구조</a>
+        <a href="esg-report-c.html">내/외부 신고채널</a>
+        <a href="esg-board-c.html">ESG 게시판</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links">
+        <a href="community-notice-c.html">공지사항</a>
+        <a href="community-press-c.html">보도자료</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="sf-hero sf-step">
+  <div class="sf-heroin">
+  <img src="../assets/carousel-ess.jpg" alt="" aria-hidden="true" />
+  <div class="sf-herocap">
+    <h1><span class="ko">에너지 인프라</span><span class="en">Energy Infrastructure</span></h1>
+    <!-- 소분류 띠지 — 이름 열 개면 한 벌로 화면이 차므로 두 벌만 잇는다 -->
+    <div class="sf-ticker" aria-hidden="true">
+      <div class="sf-tickrow">
+        <div><b>GRID ESS</b><i></i><b>Renewable ESS</b><i></i><b>C&amp;I ESS</b><i></i><b>데이터 센터 전용 UPS</b><i></i><b>산업용 UPS</b><i></i><b>주요 전력망 UPS</b><i></i><b>Module</b><i></i><b>Rack</b><i></i><b>Container</b><i></i><b>BMS</b><i></i></div>
+        <div><b>GRID ESS</b><i></i><b>Renewable ESS</b><i></i><b>C&amp;I ESS</b><i></i><b>데이터 센터 전용 UPS</b><i></i><b>산업용 UPS</b><i></i><b>주요 전력망 UPS</b><i></i><b>Module</b><i></i><b>Rack</b><i></i><b>Container</b><i></i><b>BMS</b><i></i></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ===================== INTRO ===================== -->
+<section class="sf-intro sf-step" aria-label="에너지 인프라 개요">
+  <p class="sf-lead">
+    <span class="a">배터리로 전력을 저장하고, 끊기지 않게 지켜냅니다.</span>
+    <span class="b">그리드 규모 ESS부터 우주 발사체 전원까지 아우릅니다.</span>
+  </p>
+  <div class="sf-introfig is-plate">
+    <img src="../assets/ess-grid-overview.png" width="1248" height="244"
+         alt="에너지 인프라 한눈에 보기 — 태양광·풍력 발전과 ESS 컨테이너, 변전 설비, 수요처가 송전선으로 이어진 그림" decoding="async" />
+  </div>
+  <ul class="sf-subs">
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7H3V18H21V7H6V6H22V18H24V19H0V18H2V6H5V7ZM6 17H5V8H6V17ZM9 17H8V8H9V17ZM13 11H14.4551L12.3545 17H11V14H9.54492L11.6455 8H13V11ZM16 17H15V8H16V17ZM19 17H18V8H19V17ZM10.9541 13H12V14.9873L13.0459 12H12V10.0127L10.9541 13Z" fill="currentColor"/></svg></span>
+      <p class="nm">ESS</p>
+      <p class="d">다양한 전력 및 에너지 환경에 대응할 수 있는 확장형 ESS Battery Solution을 제공합니다.</p>
+      <p class="d">배터리 Module부터 Rack 및 Container까지 고객의 요구사항과 Application에 최적화된 시스템을 설계하고 구성합니다.</p>
+    </li>
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4526 5.09961L19.7856 5.57129V11.5713C19.7856 16.2976 16.6769 19.6285 12.1498 21.0488H11.85C7.32299 19.6285 4.21428 16.2975 4.21428 11.5713V5.57129L4.54826 5.09961L11.8334 2.52832H12.1664L19.4526 5.09961ZM5.21428 5.9248V11.5713C5.21428 15.7092 7.86967 18.6983 11.9994 20.0449C16.1298 18.6985 18.7856 15.7095 18.7856 11.5713V5.9248L11.9994 3.53027L5.21428 5.9248ZM13.0004 10H14.4555L12.3549 16H11.0004V13H9.54533L11.6459 7H13.0004V10ZM10.9545 12H12.0004V13.9873L13.0463 11H12.0004V9.0127L10.9545 12Z" fill="currentColor"/></svg></span>
+      <p class="nm">UPS</p>
+      <p class="d">고출력과 높은 신뢰성이 요구되는 Data Center 및 Critical Infrastructure를 위한 배터리 시스템 솔루션을 제공합니다.</p>
+      <p class="d">빠른 전력 응답과 안정적인 시스템 운영을 고려하여 Application에 최적화된 UPS Battery System을 설계합니다.</p>
+    </li>
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 4H22V20H2V4ZM3 5V19H21V5H3ZM6 7H12V17H6V7ZM7 8V16H11V8H7ZM14 7H18V11H14V7ZM15 8V10H17V8H15ZM14 13H18V17H14V13ZM15 14V16H17V14H15Z" fill="currentColor"/></svg></span>
+      <p class="nm">솔루션</p>
+      <p class="d">Scalable Battery System Architecture</p>
+      <p class="d">From Module to Container</p>
+      <p class="d">A-PRO는 고객의 Application과 시스템 요구사항에 따라 다양한 Level의 Battery System을 제공합니다.</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ===================== 본문 ===================== -->
+<div class="sf-main">
+
+  <div class="sf-railwrap">
+    <nav class="sf-rail" id="sfRail" aria-label="에너지 인프라 소분류">
+      <div class="sf-grp">
+        <p class="hd"><span>01</span><span>ESS</span></p>
+        <a href="#sf01-1">GRID ESS</a>
+        <a href="#sf01-2">Renewable ESS</a>
+        <a href="#sf01-3">C&amp;I ESS</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>02</span><span>UPS</span></p>
+        <a href="#sf02-1">데이터 센터 전용 UPS</a>
+        <a href="#sf02-2">산업용 UPS</a>
+        <a href="#sf02-3">주요 전력망 UPS</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>03</span><span>솔루션</span></p>
+        <a href="#sf03-1">Module</a>
+        <a href="#sf03-2">Rack</a>
+        <a href="#sf03-3">Container</a>
+        <a href="#sf03-4">BMS</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="sf-body">
+
+    <!-- 01 ESS · 02 UPS — 그림은 붙박이, 오른쪽 글만 흐른다 -->
+    <div class="sf-fix">
+      <div class="sf-figwrap">
+        <div class="sf-figcol">
+          <!-- 눈금 줄은 여섯 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
+          <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
+          <div class="sf-figstack">
+          <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/ess-grid.jpg" alt="변전소와 송전탑을 배경으로 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf01-2"><img src="../assets/ess-renewable.jpg" alt="태양광 발전소와 풍력 발전기를 배경으로 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf01-3"><img src="../assets/ess-commercial-industrial.jpg" alt="산업단지 플랜트 앞에 놓인 에이프로 ESS 컨테이너" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-1"><img src="../assets/ups-data-center.jpg" alt="도시와 통신 철탑을 배경으로 놓인 데이터 센터용 UPS 한 벌" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-2"><img src="../assets/ups-industrial.jpg" alt="생산 설비가 늘어선 공장 바닥에 놓인 산업용 UPS" decoding="async" /></figure>
+          <figure class="sf-ph has-img" data-for="sf02-3"><img src="../assets/ups-power-grid.jpg" alt="넓은 전력실에 줄지어 선 주요 전력망용 UPS 캐비닛" decoding="async" /></figure>
+          </div>
+        </div>
+      </div>
+      <div class="sf-secs">
+
+      <!-- 01-1 GRID ESS -->
+      <section class="sf-sec sf-step is-fig" id="sf01-1" aria-labelledby="sf01-1-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">GRID ESS</p>
+              <h2 id="sf01-1-t">Power Grid Stability</h2>
+              <p>전력망의 안정적인 운영과 효율적인 에너지 관리를 위한 대용량 배터리 에너지 저장 솔루션입니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Grid Stabilization</span></li>
+            <li><b>02</b><span>Frequency Regulation</span></li>
+            <li><b>03</b><span>Peak Shaving</span></li>
+            <li><b>04</b><span>Load Shifting</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01-2 Renewable ESS -->
+      <section class="sf-sec sf-step is-fig" id="sf01-2" aria-labelledby="sf01-2-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">Renewable ESS</p>
+              <h2 id="sf01-2-t">Renewable Energy Integration</h2>
+              <p>태양광 및 풍력 등 변동성이 높은 신재생에너지를 안정적으로 저장하고 활용하기 위한 배터리 솔루션입니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Solar Energy</span></li>
+            <li><b>02</b><span>Wind Energy</span></li>
+            <li><b>03</b><span>Renewable Energy Integration</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01-3 C&amp;I ESS -->
+      <section class="sf-sec sf-step is-fig" id="sf01-3" aria-labelledby="sf01-3-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">C&amp;I ESS</p>
+              <h2 id="sf01-3-t">Commercial &amp;<br />Industrial Energy Storage</h2>
+              <p>산업 및 상업시설의 효율적인 에너지 관리와 안정적인 전력 운영을 위한 배터리 솔루션입니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Factory</span></li>
+            <li><b>02</b><span>Commercial Building</span></li>
+            <li><b>03</b><span>Industrial Facility</span></li>
+            <li><b>04</b><span>Microgrid</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02-1 데이터 센터 전용 UPS -->
+      <section class="sf-sec sf-step is-fig" id="sf02-1" aria-labelledby="sf02-1-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">데이터 센터 전용 UPS</p>
+              <h2 id="sf02-1-t">Reliable Power<br />for Data Infrastructure</h2>
+              <p>대규모 Data Center 및 AI Data Center의 안정적인 운영을 위한 고출력 배터리 백업 솔루션을 제공합니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Data Center</span></li>
+            <li><b>02</b><span>AI Data Center</span></li>
+            <li><b>03</b><span>Cloud &amp; Hyperscale Data Center</span></li>
+            <li><b>04</b><span>Colocation Data Center</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02-2 산업용 UPS -->
+      <section class="sf-sec sf-step is-fig" id="sf02-2" aria-labelledby="sf02-2-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">산업용 UPS</p>
+              <h2 id="sf02-2-t">Reliable Power<br />for Data Infrastructure</h2>
+              <p>순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Manufacturing Facility</span></li>
+            <li><b>02</b><span>Semiconductor &amp; Display Facility</span></li>
+            <li><b>03</b><span>Process Industry</span></li>
+            <li><b>04</b><span>Industrial Automation</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02-3 주요 전력망 UPS -->
+      <section class="sf-sec sf-step is-fig" id="sf02-3" aria-labelledby="sf02-3-t">
+        <div class="sf-txt">
+          <p class="sf-line"><i class="tick"></i><i class="rule"></i></p>
+          <div class="sf-txtin">
+            <div class="sf-texts">
+              <p class="cat">주요 전력망 UPS</p>
+              <h2 id="sf02-3-t">Continuous Power<br />for Critical Infrastructure</h2>
+              <p>전력 공급의 연속성과 높은 신뢰성이 요구되는 주요 사회 및 산업 인프라를 위한 배터리 백업 솔루션입니다.</p>
+            </div>
+            <ol class="sf-apps" aria-label="주요 적용 분야">
+            <li><b>01</b><span>Hospital &amp; Healthcare</span></li>
+            <li><b>02</b><span>Telecommunication</span></li>
+            <li><b>03</b><span>Transportation Infrastructure</span></li>
+            <li><b>04</b><span>Emergency &amp; Critical Facilities</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      </div>
+    </div>
+
+    <!-- 03 솔루션 — 한 기둥. 그림 붙박이가 없다 -->
+    <div class="sf-secs is-prods">
+
+      <!-- 03-1 Module -->
+      <section class="sf-sec sf-step is-prod" id="sf03-1" aria-labelledby="sf03-1-t">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-1</span><i class="rule"></i></p>
+          <div class="sf-ptexts">
+            <div class="txt">
+              <h2 id="sf03-1-t">Module</h2>
+              <p class="lead">배터리 시스템을 구성하는 기본 단위로서 요구되는 전압, 용량 및 출력 특성에 맞춰 설계됩니다.</p>
+            </div>
+            <div class="sf-cert">
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li class="em">UL 9540A</li>
+              </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
+            </div>
+          </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-module-air-cooling.png" alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 배터리 모듈" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>에어 쿨링 타입(Air Cooling)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.2505 2.40137C13.6259 2.61958 14.3868 3.88892 14.603 5.42481C14.8226 6.9848 14.5265 8.99374 13.6479 11.0889L13.6372 11.1133C14.0292 11.4537 14.3134 11.9132 14.4341 12.4365C16.822 12.6103 18.8041 13.3293 20.0884 14.3438C21.3776 15.3622 22.0418 16.7663 21.4634 18.1885C21.4458 18.2316 21.4218 18.272 21.3931 18.3086C20.4452 19.5138 18.8954 19.6457 17.3647 19.0469C15.8808 18.4662 14.3103 17.1768 12.9868 15.2959C12.6841 15.4261 12.3509 15.4999 12.0005 15.5C11.7524 15.5 11.5128 15.4618 11.2866 15.3945C9.97037 17.2322 8.41943 18.492 6.95359 19.0576C5.43169 19.6448 3.89389 19.5066 2.95163 18.3086C2.9228 18.2719 2.89892 18.2317 2.88132 18.1885C2.30621 16.7747 2.95927 15.3781 4.23386 14.3613C5.50932 13.3441 7.48296 12.6202 9.86277 12.4395L10.3618 12.4014L10.3696 12.5H10.5005V13C10.5006 13.8285 11.172 14.5 12.0005 14.5C12.8288 14.4998 13.5004 13.8283 13.5005 13C13.5004 12.1717 12.8288 11.5003 12.0005 11.5C11.7479 11.5 11.5108 11.5618 11.3032 11.6709L10.8608 11.9043L10.395 11.0195L10.6206 10.8994C9.80233 8.87259 9.52872 6.93794 9.74168 5.42481C9.95792 3.88884 10.7186 2.61943 12.0942 2.40137L12.1723 2.39551C12.1983 2.39552 12.2247 2.3973 12.2505 2.40137ZM9.54637 13.4717C7.49362 13.6869 5.87123 14.3336 4.85691 15.1426C3.80692 15.9802 3.48143 16.9108 3.78269 17.7422C4.35854 18.4227 5.33614 18.609 6.59324 18.124C7.8075 17.6554 9.18297 16.5801 10.3979 14.918C9.96441 14.5554 9.65667 14.0489 9.54637 13.4717ZM14.4585 13.4414C14.3705 13.9344 14.1387 14.3761 13.8071 14.7236C15.0478 16.4858 16.473 17.6237 17.729 18.1152C18.996 18.611 19.9818 18.4267 20.561 17.7432C20.8645 16.9069 20.5343 15.9694 19.4692 15.1279C18.3978 14.2816 16.6587 13.6169 14.4585 13.4414ZM12.1723 3.40527C11.4811 3.55703 10.9169 4.25071 10.7319 5.56446C10.5487 6.86686 10.7792 8.62789 11.5532 10.5391C11.6983 10.5129 11.8482 10.5 12.0005 10.5C12.2646 10.5001 12.5193 10.5413 12.7583 10.6172C13.5579 8.67585 13.7985 6.88463 13.6128 5.56446C13.4279 4.25084 12.8635 3.55717 12.1723 3.40527Z" fill="currentColor"/></svg></i><span class="t"><span class="k">자연 공기 또는 강제 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 모듈 내부의 열을 외부로 배출합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.3945 2.5C16.3162 2.50007 17.1172 2.66621 17.915 3.04297L18.0557 3.84863L14.4189 7.48438L16.5156 9.58105L20.1553 5.95312L20.9648 6.10156C21.3092 6.86635 21.5 7.71503 21.5 8.60645C21.4998 11.9784 18.7664 14.7116 15.3945 14.7119C14.6648 14.7119 13.9635 14.5832 13.3135 14.3477C13.142 14.2855 12.9745 14.2144 12.8105 14.1377L4.74219 22.207L1.79297 19.2578L3.44141 17.6094L4.14844 18.3164L3.20703 19.2578L4.74219 20.793L11.9121 13.6221C11.3136 13.2059 10.7941 12.6845 10.3779 12.0859L5.12891 17.335L4.42188 16.6279L9.86035 11.1895C9.49338 10.4051 9.28814 9.52989 9.28809 8.60645C9.28809 5.23416 12.0222 2.5 15.3945 2.5ZM15.3945 3.5C12.5745 3.5 10.2881 5.78645 10.2881 8.60645C10.2882 10.8144 11.6905 12.6963 13.6543 13.4082C14.1966 13.6047 14.7828 13.7119 15.3945 13.7119C18.2141 13.7116 20.4998 11.4261 20.5 8.60645C20.5 8.12289 20.4319 7.65548 20.3066 7.21289L16.8682 10.6416H16.1621L13.3584 7.83887V7.13086L16.8018 3.6875C16.3653 3.5607 15.9088 3.50005 15.3945 3.5Z" fill="currentColor"/></svg></i><span class="t"><span class="k">구조가 단순하고 설치가 용이</span><span class="d">쿨링 시스템이 단순하여 설치와 유지보수가 용이합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32278 19.6285 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.7091 7.86947 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">다양한 환경에서의 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있습니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.5C17.2471 2.5 21.5 6.75293 21.5 12C21.5 17.2471 17.2471 21.5 12 21.5C6.75293 21.5 2.5 17.2471 2.5 12C2.5 9.81427 3.23851 7.79969 4.47949 6.19434L5.27051 6.80566C4.16011 8.24205 3.5 10.0432 3.5 12C3.5 16.6948 7.30521 20.5 12 20.5C16.6948 20.5 20.5 16.6948 20.5 12C20.5 7.30521 16.6948 3.5 12 3.5C9.82255 3.5 7.83708 4.31795 6.33301 5.66406L6 5.29102L5.66699 4.91895C7.34733 3.41517 9.56721 2.5 12 2.5ZM12.5 7.5H16V8.5H10C9.17157 8.5 8.5 9.17157 8.5 10C8.5 10.8284 9.17157 11.5 10 11.5H14C15.3807 11.5 16.5 12.6193 16.5 14C16.5 15.3807 15.3807 16.5 14 16.5H12.5V18H11.5V16.5H8V15.5H14C14.8284 15.5 15.5 14.8284 15.5 14C15.5 13.2233 14.9097 12.5846 14.1533 12.5078L14 12.5H10C8.61929 12.5 7.5 11.3807 7.5 10C7.5 8.61929 8.61929 7.5 10 7.5H11.5V6H12.5V7.5Z" fill="currentColor"/></svg></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 시스템 전체 비용 절감이 가능합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-module-liquid-cooling.png" alt="냉각수 배관이 연결된 리퀴드 쿨링 타입 배터리 모듈" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>리퀴드 쿨링 타입(Liquid Cooling)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.3994 2.69922C12.4002 2.70025 12.4019 2.7022 12.4033 2.7041C12.4062 2.7079 12.4107 2.71357 12.416 2.7207C12.4269 2.73517 12.4424 2.75663 12.4629 2.78418C12.5041 2.83961 12.5644 2.92072 12.6406 3.02539C12.7931 3.23485 13.0102 3.53828 13.2705 3.91504C13.791 4.66838 14.4862 5.71875 15.1816 6.9043C15.8762 8.08843 16.5765 9.41679 17.1045 10.7246C17.6291 12.0241 18 13.3437 18 14.5C18 16.4217 17.4109 18.0505 16.3447 19.2041C15.2753 20.3611 13.7621 21 12 21C10.2379 21 8.72473 20.3611 7.65527 19.2041C6.58913 18.0505 6 16.4217 6 14.5C6 13.1483 6.50778 11.5675 7.18359 10.0469C7.8647 8.51431 8.74149 6.98961 9.53027 5.73438L9.95312 6L10.377 6.26562C9.60177 7.49921 8.75123 8.98032 8.09668 10.4531C7.4369 11.9378 7 13.3625 7 14.5C7 16.2183 7.52438 17.5891 8.38965 18.5254C9.25201 19.4583 10.4894 20 12 20C13.5106 20 14.748 19.4583 15.6104 18.5254C16.4756 17.5891 17 16.2183 17 14.5C17 13.5329 16.6833 12.3534 16.1768 11.0986C15.6735 9.85208 14.9988 8.57009 14.3184 7.41016C13.6388 6.2517 12.959 5.22263 12.4482 4.4834C12.2778 4.23674 12.1239 4.02437 11.998 3.84863C11.9908 3.85878 11.984 3.86948 11.9766 3.87988C11.7111 4.25119 11.3396 4.7837 10.918 5.4248L10.5 5.15039L10.082 4.875C10.512 4.22125 10.8915 3.67876 11.1631 3.29883C11.2989 3.10885 11.4079 2.95869 11.4834 2.85645C11.521 2.80554 11.5503 2.76595 11.5703 2.73926C11.5801 2.72613 11.5875 2.71592 11.5928 2.70898C11.5954 2.70549 11.5982 2.70303 11.5996 2.70117L11.6006 2.69922L11.6016 2.69824H12.3984L12.3994 2.69922Z" fill="currentColor"/></svg></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 모듈 내부의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 3C10.6576 3 11.1806 3.30308 11.5225 3.78223C11.8524 4.24474 12 4.84749 12 5.46875V14.5361C13.1954 15.2277 14 16.5192 14 18C14 20.2096 12.2096 22 10 22C7.79037 22 6 20.2096 6 18C6 17.1508 6.26488 16.3619 6.7168 15.7139L7.53711 16.2861C7.19851 16.7717 7 17.3618 7 18C7 19.6573 8.34266 21 10 21C11.6573 21 13 19.6573 13 18C13 16.3427 11.6573 15 10 15C9.48604 15 9.12572 15.0769 8.72949 15.2812L8 14.8369V5.5C8 4.87878 8.14746 4.27039 8.47461 3.80176C8.81311 3.31692 9.33546 3 10 3ZM10 4C9.68977 4 9.46175 4.13367 9.29395 4.37402C9.11492 4.63057 9 5.02215 9 5.5V14.1133C9.31492 14.0332 9.63867 14 10 14C10.3453 14 10.6804 14.0438 11 14.126V5.46875C11 4.99094 10.8852 4.60933 10.709 4.3623C10.5446 4.13186 10.3172 4 10 4ZM20 12H15V11H20V12ZM20 9H15V8H20V9Z" fill="currentColor"/></svg></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 모듈 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 9H21V10H16.3359L11.9629 20.6895L11.8359 21H10V15H3V14H7.72461L12.0361 3.3125L12.1621 3H14V9ZM8.80371 14H11V20H11.1641L15.2549 10H13V4H12.8379L8.80371 14Z" fill="currentColor"/></svg></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 19H11.293L7.29297 15H2V9H4V10H3V14H7.70703L11.707 18H12V6H11.707L7.70703 10H5V9H7.29297L11.293 5H13V19ZM20.8535 9.85352L18.8066 11.8994L20.8535 13.9463L20.1465 14.6533L18.0996 12.6064L16.0537 14.6533L15.3467 13.9463L17.3926 11.8994L15.3467 9.85352L16.0537 9.14648L18.0996 11.1924L20.1465 9.14648L20.8535 9.85352Z" fill="currentColor"/></svg></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03-2 Rack -->
+      <section class="sf-sec sf-step is-prod" id="sf03-2" aria-labelledby="sf03-2-t">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-2</span><i class="rule"></i></p>
+          <div class="sf-ptexts">
+            <div class="txt">
+              <h2 id="sf03-2-t">Rack</h2>
+              <p class="lead">Battery Module 또는 Pack, BMS 및 전기 보호 시스템을 통합하여 확장 가능한 Battery Rack Solution을 제공합니다.</p>
+            </div>
+            <div class="sf-cert">
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+                <li class="em">UL 9540A</li>
+              </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
+            </div>
+          </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-rack-high-energy.png" alt="문을 연 High Energy Type 배터리 랙" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>High Energy Type Rack</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7H3V18H21V7H6V6H19V4H20V6H22V19H2V6H4V4H5V7ZM19 16H5V13H19V16ZM6 15H18V14H6V15ZM19 12H5V9H19V12ZM6 11H18V10H6V11Z" fill="currentColor"/></svg></i><span class="t"><span class="k">높은 에너지 밀도</span><span class="d">대용량 셀과 최적화된 시스템 설계로 높은 에너지 밀도를 구현합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.5C17.2471 2.5 21.5 6.75293 21.5 12C21.5 17.2471 17.2471 21.5 12 21.5C6.75293 21.5 2.5 17.2471 2.5 12C2.5 9.81427 3.23851 7.79969 4.47949 6.19434L5.27051 6.80566C4.16011 8.24205 3.5 10.0432 3.5 12C3.5 16.6948 7.30521 20.5 12 20.5C16.6948 20.5 20.5 16.6948 20.5 12C20.5 7.30521 16.6948 3.5 12 3.5C9.82255 3.5 7.83708 4.31795 6.33301 5.66406L6 5.29102L5.66699 4.91895C7.34733 3.41517 9.56721 2.5 12 2.5ZM12.5 11.7188L15.8604 13.7734L15.3389 14.627L11.7393 12.4268C11.5907 12.336 11.5001 12.1741 11.5 12V7.2002H12.5V11.7188Z" fill="currentColor"/></svg></i><span class="t"><span class="k">장시간 에너지 저장</span><span class="d">장시간 에너지 저장이 필요한 ESS, C&amp;I 시스템 등에 최적화되어 있습니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32278 19.6285 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.7091 7.86947 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">안정적인 시스템 운영</span><span class="d">통합 BMS와 다중 보호 기능으로 안정적이고 안전한 시스템 운영을 보장합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.83789 15.3535L3.08789 16.959L2.75 16.5908L2.41211 16.2217L4.16211 14.6172L4.83789 15.3535ZM20.5 11H19.5V8.39258L13.3477 14.3584C13.2544 14.4488 13.1298 14.4999 13 14.5H12.25C12.1257 14.4999 12.005 14.4527 11.9131 14.3691L9.30664 12H8.49414L5.68457 14.5771L5.34668 14.208L5.00879 13.8398L7.96191 11.1309L8.03613 11.0752C8.11473 11.0264 8.20607 11.0001 8.2998 11H9.5L9.5918 11.0078C9.68216 11.0247 9.76697 11.0673 9.83594 11.1299L12.4434 13.5H12.7959L18.9834 7.5H16V6.5H20.5V11Z" fill="currentColor"/></svg></i><span class="t"><span class="k">확장성 및 유연성</span><span class="d">다양한 용량 구성과 병렬 확장을 통해 고객 요구에 유연하게 대응합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-rack-high-power.png" alt="문을 연 High Power Type 배터리 랙" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>High Power Type Rack</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 9H21V10H16.3359L11.9629 20.6895L11.8359 21H10V15H3V14H7.72461L12.0361 3.3125L12.1621 3H14V9ZM8.80371 14H11V20H11.1641L15.2549 10H13V4H12.8379L8.80371 14Z" fill="currentColor"/></svg></i><span class="t"><span class="k">높은 출력 성능</span><span class="d">저내부저항 설계와 고출력 셀 적용으로 순간 고출력 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.33203 7.12598L13.832 11.126L14 11.2754V12.7246L13.832 12.874L9.33203 16.874L9.19043 17H8V14H9V15.8301L13 12.2744V11.7246L9 8.16895V13H8V7H9.19043L9.33203 7.12598ZM16.332 7.12598L20.832 11.126L21 11.2754V12.7246L20.832 12.874L16.332 16.874L16.1904 17H15V14H16V15.8301L20 12.2744V11.7246L16 8.16895V13H15V7H16.1904L16.332 7.12598ZM7 14H3V13H7V14ZM7 11H3V10H7V11Z" fill="currentColor"/></svg></i><span class="t"><span class="k">빠른 응답 성능</span><span class="d">높은 출력 밀도와 최적화된 전력 설계로 빠른 응답과 안정적인 전력 공급이 가능합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 3C10.6576 3 11.1806 3.30308 11.5225 3.78223C11.8524 4.24474 12 4.84749 12 5.46875V14.5361C13.1954 15.2277 14 16.5192 14 18C14 20.2096 12.2096 22 10 22C7.79037 22 6 20.2096 6 18C6 17.1508 6.26488 16.3619 6.7168 15.7139L7.53711 16.2861C7.19851 16.7717 7 17.3618 7 18C7 19.6573 8.34266 21 10 21C11.6573 21 13 19.6573 13 18C13 16.3427 11.6573 15 10 15C9.48604 15 9.12572 15.0769 8.72949 15.2812L8 14.8369V5.5C8 4.87878 8.14746 4.27039 8.47461 3.80176C8.81311 3.31692 9.33546 3 10 3ZM10 4C9.68977 4 9.46175 4.13367 9.29395 4.37402C9.11492 4.63057 9 5.02215 9 5.5V14.1133C9.31492 14.0332 9.63867 14 10 14C10.3453 14 10.6804 14.0438 11 14.126V5.46875C11 4.99094 10.8852 4.60933 10.709 4.3623C10.5446 4.13186 10.3172 4 10 4ZM20 12H15V11H20V12ZM20 9H15V8H20V9Z" fill="currentColor"/></svg></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">고출력 환경에서도 안정적인 온도 제어와 열 확산 구조를 적용하였습니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32278 19.6285 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.7091 7.86947 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">안정성 및 신뢰성</span><span class="d">통합 BMS와 다중 보호 기능으로 고출력 환경에서도 안전한 운영을 보장합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03-3 Container -->
+      <section class="sf-sec sf-step is-prod" id="sf03-3" aria-labelledby="sf03-3-t">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-3</span><i class="rule"></i></p>
+          <div class="sf-ptexts">
+            <div class="txt">
+              <h2 id="sf03-3-t">Container</h2>
+              <p class="lead">Battery Rack과 전기 및 제어 시스템 등을 통합하여 대용량 ESS 구축에 적합한 Containerized Battery Solution을 제공합니다.</p>
+            </div>
+            <div class="sf-cert">
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>KC / IEC / UL</li>
+              </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i></p>
+            </div>
+          </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-container-air-cooling.png" alt="공기 흡배기 방향을 표시한 에어 쿨링 타입 ESS 컨테이너" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>Container Air Cooling Type</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.2505 2.40137C13.6259 2.61958 14.3868 3.88892 14.603 5.42481C14.8226 6.9848 14.5265 8.99374 13.6479 11.0889L13.6372 11.1133C14.0292 11.4537 14.3134 11.9132 14.4341 12.4365C16.822 12.6103 18.8041 13.3293 20.0884 14.3438C21.3776 15.3622 22.0418 16.7663 21.4634 18.1885C21.4458 18.2316 21.4218 18.272 21.3931 18.3086C20.4452 19.5138 18.8954 19.6457 17.3647 19.0469C15.8808 18.4662 14.3103 17.1768 12.9868 15.2959C12.6841 15.4261 12.3509 15.4999 12.0005 15.5C11.7524 15.5 11.5128 15.4618 11.2866 15.3945C9.97037 17.2322 8.41943 18.492 6.95359 19.0576C5.43169 19.6448 3.89389 19.5066 2.95163 18.3086C2.9228 18.2719 2.89892 18.2317 2.88132 18.1885C2.30621 16.7747 2.95927 15.3781 4.23386 14.3613C5.50932 13.3441 7.48296 12.6202 9.86277 12.4395L10.3618 12.4014L10.3696 12.5H10.5005V13C10.5006 13.8285 11.172 14.5 12.0005 14.5C12.8288 14.4998 13.5004 13.8283 13.5005 13C13.5004 12.1717 12.8288 11.5003 12.0005 11.5C11.7479 11.5 11.5108 11.5618 11.3032 11.6709L10.8608 11.9043L10.395 11.0195L10.6206 10.8994C9.80233 8.87259 9.52872 6.93794 9.74168 5.42481C9.95792 3.88884 10.7186 2.61943 12.0942 2.40137L12.1723 2.39551C12.1983 2.39552 12.2247 2.3973 12.2505 2.40137ZM9.54637 13.4717C7.49362 13.6869 5.87123 14.3336 4.85691 15.1426C3.80692 15.9802 3.48143 16.9108 3.78269 17.7422C4.35854 18.4227 5.33614 18.609 6.59324 18.124C7.8075 17.6554 9.18297 16.5801 10.3979 14.918C9.96441 14.5554 9.65667 14.0489 9.54637 13.4717ZM14.4585 13.4414C14.3705 13.9344 14.1387 14.3761 13.8071 14.7236C15.0478 16.4858 16.473 17.6237 17.729 18.1152C18.996 18.611 19.9818 18.4267 20.561 17.7432C20.8645 16.9069 20.5343 15.9694 19.4692 15.1279C18.3978 14.2816 16.6587 13.6169 14.4585 13.4414ZM12.1723 3.40527C11.4811 3.55703 10.9169 4.25071 10.7319 5.56446C10.5487 6.86686 10.7792 8.62789 11.5532 10.5391C11.6983 10.5129 11.8482 10.5 12.0005 10.5C12.2646 10.5001 12.5193 10.5413 12.7583 10.6172C13.5579 8.67585 13.7985 6.88463 13.6128 5.56446C13.4279 4.25084 12.8635 3.55717 12.1723 3.40527Z" fill="currentColor"/></svg></i><span class="t"><span class="k">자연 공기 순환 방식</span><span class="d">팬을 이용한 공기 순환을 통해 컨테이너 내부의 열을 외부로 배출합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.3945 2.5C16.3162 2.50007 17.1172 2.66621 17.915 3.04297L18.0557 3.84863L14.4189 7.48438L16.5156 9.58105L20.1553 5.95312L20.9648 6.10156C21.3092 6.86635 21.5 7.71503 21.5 8.60645C21.4998 11.9784 18.7664 14.7116 15.3945 14.7119C14.6648 14.7119 13.9635 14.5832 13.3135 14.3477C13.142 14.2855 12.9745 14.2144 12.8105 14.1377L4.74219 22.207L1.79297 19.2578L3.44141 17.6094L4.14844 18.3164L3.20703 19.2578L4.74219 20.793L11.9121 13.6221C11.3136 13.2059 10.7941 12.6845 10.3779 12.0859L5.12891 17.335L4.42188 16.6279L9.86035 11.1895C9.49338 10.4051 9.28814 9.52989 9.28809 8.60645C9.28809 5.23416 12.0222 2.5 15.3945 2.5ZM15.3945 3.5C12.5745 3.5 10.2881 5.78645 10.2881 8.60645C10.2882 10.8144 11.6905 12.6963 13.6543 13.4082C14.1966 13.6047 14.7828 13.7119 15.3945 13.7119C18.2141 13.7116 20.4998 11.4261 20.5 8.60645C20.5 8.12289 20.4319 7.65548 20.3066 7.21289L16.8682 10.6416H16.1621L13.3584 7.83887V7.13086L16.8018 3.6875C16.3653 3.5607 15.9088 3.50005 15.3945 3.5Z" fill="currentColor"/></svg></i><span class="t"><span class="k">구조가 단순하고 유지보수가 용이</span><span class="d">냉각 시스템이 단순하여 설치와 유지보수가 용이하고 운영 비용이 낮습니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32278 19.6285 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.7091 7.86947 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">다양한 환경에서 안정적 운용</span><span class="d">넓은 온도 범위에서 안정적으로 운용할 수 있어 다양한 설치 환경에 적합합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.5C17.2471 2.5 21.5 6.75293 21.5 12C21.5 17.2471 17.2471 21.5 12 21.5C6.75293 21.5 2.5 17.2471 2.5 12C2.5 9.81427 3.23851 7.79969 4.47949 6.19434L5.27051 6.80566C4.16011 8.24205 3.5 10.0432 3.5 12C3.5 16.6948 7.30521 20.5 12 20.5C16.6948 20.5 20.5 16.6948 20.5 12C20.5 7.30521 16.6948 3.5 12 3.5C9.82255 3.5 7.83708 4.31795 6.33301 5.66406L6 5.29102L5.66699 4.91895C7.34733 3.41517 9.56721 2.5 12 2.5ZM12.5 7.5H16V8.5H10C9.17157 8.5 8.5 9.17157 8.5 10C8.5 10.8284 9.17157 11.5 10 11.5H14C15.3807 11.5 16.5 12.6193 16.5 14C16.5 15.3807 15.3807 16.5 14 16.5H12.5V18H11.5V16.5H8V15.5H14C14.8284 15.5 15.5 14.8284 15.5 14C15.5 13.2233 14.9097 12.5846 14.1533 12.5078L14 12.5H10C8.61929 12.5 7.5 11.3807 7.5 10C7.5 8.61929 8.61929 7.5 10 7.5H11.5V6H12.5V7.5Z" fill="currentColor"/></svg></i><span class="t"><span class="k">경제성 우수</span><span class="d">추가적인 냉각 설비가 필요 없어 초기 투자 비용과 운영 비용이 절감됩니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-container-liquid-cooling.png" alt="냉각 유닛이 보이는 리퀴드 쿨링 타입 ESS 컨테이너" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>Container Liquid Cooling Type</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.3994 2.69922C12.4002 2.70025 12.4019 2.7022 12.4033 2.7041C12.4062 2.7079 12.4107 2.71357 12.416 2.7207C12.4269 2.73517 12.4424 2.75663 12.4629 2.78418C12.5041 2.83961 12.5644 2.92072 12.6406 3.02539C12.7931 3.23485 13.0102 3.53828 13.2705 3.91504C13.791 4.66838 14.4862 5.71875 15.1816 6.9043C15.8762 8.08843 16.5765 9.41679 17.1045 10.7246C17.6291 12.0241 18 13.3437 18 14.5C18 16.4217 17.4109 18.0505 16.3447 19.2041C15.2753 20.3611 13.7621 21 12 21C10.2379 21 8.72473 20.3611 7.65527 19.2041C6.58913 18.0505 6 16.4217 6 14.5C6 13.1483 6.50778 11.5675 7.18359 10.0469C7.8647 8.51431 8.74149 6.98961 9.53027 5.73438L9.95312 6L10.377 6.26562C9.60177 7.49921 8.75123 8.98032 8.09668 10.4531C7.4369 11.9378 7 13.3625 7 14.5C7 16.2183 7.52438 17.5891 8.38965 18.5254C9.25201 19.4583 10.4894 20 12 20C13.5106 20 14.748 19.4583 15.6104 18.5254C16.4756 17.5891 17 16.2183 17 14.5C17 13.5329 16.6833 12.3534 16.1768 11.0986C15.6735 9.85208 14.9988 8.57009 14.3184 7.41016C13.6388 6.2517 12.959 5.22263 12.4482 4.4834C12.2778 4.23674 12.1239 4.02437 11.998 3.84863C11.9908 3.85878 11.984 3.86948 11.9766 3.87988C11.7111 4.25119 11.3396 4.7837 10.918 5.4248L10.5 5.15039L10.082 4.875C10.512 4.22125 10.8915 3.67876 11.1631 3.29883C11.2989 3.10885 11.4079 2.95869 11.4834 2.85645C11.521 2.80554 11.5503 2.76595 11.5703 2.73926C11.5801 2.72613 11.5875 2.71592 11.5928 2.70898C11.5954 2.70549 11.5982 2.70303 11.5996 2.70117L11.6006 2.69922L11.6016 2.69824H12.3984L12.3994 2.69922Z" fill="currentColor"/></svg></i><span class="t"><span class="k">직접 액체 냉각 방식</span><span class="d">냉각수가 배터리 모듈 및 주요 부품의 냉각판을 따라 순환하며 열을 효과적으로 제거합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 3C10.6576 3 11.1806 3.30308 11.5225 3.78223C11.8524 4.24474 12 4.84749 12 5.46875V14.5361C13.1954 15.2277 14 16.5192 14 18C14 20.2096 12.2096 22 10 22C7.79037 22 6 20.2096 6 18C6 17.1508 6.26488 16.3619 6.7168 15.7139L7.53711 16.2861C7.19851 16.7717 7 17.3618 7 18C7 19.6573 8.34266 21 10 21C11.6573 21 13 19.6573 13 18C13 16.3427 11.6573 15 10 15C9.48604 15 9.12572 15.0769 8.72949 15.2812L8 14.8369V5.5C8 4.87878 8.14746 4.27039 8.47461 3.80176C8.81311 3.31692 9.33546 3 10 3ZM10 4C9.68977 4 9.46175 4.13367 9.29395 4.37402C9.11492 4.63057 9 5.02215 9 5.5V14.1133C9.31492 14.0332 9.63867 14 10 14C10.3453 14 10.6804 14.0438 11 14.126V5.46875C11 4.99094 10.8852 4.60933 10.709 4.3623C10.5446 4.13186 10.3172 4 10 4ZM20 12H15V11H20V12ZM20 9H15V8H20V9Z" fill="currentColor"/></svg></i><span class="t"><span class="k">우수한 열 관리 성능</span><span class="d">높은 열전도 효율로 컨테이너 내부 온도를 균일하게 유지하고, 고출력 운용이 가능합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 9H21V10H16.3359L11.9629 20.6895L11.8359 21H10V15H3V14H7.72461L12.0361 3.3125L12.1621 3H14V9ZM8.80371 14H11V20H11.1641L15.2549 10H13V4H12.8379L8.80371 14Z" fill="currentColor"/></svg></i><span class="t"><span class="k">고출력·고밀도 시스템에 최적</span><span class="d">높은 에너지 밀도와 연속 고출력 환경에서도 안정적인 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 19H11.293L7.29297 15H2V9H4V10H3V14H7.70703L11.707 18H12V6H11.707L7.70703 10H5V9H7.29297L11.293 5H13V19ZM20.8535 9.85352L18.8066 11.8994L20.8535 13.9463L20.1465 14.6533L18.0996 12.6064L16.0537 14.6533L15.3467 13.9463L17.3926 11.8994L15.3467 9.85352L16.0537 9.14648L18.0996 11.1924L20.1465 9.14648L20.8535 9.85352Z" fill="currentColor"/></svg></i><span class="t"><span class="k">저소음 설계 가능</span><span class="d">팬 사용을 최소화하여 소음을 줄이고, 시스템 효율을 향상시킵니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03-4 BMS -->
+      <section class="sf-sec sf-step is-prod" id="sf03-4" aria-labelledby="sf03-4-t">
+        <div class="sf-phead">
+          <p class="sf-line"><span class="sf-tag">03-4</span><i class="rule"></i></p>
+          <div class="sf-ptexts">
+            <div class="txt">
+              <h2 id="sf03-4-t">BMS</h2>
+              <p class="lead">Battery의 상태를 지속적으로 Monitoring하고 각 시스템 Level의 정보를 통합하여 안정적인 Battery System을 운영할 수 있는 BMS Solution을 제공합니다.</p>
+            </div>
+            <div class="sf-cert">
+              <p class="ttl">Certification</p>
+              <ul>
+                <li>Functional Safety (IEC 60730-1)</li>
+                <li>Cybersecurity solutions (IEC 62443)</li>
+              </ul>
+              <p class="dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i></p>
+            </div>
+          </div>
+        </div>
+        <div class="sf-prods">
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-bms-module.png" alt="모듈 BMS(CMU) 제어 보드" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>Module BMS(CMU)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 5H3V19H21V5H6V4H22V20H2V4H4.5V5ZM11.4639 9.31445L13.2725 13.8359L14.0527 12.2764L14.1914 12H20V13H14.8086L13.9473 14.7236L13.8086 15H12.6611L12.5361 14.6855L10.6621 10H10.3379L9.46387 12.1855L9.33887 12.5H4V11.5H8.66211L9.53613 9.31445L9.66113 9H11.3389L11.4639 9.31445Z" fill="currentColor"/></svg></i><span class="t"><span class="k">정밀한 셀 모니터링</span><span class="d">셀 전압, 온도, 밸런싱 상태 등 다양한 데이터를 고정밀로 실시간 측정 및 전송합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32278 19.6285 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.7091 7.86947 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">높은 신뢰성과 안정성</span><span class="d">산업용 등급의 설계와 검증을 통해 장기간 안정적인 모니터링 성능을 제공합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.5 4C19.8809 4 21 5.1191 21 6.5C21 7.8809 19.8809 9 18.5 9C18.2684 9 18.0448 8.96613 17.832 8.90723L13.5615 15.5498C14.133 16.0079 14.5 16.7104 14.5 17.5C14.5 18.8809 13.3809 20 12 20C10.6191 20 9.5 18.8809 9.5 17.5C9.5 16.7107 9.86638 16.0079 10.4375 15.5498L8.1084 11.9277L8.9502 11.3867L11.332 15.0928C11.5448 15.0339 11.7684 15 12 15C12.2312 15 12.4545 15.0331 12.667 15.0918L16.9375 8.44922C16.4905 8.09048 16.1681 7.58289 16.0498 7H7.9502C7.83187 7.58315 7.50881 8.09046 7.06152 8.44922L8.09668 10.0596L7.67578 10.3291L7.25586 10.5996L6.16699 8.90723C5.95445 8.96597 5.73126 9 5.5 9C4.1191 9 3 7.8809 3 6.5C3 5.1191 4.1191 4 5.5 4C6.70968 4 7.71863 4.85874 7.9502 6H16.0498C16.2814 4.85874 17.2903 4 18.5 4ZM12 16C11.1714 16 10.5 16.6714 10.5 17.5C10.5 18.3286 11.1714 19 12 19C12.8286 19 13.5 18.3286 13.5 17.5C13.5 16.6714 12.8286 16 12 16ZM5.5 5C4.67138 5 4 5.67138 4 6.5C4 7.32862 4.67138 8 5.5 8C6.32862 8 7 7.32862 7 6.5C7 5.67138 6.32862 5 5.5 5ZM18.5 5C17.6714 5 17 5.67138 17 6.5C17 7.32862 17.6714 8 18.5 8C19.3286 8 20 7.32862 20 6.5C20 5.67138 19.3286 5 18.5 5Z" fill="currentColor"/></svg></i><span class="t"><span class="k">Rack BMS와 완벽 연동</span><span class="d">CMU는 Rack BMS와 안정적인 통신을 통해 셀 정보를 정확하게 전달하고, 제어 명령을 신속하게 수행합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20H9V21H3V15H4V20ZM21 21H15V20H20V15H21V21ZM15.5 9V15H9V12H10V14H14.5V10H10V11H9V9H15.5ZM9 4H4V9H3V3H9V4ZM21 9H20V4H15V3H21V9Z" fill="currentColor"/></svg></i><span class="t"><span class="k">높은 확장성</span><span class="d">다양한 셀 구성과 모듈 구조를 지원하여 유연한 시스템 확장과 호환성을 제공합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-bms-rack.png" alt="랙 BMS(BPU) 제어 유닛" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>Rack BMS(BPU)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 5H3V19H21V5H6V4H22V20H2V4H4.5V5ZM18.3535 9.35352L13.8535 13.8535C13.7597 13.9473 13.6326 14 13.5 14H13C12.8674 14 12.7403 13.9473 12.6465 13.8535L10.293 11.5H9.89941L6.34375 14.8633L5.65625 14.1367L9.35645 10.6367L9.43164 10.5781C9.5113 10.5275 9.60448 10.5 9.7002 10.5H10.5L10.5977 10.5098C10.6939 10.5289 10.7831 10.5761 10.8535 10.6465L13.207 13H13.293L17.6465 8.64648L18.3535 9.35352Z" fill="currentColor"/></svg></i><span class="t"><span class="k">Rack 상태 통합 모니터링</span><span class="d">Rack 내 모듈의 전압, 전류, 온도 및 SOC/SOH 등 주요 상태 정보를 통합 관리합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.41406L19.7852 5.88574V11.8857C19.7851 16.6119 16.6765 19.943 12.1494 21.3633H11.8496C7.32281 19.9429 4.21394 16.6118 4.21387 11.8857H5.21387C5.21394 16.0234 7.86951 19.0127 11.999 20.3594C16.1293 19.0129 18.7851 16.0239 18.7852 11.8857V6.23926L11.999 3.84473L5.21387 6.23926V10.8145H4.21387V5.88574L4.54785 5.41406L11.833 2.84277H12.166L19.4521 5.41406ZM11.6465 8.04688C11.8417 7.85168 12.1582 7.85181 12.3535 8.04688L14.4541 10.1465L13.7471 10.8535L12.5 9.60645V14.1924L13.7471 12.9463L14.4541 13.6533L12.3535 15.7529C12.1583 15.9482 11.8418 15.9481 11.6465 15.7529L9.54688 13.6533L10.2539 12.9463L11.5 14.1924V9.60645L10.2539 10.8535L9.54688 10.1465L11.6465 8.04688Z" fill="currentColor"/></svg></i><span class="t"><span class="k">보호 및 제어 기능</span><span class="d">과전압/과전류/과온도 등 이상 상황을 실시간 감지하고 보호 동작과 제어를 수행합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.09961L19.7852 5.57129V11.5713C19.7852 16.2976 16.6765 19.6285 12.1494 21.0488H11.8496C7.32279 19.6284 4.21387 16.2974 4.21387 11.5713H5.21387C5.21387 15.709 7.86948 18.6982 11.999 20.0449C16.1294 18.6985 18.7852 15.7095 18.7852 11.5713V5.9248L11.999 3.53027L5.21387 5.9248V10.5H4.21387V5.57129L4.54785 5.09961L11.833 2.52832H12.166L19.4521 5.09961ZM15.9404 8.2373L12.4404 14.7373L12.2988 15H11.1914L11.0527 14.7236L9.44141 11.5H8.5V10.5H10.0586L10.1973 10.7764L11.7568 13.8955L15.0596 7.7627L15.9404 8.2373Z" fill="currentColor"/></svg></i><span class="t"><span class="k">BPU 하드웨어 통합 보호</span><span class="d">차단기, 퓨즈, 접촉기 등 보호 장치와 연계하여 안전한 배터리 시스템을 구성합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3C15.8663 3 19 6.13374 19 10C19 12.3031 17.8874 14.3454 16.1709 15.6211L16.9941 20.9238L17.084 21.5H15.8613L15.7432 21.4287L12 19.1826L8.25684 21.4287L8.13867 21.5H6.91602L7.00586 20.9238L7.82812 15.6211C6.11203 14.3454 5 12.3028 5 10C5 8.38954 5.54451 6.9046 6.45898 5.72168L6.85449 6.02734L7.25 6.33398C6.46627 7.34788 6 8.61867 6 10C6 13.314 8.68603 16 12 16C15.314 16 18 13.314 18 10C18 6.68603 15.314 4 12 4C10.4629 4 9.06179 4.57707 8 5.52734L7.66699 5.15527L7.33301 4.78223C8.57108 3.67418 10.2074 3 12 3ZM15.248 16.2002C14.2771 16.7098 13.1727 17 12 17C10.827 17 9.72209 16.7101 8.75098 16.2002L8.10645 20.3525L11.7432 18.1719L12 18.0176L12.2568 18.1719L15.8926 20.3525L15.248 16.2002ZM14.8984 8.30176L12.0986 12.002L11.9482 12.2002H10.9932L9.14648 10.3535L9.85352 9.64648L11.4072 11.2002H11.4521L14.1016 7.69824L14.8984 8.30176Z" fill="currentColor"/></svg></i><span class="t"><span class="k">기능안전 인증 취득</span><span class="d">IEC 60730 국제 표준에 기반한 기능안전 인증을 취득하여 안정성과 신뢰성을 검증받았습니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="sf-prod">
+            <div class="shot has-img"><img src="../assets/ess-bms-system.png" alt="시스템 BMS(BCP) 제어반" decoding="async" /></div>
+            <div class="side">
+              <p class="lbl"><b>System BMS(BCP)</b></p>
+              <div class="info">
+                <ul class="sf-feat">
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 12H5.5V16H8V20H2V16H4.5V11H7V12ZM15 7H12.5V11H19.5V16H22V20H16V16H18.5V12H12.5V16H15V20H9V16H11.5V12H8V11H11.5V7H9V3H15V7ZM3 19H7V17H3V19ZM10 19H14V17H10V19ZM17 19H21V17H17V19ZM10 6H14V4H10V6Z" fill="currentColor"/></svg></i><span class="t"><span class="k">전체 시스템 통합 관리</span><span class="d">다수의 Rack 상태를 통합 모니터링하고, 시스템 레벨의 운영 및 보호 기능을 수행합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.2998 15.2002C8.39786 15.2002 9.31537 15.9706 9.54395 17H21V18H9.54395C9.31543 19.0295 8.39792 19.7998 7.2998 19.7998C6.20182 19.7997 5.28519 19.0294 5.05664 18H3V17H5.05664C5.28525 15.9707 6.20188 15.2003 7.2998 15.2002ZM7.2998 16.2002C6.58231 16.2003 6.0001 16.7825 6 17.5C6.00011 18.2175 6.58231 18.7997 7.2998 18.7998C8.01739 18.7998 8.5995 18.2176 8.59961 17.5C8.59951 16.7824 8.01739 16.2002 7.2998 16.2002ZM16.7002 9.7002C17.7981 9.70038 18.7158 10.4707 18.9443 11.5H21V12.5H18.9443C18.7159 13.5294 17.7982 14.2996 16.7002 14.2998C15.4304 14.2997 14.4005 13.2698 14.4004 12C14.4005 10.7302 15.4304 9.7003 16.7002 9.7002ZM16.7002 10.7002C15.9827 10.7003 15.4005 11.2825 15.4004 12C15.4005 12.7175 15.9827 13.2997 16.7002 13.2998C17.4176 13.2996 17.9999 12.7174 18 12C17.9999 11.2826 17.4176 10.7004 16.7002 10.7002ZM13 12.5H3V11.5H13V12.5ZM7.2998 4.2002C8.39785 4.2002 9.31537 4.97061 9.54395 6H21V7H9.54395C9.31543 8.02948 8.39792 8.7998 7.2998 8.7998C6.20182 8.79971 5.28518 8.02936 5.05664 7H3V6H5.05664C5.28525 4.97073 6.20189 4.20029 7.2998 4.2002ZM7.2998 5.2002C6.58231 5.2003 6.00011 5.78251 6 6.5C6.00011 7.21749 6.58231 7.7997 7.2998 7.7998C8.01739 7.7998 8.5995 7.21756 8.59961 6.5C8.5995 5.78244 8.01739 5.2002 7.2998 5.2002Z" fill="currentColor"/></svg></i><span class="t"><span class="k">상위 시스템 연계</span><span class="d">EMS, PCS, SCADA 등 상위 시스템과 연동하여 효율적인 에너지 운영을 지원합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.4521 5.41406L19.7852 5.88574V11.8857C19.7851 16.6119 16.6765 19.943 12.1494 21.3633H11.8496C7.32281 19.9429 4.21394 16.6118 4.21387 11.8857H5.21387C5.21394 16.0234 7.86951 19.0127 11.999 20.3594C16.1293 19.0129 18.7851 16.0239 18.7852 11.8857V6.23926L11.999 3.84473L5.21387 6.23926V10.8145H4.21387V5.88574L4.54785 5.41406L11.833 2.84277H12.166L19.4521 5.41406ZM11.6465 8.04688C11.8417 7.85168 12.1582 7.85181 12.3535 8.04688L14.4541 10.1465L13.7471 10.8535L12.5 9.60645V14.1924L13.7471 12.9463L14.4541 13.6533L12.3535 15.7529C12.1583 15.9482 11.8418 15.9481 11.6465 15.7529L9.54688 13.6533L10.2539 12.9463L11.5 14.1924V9.60645L10.2539 10.8535L9.54688 10.1465L11.6465 8.04688Z" fill="currentColor"/></svg></i><span class="t"><span class="k">시스템 보호 및 제어</span><span class="d">시스템 차단, 절연 감시, 고장 진단 등 다양한 보호 및 제어 기능으로 안전성을 극대화합니다.</span></span></li>
+                  <li><i class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 11V7C15 5.34315 13.6569 4 12 4C10.3431 4 9 5.34315 9 7V11H15ZM12 14C13.1041 14 14 14.8959 14 16C14 17.1041 13.1041 18 12 18C10.8959 18 10 17.1041 10 16C10 14.8959 10.8959 14 12 14ZM12 15C11.4481 15 11 15.4481 11 16C11 16.5519 11.4481 17 12 17C12.5519 17 13 16.5519 13 16C13 15.4481 12.5519 15 12 15ZM19 21H5V11H7V12H6V20H18V12H8V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11H19V21Z" fill="currentColor"/></svg></i><span class="t"><span class="k">사이버 보안 솔루션 제공</span><span class="d">IEC 62443 기반의 사이버 보안 솔루션을 제공하여 네트워크 보안, 데이터 암호화, 접근 제어, 침입 탐지 등 다계층 보안 체계를 지원합니다.</span></span></li>
+                </ul>
+                <p class="use"><b>주요 적용 분야</b><span>ESS, Telecom, Military, Electric Vehicle, Industrial, Aerospace, Marine 등</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 다른 사업영역 — 마을 ===================== -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <a class="bhlot" data-a="smart" href="business-smart-c.html" style="--ar:251/177">
+      <span class="bhtop"><span class="bhtag">스마트 제조</span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </a>
+    <span class="bhlot is-here" data-a="energy" style="--ar:251/179">
+      <span class="bhnow"><span class="ko">에너지 인프라</span><span class="en">Energy Infrastructure</span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="ai" href="business-ai-c.html" style="--ar:267/176">
+      <span class="bhtop"><span class="bhtag">인공지능 플랫폼</span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="semicon" href="business-semicon-c.html" style="--ar:251/180">
+      <span class="bhtop"><span class="bhtag">화합물 전력 반도체</span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul>
+          <li><a href="business-smart-c.html">스마트 제조</a></li>
+          <li><a href="business-energy-c.html" aria-current="page">에너지 인프라</a></li>
+          <li><a href="business-ai-c.html">인공지능 플랫폼</a></li>
+          <li><a href="business-semicon-c.html">화합물 전력 반도체</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-c.html">회사 소개</a></li><li><a href="network-c.html">글로벌 네트워크</a></li><li><a href="locations-c.html">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance-c.html">재무정보</a></li><li><a href="ir-disclosure-c.html">공시정보</a></li><li><a href="ir-stock-c.html">주식정보</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment-c.html">환경</a></li><li><a href="esg-social-c.html">사회</a></li><li><a href="esg-governance-c.html">지배구조</a></li><li><a href="esg-report-c.html">내/외부 신고채널</a></li><li><a href="esg-board-c.html">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice-c.html">공지사항</a></li><li><a href="community-press-c.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network-c.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="locations-c.html">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- 공용 스크립트 — 이 페이지에서 실제로 도는 것은 두 가지뿐이다.
+     ① 푸터 FAMILY SITE 드롭다운 ② 마을(.bhop) 그림 지연 로드 + 태그 점등.
+     GNB·탭 바·카드 캐러셀 담당 블록은 해당 요소를 못 찾고 곧바로 빠져나간다 -->
+<script src="business-layout.js"></script>
+<script>
+/* ── GNB 메가 메뉴 ──────────────────────────────────
+   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
+   둘 다 벗어나면 짧게 기다렸다 닫는다 — 대분류와 판 사이를 지나는 동안
+   깜빡이지 않게 하는 여유다 */
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.sf-menus>li[data-mega]'));
+  if(!items.length) return;
+  var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
+  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
+  function shut(){
+    if(!cur) return;
+    var p = panel(cur);
+    cur.classList.remove('is-open');
+    cur.querySelector('a').setAttribute('aria-expanded','false');
+    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
+    cur = null;
+  }
+  function show(li){
+    if(cur === li) return;
+    var p = panel(li);
+    if(!p) return;
+    shut();
+    li.classList.add('is-open');
+    li.querySelector('a').setAttribute('aria-expanded','true');
+    p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    /* 카드는 흐림막 없이 뜬다 — 가릴 만큼 크지 않다 */
+    if(scrim && !p.classList.contains('card')) scrim.classList.add('open');
+    cur = li;
+  }
+  function hold(){ clearTimeout(t); }
+  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
+  items.forEach(function(li){
+    var p = panel(li);
+    li.addEventListener('mouseenter', function(){ hold(); show(li); });
+    li.addEventListener('mouseleave', leave);
+    li.addEventListener('focusin', function(){ hold(); show(li); });
+    if(p){
+      p.addEventListener('mouseenter', hold);
+      p.addEventListener('mouseleave', leave);
+      p.addEventListener('focusin', hold);
+    }
+  });
+  /* 탭으로 판 밖으로 나가면 닫는다 */
+  document.addEventListener('focusin', function(e){
+    if(!cur) return;
+    var p = panel(cur);
+    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
+    shut();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+  /* 전체 메뉴를 열면 판은 비켜 준다 */
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
+  var burger = document.getElementById('sfBurger');
+  if(burger) burger.addEventListener('click', shut);
+
+  /* 카드를 자기 상단 메뉴 바로 아래로 세운다 — 메뉴 글자 왼쪽 끝에 카드 글자를
+     맞추면 커서는 세로로만 내려오면 된다. 화면 폭을 다 쓰던 때는 오른쪽 메뉴일수록
+     커서가 목록까지 가로로 멀리 건너야 했고, 가는 길에 상단 띠를 스치면 옆 메뉴
+     판으로 바뀌어 버렸다. 카드 왼쪽 자리를 --mm-x 로 준다. 화면 오른쪽 끝을 넘으면
+     거기서 멈추고, 글꼴이 늦게 오면 메뉴 자리가 밀리므로 load 때 다시 잰다.
+     넓은 판을 쓰는 사업영역은 건너뛴다 */
+  function alignMega(){
+    items.forEach(function(li){
+      var p = panel(li); if(!p || !p.classList.contains('card')) return;
+      var menu = p.querySelector('.menu'); if(!menu) return;
+      var a = li.querySelector('a'); if(!a) return;
+      var w = p.offsetWidth;
+      if(!w) return;                                /* 좁은 화면에선 판이 없다 */
+      /* 글자끼리 맞춘다 — 메뉴 링크도 카드도 제 안에 여백을 두고 있어서,
+         상자 왼쪽이 아니라 여백을 걷어낸 자리를 재야 줄이 선다 */
+      var pad = parseFloat(getComputedStyle(menu).paddingLeft) || 0;
+      var apad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
+      var x = a.getBoundingClientRect().left + apad - pad;
+      var edge = document.documentElement.clientWidth - w - 16;
+      p.style.setProperty('--mm-x', Math.max(16, Math.min(x, edge)) + 'px');
+    });
+  }
+  alignMega();
+  window.addEventListener('resize', alignMega);
+  window.addEventListener('load', alignMega);
+})();
+</script>
+<script>
+(function(){
+  var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
+  var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
+  var secsEl = document.querySelector('.sf-secs');
+  var figs   = [].slice.call(document.querySelectorAll('.sf-figstack .sf-ph'));
+  var tag    = document.getElementById('sfTag');
+  var reels  = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
+  if(!secs.length) return;
+
+  /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
+     장이 제자리에 섰을 때 그 윗변이 놓이는 높이 = 고정 GNB 밑변 + 장 띠가 위로
+     비워 둔 만큼(--sec-pad). 그 여백은 띠 상자의 padding-top 을 그대로 재 온다
+     — CSS 의 clamp 를 JS 로 다시 풀 필요가 없고 값이 바뀌어도 따라온다.
+     그 줄에 가장 가까운 장을 지금 장으로 친다 — 장이 화면보다 길어도 한 장은
+     반드시 뽑히므로 인덱스가 비지 않는다. 장의 쿨그레이 칠(.is-on)도 같이 갈린다 */
+  var raf = 0, cur = -1;
+  function px(name){
+    return parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue(name)) || 0;
+  }
+  function secPad(){
+    return secsEl ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0;
+  }
+  function line(){ return px('--gnb-h') + secPad(); }
+  /* 카드도 장처럼 한 장씩 센다 — 카드가 서는 줄은 그 장 붙박이 윗단의 아래 변이다.
+     지금 카드에만 .is-on 을 두어, 아직 올라오지 않은 카드가 옅게 남는다 */
+  var prods = [].slice.call(document.querySelectorAll('.sf-prod'));
+  var curProd = -1;
+  function prodLine(el){
+    var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
+    var hd  = sec ? sec.querySelector('.sf-phead') : null;
+    return px('--gnb-h') + (hd ? hd.getBoundingClientRect().height : 0);
+  }
+  function prodSpy(){
+    if(!prods.length) return;
+    var best = 0, bd = Infinity;
+    for(var i=0;i<prods.length;i++){
+      var d = Math.abs(prods[i].getBoundingClientRect().top - prodLine(prods[i]));
+      if(d < bd){ bd = d; best = i; }
+    }
+    if(best === curProd) return;
+    curProd = best;
+    for(var n=0;n<prods.length;n++) prods[n].classList.toggle('is-on', n === best);
+    markDots(prods[best]);
+  }
+  /* 점은 그 장 안에서 몇째인지를 가리킨다 — 장이 바뀌면 앞 장의 점은 첫째로
+     되돌려 둔다(다시 올라왔을 때 첫 카드부터 보이기 때문) */
+  function markDots(el){
+    var sec = el && el.closest ? el.closest('.sf-sec.is-prod') : null;
+    if(!sec) return;
+    var cards = [].slice.call(sec.querySelectorAll('.sf-prod'));
+    var at = cards.indexOf(el);
+    var all = document.querySelectorAll('.sf-cert .dots');
+    for(var i=0;i<all.length;i++){
+      var here = all[i].closest('.sf-sec') === sec;
+      var dots = all[i].children;
+      for(var j=0;j<dots.length;j++)
+        dots[j].classList.toggle('is-on', j === (here ? at : 0));
+    }
+  }
+  function spy(){
+    prodSpy();
+    var y = line(), best = 0, bd = Infinity;
+    for(var i=0;i<secs.length;i++){
+      var d = Math.abs(secs[i].getBoundingClientRect().top - y);
+      if(d < bd){ bd = d; best = i; }
+    }
+    if(best === cur) return;
+    cur = best;
+    for(var j=0;j<links.length;j++){
+      if(j === best) links[j].setAttribute('aria-current','true');
+      else           links[j].removeAttribute('aria-current');
+    }
+    for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
+    show(secs[best].id);
+  }
+
+  /* 붙박이 그림과 숫자 태그 — 01·02 장에만 짝이 있다. 03 솔루션으로 넘어가면
+     짝이 없으므로 마지막 그림을 그대로 둔다(묶음이 이미 화면 밖으로 흐른 뒤다).
+     여기서 지우면 그림 열이 사라지는 순간이 눈에 걸린다 */
+  /* 그림 밀기 — 다음 장의 가는 선이 그림 칸을 훑는 그 높이에 두 그림의
+     이음매를 둔다. 선이 칸 바닥에 있으면 다음 그림은 아직 칸 밖(아래)이고,
+     선이 칸 꼭대기에 닿으면 다음 그림이 칸을 다 채운다 — 그 사이는 스크롤이
+     그대로 끌고 간다. 시간이 정하는 전이가 아니라서 휠·드래그·인덱스 어느
+     쪽으로 움직여도 오른쪽 줄과 어긋나지 않는다 */
+  var figFor = [], figAt = [], seamA = null, seamB = null, rOff = 8;
+  var REST = 1.04;  /* 제자리 배율 - 나가는 쪽이 줄어들 여유다 */
+  var Z_IN = .06;   /* 들어올 때 덤으로 얹는 몫 */
+  var Z_OUT = .04;  /* 나갈 때 덜어내는 몫 - REST 를 1 아래로 끌지 않는다 */
+  (function(){
+    for(var i=0;i<secs.length;i++){
+      figFor[i] = null;
+      for(var k=0;k<figs.length;k++)
+        if(figs[k].getAttribute('data-for') === secs[i].id){ figFor[i] = figs[k]; break; }
+      figAt[i] = figFor[i] || (i ? figAt[i-1] : figs[0] || null);
+    }
+  })();
+  function readRuleOff(){
+    rOff = parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--rule-off')) || 0;
+  }
+  /* 좁은 화면(1180 이하)은 그림이 기둥을 떠나 장 안에 있다 — 밀 것이 없다 */
+  var wideMq = window.matchMedia('(min-width:1181px)');
+  function slide(){
+    if(!wideMq.matches) return;
+    var stack = figs.length ? figs[0].parentNode : null;
+    if(!stack) return;
+    var sr = stack.getBoundingClientRect(), H = sr.height;
+    var top = line();
+    /* 지금 띠를 차지한 장 = 윗변이 그 줄 위(또는 그 줄)에 있는 마지막 장 */
+    var n = -1, i;
+    for(i=0;i<secs.length;i++)
+      if(secs[i].getBoundingClientRect().top <= top + 1) n = i;
+    var a = n < 0 ? figAt[0] : figAt[n];
+    var b = (n + 1 < secs.length) ? figFor[n + 1] : null;
+    if(b === a) b = null;
+    var seam = H;
+    if(b) seam = Math.max(0, Math.min(H,
+      secs[n + 1].getBoundingClientRect().top + rOff - sr.top));
+    if(a !== seamA || b !== seamB){
+      for(i=0;i<figs.length;i++){
+        var on = (figs[i] === a || figs[i] === b);
+        figs[i].style.visibility = on ? 'visible' : 'hidden';
+        if(!on){
+          figs[i].style.transform = 'translateY(100%)';
+          figs[i].style.setProperty('--zoom', REST + Z_IN);
+        }
+      }
+      seamA = a; seamB = b;
+    }
+    /* 배율은 이음매가 간 만큼 따라간다 - 들어오는 쪽은 REST+Z_IN 에서 REST 로,
+       나가는 쪽은 REST 에서 REST-Z_OUT 으로. 둘 다 줄어드는 쪽이다.
+       되감으면 그대로 뒤집힌다 - 시간이 아니라 자리가 정하기 때문이다 */
+    var p = H ? seam / H : 1;
+    if(a){
+      a.style.transform = 'translateY(' + (seam - H) + 'px)';
+      a.style.setProperty('--zoom', REST - Z_OUT * (1 - p));
+    }
+    if(b){
+      b.style.transform = 'translateY(' + seam + 'px)';
+      b.style.setProperty('--zoom', REST + Z_IN * p);
+    }
+  }
+
+  function show(id){
+    var hit = false, i;
+    for(i=0;i<figs.length;i++)
+      if(figs[i].getAttribute('data-for') === id){ hit = true; break; }
+    if(!hit) return;
+    setTag(id);
+  }
+  /* "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다. 띠 한 칸이 11px 이라
+     숫자 d 는 -11×d 만큼 올리면 창에 걸린다 */
+  function setTag(id){
+    var m = /sf(\d)(\d)-(\d)/.exec(id || '');
+    if(!m || !reels.length) return;
+    for(var i=0;i<3;i++){
+      var b = reels[i].firstElementChild;
+      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
+    }
+    tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
+  }
+  /* spy 는 장이 바뀔 때만 일하지만 slide 는 프레임마다 돌아야 한다 */
+  function onFrame(){ raf = 0; spy(); slide(); }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(onFrame); }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', function(){ readRuleOff(); onScroll(); });
+  readRuleOff(); spy(); slide();
+
+})();
+</script>
+<script>
+/* ── 휠 한 번 = 한 장 ────────────────────────────────────────────────────
+   히어로 · 인트로 · 소분류 열 장이 각각 한 자리라, 굴린 만큼 어중간하게 멈추는
+   대신 다음 장이 제 띠에 딱 앉게 옮긴다. 값(PAGE 820ms ·
+   REARM 180ms · easeInOutSine)은 형제 페이지와 같다 — 사업영역을 옮겨 다닐 때
+   손끝 느낌이 달라지면 안 된다.
+
+   ⚠ 이 페이지에만 있는 조건 : 03 솔루션 네 장은 제품 카드가 붙어 한 화면보다
+     길다. 그 장을 통째로 건너뛰면 아랫부분은 영영 안 보이므로, "지금 장의 아래가
+     아직 화면 밖에 남아 있으면 넘기지 않는다"를 먼저 본다 — 그동안은 브라우저
+     기본 스크롤이 그대로 흐르고, 다음 장이 제 줄에 닿으면 다시 한 장씩 넘어간다.
+
+   가로채지 않는 자리
+     · 좁은 화면(≤900) — 인덱스가 띠로 눕고 장 높이도 화면에 매이지 않는다
+     · 마지막 장 아래(마을·푸터) — 여기는 한 화면짜리가 아니라 그냥 흐른다
+     · 전체 메뉴가 열려 있을 때 — 그 판이 자기 스크롤을 갖는다
+     · 키보드(Space·PageDown·화살표) — 손대지 않는다. 어긋나면 다음 휠이 맞춘다 */
+(function(){
+  var narrow = window.matchMedia('(max-width:1180px)');
+  /* 제품 장은 통째로 한 장이 아니라 카드 하나가 한 장이다 — 붙박이 윗단은
+     그대로 서 있고 카드만 그 아래로 한 장씩 올라온다 */
+  var steps  = [].slice.call(
+    document.querySelectorAll('.sf-step:not(.is-prod), .sf-prod'));
+  var nav    = document.getElementById('navover');
+  if(steps.length < 2) return;
+
+  var PAGE = 820, REARM = 180, SLACK = 24;
+  var paging = false, praf = null, armed = true, quiet = null;
+
+  function px(name){
+    return parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue(name)) || 0;
+  }
+  /* 소분류 장은 띠가 위로 비워 둔 만큼(--sec-pad) 내려서 서고, 배너·인트로는
+     GNB 밑변에 바로 붙는다. 여백은 띠 상자의 padding-top 에서 잰다 */
+  var secsEl = document.querySelector('.sf-secs');
+  /* 제품 카드가 서는 자리는 붙박이 윗단의 아래 변이다 — 윗단 높이에는 위쪽
+     안쪽 여백(--sec-pad)이 들어 있어서, 붙었을 때의 아래 변이 곧 이 값이다 */
+  function headH(el){
+    var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
+    var hd  = sec ? sec.querySelector('.sf-phead') : null;
+    return hd ? hd.getBoundingClientRect().height : 0;
+  }
+  function lineOf(el){
+    if(el.classList.contains('sf-prod')) return px('--gnb-h') + headH(el);
+    return px('--gnb-h') +
+           (el.classList.contains('sf-sec') && secsEl
+            ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0);
+  }
+  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - lineOf(el); }
+  function current(){
+    var best = -1, bd = Infinity;
+    for(var i=0;i<steps.length;i++){
+      var d = Math.abs(steps[i].getBoundingClientRect().top - lineOf(steps[i]));
+      if(d < bd){ bd = d; best = i; }
+    }
+    return best;
+  }
+
+  function ease(p){ return .5 - .5 * Math.cos(Math.PI * p); }
+  function pageTo(y){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    y = Math.max(0, Math.min(max, y));
+    var from = window.scrollY, delta = y - from, t0 = 0;
+    if(Math.abs(delta) < 1) return;
+    paging = true;
+    cancelAnimationFrame(praf);
+    (function frame(){
+      praf = requestAnimationFrame(function(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min(1, (ts - t0) / PAGE);
+        window.scrollTo(0, from + delta * ease(p));
+        if(p < 1) frame();
+        else { paging = false; praf = null; }
+      });
+    })();
+  }
+  function arm(){ clearTimeout(quiet); quiet = setTimeout(function(){ armed = true; }, REARM); }
+
+  window.addEventListener('wheel', function(e){
+    if(narrow.matches || !e.deltaY) return;
+    if(nav && nav.classList.contains('open')) return;
+    arm();
+    if(paging){ e.preventDefault(); return; }
+
+    var dir = e.deltaY > 0 ? 1 : -1;
+    var i = current();
+    if(i < 0) return;
+
+    var r = steps[i].getBoundingClientRect();
+    var off = r.top - lineOf(steps[i]);
+    /* 한 화면보다 긴 장(03 솔루션)은 남은 쪽으로 그냥 흐르게 둔다 */
+    if(dir > 0 && r.bottom > window.innerHeight + 4) return;
+    if(dir < 0 && off < -4) return;
+    /* 마지막 장이 제자리에 선 뒤 아래로 = 마을·푸터로 나가는 길 */
+    if(i === steps.length - 1 && dir > 0 && off <= 1) return;
+
+    e.preventDefault();
+    if(!armed) return;
+    armed = false;
+    /* 아직 제자리에 서지 않았으면 먼저 세운다 — 단 '아래로 벗어난' 쪽만이다.
+       위로 벗어나 있는(off 가 음수인) 장은 이미 그 안을 굴러 내려온 긴 장이므로
+       여기서 되돌리면 다음 장으로 못 넘어가고 제자리로 튕겨 돌아온다 */
+    if(off > SLACK){ pageTo(window.scrollY + off); return; }
+    var nx = i + dir;
+    pageTo(nx < 0 ? 0 : topOf(steps[Math.min(steps.length - 1, nx)]));
+  }, { passive:false });
+
+  /* 좌측 인덱스 클릭도 같은 이동을 태운다 */
+  [].slice.call(document.querySelectorAll('.sf-rail a[href^="#"]')).forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(narrow.matches) return;
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if(!el) return;
+      e.preventDefault();
+      pageTo(topOf(el));
+    });
+  });
+})();
+</script>
+<script src="gnb-c.js"></script>
+</body>
+</html>
