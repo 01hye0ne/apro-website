@@ -48,12 +48,14 @@
   opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
   transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),visibility .3s}
 .c-mega.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
-/* 판 안 — 위아래 여백 22(A-1 판 44 의 절반, 2026-09-28 요청), 줄 사이 20. 글자는 A-1 메가 판 링크와 같은 토큰
-   (SUIT 600 --fs-body · 줄높이 --lh-head · 자간 --ls), 지금 장은 800 */
+/* 판 안 — 위아래 여백 22(A-1 판 44 의 절반, 2026-09-28 요청), 줄 사이 28(A 의 30 에 가깝게).
+   글자는 SUIT 400 --fs-body · 줄높이 --lh-head · 자간 --ls, 지금 장은 800.
+   한동안 A-1 메가 판 값(줄 사이 20 · 굵기 600)이었는데 답답해 보였다 — A-1 판은 제목 · 목록 · 세로선이 칸을
+   나눠 20 이 맞았지만, 목록만 선 A 식 열에서는 촘촘했다. 굵기 400 은 사다리의 보조 글자 몫이다(2026-09-28) */
 .c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:22px 0}
-.c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:20px}
+.c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:28px}
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
-  font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
+  font-weight:400;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
   white-space:nowrap;text-decoration:none;transition:color .18s}
 .c-mega .c-col a:hover,.c-mega .c-col a:focus-visible{color:var(--gnb-brand,#2c5790)}
 .c-mega .c-col a[aria-current]{color:var(--gnb-brand,#2c5790);font-weight:800}
