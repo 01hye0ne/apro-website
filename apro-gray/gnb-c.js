@@ -15,6 +15,22 @@
   var items = [].slice.call(menus.children);
   var cols = [].slice.call(mega.querySelectorAll('.c-col'));
 
+  /* 밑줄 폭 = 글자 폭 — 링크는 칸 폭(--mm-col)이라 글자만 재서 --lw 로 준다. 글꼴이 늦게 오면 다시 잰다 */
+  function measure(){
+    items.forEach(function(li){
+      var a = li.querySelector('a'); if(!a) return;
+      var r = document.createRange(), n = a.firstChild;
+      if(!n || n.nodeType !== 3) return;
+      r.selectNodeContents(n);
+      var w = r.getBoundingClientRect().width;
+      if(w) a.style.setProperty('--lw', Math.round(w) + 'px');
+    });
+  }
+  measure();
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
   /* 판은 바 바로 밑 층에 둔다 — 바의 층이 장마다 다르다(세부 넷 60 · 나머지 100) */
   var z = parseInt(getComputedStyle(gnb).zIndex, 10);
   if(z > 0) mega.style.zIndex = z - 1;

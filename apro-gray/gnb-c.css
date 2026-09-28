@@ -38,17 +38,19 @@
 .sf-gnb .sf-menus>li>a{width:var(--mm-col);box-sizing:border-box;justify-content:center}
 .sf-gnb .sf-menus .caret{display:none}
 
+/* 판 — 바 바로 밑에서 열린다. 자리는 바 키 --c-gnb-h(아래 절) — A-1 의 --gnb-h 는 콘텐츠 장 :root 에
+   옛 A 값 72 가 남아 있어 판이 바에서 8px 떨어져 떴다 */
 /* 판 — 바 바로 밑에서 열린다(A 는 투명 GNB 뒤까지 판이 올라갔지만, C 의 바는 이미
    흰 판이라 겹칠 필요가 없다). 흐림막은 깔지 않는다 — A 와 같다 */
-.c-mega{position:fixed;left:0;right:0;top:var(--gnb-h,64px);z-index:99;background:#fff;
+.c-mega{position:fixed;left:0;right:0;top:var(--c-gnb-h);z-index:99;background:#fff;
   border-top:1px solid var(--gnb-line,#e4e8ed);border-bottom:1px solid var(--gnb-line,#e4e8ed);
   box-shadow:0 24px 48px rgba(14,22,30,.12);
   opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
   transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),visibility .3s}
 .c-mega.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
-/* 판 안 — 위아래 여백은 A-1 판과 같은 --gnb-m(44), 줄 사이 20. 글자는 A-1 메가 판 링크와 같은 토큰
+/* 판 안 — 위아래 여백 22(A-1 판 44 의 절반, 2026-09-28 요청), 줄 사이 20. 글자는 A-1 메가 판 링크와 같은 토큰
    (SUIT 600 --fs-body · 줄높이 --lh-head · 자간 --ls), 지금 장은 800 */
-.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:var(--gnb-m,44px) 0}
+.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:22px 0}
 .c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:20px}
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
   font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
@@ -58,8 +60,16 @@
 /* 1180 아래는 칸이 110 안팎으로 좁아져 "화합물 전력 반도체"가 옆 칸 글자에 닿는다 — 한 칸 내린다
    (A-1 판도 같은 경계에서 칸 안 여백을 줄였다) */
 @media(max-width:1180px){ .c-mega .c-col a{font-size:var(--fs-meta)} }
-/* 커서가 머무는 열의 대분류를 바에서 함께 밝힌다 — A 의 .active 밑줄과 같은 자리다 */
-.sf-gnb .sf-menus>li.is-open>a{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:8px}
+/* 커서가 머무는 열의 대분류를 바에서 함께 밝힌다 — 밑줄이 바와 메가 판 사이 경계선 위에 앉는다(2026-09-28 요청).
+   대분류 줄을 바 키만큼 세워(top 0 · bottom 0) 링크 밑변 = 바 밑변이 되게 하고, 밑줄은 링크의 ::after 다.
+   폭은 글자 폭 — gnb-c.js 가 글자를 재서 --lw 로 준다(재기 전엔 칸 폭의 절반). 굵기는 A 의 밑줄과 같은 1.5 에
+   가까운 2, 경계선(1px)을 덮도록 1px 내려 앉힌다 */
+.sf-gnb .sf-menus{top:0;bottom:0;align-items:stretch}
+.sf-gnb .sf-menus>li>a{position:relative}
+.sf-gnb .sf-menus>li>a::after{content:"";position:absolute;left:50%;bottom:-1px;height:2px;
+  width:var(--lw,50%);transform:translateX(-50%) scaleX(0);background:currentColor;
+  transition:transform .25s cubic-bezier(.22,1,.36,1)}
+.sf-gnb .sf-menus>li.is-open>a::after{transform:translateX(-50%) scaleX(1)}
 
 /* 좁은 화면은 대분류 줄이 없다(전체메뉴 단추만) — 판도 없다 */
 @media(max-width:900px){.c-mega{display:none}}
