@@ -594,11 +594,10 @@
       .v2banner .bnav .b:last-child{padding:20px 10px}
     }
   }
-  /* 시안 C 맞춤 — A 는 투명 GNB 가 영상 위에 떠 있어 히어로가 화면 전체(100vh)였고 문구가 화면 위 220 에 섰다.
-     C 는 흰 머리 바(64 · 900 아래 53)가 위를 차지하므로 히어로는 그 아래 한 화면(--hm-h)이고,
-     문구는 같은 화면 자리에 서도록 바 높이만큼 덜 내린다(220 − 64 = 156) */
-  .v2banner{height:var(--hm-h);min-height:560px}
-  .v2banner .headline{padding-top:156px}
+  /* 시안 C 맞춤 — A 처럼 히어로가 GNB 밑까지 올라와 화면 전체(100vh)를 쓴다. 바는 A-1 의 흰 바지만
+     히어로 위에서는 투명해진다(gnb-c.css .c-clear). A-1 은 바 높이만큼 빈 칸(.sf-gnb-sp)을 두므로
+     히어로를 그만큼(--c-gnb-h, gnb-c.css) 위로 끌어올린다. 문구 자리(220)는 A 그대로다 */
+  .v2banner{margin-top:calc(-1 * var(--c-gnb-h))}
 
   /* ── Business — 비대칭 4열 아코디언 ─────────────────────────────────────
      켜진 카드 한 장만 펴서 크게 보이고, 나머지 셋은 세로로 긴 띠로 접힌다.

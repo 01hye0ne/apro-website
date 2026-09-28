@@ -41,6 +41,74 @@
    바탕(g100)은 A-1 의 .is-open 규칙이 이미 칠한다 */
 .sf-gnb .sf-menus>li.is-open>a{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:8px}
 
-@media(prefers-reduced-motion:reduce){.c-mega{transition:none}}
 /* 좁은 화면은 대분류 줄이 없다(전체메뉴 단추만) — 판도 없다 */
 @media(max-width:900px){.c-mega{display:none}}
+
+
+/* ===================== 시안 C — 바 바탕이 뒤를 따라 바뀐다 (A 방식, 2026-09-28) =====================
+   A 의 GNB 는 세 얼굴이다 (index.html .gnb-bg · a-common.css §0-3c 와 같은 값).
+     ① 히어로 위       투명 · 흰 로고 · 흰 글자                 → .c-clear
+     ② 어두운 바탕 위  어두운 유리(.42 · blur 10) · 흰 글자    → .c-dark
+     ③ 밝은 바탕 위    흰 유리(.72 · blur 10) · 짙은 글자      → (기본)
+   메가 판이 열리면 흰 판과 한 덩이가 되도록 흰 바로 선다      → .c-open
+   어느 얼굴인지는 gnb-c.js 가 바 뒤를 재서 정한다.
+
+   ①이 되려면 히어로가 바 밑까지 올라와야 한다 — A-1 은 바 높이만큼 본문을 내려 두므로
+   (빈 칸 .sf-gnb-sp 또는 body padding-top), 첫 화면 히어로만 그만큼 위로 끌어올리고
+   키를 바 높이만큼 늘린다. 안에서 위에 붙은 글(회사정보 틀의 눈썹 · 문장)은 같은 값만큼 내린다.
+   --c-gnb-h 는 바 키다(A-1 의 --gnb-h 는 장마다 정의된 자리가 달라 여기서 부를 수 없다) */
+:root{--c-gnb-h:64px}
+@media(max-width:900px){:root{--c-gnb-h:53px}}
+
+/* 히어로 끌어올리기 — 사업영역 세부 넷(.sf-hero) · 회사정보 셋(.ci-top). 홈은 index-c.html 이 직접 한다 */
+.sf-hero{margin-top:calc(-1 * var(--c-gnb-h));height:100svh;
+  min-height:calc(480px + var(--c-gnb-h));max-height:calc(900px + var(--c-gnb-h))}
+.ci-top{margin-top:calc(-1 * var(--c-gnb-h));height:100vh;height:100svh;
+  min-height:calc(var(--ci-min) + var(--c-gnb-h))}
+.ci-hero{padding-top:calc(88px + var(--c-gnb-h))}
+@media(max-width:900px){
+  .sf-hero{height:80svh;min-height:calc(380px + var(--c-gnb-h))}
+  .ci-top{height:auto;min-height:0}
+  .ci-hero{padding-top:calc(48px + var(--c-gnb-h))}
+}
+
+/* 바 — 흰 단색 대신 흰 유리. 흰 바탕 위에서는 전과 똑같이 보인다 */
+.sf-gnb{background:rgba(255,255,255,.72);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  transition:background .35s cubic-bezier(.22,1,.36,1),border-color .35s cubic-bezier(.22,1,.36,1),
+             transform .34s cubic-bezier(.22,1,.36,1),opacity .34s cubic-bezier(.22,1,.36,1)}
+.sf-gnb .logo img{transition:filter .35s cubic-bezier(.22,1,.36,1)}
+.sf-gnb .sf-menus>li>a,.sf-gnb .sf-tools button{transition:background .2s,color .35s cubic-bezier(.22,1,.36,1)}
+
+/* ① 히어로 위 — 바탕 · 선 · 흐림을 모두 걷는다. 대신 위에서 아래로 옅어지는 그늘을 한 겹 —
+   사업영역 세부 히어로처럼 밝은 사진(흰 설비) 위에서는 흰 글자가 묻혔다.
+   그늘은 바보다 길게(×1.6) 내려 끝이 바 밑변에서 선으로 끊기지 않게 한다 */
+.sf-gnb.c-clear{background:transparent;border-bottom-color:transparent;
+  -webkit-backdrop-filter:none;backdrop-filter:none}
+.sf-gnb::before{content:"";position:absolute;left:0;right:0;top:0;height:160%;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,14,22,.38),rgba(6,14,22,0));opacity:0;
+  transition:opacity .35s cubic-bezier(.22,1,.36,1)}
+.sf-gnb.c-clear::before{opacity:1}
+.sf-gnb.c-clear.c-open::before{opacity:0}
+/* ② 어두운 유리 */
+.sf-gnb.c-dark{background:rgba(11,17,24,.42);border-bottom-color:rgba(255,255,255,.10)}
+/* ①② 는 글자가 흰색이다. 로고는 파랑 한 벌뿐이라 필터로 희게 한다 */
+.sf-gnb:is(.c-clear,.c-dark) .logo img{filter:brightness(0) invert(1)}
+.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a,
+.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a[aria-current],
+.sf-gnb:is(.c-clear,.c-dark) .sf-tools button{color:#fff}
+.sf-gnb.c-clear .sf-menus>li>a,.sf-gnb.c-clear .sf-tools button{text-shadow:0 1px 4px rgba(0,0,0,.28)}
+.sf-gnb.c-clear .sf-tools svg{filter:drop-shadow(0 1px 4px rgba(0,0,0,.28))}
+.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li>a:hover,
+.sf-gnb:is(.c-clear,.c-dark) .sf-menus>li.is-open>a{background:rgba(255,255,255,.12)}
+/* 메가 판이 열리면 어느 얼굴에서든 흰 바 — 판과 한 장으로 읽힌다 (A 의 .mega-open) */
+.sf-gnb.c-open{background:#fff;border-bottom-color:var(--gnb-line,#e4e8ed)}
+.sf-gnb.c-open .logo img{filter:none}
+.sf-gnb.c-open .sf-menus>li>a,.sf-gnb.c-open .sf-tools button{color:var(--gnb-sec,#5a6675);text-shadow:none}
+.sf-gnb.c-open .sf-menus>li>a[aria-current]{color:var(--gnb-brand,#2c5790)}
+.sf-gnb.c-open .sf-tools svg{filter:none}
+.sf-gnb.c-open .sf-menus>li>a:hover,.sf-gnb.c-open .sf-menus>li.is-open>a{background:var(--gnb-g100,#f4f6f8)}
+
+@media(prefers-reduced-motion:reduce){
+  .c-mega,.sf-gnb,.sf-gnb .logo img,.sf-gnb .sf-menus>li>a,.sf-gnb .sf-tools button{transition:none}
+}
