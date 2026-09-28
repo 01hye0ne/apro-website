@@ -78,6 +78,12 @@ SWAPS = [
              '<header class="cs-hero cs-hero--low" style="--pos:22% 55%;--pos-m:22% 60%">'),
     ('esg-', 'src="../assets/wind-turbine-portrait.jpg" width="1200" height="2293"',
              'src="../assets/esg-hero-tree-row.jpg" width="2600" height="1727"'),
+    # 화합물 전력 반도체 대표 사진 — Veeco 앞 두 사람(carousel-gan.jpg) → AIXTRON 앞 두 사람(2026-09-28 요청).
+    # 세부 히어로 · 사업영역 허브 카드 두 자리. 홈 Business 카드는 index-c.html 에서 손으로. 원본 PNG 는 assets/_unused/
+    ('business-semicon', '<img src="../assets/carousel-gan.jpg" alt="" aria-hidden="true" />',
+                         '<img src="../assets/gan-hero-aixtron.jpg" alt="" aria-hidden="true" />'),
+    ('business-c.', '<img src="../assets/carousel-gan.jpg" alt="" aria-hidden="true" />',
+                    '<img src="../assets/gan-hero-aixtron.jpg" alt="" aria-hidden="true" />'),
 ]
 
 
