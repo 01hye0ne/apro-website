@@ -105,12 +105,17 @@
   var gnb = document.querySelector('.sf-gnb');
   if(!gnb) return;
   var hero = document.querySelector('.v2banner, .sf-hero, .ci-top');
+  /* 히어로가 바 밑에 조금만 남아 있을 때(밑변이 바 안쪽) — 사업영역 세부는 한 장씩 넘어가며 인트로가
+     바 바로 아래에 멈춰, 바 뒤에 히어로 사진 밑단이 깔린 채로 남는다. 흰 반투명이 그 사진을 비쳐
+     회색빛이 돌았다(2026-09-28). 그 틈에는 반투명 대신 불투명 흰색(.c-solid)을 깐다 — 흰 바탕 위의
+     흰 반투명과 눈으로는 같은 흰색이라 얼굴은 여전히 둘이다 */
   var face = null;
   function apply(){
     var h = gnb.offsetHeight, r = hero && hero.getBoundingClientRect();
-    var next = r && r.bottom > h && r.top <= 0;
+    var next = !r ? '' : (r.bottom > h && r.top <= 0) ? 'c-clear' : (r.bottom > 0 ? 'c-solid' : '');
     if(next === face) return;
-    gnb.classList.toggle('c-clear', !!next);
+    gnb.classList.remove('c-clear', 'c-solid');
+    if(next) gnb.classList.add(next);
     face = next;
   }
   var ticking = false;

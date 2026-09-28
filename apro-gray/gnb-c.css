@@ -122,6 +122,8 @@
   transition:opacity .35s cubic-bezier(.22,1,.36,1)}
 .sf-gnb.c-clear::before{opacity:1}
 .sf-gnb.c-clear.c-open::before{opacity:0}
+/* ② 의 한 경우 — 히어로 밑단이 바 뒤에 남은 틈에는 불투명 흰색(사진이 비쳐 회색빛이 돌지 않게, gnb-c.js) */
+.sf-gnb.c-solid{background:#fff}
 /* ① 은 글자가 흰색이다. 로고는 파랑 한 벌뿐이라 필터로 희게 한다 */
 .sf-gnb.c-clear .logo img{filter:brightness(0) invert(1)}
 .sf-gnb.c-clear .sf-menus>li>a,
