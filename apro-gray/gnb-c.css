@@ -43,7 +43,7 @@
 /* 판 — 바 바로 밑에서 열린다(A 는 투명 GNB 뒤까지 판이 올라갔지만, C 의 바는 이미
    흰 판이라 겹칠 필요가 없다). 흐림막은 깔지 않는다 — A 와 같다 */
 .c-mega{position:fixed;left:0;right:0;top:var(--c-gnb-h);z-index:99;background:#fff;
-  border-top:1px solid var(--gnb-line,#e4e8ed);border-bottom:1px solid var(--gnb-line,#e4e8ed);
+  border-bottom:1px solid var(--gnb-line,#e4e8ed);   /* 윗선은 두지 않는다 — 바의 밑선과 겹쳐 두 줄로 보였다 */
   box-shadow:0 24px 48px rgba(14,22,30,.12);
   opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
   transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),visibility .3s}
