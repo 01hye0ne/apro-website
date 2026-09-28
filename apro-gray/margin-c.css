@@ -1,0 +1,28 @@
+/* ===================== 시안 C — 좌우 여백을 A 사다리로 (2026-09-28) =====================
+   C 의 여백 --c-m(gnb-c.css)은 A 의 여백을 A-1 격자 단위로 옮긴 사다리다 —
+   84(1601~) · 64(1281~1600) · 44(1280 아래) · 16(900 아래). GNB 바와 홈(index-c.html)이 먼저 썼고,
+   이 파일이 나머지 장을 같은 선에 세운다. _gen-c.py 가 GNB 가 있는 C 장에 모두 붙인다.
+
+   A-1 은 여백 44 를 한 곳이 아니라 영역마다 다른 변수로 쥐고 있다. 그 변수들을 --c-m 으로 덮는다.
+   1280 아래에서는 사다리 값(44 · 16)이 A-1 과 같으므로 1281 이상에서만 덮는다 — 좁은 화면은 그대로다.
+
+     --f-m     푸터(business-layout.css · 회사소개 페이지)
+     --ci-m    회사정보 세 장 첫 화면(company-info.css .ci-top)
+     --co-m    회사소개 본문(company-c.html)
+     --cs-m    콘텐츠 열한 장 세로 히어로 틀(content-side.css .cs-split) — 틀의 12열 폭 --g-w 도
+               "좌우 44 × 2 = 88" 을 빼고 있어서 같은 여백으로 다시 세운다(히어로 폭이 5열 머리를 따라온다)
+     --gm      이사회 표(content-layout.css .cgov-board — 세로 틀 안에서는 이미 --cs-m 을 따른다)
+     --grid-m  사업영역 세부 네 장(각 장 :root)
+   변수가 아닌 날값 한 곳 — 회사소개 맨 아래 A-PRO 판(.co-apro .fig)의 안쪽 좌우 44 도 같은 선으로 옮긴다.
+   사업영역 세부 히어로의 흐르는 소분류 띠(.sf-ticker)는 화면 끝까지 흐르는 전폭 부품이라 그대로 둔다
+
+   사업영역 허브(business-c.html)는 제 머리(.subhd)와 화면 폭 판이라 대상이 아니다 */
+@media(min-width:1281px){
+  :root{--co-m:var(--c-m);--grid-m:var(--c-m)}
+  .footer{--f-m:var(--c-m)}
+  .ci-top{--ci-m:var(--c-m)}
+  .cs-split{--cs-m:var(--c-m);
+    --g-w:min(calc(var(--maxw) - 2 * var(--c-m)),calc(100% - 2 * var(--c-m)))}
+  .cgov-board{--gm:var(--c-m)}
+  .co-apro .fig{padding-left:var(--c-m);padding-right:var(--c-m)}
+}
