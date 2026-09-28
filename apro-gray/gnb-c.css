@@ -19,14 +19,17 @@
 @media(max-width:1600px){.sf-gnb,.c-mega{--mm-col:150px}}
 @media(max-width:1280px){.sf-gnb,.c-mega{--mm-col:min(150px, calc((100vw - 356px) / 5))}}
 
-/* 바 좌우 여백 · 로고 — A 의 자리를 A-1 격자 단위로 옮긴다.
+/* 시안 C 좌우 여백 --c-m — A 의 여백 사다리를 A-1 격자 단위로 옮긴 것 (2026-09-28).
    A 는 84(1601~) · 64(1281~1600) · 40(1280 아래). A-1 은 마진 44 · 거터 20 이므로
    마진 + 거터 둘 = 84 · 마진 + 거터 하나 = 64 · 마진 44 로 같은 사다리가 나온다. 900 아래는 A-1 의 16.
-   로고는 A 와 같은 78 — A-1 넓은 화면의 96 은 A 옆에 두면 머리가 무거웠다(바 키 64 는 A-1 그대로) */
-.sf-gnb{padding-left:84px;padding-right:84px}
-@media(max-width:1600px){.sf-gnb{padding-left:64px;padding-right:64px}}
-@media(max-width:1280px){.sf-gnb{padding-left:44px;padding-right:44px}}
-@media(max-width:900px){.sf-gnb{padding-left:16px;padding-right:16px}}
+   GNB 바가 먼저 썼고, 홈 · 푸터가 뒤따랐다. 다른 장은 아직 A-1 의 44 다(차례로 옮긴다) */
+:root{--c-m:84px}
+@media(max-width:1600px){:root{--c-m:64px}}
+@media(max-width:1280px){:root{--c-m:44px}}
+@media(max-width:900px){:root{--c-m:16px}}
+
+/* 바 좌우 여백 · 로고. 로고는 A 와 같은 78 — A-1 넓은 화면의 96 은 A 옆에 두면 머리가 무거웠다(바 키 64 는 A-1 그대로) */
+.sf-gnb{padding-left:var(--c-m);padding-right:var(--c-m)}
 .sf-gnb .logo{width:78px}
 
 /* 대분류 칸 — 글자를 칸 가운데에. 화살촉(+)은 걷는다: A-1 에서 "이 메뉴만의 판이 열린다"는
