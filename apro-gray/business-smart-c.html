@@ -758,7 +758,9 @@
           display:flex;flex-direction:column}
   /* 다음 장은 눈금 줄 절반만큼 올라앉는다 — 그래야 앞 장 그림의 아래 변과
      다음 장의 가는 선이 한 줄이 된다(세로 눈금은 그 선을 가로지른다) */
-  .sf-secs>.sf-sec+.sf-sec{margin-top:calc(var(--rule-off) * -1)}
+  /* 첫 장을 뺀 모든 장 — "+" (바로 앞이 장)로 적으면 스크립트가 분류 첫 장 앞에 끼워 넣는 숨은 아코디언 제목
+     (p.sf-acc-grp, 좁은 화면용)에 막혀 분류가 바뀌는 장마다 8 이 빠져 눈금 줄이 어긋났다(2026-09-28) */
+  .sf-secs>.sf-sec:not(:first-of-type){margin-top:calc(var(--rule-off) * -1)}
   .sf-ph span{font-family:var(--suit);font-weight:400;font-size:var(--t-2xs);line-height:var(--lh-body);
               color:var(--sf-ph-tx)}
 
@@ -1107,7 +1109,7 @@
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:var(--ls-num)}
     /* 장 — 왼쪽 그림 · 오른쪽 글 */
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
-    .sf-secs>.sf-sec+.sf-sec{margin-top:0}
+    .sf-secs>.sf-sec:not(:first-of-type){margin-top:0}
     .sf-sec{min-height:0;display:flex;flex-direction:row;align-items:flex-start;gap:24px;
             padding:40px 24px 56px;border-top:1px solid var(--sf-line);
             scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 1px)}
