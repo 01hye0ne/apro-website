@@ -569,7 +569,7 @@
   .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:16px}
   .hm-wv li{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
             line-height:var(--lh-body);letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
-  .hm-wv li b{font-weight:700}
+  .hm-wv li b{font-weight:600}   /* 항목 머리말 — 700 은 사다리 밖이라 라벨 · 강조 굵기 600(2026-09-28 점검) */
   /* 스크롤 등장 — 판이 화면에 들어오면 [이름 → 영문 → 국문 → 밑선 → 목록 줄] 차례로 떠오른다.
      스크립트가 .is-rv 를 걸고 글마다 순번(--i)을 매긴 뒤, 판이 20% 보이면 .is-in 을 붙인다.
      사업영역 세부 번호 목록(.sf-num)의 등장과 같은 결이다 — 옅게 · 짧게 올라온다.
@@ -613,7 +613,7 @@
              카드 사이는 격자 거터 20. 카드 셋이 1~12 열을 네 열씩 나눈다
        글자  제목 "News" 는 A-1 섹션 제목(.hm-ttl, Aldrich --fs-display-sm) · 날짜는 Aldrich --fs-meta(A-1 날짜 규칙).
              그 밖은 type-scale.css 토큰 — 카드 제목 --fs-h3 800 · 목록 제목 --fs-lead 800 · 줄글 --fs-body */
-  .v2news{gap:28px}
+  .v2news{gap:24px}   /* 제목–본문 24 — Business 와 같다(A 는 28, 2026-09-28 점검) */
   .v2news .news-head{display:flex;align-items:flex-start;gap:8px}
   .v2news .news-head .ttls{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
   .v2news .news-head .sub{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
@@ -709,6 +709,7 @@
   }
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
+<link rel="stylesheet" href="type-c.css" />
 </head>
 <body>
 

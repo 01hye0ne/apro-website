@@ -22,7 +22,7 @@ C 파일을 직접 고치면 다음 실행 때 덮어써진다. A-1 을 고친 �
   1. <title> 끝의 (A-1) → (C)
   2. 페이지 링크 X-a1.html → X-c.html        C 안에서 돌아다니면 C 만 나온다
   3. A-1 메가 판(#mega-biz … #mega-cmm) + 흐림막(#sfScrim) → C 메가 판 한 장(#cMega)
-  4. gnb-c.css · margin-c.css(좌우 여백 A 사다리)를 </head> 앞에, gnb-c.js 를 </body> 앞에 붙인다
+  4. gnb-c.css · margin-c.css(좌우 여백 A 사다리) · type-c.css(줄높이 빈칸)를 </head> 앞에, gnb-c.js 를 </body> 앞에 붙인다
 
 A-1 의 머리 바 마크업(li[data-mega])과 판 스크립트는 건드리지 않는다 — 가리키던 판이
 없어져 그 스크립트는 조용히 지나가고, 같은 묶음 안의 언어 선택은 그대로 동작한다.
@@ -79,7 +79,8 @@ def build(src, name):
         if n != 1:
             raise SystemExit('%s: A-1 메가 판 묶음을 찾지 못했다' % name)
         s = s.replace('</head>', '<link rel="stylesheet" href="gnb-c.css" />' + nl
-                      + '<link rel="stylesheet" href="margin-c.css" />' + nl + '</head>', 1)
+                      + '<link rel="stylesheet" href="margin-c.css" />' + nl
+                      + '<link rel="stylesheet" href="type-c.css" />' + nl + '</head>', 1)
         s = s.replace('</body>', '<script src="gnb-c.js"></script>' + nl + '</body>', 1)
     return s
 
