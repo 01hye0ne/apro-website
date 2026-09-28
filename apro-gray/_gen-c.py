@@ -69,11 +69,28 @@ def c_name(a1_name):
     return a1_name[:-len('-a1.html')] + '-c.html'
 
 
+# C 에서만 바꾸는 그림 — (장 이름 접두사, A-1 의 원문, C 의 글) 목록. 원문이 정확히 하나 있어야 한다
+SWAPS = [
+    # 지속가능경영 다섯 장 세로 히어로 — 풍차(세로 사진) → 가로수 길 · 흰 차(가로 사진, 2026-09-28 요청).
+    # 가로:세로 1.5:1 이라 세로 칸에서는 가운데 37% 만 보인다 — 흰 차(왼쪽 10~38%)가 들도록 가로 22% 를 붙든다.
+    # 세로는 넓은 화면 55%(나뭇잎 · 줄기 · 차가 함께), 좁은 화면 60%. 원본 PNG(43MB)는 assets/_unused/ 에 있다
+    ('esg-', '<header class="cs-hero cs-hero--low" style="--pos:50% 100%;--pos-m:50% 60%">',
+             '<header class="cs-hero cs-hero--low" style="--pos:22% 55%;--pos-m:22% 60%">'),
+    ('esg-', 'src="../assets/wind-turbine-portrait.jpg" width="1200" height="2293"',
+             'src="../assets/esg-hero-tree-row.jpg" width="2600" height="1727"'),
+]
+
+
 def build(src, name):
     nl = '\r\n' if '\r\n' in src else '\n'     # 원본 줄바꿈을 따른다(작업 트리는 CRLF)
     s = src
     s = re.sub(r'\(A-1\)</title>', '(C)</title>', s, count=1)
     s = s.replace('-a1.html', '-c.html')
+    for pre, old, new in SWAPS:
+        if name.startswith(pre):
+            if s.count(old) != 1:
+                raise SystemExit('%s: 바꿀 그림 자리를 찾지 못했다 — %s' % (name, old[:40]))
+            s = s.replace(old, new)
     if 'class="sf-gnb' in s:
         s, n = MEGA_RE.subn(lambda m: mega_html(name).replace('\n', nl), s, count=1)
         if n != 1:
