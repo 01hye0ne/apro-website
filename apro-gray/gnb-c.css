@@ -158,3 +158,16 @@
   .navover .ov-row{grid-template-columns:clamp(200px,calc(100vw - 800px),320px) minmax(0,1fr)}
   .navover .ov-links{grid-template-columns:repeat(5,minmax(max-content,1fr))}
 }
+
+/* ── 도구 아이콘(언어 · 전체 메뉴) — A 의 크기 · 굵기로 (2026-09-28) ─────────────────────
+   A-1 아이콘은 선 1px · 전체 메뉴 줄 폭 14 라, 16px 굵은(600) 대분류 글자 옆에서 약했다.
+   A 는 지구본 선 1.5 · 메뉴 줄 폭 24 · 굵기 1.8. 상자는 A-1 규격 24 그대로 두고 안의 그림만 키운다 —
+   지구본 선 1 → 1.5, 메뉴 줄 폭 14 → 20 · 굵기 1 → 1.5(윗줄 짧은 눈금 + 긴 선, 아랫줄 긴 선의 A-1 모양은 유지).
+   누르면 X 로 엇갈리는 움직임도 새 치수에 맞춘다(두 줄 사이 10 의 절반 5 씩 가운데로) */
+.sf-gnb .sf-tools svg :is(circle,path){stroke-width:1.5}
+.sf-gnb .sf-burger .bar{height:1.5px}
+.sf-gnb .sf-burger .a{left:2px;top:6.5px;width:4px}
+.sf-gnb .sf-burger .b{left:2px;top:6.5px;width:14px;transform:translateX(6px)}
+.sf-gnb .sf-burger .c{left:2px;top:16.5px;width:20px}
+.sf-gnb .sf-burger[aria-expanded="true"] .b{width:20px;transform:translateY(5px) rotate(45deg)}
+.sf-gnb .sf-burger[aria-expanded="true"] .c{transform:translateY(-5px) rotate(-45deg)}

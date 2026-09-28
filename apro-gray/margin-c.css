@@ -26,3 +26,8 @@
   .cgov-board{--gm:var(--c-m)}
   .co-apro .fig{padding-left:var(--c-m);padding-right:var(--c-m)}
 }
+
+/* 제목과 본문 사이 세로 간격 — 24 로 모은다(2026-09-28 점검). 홈 Business 24 · 홈 News 28 · 회사소개 Vision 띠 26
+   이 같은 자리인데 값이 셋이었다(홈 두 곳은 index-c.html 이 직접 고친다). 네트워크 · 사업장소재 띠의 20 은
+   좌우로 선 두 덩어리 사이 가로 간격(격자 거터 20)이라 대상이 아니다 */
+.co-vband{row-gap:24px}
