@@ -411,19 +411,23 @@
 
   /* ── Business — 비대칭 4열 아코디언 ─────────────────────────────────────
      켜진 카드 한 장만 펴서 크게 보이고, 나머지 셋은 세로로 긴 띠로 접힌다.
-     폭은 A-1 격자(12열 · 거터 20)를 따른다(시안 C, 2026-09-28) — 펴진 카드 6열, 접힌 띠 2열씩,
-     카드 사이는 거터 20. 6 + 2 + 2 + 2 = 12 열이라 레일 폭이 딱 찬다(1440 에서 펴진 카드 663 · 띠 205).
-     한 열 = (레일 − 거터 11개) / 12. 레일을 컨테이너로 삼아 cqi 로 구하므로 화면 폭이
-     바뀌어도 스크립트 없이 맞는다. 줄 높이는 펴진 카드의 779:438 비율을 따른다.
+     폭은 12열 격자 몫이다(시안 C, 2026-09-28) — 펴진 카드 6열(레일의 1/2), 접힌 띠 2열씩(1/6).
+     카드는 A-1 처럼 틈 없이 붙고 흰 선 1px 로만 가른다 — 그래서 선은 거터 한가운데쯤에 선다
+     (6열 뒤는 딱 가운데, 8 · 10열 뒤는 3px 안쪽). 레일을 컨테이너로 삼아 cqi 로 구하므로 화면 폭이
+     바뀌어도 스크립트 없이 맞는다.
+     줄 높이는 A-1 원래 키 그대로다 — 펴진 카드가 A-1 폭(레일 − 히어로 탭 폭 --hm-tabs, 1280 아래는
+     레일의 62.5%)이던 때의 779:438 비율(--open-h). 폭만 6열로 바뀌고 키는 옛 값을 지킨다.
      띠를 누르면 그 카드가 펴지고, 펴진 카드를 누르면 세부 페이지로 간다.
      사진은 늘 펴진 폭으로 그려 가운데에 두므로, 폭이 바뀌는 동안 확대 비율이 튀지 않고
      접힌 띠에는 사진 가운데 한 줄기만 보인다 */
   .hm-biz{gap:24px}
   .hm-rail{container-type:inline-size}
-  /* A-1 은 카드를 틈 없이 붙이고 흰 선 1px 로 갈랐다 — C 는 격자 칸에 맞추느라 거터 20 을 둔다 */
-  .hm-track{--col:calc((100cqi - 220px) / 12);
-            --fold:calc(var(--col) * 2 + 20px);--open:calc(var(--col) * 6 + 100px);
-            display:flex;gap:20px;list-style:none;height:max(360px,calc(var(--open) * .5623))}
+  /* 카드 사이는 틈 없이 붙이고 흰 선 1px 로만 가른다 — 선은 뒤 카드의 왼쪽 테두리다
+     (box-sizing 이 border-box 라 폭 계산에 따로 넣지 않아도 된다) */
+  .hm-track{--fold:calc(100cqi / 6);--open:calc(100cqi / 2);--open-h:calc(100cqi - var(--hm-tabs));
+            display:flex;list-style:none;height:max(360px,calc(var(--open-h) * .5623))}
+  @media(max-width:1280px){ .hm-track{--open-h:calc(100cqi * .625)} }
+  .hm-card+.hm-card{border-left:1px solid #fff}
   .hm-card{position:relative;flex:0 0 var(--fold);min-width:0;overflow:hidden;background:#c7c7c7;
            transition:flex-basis .8s var(--ease)}
   .hm-card.is-open{flex-basis:var(--open)}
@@ -673,7 +677,7 @@
     .hm-ttl{font-size:var(--fs-h1)}
     /* 좁은 화면은 세로 아코디언 — 카드가 위아래로 쌓이고, 접힌 카드는 64 높이의 가로 띠,
        펴진 카드는 420 이다. 사진은 늘 420 높이로 그려 가운데에 둔다 */
-    .hm-track{flex-direction:column;gap:0;height:auto}
+    .hm-track{flex-direction:column;height:auto}
     .hm-card,.hm-card.is-open{flex:0 0 auto;height:64px;transition:height .8s var(--ease)}
     .hm-card.is-open{height:420px}
     .hm-card>img,.hm-card.is-open:hover>img{top:50%;left:0;width:100%;height:420px;transform:translateY(-50%)}
