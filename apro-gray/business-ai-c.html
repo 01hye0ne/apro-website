@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 옅은 장 칠하기는 이 클래스가 붙어 있을 때만 건다 (아래 .js .sf-sec:not(.is-on) 참고) -->
+<script>document.documentElement.className += ' js';</script>
+<title>APRO | 에이프로 — 인공지능 플랫폼 (C)</title>
+<meta name="description" content="에이프로(APRO) 인공지능 플랫폼 — 로봇 플랫폼, 배터리 진단 플랫폼, 전기자동차 충전 플랫폼, 전기자동차 제어 플랫폼." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<!-- ============================================================
+     인공지능 플랫폼 A-1 — Figma 994:321 "05 · 인공지능 플랫폼" 와이어프레임 구현
+     (26.09.07 v5.0 와이어프레임 페이지, fileKey 5lJIj3AmCr20ZdgBLldb3f)
+
+     레이아웃·CSS·JS 는 스마트 제조 A-1 · 화합물 전력 반도체 A-1 과 한 벌이다 —
+     스마트 쪽을 뼈대로 뜨고 내용만 이 사업영역 것으로 갈아 끼웠다. 골격을 고칠 일이
+     생기면 세 파일을 함께 고쳐야 한다(공용 파일로 뽑지 않았다 — 페이지마다
+     소분류 수와 장 길이가 달라 스타일 블록 안에서 조금씩 다르게 잡힌다).
+
+     ⚠ 이 페이지는 _gen-a1.py 가 만들지 않는다. A(business-ai.html)와 디자인이
+        갈라졌기 때문이다 — 생성기의 SOURCES 에서 business-ai.html 을 뺐고,
+        PAGES 에는 남겨 두어 다른 A-1 페이지의 링크는 그대로 이 파일로 들어온다.
+
+     스마트 제조 A-1 과 다른 곳
+       · 소분류가 4묶음 6장이다 (스마트는 4묶음 11장)
+         (2026-09-17 완속 충전기 · 자율주행 제어기 · 소프트웨어 세 장을 걷었다 — 9장 → 6장)
+       · 히어로 사진은 안전진단 로봇(A 페이지·사업영역 허브가 쓰는 그 사진).
+         인트로 그림은 와이어프레임의 것을 그대로 받았다 — 충전기·전기차·점검 로봇·
+         상태 대시보드·ESS 랙이 한 줄로 이어진 그림(assets/ai-platform-overview.png,
+         Figma 원본에서 흰 여백을 잘라 냈다). 스마트의 설비 라인 자리에 그대로 앉는다
+       · 히어로 유리 띠는 스마트보다 진하다 — 그 사진은 아래가 어두운데 여기는
+         로봇의 흰 몸통이 국문 줄 뒤에 와서 흰 글자가 묻힌다(스타일 블록 안 주석 참고)
+       · 인트로 리드 두 줄은 와이어프레임이 스마트 것을 그대로 물고 있어(오버라이드
+         안 됨) A 페이지 히어로 문안을 옮겨 왔다 — 문안이 확정되면 여기만 고친다
+     ============================================================ -->
+<style>
+  /* ── 이 페이지 전용 토큰 ───────────────────────────────────────────────
+     값은 Figma 변수(text/·border/·primitive/) 이름 그대로 옮겼다. 사이트 공용
+     토큰(business-layout.css :root)과 겹치지 않게 --sf- 접두사를 붙인다 */
+  :root{
+    --sf-txt:#1b2733;        /* text/primary       */
+    --sf-sec:#5a6675;        /* text/secondary     */
+    --sf-ter:#96a3b3;        /* text/tertiary      */
+    --sf-line:#e4e8ed;       /* border/default     */
+    --sf-line-s:#cbd2da;     /* border/strong      */
+    --sf-gray100:#f4f6f8;    /* primitive/gray/100 */
+    --sf-brand100:#eef4fd;   /* primitive/brand/100 — 소분류 카드 판 */
+    --sf-ph-bg:#e5e6e8;
+    --sf-ph-bd:#c7c9cc;
+    --sf-ph-tx:#73757a;
+    /* ── 글자 사다리 ────────────────────────────────────────────────────
+       역할이 같으면 페이지가 달라도 같은 칸을 쓴다. 네 장이 이 일곱 칸과
+       굵기 세 단(800 제목·이름 / 600 줄글 / 500 메타)만으로 짜인다.
+       글꼴은 둘뿐이다 — 글은 전부 SUIT, 숫자와 히어로 영문만 Aldrich */
+    --t-xl:var(--fs-h1); /* 장 제목                    */
+    --t-lg:var(--fs-h2);   /* 인트로 리드                */
+    --t-md:var(--fs-h3);/* 제품 이름 · 카드 라벨      */
+    --t-sm:var(--fs-body);                   /* 소분류 이름 · 목록 항목    */
+    --t-xs:var(--fs-body);                   /* 줄글 · 인덱스 · 특징 · 표  */
+    --t-2xs:var(--fs-tag);                  /* 번호 · 그룹 머리 · 꼬리    */
+    --t-tag:var(--fs-tag);                  /* 숫자 태그                  */
+    --ald:"Aldrich",var(--rc),sans-serif;
+    /* 고정 GNB 높이 — 본문을 밀어내는 값이자, 화면 높이를 쓰는 모든 계산
+       (히어로·장 높이·sticky 인덱스·앵커 여백)이 함께 빼는 값이다.
+       한 군데서 바꾸면 전부 따라온다 */
+    --gnb-h:64px;  /* 좁은 화면(≤900)은 53 — 아래 좁은 화면 블록 */
+    /* 장 위아래 여백. 설계값은 176(= 바깥 120 + 카드 자체 56)이고 900 높이 화면을
+       전제로 그렸는데, 고정 GNB 가 53 을 먹어 그대로 쓰면 가장 긴 장(01-1, 여섯 줄
+       목록)이 한 화면을 29px 넘긴다 — 휠 한 번이 다음 장으로 건너뛰므로 그 29px 는
+       영영 안 보인다. 그래서 본문 자리 560 을 먼저 떼고 남는 만큼을 위아래로 나누되,
+       설계값 176 을 넘지는 않게 한다. 화면이 넉넉하면(1140 이상) 그대로 176 이다 */
+    --sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 560px) / 4),88px);
+    /* 본문 띠 — 눈금 줄 + 그림이 앉는 높이. 붙박이 그림 기둥과 글 한 장이
+       이 값을 같이 쓴다(그래서 두 눈금 줄이 한 줄로 맞는다) */
+    --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
+    /* 인트로 위아래 여백. 설계값은 120 이고 900 높이 화면을 전제로 그렸는데, 고정
+       GNB 가 53 을 먹어 그대로 쓰면 카드 아랫줄이 한 화면을 넘긴다 — 휠 한 번이 다음
+       장으로 건너뛰므로 그만큼은 영영 안 보인다. 그래서 리드 두 줄(96) + 숨(64) +
+       카드 최소(400) = 560 을 먼저 떼고 남는 만큼을 위아래로 나누되, 설계값 120 을
+       넘지는 않게 한다 */
+    --intro-pad:clamp(24px,calc((100svh - var(--gnb-h) - 560px) / 2),120px);
+    /* 12컬럼 한 칸(여백 44 · 거터 20). 인트로 리드가 1~5열, 소분류 카드가 6~12열이다 */
+    --gcol:calc((100% - 308px) / 12);
+    /* 본문 세 기둥이 먹는 고정분 = 왼쪽 여백 44 + 인덱스 215 + 그 오른쪽 여백 12
+       + 기둥 사이 8 두 번. 남는 폭을 그림/글이 반씩 가져가므로 5컬럼 한 칸이
+       (100% - 287) / 2 다 — GNB 우측 메뉴도 이 폭을 그대로 쓴다 */
+    --body-fixed:287px;
+    --col5:calc((100% - var(--body-fixed)) / 2);
+    /* 글 기둥 안쪽 왼쪽 여백. 소분류 제목이 앉는 자리이고, GNB 첫 메뉴도 여기 맞춘다 */
+    --txt-pad-l:40px;
+    /* 글 단 오른쪽 여백 — 넓은 화면에서는 122 를 지키고, 화면이 좁아질수록
+       물러난다. 줄글이 16px 이라 여백을 그대로 두면 한 줄이 스무 자로
+       잘게 끊긴다(한글은 서른에서 마흔 자가 편하다) */
+    --txt-pad-r:clamp(24px,calc(122px - (1600px - 100vw) * .4),122px);
+    /* 눈금 줄 상자는 16 이고 가는 선은 그 한가운데에 놓인다. 다음 장을 이만큼
+       끌어올려야 앞 장 그림의 아래 변과 다음 장의 가는 선이 한 줄로 맞는다 */
+    /* 격자 좌우 마진 — 메가 메뉴 칸 안쪽 여백도 이 값이다 */
+    --grid-m:44px;
+    --rule-off:8px;
+    /* 장 맨 아래에 비워 두는 자리 — 글이 다음 장의 머리 줄에 닿지 않게 한다 */
+    --sec-clear:20px;
+  }
+  /* 넓은 화면에서는 휠을 가로채 한 번에 한 장씩 옮긴다(맨 아래 스크립트).
+     scroll-behavior:smooth 를 켜 두면 그 rAF 애니메이션이 브라우저 이징과 겹쳐
+     뭉개지므로 공용 CSS 의 auto 를 그대로 두고, 휠을 가로채지 않는 좁은 화면에서만
+     되살린다 — 거기서는 인덱스 띠의 앵커 이동에 쓰인다 */
+  @media(max-width:900px){html{scroll-behavior:smooth}}
+  @media(max-width:900px) and (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  /* 고정 바가 덮는 만큼 본문을 내린다 — 와이어프레임도 GNB 아래에서 Scroll 이 시작한다 */
+  body{padding-top:var(--gnb-h)}
+
+  /* ===================== 고정 GNB =====================
+     로고 · 가운데 대분류 다섯 · 오른쪽 도구 (Figma 1135:7128).
+     대분류 묶음은 화면 한가운데에 못 박는다 — 로고(78)와 도구(58)의 폭이 달라
+     space-between 만으로는 가운데가 어긋난다 */
+  .sf-gnb{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--gnb-h);
+          display:flex;align-items:center;justify-content:space-between;gap:24px;
+          padding:8px var(--grid-m);background:#fff;border-bottom:1px solid var(--sf-line)}
+  .sf-gnb .logo{flex-shrink:0;width:96px}
+  .sf-gnb .logo img{display:block;width:100%;max-width:100%;height:auto}
+  .sf-menus{position:absolute;left:50%;transform:translateX(-50%);
+            list-style:none;display:flex;align-items:center;gap:16px}
+  .sf-menus>li{display:flex}
+  .sf-menus>li>a{display:flex;align-items:center;gap:4px;padding:8px;
+                 font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-body);
+                 color:var(--sf-sec);white-space:nowrap;
+                 transition:background .2s var(--ease),color .2s var(--ease)}
+  .sf-menus>li>a:hover,.sf-menus>li.is-open>a{background:var(--sf-gray100)}
+  .sf-menus>li>a[aria-current]{color:var(--brand);font-weight:800}
+  /* 화살촉은 커서가 올라갔거나 판이 열렸을 때만 보인다(와이어프레임의 hover 상태).
+     자리는 늘 잡아 둔다 — 안 그러면 커서가 닿는 순간 메뉴 폭이 흔들린다 */
+  .sf-menus .caret{width:16px;height:16px;flex-shrink:0;opacity:0;
+                   transition:opacity .18s var(--ease),transform .22s var(--ease)}
+  .sf-menus>li>a:hover .caret,.sf-menus>li.is-open .caret{opacity:1}
+
+
+  /* 메가 메뉴 두 갈래 — 사업영역만 GNB 밑으로 화면 폭을 다 쓰며 펼쳐지고(칸 넷을
+     왼쪽부터 채운다), 나머지 넷은 제 메뉴 아래 뜨는 작은 카드다(.card). 항목이
+     둘에서 다섯뿐인 메뉴에 흰 띠를 화면 끝까지 깔면 빈자리만 남고, 오른쪽
+     메뉴일수록 커서가 목록까지 가로로 멀리 건너야 했다 */
+  .sf-mega{position:fixed;left:0;right:0;top:var(--gnb-h);z-index:58;background:#fff;
+           box-shadow:0 12px 28px rgba(14,22,30,.08);
+           opacity:0;visibility:hidden;transform:translateY(-8px);
+           transition:opacity .24s var(--ease),transform .24s var(--ease),visibility .24s}
+  .sf-mega.open{opacity:1;visibility:visible;transform:none}
+  /* 판 안쪽은 격자 1~12 열(로고 ~ 햄버거)에 앉는다(2026-09-22 요청 — 2~11 열은 칸이 좁아
+     이름이 두세 줄로 접혔다). 화면 끝까지는 펼치지 않는다 — 칸이 너무 넓어
+     이름 사이가 벌어진다 */
+  .sf-mega .cols{width:calc(var(--gcol) * 12 + 220px);margin-inline:auto;
+                 display:grid;grid-template-columns:repeat(4,1fr)}
+  .sf-mega .col{display:flex;flex-direction:column;gap:20px;
+                padding:var(--grid-m);border-right:1px solid var(--sf-line)}
+  .sf-mega .col:last-child{border-right:0}
+  /* 좁은 폭(≤1180)에서는 칸 안 좌우 여백을 줄인다 — 44 그대로면 "전기자동차 충전 플랫폼"이 두 줄로 접힌다 */
+  @media(max-width:1180px){.sf-mega .col{padding-left:24px;padding-right:24px}}
+  /* 카드는 제 메뉴 글자에 왼쪽을 맞춘다 — 커서가 세로로만 내려오면 된다.
+     그 자리(--mm-x)는 sfMegaAlign 이 재고, 화면 밖으로 나가면 끝에서 멈춘다.
+     폭은 가장 긴 이름에 맞춰 늘고(max-content), 이름은 접지 않는다.
+     카드 뒤에는 흐림막을 깔지 않는다 — 가릴 만큼 크지 않다 */
+  .sf-mega.card{right:auto;left:var(--mm-x,0px);width:max-content;min-width:200px;
+                box-shadow:0 10px 24px rgba(14,22,30,.12)}
+  .sf-mega.card .menu{display:flex;flex-direction:column;gap:20px;padding:28px 32px}
+  .sf-mega.card .hd{white-space:nowrap}
+  .sf-mega .hd{display:flex;align-items:center;gap:8px;font-family:var(--suit);
+               font-weight:800;font-size:var(--t-sm);line-height:var(--lh-head);letter-spacing:var(--ls-num);
+               color:var(--sf-sec);transition:color .18s var(--ease)}
+  .sf-mega .hd .go{width:20px;height:20px;flex-shrink:0;margin-left:auto}
+  .sf-mega .hd:hover,.sf-mega .hd[aria-current]{color:var(--brand)}
+  .sf-mega ul{list-style:none;display:flex;flex-direction:column;gap:20px}
+  .sf-mega ul a{display:block;font-family:var(--suit);font-weight:600;
+                font-size:var(--t-sm);line-height:var(--lh-head);letter-spacing:var(--ls-num);
+                color:var(--sf-sec);transition:color .18s var(--ease)}
+  .sf-mega ul a:hover{color:var(--brand)}
+
+  /* 판이 열리면 그 아래 본문을 흐리게 눌러 둔다 — 판이 흰 종이라 본문이 또렷하면
+     둘이 같은 층에 있는 것처럼 보인다. GNB 밑변부터 깔고 판은 그 위에 뜬다.
+     커서가 여기 닿으면 판에서 벗어난 것이므로 곧 닫힌다 */
+  .sf-scrim{position:fixed;left:0;right:0;top:var(--gnb-h);bottom:0;z-index:57;
+            background:rgba(27,39,51,.16);
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+            opacity:0;visibility:hidden;pointer-events:none;
+            transition:opacity .24s var(--ease),visibility .24s}
+  .sf-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+
+  /* 언어 선택 목록 — 오른쪽 도구에만 남았다 */
+  .sf-drop{position:absolute;top:100%;left:0;min-width:172px;padding:6px 0;background:#fff;
+           border:1px solid var(--sf-line);box-shadow:0 12px 28px rgba(14,22,30,.1);
+           opacity:0;visibility:hidden;transform:translateY(-6px);
+           transition:opacity .22s var(--ease),transform .22s var(--ease),visibility .22s}
+  .sf-lang.open .sf-drop{opacity:1;visibility:visible;transform:none}
+  .sf-drop a{display:block;padding:9px 14px;font-family:var(--suit);font-weight:400;
+             font-size:var(--fs-meta);line-height:var(--lh-label);color:var(--sf-sec);white-space:nowrap;
+             transition:background .18s,color .18s}
+  .sf-drop a:hover{background:var(--sf-gray100);color:var(--brand)}
+  .sf-drop a[aria-current]{color:var(--brand);font-weight:800}
+  .sf-tools{display:flex;align-items:center;gap:10px}
+  .sf-lang{position:relative}
+  .sf-lang .sf-drop{left:auto;right:0;min-width:96px}
+  .sf-tools button{width:24px;height:24px;display:grid;place-content:center;padding:0;
+                   background:none;border:0;color:var(--sf-sec);cursor:pointer;
+                   transition:color .2s}
+  .sf-tools button:hover,.sf-tools button[aria-expanded="true"]{color:var(--brand)}
+  .sf-tools svg{display:block;width:24px;height:24px}
+
+
+  /* 전체 메뉴 — 와이어프레임에 화면이 없어 푸터 사이트맵을 그대로 흰 판에 편다 */
+  /* 전체 메뉴 — 홈(index-c.html)과 같은 전면 오버레이(2026-09-18). 예전의 흰 판(.sf-nav)을
+     걷고 홈 규칙을 그대로 옮겼다. 열고 닫기는 business-layout.js 의 공용 블록이 맡는다.
+     type-scale.css 를 싣지 않는 장이라 그 토큰 둘은 같은 값을 기본값으로 둔다 */
+  .menu-toggle{width:30px;height:44px;display:grid;place-content:center;background:none;border:none;
+    cursor:pointer;color:inherit;padding:0;flex-shrink:0}
+  /* 줄 모양은 아래 .sf-burger 가 맡는다. 예전 세 줄 단추의 span 규칙(두께 1.8 · 줄 사이
+     margin 7 · 커서 올릴 때 밀기)이 남아 있으면 둘째 · 셋째 줄이 7px 씩 아래로 밀리고,
+     커서를 올리면 .sf-burger 의 transform 까지 덮어써 모양이 틀어진다 */
+  .navover{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;overflow-y:auto;
+    background:rgba(27,39,51,.82);backdrop-filter:blur(20px) saturate(1.05);-webkit-backdrop-filter:blur(20px) saturate(1.05);
+    color:#fff;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .45s var(--ease),visibility .45s var(--ease)}
+  .navover.open{opacity:1;visibility:visible;pointer-events:auto}
+  .navover-hd{position:absolute;top:0;left:0;right:0;z-index:2;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,48px)}
+  .ov-logo img{height:20px;width:auto;display:block}
+  .ov-tools{display:flex;align-items:center;gap:22px}
+  .ov-lang{text-decoration:none;color:var(--on-dark-body,rgba(255,255,255,.8));font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);letter-spacing:var(--ls-caps,.06em);transition:color .2s}
+  .ov-lang:hover{color:#fff}
+  .ov-close{position:relative;width:44px;height:44px;flex-shrink:0;border:1px solid rgba(255,255,255,.5);background:none;cursor:pointer;transition:border-color .2s,background .2s}
+  .ov-close:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .ov-close span{position:absolute;top:50%;left:11px;right:11px;height:1.6px;background:#fff}
+  .ov-close span:first-child{transform:rotate(45deg)}
+  .ov-close span:last-child{transform:rotate(-45deg)}
+  .navover-body{flex:1;width:100%;max-width:1680px;margin:0 auto;padding:40px clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .ov-row{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:24px;align-items:start;padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ov-row:first-child{border-top:none}
+  .ov-cat{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls-num);color:#fff}
+  .ov-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+  .ov-links a{text-decoration:none;color:var(--on-dark-body,rgba(255,255,255,.8));font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);word-break:keep-all;transition:color .2s var(--ease)}
+  .ov-links a:hover{color:#fff}
+  .navover .ov-row{transform:translateY(18px);opacity:0}
+  .navover.open .ov-row{transform:none;opacity:1;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+  .navover.open .ov-row:nth-child(1){transition-delay:.06s}
+  .navover.open .ov-row:nth-child(2){transition-delay:.11s}
+  .navover.open .ov-row:nth-child(3){transition-delay:.16s}
+  .navover.open .ov-row:nth-child(4){transition-delay:.21s}
+  .navover.open .ov-row:nth-child(5){transition-delay:.26s}
+  @media(max-width:900px){.ov-row{grid-template-columns:1fr;gap:14px;padding:24px 0}.ov-links{grid-template-columns:repeat(2,1fr)}}
+
+  /* ===================== 히어로 ===================== */
+  .sf-hero{height:calc(100svh - var(--gnb-h));min-height:480px;max-height:900px;
+           background:#fff}
+  .sf-heroin{position:relative;height:100%;overflow:hidden;background:var(--sf-ph-bg)}
+  /* 크롭 지점 — 로봇이 아래 유리 띠에 반쯤 잠기지 않게 사진 아래쪽을 보여 준다
+     (사진이 3:2 라 세로로 남는 여유가 113px 뿐이고, 그걸 다 쓴 값이 100%) */
+  .sf-heroin>img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;
+                 object-fit:cover;object-position:50% 100%}
+  /* 하단 유리 띠 — 아래로 갈수록 어두워지는 그라디언트 + 블러.
+     사진 위에 흰 글자를 얹으려면 둘이 함께 있어야 어느 사진에서도 읽힌다.
+     세 덩이(국문 · 영문 · 소분류 띠지)가 32 간격으로 쌓이고, 띠지는 바닥에
+     딱 붙는다(아래 여백 0).
+
+     블러를 띠 전체에 그냥 걸면 윗변에 가로줄이 그어진다 — 거기서부터 갑자기
+     흐려지기 때문이다. 그래서 블러 판을 따로 깔고 mask 로 위에서 아래로 서서히
+     드러낸다. 배경 그라디언트도 같은 판에 얹어 한 겹으로 이어지게 했다.
+     글자는 그 판 위에 오도록 z-index 를 준다.
+
+     블러 양은 2026-09-09 요청으로 절반으로 낮췄다(스마트 6→3, 여기 8→4) —
+     사진이 덜 뭉개지도록. 어두워지는 정도와 마스크 위치는 건드리지 않았다.
+
+     ⚠ 값이 스마트 제조 A-1 보다 세다(띠가 70 위에서 시작 · 30% 에서 블러 최대 ·
+       검정 .22 → .5). 그 페이지 사진은 아래가 어두워 옅은 띠로 충분하지만, 여기는
+       로봇의 흰 몸통이 국문 줄 바로 뒤에 와서 흰 글자가 묻힌다 — 국문 줄이 놓이는
+       높이에서 블러와 어둠이 이미 다 올라와 있어야 읽힌다 */
+  .sf-herocap{position:absolute;left:0;right:0;bottom:0;
+              display:flex;flex-direction:column;gap:32px;padding-top:40px;color:#fff}
+  .sf-herocap::before{content:"";position:absolute;inset:-70px 0 0 0;pointer-events:none;
+              background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.4) 38%,rgba(0,0,0,.5) 100%);
+              -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+              -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%);
+              mask-image:linear-gradient(180deg,transparent 0%,#000 30%)}
+  .sf-herocap>*{position:relative;z-index:1}
+  .sf-herocap h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:32px;
+                 padding:0 88px}
+  .sf-hero .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+               line-height:var(--lh-head);letter-spacing:var(--ls)}
+  .sf-hero .en{font-family:var(--ald);font-weight:400;
+               font-size:var(--fs-display);line-height:var(--lh-tight);
+               letter-spacing:var(--ls-num);text-align:center;white-space:nowrap}
+
+  /* 소분류 띠지 — 아홉 개가 한 줄에 못 들어가고 잘린다. 잘린 채 세워 두는 대신
+     천천히 흘려 보낸다(같은 줄 두 벌을 이어 붙여 끊김 없이 돈다).
+     읽을 거리가 아니라 분위기라서 aria-hidden 이고, 커서를 얹으면 멈춘다 */
+  .sf-ticker{overflow:hidden;border-top:1px solid rgba(255,255,255,.2)}
+  .sf-tickrow{display:flex;width:max-content}
+  .sf-tickrow>div{display:flex;align-items:center;gap:30px;padding:12px 20px;
+                  flex-shrink:0;animation:sfTick 38s linear infinite}
+  .sf-tickrow:hover>div{animation-play-state:paused}
+  .sf-tickrow b{font-family:var(--suit);font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);
+                letter-spacing:var(--ls-num);color:var(--on-dark-sub);white-space:nowrap}
+  /* 이름 사이 구분 — 1px 세로선 두 개 */
+  .sf-tickrow i{display:flex;align-items:center;gap:8px;height:10px;flex-shrink:0}
+  .sf-tickrow i::before,.sf-tickrow i::after{content:"";width:1px;height:100%;
+                                             background:rgba(255,255,255,.7)}
+  @keyframes sfTick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+  @media(prefers-reduced-motion:reduce){
+    .sf-tickrow>div{animation:none}
+  }
+
+  /* ===================== 인트로 =====================
+     Figma 1056:4261 · 4324 · 4387 · 4450 — 한 화면에 [리드 두 줄]과 [소분류 카드]
+     둘뿐이다. 그 사이에 있던 설비 그림과 화면을 가로지르던 네 칸 띠는 함께 걷었다.
+
+     넓은 화면(1181 이상)에서 둘은 아래 본문의 두 기둥에 정확히 겹친다 —
+     리드는 그림 기둥(왼쪽 끝이 설비 그림 시작점), 카드는 글 기둥이다.
+     본문 기둥은 12컬럼이 아니라 [여백 44][인덱스 215 + 오른여백 12][간격 8][그림][간격 8][글]
+     로 놓이므로 아래 @media(min-width:1181px) 가 그 셈을 그대로 쓴다.
+     그보다 좁으면 본문이 세 기둥을 풀므로 맞출 기둥이 없다 — 그때는 아래 12컬럼 값
+     (리드 1~5열 · 카드 6~12열)으로 돌아간다. 둘이 한 줄에 놓이지 않고 위아래로 서지만,
+     양 끝이 본문과 같은 세로선 위에 서서 가운데가 비어도 장이 흐트러져 보이지 않는다.
+
+     카드 격자는 2열 고정이고 남는 세로를 다 먹는다(flex:1). 장 높이가 화면을 따라
+     달라져도 카드만 늘고 줄 뿐 리드와 여백은 흔들리지 않는다. 소분류가 셋인 장
+     (에너지 인프라 · 화합물 전력 반도체)은 넷째 칸이 빈다 — 시안도 같은 자리를 비운다 */
+  /* 여기서 --gcol 을 쓰면 안 된다 — 그 값은 100% 가 화면 폭일 때를 전제로 여백
+     44 두 번까지 빼는데, 이 장 안에서는 100% 가 이미 여백을 뺀 안쪽 폭이라 한 칸이
+     두 번 깎인다(1584 화면에서 격자가 51px 짧아졌다). 안쪽 폭 기준으로 다시 잡는다 */
+  .sf-intro{--icol:calc((100% - 220px) / 12);
+            min-height:calc(100svh - var(--gnb-h));
+            display:flex;flex-direction:column;gap:64px;
+            padding:var(--intro-pad) var(--grid-m)}
+  .sf-lead{flex-shrink:0;max-width:calc(var(--icol) * 5 + 80px);
+           font-family:var(--suit);font-size:var(--t-lg);line-height:var(--lh-body);
+           letter-spacing:var(--ls);color:var(--sf-sec)}
+  .sf-lead .a{font-weight:500}
+  .sf-lead .b{display:block;font-weight:800;color:var(--brand)}
+  /* 소분류 카드 — 옅은 파란 판 위에 [아이콘 64][이름][설명].
+     설명(.d)은 에너지 인프라에만 있다. 나머지 세 장은 이름까지만 쓰고 아래를 비운다 */
+  /* 남는 세로는 먹되(grow 1) 글이 칸보다 길면 줄어들지는 않는다(shrink 0) — 장 높이를
+     화면에 못 박으면 설명이 긴 에너지 인프라에서 카드 아랫줄이 잘린다. 장은
+     min-height 로만 한 화면을 지키고, 그보다 길어질 때만 아래로 자란다 */
+  .sf-subs{flex:1 0 auto;align-self:flex-end;list-style:none;
+           width:calc(var(--icol) * 7 + 120px);max-width:100%;
+           display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+           grid-auto-rows:minmax(min-content,1fr);gap:4px}
+  .sf-subs li{min-width:0;
+              display:flex;flex-direction:column;gap:8px;
+              padding:24px;background:var(--sf-brand100)}
+  .sf-subs .ic{width:64px;height:64px;flex-shrink:0;color:var(--brand)}
+  .sf-subs .ic svg{display:block;width:100%;height:100%}
+  .sf-subs .nm{font-family:var(--suit);font-weight:800;font-size:var(--t-md);
+               line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--brand)}
+  .sf-subs .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);
+              line-height:var(--lh-body);letter-spacing:var(--ls-num);color:var(--brand)}
+  /* 설명 여러 줄은 한 덩어리다 — 칸 사이 8 중 6 을 당겨 2 로 좁힌다(시안과 같다).
+     아이콘 · 이름 · 설명덩어리 사이의 8 은 그대로 둔다 */
+  .sf-subs .d+.d{margin-top:calc(2px - 8px)}
+  /* 설비 그림 — 리드와 카드 사이 빈 자리에 선다. 칸이 남는 세로를 먹고 그림은
+     그 안에 비율을 지켜 들어앉되 바닥에 붙는다(contain · center bottom). 칸 모양이
+     화면마다 달라도 그림이 잘리거나 늘어나지 않는다 */
+  .sf-introfig{position:relative;flex:0 0 200px;min-height:0}
+  .sf-introfig img{position:absolute;inset:0;width:100%;height:100%;
+                   object-fit:contain;object-position:center bottom}
+  /* 바탕이 불투명한 그림(흰 하늘이 아래로 갈수록 옅은 회색)은 칸 안에서 네모 판으로
+     떠 보인다 — 위와 양옆 가장자리만 바탕으로 풀어 준다. 아래는 카드 띠에 닿는
+     바닥선이라 풀지 않는다. 투명 PNG(스마트 제조)에는 붙이지 않는다 */
+  .sf-introfig.is-plate img{
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),
+                       linear-gradient(to bottom,transparent,#000 18%);
+            mask-composite:intersect}
+  /* 본문의 세 기둥이 살아 있는 폭에서는 소개 장을 그 기둥에 맞춘다.
+     리드는 그림 기둥 폭에 맞춰 서고(왼쪽 끝이 설비 그림 시작점),
+     카드는 두 기둥을 가로질러 한 줄로 눕는다.
+     기둥 하나의 폭 = (안쪽 폭 - 인덱스 몫 235 - 기둥 간격 8) / 2
+
+     장의 오른쪽 여백은 0 이다(본문도 0 — 눈금 줄이 화면 끝까지 나간다). 그 위에서
+     카드만 --txt-pad-r 만큼 물러나 본문 글이 끝나는 선에 맞춘다 : 이 띠와 세로로
+     마주 보는 것이 본문의 눈금 줄이 아니라 그 안의 글이기 때문이다. 여백을 장에
+     주지 않고 카드에만 주는 이유는 --isplit 셈이 오른쪽 여백 0 을 전제로 서 있어서다.
+
+     칸 수는 소분류 수를 따라간다(넷이면 넷, 셋이면 셋) — 2×2 때는 빈 칸이 오른쪽
+     아래 한 귀퉁이라 눈에 안 띄었지만, 한 줄로 눕히면 그 자리가 줄 끝에 크게
+     뚫려 보인다. auto-flow 로 두면 항목 수가 바뀌어도 값을 고칠 데가 없다 */
+  /* 태블릿(901~1180) — 인트로 문장은 두 줄로(2026-09-22 요청). 이 구간에서는 문장 옆이 비어 있는데
+     5열 폭 제한에 걸려 두 문장이 각각 두 줄로 접혀 넉 줄이 됐다 */
+  @media(min-width:901px) and (max-width:1180px){
+    .sf-lead{max-width:none}
+    /* 소분류 카드가 셋이면 한 줄로(2026-09-22 요청) — 두 칸 격자라 셋째 카드가 홀로 한 줄을 먹었다.
+       넷이면 2×2 그대로 둔다 : 한 줄 넷은 901 에서 칸이 200 이라 "Cycler(Cell&Module)" 이 단어 중간에서 끊긴다 */
+    .sf-subs:has(>li:nth-child(3):last-child){width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media(min-width:1181px){
+    /* 장 아래 여백은 위(--intro-pad, 최대 120)보다 좁게 좌우 여백(44)으로 묶는다 —
+       카드가 장 바닥 쪽으로 내려앉고, 줄어든 만큼은 그림 칸이 먹어 그림이 커진다 */
+    .sf-intro{--isplit:calc((100% - 235px - 8px) / 2);padding-right:0;
+              padding-bottom:min(var(--intro-pad),var(--grid-m))}
+    .sf-lead{margin-left:235px;max-width:var(--isplit)}
+    .sf-subs{align-self:stretch;width:auto;
+             margin-left:235px;margin-right:var(--txt-pad-r);
+             grid-template-columns:none;
+             grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);
+             /* 한 줄이 된 뒤로는 남는 세로를 먹지 않는다 — 두 줄일 때는 그 세로를
+                두 줄이 나눠 가져 카드가 알맞았는데, 한 줄이 다 먹으면 아이콘과
+                이름만 든 칸이 화면 절반 높이의 빈 판이 된다. 대신 띠를 장 바닥에
+                붙이고(margin-top:auto) 남는 세로는 리드 아래로 보낸다 —
+                본문 장에서 목록이 그림 바닥선에 앉는 것과 같은 짜임이다 */
+             flex:0 0 auto;margin-top:auto;min-height:240px}
+    /* 그림 칸이 리드 아래 남는 세로를 다 먹고 카드 폭을 따라 선다. 아래 간격 64 를
+       되돌려 카드 띠 윗선에 그림 바닥을 붙인다 — 띠가 설비가 놓인 바닥선이 된다.
+       낮은 화면에서도 160 은 지키고, 그보다 모자라면 장이 아래로 자란다 */
+    .sf-introfig{flex:1 1 0;min-height:160px;
+                 margin-left:235px;margin-right:var(--txt-pad-r);margin-bottom:-64px}
+  }
+  /* ===================== 본문 — 인덱스 + 그림 + 아홉 장 =====================
+     세 기둥이다. 왼쪽 인덱스와 가운데 그림은 화면에 붙어 있고(sticky), 오른쪽 글만
+     흐른다. 가운데 그림은 장마다 다른 그림이 들어올 자리라 아홉 장을 같은 칸에
+     겹쳐 두고 지금 장의 것만 띄운다 — 스크롤스파이가 인덱스를 칠하는 것과 같은
+     판정을 쓴다.
+     12컬럼 그리드(여백 24 · 거터 20) 위에 인덱스 2컬럼 · 그림 5컬럼 · 글 5컬럼으로
+     앉는다. 1440 에서 실측한 값이 아래 셋이다.
+       · 왼쪽 여백 24, 오른쪽 여백 0 — 눈금 줄이 화면 오른쪽 끝까지 나가야 한다
+       · 인덱스 기둥 215(= 2컬럼 + 거터). 그중 오른쪽 20 은 여백이라 칸은 195
+       · 그림/글은 남는 1181 을 8 간격으로 반씩(각 586.5)
+     기둥 사이 간격이 달라서(인덱스—20—내용, 그림—8—글) gap 은 8 로 두고
+     인덱스에만 오른쪽 여백 12 를 더해 20 을 만든다 */
+  .sf-main{display:flex;align-items:flex-start;gap:8px;padding-left:var(--grid-m)}
+
+  /* 좌측 인덱스 — 화면 세로 가운데에 붙어 따라온다.
+     sticky 요소를 화면 높이로 잡고 그 안에서 가운데 정렬하면, 장마다 인덱스를 다시
+     그린 와이어프레임과 같은 자리에 선다 */
+  .sf-railwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+               flex-shrink:0;width:215px;padding-right:20px;margin-right:12px;
+               display:flex;align-items:center}
+  .sf-rail{width:100%;display:flex;flex-direction:column;gap:20px}
+  .sf-grp{display:flex;flex-direction:column}
+  .sf-grp>.hd{display:flex;align-items:center;gap:4px;padding:4px 8px;
+              background:var(--sf-gray100);font-family:var(--suit);font-weight:600;
+              font-size:var(--t-2xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter);
+              white-space:nowrap}
+  .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
+             border-bottom:1px solid var(--sf-line);font-family:var(--suit);
+             font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);
+             color:var(--sf-ter);white-space:nowrap;
+             transition:background .3s var(--ease),color .3s var(--ease)}
+  .sf-rail a:hover{color:var(--brand)}
+  .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
+
+  /* 가운데 그림 기둥 — 인덱스와 똑같이 화면에 붙는다.
+     안쪽 .sf-figstack 이 장의 본문 띠(위아래 176 을 뺀 자리)와 같은 높이를 갖는다
+     → 장이 화면 가운데에 왔을 때 그림과 글의 눈금 줄이 한 줄로 맞는다 */
+  .sf-figwrap{position:sticky;top:var(--gnb-h);height:calc(100svh - var(--gnb-h));
+              flex:1 1 0;min-width:0;display:flex;align-items:center}
+  .sf-figcol{width:100%;height:var(--band-h);min-height:420px;
+             display:flex;flex-direction:column;gap:24px}
+  .sf-figstack{position:relative;flex:1;min-height:0;overflow:hidden}
+  /* 아홉 장을 같은 칸에 겹쳐 두고 지금 장만 띄운다.
+     visibility 를 같이 껐다 켜야 안 보이는 열 장이 읽기 순서에 끼지 않는다 */
+  .sf-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         background:var(--sf-ph-bg);border:1px dashed var(--sf-ph-bd);
+         transform:translateY(100%);visibility:hidden}
+  /* 자리는 스크롤이 정한다 — 다음 장의 가는 선이 그림 칸을 훑고 지나가는 그
+     높이에 두 그림의 이음매를 둔다. 그래서 오른쪽 줄과 그림의 경계가 한 줄이다.
+     스크립트가 transform 을 직접 얹으므로 여기서는 전이를 걸지 않는다.
+     .is-on 은 스크립트가 돌기 전 첫 그림의 자리다 */
+  .sf-ph.is-on{transform:none;visibility:visible}
+  /* 사진이 든 칸은 자리표시 테두리를 걷는다 */
+  .sf-ph.has-img{background:none;border:0;overflow:hidden}
+  /* EV 배터리 안전 진단(화면 두 장을 넘기는 칸)도 자리표시 점선을 걷는다 */
+  .sf-ph[data-for="sf02-1"]{border:0}
+  .sf-ph img{display:block;width:100%;height:100%;object-fit:cover}
+  /* 들어오는 그림은 살짝 큰 채로 들어와 제자리 배율로 줄고, 밀려 나가는 그림은
+     제자리 배율에서 더 줄며 빠진다. 칸이 아니라 안쪽 사진만 키운다 — 그래야 두
+     그림의 이음매가 한 줄로 남는다. 배율도 자리와 같은 진행도를 쓴다.
+     제자리 배율이 1 이 아니라 1.04 인 건, 나가는 쪽이 1 아래로 내려가면 사진이
+     칸보다 작아져 가장자리에 흰 틈이 생기기 때문이다 — 그 틈을 메우는 몫이다 */
+  .sf-ph img{transform:scale(var(--zoom,1.04));transform-origin:50% 50%;
+             will-change:transform;backface-visibility:hidden}
+  @media(prefers-reduced-motion:reduce){.sf-ph img{transform:none}}
+  /* 화면 캡처(.is-ui)는 잘리면 안 되는 양옆 패널이 있어 칸에 통째로 담는다(contain).
+     남는 위아래 자리는 캡처 바탕색(#070a10)으로 채워 한 장으로 읽힌다 */
+  .sf-ph.is-ui{background:#070a10}
+  .sf-ph.is-ui img{object-fit:contain}
+
+  /* 오른쪽 글 기둥은 한 장씩 끊기지 않고 이어 흐른다 — 지금 장 바로 밑에 다음
+     장이 붙어 있고, 지금 장만 진하고 앞뒤는 옅게 남는다.
+     맨 위 --sec-pad 는 첫 장의 눈금 줄을 붙박이 그림의 눈금 줄에 맞추는 자리다
+     (그림 기둥이 화면 가운데에 서면서 위로 딱 그만큼 비운다) */
+  /* 장 사이를 벌리지 않는다 — 장 하나가 본문 띠와 같은 높이라, 간격이 0 이어야
+     다음 장의 머리 줄이 앞 장 그림의 아래 선과 한 줄로 맞는다 */
+  .sf-secs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:0;
+           padding-top:var(--sec-pad);padding-bottom:var(--sec-pad)}
+  /* 장 높이는 본문 띠와 같다 — 글이 짧아도 다음 장이 그림 위로 올라오지 않는다 */
+  .sf-sec{min-height:var(--band-h);padding-bottom:var(--sec-clear);
+          scroll-margin-top:calc(var(--gnb-h) + var(--sec-pad));
+          display:flex;flex-direction:column}
+  /* 다음 장은 눈금 줄 절반만큼 올라앉는다 — 그래야 앞 장 그림의 아래 변과
+     다음 장의 가는 선이 한 줄이 된다(세로 눈금은 그 선을 가로지른다) */
+  .sf-secs>.sf-sec+.sf-sec{margin-top:calc(var(--rule-off) * -1)}
+  .sf-ph span{font-family:var(--suit);font-weight:400;font-size:var(--t-2xs);line-height:var(--lh-body);
+              color:var(--sf-ph-tx)}
+
+  /* 눈금 줄 — 그림 열은 [태그][가는 선][짧은 세로 눈금], 글 열은 [눈금][가는 선].
+     오른쪽 선은 화면 오른쪽 끝까지 나간다(.sf-main 에 오른쪽 여백이 없다) */
+  .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center}
+  .sf-line i{display:block}
+  /* 그림 기둥의 줄은 기둥 사이 8 을 건너 글 기둥의 줄과 만난다 */
+  .sf-figcol>.sf-line{margin-right:-8px}
+  .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-rule,var(--sf-line-s))}
+  .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
+  /* 숫자 태그 — 폭을 32 로 고정한다(Figma 실측). 글자에 맞춰 늘었다 줄었다 하면
+     장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
+     자리마다 0~9 를 세로로 이어 둔 띠(.r)를 두고, 지금 숫자만큼 끌어올려 보여 준다
+     — 바뀔 때 글자가 갈리는 대신 계기판처럼 굴러간다 */
+  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
+          justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
+          font-family:var(--ald);font-size:var(--t-tag);line-height:var(--lh-tight);letter-spacing:var(--ls-caps)}
+  /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
+     가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
+  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
+  .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
+  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
+  .sf-tag .s{display:block;width:5px;text-align:center}
+  @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
+
+  /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
+     맞춰 앉는다(그림 기둥의 .sf-figstack 과 같은 높이가 된다) */
+  /* 글 열의 색을 토큰으로 빼 둔다. 옅은 장은 이 토큰만 쿨그레이 계단 아래쪽으로
+     갈아 끼운다 — 투명도를 내리는 대신 색을 직접 칠하므로, 배경이 흰색이 아닌
+     곳에 놓여도 같은 회색이 나온다 */
+  .sf-txt{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+          --c-ttl:var(--sf-txt);     /* 900 제목        */
+          --c-body:var(--sf-sec);    /* 600 줄글        */
+          --c-num:var(--brand);      /* 목록 번호·점    */
+          --c-rule:var(--sf-line-s); /* 300 눈금 가로선 */
+          --c-tick:var(--sf-ter);    /* 500 눈금 세로   */
+          --c-bd-s:var(--sf-line-s); /* 300 목록 윗선   */
+          --c-bd:var(--sf-line)}     /* 200 목록 칸선   */
+  .sf-txtin{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px;
+            padding-left:var(--txt-pad-l);padding-right:var(--txt-pad-r)}
+  /* 제목+줄글 덩어리가 남는 세로를 먹어서, 목록이 그림 바닥에 맞춰 앉는다 */
+  /* ── 줄바꿈 ────────────────────────────────────────────────────────────
+     한글은 낱말 가운데를 끊으면 읽기 나빠진다 — '제조 안 / 정성을' 처럼.
+     띄어쓰기에서만 끊고, 끊을 자리가 없는 긴 영문만 예외로 쪼갠다.
+     text-wrap:pretty 는 마지막 줄에 글자 하나가 남는 것을 막고,
+     balance 는 짧은 제목의 두 줄을 고르게 나눈다. 두 값 모두 모르는
+     브라우저는 그냥 지나간다 — 예전처럼 끊길 뿐 깨지지 않는다 */
+  .sf-sec,.sf-intro,.sf-herocap{word-break:keep-all;overflow-wrap:break-word;
+                                text-wrap:pretty}
+  .sf-texts h2,.sf-texts .en,.sf-body .sub,
+  .sf-ptexts h2,.sf-ptexts .lead,.sf-lead{text-wrap:balance}
+
+  .sf-texts{flex:1;min-height:0;display:flex;flex-direction:column;gap:24px}
+  .sf-texts h2{font-family:var(--suit);font-weight:800;font-size:var(--t-xl);
+               line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--c-ttl)}
+  .sf-texts .en{margin-top:8px;font-family:var(--suit);font-weight:800;font-size:var(--t-md);
+                line-height:var(--lh-head);letter-spacing:var(--ls-num);color:var(--c-body)}
+  .sf-body p{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:var(--lh-body);
+             letter-spacing:var(--ls-num);color:var(--c-body)}
+  .sf-body p+p{margin-top:8px}
+  /* 줄글 위에 얹는 작은 제목 — 줄글보다 한 칸 위, 영문 제목과 같은 칸이다.
+     영문 제목 자리(.en)와 다른 점은 색과 자리다: 제목 바로 밑 8px 이 아니라
+     줄글 덩어리의 머리로 24px 떨어져 앉고, 색은 제목과 같은 진한 쪽이다 */
+  .sf-body .sub{font-weight:800;font-size:var(--t-md);line-height:var(--lh-head);
+                letter-spacing:var(--ls-num);color:var(--c-ttl)}
+  /* 와이어프레임에 본문이 비어 있는 장(03-2 · 04-2 · 04-3) */
+  .sf-body .tbd{color:var(--c-tick,var(--sf-ter))}
+
+  /* 번호 목록 · 점 목록 — 지금 이 페이지의 아홉 장은 줄글만 쓰지만, 스마트 제조
+     A-1 과 골격을 한 벌로 두려고 규칙은 남긴다(문안이 목록으로 오면 바로 쓴다).
+     폭은 글 열을 그대로 따른다 */
+  .sf-num,.sf-dl{list-style:none;width:100%;border-top:2px solid var(--c-bd-s)}
+  .sf-num li{display:flex;align-items:center;gap:8px;padding:8px;
+             border-bottom:1px solid var(--c-bd)}
+  .sf-num b{width:18px;flex-shrink:0;font-family:var(--ald);font-weight:400;
+            font-size:var(--t-2xs);line-height:var(--lh-tight);color:var(--c-num)}
+  .sf-num span{font-family:var(--suit);font-weight:600;font-size:var(--t-sm);line-height:var(--lh-label);
+               letter-spacing:var(--ls-num);color:var(--c-body)}
+
+  .sf-dl li{display:flex;flex-direction:column;gap:8px;padding:8px;
+            border-bottom:1px solid var(--c-bd)}
+  .sf-dl .k{display:flex;align-items:center;gap:4px;font-family:var(--suit);
+            font-weight:800;font-size:var(--t-sm);line-height:var(--lh-label);letter-spacing:var(--ls-num);
+            color:var(--c-ttl)}
+  .sf-dl .k::before{content:"";width:4px;height:4px;flex-shrink:0;background:var(--c-num)}
+  .sf-dl .d{font-family:var(--suit);font-weight:600;font-size:var(--t-xs);line-height:var(--lh-body);
+            letter-spacing:var(--ls-num);color:var(--c-body)}
+  /* 마지막 칸은 아래 선을 긋지 않는다 — 이 선은 칸과 칸을 가르는 것이지
+     표를 닫는 테두리가 아니다 */
+  .sf-num li:last-child,.sf-dl li:last-child{border-bottom:0}
+
+  /* 화면 갈무리는 사진과 다르다 — 잘라 채우면 글자가 잘린다. 통째로 넣고
+     남는 자리를 옅은 바탕으로 둔다. 밀려 들어올 때의 배율도 여기서는 끈다:
+     1.10 까지 커지면 통째로 넣은 뜻이 없어진다 */
+  .sf-ph.is-shot{background:var(--sf-gray100);border:0;overflow:hidden;padding:16px}
+  .sf-ph.is-shot img{width:auto;height:auto;max-width:100%;max-height:100%;
+                     object-fit:contain;transform:none}
+
+  /* 02-1 은 한 칸 안에서 화면 둘을 갈아 끼운다. 칸 자체는 스크롤을 따라 밀려
+     들어오므로, 그 안쪽 갈아 끼우기는 부딪히지 않게 흐리게만 바꾼다 */
+  .sf-cnt{position:absolute;inset:0;opacity:0;visibility:hidden;
+          transition:opacity .35s var(--ease),visibility .35s}
+  .sf-cnt.is-on{opacity:1;visibility:visible}
+  .sf-cnt>.shot{position:absolute;inset:0;display:flex;align-items:center;
+                justify-content:center;padding:16px;background:var(--sf-gray100)}
+  .sf-cnt>.shot img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;
+                    object-fit:contain;transform:none}
+
+  /* 그림이 여럿인 칸에는 아래에 몇 장 중 몇 번째인지 표시한다. 지금 장은
+     길쭉한 알약, 나머지는 점이다. 눌러서 옮길 수도 있다.
+     이름이 필요한 칸에는 단추를 쓰고(아래), 그림만 넘기면 되는 칸에는 이것을
+     쓴다 — 둘 다 tablist 라 고르는 방식은 같다 */
+  /* 표시를 다는 칸은 그림 자리를 그 높이만큼 비워 둔다. 겹쳐 놓으면 화면
+     위에 점이 얹혀 읽기 나빠지고, 판이 칸을 꽉 채우고 있어 덮이기도 한다 */
+  .sf-ph.has-dots{background:var(--sf-gray100);border:0;overflow:hidden;
+                  flex-direction:column;justify-content:flex-end}
+  .sf-ph.has-dots .sf-cnt{bottom:28px}
+  /* 띄워 놓지 않고 칸의 마지막 줄로 앉힌다 — 판이 칸을 꽉 채우고 있어
+     띄워 두면 그 아래 깔린다 */
+  .sf-dots{position:relative;z-index:2;width:100%;height:28px;flex-shrink:0;
+           display:flex;align-items:center;justify-content:center;gap:6px}
+  .sf-dots button{width:6px;height:6px;padding:0;border:0;
+                  background:var(--sf-line-s);cursor:pointer;
+                  transition:width .3s var(--ease),background .3s var(--ease)}
+  .sf-dots button:hover{background:var(--sf-ter)}
+  .sf-dots button[aria-selected="true"]{width:40px;background:var(--brand)}
+  @media(prefers-reduced-motion:reduce){.sf-dots button{transition:none}}
+
+  /* 화면을 고르는 단추 — 스마트 제조의 제품 단추와 같은 짜임이다.
+     다만 여기 그림도 화면 갈무리라 잘라 채우지 않는다 */
+  .sf-picks{display:flex;gap:8px}
+  /* 단추가 둘뿐이라도 폭은 셋으로 나눈 몫을 쓴다 — 탄소 나노 튜브의 단추와
+     같은 크기여야 하고, 폭이 같으면 그림 칸의 세로도 저절로 같아진다.
+     남는 한 칸은 비워 둔다 */
+  .sf-picks button{flex:0 0 calc((100% - 16px) / 3);min-width:0;
+                   display:flex;flex-direction:column;gap:4px;
+                   padding:4px;background:#fff;border:1px solid var(--c-bd);
+                   cursor:pointer;text-align:left;
+                   transition:border-color .3s var(--ease)}
+  .sf-picks button:hover{border-color:var(--c-bd-s)}
+  .sf-picks button[aria-selected="true"]{border-color:var(--c-num)}
+  .sf-picks .shot{aspect-ratio:160/120;overflow:hidden;padding:6px;
+                  display:flex;align-items:center;justify-content:center;
+                  background:var(--sf-gray100);border:1px solid var(--c-bd)}
+  .sf-picks .shot img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+  .sf-picks .nm{padding:12px;font-family:var(--suit);font-weight:800;
+                font-size:var(--t-sm);line-height:var(--lh-label);letter-spacing:var(--ls-num);
+                color:var(--c-ttl)}
+
+  /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
+       제목 900 → 300 · 줄글 600 → 200 · 번호/점 파랑 → 300
+       눈금 가로 300 → 200 · 세로 500 → 300 · 목록 윗선 300 → 200 · 칸선 200 → 100
+     좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
+     .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
+  @media(min-width:1181px){
+    .js .sf-sec:not(.is-on) .sf-txt{
+      --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
+      --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
+      --c-bd-s:var(--sf-line);--c-bd:var(--sf-gray100)}
+  }
+  /* 색이 갈리는 대신 넘어가도록 — 토큰 자체는 전환되지 않으므로 쓰는 자리에 건다 */
+  .sf-texts h2,.sf-texts .en,.sf-body p,
+  .sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d{transition:color .5s var(--ease)}
+  .sf-num,.sf-dl,.sf-num li,.sf-dl li{transition:border-color .5s var(--ease)}
+  .sf-dl .k::before,.sf-line .rule,.sf-line .tick{
+    transition:background-color .5s var(--ease)}
+  @media(prefers-reduced-motion:reduce){
+    .sf-texts h2,.sf-texts .en,.sf-body p,.sf-num b,.sf-num span,.sf-dl .k,.sf-dl .d,
+    .sf-num,.sf-dl,.sf-num li,.sf-dl li,
+    .sf-dl .k::before,.sf-line .rule,.sf-line .tick,
+    .sf-ph,.sf-ph.is-on{transition:none}
+  }
+
+  /* ── 아코디언 제목 줄 ──────────────────────────────────────────────────
+     모바일(767 이하)에서 장을 열고 닫는 줄이다. 스크립트(business-layout.js)가
+     장마다 한 줄씩 만들어 두고, 폭에 따라 CSS 가 보이고 감출 뿐이라 창을 늘였다
+     줄여도 되돌릴 것이 없다. 넓은 화면에서는 아예 그려지지 않는다 */
+  .sf-acc-hd{display:none;margin:0}
+  /* 소분류 묶음 이름 — 인덱스를 걷는 모바일에서 줄 사이에 끼는 띠다.
+     인덱스의 묶음 머리(.sf-grp>.hd)와 같은 회색 띠 · 같은 글자다 */
+  .sf-acc-grp{display:none;align-items:center;gap:4px;margin:0;
+              padding:10px 16px;background:var(--sf-gray100);
+              font-family:var(--suit);font-weight:600;font-size:var(--t-2xs);
+              line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter)}
+  .sf-acc-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;
+              width:100%;padding:20px 0;background:none;border:0;text-align:left;
+              font-family:var(--suit);font-weight:800;font-size:var(--t-lg);
+              line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--sf-txt);
+              cursor:pointer;transition:color .3s var(--ease)}
+  /* 열림 표시는 GNB 메뉴와 같은 열십자다 — 열리면 45도 돌아 X 가 된다 */
+  .sf-acc-ic{flex-shrink:0;width:20px;height:20px;color:var(--sf-ter);
+             transition:transform .3s var(--ease),color .3s var(--ease)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-btn{color:var(--brand)}
+  .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(45deg);color:var(--brand)}
+  @media(prefers-reduced-motion:reduce){
+    .sf-acc-btn,.sf-acc-ic{transition:none}
+  }
+
+  /* ── 좁은 화면 ─────────────────────────────────────────────────────── */
+  @media(max-width:1400px){
+    :root{--txt-pad-l:clamp(20px,2.8vw,40px)}
+    .sf-herocap h1{padding-left:clamp(24px,6vw,88px);padding-right:clamp(24px,6vw,88px)}
+  }
+  @media(max-width:1180px){
+    .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
+    :root{--sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 520px) / 4),60px)}
+    /* 카드가 7열로는 좁아진다 — 리드 아래 자리를 통째로 내준다 */
+    .sf-intro{gap:40px}
+    .sf-subs{width:100%}
+    .sf-subs li{padding:20px}
+    .sf-subs .ic{width:52px;height:52px}
+  }
+  /* ── 태블릿(768~1180) — 그림이 장 안 왼쪽으로 ─────────────────────────
+     붙박이 둘을 푼다. 인덱스는 화면 위 가로 띠로 눕고, 그림 기둥은 통째로 접는다
+     — 겹쳐 있던 그림은 스크립트(business-layout.js)가 제 장 안으로 옮겨서, 장마다
+     그림이 왼쪽 · 글이 오른쪽인 두 칸이 된다. 그림이 스크롤을 따라 갈리는 연출은
+     여기서 멈춘다(장과 그림이 한 덩어리로 같이 흐르므로 갈릴 것이 없다).
+     --subnav-h 는 인덱스 띠의 실제 높이(13px × 1.35 + 위아래 14 + 선 1) */
+  @media(max-width:1180px){
+    :root{--subnav-h:47px}
+    .sf-main{display:block;padding-left:0}
+    .sf-railwrap{position:sticky;top:var(--gnb-h);z-index:20;width:100%;height:auto;
+                 padding-right:0;margin-right:0;
+                 display:block;background:rgba(255,255,255,.94);
+                 -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+                 border-bottom:1px solid var(--sf-line)}
+    .sf-rail{flex-direction:row;gap:0;overflow-x:auto;padding:0 24px;
+             scrollbar-width:none;-ms-overflow-style:none}
+    .sf-rail::-webkit-scrollbar{display:none}
+    .sf-grp{flex-direction:row;flex-shrink:0}
+    /* 지금 읽는 묶음만 남긴다(2026-09-22 요청) — [01 ESS | GRID ESS | Renewable ESS | C&I ESS].
+       현재 표시(aria-current)는 스크롤을 따라 옮겨 가므로 묶음도 저절로 바뀐다.
+       묶음 머리는 세로 인덱스와 같은 회색 칩으로 탭 앞에 선다 */
+    .sf-grp:not(:has(a[aria-current="true"])){display:none}
+    .sf-grp>.hd{display:flex;align-self:center;margin-right:8px;
+                font-size:var(--t-xs)}  /* 옆 탭 글자와 같은 크기(2026-09-22 요청) */
+    .sf-rail a{border-bottom:0;padding:14px 12px}
+    .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
+                                    box-shadow:inset 0 -2px 0 var(--brand)}
+    /* 빈 기둥만 남으므로 접는다 */
+    .sf-figwrap{display:none}
+    /* 장 — 왼쪽 그림 · 오른쪽 글 */
+    .sf-secs{gap:0;padding-top:0;padding-bottom:0}
+    .sf-secs>.sf-sec+.sf-sec{margin-top:0}
+    .sf-sec{min-height:0;display:flex;flex-direction:row;align-items:flex-start;gap:24px;
+            padding:40px 24px 56px;border-top:1px solid var(--sf-line);
+            scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 1px)}
+    .sf-secs>.sf-sec:first-child{border-top:0}
+    /* 기둥에서 나온 그림 — 겹쳐 두려고 걸어 둔 절대 위치 · 자리 · 배율을 모두 푼다.
+       스크립트가 얹었던 인라인 값은 옮길 때 지우므로 여기 !important 가 필요 없다 */
+    .sf-sec>.sf-ph{position:relative;inset:auto;flex:0 0 34%;max-width:380px;
+                   aspect-ratio:4/3;transform:none;visibility:visible;--zoom:1}
+    .sf-sec>.sf-txt{flex:1;min-width:0}
+    .sf-txt{min-height:0}
+    .sf-txtin{padding:0}
+    .sf-num,.sf-dl{width:100%}
+  }
+
+  /* 장 번호 태그 · 그림 기둥 몫 눈금줄 — 스크립트(business-layout.js)가 글 쪽 눈금줄 앞에
+     붙여 둔다. 태블릿에서만 쓴다(넓은 화면은 그림 기둥 위 #sfTag 가, 모바일은 눈금줄을 걷는다) */
+  .sf-line .sf-tag--sec,.sf-line .sf-rule--fig{display:none}
+  /* 태블릿(768~1180) — 넓은 화면의 짜임을 살린다(2026-09-22 요청).
+     · 그림 : 글 = 1 : 1.
+     · 눈금줄은 그림 칸 위까지 가로질러 넓은 화면처럼 [번호 태그][선][눈금 | 글 칸 시작][선] 한 줄이 된다.
+       글 칸의 줄을 왼쪽으로 그림 칸 폭 + 사이 24 만큼 끌어낸다(두 칸이 같은 폭이라 -100% - 24).
+       그림은 그 줄 아래, 제목 높이(줄 16 + 사이 24)에서 시작한다.
+     · 줄이 장 머리를 가르므로 장 사이 가로 구분선은 걷는다.
+     · 그림은 크기를 고정하고 제 장 안에서 붙박는다(sticky, 2026-09-22 요청) — 글 길이가 장마다
+       달라 그림 아래가 비는데, 글을 읽어 내리는 동안 그림이 GNB · 탭 줄 밑에 붙어 따라오고
+       장이 끝나면 함께 올라간다. 그림을 글 높이만큼 늘리면 장마다 크기가 제각각이 되고
+       사진(cover)은 양옆이 잘린다. 비율은 사진 · 공정 맵 모두 1:1(2026-09-22 요청) — 글이 대개
+       4:3 그림보다 길어 가로형일 까닭이 없고, 넓은 화면 그림 기둥(≈0.87)이 이미 같은 사진을
+       세로로 잘라 쓰고 있다.
+     모바일은 글 아래로 눕는 흐름이라 뺀다 */
+  @media(min-width:768px) and (max-width:1180px){
+    .sf-secs>.sf-sec{border-top:0}
+    .sf-sec>.sf-ph{flex:1 1 0;min-width:0;max-width:none;margin-top:40px}
+    .sf-sec>.sf-txt{flex:1 1 0}
+    .sf-line .sf-tag--sec{display:flex}
+    .sf-sec:has(>.sf-ph)>.sf-txt>.sf-line{margin-left:calc(-100% - 24px)}
+    .sf-sec:has(>.sf-ph) .sf-rule--fig{display:block;flex:0 0 calc(50% + 12px - 41px)}
+    .sf-sec>.sf-ph{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);align-self:flex-start}
+    .sf-sec>.sf-ph{aspect-ratio:1}
+  }
+
+  /* ── 모바일(767 이하) — 인덱스 없이 장을 열고 닫는다 ───────────────────
+     가로 띠 인덱스는 걷는다. 장마다 제목 줄 하나가 서고, 누르면 그 장의 글과
+     그림이 열린다. 첫 장은 열린 채로 시작한다(스크립트가 .is-open 을 준다).
+     열린 장 안은 글이 먼저, 그림이 그 아래 가로로 눕는다 — 좁은 폭에서 그림을
+     옆에 두면 둘 다 읽히지 않는다 */
+  @media(max-width:767px){
+    /* 장식 눈금줄(.sf-line — 번호 태그 · 눈금 · 가는 선)은 걷는다(2026-09-22 요청).
+       아코디언 줄이 이미 장을 가르므로 제목 밑에 선 하나가 더 그어져 보였다 */
+    .sf-line{display:none}
+    .sf-railwrap{display:none}
+    /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
+    .sf-acc-grp{display:flex}
+    .sf-acc-grp+.sf-sec{border-top:0}
+    /* align-items 는 위 태블릿 규칙에서 flex-start 로 와 있다 — 세로로 세울 때는
+       제목 줄이 폭을 꽉 채워야 열림 표시가 오른쪽 끝에 선다 */
+    .sf-secs>.sf-sec{display:flex;flex-direction:column;align-items:stretch;gap:0;
+                     padding:0 16px;border-top:1px solid var(--sf-line);
+                     scroll-margin-top:var(--gnb-h)}
+    /* 닫힌 장은 제목 줄만 남는다 — 안에 무엇이 들었든(글 · 그림 · 제품 판) 함께 접힌다.
+       장마다 속이 달라 하나씩 짚는 대신, 제목 줄이 아닌 것을 통째로 접는다 */
+    .sf-sec>*{order:2}
+    .sf-sec>.sf-acc-hd{display:block;order:1}
+    .sf-sec:not(.is-open)>*:not(.sf-acc-hd){display:none}
+    .sf-sec>.sf-txt{padding-bottom:12px}
+    /* 그림은 글 아래로 — 좁은 폭에서 옆에 두면 둘 다 읽히지 않는다 */
+    .sf-sec>.sf-ph{order:3;flex:0 0 auto;width:100%;max-width:none;
+                   aspect-ratio:16/9;margin-bottom:28px}
+    /* 줄 이름과 같은 말인 제목만 접는다 — 스크립트가 .sf-acc-dup 로 짚어 준다.
+       에너지 인프라처럼 줄은 소분류 이름 · 안은 장 제목으로 갈리는 곳은 그대로 둔다 */
+    .sf-sec.sf-acc-dup h2:not(.sf-acc-hd){display:none}
+  }
+
+  @media(max-width:900px){
+    :root{--t-sm:var(--fs-body)}
+    .sf-hero{height:calc(80svh - var(--gnb-h));min-height:380px}
+    .sf-herocap{gap:20px;padding-top:28px}
+    .sf-herocap h1{gap:12px}
+    .sf-hero .ko{font-size:var(--fs-h3)}
+    .sf-hero .en{white-space:normal}
+    .sf-tickrow>div{gap:20px;padding:10px 16px}
+    .sf-tickrow b{}
+    /* 한 화면에 묶어 둘 이유가 없다 — 장이 제 높이로 흐르고 카드는 한 줄에 한 장 */
+    .sf-intro{height:auto;min-height:0;gap:32px;padding:64px 24px 40px}
+    .sf-introfig{flex-basis:140px}
+    .sf-gnb{padding-left:16px;padding-right:16px}
+    .sf-mega,.sf-scrim{display:none}
+    /* 좁은 화면에서는 대분류 다섯 칸을 접고 전체 메뉴로 보낸다 */
+    .sf-menus{display:none}
+    :root{--gnb-h:53px}
+    .sf-gnb .logo{width:78px}
+    .sf-tools{border-left:0;margin-left:0;padding-left:0}
+    .sf-lead{max-width:none}
+    .sf-subs{align-self:stretch;grid-template-columns:1fr;grid-auto-rows:auto}
+    .sf-subs li{padding:16px}
+    .sf-subs .ic{width:44px;height:44px}
+    /* 이름만 든 소분류 카드는 한 줄에 여럿 세운다(2026-09-22 요청) — 넷이면 2×2, 셋이면 한 줄 셋
+       (넷을 셋씩 세우면 한 장이 홀로 한 줄을 먹는다). 설명(.d)이 든 에너지 인프라는 한 줄에 한 장 */
+    .sf-subs:not(:has(.d)){grid-template-columns:repeat(2,minmax(0,1fr))}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  /* 좁은 폰에서 셋이 한 줄이면 칸이 100 남짓이다 — 여백 · 아이콘 · 이름을 한 단계씩 줄인다 */
+  @media(max-width:600px){
+    .sf-subs:not(:has(.d)) li{padding:14px 12px}
+    .sf-subs:not(:has(.d)) .ic{width:36px;height:36px}
+    .sf-subs:not(:has(.d)) .nm{font-size:var(--t-sm);word-break:keep-all}
+  }
+  /* 셋이 한 줄에 서려면 칸이 115 는 돼야 한다("에이프로세미콘" 91 + 여백) — 그 아래 폰(≈400 미만)에서는
+     이름이 낱자에서 끊긴다. 이때만 한 줄에 한 장으로 돌리되, 아이콘을 이름 왼쪽에 눕혀 카드를 낮게 둔다 */
+  @media(max-width:399px){
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:1fr}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child) li{flex-direction:row;align-items:center;gap:12px}
+    .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child) .ic{width:32px;height:32px}
+  }
+
+  /* 전체 메뉴 단추 — 두 줄(위는 짧은 눈금 + 긴 선, 아래는 긴 선 하나).
+     누르면 짧은 눈금은 사라지고 긴 두 줄이 가운데에서 엇갈려 X 가 된다 */
+  .sf-burger{position:relative;display:block;width:24px;height:24px}
+  .sf-burger .bar{position:absolute;height:1px;background:currentColor;
+                  transition:width .3s var(--ease),transform .3s var(--ease),
+                             opacity .2s var(--ease)}
+  .sf-burger .a{left:5px;top:7px;width:3px}
+  .sf-burger .b{left:5px;top:7px;width:10px;transform:translateX(4px)}
+  .sf-burger .c{left:5px;top:16px;width:14px}
+  .sf-burger[aria-expanded="true"] .a{opacity:0}
+  .sf-burger[aria-expanded="true"] .b{width:14px;transform:translateY(4.5px) rotate(45deg)}
+  .sf-burger[aria-expanded="true"] .c{transform:translateY(-4.5px) rotate(-45deg)}
+  /* 하단 다른 사업영역 마을(.bhop) — A-1 은 격자 1~12열 전체를 쓴다(2026-09-17).
+     공용 규칙은 --maxw(1440)에 묶여 넓은 화면에서 가운데로 모였다. 좌우 여백은 GNB · 푸터와 같은
+     44, 900 아래는 16 */
+  .bhop-town{width:calc(100% - var(--grid-m) * 2)}
+  @media(max-width:900px){.bhop-town{width:calc(100% - 32px)}}
+  /* 픽토그램은 칸 폭의 70% — 칸 가운데 아래에 앉아 바닥선은 넷이 그대로 맞는다(2026-09-17).
+     칸이 1~12열로 넓어지며 그림이 함께 커져 섹션이 너무 높아졌다 */
+  .bhlot img{width:70%;margin-inline:auto}
+</style>
+<link rel="stylesheet" href="gnb-c.css" />
+</head>
+<body>
+
+<!-- ===================== 고정 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-c.html" aria-current="true" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-c.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-c.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-c.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-c.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+      <div class="sf-lang" id="sfLang">
+        <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19V20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20V19C15.866 19 19 15.866 19 12Z" fill="currentColor"/>
+<path d="M15 12C15 9.91244 14.5744 8.07164 13.9336 6.79004C13.2629 5.44895 12.5217 5 12 5C11.4783 5 10.7371 5.44895 10.0664 6.79004C9.42561 8.07164 9 9.91244 9 12C9 14.0876 9.42561 15.9284 10.0664 17.21C10.7371 18.551 11.4783 19 12 19V20C9.79086 20 8 16.4183 8 12C8 7.58172 9.79086 4 12 4C14.2091 4 16 7.58172 16 12C16 16.4183 14.2091 20 12 20V19C12.5217 19 13.2629 18.551 13.9336 17.21C14.5744 15.9284 15 14.0876 15 12Z" fill="currentColor"/>
+<path d="M19.5 12.5V11.5H8.5V12.5H19.5Z" fill="currentColor"/>
+<path d="M4.5 11.5V12.5H7V11.5H4.5Z" fill="currentColor"/></svg>
+        </button>
+        <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+      </div>
+      <button type="button" class="menu-toggle sf-burger" id="sfBurger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+
+<!-- 메가 판 — 시안 C 는 A 의 방식: 한 장이 화면 폭으로 열리고, 하위 메뉴가 제 대분류 밑에 선다 (gnb-c.css) -->
+<div class="c-mega" id="cMega" aria-hidden="true" aria-label="전체 메뉴">
+  <div class="c-cols">
+    <div class="c-col"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html" aria-current="page">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    <div class="c-col"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    <div class="c-col"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    <div class="c-col"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">지배구조</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html">ESG 게시판</a></div>
+    <div class="c-col"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+  </div>
+</div>
+
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-c.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links">
+        <a href="business-smart-c.html">스마트 제조</a>
+        <a href="business-energy-c.html">에너지 인프라</a>
+        <a href="business-ai-c.html">인공지능 플랫폼</a>
+        <a href="business-semicon-c.html">화합물 전력 반도체</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links">
+        <a href="company-c.html">회사 소개</a>
+        <a href="network-c.html">글로벌 네트워크</a>
+        <a href="locations-c.html">사업장소재</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links">
+        <a href="esg-environment-c.html">환경</a>
+        <a href="esg-social-c.html">사회</a>
+        <a href="esg-governance-c.html">지배구조</a>
+        <a href="esg-report-c.html">내/외부 신고채널</a>
+        <a href="esg-board-c.html">ESG 게시판</a>
+      </div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links">
+        <a href="community-notice-c.html">공지사항</a>
+        <a href="community-press-c.html">보도자료</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="sf-hero sf-step">
+  <div class="sf-heroin">
+  <img src="../assets/carousel-safety-robot.jpg" alt="" aria-hidden="true" />
+  <div class="sf-herocap">
+    <h1><span class="ko">인공지능 플랫폼</span><span class="en">AI platform</span></h1>
+    <!-- 소분류 띠지 — 같은 줄 두 벌이라 끝이 이어진다. 읽을 거리가 아니라 분위기다.
+         이름이 아홉이라 스마트(열하나)보다 줄이 짧다 → 한 바퀴 시간도 그만큼 줄인다 -->
+    <div class="sf-ticker" aria-hidden="true">
+      <div class="sf-tickrow">
+        <div><b>산업 안전 진단 솔루션</b><i></i><b>로봇 통합 운영 플랫폼</b><i></i><b>EV 배터리 안전 진단</b><i></i><b>EV 배터리 성능 진단</b><i></i><b>PICKLE Station</b><i></i><b>전기자동차 제어 플랫폼</b><i></i></div>
+        <div><b>산업 안전 진단 솔루션</b><i></i><b>로봇 통합 운영 플랫폼</b><i></i><b>EV 배터리 안전 진단</b><i></i><b>EV 배터리 성능 진단</b><i></i><b>PICKLE Station</b><i></i><b>전기자동차 제어 플랫폼</b><i></i></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ===================== INTRO ===================== -->
+<section class="sf-intro sf-step" aria-label="인공지능 플랫폼 개요">
+  <p class="sf-lead">
+    <span class="a">AI로 배터리와 설비의 상태를 읽어냅니다.</span>
+    <span class="b">진단부터 충전·제어까지, 전기 모빌리티의 데이터를 잇습니다.</span>
+  </p>
+  <div class="sf-introfig is-plate">
+    <img src="../assets/ai-platform-overview.png" width="1672" height="473"
+         alt="인공지능 플랫폼 한눈에 보기 — 충전기와 전기차, 점검 로봇, 배터리 상태 대시보드, ESS 랙이 한 줄로 이어진 그림" decoding="async" />
+  </div>
+  <ul class="sf-subs">
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17.5 10.5C19.433 10.5 21 12.067 21 14V16.2891C21.6118 16.8354 22 17.6193 22 18.5C22 20.17 20.6116 21.4999 18.9287 21.5C17.2458 21.5 15.8574 20.17 15.8574 18.5C15.8574 16.83 17.2458 15.5 18.9287 15.5C19.305 15.5 19.6654 15.5695 20 15.6914V14C20 12.6193 18.8807 11.5 17.5 11.5H6.5C5.11929 11.5 4 12.6193 4 14V15.6914C4.33459 15.5695 4.69504 15.5 5.07129 15.5C6.75422 15.5 8.14258 16.83 8.14258 18.5C8.14258 18.6706 8.12742 18.8375 8.09961 19H15V20H7.72949C7.19616 20.8993 6.20113 21.5 5.07129 21.5C3.38842 21.4999 2 20.17 2 18.5C2 17.6193 2.38817 16.8354 3 16.2891V14C3 12.067 4.567 10.5 6.5 10.5H17.5ZM5.07129 16.5C3.91397 16.5001 3 17.4087 3 18.5C3 19.5913 3.91397 20.4999 5.07129 20.5C6.22868 20.5 7.14258 19.5914 7.14258 18.5C7.14258 17.4086 6.22868 16.5 5.07129 16.5ZM18.9287 16.5C17.7713 16.5 16.8574 17.4086 16.8574 18.5C16.8574 19.5914 17.7713 20.5 18.9287 20.5C20.086 20.4999 21 19.5913 21 18.5C21 17.4087 20.086 16.5001 18.9287 16.5ZM11.7734 7.57617C12.4423 7.57617 13.0869 7.83006 13.5762 8.28613L13.2354 8.65137L12.8945 9.01758C12.5903 8.73404 12.1893 8.57617 11.7734 8.57617C11.3577 8.57625 10.9574 8.73411 10.6533 9.01758L10.3125 8.65137L9.97168 8.28613C10.4609 7.83013 11.1046 7.57625 11.7734 7.57617ZM11.7734 5.03809C13.0669 5.03809 14.3101 5.54162 15.2393 6.44141L14.5439 7.16016C13.8013 6.44099 12.8072 6.03809 11.7734 6.03809C10.7397 6.03817 9.74649 6.44106 9.00391 7.16016L8.30859 6.44141C9.2377 5.54172 10.4801 5.03817 11.7734 5.03809ZM11.7734 2.5C13.6894 2.5 15.5292 3.25162 16.8975 4.59277L16.1973 5.30664C15.0159 4.14874 13.4276 3.5 11.7734 3.5C10.1194 3.50008 8.53086 4.14878 7.34961 5.30664L7 4.94922L6.65039 4.59277C8.01857 3.25169 9.85761 2.50008 11.7734 2.5Z" fill="currentColor"/></svg></span>
+      <p class="nm">로봇 플랫폼</p>
+    </li>
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.00003 7H3.00003V18H21V7H6.00003V6H19V4H20V6H22V19H2.00003V6H4.00003V4H5.00003V7ZM11.4639 9.81445L13.2725 14.3359L14.0528 12.7764L14.1914 12.5H20V13.5H14.8086L13.9473 15.2236L13.8086 15.5H12.6612L12.5362 15.1855L10.6621 10.5H10.3379L9.4639 12.6855L9.3389 13H4.00003V12H8.66214L9.53616 9.81445L9.66116 9.5H11.3389L11.4639 9.81445Z" fill="currentColor"/></svg></span>
+      <p class="nm">배터리 진단 플랫폼</p>
+    </li>
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 5H4V20H12V5H7V4H13V20H24V21H0V20H3V4H5.5V5ZM19 10H20.4551L18.3545 16H17V13H15.5449L17.6455 7H19V10ZM11 15H5V12H11V15ZM6 14H10V13H6V14ZM16.9541 12H18V13.9873L19.0459 11H18V9.0127L16.9541 12ZM11 10H5V6H11V10ZM6 9H10V7H6V9Z" fill="currentColor"/></svg></span>
+      <p class="nm">전기자동차 충전 플랫폼</p>
+    </li>
+    <li>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17.1064 11.2861L18.8672 15H20.5L21 15.5V19H18.5C18.5 20.1046 17.6046 21 16.5 21C15.3954 21 14.5 20.1046 14.5 19C14.5 17.8954 15.3954 17 16.5 17C17.2399 17 17.8845 17.4027 18.2305 18H20V16H18.5518L18.0996 15.7139L16.3389 12H6.27637L4 15.6426V18H5.76953C6.11546 17.4027 6.76007 17 7.5 17C8.23993 17 8.88454 17.4027 9.23047 18H13V19H9.5C9.5 20.1046 8.60457 21 7.5 21C6.39543 21 5.5 20.1046 5.5 19H3V15.5L3.07617 15.2354L5.57617 11.2354L6 11H16.6543L17.1064 11.2861ZM7.5 18C6.94772 18 6.5 18.4477 6.5 19C6.5 19.5523 6.94772 20 7.5 20C8.05228 20 8.5 19.5523 8.5 19C8.5 18.4477 8.05228 18 7.5 18ZM16.5 18C15.9477 18 15.5 18.4477 15.5 19C15.5 19.5523 15.9477 20 16.5 20C17.0523 20 17.5 19.5523 17.5 19C17.5 18.4477 17.0523 18 16.5 18ZM11.7734 7.57617C12.4423 7.57617 13.0869 7.83006 13.5762 8.28613L13.2354 8.65137L12.8945 9.01758C12.5903 8.73404 12.1893 8.57617 11.7734 8.57617C11.3577 8.57625 10.9574 8.73411 10.6533 9.01758L10.3125 8.65137L9.97168 8.28613C10.4609 7.83013 11.1046 7.57625 11.7734 7.57617ZM11.7734 5.03809C13.0669 5.03809 14.3101 5.54162 15.2393 6.44141L14.5439 7.16016C13.8013 6.44099 12.8072 6.03809 11.7734 6.03809C10.7397 6.03817 9.74649 6.44106 9.00391 7.16016L8.30859 6.44141C9.2377 5.54172 10.4801 5.03817 11.7734 5.03809ZM11.7734 2.5C13.6894 2.5 15.5292 3.25162 16.8975 4.59277L16.1973 5.30664C15.0159 4.14874 13.4276 3.5 11.7734 3.5C10.1194 3.50008 8.53086 4.14878 7.34961 5.30664L7 4.94922L6.65039 4.59277C8.01857 3.25169 9.85761 2.50008 11.7734 2.5Z" fill="currentColor"/></svg></span>
+      <p class="nm">전기자동차 제어 플랫폼</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ===================== 본문 ===================== -->
+<div class="sf-main">
+
+  <div class="sf-railwrap">
+    <nav class="sf-rail" id="sfRail" aria-label="인공지능 플랫폼 소분류">
+      <div class="sf-grp">
+        <p class="hd"><span>01</span><span>로봇 플랫폼</span></p>
+        <a href="#sf01-1">산업 안전 진단 솔루션</a>
+        <a href="#sf01-2">로봇 통합 운영 플랫폼</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>02</span><span>배터리 진단 플랫폼</span></p>
+        <a href="#sf02-1">EV 배터리 안전 진단</a>
+        <a href="#sf02-2">EV 배터리 성능 진단</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>03</span><span>전기자동차 충전 플랫폼</span></p>
+        <a href="#sf03-1">PICKLE Station</a>
+      </div>
+      <div class="sf-grp">
+        <p class="hd"><span>04</span><span>전기자동차 제어 플랫폼</span></p>
+        <a href="#sf04-1">전기자동차 제어 플랫폼</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="sf-figwrap">
+    <div class="sf-figcol">
+      <!-- 눈금 줄은 아홉 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
+      <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
+      <div class="sf-figstack">
+        <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/industrial-safety-diagnostics.jpg" alt="이차전지 설비 앞을 도는 바퀴형 안전 진단 로봇" decoding="async" /></figure>
+        <figure class="sf-ph has-img is-ui" data-for="sf01-2"><img src="../assets/aprism-robot-ops-ui.jpg" alt="로봇 통합 운영 플랫폼 APRISM 관제 화면 — 3D 현장 지도 위 로봇 위치와 미션 진행 목록" decoding="async" /></figure>
+        <figure class="sf-ph has-panes" data-for="sf02-1">
+          <div class="sf-cnt is-on" role="tabpanel" id="ev-dash" aria-labelledby="ev-dash-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-safety-dashboard.png" alt="배터리 셀 안전 분류 결과를 표와 히트맵으로 보여 주는 대시보드 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="ev-mob" aria-labelledby="ev-mob-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-safety-mobile.png" alt="안전 진단 리포트를 등급과 막대로 보여 주는 모바일 화면" decoding="async" /></div>
+          </div>
+        </figure>
+        <figure class="sf-ph has-panes has-dots" data-for="sf02-2">
+          <div class="sf-cnt is-on" role="tabpanel" id="ev-rep" aria-labelledby="ev-rep-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-performance-report.png" alt="배터리 진단 결과를 항목별 백분율과 레이더 도표로 보여 주는 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-cnt" role="tabpanel" id="ev-inp" aria-labelledby="ev-inp-t" tabindex="0">
+            <div class="shot"><img src="../assets/ev-performance-input.png" alt="업체와 차량, 배터리 제원을 입력하는 진단 준비 화면" decoding="async" /></div>
+          </div>
+          <div class="sf-dots" role="tablist" aria-label="EV 배터리 성능 진단 화면">
+            <button type="button" role="tab" id="ev-rep-t" aria-controls="ev-rep" aria-selected="true" aria-label="1 / 2 진단 결과"></button>
+            <button type="button" role="tab" id="ev-inp-t" aria-controls="ev-inp" aria-selected="false" tabindex="-1" aria-label="2 / 2 진단 준비"></button>
+          </div>
+        </figure>
+        <figure class="sf-ph has-img" data-for="sf03-1"><img src="../assets/ev-fast-charger.jpg" alt="건물 앞 충전소에 나란히 선 에이프로 전기자동차 급속 충전기 세 대 — DESIGN iT AWARD 2025 수상" decoding="async" /></figure>
+        <figure class="sf-ph has-img" data-for="sf04-1"><img src="../assets/ev-controller.jpg" alt="제어기를 얹은 전기자동차 구동 플랫폼" decoding="async" /></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="sf-secs">
+
+    <!-- 01-1 -->
+    <section class="sf-sec sf-step" id="sf01-1" aria-labelledby="sf01-1-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf01-1-t">산업 안전 진단 솔루션</h2>
+            <div class="sf-body">
+              <p>에이프로의 산업 안전 진단 로봇 솔루션은 이동형 로봇, AI, 원격 관제 기술을 결합하여 위험 산업 현장의 안전 점검을 자율화·지능화합니다.</p>
+              <p>안전장비 착용 여부, 설비 이상 및 누출, 열화상, 음향 등 6대 핵심 점검 항목을 로봇이 자율적으로 수행하며, 수집된 데이터를 통합 관제 시스템에서 실시간으로 모니터링하고 분석합니다.</p>
+              <p>이를 통해 작업자의 위험 구역 노출을 최소화하고 점검의 일관성과 신뢰성을 높여, 선제적이고 스마트한 산업 안전 운영을 지원합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01-2 -->
+    <section class="sf-sec sf-step" id="sf01-2" aria-labelledby="sf01-2-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf01-2-t">로봇 통합 운영 플랫폼</h2>
+            <div class="sf-body">
+              <p>APRISM은 제조사와 기종이 서로 다른 로봇을 하나의 플랫폼에서 통합 관제하는 이기종 로봇 통합 관제 플랫폼입니다.</p>
+              <p>객체 검출, VLM, 시계열 데이터 분석 등 다양한 AI 기술을 기반으로 현장에서 수집되는 영상·센서·설비 데이터를 분석하고, 에이프로의 LLM 기반 지능형 통신 모델 DELTA가 이를 해석·요약하여 로봇, 현장 설비, 관제실을 하나의 정보 체계로 연결합니다.</p>
+              <p>APRISM은 지하 발전소, 변전소, 산업 플랜트, 데이터센터 등 사람이 상시 접근하기 어렵거나 위험한 산업 현장에서 무인 순찰, 이상 감지, 상태 진단 및 예지보전을 지원합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02-1 -->
+    <section class="sf-sec sf-step" id="sf02-1" aria-labelledby="sf02-1-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf02-1-t">EV 배터리 안전 진단</h2>
+            <div class="sf-body">
+              <p>전기자동차 충전 중 배터리 데이터를 실시간으로 수집하고, 개별 셀 전압과 모듈 온도 정보를 AI 기반으로 분석하여 배터리의 이상 징후와 안전 상태를 진단하는 솔루션입니다.</p>
+              <p>배터리 이상을 조기에 감지하여 사고 위험을 예방하고, 보다 안전한 충전 환경 구축과 효율적인 배터리 유지관리를 지원합니다.</p>
+            </div>
+          </div>
+          <div class="sf-picks" role="tablist" aria-label="EV 배터리 안전 진단 화면">
+            <button type="button" role="tab" id="ev-dash-t" aria-controls="ev-dash" aria-selected="true">
+              <span class="shot"><img src="../assets/ev-safety-dashboard.png" alt="" decoding="async" /></span><span class="nm">대시보드</span>
+            </button>
+            <button type="button" role="tab" id="ev-mob-t" aria-controls="ev-mob" aria-selected="false" tabindex="-1">
+              <span class="shot"><img src="../assets/ev-safety-mobile.png" alt="" decoding="async" /></span><span class="nm">모바일</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02-2 -->
+    <section class="sf-sec sf-step" id="sf02-2" aria-labelledby="sf02-2-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf02-2-t">EV 배터리 성능 진단</h2>
+            <div class="sf-body">
+              <p>전기자동차 사용후 배터리의 성능과 잔존가치를 신속하게 평가하는 AI 기반 진단 솔루션입니다.</p>
+              <p>배터리의 부분 방전 데이터를 기존 학습 데이터와 비교·분석하여, 10분 이내에 배터리 셀의 가용 최대 용량과 건강 상태(SOH)를 예측합니다.</p>
+              <p>이를 통해 중고 전기차 및 사용후 배터리의 상태를 빠르고 정량적으로 평가하고, 재사용·재제조·재활용 등 배터리 활용 의사결정을 지원합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03-1 -->
+    <section class="sf-sec sf-step" id="sf03-1" aria-labelledby="sf03-1-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf03-1-t">PICKLE Station</h2>
+            <div class="sf-body">
+              <p>에이프로의 전기자동차 충전 솔루션 PICKLE Station은 주거용 충전부터 공공 충전소, 상용 플릿까지 다양한 운영 환경에 대응하는 통합 충전 인프라 솔루션입니다.</p>
+              <p>원격 모니터링과 충전기 운영·유지관리 기능을 지원하며, 충전 운영 플랫폼 및 에너지관리시스템(EMS)과 연계하여 충전 인프라를 효율적으로 관리하고 유연하게 확장할 수 있습니다.</p>
+              <p>에이프로가 축적해 온 전력전자 및 배터리 시스템 기술을 기반으로, 안전하고 안정적인 충전 환경과 지속 가능한 전기 모빌리티 생태계를 제공합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 04-1 -->
+    <section class="sf-sec sf-step" id="sf04-1" aria-labelledby="sf04-1-t">
+      <div class="sf-txt">
+        <div class="sf-line"><i class="tick"></i><i class="rule"></i></div>
+        <div class="sf-txtin">
+          <div class="sf-texts">
+            <h2 id="sf04-1-t">전기자동차 제어 플랫폼</h2>
+            <div class="sf-body">
+              <p>에이프로는 ECOTRON 차량 및 자율주행 제어기의 국내 총판으로서 VCU, ZCU, EVCC, 자율주행 제어기 등 검증된 차량 제어 솔루션을 공급합니다.</p>
+              <p>ECOTRON 제어기는 ISO 26262 기능안전과 MATLAB/Simulink 기반의 모델 기반 개발(MBD)을 지원하며, 차량 제어 시스템 개발에 요구되는 높은 안전성과 개발 효율성을 제공합니다.</p>
+              <p>에이프로는 국내 공급과 기술 지원을 통해 전기자동차, 자율주행차, 무인 이동체 및 로봇 분야 고객의 제어기 도입부터 시스템 적용까지 지원합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+  </div>
+</div>
+
+<!-- ===================== 다른 사업영역 — 마을 ===================== -->
+<section class="bhop" aria-label="다른 사업영역으로 이동">
+  <div class="bhop-town">
+    <a class="bhlot" data-a="smart" href="business-smart-c.html" style="--ar:251/177">
+      <span class="bhtop"><span class="bhtag">스마트 제조</span></span>
+      <img data-src="../assets/vec-smart.svg" alt="" aria-hidden="true" />
+    </a>
+    <a class="bhlot" data-a="energy" href="business-energy-c.html" style="--ar:251/179">
+      <span class="bhtop"><span class="bhtag">에너지 인프라</span></span>
+      <img data-src="../assets/vec-energy.svg" alt="" aria-hidden="true" />
+    </a>
+    <span class="bhlot is-here" data-a="ai" style="--ar:267/176">
+      <span class="bhnow"><span class="ko">인공지능 플랫폼</span><span class="en">Intelligent AI Platform</span></span>
+      <img data-src="../assets/vec-ai.svg" alt="" aria-hidden="true" />
+    </span>
+    <a class="bhlot" data-a="semicon" href="business-semicon-c.html" style="--ar:251/180">
+      <span class="bhtop"><span class="bhtag">화합물 전력 반도체</span></span>
+      <img data-src="../assets/vec-semicon.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul>
+          <li><a href="business-smart-c.html">스마트 제조</a></li>
+          <li><a href="business-energy-c.html">에너지 인프라</a></li>
+          <li><a href="business-ai-c.html" aria-current="page">인공지능 플랫폼</a></li>
+          <li><a href="business-semicon-c.html">화합물 전력 반도체</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-c.html">회사 소개</a></li><li><a href="network-c.html">글로벌 네트워크</a></li><li><a href="locations-c.html">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance-c.html">재무정보</a></li><li><a href="ir-disclosure-c.html">공시정보</a></li><li><a href="ir-stock-c.html">주식정보</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment-c.html">환경</a></li><li><a href="esg-social-c.html">사회</a></li><li><a href="esg-governance-c.html">지배구조</a></li><li><a href="esg-report-c.html">내/외부 신고채널</a></li><li><a href="esg-board-c.html">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice-c.html">공지사항</a></li><li><a href="community-press-c.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network-c.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="locations-c.html">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- 공용 스크립트 — 이 페이지에서 실제로 도는 것은 두 가지뿐이다.
+     ① 푸터 FAMILY SITE 드롭다운 ② 마을(.bhop) 그림 지연 로드 + 태그 점등.
+     GNB·탭 바·카드 캐러셀 담당 블록은 해당 요소를 못 찾고 곧바로 빠져나간다 -->
+<script src="business-layout.js"></script>
+<script>
+/* ── GNB 메가 메뉴 ──────────────────────────────────
+   대분류마다 다른 판이 열린다. 커서가 대분류나 그 판 위에 있으면 열려 있고,
+   둘 다 벗어나면 짧게 기다렸다 닫는다 — 대분류와 판 사이를 지나는 동안
+   깜빡이지 않게 하는 여유다 */
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.sf-menus>li[data-mega]'));
+  if(!items.length) return;
+  var cur = null, t = 0;
+  var scrim = document.getElementById('sfScrim');
+  function panel(li){ return document.getElementById(li.getAttribute('data-mega')); }
+  function shut(){
+    if(!cur) return;
+    var p = panel(cur);
+    cur.classList.remove('is-open');
+    cur.querySelector('a').setAttribute('aria-expanded','false');
+    if(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+    if(scrim) scrim.classList.remove('open');
+    cur = null;
+  }
+  function show(li){
+    if(cur === li) return;
+    var p = panel(li);
+    if(!p) return;
+    shut();
+    li.classList.add('is-open');
+    li.querySelector('a').setAttribute('aria-expanded','true');
+    p.classList.add('open'); p.setAttribute('aria-hidden','false');
+    /* 카드는 흐림막 없이 뜬다 — 가릴 만큼 크지 않다 */
+    if(scrim && !p.classList.contains('card')) scrim.classList.add('open');
+    cur = li;
+  }
+  function hold(){ clearTimeout(t); }
+  function leave(){ clearTimeout(t); t = setTimeout(shut, 140); }
+  items.forEach(function(li){
+    var p = panel(li);
+    li.addEventListener('mouseenter', function(){ hold(); show(li); });
+    li.addEventListener('mouseleave', leave);
+    li.addEventListener('focusin', function(){ hold(); show(li); });
+    if(p){
+      p.addEventListener('mouseenter', hold);
+      p.addEventListener('mouseleave', leave);
+      p.addEventListener('focusin', hold);
+    }
+  });
+  /* 탭으로 판 밖으로 나가면 닫는다 */
+  document.addEventListener('focusin', function(e){
+    if(!cur) return;
+    var p = panel(cur);
+    if(cur.contains(e.target) || (p && p.contains(e.target))) return;
+    shut();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+  /* 전체 메뉴를 열면 판은 비켜 준다 */
+  if(scrim){
+    scrim.addEventListener('mouseenter', leave);
+    scrim.addEventListener('click', shut);
+  }
+  var burger = document.getElementById('sfBurger');
+  if(burger) burger.addEventListener('click', shut);
+
+  /* 카드를 자기 상단 메뉴 바로 아래로 세운다 — 메뉴 글자 왼쪽 끝에 카드 글자를
+     맞추면 커서는 세로로만 내려오면 된다. 화면 폭을 다 쓰던 때는 오른쪽 메뉴일수록
+     커서가 목록까지 가로로 멀리 건너야 했고, 가는 길에 상단 띠를 스치면 옆 메뉴
+     판으로 바뀌어 버렸다. 카드 왼쪽 자리를 --mm-x 로 준다. 화면 오른쪽 끝을 넘으면
+     거기서 멈추고, 글꼴이 늦게 오면 메뉴 자리가 밀리므로 load 때 다시 잰다.
+     넓은 판을 쓰는 사업영역은 건너뛴다 */
+  function alignMega(){
+    items.forEach(function(li){
+      var p = panel(li); if(!p || !p.classList.contains('card')) return;
+      var menu = p.querySelector('.menu'); if(!menu) return;
+      var a = li.querySelector('a'); if(!a) return;
+      var w = p.offsetWidth;
+      if(!w) return;                                /* 좁은 화면에선 판이 없다 */
+      /* 글자끼리 맞춘다 — 메뉴 링크도 카드도 제 안에 여백을 두고 있어서,
+         상자 왼쪽이 아니라 여백을 걷어낸 자리를 재야 줄이 선다 */
+      var pad = parseFloat(getComputedStyle(menu).paddingLeft) || 0;
+      var apad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
+      var x = a.getBoundingClientRect().left + apad - pad;
+      var edge = document.documentElement.clientWidth - w - 16;
+      p.style.setProperty('--mm-x', Math.max(16, Math.min(x, edge)) + 'px');
+    });
+  }
+  alignMega();
+  window.addEventListener('resize', alignMega);
+  window.addEventListener('load', alignMega);
+})();
+</script>
+<script>
+(function(){
+  var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
+  var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
+  var figs  = [].slice.call(document.querySelectorAll('.sf-figstack .sf-ph'));
+  var tag   = document.getElementById('sfTag');
+  var reels = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
+  if(!secs.length) return;
+
+  /* ── 좌측 인덱스 스크롤스파이 ─────────────────────────────────────────
+     화면 세로 중앙에 가장 가까운 장을 현재 소분류로 친다. 장이 화면보다 길어도
+     (좁은 화면에서 글이 늘어난 경우) 한 장은 반드시 뽑히므로 인덱스가 비지 않는다 */
+  var raf = 0, cur = -1;
+  /* 장이 제자리에 섰을 때 그 윗변이 놓이는 높이 = 고정 GNB 밑변 + 본문 띠가
+     위로 비워 둔 만큼(--sec-pad). 그 여백은 붙박이 그림 기둥 안에서 그대로 재 온다
+     — CSS 의 clamp 를 JS 로 다시 풀 필요가 없고 값이 바뀌어도 따라온다.
+     ⚠ 기둥의 화면 좌표를 그냥 쓰면 안 된다 — 아직 화면에 붙기 전(배너·인트로를
+       보는 동안)에는 한참 아래에 있어서 판정이 어긋난다. 두 상자의 차이만 쓴다 */
+  function alignTop(){
+    var w = document.querySelector('.sf-figwrap'), c = document.querySelector('.sf-figcol');
+    var top = parseFloat(getComputedStyle(document.documentElement)
+                         .getPropertyValue('--gnb-h')) || 0;
+    if(!w || !c) return top;
+    return top + (c.getBoundingClientRect().top - w.getBoundingClientRect().top);
+  }
+  /* 그림 밀기 — 다음 장의 가는 선이 그림 칸을 훑는 그 높이에 두 그림의
+     이음매를 둔다. 선이 칸 바닥에 있으면 다음 그림은 아직 칸 밖(아래)이고,
+     선이 칸 꼭대기에 닿으면 다음 그림이 칸을 다 채운다 — 그 사이는 스크롤이
+     그대로 끌고 간다. 시간이 정하는 전이가 아니라서 휠·드래그·인덱스 어느
+     쪽으로 움직여도 오른쪽 줄과 어긋나지 않는다 */
+  var figFor = [], figAt = [], seamA = null, seamB = null, rOff = 8;
+  var REST = 1.04;  /* 제자리 배율 - 나가는 쪽이 줄어들 여유다 */
+  var Z_IN = .06;   /* 들어올 때 덤으로 얹는 몫 */
+  var Z_OUT = .04;  /* 나갈 때 덜어내는 몫 - REST 를 1 아래로 끌지 않는다 */
+  (function(){
+    for(var i=0;i<secs.length;i++){
+      figFor[i] = null;
+      for(var k=0;k<figs.length;k++)
+        if(figs[k].getAttribute('data-for') === secs[i].id){ figFor[i] = figs[k]; break; }
+      figAt[i] = figFor[i] || (i ? figAt[i-1] : figs[0] || null);
+    }
+  })();
+  function readRuleOff(){
+    rOff = parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--rule-off')) || 0;
+  }
+  /* 좁은 화면(1180 이하)은 그림이 기둥을 떠나 장 안에 있다 — 밀 것이 없다 */
+  var wideMq = window.matchMedia('(min-width:1181px)');
+  function slide(){
+    if(!wideMq.matches) return;
+    var stack = figs.length ? figs[0].parentNode : null;
+    if(!stack) return;
+    var sr = stack.getBoundingClientRect(), H = sr.height;
+    var top = alignTop();
+    /* 지금 띠를 차지한 장 = 윗변이 그 줄 위(또는 그 줄)에 있는 마지막 장 */
+    var n = -1, i;
+    for(i=0;i<secs.length;i++)
+      if(secs[i].getBoundingClientRect().top <= top + 1) n = i;
+    var a = n < 0 ? figAt[0] : figAt[n];
+    var b = (n + 1 < secs.length) ? figFor[n + 1] : null;
+    if(b === a) b = null;
+    var seam = H;
+    if(b) seam = Math.max(0, Math.min(H,
+      secs[n + 1].getBoundingClientRect().top + rOff - sr.top));
+    if(a !== seamA || b !== seamB){
+      for(i=0;i<figs.length;i++){
+        var on = (figs[i] === a || figs[i] === b);
+        figs[i].style.visibility = on ? 'visible' : 'hidden';
+        if(!on){
+          figs[i].style.transform = 'translateY(100%)';
+          figs[i].style.setProperty('--zoom', REST + Z_IN);
+        }
+      }
+      seamA = a; seamB = b;
+    }
+    /* 배율은 이음매가 간 만큼 따라간다 - 들어오는 쪽은 REST+Z_IN 에서 REST 로,
+       나가는 쪽은 REST 에서 REST-Z_OUT 으로. 둘 다 줄어드는 쪽이다.
+       되감으면 그대로 뒤집힌다 - 시간이 아니라 자리가 정하기 때문이다 */
+    var p = H ? seam / H : 1;
+    if(a){
+      a.style.transform = 'translateY(' + (seam - H) + 'px)';
+      a.style.setProperty('--zoom', REST - Z_OUT * (1 - p));
+    }
+    if(b){
+      b.style.transform = 'translateY(' + seam + 'px)';
+      b.style.setProperty('--zoom', REST + Z_IN * p);
+    }
+  }
+
+  function spy(){
+    var line = alignTop(), best = 0, bd = Infinity;
+    for(var i=0;i<secs.length;i++){
+      var d = Math.abs(secs[i].getBoundingClientRect().top - line);
+      if(d < bd){ bd = d; best = i; }
+    }
+    if(best === cur) return;
+    cur = best;
+    for(var j=0;j<links.length;j++){
+      if(j === best) links[j].setAttribute('aria-current','true');
+      else           links[j].removeAttribute('aria-current');
+    }
+    /* 붙박이 그림과 지금 장의 진하기도 같은 판정을 쓴다 */
+    for(var n=0;n<secs.length;n++) secs[n].classList.toggle('is-on', n === best);
+    setTag(secs[best].id);
+  }
+
+  /* 숫자 태그 — "01-1" 의 세 숫자를 각 자리 띠에서 끌어올린다.
+     띠 한 칸이 11px 이라 숫자 d 는 -11×d 만큼 올리면 창에 걸린다 */
+  function setTag(id){
+    var m = /sf(\d)(\d)-(\d)/.exec(id || '');
+    if(!m || !reels.length) return;
+    for(var i=0;i<3;i++){
+      var b = reels[i].firstElementChild;
+      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
+    }
+    tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
+  }
+  /* spy 는 장이 바뀔 때만 일하지만 slide 는 프레임마다 돌아야 한다 */
+  function onFrame(){ raf = 0; spy(); slide(); }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(onFrame); }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', function(){ readRuleOff(); onScroll(); });
+  readRuleOff(); spy(); slide();
+
+})();
+</script>
+<script>
+/* ── 휠 한 번 = 한 장 ────────────────────────────────────────────────────
+   히어로 · 인트로 · 소분류 여섯 장이 각각 한 화면(.sf-step)이라, 굴린 만큼
+   어중간하게 멈추는 대신 다음 장이 고정 GNB 바로 밑에 딱 붙게 옮긴다.
+
+   브라우저 CSS 스냅(scroll-snap-type)을 쓰지 않는 이유 — 지속시간과 이징을
+   정할 수 없어 자석처럼 끌리고, 붙박이 기둥(인덱스·그림)이 매 프레임 되잡히며
+   튄다. 그래서 휠을 직접 받아 easeInOutSine 으로 옮긴다.
+   값(PAGE 820ms · REARM 180ms · easeInOutSine)은 이 사이트가 쓰던 것과 같다
+   — 다른 페이지의 카드 이동과 손끝 느낌이 달라지면 안 된다.
+
+   가로채지 않는 자리를 분명히 해 둔다.
+     · 좁은 화면(≤900) — 인덱스가 띠로 눕고 장 높이도 화면에 매이지 않는다
+     · 마지막 장 아래(마을·푸터) — 여기는 한 화면짜리가 아니라 그냥 흐른다
+     · 전체 메뉴가 열려 있을 때 — 그 판이 자기 스크롤을 갖는다
+     · 키보드(Space·PageDown·화살표) — 손대지 않는다. 어긋나면 다음 휠이 맞춘다 */
+(function(){
+  var narrow = window.matchMedia('(max-width:1180px)');
+  var steps  = [].slice.call(document.querySelectorAll('.sf-step'));
+  var nav    = document.getElementById('navover');
+  if(steps.length < 2) return;
+
+  var PAGE = 820,   /* 한 장 이동에 쓰는 시간(ms) */
+      REARM = 180,  /* 휠이 이만큼 멎어야 다음 한 장을 받는다 — 관성 스크롤 한 제스처가
+                       이벤트 수십 개로 쪼개져 들어오므로 이게 없으면 여러 장이 밀린다 */
+      SLACK = 24;   /* 이만큼 어긋나 있으면 다음 장 대신 지금 장을 먼저 맞춘다 */
+
+  var paging = false, praf = null, armed = true, quiet = null;
+
+  function gnb(){
+    return parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--gnb-h')) || 0;
+  }
+  /* 소분류 장은 붙박이 그림의 눈금 줄에 맞춰 서고(GNB 밑변에서 --sec-pad 만큼
+     아래), 배너·인트로는 GNB 밑변에 바로 붙는다.
+     여백은 그림 기둥 안 두 상자의 차이로 잰다 — 기둥이 아직 화면에 붙기 전에도
+     같은 값이 나와야 한다(화면 좌표를 그냥 쓰면 인트로에서 판정이 어긋난다) */
+  function secOffset(){
+    var w = document.querySelector('.sf-figwrap'), c = document.querySelector('.sf-figcol');
+    if(!w || !c) return 0;
+    return c.getBoundingClientRect().top - w.getBoundingClientRect().top;
+  }
+  function lineOf(el){
+    return gnb() + (el.classList.contains('sf-sec') ? secOffset() : 0);
+  }
+  function topOf(el){ return window.scrollY + el.getBoundingClientRect().top - lineOf(el); }
+  /* 지금 보고 있는 장 = 제자리에서 가장 덜 벗어난 장 */
+  function current(){
+    var best = -1, bd = Infinity;
+    for(var i=0;i<steps.length;i++){
+      var d = Math.abs(steps[i].getBoundingClientRect().top - lineOf(steps[i]));
+      if(d < bd){ bd = d; best = i; }
+    }
+    return best;
+  }
+
+  function ease(p){ return .5 - .5 * Math.cos(Math.PI * p); }
+  function pageTo(y){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    y = Math.max(0, Math.min(max, y));
+    var from = window.scrollY, delta = y - from, t0 = 0;
+    if(Math.abs(delta) < 1) return;
+    paging = true;
+    cancelAnimationFrame(praf);
+    (function frame(){
+      praf = requestAnimationFrame(function(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min(1, (ts - t0) / PAGE);
+        window.scrollTo(0, from + delta * ease(p));
+        if(p < 1) frame();
+        else { paging = false; praf = null; }
+      });
+    })();
+  }
+  function arm(){ clearTimeout(quiet); quiet = setTimeout(function(){ armed = true; }, REARM); }
+
+  window.addEventListener('wheel', function(e){
+    if(narrow.matches || !e.deltaY) return;
+    if(nav && nav.classList.contains('open')) return;
+    arm();                                   /* 입력이 이어지는 동안 재무장을 미룬다 */
+    if(paging){ e.preventDefault(); return; } /* 옮기는 중에는 아무것도 받지 않는다 */
+
+    var dir = e.deltaY > 0 ? 1 : -1;
+    var i = current();
+    if(i < 0) return;
+
+    var off = steps[i].getBoundingClientRect().top - lineOf(steps[i]);
+    /* 마지막 장이 제자리에 선 뒤 아래로 = 마을·푸터로 나가는 길 */
+    if(i === steps.length - 1 && dir > 0 && off <= 1) return;
+
+    e.preventDefault();
+    if(!armed) return;
+    armed = false;
+    /* 어긋나 있으면(앵커 이동·리사이즈·키보드 스크롤 뒤) 지금 장을 먼저 맞춘다 */
+    /* 아직 제자리에 서지 않았으면 먼저 세운다 — 단 '아래로 벗어난' 쪽만이다.
+       위로 벗어나 있는(off 가 음수인) 장은 이미 그 안을 굴러 내려온 긴 장이므로
+       여기서 되돌리면 다음 장으로 못 넘어가고 제자리로 튕겨 돌아온다 */
+    if(off > SLACK){ pageTo(window.scrollY + off); return; }
+    var nx = i + dir;
+    pageTo(nx < 0 ? 0 : topOf(steps[Math.min(steps.length - 1, nx)]));
+  }, { passive:false });
+
+  /* 좌측 인덱스 클릭도 같은 이동을 태운다 — 앵커 점프와 휠의 느낌이 달라지면
+     같은 페이지가 두 가지로 움직이는 것처럼 보인다 */
+  [].slice.call(document.querySelectorAll('.sf-rail a[href^="#"]')).forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(narrow.matches) return;              /* 좁은 화면은 기본 앵커 이동 */
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if(!el) return;
+      e.preventDefault();
+      pageTo(topOf(el));
+      return;
+    });
+  });
+})();
+</script>
+<script>
+/* ── 화면 고르기 ─────────────────────────────────────────────────────────
+   단추 하나가 그림 칸의 화면 하나를 켠다. tablist 의 약속대로 화살표로도
+   옮겨 다닌다. 단추가 없는 장에서는 조용히 지나간다 */
+(function(){
+  var lists = [].slice.call(document.querySelectorAll('.sf-picks,.sf-dots'));
+  if(!lists.length) return;
+  lists.forEach(wire);
+
+  function wire(list){
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  if(!tabs.length) return;
+
+  function pick(i, move){
+    for(var k=0;k<tabs.length;k++){
+      var on = (k === i);
+      tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[k].tabIndex = on ? 0 : -1;
+      var pane = document.getElementById(tabs[k].getAttribute('aria-controls'));
+      if(pane) pane.classList.toggle('is-on', on);
+    }
+    if(move) tabs[i].focus();
+  }
+
+  for(var i=0;i<tabs.length;i++)(function(i){
+    tabs[i].addEventListener('click', function(){ pick(i); });
+    tabs[i].addEventListener('keydown', function(e){
+      var n;
+      if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(e.key === 'Home') n = 0;
+      else if(e.key === 'End')  n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      pick(n, true);
+    });
+  })(i);
+
+  pick(0);
+  }
+})();
+</script>
+<script src="gnb-c.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — ESG 게시판 (C)</title>
+<meta name="description" content="에이프로(APRO) ESG 게시판 — 온실가스·에너지·용수·폐기물 환경 성과 공개." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
+<!-- ============================================================
+     지속가능경영 > ESG 게시판 (A-1)
+
+     2026-09-15 부터 콘텐츠 페이지 공용 세로 히어로 틀(content-side.css, 투자정보 시안 Figma 1248:13870)을
+     쓴다 — 왼쪽 세로 히어로(사진 · 페이지 이름 · 문장 · 이 페이지의 장 목록)가 화면에 붙어 있고,
+     오른쪽 본문이 흐른다. 본문 부품은 A(esg-board.html)와 같은 기존 것(content-layout.css)이다.
+
+     손으로 고치는 파일이다 — _gen-a1.py 의 SOURCES 에서 뺐다. A 는 옛 배너 히어로 그대로이고,
+     A 를 고쳐도 여기로 넘어오지 않는다. GNB · 푸터 · 전체메뉴는 business-layout.css / .js 한 벌이다 -->
+<link rel="stylesheet" href="gnb-c.css" />
+</head>
+<body>
+
+<!-- ===================== GNB ===================== -->
+<!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-c.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-c.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-c.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-c.html" aria-current="true" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-c.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+    </div>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<!-- 메가 판 — 시안 C 는 A 의 방식: 한 장이 화면 폭으로 열리고, 하위 메뉴가 제 대분류 밑에 선다 (gnb-c.css) -->
+<div class="c-mega" id="cMega" aria-hidden="true" aria-label="전체 메뉴">
+  <div class="c-cols">
+    <div class="c-col"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    <div class="c-col"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    <div class="c-col"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    <div class="c-col"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">지배구조</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html" aria-current="page">ESG 게시판</a></div>
+    <div class="c-col"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+  </div>
+</div>
+
+<!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
+<div class="cs-split">
+  <header class="cs-hero cs-hero--low" style="--pos:50% 100%;--pos-m:50% 60%">
+    <img class="cs-hero-bg" src="../assets/wind-turbine-portrait.jpg" width="1200" height="2293" alt="" aria-hidden="true" decoding="async" />
+    <div class="cs-hero-page">
+      <h1>ESG 게시판</h1>
+      <p class="sub">책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.</p>
+    </div>
+    <nav class="cs-toc" aria-label="ESG 게시판 목차">
+      <a href="#list">ESG 게시판</a>
+    </nav>
+  </header>
+
+  <main class="cs-body">
+  <section class="cblock" id="list">
+    <h2>ESG 게시판</h2>
+    <div class="clist-hd">
+      <p class="count">총 <b>9</b>건</p>
+      <form class="csearch" role="search">
+        <label class="sr-only" for="q-esg">ESG 게시판 검색</label>
+        <input type="search" id="q-esg" placeholder="검색어를 입력하세요" />
+        <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+      </form>
+    </div>
+    <table class="cboard">
+      <thead><tr><th>번호</th><th>제목</th><th>작성일</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="no">9</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=16" target="_blank" rel="noopener">폐기물 발생 현황 (2023~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">8</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=15" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">7</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=14" target="_blank" rel="noopener">용수 사용량 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">6</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=13" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2025)</a></td>
+          <td>2026-06-23</td>
+        </tr>
+        <tr>
+          <td class="no">5</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=9" target="_blank" rel="noopener">폐기물 발생 현황 (2024)</a></td>
+          <td>2025-07-28</td>
+        </tr>
+        <tr>
+          <td class="no">4</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=8" target="_blank" rel="noopener">에너지 소비량 및 집약도 (2022~2024)</a></td>
+          <td>2025-07-28</td>
+        </tr>
+        <tr>
+          <td class="no">3</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=4" target="_blank" rel="noopener">환경경영시스템 (ISO 14001:2015)</a></td>
+          <td>2025-07-25</td>
+        </tr>
+        <tr>
+          <td class="no">2</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=3" target="_blank" rel="noopener">용수 사용량 (2022~2024)</a></td>
+          <td>2025-07-24</td>
+        </tr>
+        <tr>
+          <td class="no">1</td>
+          <td class="ttl"><a href="https://aproele.com/bbs/board.php?bo_table=esg&amp;wr_id=2" target="_blank" rel="noopener">온실가스 배출량 및 집약도 (2022~2024)</a></td>
+          <td>2025-07-24</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="cempty" hidden>검색 결과가 없습니다.</p>
+  </section>
+  </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul><li><a href="business-smart-c.html">스마트 제조</a></li><li><a href="business-energy-c.html">에너지 인프라</a></li><li><a href="business-ai-c.html">인공지능 플랫폼</a></li><li><a href="business-semicon-c.html">화합물 전력 반도체</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-c.html">회사 소개</a></li><li><a href="network-c.html">글로벌 네트워크</a></li><li><a href="locations-c.html">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance-c.html">재무정보</a></li><li><a href="ir-disclosure-c.html">공시정보</a></li><li><a href="ir-stock-c.html">주식정보</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment-c.html">환경</a></li><li><a href="esg-social-c.html">사회</a></li><li><a href="esg-governance-c.html">지배구조</a></li><li><a href="esg-report-c.html">내/외부 신고채널</a></li><li><a href="esg-board-c.html" aria-current="page">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice-c.html">공지사항</a></li><li><a href="community-press-c.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-util">
+      <div class="f-links">
+        <a href="network-c.html">글로벌 네트워크</a><i class="sep"></i>
+        <a href="#">Contact us</a><i class="sep"></i>
+        <a href="locations-c.html">사업장소재</a><i class="sep"></i>
+        <a href="#">이메일무단수집거부</a><i class="sep"></i>
+        <a href="#" class="strong">개인정보처리방침</a>
+      </div>
+      <div class="f-family" id="fFamily">
+        <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+          <span>FAMILY SITE</span><i class="arw"></i>
+        </button>
+        <div class="fmenu">
+          <a href="#" target="_blank" rel="noopener">에이프로 머티리얼즈</a>
+          <a href="#" target="_blank" rel="noopener">에이프로 세미콘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+      </div>
+      <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-c.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-c.html">재무정보</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">지배구조</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html" aria-current="page">ESG 게시판</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
+     (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
+<script src="business-layout.js"></script>
+<script src="gnb-c.js"></script>
+</body>
+</html>
