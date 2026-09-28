@@ -10,11 +10,14 @@
    대분류 글자 칸을 --mm-col 로 못박고, 판의 열도 같은 값으로 가운데 정렬한다.
    바(.sf-menus)는 화면 가운데에 절대 위치로 서고, 판도 화면 폭(left 0 · right 0)이라
    두 줄의 가운데가 같다 — 스크립트로 잴 것이 없다.
-   값의 사다리(176 → 150 → 화면 따라)는 A 의 .gnb-group 과 같다(index.html).
-   356 = 좌우 여백 44×2 + 로고 96 + 도구 58 + 틈 여유 114. 901 에서 한 칸 109 */
-.sf-gnb,.c-mega{--mm-col:176px;--mm-gap:8px}
-@media(max-width:1600px){.sf-gnb,.c-mega{--mm-col:150px}}
-@media(max-width:1280px){.sf-gnb,.c-mega{--mm-col:min(150px, calc((100vw - 356px) / 5))}}
+
+   칸 폭은 A-1 격자에서 온다(2026-09-28, A 의 176 · 150 고정 사다리를 대신한다) —
+   A-1 격자는 마진 44 · 거터 20 · 12열이라 한 열이 (100vw − 308) / 12 이고, 대분류 한 칸 = 두 열 + 거터,
+   칸 사이 = 거터 20. 다섯 칸이 2~11 열을 딱 채운다(사업영역 판이 격자 안에 앉던 A-1 과 같은 띠).
+   화면이 좁아 그 폭이면 칸 줄이 로고를 덮는 자리(≈1320 아래)부터는 로고 · 도구 자리를 뺀 폭을
+   다섯으로 나눈다 — 392 = 마진 44×2 + 로고 96 + 도구 58 + 틈 20×4 + 여유 70 */
+.sf-gnb,.c-mega{--c-col:calc((100vw - 308px) / 12);
+  --mm-col:min(calc(var(--c-col) * 2 + 20px), calc((100vw - 392px) / 5));--mm-gap:20px}
 
 /* 대분류 칸 — 글자를 칸 가운데에. 화살촉(+)은 걷는다: A-1 에서 "이 메뉴만의 판이 열린다"는
    표시였는데, 판이 한 장이 되면 가리킬 것이 없다 */
@@ -30,13 +33,18 @@
   opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
   transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),visibility .3s}
 .c-mega.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
-.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:36px 0 44px}
-.c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:26px}
+/* 판 안 — 위아래 여백은 A-1 판과 같은 --gnb-m(44), 줄 사이 20. 글자는 A-1 메가 판 링크와 같은 토큰
+   (SUIT 600 --fs-body · 줄높이 --lh-head · 자간 --ls), 지금 장은 800 */
+.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:var(--gnb-m,44px) 0}
+.c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:20px}
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
-  font-weight:500;font-size:15px;line-height:1.4;letter-spacing:-.3px;color:var(--gnb-sec,#5a6675);
+  font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
   white-space:nowrap;text-decoration:none;transition:color .18s}
 .c-mega .c-col a:hover,.c-mega .c-col a:focus-visible{color:var(--gnb-brand,#2c5790)}
-.c-mega .c-col a[aria-current]{color:var(--gnb-brand,#2c5790);font-weight:700}
+.c-mega .c-col a[aria-current]{color:var(--gnb-brand,#2c5790);font-weight:800}
+/* 1180 아래는 칸이 110 안팎으로 좁아져 "화합물 전력 반도체"가 옆 칸 글자에 닿는다 — 한 칸 내린다
+   (A-1 판도 같은 경계에서 칸 안 여백을 줄였다) */
+@media(max-width:1180px){ .c-mega .c-col a{font-size:var(--fs-meta)} }
 /* 커서가 머무는 열의 대분류를 바에서 함께 밝힌다 — A 의 .active 밑줄과 같은 자리다.
    바탕(g100)은 A-1 의 .is-open 규칙이 이미 칠한다 */
 .sf-gnb .sf-menus>li.is-open>a{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:8px}
