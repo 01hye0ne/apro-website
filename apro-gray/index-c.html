@@ -359,6 +359,10 @@
     .v2banner .bnav .b{height:44px;padding:0 8px;background:rgba(255,255,255,.05)}
     .v2banner .bnav .b::before{background:rgba(255,255,255,.16)}
     .v2banner .bnav .bt{font-size:var(--fs-meta)}
+    /* 탭 다섯은 한 줄에 하나로(2026-09-29 요청) — 두 칸이면 다섯째(화합물 전력 반도체)가 홀로 한 줄을 먹어 빈칸이 떴다.
+       메뉴 목록처럼 무겁지 않게 줄 키는 44 → 40, 이름은 헤드라인과 같은 왼쪽 선에 */
+    .v2banner .bnav{grid-template-columns:minmax(0,1fr)}
+    .v2banner .bnav .b{height:40px;justify-content:flex-start;padding:0 12px}
   }
   @media(prefers-reduced-motion:reduce){
     .v2banner .headline .en,.v2banner .headline .kor{animation:none!important}
