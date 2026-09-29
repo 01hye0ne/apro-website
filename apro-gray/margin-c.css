@@ -241,3 +241,10 @@
 @media(min-width:768px) and (max-width:1180px){
   .sf-sec>.sf-ph{position:relative;top:auto}
 }
+
+/* 좁은 태블릿(768~900) 콘텐츠 장 — 이사회 사람 카드(.cpeople)와 제보 방법 칸(.cways)을 세 칸으로(2026-09-30 요청).
+   900 아래에서 한 칸 · 두 칸(2 + 1 외톨이)으로 쌓여 세로로 길었다. 폰은 그대로 */
+@media(min-width:768px) and (max-width:900px){
+  .cs-body .cpeople{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cs-body .cways{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
