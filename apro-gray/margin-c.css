@@ -65,9 +65,10 @@
 @media(max-width:1180px){ .sf-intro>.sf-introfig{margin-bottom:calc(12px - 40px)} }
 @media(max-width:900px){ .sf-intro>.sf-introfig{margin-bottom:calc(12px - 32px)} }
 
-/* 사업영역 세부 모바일(767 이하) 아코디언 — 소분류 묶음 띠(회색 .sf-acc-grp) 위아래에 선을 긋는다(2026-09-29 요청).
+/* 사업영역 세부 모바일(767 이하) 아코디언 — 소분류 묶음 띠(회색 .sf-acc-grp) 위에 선을 긋는다(2026-09-29 요청).
    줄 사이 선(--sf-line)만 있고 묶음 띠는 회색 바탕뿐이라, 한 묶음의 마지막 줄과 다음 묶음 머리가
-   이어져 보였다. 묶음 경계는 한 단 짙은 선(--sf-line-s), 띠와 그 밑 첫 줄 사이는 줄 사이와 같은 선 */
+   이어져 보였다. 묶음 경계는 한 단 짙은 선(--sf-line-s). 띠와 그 밑 첫 줄 사이는 회색 바탕이 가르므로 선을 두지 않는다
+   (같은 날 한때 그었다가 걷음) */
 @media(max-width:767px){
-  .sf-secs>.sf-acc-grp{border-top:1px solid var(--sf-line-s);border-bottom:1px solid var(--sf-line)}
+  .sf-secs>.sf-acc-grp{border-top:1px solid var(--sf-line-s)}
 }
