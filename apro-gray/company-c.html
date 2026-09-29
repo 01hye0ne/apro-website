@@ -280,7 +280,7 @@
   .co-vband h2.is-typing .ch.on{opacity:1}
   .co-vband h2 .caret{display:none}   /* 커서('|')는 걷었다(2026-09-21 요청) — 요소는 남겨 두고 줄 바뀜 판정에만 쓴다 */
   .co-vband.is-typing .lead{opacity:0;translate:0 10px}
-  .co-vband.is-typed .lead{opacity:1;translate:none;transition:opacity .6s var(--ease),translate .6s var(--ease)}
+  .co-vband.is-typed .lead{opacity:1;translate:none;transition:opacity .4s var(--ease),translate .4s var(--ease)}
   @media(prefers-reduced-motion:reduce){
     .co-vband h2.is-typing .ch{opacity:1}
     .co-vband.is-typing .lead{opacity:1;translate:none}
@@ -1053,7 +1053,7 @@
 </script>
 <script>
 /* Vision 제목 타이핑 — 위 <style> 의 "Vision 제목 타이핑" 참고.
-   글자마다 22ms, 줄이 바뀌는 자리(<br>)에서 200ms 숨을 둔다(2026-09-21 에 45/360 에서 올렸다). 첫 화면 안이라 열자마자 돈다. 한 번만 */
+   글자마다 12ms, 줄이 바뀌는 자리(<br>)에서 100ms 숨을 둔다(2026-09-21 에 45/360 → 22/200, 2026-09-29 에 다시 빠르게). 첫 화면 안이라 열자마자 돈다. 한 번만 */
 (function(){
   var sec=document.querySelector('.co-vband'),h=sec&&sec.querySelector('h2');
   if(!h||!('IntersectionObserver' in window))return;
@@ -1079,17 +1079,17 @@
   if(reduce){done();return;}
   var i=0;
   function tick(){
-    if(i>=chars.length){setTimeout(done,300);return;}
+    if(i>=chars.length){setTimeout(done,150);return;}
     var c=chars[i++];c.classList.add('on');
     c.parentNode.insertBefore(caret,c.nextSibling);
-    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?200:22;
+    var nx=caret.nextSibling,pause=nx&&nx.nodeName==='BR'?100:12;
     setTimeout(tick,pause);
   }
   var io=new IntersectionObserver(function(es){
     if(!es.some(function(e){return e.isIntersecting;}))return;
     io.disconnect();
     h.insertBefore(caret,h.firstChild);
-    setTimeout(tick,400);
+    setTimeout(tick,200);
   },{rootMargin:'0px 0px -12% 0px'});
   io.observe(sec);
 })();
