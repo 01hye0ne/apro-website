@@ -469,9 +469,12 @@
      = 화면 폭 - 마진(--co-m) - 두 칸(열 + 거터 둘) · (한 칸 = (폭 - 마진 둘 + 거터) / 12) */
   @media(min-width:768px) and (max-width:1180px){
     .co-val{width:calc(100% - var(--co-m) - (100% - 2 * var(--co-m) + var(--c-g)) / 6)}
-    /* 글 · 사진 기둥은 판 가운데로(같은 날 요청) — 넓힌 판 안에서 안쪽 절반에 두면 번호 상자 · 제목이 판 가운데를 벗어났다.
-       좌우 16% 씩 비워 기둥이 판 폭의 68% */
-    .co-val .in,.co-val:nth-child(odd) .in{padding-left:16%;padding-right:16%}
+    /* 글 · 사진 기둥은 화면 가운데 — 격자 4~9열(같은 날 요청). 판이 번갈아 붙어도 기둥은 늘 같은 자리에 선다.
+       --u = 세 칸(열 + 거터) 폭, 기둥 왼쪽 = 마진 + u. 판 안쪽 끝(3열 시작)과 기둥 사이 = u/3 에서
+       바깥 판 여백 20 · 선 둘 2 를 뺀 값. 화면 끝 쪽 여백 = 마진 + u */
+    .co-values{container-type:inline-size;--u:calc((100cqw - 2 * var(--co-m) + var(--c-g)) / 4)}
+    .co-val .in{padding-left:calc(var(--co-m) + var(--u));padding-right:calc(var(--u) / 3 - 22px)}
+    .co-val:nth-child(odd) .in{padding-left:calc(var(--u) / 3 - 22px);padding-right:calc(var(--co-m) + var(--u))}
   }
 
 
