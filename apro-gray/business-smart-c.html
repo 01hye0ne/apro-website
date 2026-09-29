@@ -1126,12 +1126,10 @@
     .sf-sec:has(.sf-cta) .sf-txtin{position:static}
     .sf-sec .sf-cta{position:absolute;z-index:2;top:17px;left:calc(16px + var(--acc-tw,0px) + 12px);right:auto;
                     height:32px;padding:0 12px}
-    /* 제품 사진 — 16:9 칸에서 설명이 접시 · 실린더 위에 얹혔다(2026-09-29 요청). 물체 바닥이 사진 높이의
-       72~78% 까지 내려와, 칸을 키워도 사진이 함께 커지므로 겹침이 풀리지 않는다. 모바일은 설명을 사진 위가
-       아니라 아래 띠로 내리고, 사진은 제 비율(2100×1800 = 7:6) 그대로 온전히 보인다.
-       칸 높이 = 사진(글 칸 폭 × 6/7) + 설명 띠 64. 세 제품 판이 한 칸에 겹쳐 있어 칸 높이를 박아 둔다 */
-    .sf-sec>.sf-ph:has(#cnt-pw){aspect-ratio:auto;height:calc((100vw - 32px) * 6 / 7 + 64px)}
-    #sf04-1 .sf-cnt .cap{position:static;flex:0 0 64px;justify-content:center;padding:0 16px}
+    /* 제품 사진 — 16:9 칸에서는 사진 위아래가 잘려 설명이 접시 · 실린더 위에 얹혔다(2026-09-29 요청).
+       칸을 사진 비율(2100×1800 = 7:6) 그대로 두면 사진이 온전히 보이고, 물체 바닥(사진 높이의 72~78%)
+       아래 빈 바닥에 설명(아래 16% 남짓)이 사진 안에 얹힌다. 한때 설명을 사진 밖 아래 띠로 뺐다가 되돌림 */
+    .sf-sec>.sf-ph:has(#cnt-pw){aspect-ratio:7/6}
     .sf-railwrap{display:none}
     /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
     .sf-acc-grp{display:flex}
