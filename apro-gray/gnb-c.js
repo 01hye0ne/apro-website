@@ -125,3 +125,26 @@
   window.addEventListener('load', apply);
   apply();
 })();
+
+/* 사업영역 세부 모바일 — 붙박인 아코디언 제목 줄(.sf-acc-hd)에 .is-stuck 을 단다(margin-c.css 가 밑줄을 긋는다).
+   GNB 밑(--c-gnb-h)에 닿아 있고 제 장 윗선은 이미 그 위로 올라간 때만 붙은 것이다 */
+(function(){
+  var hds = [].slice.call(document.querySelectorAll('.sf-secs>.sf-sec>.sf-acc-hd'));
+  if(!hds.length) return;
+  var raf = 0;
+  function apply(){
+    raf = 0;
+    var g = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--c-gnb-h')) || 0;
+    hds.forEach(function(h){
+      var on = getComputedStyle(h).position === 'sticky' &&
+               h.parentNode.getBoundingClientRect().top < g - 1 &&
+               Math.abs(h.getBoundingClientRect().top - g) < 1;
+      h.classList.toggle('is-stuck', on);
+    });
+  }
+  function req(){ if(!raf) raf = requestAnimationFrame(apply); }
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
+  document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('.sf-acc-btn')) req(); });
+  apply();
+})();
