@@ -182,7 +182,8 @@
     .carousel .panel,.carousel .panel:nth-child(-n+2){height:auto;flex-direction:row;align-items:center;gap:16px;padding:12px var(--px)}
     .p-foot{flex:1;min-width:0}
     .pvec{flex:0 0 52%;height:100%;margin:0;place-items:center end}
-    .pvec img,.panel[data-idx="03"] .pvec img{max-width:100%;max-height:100%}
+    /* 그림은 줄 키의 64% · 칸 폭의 80% 까지만(같은 날 줄임) — 글보다 무겁지 않게 */
+    .pvec img,.panel[data-idx="03"] .pvec img{max-width:80%;max-height:64%}
     header.subhd.is-biz{mix-blend-mode:normal;background:#fff;border-bottom:1px solid var(--border-g)}
     header.subhd.is-biz .hd-left,header.subhd.is-biz .hd-right{color:var(--g900)}
   }
