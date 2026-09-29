@@ -415,9 +415,12 @@
   .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
                      transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
                      line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
-  /* 이름은 두 줄(2026-09-29 요청) — 마크업의 <br> 에서 접힌다. 줄 사이는 좁게 붙여 한 이름으로 읽히게.
+  /* 이름은 두 줄(2026-09-29 요청) — 마크업의 <br> 에서 접힌다.
      화합물은 "화합물 전력 / 반도체"로 두 줄 길이를 비슷하게. 폰(가로 띠)에서는 한 줄로 되돌린다 */
-  .hm-card .fold .nm{line-height:1.15}
+  /* 눕히지 않고 가로 두 줄로(같은 날 요청 — 세로 두 줄이 아니라 가로). 카드 왼쪽 아래에 선다.
+     접힌 칸이 좁은 폭(1181~1280, 약 130)에서 한 줄이 칸보다 길면 낱말 단위로 한 번 더 접힌다 */
+  .hm-card .fold .nm{writing-mode:horizontal-tb;transform:none;line-height:var(--lh-head);
+                     white-space:normal;word-break:keep-all}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
