@@ -1156,6 +1156,14 @@
        칸을 사진 비율(2100×1800 = 7:6) 그대로 두면 사진이 온전히 보이고, 물체 바닥(사진 높이의 72~78%)
        아래 빈 바닥에 설명(아래 16% 남짓)이 사진 안에 얹힌다. 한때 설명을 사진 밖 아래 띠로 뺐다가 되돌림 */
     .sf-sec>.sf-ph:has(#cnt-pw){aspect-ratio:7/6}
+    /* 공정 맵(폰) — 단계 칸 안 여백을 태블릿(16 · 12)보다 한 단 더 줄인다(2026-09-29 요청).
+       설비 이름은 마크업의 줄바꿈에서만 접는다 — 칸 폭(한 칸 50 남짓)을 따라 접히면 "(Formation)" · "(High · Normal ·
+       Shipping Temp)" 이 괄호 한가운데서 갈렸다. 이름이 칸보다 넓으면 칸 가운데를 기준으로 양옆으로 나간다 */
+    .sf-map .ring li:nth-child(-n+3)>button{padding-top:calc(10px + var(--bw))}
+    .sf-map .ring li:nth-child(n+4)>button{padding-bottom:calc(10px + var(--bw))}
+    .sf-map .ring li:nth-child(1)>button,.sf-map .ring li:nth-child(4)>button{padding-left:calc(8px + var(--bw))}
+    .sf-map .ring li:nth-child(3)>button,.sf-map .ring li:nth-child(6)>button{padding-right:calc(8px + var(--bw))}
+    .sf-map .it b{white-space:pre}
     .sf-railwrap{display:none}
     /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
     .sf-acc-grp{display:flex}
