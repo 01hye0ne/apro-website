@@ -199,3 +199,22 @@
   /* 목록이 짧아져 한 화면에 들므로 넓은 태블릿처럼 세로 가운데로(같은 날 요청). 위아래 80 은 머리줄 몫 */
   .navover .navover-body{justify-content:center;padding-bottom:80px}
 }
+
+/* 맨 위로 가기(.totop) — 콘텐츠 열세 장(투자정보 · 지속가능경영 · 커뮤니티)은 단추 마크업만 있고 모양 · 동작이 없어
+   푸터 밑에 맨 단추로 흘러 흰 여백(21)이 생겼다(2026-09-29). 홈 · 회사소개(index-c · company-c 안)와 같은 규칙을 여기 둔다.
+   움직임은 gnb-c.js. z-index 는 전체 메뉴(300)보다 낮게 */
+.totop{position:fixed;right:32px;bottom:32px;z-index:150;width:52px;height:52px;
+  border-radius:50%;background:var(--g950);border:none;cursor:pointer;
+  display:grid;place-content:center;color:#fff;
+  box-shadow:0 12px 32px rgba(14,22,30,.22);
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .3s var(--ease),transform .3s var(--ease),
+    visibility 0s linear .3s,background .2s var(--ease)}
+.totop.is-visible{opacity:1;visibility:visible;transform:none;
+  transition:opacity .3s var(--ease),transform .3s var(--ease),background .2s var(--ease)}
+.totop:hover{background:var(--brand)}
+.totop svg{width:22px;height:22px}
+@media(max-width:900px){
+  .totop{right:20px;bottom:20px;width:44px;height:44px}
+  .totop svg{width:18px;height:18px}
+}

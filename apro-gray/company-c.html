@@ -1004,7 +1004,8 @@
 <script>
 (function(){
   var btn = document.getElementById('totop');
-  if (!btn) return;
+  if (!btn || btn.dataset.wired) return;
+  btn.dataset.wired = '1';
   var onScroll = function(){
     btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5);
   };
