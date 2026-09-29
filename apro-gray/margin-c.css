@@ -90,3 +90,12 @@
    머리 안의 버튼만 높이 ≈38(위아래 9 · --fs-meta)로. 본문의 내려받기 버튼은 그대로 */
 .cpost-hd .cbtn{padding:9px 16px;gap:8px;font-size:var(--fs-meta);line-height:var(--lh-body)}
 .cpost-hd .cbtns{gap:8px}
+
+/* 사업영역 세부 히어로 영문 제목 — 폰 폭에서 양옆이 잘렸다(2026-09-29 요청).
+   글자 크기가 --fs-display 최솟값 56 에 걸려 있는데, 가장 긴 낱말 "Semiconductors" 가 Aldrich 로 7.51em
+   (≈420px)이라 390 폰의 글 칸(342)을 넘는다. "Infrastructure"(6.73em)도 390 에서 넘는다.
+   767 이하에서는 글 칸 폭(화면 − 좌우 여백 clamp(24px,6vw,88px) × 2) ÷ 7.6 을 넘지 않게 — 네 장 모두
+   같은 식이라 같은 폭에서 같은 크기로 선다 */
+@media(max-width:767px){
+  .sf-hero .en{font-size:min(var(--fs-display),calc((100vw - 2 * clamp(24px,6vw,88px)) / 7.6))}
+}
