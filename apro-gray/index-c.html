@@ -279,7 +279,7 @@
      2026-09-28 A-1 체계로 다시 짰다 —
        격자  글과 탭 줄은 A-1 마진(--hm-m)에 선다 — 격자 1~12 열, GNB 로고 선 · Business · News · 푸터와 같다.
              (2026-09-28 한때 2~11 열로 좁혔다가 다시 1~12 열로 늘렸다)
-             문구 윗자리는 바 키 + 섹션 위 여백(--hm-pad 160 · 900 아래 128)이고, 탭 줄 아래도 마진(--hm-m)이다
+             문구 윗자리는 바 키 + 섹션 위 여백(--hm-pad 160 · 900 아래 128)이고, 탭 줄 아래는 A 와 같은 40(900 아래 20)이다
        글자  A-1 홈 히어로(index-a1.html .hm-hl · .hm-tab)와 같은 규칙이다(2026-09-28 요청 — 특히 영문 서체).
              영문 문구 Aldrich 400 · 줄높이 --lh-tight · 자간 --ls-num, 크기는 A-1 과 같은 식(칸 폭 ÷ 12.6, 24~64).
              보조 문장 SUIT 600 --fs-h3 흰 80% · 탭 이름 SUIT 800 --fs-lead 흰 60% → 켜지면 흰색. 문구와 보조 사이 10.
@@ -294,7 +294,7 @@
   /* .band 는 A-1 뼈대에 남은 옛 12열 띠 규칙(절대 위치 · 좁힌 폭)이 있어 여기서 화면 폭으로 푼다 */
   .v2banner .band{position:absolute;inset:0;z-index:2;width:auto;margin:0}
   .v2banner .v2b-inner{position:absolute;inset:0;display:flex;flex-direction:column;
-    padding:calc(var(--c-gnb-h) + var(--hm-pad)) var(--hm-m) var(--hm-m)}
+    padding:calc(var(--c-gnb-h) + var(--hm-pad)) var(--hm-m) 40px}   /* 탭 줄 아래 40 — A 의 --bpad 와 같다(2026-09-29 요청) */
 
   /* 문구 — 강조(.en) + 보조(.kor). 글자는 스크립트가 갈고, 갈 때 위로 빠졌다 아래서 떠오른다 */
   .v2banner .headline{display:flex;flex-direction:column;gap:10px;container-type:inline-size}
@@ -347,7 +347,7 @@
 
   /* 좁은 화면 — 탭 줄은 두 칸씩 상자 묶음으로 푼다(A 와 같다). 문구 윗자리는 화면 키를 따라 준다 */
   @media(max-width:900px){
-    .v2banner .v2b-inner{padding-top:calc(var(--c-gnb-h) + clamp(64px,18vh,var(--hm-pad)))}
+    .v2banner .v2b-inner{padding-top:calc(var(--c-gnb-h) + clamp(64px,18vh,var(--hm-pad)));padding-bottom:20px}
     .v2banner .en{font-size:clamp(28px,7vw,56px)}
     .v2banner .kor{font-size:var(--fs-body)}
     .v2banner .bnav{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;border:0;border-radius:0;
