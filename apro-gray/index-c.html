@@ -309,9 +309,10 @@
   .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--on-dark);white-space:pre-line}
   /* 영문 — A-1 히어로 제목과 같은 글꼴 · 크기 식. 네 문구 중 가장 긴 줄(Industrial Safety Innovation)이
-     64 에서 12.57em 이라 칸 폭 ÷ 12.6 이면 칸에 딱 든다(A-1 과 같은 문장이라 같은 값) */
+     64 에서 12.57em 이라 칸 폭 ÷ 12.6 이면 칸에 딱 든다(A-1 과 같은 문장이라 같은 값).
+     줄높이는 국문과 같은 --lh-head(1.2) — 1 이면 네모난 Aldrich 두 줄이 붙어 보였다(2026-09-29 요청) */
   .v2banner .headline.is-en .en{font-family:var(--ald);font-weight:400;font-size:clamp(24px,calc(100cqi / 12.6),64px);
-    line-height:var(--lh-tight);letter-spacing:var(--ls-num)}
+    line-height:var(--lh-head);letter-spacing:var(--ls-num)}
   .v2banner .kor{font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);line-height:var(--lh-label);
     letter-spacing:var(--ls);color:var(--on-dark-body)}
 
