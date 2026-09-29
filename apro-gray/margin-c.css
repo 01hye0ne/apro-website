@@ -176,3 +176,18 @@
   .sf-intro,.sf-sec,.sf-sec.is-prod{padding-left:var(--c-m);padding-right:var(--c-m)}
   .bhop-town{width:calc(100% - 2 * var(--c-m))}
 }
+
+/* ── 격자 거터 --c-g (gnb-c.css: 20 · 16 · 12) 에 칸 사이 가로 간격을 잇는다 (2026-09-29 요청) ─────────
+   --grid-gutter  공용 격자(business-layout.css 에 A 시절 24 가 남아 콘텐츠 세로 히어로 5열 계산이 20 격자와 어긋났다)
+   카드 격자 · 기사 목록 · 이사회 표 · 두 기둥 띠(네트워크 · 사업장소재) · 회사정보 사진 셋 사이.
+   세로로 쌓였을 때의 위아래 간격은 제 값 그대로(칸 사이가 아니라 덩어리 사이라서) */
+:root{--grid-gutter:var(--c-g)}
+.cgrid{gap:var(--c-g)}
+.ccreed{gap:var(--c-g)}
+.cnews{column-gap:var(--c-g)}
+.cgov-board{column-gap:var(--c-g)}
+.ci-top{--ci-gap:var(--c-g)}
+@media(min-width:901px){
+  .gn-band,.lc-band{gap:var(--c-g)}
+  .lc-info{flex-basis:min(664px,calc(50% - var(--c-g) / 2))}
+}
