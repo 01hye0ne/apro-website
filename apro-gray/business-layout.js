@@ -679,6 +679,11 @@
 
   sets.forEach(function(set){
     var box = set.box, all = set.rows, per = set.per;
+    /* 좁은 화면(760 이하) 쪽당 건수 — 표에 data-per-sm 이 있을 때만(시안 C, 2026-09-29). 없으면 넓은 화면과 같다.
+       폭이 그 선을 넘나들면 보던 첫 건이 든 쪽으로 다시 그린다 */
+    var perSm = parseInt(box.getAttribute('data-per-sm'), 10) || 0;
+    var smMq = perSm && window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
+    if (smMq && smMq.matches) per = perSm;
     var blk = box.closest ? box.closest('.cblock') : null;
     var head = blk && blk.querySelector('.clist-hd');
     var input = head && head.querySelector('.csearch input');
@@ -755,6 +760,14 @@
       if (form) form.addEventListener('submit', function(e){ e.preventDefault(); });
     }
     draw();
+    if (smMq){
+      var onMq = function(){
+        var first = cur * per;
+        per = smMq.matches ? perSm : set.per;
+        cur = Math.floor(first / per); draw();
+      };
+      if (smMq.addEventListener) smMq.addEventListener('change', onMq); else smMq.addListener(onMq);
+    }
   });
 })();
 
