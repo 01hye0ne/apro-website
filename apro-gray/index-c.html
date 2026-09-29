@@ -96,7 +96,7 @@
   .footer .f-bottom .infos .line span{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--on-dark-body);opacity:.75;white-space:nowrap}
   .footer .f-bottom .infos .line .sep{width:1px;height:12px;background:var(--white-300);opacity:1}
   .footer .f-bottom .copy{font-family:var(--suit);font-size:var(--fs-meta);letter-spacing:var(--ls);color:var(--on-dark-body);opacity:.6;white-space:nowrap}
-  @media(max-width:900px){.footer{--f-m:16px}}
+  @media(max-width:900px){.footer{--f-m:var(--c-m)}}
   @media(max-width:960px){
     .footer .f-nav{grid-template-columns:repeat(2,1fr);gap:32px 24px}
     .footer .f-util{flex-direction:column;align-items:flex-start}
@@ -642,6 +642,8 @@
 
   @media(max-width:900px){
     :root{--hm-m:16px;--hm-pad:128px}
+    /* 좁은 태블릿(768~900)은 --c-m 32 를 따른다(2026-09-29) — 폰은 16 */
+    @media(min-width:768px){ :root{--hm-m:var(--c-m)} }
     .hm-ttl{font-size:var(--fs-h1)}
     /* 좁은 화면은 세로 아코디언 — 카드가 위아래로 쌓이고, 접힌 카드는 64 높이의 가로 띠,
        펴진 카드는 420 이다. 사진은 늘 420 높이로 그려 가운데에 둔다 */
