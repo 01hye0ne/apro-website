@@ -58,3 +58,36 @@
 
 /* 게시판 머리줄 "총 n건"의 숫자 — 브랜드 파랑(2026-09-29 요청). 공지 · 보도자료 · ESG 게시판 */
 .clist-hd .count b{color:var(--brand)}
+
+/* ── 글자에 쓰는 브랜드 파랑 → 보조 파랑 --brand-2(#4077b7) (2026-09-29 요청) ─────────────────────
+   --brand(#2c5790)는 본문 검정(--g900 #1b2733)과 명도 차가 2.1 배뿐이라 작은 글자에서 같은 색으로 읽혔다.
+   #4077b7 은 검정과 3.3 배 벌어지고 흰 바탕 대비 4.6(AA)이며, 이미 사이트의 배지 · 단추에 쓰는 색이다.
+   글자색만 바꾼다 — 면(바탕 · 단추 · 선)과 선 아이콘(.ic)은 --brand 그대로.
+   C 가 불러오는 CSS(페이지 <style> · business-layout · content-layout · content-side · C 전용 셋)에서
+   color:var(--brand | --gnb-brand) · #2c5790 인 글자 규칙을 모아 같은 선택자로 덮는다(이 파일이 가장 뒤에 온다) */
+.bhop .bhlot:not(.is-here):hover .bhtag,
+.cblock>.ctagline,.cdetails summary:hover,.cdoc a,.cdoc h4,.cdoc ol ol>li::before,.cframe-out a,
+.clist-hd .count b,.cmodal-open:hover,.cnews>li>a:hover .ttl,.co-val .pair b,
+.cpager button:hover:not(:disabled):not([aria-current]),.cperson .role,.cpost-links a,.cpost-nav a:hover .v,
+.csearch button:hover,.ctoc a:hover,.cway .k,.gn-lab,.lc-tab[aria-selected="true"],
+.sf-cnt .cap span,.sf-drop a:hover,.sf-drop a[aria-current],
+.sf-gnb .sf-drop a:hover,.sf-gnb .sf-drop a[aria-current],.sf-gnb .sf-menus>li>a[aria-current],
+.sf-gnb .sf-tools button:hover,.sf-gnb .sf-tools button[aria-expanded="true"],
+.sf-lead .b,.sf-map .it b,.sf-map .ring li.is-on,.sf-menus>li>a[aria-current],.sf-rail a:hover,
+.sf-sec.is-open>.sf-acc-hd .sf-acc-btn,.sf-subs .d,.sf-subs .nm,
+.sf-tools button:hover,.sf-tools button[aria-expanded="true"],
+.v2news .ncard:hover .title,.v2news .news-list a:hover .ttl{color:var(--brand-2)}
+@media(max-width:1180px){ .sf-rail a[aria-current="true"]{color:var(--brand-2)} }
+@media(max-width:767px){ .sf-picks button[aria-selected="true"] .nm{color:var(--brand-2)} }
+@media(max-width:900px){ .hm-card:not(.is-open):is(:hover,:active) .fold{color:var(--brand-2)} }
+/* 다른 사업영역 태그에 불이 도는 루프 — 켜진 글도 같은 파랑 */
+@keyframes bhlit{
+  0%,100%{background:none;color:var(--teritary)}
+  5%,20%{background:none;color:var(--brand-2)}
+  27%{background:none;color:var(--teritary)}
+}
+/* 사업영역 세부 — 번호 · 제품 태그 · 수치는 --c-num 을 쓰는데, 지금 장이 아니면 옅은 회색으로 바래야 한다.
+   글자용 짝 --c-num-tx 를 두고 바래는 규칙(넓은 화면 .js .sf-sec:not(.is-on) .sf-txt)에서 함께 바랜다 */
+:root{--c-num-tx:var(--brand-2)}
+@media(min-width:1181px){ .js .sf-sec:not(.is-on) .sf-txt{--c-num-tx:var(--sf-line-s)} }
+.sf-apps b,.sf-cert li.em,.sf-dl--row .k,.sf-prods .k,.sf-dl--row .v,.sf-prods .cap,.sf-num b{color:var(--c-num-tx)}
