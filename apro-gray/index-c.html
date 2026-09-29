@@ -395,15 +395,6 @@
                   background:rgba(14,22,30,.5);opacity:0;transition:opacity .6s var(--ease)}
   .hm-card:not(.is-open)::after{opacity:1}
   .hm-card:not(.is-open):hover::after{opacity:.6}
-  /* 넓은 화면 — 접힌 띠에 커서를 올리면 어둠이 옅어지는 대신 파스텔 파랑(#d6e3f6 · 85%)으로 덮고, 이름은 브랜드 남색으로
-     (2026-09-29 요청). 회사소개 AAA 선 사이 면과 같은 파랑이다. 모바일은 호버가 없고 접힌 띠가 옅은 회색이라 그대로 */
-  @media(min-width:901px) and (hover:hover){
-    .hm-card::after{transition:opacity .6s var(--ease),background-color .35s var(--ease)}
-    .hm-card:not(.is-open):hover::after{opacity:1;background-color:rgba(214,227,246,.85)}
-    .hm-card .fold{transition:opacity .2s var(--ease),color .35s var(--ease)}
-    .hm-card:not(.is-open) .fold{transition:opacity .5s var(--ease) .45s,color .35s var(--ease)}
-    .hm-card:not(.is-open):hover .fold{color:var(--brand)}
-  }
   .hm-card .fold{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
                  justify-content:flex-end;padding:20px;color:#fff;pointer-events:none;
                  opacity:0;transition:opacity .2s var(--ease)}
@@ -673,6 +664,12 @@
     .hm-card>img{transition:opacity .6s var(--ease)}
     .hm-card:not(.is-open)>img{opacity:0}
     .hm-card:not(.is-open)::after{opacity:0}
+    /* 접힌 띠를 누르거나 커서를 올리면 파스텔 파랑(#d6e3f6 — 회사소개 AAA 선 사이 면과 같은 파랑)에 이름 · (+) 브랜드 남색
+       (2026-09-29 요청). 전엔 넓은 화면의 어둠 막(.6)이 그대로 걸려 진회색이 됐다 */
+    .hm-card{transition:height .8s var(--ease),background-color .3s var(--ease)}
+    .hm-card:not(.is-open):hover::after{opacity:0}
+    .hm-card:not(.is-open):is(:hover,:active){background-color:#d6e3f6}
+    .hm-card:not(.is-open):is(:hover,:active) .fold{color:var(--brand)}
     /* 펴진 카드 글 띠는 조금 일찍(.25s) 켠다 — 세로로 펴지는 카드가 짧아 .4s 는 늦게 느껴졌다 */
     .hm-card .cap{transition:opacity .45s var(--ease) .25s,visibility 0s linear 0s}
     .hm-card .fold::after{content:"";flex:0 0 16px;height:16px;margin-left:auto;
