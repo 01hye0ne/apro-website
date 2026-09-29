@@ -517,14 +517,13 @@
   /* 글 기둥은 네 판 모두 503 — 2 번째 판만 이름 밑선이 그보다 짧은 323 까지다(시안 그대로) */
   .hm-wv .body{display:flex;flex-direction:column;gap:20px;max-width:503px}
   .hm-wv:nth-child(2) .hd{width:64.2%}
-  /* 3 번째 판의 두 문단은 한 덩어리로 붙인다(시안 2) */
-  .hm-wv:nth-child(3) ul{gap:2px}
   .hm-wv .hd{display:flex;flex-direction:column;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--who-line)}
   .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-head);
             letter-spacing:var(--ls)}
   .hm-wv .msg{display:flex;flex-direction:column;gap:8px;font-family:var(--suit);font-weight:600;
               font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls)}
-  .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  /* 목록 줄은 한 덩어리로 붙인다 — 3 번째 판 문단(시안 2)과 같은 2. 첫 판의 머리말 목록도 같은 결로(2026-09-29 요청) */
+  .hm-wv ul{list-style:none;display:flex;flex-direction:column;gap:2px}
   .hm-wv li{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);
             line-height:var(--lh-body);letter-spacing:var(--ls);font-feature-settings:"lnum" 1,"tnum" 1}
   .hm-wv li b{font-weight:600}   /* 항목 머리말 — 700 은 사다리 밖이라 라벨 · 강조 굵기 600(2026-09-28 점검) */
