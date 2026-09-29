@@ -153,3 +153,9 @@
   .bhop-town{width:calc(100% - 2 * var(--c-m))}
   .co-apro .fig{padding-left:var(--c-m);padding-right:var(--c-m)}
 }
+
+/* 지속가능경영 카드 격자(.cgrid) — 900 아래 두 칸일 때 카드 수가 홀수면 마지막 한 장이 홀로 한 줄을 먹었다(2026-09-29 요청).
+   홀수 묶음만 모바일처럼 한 줄에 한 장으로 쌓는다. 짝수 묶음은 두 칸 그대로 */
+@media(max-width:900px){
+  .cgrid:has(>li:last-child:nth-child(odd)){--col:1}
+}
