@@ -1064,6 +1064,16 @@
     .sf-map .it{gap:8px}
     .sf-map .floor{height:6px}
     .sf-map .it b{font-size:var(--t-2xs);letter-spacing:var(--ls-num)}
+    /* 태블릿(768~1180) — 단계 칸 안 여백을 줄이고 설비를 키운다(2026-09-29 요청).
+       위 12 10 은 자리별 여백 규칙(li:nth-child>button, 32 + 띠)에 밀려 먹지 않고 있었다 — 같은 자리로 짚어 덮는다.
+       여백이 준 만큼 가운데 자리가 넓어져 한 칸을 14.5 → 18%(가장 넓은 벌 5칸 + 사이 둘 = 94%) */
+    @media(min-width:768px){
+      .sf-map .ring li:nth-child(-n+3)>button{padding-top:calc(16px + var(--bw))}
+      .sf-map .ring li:nth-child(n+4)>button{padding-bottom:calc(16px + var(--bw))}
+      .sf-map .ring li:nth-child(1)>button,.sf-map .ring li:nth-child(4)>button{padding-left:calc(12px + var(--bw))}
+      .sf-map .ring li:nth-child(3)>button,.sf-map .ring li:nth-child(6)>button{padding-right:calc(12px + var(--bw))}
+      .sf-map{--eu:18%}
+    }
     /* 장 — 왼쪽 그림 · 오른쪽 글 */
     .sf-secs{gap:0;padding-top:0;padding-bottom:0}
     .sf-secs>.sf-sec:not(:first-of-type){margin-top:0}
