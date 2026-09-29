@@ -135,12 +135,17 @@
   function apply(){
     raf = 0;
     var g = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--c-gnb-h')) || 0;
+    var any = false;
     hds.forEach(function(h){
+      /* 장 끝에서 밀려 올라가는 동안에도 바 밑에 걸쳐 있으면 붙은 것으로 친다 */
       var on = getComputedStyle(h).position === 'sticky' &&
                h.parentNode.getBoundingClientRect().top < g - 1 &&
-               Math.abs(h.getBoundingClientRect().top - g) < 1;
+               h.getBoundingClientRect().bottom > g + 1;
       h.classList.toggle('is-stuck', on);
+      if(on) any = true;
     });
+    /* 붙은 줄이 있으면 문서에도 표시 — GNB 가 유리를 걷고 흰 단색이 된다(margin-c.css) */
+    document.documentElement.classList.toggle('c-acc-stuck', any);
   }
   function req(){ if(!raf) raf = requestAnimationFrame(apply); }
   window.addEventListener('scroll', req, { passive: true });
