@@ -653,6 +653,16 @@
     .hm-arrows{gap:6px}
     .hm-arrows button{width:36px;height:36px}
     .hm-arrows svg{width:20px;height:20px;transform:rotate(90deg)}
+    /* 접힌 띠 — 사진 없이 짙은 단색 띠 + 사업명 + 펼침 표시(+)(2026-09-29 요청, 안 A).
+       420 높이 사진의 가운데 64 줄만 비쳐 무슨 사진인지 읽히지 않았다. 펼치면 사진이 서서히 드러난다.
+       어둠 막(::after)은 단색 위라 걷는다. 이상하면 안 B(단색 띠 + 오른쪽 작은 썸네일)로 */
+    .hm-card{background:var(--g900)}
+    .hm-card>img{transition:opacity .6s var(--ease)}
+    .hm-card:not(.is-open)>img{opacity:0}
+    .hm-card:not(.is-open)::after{opacity:0}
+    .hm-card .fold::after{content:"";flex:0 0 16px;height:16px;margin-left:auto;
+      background:linear-gradient(#fff,#fff) center/100% 1.5px no-repeat,linear-gradient(#fff,#fff) center/1.5px 100% no-repeat;
+      opacity:.8}
     /* 좁은 화면 — 계단을 접는다. 판은 화면의 92% 로 2 번째만 왼쪽, 나머지는 오른쪽에 붙고
        글은 판 안을 다 쓴다. 제목과 첫 판 사이는 40 을 띄운다(판이 화면 폭을 거의 다 써 겹친다) */
     /* 띠를 세로로 0.4 배(48) 눌러 담는다 */
