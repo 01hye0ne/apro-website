@@ -175,10 +175,11 @@
 .sf-gnb .sf-burger[aria-expanded="true"] .b{width:20px;transform:translateY(5px) rotate(45deg)}
 .sf-gnb .sf-burger[aria-expanded="true"] .c{transform:translateY(-5px) rotate(-45deg)}
 
-/* 푸터 모바일(767 이하) — 사이트맵 메뉴 트리(.f-nav)를 걷는다(2026-09-29 요청, 두산에너빌리티 푸터 참고).
+/* 푸터 모바일 · 태블릿(1180 이하) — 사이트맵 메뉴 트리(.f-nav)를 걷는다(2026-09-29 요청, 두산에너빌리티 푸터 참고).
    같은 트리가 햄버거 전체 메뉴에 이미 있고, 모바일에서는 한 줄 한 칸으로 풀려 푸터가 한 화면 넘게 길어졌다.
-   유틸 줄(정보 링크 · 패밀리 사이트)이 푸터 맨 위가 되므로 위 여백을 줄이고 줄 위 여백은 뺀다 */
-@media(max-width:767px){
+   유틸 줄(정보 링크 · 패밀리 사이트)이 푸터 맨 위가 되므로 위 여백을 줄이고 줄 위 여백은 뺀다.
+   같은 날 태블릿까지 넓힘 — 메뉴 트리는 넓은 화면(1181 이상)에서만 보인다 */
+@media(max-width:1180px){
   .footer .f-nav{display:none}
   .footer{padding-top:40px}
   .footer .f-util{padding-top:0}
