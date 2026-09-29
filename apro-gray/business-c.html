@@ -186,6 +186,12 @@
     .pvec{flex:0 0 52%;height:auto;margin:0;place-items:end end}
     /* 그림은 줄 키의 64% · 칸 폭의 80% 까지만(같은 날 줄임) — 글보다 무겁지 않게 */
     .pvec img,.panel[data-idx="03"] .pvec img{max-width:80%;max-height:64%}
+    /* 누르거나 올렸을 때 뜨는 소분류 목록도 그림 자리(오른쪽 52%)에 — 왼쪽 글과 겹치지 않게(같은 날 요청).
+       줄 키가 190 남짓이라 네 칸이 들도록 칸 32 · 사이 2 · 글자 메타 크기 */
+    .p-lists{left:auto;right:var(--px);bottom:20px;width:calc(52% - var(--px) / 2);gap:2px}
+    .li{height:32px;padding:0 10px}
+    .li .nm{font-size:var(--fs-meta)}
+    .li .tag{padding:0 6px;font-size:var(--fs-tag)}
     header.subhd.is-biz{mix-blend-mode:normal;background:#fff;border-bottom:1px solid var(--border-g)}
     header.subhd.is-biz .hd-left,header.subhd.is-biz .hd-right{color:var(--g900)}
   }
