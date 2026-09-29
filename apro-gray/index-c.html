@@ -612,7 +612,7 @@
     transition:background .2s var(--ease)}
   .v2news .more img{width:20px;height:20px;display:block}
   .v2news .more:hover{background:var(--secondary-bg)}
-  .v2news .news-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .v2news .news-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--c-g)}   /* 격자 거터 20 · 16 · 12(gnb-c.css) */
   .v2news .ncard{min-width:0;display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:inherit}
   .v2news .ncard .img{aspect-ratio:16/9;background:var(--hm-ph);border:1px solid var(--border-g);overflow:hidden}
   .v2news .ncard .img img{width:100%;height:100%;object-fit:cover}
@@ -658,7 +658,7 @@
   /* 좁은 태블릿(768~900)은 넓은 화면처럼 한 줄 세 장(2026-09-29 요청) — 두 칸이면 셋째 카드가 홀로 한 줄을 먹었다.
      카드 폭이 220 남짓이라 제목은 16 · 세 줄까지(18 이면 768 에서 긴 제목이 잘렸다), 글 상자 안 여백은 16 으로 */
   @media(min-width:768px) and (max-width:900px){
-    .v2news .news-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .v2news .news-row{grid-template-columns:repeat(3,minmax(0,1fr))}
     .v2news .ncard .txt{padding:16px}
     .v2news .ncard .title{-webkit-line-clamp:3;font-size:var(--fs-body)}
   }
