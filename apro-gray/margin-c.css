@@ -48,11 +48,13 @@
 
 /* 사업영역 세부 맨 아래 "다른 사업영역" — 모바일(767 이하)은 왼쪽 정렬(2026-09-29 요청).
    위 아코디언 제목 · 푸터가 모두 여백 16 선에서 시작하는데 2×2 칸만 가운데 맞춤이라 줄이 흩어져 보였다.
-   왼쪽 칸 글 · 그림은 그 16 선에, 오른쪽 칸은 가운데 세로선에서 16 떨어져 선다 */
+   글(태그 · 이름)은 왼쪽 — 왼쪽 칸은 그 16 선에, 오른쪽 칸은 가운데 세로선에서 16 떨어져 선다.
+   그림은 오른쪽 아래 구석에 붙인다(같은 날 요청) — 글과 그림이 칸의 대각선 양 끝에 서서 칸이 덜 비어 보인다.
+   오른쪽 끝은 왼쪽 칸이 가운데 세로선에서 16, 오른쪽 칸이 화면 여백 16 선 */
 @media(max-width:767px){
   .bhop-town .bhlot:nth-child(n){padding:32px 16px 0 0}
   .bhop-town .bhlot:nth-child(even){padding:32px 0 0 16px}
   .bhop .bhtop{justify-content:flex-start}
   .bhop .bhnow{align-items:flex-start;text-align:left}
-  .bhop .bhlot img{margin-inline:0}
+  .bhop .bhlot img{margin-inline:auto 0}
 }
