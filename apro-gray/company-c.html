@@ -459,6 +459,16 @@
   @media(min-width:768px) and (max-width:900px){
     .co-val .ph{width:min(100%,480px);margin-inline:auto}
   }
+  /* 넓은 태블릿(901~1180) AAA 판 — 판이 화면 68% 에 글 기둥은 그 안쪽 절반(280 남짓)이라 좌우가 크게 비었다(2026-09-29 요청).
+     좁은 화면과 같은 짜임으로 — 판은 붙은 쪽 화면 끝부터 반대쪽 마진(--co-m 44, 격자 1 · 12열 바깥선)까지,
+     글 · 사진은 판 가운데 한 기둥. 사진은 560 상한 */
+  @media(min-width:901px) and (max-width:1180px){
+    .co-val{width:auto;margin:0 var(--co-m) 0 0}
+    .co-val:nth-child(odd){margin:0 0 0 var(--co-m)}
+    .co-val .in{--pt:56px;padding:var(--pt) 20px 88px calc(20px + var(--co-m))}
+    .co-val:nth-child(odd) .in{padding:var(--pt) calc(20px + var(--co-m)) 88px 20px}
+    .co-val .ph{width:min(100%,560px);margin-inline:auto}
+  }
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
