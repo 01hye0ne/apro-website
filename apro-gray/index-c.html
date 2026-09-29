@@ -415,6 +415,9 @@
   .hm-card .fold .nm{align-self:flex-start;writing-mode:vertical-rl;text-orientation:sideways;
                      transform:rotate(180deg);font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
                      line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
+  /* 이름은 두 줄(2026-09-29 요청) — 마크업의 <br> 에서 접힌다. 줄 사이는 좁게 붙여 한 이름으로 읽히게.
+     화합물은 "화합물 전력 / 반도체"로 두 줄 길이를 비슷하게. 폰(가로 띠)에서는 한 줄로 되돌린다 */
+  .hm-card .fold .nm{line-height:1.15}
   /* 글 띠도 히어로와 같은 유리 판이다. z-index 로 띠를 사진 위 한 층으로 묶어
      판(::before, -1)이 글 아래 · 사진 위에 오게 한다 */
   /* 글 띠는 [이름 · 설명] 아래에 [소분류 띠지]가 카드 바닥에 붙는 두 층이다.
@@ -695,6 +698,7 @@
     .hm-card+.hm-card{border-left:0;border-top:1px solid #fff}
     .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
     .hm-card .fold .nm{align-self:center;writing-mode:horizontal-tb;transform:none;font-size:var(--fs-h3)}
+    .hm-card .fold .nm br{display:none}
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{padding:0 16px}
     .hm-card .sub{gap:20px;padding:10px 16px}
@@ -842,7 +846,7 @@
         <li class="hm-card is-open">
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">스마트 제조</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">스마트 <br />제조</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -861,7 +865,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">에너지 인프라</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">에너지 <br />인프라</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -879,7 +883,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">인공지능 플랫폼</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">인공지능 <br />플랫폼</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -898,7 +902,7 @@
         <li class="hm-card">
           <img src="../assets/gan-hero-aixtron.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">화합물 전력 반도체</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm">화합물 전력 <br />반도체</span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
