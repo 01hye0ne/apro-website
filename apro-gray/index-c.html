@@ -1563,5 +1563,23 @@
 })();
 </script>
 <script src="gnb-c.js"></script>
+<script>
+/* 홈 Business 소분류 띠지(.hm-card .sub) — 넘치면 휠을 가로로 돌린다(2026-09-29 요청).
+   스크롤바를 숨겨 두어 일반 마우스로는 옆으로 밀 방법이 없었다. 가로로 더 갈 곳이 있을 때만 받고,
+   끝에 닿았으면 휠을 그대로 흘려 페이지가 내려간다. 트랙패드의 가로 밀기(deltaX)는 브라우저에 맡긴다 */
+(function(){
+  [].forEach.call(document.querySelectorAll('.hm-card .sub'), function(el){
+    el.addEventListener('wheel', function(e){
+      if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      var max = el.scrollWidth - el.clientWidth;
+      if(max < 1) return;
+      var d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      if((d > 0 && el.scrollLeft >= max - 1) || (d < 0 && el.scrollLeft <= 0)) return;
+      e.preventDefault();
+      el.scrollLeft += d;
+    }, { passive: false });
+  });
+})();
+</script>
 </body>
 </html>
