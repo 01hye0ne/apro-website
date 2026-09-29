@@ -658,6 +658,15 @@
     .hm-who{--who-fade:var(--hm-m)}
     .hm-wv:nth-child(n) .in{padding:40px var(--hm-m) 40px 20px}
     .hm-wv:nth-child(2) .in{padding:40px 20px 40px var(--hm-m)}
+    /* 넷째 판도 둘째처럼 왼쪽에 붙여 좌우를 번갈게 한다(오른 · 왼 · 오른 · 왼, 2026-09-29 요청) —
+       넓은 화면의 넷째는 폭 넓은 오른쪽 판이지만, 모두 92% 인 좁은 화면에서는 셋째와 같은 쪽이라
+       계단이 끊겨 보였다. 흐르는 점은 판의 선 쪽(border-left 유무)을 읽어 길을 그리므로 따라온다 */
+    .hm-wv:nth-child(4){margin-left:0}
+    .hm-wv:nth-child(4) .out{border-left:0;border-right:1px solid var(--who-line);
+      border-radius:0 60px 0 0;padding:12px 12px 0 0;
+      -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--who-fade));
+      mask-image:linear-gradient(to right,transparent,#000 var(--who-fade))}
+    .hm-wv:nth-child(4) .in{border-radius:0 40px 0 0;padding:40px 20px 40px var(--hm-m)}
     .hm-wv .body{max-width:none}
     .hm-wv:nth-child(2) .hd{width:auto}
     .hm-wv h3{font-size:var(--fs-h1)}
