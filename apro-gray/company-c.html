@@ -428,9 +428,12 @@
     .co-vband{padding:40px var(--ci-m)}
     .co-vband h2{font-size:var(--fs-h1)}
     .co-vision{--vpad:120px;--vgap:80px}
-    .co-val{width:auto;margin-inline:var(--co-m)}
-    .co-val:nth-child(odd){margin-left:var(--co-m)}
-    .co-val .in,.co-val:nth-child(odd) .in{--pt:48px;padding:var(--pt) 20px 64px}
+    /* 판은 붙은 쪽(짝수 왼쪽 · 홀수 오른쪽)으로는 화면 끝까지 나가 선이 끊기지 않고 이어진다(2026-09-29 요청,
+       넓은 화면과 같은 짜임). 세로선이 서는 쪽만 여백 16 을 둔다. 글은 붙은 쪽 안쪽 여백에 16 을 더해 제자리 */
+    .co-val{width:auto;margin:0 var(--co-m) 0 0}
+    .co-val:nth-child(odd){margin:0 0 0 var(--co-m)}
+    .co-val .in{--pt:48px;padding:var(--pt) 20px 64px calc(20px + var(--co-m))}
+    .co-val:nth-child(odd) .in{padding:var(--pt) calc(20px + var(--co-m)) 64px 20px}
     .co-val h3{font-size:var(--fs-h1)}
     .co-apro .fig{aspect-ratio:auto;min-height:480px;padding:16px}
     .co-apro .fig>img{object-position:70% 50%}
