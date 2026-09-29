@@ -44,3 +44,14 @@
 @media(max-width:767px){
   .bhop .bhtop{text-align:left;align-items:flex-start}
 }
+
+/* 게시판 목록(.cboard — 공시 · 공지 · ESG 게시판) 글자 강약(2026-09-29 요청).
+   번호 · 제목 · 날짜가 모두 16 이고 색도 비슷해 한 덩어리로 읽혔다. 세 단으로 가른다 —
+     강  제목         --fs-lead(18) · 600 · --g900
+     약  번호 · 날짜  --fs-meta(14) · --teritary
+     머리줄            --fs-meta · 600 · --sec (제목 줄보다 앞에 나서지 않게)
+   좁은 화면(760 이하)의 제목 --fs-h3 은 그대로 */
+.cboard thead th{font-size:var(--fs-meta);font-weight:600;color:var(--sec)}
+.cboard td{font-size:var(--fs-meta);color:var(--teritary)}
+.cboard td.ttl{font-size:var(--fs-lead);color:var(--g900)}
+@media(max-width:760px){ .cboard td.ttl{font-size:var(--fs-h3)} }
