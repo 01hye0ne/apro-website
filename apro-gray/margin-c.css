@@ -127,6 +127,13 @@
   .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck{box-shadow:0 1px 0 var(--sf-line),0 6px 12px -4px rgba(27,39,51,.08)}
   /* 붙은 동안에는 GNB 와 제목 줄 둘 다 유리를 걷고 흰 단색으로(같은 날). 유리 두 겹이 따로 흐려져
      경계에서 번져 보였다 — 한 덩어리 흰 머리줄로 읽히게 한다. 떨어지면 GNB 는 다시 유리 */
-  .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck,
+  .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+/* 태블릿(768~1180) 가로 인덱스 띠(.sf-railwrap)도 붙으면 같은 규칙 — 흰 단색 · 옅은 그림자, GNB 도 흰 단색(같은 날 요청).
+   밑줄은 띠가 원래 갖고 있다(border-bottom). 767 아래는 띠를 걷으므로 붙을 일이 없다 */
+@media(max-width:1180px){
+  .sf-railwrap{transition:box-shadow .2s}
+  .sf-railwrap.is-stuck{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none;
+    box-shadow:0 6px 12px -4px rgba(27,39,51,.08)}
   .c-acc-stuck .sf-gnb{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
 }
