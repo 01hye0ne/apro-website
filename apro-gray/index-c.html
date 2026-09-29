@@ -403,9 +403,10 @@
            transition:flex-basis .8s var(--ease)}
   .hm-card.is-open{flex-basis:var(--open)}
   .hm-card>img{position:absolute;top:0;left:50%;width:var(--open);max-width:none;height:100%;
-               object-fit:cover;transform:translateX(-50%) scale(1.05);transition:transform 1.2s var(--ease)}
-  /* 펴진 카드에 커서를 올리면 사진이 살짝 물러난다(2026-09-29 요청 — 확대 1.03 에서 축소로). 평소 1.05 로 두었다가 제 크기로 */
-  .hm-card.is-open:hover>img{transform:translateX(-50%) scale(1)}
+               object-fit:cover;transform:translateX(-50%) scale(1.04);transition:transform 1.2s var(--ease)}
+  /* 커서를 올리면 — 펴진 카드는 사진이 다가오고(1.04 → 1.08), 접힌 띠는 물러난다(1.04 → 1)(2026-09-29 요청) */
+  .hm-card.is-open:hover>img{transform:translateX(-50%) scale(1.08)}
+  .hm-card:not(.is-open):hover>img{transform:translateX(-50%) scale(1)}
   /* 접힌 띠 — 사진 위에 어둠을 한 겹 깔고 사업명을 세로로 눕혀 왼쪽 아래에 둔다.
      커서를 올리면 어둠이 옅어져 누를 수 있음을 알린다. 펴질 때는 이름표가 먼저 사라지고,
      접힐 때는 폭이 거의 줄어든 뒤에 나타난다 */
@@ -714,7 +715,7 @@
     .hm-track{flex-direction:column;height:auto}
     .hm-card,.hm-card.is-open{flex:0 0 auto;height:64px;transition:height .8s var(--ease)}
     .hm-card.is-open{height:420px}
-    .hm-card>img,.hm-card.is-open:hover>img{top:50%;left:0;width:100%;height:420px;transform:translateY(-50%)}
+    .hm-card>img,.hm-card.is-open:hover>img,.hm-card:not(.is-open):hover>img{top:50%;left:0;width:100%;height:420px;transform:translateY(-50%)}
     .hm-card .cap{right:0;width:auto}
     .hm-card+.hm-card{border-left:0;border-top:1px solid #fff}
     .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 16px}
