@@ -46,6 +46,8 @@
   .cpost-bd img{display:block;width:100%;max-width:800px;height:auto}
   .cpost-bd.has-fig .txt>p:first-child{margin-top:0}
   @media(max-width:900px){ .cpost-bd.has-fig{grid-template-columns:minmax(0,1fr)} }
+  /* 태블릿(768~1180)은 사진 : 본문 = 1 : 1(2026-09-30 요청 — 가로 아이패드에서 사진이 800 까지 커져 본문이 좁은 기둥으로 밀렸다) */
+  @media(min-width:768px) and (max-width:1180px){ .cpost-bd.has-fig{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px} }
   .cpost-bd p{margin:24px 0 0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);
     letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
   .cpost-bd p+p{margin-top:8px}
