@@ -154,3 +154,15 @@
   document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('.sf-acc-btn')) req(); });
   apply();
 })();
+
+/* 맨 위로 가기(#totop) — 화면 절반을 내려가면 뜨고, 누르면 맨 위로. 홈 · 회사소개는 제 장 안에 같은 스크립트가 있어
+   data-wired 로 한 번만 잇는다(콘텐츠 열세 장은 이것뿐이다) */
+(function(){
+  var btn = document.getElementById('totop');
+  if(!btn || btn.dataset.wired) return;
+  btn.dataset.wired = '1';
+  function on(){ btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * .5); }
+  window.addEventListener('scroll', on, { passive: true });
+  on();
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
