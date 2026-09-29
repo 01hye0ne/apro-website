@@ -174,14 +174,16 @@
   @media(max-width:1120px){ .panel{--px:26px} }
   /* 폰(560 아래) — 이 장으로 오는 링크는 폰에 없지만(대분류 메뉴가 접힌다) 공유 주소 · 검색으로 열릴 수 있다(2026-09-29).
      스크롤 없이 한 화면에 넷이 다 보이게 — 머리줄(80) 밑을 네 줄이 똑같이 나눠 갖고, 줄마다 글은 왼쪽 · 그림은 오른쪽(같은 날 요청).
-     글은 줄 가운데 높이에, 그림은 줄 오른쪽 절반 안에 담는다(잘리지 않게 contain).
+     글은 줄 왼쪽 위, 그림은 줄 오른쪽 아래 구석에 담는다(잘리지 않게 contain).
      머리줄은 흰 바탕 · 짙은 글자로(칸이 어두워지는 hover 가 없으니 반전 섞기도 필요 없다) */
   @media(max-width:560px){
     .bizpage{height:100vh;height:100svh;min-height:560px}
     .bizpage .carousel{grid-template-rows:repeat(4,minmax(0,1fr));padding-top:80px}
-    .carousel .panel,.carousel .panel:nth-child(-n+2){height:auto;flex-direction:row;align-items:center;gap:16px;padding:12px var(--px)}
+    .carousel .panel,.carousel .panel:nth-child(-n+2){height:auto;flex-direction:row;align-items:stretch;gap:16px;padding:20px var(--px)}
     .p-foot{flex:1;min-width:0}
-    .pvec{flex:0 0 52%;height:100%;margin:0;place-items:center end}
+    /* 글은 줄 왼쪽 위, 그림은 오른쪽 아래 구석(같은 날 요청 — 넓은 태블릿 2×2 와 같은 대각선) */
+    .p-foot{align-self:flex-start}
+    .pvec{flex:0 0 52%;height:auto;margin:0;place-items:end end}
     /* 그림은 줄 키의 64% · 칸 폭의 80% 까지만(같은 날 줄임) — 글보다 무겁지 않게 */
     .pvec img,.panel[data-idx="03"] .pvec img{max-width:80%;max-height:64%}
     header.subhd.is-biz{mix-blend-mode:normal;background:#fff;border-bottom:1px solid var(--border-g)}
