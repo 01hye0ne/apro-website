@@ -117,9 +117,11 @@
 
 /* 사업영역 세부 모바일(767 이하) — 열린 장의 제목 줄(.sf-acc-hd)을 GNB 밑에 붙박는다(2026-09-29 요청).
    긴 장을 읽는 중에도 지금 어느 장인지 보이고, 그 자리에서 바로 접을 수 있다. 붙는 범위는 제 장 안이라
-   장이 끝나면 다음 줄에 자리를 넘긴다. 장 좌우 여백(16)까지 흰 바탕으로 덮고, 붙어 있을 때만 밑줄(.is-stuck, 스크립트) */
+   장이 끝나면 다음 줄에 자리를 넘긴다. 장 좌우 여백(16)까지 바탕으로 덮고, 붙어 있을 때만 밑줄(.is-stuck, 스크립트) */
 @media(max-width:767px){
   .sf-secs>.sf-sec.is-open>.sf-acc-hd{position:sticky;top:var(--c-gnb-h);z-index:3;
-    margin:0 -16px;padding:0 16px;background:#fff;transition:box-shadow .2s}
+    margin:0 -16px;padding:0 16px;transition:box-shadow .2s;
+    /* 바탕은 GNB(.sf-gnb)와 같은 흰 반투명 — 바로 위 바와 한 겹으로 읽히게(같은 날 흰색에서 바꿈) */
+    background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck{box-shadow:0 1px 0 var(--sf-line)}
 }
