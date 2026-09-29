@@ -191,3 +191,12 @@
   .gn-band,.lc-band{gap:var(--c-g)}
   .lc-info{flex-basis:min(664px,calc(50% - var(--c-g) / 2))}
 }
+
+/* 사업영역 세부 소개 장 소분류 카드 넷(스마트 제조 · 인공지능 플랫폼) — 넓은 태블릿(901~1180)도 한 줄에(2026-09-29 요청).
+   901 에서 칸이 200 남짓이라 카드 안 여백 20 → 16, 이름 --fs-h3 20 → --fs-lead 18 로 한 단 줄인다.
+   "Cycler(Cell&Module)" 은 마크업의 <wbr> 로 괄호 앞에서만 접힌다. 셋인 장은 이미 한 줄 */
+@media(min-width:901px) and (max-width:1180px){
+  .sf-subs:has(>li:nth-child(4):last-child){width:100%;grid-template-columns:repeat(4,minmax(0,1fr))}
+  .sf-subs:has(>li:nth-child(4):last-child) li{padding:16px}
+  .sf-subs:has(>li:nth-child(4):last-child) .nm{font-size:var(--fs-lead)}
+}
