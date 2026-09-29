@@ -471,6 +471,15 @@
                   letter-spacing:var(--ls);color:var(--on-dark-body);white-space:nowrap;
                   text-decoration:none;transition:color .2s var(--ease)}
   .hm-card .sub a:hover,.hm-card .sub a:focus-visible{color:#fff}
+  /* 펴진 카드 글 강약(2026-09-29 요청) — 이름 · 설명 · 소분류가 모두 흰 글자 16~38 에 굵기도 비슷해 한 덩어리로 읽혔다.
+       이름  한 단 크게(--fs-display-sm 48) — 가장 강
+       설명  크기 그대로 · 흰 80%(--on-dark-body) — 중
+       소분류 14 · 600 · 흰 60%(--on-dark-sub) — 약, 올리면 흰색
+     이름과 설명 사이는 8 → 12 로 조금 띄운다 */
+  .hm-card .txt{gap:12px}
+  .hm-card .d{color:var(--on-dark-body)}
+  .hm-card .sub a{font-weight:600;font-size:var(--fs-meta);color:var(--on-dark-sub)}
+  @media(min-width:901px){ .hm-card h3{font-size:var(--fs-display-sm)} }
   /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
      화살표를 레일 아래 오른쪽에 두면 화면 오른쪽 아래에 떠 있는 '맨 위로' 단추와 겹친다.
      아코디언은 네 카드가 늘 다 보이므로 몇 번째인지 알리던 점 표시는 두지 않는다 */
