@@ -584,7 +584,8 @@
      함께 커지고 좁아져도 벌이 창 밖으로 새지 않는다. 17% 는 가장 넓은 벌인
      01(1+2+2 = 다섯 칸 + 사이 둘)이 89% 에 드는 값이다 — 남는 11% 가 이름이
      제 설비보다 넓을 때 삐져나갈 자리다.
-     그림이 아직 없는 설비(에이징 룸 셋)는 4:3 회색 네모로 남는다 */
+     그림이 아직 없는 설비는 4:3 회색 네모로 남는다(지금은 없다 — 에이징은 세 대가 아니라 고온 · 상온 · 출하 온도를
+     한 대가 맡는 설비라 2026-09-29 Figma 1434:2446 그림 한 장으로 채웠다) */
   .sf-map{--eu:17%;--eg:2%}
   .sf-map .it{--ar:1;width:calc(var(--ar) * var(--eu));
               flex-shrink:0;display:flex;flex-direction:column;gap:16px;
@@ -1402,9 +1403,8 @@
                     <div class="it w3"><img class="gx" src="../assets/equip-degas.svg" alt="" decoding="async" /><b>Degas</b></div>
                   </div>
                   <div class="row" data-step="3" id="sfmap-p3" role="tabpanel" aria-labelledby="sfmap-t3" tabindex="0">
-                    <div class="it is-blank"><span class="gx"></span><b>High Temp</b></div>
-                    <div class="it is-blank"><span class="gx"></span><b>Normal Temp</b></div>
-                    <div class="it is-blank"><span class="gx"></span><b>Shipping Temp</b></div>
+                    <div class="it w3"><img class="gx" src="../assets/equip-aging.svg" alt="" decoding="async" /><b>Aging
+(High · Normal · Shipping Temp)</b></div>
                   </div>
                   <div class="row" data-step="4" id="sfmap-p4" role="tabpanel" aria-labelledby="sfmap-t4" tabindex="0">
                     <div class="it"><img class="gx" src="../assets/equip-formation.svg" alt="" decoding="async" /><b>충방전기
