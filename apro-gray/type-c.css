@@ -106,3 +106,8 @@
 /* 사업영역 세부 소분류 묶음 번호(인덱스 · 가로 띠의 묶음 머리 .sf-grp>.hd, 모바일 묶음 띠 .sf-acc-grp 의 "01") — Aldrich(2026-09-29 요청).
    장 번호 태그 · 공정 번호와 같은 숫자 글꼴. 크기 · 굵기는 옆 이름 그대로 두고 글꼴만 */
 .sf-grp>.hd>span:first-child,.sf-acc-grp>span:first-child{font-family:"Aldrich",var(--suit);font-weight:400}
+
+/* 사업영역 세부 단계 번호 — 공정 맵 고리의 번호(.sf-map .ring b, 16)와 옆 목록 번호(.sf-num b, 12)가 같은 01~06 인데
+   크기가 달랐다(2026-09-29 요청). 둘 다 --fs-meta 14 로. 목록 번호 칸은 두 자리가 들게 18 → 24(20 은 "06" 이 접혔다) */
+.sf-map .ring b,.sf-num b{font-size:var(--fs-meta)}
+.sf-num b{width:24px;white-space:nowrap}
