@@ -639,6 +639,13 @@
     .v2news .news-list .go .lb{display:none}
   }
   @media(max-width:560px){ .v2news .news-row{grid-template-columns:minmax(0,1fr)} }
+  /* 좁은 태블릿(768~900)은 넓은 화면처럼 한 줄 세 장(2026-09-29 요청) — 두 칸이면 셋째 카드가 홀로 한 줄을 먹었다.
+     카드 폭이 220 남짓이라 제목은 16 · 세 줄까지(18 이면 768 에서 긴 제목이 잘렸다), 글 상자 안 여백은 16 으로 */
+  @media(min-width:768px) and (max-width:900px){
+    .v2news .news-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .v2news .ncard .txt{padding:16px}
+    .v2news .ncard .title{-webkit-line-clamp:3;font-size:var(--fs-body)}
+  }
 
   @media(max-width:900px){
     :root{--hm-m:16px;--hm-pad:128px}
