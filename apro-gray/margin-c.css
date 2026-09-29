@@ -124,4 +124,8 @@
     /* 바탕은 GNB(.sf-gnb)와 같은 흰 반투명 — 바로 위 바와 한 겹으로 읽히게(같은 날 흰색에서 바꿈) */
     background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck{box-shadow:0 1px 0 var(--sf-line)}
+  /* 붙은 동안에는 GNB 와 제목 줄 둘 다 유리를 걷고 흰 단색으로(같은 날). 유리 두 겹이 따로 흐려져
+     경계에서 번져 보였다 — 한 덩어리 흰 머리줄로 읽히게 한다. 떨어지면 GNB 는 다시 유리 */
+  .sf-secs>.sf-sec.is-open>.sf-acc-hd.is-stuck,
+  .c-acc-stuck .sf-gnb{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
 }
