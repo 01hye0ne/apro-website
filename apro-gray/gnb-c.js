@@ -166,3 +166,19 @@
   on();
   btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
 })();
+
+/* 콘텐츠 장 본문 블록 등장(gnb-c.css "콘텐츠 장 움직임") — 화면에 들어온 낱낱에 .c-in 을 단다. 한 번만 */
+(function(){
+  var body = document.querySelector('.cs-split .cs-body');
+  if(!body || !('IntersectionObserver' in window)) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var items = [].slice.call(body.querySelectorAll('.cblock>*:not(.cgrid):not(.ccreed):not(.cnews)'));
+  [].forEach.call(body.querySelectorAll('.cgrid,.ccreed,.cnews'), function(g){
+    [].forEach.call(g.children, function(li, i){ li.style.setProperty('--ci', Math.min(i, 8)); items.push(li); });
+  });
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('c-in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  items.forEach(function(el){ io.observe(el); });
+  document.documentElement.classList.add('c-rv');
+})();
