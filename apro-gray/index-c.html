@@ -487,8 +487,10 @@
           /* 밀도 있게(2026-09-29 "너무 길다") — 위 여백 160 → 콘텐츠 블록 단계 88, 줄무늬 띠(120)도 88 에 맞춰 누른다(.733) */
           background:var(--brand-2) url(../assets/blue-sky-horizon.jpg) 34% 0/cover no-repeat;
           border-bottom-color:var(--brand-2);color:#fff}
-  /* 제목은 2 · 4 번째 판 글과 같은 세로줄(--who-x)에 선다 */
-  .hm-who .hm-ttl{padding-left:var(--who-x);color:#fff}
+  /* 제목은 2 · 4 번째 판 글과 같은 세로줄(--who-x)에 서고, 첫 판 윗선과 같은 높이에 앉는다(2026-09-29 요청) —
+     첫 판이 오른쪽에 붙어 왼쪽이 비므로 제목 키(줄높이 1 = 1em)만큼 판을 끌어올려 제목 줄을 따로 두지 않는다.
+     글자는 바깥 판 틈(12)만큼 내려 안쪽 판 윗변과 맞춘다. 좁은 화면은 판이 화면을 거의 다 써 겹치므로 아래에서 되돌린다 */
+  .hm-who .hm-ttl{position:relative;z-index:2;top:12px;margin-bottom:-1em;padding-left:var(--who-x);color:#fff}
   .hm-who-list{list-style:none;display:flex;flex-direction:column}
   /* 오른쪽에 붙는 판(1 · 3 · 4) — 기본값 */
   .hm-wv{margin-left:auto}
@@ -647,7 +649,7 @@
        글은 판 안을 다 쓴다. 제목과 첫 판 사이는 40 을 띄운다(판이 화면 폭을 거의 다 써 겹친다) */
     /* 위 여백 56 — 띠를 세로로 0.4 배(48) 눌러 그 안에 담는다 */
     .hm-who{--seam-k:.4;padding-top:56px}
-    .hm-who .hm-ttl{margin-bottom:24px;padding-left:var(--hm-m)}
+    .hm-who .hm-ttl{top:0;margin-bottom:24px;padding-left:var(--hm-m)}
     .hm-wv:nth-child(n){width:92%}
     /* 글이 화면 끝 여백(16)까지 오므로 흐리는 폭도 그만큼만 */
     .hm-who{--who-fade:var(--hm-m)}
