@@ -475,7 +475,12 @@
     .co-values{container-type:inline-size;--u:calc((100cqw - 2 * var(--co-m) + var(--c-g)) / 4)}
     .co-val .in{padding-left:calc(var(--co-m) + var(--u));padding-right:calc(var(--u) / 3 - 22px)}
     .co-val:nth-child(odd) .in{padding-left:calc(var(--u) / 3 - 22px);padding-right:calc(var(--co-m) + var(--u))}
+  }  /* 넓은 태블릿(901~1180) 사옥 판 — 1440:655 비율 그대로면 판 키(1024 에서 465)가 문구 세 줄 + 핵심가치 여섯 줄보다 작아
+     문구와 목록이 겹쳤다(2026-09-29 요청). 비율을 풀고 키를 600 으로 — 글이 늘면 판이 따라 자란다 */
+  @media(min-width:901px) and (max-width:1180px){
+    .co-apro .fig{aspect-ratio:auto;min-height:600px}
   }
+
 
 
 </style>
