@@ -16,3 +16,31 @@
    그림(z -1) 뒤에 오는 ::after 를 같은 층에 두어 그림 위 · 글 아래에 깐다. .cs-hero--low 는 지속가능경영 다섯 장만 쓴다 */
 .cs-hero--low::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,18,14,.62) 0%,rgba(6,18,14,.22) 42%,rgba(6,18,14,.12) 60%,rgba(6,18,14,.5) 100%)}
+
+/* 사업영역 세부 맨 아래 "다른 사업영역" — 박스 태그를 걷고 넷을 한 글꼴로(2026-09-29 요청).
+   전엔 다른 영역은 테두리 박스(38 높이 · 본문 크기), 현재 영역만 큰 제목(국문 + 영문)이라 한 줄에서
+   글 크기 · 윗선이 제각각이었다. 이제 넷 모두 [국문 제목 · 영문] 두 줄이고 색으로만 가른다 —
+   현재 영역은 짙게(--g900 · 영문 --teritary), 다른 영역은 옅게(--teritary). 불이 도는 루프와
+   마우스 얹기는 박스를 채우던 대신 글을 브랜드 파랑으로 켠다(그림이 함께 켜지는 박자는 그대로) */
+.bhop .bhtag{height:auto;padding:0;border:0;border-radius:0;background:none;
+  display:flex;flex-direction:column;align-items:inherit;text-align:inherit;gap:6px;white-space:normal;
+  color:var(--teritary);transition:color .25s var(--ease)}
+.bhop .bhtag .ko{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);
+  line-height:var(--lh-head);letter-spacing:var(--ls-num);word-break:keep-all}
+.bhop .bhtag .en{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-head);
+  letter-spacing:var(--ls)}
+.bhop .bhtop{text-align:center;flex-direction:column;align-items:center}
+@keyframes bhlit{
+  0%,100%{background:none;color:var(--teritary)}
+  5%,20%{background:none;color:var(--brand)}
+  27%{background:none;color:var(--teritary)}
+}
+.bhop .bhlot:not(.is-here):hover .bhtag{background:none;color:var(--brand)}
+@media(max-width:900px){
+  .bhop .bhtag{height:auto;padding:0;font-size:inherit}
+  .bhop .bhtag .ko{font-size:var(--fs-h3)}
+  .bhop .bhtag .en{font-size:var(--fs-meta)}
+}
+@media(max-width:767px){
+  .bhop .bhtop{text-align:left;align-items:flex-start}
+}
