@@ -454,21 +454,18 @@
     /* 문구가 판 윗끝(16)에 붙어 있었다 — 위를 64 로 띄워 빈 밤하늘 쪽으로 내린다(같은 날 요청) */
     .co-apro .fig{padding-top:64px}
   }
-  /* 좁은 태블릿(768~900) AAA 판 사진 — 판 폭을 다 써 사진이 화면을 거의 채웠다(2026-09-29 요청).
-     폭 480 상한 · 가운데로(글도 가운데 정렬이다). 폰은 폭이 모자라 그대로 */
+
+  /* 태블릿(768~900) AAA 판 — 넓은 화면 구도 그대로(2026-09-29 요청: 넓은 화면의 느낌이 반응형에서도 이어지게).
+     판은 화면 68% 로 좌우 번갈아 붙고, 글 · 사진은 판의 화면 안쪽 절반 기둥에 선다 — 사진이 화면 대비
+     넓은 화면과 같은 크기로 읽힌다. 900 아래 좁은 화면 규칙(판 92% · 한 기둥)을 이 폭에서만 되돌린다.
+     (같은 날 한때 태블릿을 좁은 화면 짜임으로 넓혔다가 되돌림.) 폰(767 이하)은 폭이 모자라 좁은 화면 짜임 */
   @media(min-width:768px) and (max-width:900px){
-    .co-val .ph{width:min(100%,480px);margin-inline:auto}
+    .co-val{width:68.125%;margin:0}
+    .co-val:nth-child(odd){margin:0 0 0 auto}
+    .co-val .in{--pt:64px;padding:var(--pt) 2.08% 120px 52.13%}
+    .co-val:nth-child(odd) .in{padding:var(--pt) 52.13% 120px 2.08%}
   }
-  /* 넓은 태블릿(901~1180) AAA 판 — 판이 화면 68% 에 글 기둥은 그 안쪽 절반(280 남짓)이라 좌우가 크게 비었다(2026-09-29 요청).
-     좁은 화면과 같은 짜임으로 — 판은 붙은 쪽 화면 끝부터 반대쪽 마진(--co-m 44, 격자 1 · 12열 바깥선)까지,
-     글 · 사진은 판 가운데 한 기둥. 사진은 560 상한 */
-  @media(min-width:901px) and (max-width:1180px){
-    .co-val{width:auto;margin:0 var(--co-m) 0 0}
-    .co-val:nth-child(odd){margin:0 0 0 var(--co-m)}
-    .co-val .in{--pt:56px;padding:var(--pt) 20px 88px calc(20px + var(--co-m))}
-    .co-val:nth-child(odd) .in{padding:var(--pt) calc(20px + var(--co-m)) 88px 20px}
-    .co-val .ph{width:min(100%,560px);margin-inline:auto}
-  }
+
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
