@@ -213,3 +213,18 @@
 @media(max-width:767px){
   .sf-sec>.sf-ph{aspect-ratio:4/3}
 }
+
+/* 사업영역 세부 히어로 등장(2026-09-29 요청) — 마스크 라이즈 + 사진 줌아웃.
+   사진은 1.06 → 1 로 천천히(1.6초). 국문 제목이 먼저 옅게 떠오르고(0.1초 뒤 · 0.5초), 영문 대제목은 제 줄 아래에서
+   밀려 올라온다(0.3초 뒤 · 0.9초) — 줄 밖은 clip-path 로 잘려 선 아래에서 솟는 것처럼 보인다.
+   흐르는 띠는 마지막에 옅게(0.7초 뒤). 동작 줄이기면 모두 끈다 */
+@keyframes sfHeroZoom{from{transform:scale(1.06)}to{transform:none}}
+@keyframes sfHeroFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes sfHeroRise{from{transform:translateY(70%);clip-path:inset(0 0 100% 0)}to{transform:none;clip-path:inset(0 0 -10% 0)}}
+@keyframes sfHeroIn{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:no-preference){
+  .sf-heroin>img{animation:sfHeroZoom 1.6s cubic-bezier(.22,1,.36,1) both}
+  .sf-hero .ko{animation:sfHeroFade .5s cubic-bezier(.22,1,.36,1) .1s both}
+  .sf-hero .en{animation:sfHeroRise .9s cubic-bezier(.22,1,.36,1) .3s both}
+  .sf-hero .sf-ticker{animation:sfHeroIn .6s ease .7s both}
+}
