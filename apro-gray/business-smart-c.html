@@ -1130,6 +1130,11 @@
        칸을 사진 비율(2100×1800 = 7:6) 그대로 두면 사진이 온전히 보이고, 물체 바닥(사진 높이의 72~78%)
        아래 빈 바닥에 설명(아래 16% 남짓)이 사진 안에 얹힌다. 한때 설명을 사진 밖 아래 띠로 뺐다가 되돌림 */
     .sf-sec>.sf-ph:has(#cnt-pw){aspect-ratio:7/6}
+    /* 제품 목록(HNBR 바인더 · 라텍스) — 한 줄 [태그 | 설명 | 값]은 폰 폭에서 설명이 두 줄로 접혔다(2026-09-29 요청).
+       윗줄에 태그, 아랫줄에 설명(왼쪽) · 값(오른쪽)으로 */
+    .sf-dl--row{grid-template-columns:minmax(0,1fr) max-content}
+    .sf-dl--row li{row-gap:8px;column-gap:16px}
+    .sf-dl--row .k{grid-column:1/-1;justify-self:start}
     .sf-railwrap{display:none}
     /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
     .sf-acc-grp{display:flex}
