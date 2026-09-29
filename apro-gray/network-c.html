@@ -172,6 +172,12 @@
     .gn-map .lead,.gn-lab{display:none}
     .gn-list{display:flex}
   }
+  /* 모바일 히어로 문장 — 20px 여섯 줄이 한 덩어리라 부담스러웠다(2026-09-29 요청).
+     첫 문장만 헤드라인(--fs-h2)으로 남기고, 나머지 두 문장은 본문 크기 · 옅은 흰색(--on-dark-body)으로 */
+  @media(max-width:900px){
+    .ci-hero .sub span:first-child{display:block;margin-bottom:12px}
+    .ci-hero .sub span+span{font-size:var(--fs-body);line-height:var(--lh-body);color:var(--on-dark-body)}
+  }
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
