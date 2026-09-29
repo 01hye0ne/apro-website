@@ -196,4 +196,6 @@
    넓은 화면처럼 한 행에 [대분류 | 하위 두 칸]으로 세운다. 대분류와 첫 하위 줄은 글자 바닥선을 맞춘다. 폰은 제목 위 · 하위 두 칸 그대로 */
 @media(min-width:768px) and (max-width:900px){
   .navover .ov-row{grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline}
+  /* 목록이 짧아져 한 화면에 들므로 넓은 태블릿처럼 세로 가운데로(같은 날 요청). 위아래 80 은 머리줄 몫 */
+  .navover .navover-body{justify-content:center;padding-bottom:80px}
 }
