@@ -813,7 +813,8 @@
   /* 태블릿 · 넓은 화면도 모바일처럼 제목 바로 옆(12 띄움)으로(2026-09-29 요청). 자리는 스크립트가 제목 끝을 재어
      --cta-x · --cta-y 로 준다(아래 "문의하기 자리"). 스크립트가 못 돌면 원래 자리(오른쪽 끝)에 그대로 선다 */
   @media(min-width:768px){
-    .sf-sec.has-cta-at .sf-cta{left:var(--cta-x);top:var(--cta-y);right:auto}
+    .sf-sec.has-cta-at .sf-cta{left:var(--cta-x);top:var(--cta-y);right:auto;
+                               height:32px;padding:0 12px}  /* 크기도 모바일과 같은 32 — 제목보다 무겁지 않게(같은 날) */
   }
 
   /* 번호 목록 (01-1 공정 프로세스 맵) — 폭은 글 열을 그대로 따른다(430 고정이었다) */
