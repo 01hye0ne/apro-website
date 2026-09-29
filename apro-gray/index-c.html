@@ -660,6 +660,11 @@
     .hm-card>img{transition:opacity .6s var(--ease)}
     .hm-card:not(.is-open)>img{opacity:0}
     .hm-card:not(.is-open)::after{opacity:0}
+    /* 펴진 카드 글 띠의 흐림(blur 3 · 위로 120) — 모바일에서는 걷는다(2026-09-29 요청).
+       420 카드의 아래 절반을 덮어 세게 보였고, 글 띠가 늦게(.4s 뒤 .5s) 서서히 켜지는 동안 폰 브라우저(특히 Safari)가
+       흐림을 끝에 한꺼번에 입혀 0.5~1 초 늦게 '툭' 번졌다. 흰 글자 읽힘은 어둠 기울기가 맡는다. 글 띠도 조금 일찍(.25s) */
+    .hm-card .cap::before{-webkit-backdrop-filter:none;backdrop-filter:none}
+    .hm-card .cap{transition:opacity .45s var(--ease) .25s,visibility 0s linear 0s}
     .hm-card .fold::after{content:"";flex:0 0 16px;height:16px;margin-left:auto;
       background:linear-gradient(#fff,#fff) center/100% 1.5px no-repeat,linear-gradient(#fff,#fff) center/1.5px 100% no-repeat;
       opacity:.8}
