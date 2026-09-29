@@ -97,3 +97,8 @@
 .sf-subs .nm{color:var(--brand)}
 /* 같은 날 설명도 회색으로 내려 봄 — 세부 페이지 줄글과 같은 --sf-sec(#5a6675). 이름만 파랑으로 남긴다 */
 .sf-subs .d{color:var(--sf-sec)}
+
+/* 카드 격자 번호(.cgrid .mark 안 글자 — 지배구조 윤리헌장 01~04) — SUIT 800 대신 Aldrich(2026-09-29 요청).
+   공정 번호 · AAA 번호 · 게시판 날짜처럼 사이트의 숫자 글꼴에 맞춘다. 아이콘(svg)이 든 표시는 그대로.
+   Aldrich 는 400 한 굵기라 크기를 한 단 올린다(14 → 16) */
+.cgrid .mark:not(:has(svg)){font-family:"Aldrich",var(--suit);font-weight:400;font-size:var(--fs-body);letter-spacing:var(--ls-num)}
