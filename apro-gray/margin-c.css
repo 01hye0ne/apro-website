@@ -137,3 +137,19 @@
     box-shadow:0 6px 12px -4px rgba(27,39,51,.08)}
   .c-acc-stuck .sf-gnb{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
 }
+
+/* ── 좁은 태블릿(768~900) 좌우 여백 32 (2026-09-29 요청) ───────────────────────────────
+   --c-m 이 이 폭에서 32(gnb-c.css). 1281 이상과 같은 방식으로 영역별 여백 변수를 --c-m 에 잇고,
+   사업영역 세부 네 장의 날값 24(인덱스 띠 · 인트로 · 장)와 아래 진입점 폭도 옮긴다.
+   홈은 이 파일을 부르지 않아 index-c.html 이 직접 잇는다. 폰(767 이하)은 16 그대로 */
+@media(min-width:768px) and (max-width:900px){
+  :root{--co-m:var(--c-m)}
+  .footer{--f-m:var(--c-m)}
+  .ci-top{--ci-m:var(--c-m)}
+  .cs-split{--cs-m:var(--c-m)}
+  .cgov-board{--gm:var(--c-m)}
+  .sf-rail{padding-left:var(--c-m);padding-right:var(--c-m)}
+  .sf-intro,.sf-sec,.sf-sec.is-prod{padding-left:var(--c-m);padding-right:var(--c-m)}
+  .bhop-town{width:calc(100% - 2 * var(--c-m))}
+  .co-apro .fig{padding-left:var(--c-m);padding-right:var(--c-m)}
+}
