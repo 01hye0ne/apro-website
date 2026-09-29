@@ -159,3 +159,12 @@
 @media(max-width:900px){
   .cgrid:has(>li:last-child:nth-child(odd)){--col:1}
 }
+
+/* 좁은 태블릿(768~900) 다섯 장 묶음(책임있는 공급망 핵심가치 · 보고서 주제) — 아이콘 + 짧은 제목뿐이라
+   한 줄에 한 장으로 쌓으면 높이만 길었다(2026-09-29 요청). 3 + 2 로 — 6칸 격자에서 윗줄 셋은 두 칸씩,
+   아랫줄 둘은 세 칸씩 차지해 빈칸 없이 줄 끝이 맞는다. 폰은 한 줄에 한 장 그대로 */
+@media(min-width:768px) and (max-width:900px){
+  .cgrid:has(>li:nth-child(5):last-child){grid-template-columns:repeat(6,minmax(0,1fr))}
+  .cgrid:has(>li:nth-child(5):last-child)>li{grid-column:span 2}
+  .cgrid:has(>li:nth-child(5):last-child)>li:nth-child(n+4){grid-column:span 3}
+}
