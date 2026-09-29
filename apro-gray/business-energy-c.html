@@ -994,6 +994,10 @@
     .sf-prod{flex-direction:row;min-height:0}
     .sf-prod>.shot{flex:0 0 38%;width:auto;height:auto;aspect-ratio:1;align-self:center;margin:0}
     .sf-prod>.side{border-left:1px solid var(--c-bd)}
+  }
+  /* 특징 목록(아이콘 왼쪽 · 글 오른쪽, 한 줄에 하나)은 폰에서도 같다 — 2×2 칸에서는 글 칸이 좁아 설명이
+     두세 줄로 잘게 접혔다(같은 날 요청). 사진이 위에 오는 카드 짜임은 폰 그대로 */
+  @media(max-width:1180px){
     .sf-feat{display:flex;flex-direction:column;flex-wrap:nowrap}
     .sf-feat li{flex:none;flex-direction:row;align-items:flex-start;gap:12px;padding:12px 16px}
     .sf-feat li+li{border-left:0;border-top:1px solid var(--c-bd,var(--sf-line))}
