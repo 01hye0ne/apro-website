@@ -99,3 +99,8 @@
 @media(max-width:767px){
   .sf-hero .en{font-size:min(var(--fs-display),calc((100vw - 2 * clamp(24px,6vw,88px)) / 7.6))}
 }
+
+/* 게시판 목록 모바일(760 이하) — 쪽 넘김이 숨긴 줄(tr[hidden])이 다 보이던 버그(2026-09-29 발견).
+   줄을 세로로 쌓는 규칙(.cboard tr{display:block})이 브라우저 기본 [hidden]{display:none} 을 이겨,
+   공지 34 건이 한 번에 다 서고 쪽 번호는 그 밑에 붙어 있었다 */
+.cboard tr[hidden]{display:none}
