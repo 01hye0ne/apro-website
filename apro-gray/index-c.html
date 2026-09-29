@@ -648,6 +648,11 @@
     .hm-card .sub{gap:20px;padding:10px 16px}
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:var(--fs-meta)}
+    /* 넘기기 단추 — 카드가 위아래로 쌓이므로 화살표도 위(이전) · 아래(다음)로 돌리고, 한 단 작게(44 → 36 · 그림 20).
+       제목(--fs-h1) 옆에서 단추가 제목만큼 무거워 보였다(2026-09-29 요청) */
+    .hm-arrows{gap:6px}
+    .hm-arrows button{width:36px;height:36px}
+    .hm-arrows svg{width:20px;height:20px;transform:rotate(90deg)}
     /* 좁은 화면 — 계단을 접는다. 판은 화면의 92% 로 2 번째만 왼쪽, 나머지는 오른쪽에 붙고
        글은 판 안을 다 쓴다. 제목과 첫 판 사이는 40 을 띄운다(판이 화면 폭을 거의 다 써 겹친다) */
     /* 띠를 세로로 0.4 배(48) 눌러 담는다 */
