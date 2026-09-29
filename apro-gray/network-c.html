@@ -149,10 +149,12 @@
   }
 
   @media(max-width:900px){
-    /* 지도 · (목록) · 숫자 차례. 마크업은 숫자가 먼저라(넓은 화면에서 지도 왼쪽) 자리만 뒤로 보낸다 */
+    /* 숫자 · 지도 · (목록) 차례 — 마크업 순서 그대로다 */
     .gn-band{flex-direction:column;align-items:stretch;gap:32px;padding:40px var(--ci-m)}
     .gn-map{flex:none;width:100%}
-    .gn-stats{order:3;flex-direction:row;gap:40px;margin-bottom:0}
+    /* 숫자(Global Bases · Years History)는 지도 위로 — 소개 글 다음에 지표가 먼저 서고 지도 · 거점 목록이 뒤따른다
+       (2026-09-29 요청. 전엔 order 3 으로 맨 아래였다) */
+    .gn-stats{order:0;flex-direction:row;gap:40px;margin-bottom:0}
     .gn-stats .v{font-size:var(--fs-display-sm)}
   }
   /* 767 아래에서는 지도가 이름표를 달기에 너무 좁다 — 열 곳이 서로 겹치고 오른쪽 사다리는
