@@ -84,3 +84,9 @@
   .sf-picks button[aria-selected="true"]{border-color:var(--brand)}
   .sf-picks button[aria-selected="true"] .nm{color:var(--brand)}
 }
+
+/* 글 상세 머리(보도자료 · 공지 · 공시 상세) [목록으로 · 기사 원문 보기] — 한 단 작게(2026-09-29 요청).
+   내려받기 버튼(.cbtn, 높이 ≈54 · 본문 크기)을 그대로 써서 제목 줄 옆 · 모바일 제목 밑에서 제목보다 무거워 보였다.
+   머리 안의 버튼만 높이 ≈38(위아래 9 · --fs-meta)로. 본문의 내려받기 버튼은 그대로 */
+.cpost-hd .cbtn{padding:9px 16px;gap:8px;font-size:var(--fs-meta);line-height:var(--lh-body)}
+.cpost-hd .cbtns{gap:8px}
