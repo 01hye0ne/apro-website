@@ -1124,6 +1124,9 @@
        스크립트가 --acc-tw 로 재어 준다(아래 "문의하기 자리"). 장을 접으면 글 칸째 감춰지므로 함께 사라진다 */
     .sf-sec:has(.sf-cta){position:relative}
     .sf-sec:has(.sf-cta) .sf-txtin{position:static}
+    /* 제목 줄이 붙박이(margin-c.css)라 [문의하기]도 스크립트가 줄 안으로 옮겨 함께 붙는다. 접힌 장에서는 감춘다 */
+    .sf-acc-hd{position:relative;--c-num:var(--brand)}  /* 단추 색 토큰은 글 칸(.sf-txt)에만 있어 줄에도 둔다 */
+    .sf-sec:not(.is-open)>.sf-acc-hd .sf-cta{display:none}
     .sf-sec .sf-cta{position:absolute;z-index:2;top:17px;left:calc(16px + var(--acc-tw,0px) + 12px);right:auto;
                     height:32px;padding:0 12px}
     /* 제품 사진 — 16:9 칸에서는 사진 위아래가 잘려 설명이 접시 · 실린더 위에 얹혔다(2026-09-29 요청).
@@ -2505,6 +2508,18 @@
       s.style.setProperty('--acc-tw', Math.ceil(r.getBoundingClientRect().width) + 'px');
     });
   }
+  /* 모바일에서는 [문의하기]를 제목 줄 안으로 옮긴다 — 줄이 GNB 밑에 붙박일 때 함께 따라가도록. 넓어지면 제자리로 */
+  var mob = window.matchMedia('(max-width:767px)');
+  var homes = secs.map(function(s){ var c = s.querySelector('.sf-cta'); return { c: c, p: c.parentNode, n: c.nextSibling }; });
+  function move(){
+    secs.forEach(function(s, i){
+      var h = homes[i], hd = s.querySelector('.sf-acc-hd');
+      if(mob.matches && hd){ if(h.c.parentNode !== hd) hd.appendChild(h.c); }
+      else if(h.c.parentNode !== h.p){ h.p.insertBefore(h.c, h.n); }
+    });
+  }
+  if(mob.addEventListener) mob.addEventListener('change', move); else if(mob.addListener) mob.addListener(move);
+  move();
   window.addEventListener('load', put);
   window.addEventListener('resize', put);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(put);
