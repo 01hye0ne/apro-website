@@ -228,3 +228,9 @@
   .sf-hero .en{animation:sfHeroRise .9s cubic-bezier(.22,1,.36,1) .3s both}
   .sf-hero .sf-ticker{animation:sfHeroIn .6s ease .7s both}
 }
+
+/* 사업영역 세부 소개 장 넓은 태블릿(901~1180) 위아래 여백 — 화면 키를 따라 주는 --intro-pad 가 가로 아이패드(1180×740 남짓)에서
+   50 안팎으로 줄어 리드가 GNB · 히어로 밑에, 카드가 다음 장에 붙어 보였다(2026-09-30 요청). 콘텐츠 블록 단계 88 로 못박는다 */
+@media(min-width:901px) and (max-width:1180px){
+  .sf-intro{padding-top:88px;padding-bottom:88px}
+}
