@@ -528,6 +528,22 @@
               -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--who-fade));
               mask-image:linear-gradient(to right,transparent,#000 var(--who-fade))}
   .hm-wv:nth-child(2) .in{border-radius:0 40px 0 0;padding:56px 44px 56px var(--who-x)}
+  /* 넓은 태블릿(901~1180) — 글을 격자 열에 맞춘다(2026-09-29 요청). 넓은 화면의 --who-x(18.96cqw)는 1440 격자 3열 자리라
+     이 폭에서는 어느 열에도 서지 않았다.
+       제목 · 왼쪽 판 글 → 1열(마진 --hm-m, GNB 로고 선)
+       오른쪽 판(1 · 3) 글 → 7열(화면 가운데 + 거터 절반 10) — 판 폭을 50cqw + 47 로 두면 판 왼쪽 + 선 틈 13 + 안 여백 44 가 거기 온다
+     넷째 판은 오른쪽에 붙은 넓은 판이라 글을 1열까지 끌어올 수 없다 — 좁은 화면처럼 둘째와 같이 왼쪽에 붙여 좌우를 번갈게 한다 */
+  @media(min-width:901px) and (max-width:1180px){
+    /* 글이 화면 끝 여백(44)부터 서므로 판 끝을 흐리는 폭도 그만큼만(좁은 화면과 같다) — 111 이면 왼쪽 판 글 앞머리가 흐려졌다 */
+    .hm-who{--who-x:var(--hm-m);--who-fade:var(--hm-m)}
+    .hm-wv:nth-child(1),.hm-wv:nth-child(3){width:calc(50cqw + 47px)}
+    .hm-wv:nth-child(4){width:66.67cqw;margin-left:0}
+    .hm-wv:nth-child(4) .out{border-left:0;border-right:1px solid var(--who-line);
+                border-radius:0 60px 0 0;padding:12px 12px 0 0;
+                -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--who-fade));
+                mask-image:linear-gradient(to right,transparent,#000 var(--who-fade))}
+    .hm-wv:nth-child(4) .in{border-radius:0 40px 0 0;padding:56px 44px 56px var(--who-x)}
+  }
   /* 글 기둥은 네 판 모두 503 — 2 번째 판만 이름 밑선이 그보다 짧은 323 까지다(시안 그대로) */
   .hm-wv .body{display:flex;flex-direction:column;gap:20px;max-width:503px}
   .hm-wv:nth-child(2) .hd{width:64.2%}
