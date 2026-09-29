@@ -92,7 +92,7 @@
        목록)이 한 화면을 29px 넘긴다 — 휠 한 번이 다음 장으로 건너뛰므로 그 29px 는
        영영 안 보인다. 그래서 본문 자리 560 을 먼저 떼고 남는 만큼을 위아래로 나누되,
        설계값 176 을 넘지는 않게 한다. 화면이 넉넉하면(1140 이상) 그대로 176 이다 */
-    --sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 560px) / 4),88px);
+    --sec-pad:clamp(8px,round(down,(100svh - var(--gnb-h) - 560px) / 4,1px),88px);
     /* 본문 띠 — 눈금 줄 + 그림이 앉는 높이. 붙박이 그림 기둥과 글 한 장이
        이 값을 같이 쓴다(그래서 두 눈금 줄이 한 줄로 맞는다) */
     --band-h:calc(100svh - var(--gnb-h) - var(--sec-pad) * 2);
@@ -723,7 +723,10 @@
   .sf-line{height:16px;flex-shrink:0;display:flex;align-items:center}
   .sf-line i{display:block}
   /* 그림 기둥의 줄은 기둥 사이 8 을 건너 글 기둥의 줄과 만난다 */
-  .sf-figcol>.sf-line{margin-right:-8px}
+  /* 두 눈금이 한 자리에 겹치도록 기둥 사이 8 + 눈금 폭 2 를 건넌다 — 8 만 건너면 두 눈금이 나란히 붙어
+     4px 굵기로 보였다. --sec-pad 는 정수로 내림한다(round) — 화면 키 ÷ 4 가 .25 · .5 로 떨어지면 장 사이가
+     642.5 처럼 반 픽셀이 되어 한 장 걸러 눈금 줄이 붙박이 줄과 1px 어긋났다(2026-09-29) */
+  .sf-figcol>.sf-line{margin-right:-10px}
   .sf-line .rule{flex:1;min-width:0;height:1px;background:var(--c-rule,var(--sf-line-s))}
   .sf-line .tick{width:2px;height:12px;flex-shrink:0;background:var(--c-tick,var(--sf-ter))}
   /* 숫자 태그 — 폭을 32 로 고정한다(Figma 실측). 글자에 맞춰 늘었다 줄었다 하면
@@ -1012,7 +1015,7 @@
   }
   @media(max-width:1180px){
     .sf-railwrap{width:196px;padding-right:16px;margin-right:8px}
-    :root{--sec-pad:clamp(8px,calc((100svh - var(--gnb-h) - 520px) / 4),60px)}
+    :root{--sec-pad:clamp(8px,round(down,(100svh - var(--gnb-h) - 520px) / 4,1px),60px)}
     /* 카드가 7열로는 좁아진다 — 리드 아래 자리를 통째로 내준다 */
     .sf-intro{gap:40px}
     .sf-subs{width:100%}
@@ -2449,6 +2452,28 @@
   }
   if(window.ResizeObserver) new ResizeObserver(again).observe(wrap);
   else window.addEventListener('resize', again);
+})();
+</script>
+<script>
+/* 장 높이를 정수로 올린다 — 글이 띠보다 긴 장은 글 높이(줄높이 × 글자 크기)를 따라 642.41 처럼 소수로 끝나
+   다음 장들의 눈금 줄이 붙박이 줄과 1px 어긋난다(2026-09-29). 띠 높이(--band-h)는 CSS 에서 이미 정수다.
+   눈금 줄이 붙박이 그림 기둥과 만나는 넓은 화면(1181~)에서만 — 좁은 화면의 장은 아코디언이라 높이를 묶으면 안 접힌다 */
+(function(){
+  var secs = [].slice.call(document.querySelectorAll('.sf-secs>.sf-sec'));
+  if(!secs.length) return;
+  var wide = window.matchMedia('(min-width:1181px)');
+  function snap(){
+    secs.forEach(function(s){ s.style.minHeight = ''; });
+    if(!wide.matches) return;
+    secs.forEach(function(s){
+      var h = s.getBoundingClientRect().height;
+      if(h % 1 > .01) s.style.minHeight = Math.ceil(h) + 'px';
+    });
+  }
+  var t = 0;
+  window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(snap, 120); });
+  window.addEventListener('load', snap);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(snap);
 })();
 </script>
 <script src="gnb-c.js"></script>
