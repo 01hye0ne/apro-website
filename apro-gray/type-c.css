@@ -74,7 +74,7 @@
 .sf-gnb .sf-drop a:hover,.sf-gnb .sf-drop a[aria-current],.sf-gnb .sf-menus>li>a[aria-current],
 .sf-gnb .sf-tools button:hover,.sf-gnb .sf-tools button[aria-expanded="true"],
 .sf-lead .b,.sf-map .it b,.sf-map .ring li.is-on,.sf-menus>li>a[aria-current],.sf-rail a:hover,
-.sf-sec.is-open>.sf-acc-hd .sf-acc-btn,.sf-subs .d,.sf-subs .nm,
+.sf-sec.is-open>.sf-acc-hd .sf-acc-btn,.sf-subs .d,
 .sf-tools button:hover,.sf-tools button[aria-expanded="true"],
 .v2news .ncard:hover .title,.v2news .news-list a:hover .ttl{color:var(--brand-2)}
 @media(max-width:1180px){ .sf-rail a[aria-current="true"]{color:var(--brand-2)} }
@@ -91,3 +91,7 @@
 :root{--c-num-tx:var(--brand-2)}
 @media(min-width:1181px){ .js .sf-sec:not(.is-on) .sf-txt{--c-num-tx:var(--sf-line-s)} }
 .sf-apps b,.sf-cert li.em,.sf-dl--row .k,.sf-prods .k,.sf-dl--row .v,.sf-prods .cap,.sf-num b{color:var(--c-num-tx)}
+
+/* 사업영역 세부 소개 장 소분류 카드 — 이름(.nm)은 짙은 브랜드 파랑 --brand, 설명(.d)은 보조 파랑 --brand-2 (2026-09-29 요청).
+   둘 다 --brand-2 여서 이름과 설명이 한 색으로 읽혔다 — 이름을 한 단 짙게 해 강약을 둔다 */
+.sf-subs .nm{color:var(--brand)}
