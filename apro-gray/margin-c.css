@@ -168,3 +168,11 @@
   .cgrid:has(>li:nth-child(5):last-child)>li{grid-column:span 2}
   .cgrid:has(>li:nth-child(5):last-child)>li:nth-child(n+4){grid-column:span 3}
 }
+
+/* 사업영역 세부 네 장 넓은 태블릿(901~1180) 좌우 여백 — 인덱스 띠 · 인트로 · 장이 날값 24(인트로는 --grid-m 44 와 다른 값)라
+   GNB 로고 · 도구 선(--c-m 44)과 어긋났다(2026-09-29 요청). 좁은 태블릿과 같은 방식으로 --c-m 에 잇는다 */
+@media(min-width:901px) and (max-width:1180px){
+  .sf-rail{padding-left:var(--c-m);padding-right:var(--c-m)}
+  .sf-intro,.sf-sec,.sf-sec.is-prod{padding-left:var(--c-m);padding-right:var(--c-m)}
+  .bhop-town{width:calc(100% - 2 * var(--c-m))}
+}
