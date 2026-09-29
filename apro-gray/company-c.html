@@ -469,6 +469,9 @@
      = 화면 폭 - 마진(--co-m) - 두 칸(열 + 거터 둘) · (한 칸 = (폭 - 마진 둘 + 거터) / 12) */
   @media(min-width:768px) and (max-width:1180px){
     .co-val{width:calc(100% - var(--co-m) - (100% - 2 * var(--co-m) + var(--c-g)) / 6)}
+    /* 글 · 사진 기둥은 판 가운데로(같은 날 요청) — 넓힌 판 안에서 안쪽 절반에 두면 번호 상자 · 제목이 판 가운데를 벗어났다.
+       좌우 16% 씩 비워 기둥이 판 폭의 68% */
+    .co-val .in,.co-val:nth-child(odd) .in{padding-left:16%;padding-right:16%}
   }
 
 
