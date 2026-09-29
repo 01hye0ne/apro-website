@@ -55,3 +55,6 @@
 .cboard td{font-size:var(--fs-meta);color:var(--teritary)}
 .cboard td.ttl{font-size:var(--fs-lead);color:var(--g900)}
 @media(max-width:760px){ .cboard td.ttl{font-size:var(--fs-h3)} }
+
+/* 게시판 머리줄 "총 n건"의 숫자 — 브랜드 파랑(2026-09-29 요청). 공지 · 보도자료 · ESG 게시판 */
+.clist-hd .count b{color:var(--brand)}
