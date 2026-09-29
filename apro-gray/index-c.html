@@ -353,6 +353,11 @@
     .v2banner .v2b-inner{padding-top:calc(var(--c-gnb-h) + clamp(64px,18vh,var(--hm-pad)));padding-bottom:20px}
     .v2banner .en{font-size:clamp(28px,7vw,56px)}
     .v2banner .kor{font-size:var(--fs-body)}
+    /* 좁은 태블릿(768~900)은 넓은 화면처럼 한 줄 다섯 칸 그대로(2026-09-29 요청) — 칸 폭 147 이상이라
+       가장 긴 이름(화합물 전력 반도체)도 14 글자 크기면 한 줄에 든다. 상자 묶음은 폰(767 이하)만 */
+    .v2banner .bnav .bt{font-size:var(--fs-meta)}
+  }
+  @media(max-width:767px){
     .v2banner .bnav{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;border:0;border-radius:0;
       -webkit-backdrop-filter:none;backdrop-filter:none}
     .v2banner .bnav::after{display:none}
