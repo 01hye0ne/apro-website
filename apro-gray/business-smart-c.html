@@ -891,6 +891,13 @@
      맞닿은 그 한 칸만 당기고 스택 gap 자체는 건드리지 않는다 — 제목·줄글과의
      숨은 그대로여야 한다 */
   .sf-dl--row+.sf-dl,.sf-prods+.sf-dl{margin-top:-24px}
+  /* 제품 목록(HNBR 바인더 · 라텍스) — 한 줄 [태그 | 설명 | 값]은 좁은 글 칸에서 설명이 두 줄로 접혔다(2026-09-29 요청).
+     윗줄에 태그, 아랫줄에 설명(왼쪽) · 값(오른쪽)으로. 폰(767 이하)에서 먼저 했고 같은 날 태블릿(1180 이하)까지 넓힘 */
+  @media(max-width:1180px){
+    .sf-dl--row{grid-template-columns:minmax(0,1fr) max-content}
+    .sf-dl--row li{row-gap:8px;column-gap:16px}
+    .sf-dl--row .k{grid-column:1/-1;justify-self:start}
+  }
 
   /* ── 제품 카드 (04-2 LiFSI 전해염) — Figma 1302:46434 ──────────────────
      카드 두 장이 위아래로 쌓이고, 한 장 안에서는 [이름 태그 · 설명 · 값]이 왼쪽,
@@ -1143,11 +1150,6 @@
        칸을 사진 비율(2100×1800 = 7:6) 그대로 두면 사진이 온전히 보이고, 물체 바닥(사진 높이의 72~78%)
        아래 빈 바닥에 설명(아래 16% 남짓)이 사진 안에 얹힌다. 한때 설명을 사진 밖 아래 띠로 뺐다가 되돌림 */
     .sf-sec>.sf-ph:has(#cnt-pw){aspect-ratio:7/6}
-    /* 제품 목록(HNBR 바인더 · 라텍스) — 한 줄 [태그 | 설명 | 값]은 폰 폭에서 설명이 두 줄로 접혔다(2026-09-29 요청).
-       윗줄에 태그, 아랫줄에 설명(왼쪽) · 값(오른쪽)으로 */
-    .sf-dl--row{grid-template-columns:minmax(0,1fr) max-content}
-    .sf-dl--row li{row-gap:8px;column-gap:16px}
-    .sf-dl--row .k{grid-column:1/-1;justify-self:start}
     .sf-railwrap{display:none}
     /* 묶음 띠 — 그 밑 첫 장의 윗선은 띠가 대신하므로 걷는다 */
     .sf-acc-grp{display:flex}
