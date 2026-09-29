@@ -45,3 +45,14 @@
   .co-vband{padding-top:56px;padding-bottom:56px}           /* 회사소개 Vision 띠 — A-1 40, 네트워크 · 사업장소재 띠와 같게 */
   .bhop{--pad:160px}                                        /* 사업영역 세부 맨 아래 "다른 사업영역" — A-1 88~132(화면 따라) */
 }
+
+/* 사업영역 세부 맨 아래 "다른 사업영역" — 모바일(767 이하)은 왼쪽 정렬(2026-09-29 요청).
+   위 아코디언 제목 · 푸터가 모두 여백 16 선에서 시작하는데 2×2 칸만 가운데 맞춤이라 줄이 흩어져 보였다.
+   왼쪽 칸 글 · 그림은 그 16 선에, 오른쪽 칸은 가운데 세로선에서 16 떨어져 선다 */
+@media(max-width:767px){
+  .bhop-town .bhlot:nth-child(n){padding:32px 16px 0 0}
+  .bhop-town .bhlot:nth-child(even){padding:32px 0 0 16px}
+  .bhop .bhtop{justify-content:flex-start}
+  .bhop .bhnow{align-items:flex-start;text-align:left}
+  .bhop .bhlot img{margin-inline:0}
+}
