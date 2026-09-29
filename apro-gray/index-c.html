@@ -426,6 +426,14 @@
      접힌 칸이 좁은 폭(1181~1280, 약 130)에서 한 줄이 칸보다 길면 낱말 단위로 한 번 더 접힌다 */
   .hm-card .fold .nm{writing-mode:horizontal-tb;transform:none;line-height:var(--lh-head);white-space:nowrap}
   .hm-card .fold .nm br{display:none}
+  /* 펼침 신호 "+" — 이름이 가로가 되며 약해진 '접힌 띠' 느낌을 되살린다(2026-09-29 요청). 폰 가로 띠의 + 와 같은 모양.
+     이름이 띠 폭을 거의 다 쓰므로 띠 오른쪽 위 구석에 둔다(폰은 아래 규칙이 이름 오른쪽 끝에 둔다) */
+  @media(min-width:901px){
+    .hm-card .fold::after{content:"";position:absolute;top:20px;right:20px;width:20px;height:20px;
+      background:linear-gradient(currentColor,currentColor) center/100% 1.5px no-repeat,
+                 linear-gradient(currentColor,currentColor) center/1.5px 100% no-repeat}
+  }
+  @media(min-width:901px) and (max-width:1280px){ .hm-card .fold::after{top:16px;right:16px;width:16px;height:16px} }
   @media(min-width:901px) and (max-width:1280px){
     .hm-card .fold{padding:16px}
     .hm-card .fold .nm{font-size:var(--fs-body)}
