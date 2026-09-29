@@ -154,6 +154,25 @@
     .pvec img,.pvec::before{transform:translateY(14px)}
   }
 
+  /* 2×2(1439 아래) — 사업영역 세부 모바일 "다른 사업영역" 칸처럼(2026-09-29 요청, 넓은 태블릿에서 글 · 그림이 부담스러웠다).
+     글(국문 · 영문)은 칸 왼쪽 위, 그림은 오른쪽 아래 구석에 작게 — 글과 그림이 대각선 양 끝에 선다.
+     글 크기는 판 제목 38 → 카드 제목(--fs-h3), 영문은 메타 크기. 왼쪽 선은 머리줄 [홈으로] 단추 선(34 · 1120 아래 26).
+     윗줄 두 칸은 머리줄(80) 밑에서 시작한다 — 전에는 제목이 [홈으로] · 메뉴 단추와 겹쳤다 */
+  @media(max-width:1439px){
+    .panel{--px:34px;padding:32px var(--px) var(--px)}
+    .panel:nth-child(-n+2){padding-top:calc(80px + 16px)}
+    .p-foot{align-items:flex-start;text-align:left}
+    .p-title{gap:4px}
+    .p-title .ko{font-size:var(--fs-h3)}
+    .p-title .en{font-size:var(--fs-meta)}
+    .pvec{margin-top:0;padding-bottom:0;place-items:end end}
+    .pvec img,.pvec::before{transform:none}
+    .pvec img{width:auto;height:auto;max-width:58%;max-height:72%}
+    .panel[data-idx="03"] .pvec img{width:auto;max-width:61.7%}   /* 267/251 배 — 바닥선 길이를 네 칸이 같게(위 90.4% 와 같은 까닭) */
+    .p-lists{left:var(--px);right:var(--px);bottom:var(--px)}
+  }
+  @media(max-width:1120px){ .panel{--px:26px} }
+
   .mnote{display:none}
   @media(max-width:640px){
     .p-title .ko{font-size:var(--fs-body)}
