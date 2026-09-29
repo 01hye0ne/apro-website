@@ -631,12 +631,17 @@
   }
   /* 목록 — 한 줄에 [제목 | 날짜 | 자세히 보기], 줄마다 밑선(A-1 .hm-nlist 와 같은 짜임) */
   .v2news .news-list{list-style:none;margin:12px 0 0;padding:0}
-  .v2news .news-list a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;
-    column-gap:24px;padding:28px 0;border-bottom:1px solid var(--border-g);color:inherit;text-decoration:none}
+  /* 칸은 위 카드 줄과 같은 세 칸 · 같은 거터(--c-g) — 제목은 1~2칸, 날짜는 셋째 카드 왼쪽 선에서 시작하고
+     자세히 보기는 같은 칸 오른쪽 끝(2026-09-29 요청: 날짜를 셋째 카드 열에 맞춘다) */
+  .v2news .news-list a{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;
+    column-gap:var(--c-g);padding:28px 0;border-bottom:1px solid var(--border-g);color:inherit;text-decoration:none}
   .v2news .news-list .ttl{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
     font-family:var(--suit);font-weight:800;font-size:var(--fs-lead);line-height:var(--lh-body);letter-spacing:var(--ls);
     color:var(--g900);transition:color .2s var(--ease)}
   .v2news .news-list .date{margin-top:0;color:var(--teritary)}
+  .v2news .news-list .ttl{grid-column:1/3}
+  .v2news .news-list .date{grid-column:3;grid-row:1}
+  .v2news .news-list .go{grid-column:3;grid-row:1;justify-self:end}
   .v2news .news-list .go{display:flex;align-items:center;gap:6px;font-family:var(--suit);font-weight:400;
     font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900);white-space:nowrap}
   .v2news .news-list .go svg{display:block;width:20px;height:20px;color:var(--hm-icon);transition:transform .3s var(--ease)}
