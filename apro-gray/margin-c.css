@@ -97,7 +97,7 @@
    767 이하에서는 글 칸 폭(화면 − 좌우 여백 clamp(24px,6vw,88px) × 2) ÷ 7.6 을 넘지 않게 — 네 장 모두
    같은 식이라 같은 폭에서 같은 크기로 선다 */
 @media(max-width:767px){
-  .sf-hero .en{font-size:min(var(--fs-display),calc((100vw - 2 * var(--c-m)) / 7.6))}
+  .sf-hero .en{font-size:min(var(--fs-display),calc((100vw - 2 * clamp(24px,6vw,88px)) / 7.6))}
 }
 
 /* 게시판 목록 모바일(760 이하) — 쪽 넘김이 숨긴 줄(tr[hidden])이 다 보이던 버그(2026-09-29 발견).
@@ -213,11 +213,3 @@
 @media(max-width:767px){
   .sf-sec>.sf-ph{aspect-ratio:4/3}
 }
-
-/* 사업영역 세부 히어로 제목 — 가운데 정렬 → 왼쪽 마진선(--c-m, GNB 로고 선)(2026-09-29 요청).
-   홈 · 회사정보 · 콘텐츠 장 첫 화면이 모두 왼쪽 선에서 시작하는데 여기만 가운데라 A · A-1 이 섞인 티가 났다.
-   아래 흐르는 띠에 기대 앉는 자리는 그대로(세로 위치는 손대지 않음). 폰 영문 크기 식도 같은 여백으로 */
-.sf-herocap h1{align-items:flex-start;padding-left:var(--c-m);padding-right:var(--c-m)}
-.sf-hero .en{text-align:left}
-/* 흐르는 띠 첫 이름도 같은 선에서 출발 — 띠가 흐르기 시작하기 전(또는 동작 줄임) 첫 화면에서 제목과 한 줄로 */
-.sf-tickrow{padding-left:calc(var(--c-m) - 20px)}
