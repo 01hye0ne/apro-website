@@ -173,10 +173,10 @@
     .gn-list{display:flex}
   }
   /* 모바일 히어로 문장 — 20px 여섯 줄이 한 덩어리라 부담스러웠다(2026-09-29 요청).
-     첫 문장만 헤드라인(--fs-h2)으로 남기고, 나머지 두 문장은 본문 크기 · 옅은 흰색(--on-dark-body)으로 */
+     문단 전체를 리드 크기(--fs-lead, 이 폭 16)로 내리고 줄 간격은 본문으로(A안).
+     같은 날 한때 첫 문장만 헤드라인 · 나머지 옅은 본문(B안)이었다가 A 로 바꿔 봄 */
   @media(max-width:900px){
-    .ci-hero .sub span:first-child{display:block;margin-bottom:12px}
-    .ci-hero .sub span+span{font-size:var(--fs-body);line-height:var(--lh-body);color:var(--on-dark-body)}
+    .ci-hero .sub{font-size:var(--fs-lead);line-height:var(--lh-body)}
   }
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
