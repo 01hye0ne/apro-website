@@ -104,3 +104,13 @@
    줄을 세로로 쌓는 규칙(.cboard tr{display:block})이 브라우저 기본 [hidden]{display:none} 을 이겨,
    공지 34 건이 한 번에 다 서고 쪽 번호는 그 밑에 붙어 있었다 */
 .cboard tr[hidden]{display:none}
+
+/* 사업영역 세부 소개 장 소분류 카드 — 폰(767 이하)에서는 한 줄에 한 장, 아이콘을 이름 왼쪽에 눕혀 낮게(2026-09-29 요청).
+   화합물 전력 반도체가 399 아래에서 쓰던 짜임을 이름만 든 카드(스마트 · 인공지능 · 반도체) 모두에 767 까지 넓힌다.
+   2×2 · 한 줄 셋은 칸이 좁아 이름이 두 줄로 접혔다. 설명이 든 에너지 인프라 카드는 이미 한 줄에 한 장이라 그대로.
+   선택자를 .sf-intro 로 한 칸 길게 — 페이지 안 "셋이면 한 줄 셋" 규칙(:has(>li:nth-child(3):last-child))을 이기려고 */
+@media(max-width:767px){
+  .sf-intro .sf-subs:not(:has(.d)):has(>li:nth-child(n)){grid-template-columns:1fr}
+  .sf-intro .sf-subs:not(:has(.d)) li{flex-direction:row;align-items:center;gap:12px;padding:14px 16px}
+  .sf-intro .sf-subs:not(:has(.d)) .ic{width:32px;height:32px}
+}
