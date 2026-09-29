@@ -224,3 +224,25 @@
   .totop{right:20px;bottom:20px;width:44px;height:44px}
   .totop svg{width:18px;height:18px}
 }
+
+/* ── 콘텐츠 장(투자정보 · 지속가능경영 · 커뮤니티 — .cs-split) 움직임 (2026-09-29 요청) ─────────────────────
+   ② 세로 히어로 첫 등장 — 사진 1.04 → 1(1.6초), 제목 · 한 줄 소개가 0.1초 차로 8 떠오름. 사업영역 세부 히어로와 한 가족
+   ① 본문 블록 등장 — 블록의 낱낱(제목 · 소개 · 표 · 목록 …)이 화면에 들어올 때 8 아래에서 0.5초 떠오른다. 한 번만.
+      카드 격자(.cgrid · .ccreed · .cnews)는 카드마다 0.06초씩 차례로. 가림은 스크립트가 html 에 .c-rv 를 달 때만 —
+      스크립트가 못 돌거나 동작 줄이기면 그냥 다 보인다(gnb-c.js) */
+@keyframes cHeroZoom{from{transform:scale(1.04)}to{transform:none}}
+@keyframes cHeroUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:no-preference){
+  .cs-split .cs-hero-bg{animation:cHeroZoom 1.6s cubic-bezier(.22,1,.36,1) both}
+  .cs-split .cs-hero-page>*{animation:cHeroUp .6s cubic-bezier(.22,1,.36,1) both}
+  .cs-split .cs-hero-page>*:nth-child(1){animation-delay:.1s}
+  .cs-split .cs-hero-page>*:nth-child(2){animation-delay:.2s}
+  .cs-split .cs-toc{animation:cHeroUp .6s cubic-bezier(.22,1,.36,1) .3s both}
+}
+.c-rv .cs-body .cblock>*:not(.c-in),
+.c-rv .cs-body :is(.cgrid,.ccreed,.cnews)>li:not(.c-in){opacity:0;transform:translateY(8px)}
+.c-rv .cs-body .cblock>*,
+.c-rv .cs-body :is(.cgrid,.ccreed,.cnews)>li{transition:opacity .5s cubic-bezier(.22,1,.36,1) calc(var(--ci,0) * .06s),
+                                                   transform .5s cubic-bezier(.22,1,.36,1) calc(var(--ci,0) * .06s)}
+/* 카드 격자는 칸이 차례로 나오므로 격자 자체는 가리지 않는다 */
+.c-rv .cs-body .cblock>:is(.cgrid,.ccreed,.cnews){opacity:1;transform:none}
