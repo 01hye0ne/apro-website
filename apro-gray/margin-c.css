@@ -72,3 +72,15 @@
 @media(max-width:767px){
   .sf-secs>.sf-acc-grp{border-top:1px solid var(--sf-line-s)}
 }
+
+/* 사업영역 세부 모바일(767 이하) — 화면 · 제품 고르는 단추(.sf-picks)를 글 단추로(2026-09-29 요청).
+   모바일은 고른 그림이 단추 바로 밑에 크게 나오므로 단추 속 썸네일은 같은 그림을 한 번 더 작게
+   보여 줄 뿐이었다. 썸네일을 걷고 이름만 든 박스 단추로 — 폭은 단추 수대로 똑같이 나눈다.
+   고른 단추는 테두리와 글을 브랜드 파랑으로. 인공지능 EV 배터리 안전 진단 · 스마트 제조 탄소 나노 튜브 */
+@media(max-width:767px){
+  .sf-picks button{flex:1 1 0;padding:0;justify-content:center}
+  .sf-picks .shot{display:none}
+  .sf-picks .nm{padding:12px 8px;text-align:center}
+  .sf-picks button[aria-selected="true"]{border-color:var(--brand)}
+  .sf-picks button[aria-selected="true"] .nm{color:var(--brand)}
+}
