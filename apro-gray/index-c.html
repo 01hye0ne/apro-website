@@ -800,6 +800,28 @@
     .hm-wv:nth-child(2) .hd{width:auto}
     .hm-wv h3{font-size:var(--fs-h1)}
   }
+  /* 세로로 든 큰 태블릿(901~1180 · 세로 방향 — 12.9 · 11 인치 아이패드 Pro 세로 등, 2026-09-30 요청) — 폭은 넓은 태블릿이지만
+     화면이 세로로 길어, 가로 아코디언(카드 키 360 남짓)이 한 화면 높이 섹션 가운데에 떠 위아래가 크게 비었다.
+     세로 태블릿(900 이하)과 같은 세로 아코디언으로 쌓고, 펴진 카드는 남는 키를 채운다
+     (화면 키 − 위아래 여백 − 제목 줄 100 − 접힌 띠 셋 192, 420 ~ 720). 가로로 돌리면 가로 아코디언 그대로 */
+  @media(min-width:901px) and (max-width:1180px) and (orientation:portrait){
+    .hm-track{--bz-open:clamp(420px,calc(var(--hm-h) - 2 * var(--hm-pad) - 292px),720px);flex-direction:column;height:auto}
+    .hm-card,.hm-card.is-open{flex:0 0 auto;height:64px;transition:height .8s var(--ease),background-color .3s var(--ease)}
+    .hm-card.is-open{height:var(--bz-open)}
+    .hm-card>img,.hm-card.is-open:hover>img,.hm-card:not(.is-open):hover>img{top:50%;left:0;width:100%;height:var(--bz-open);transform:translateY(-50%)}
+    .hm-card .cap{right:0;width:auto;gap:12px;padding-top:32px;transition:opacity .45s var(--ease) .25s,visibility 0s linear 0s}
+    .hm-card+.hm-card{border-left:0;border-top:1px solid var(--border-g)}
+    .hm-card .fold{flex-direction:row;align-items:center;justify-content:flex-start;padding:0 20px;color:var(--g900)}
+    .hm-card .fold .nm{align-self:center;font-size:var(--fs-h3)}
+    .hm-card .fold::after{content:"";position:static;flex:0 0 16px;width:16px;height:16px;margin-left:auto}
+    .hm-arrows svg{transform:rotate(90deg)}
+    .hm-card{background:var(--secondary-bg)}
+    .hm-card>img{transition:opacity .6s var(--ease)}
+    .hm-card:not(.is-open)>img{opacity:0}
+    .hm-card:not(.is-open)::after,.hm-card:not(.is-open):hover::after{opacity:0}
+    .hm-card:not(.is-open):is(:hover,:active){background-color:#d6e3f6}
+    .hm-card:not(.is-open):is(:hover,:active) .fold{color:var(--brand)}
+  }
   /* 좁은 태블릿(768~900) — 판이 92% 면 글은 왼쪽 절반 남짓만 쓰고 오른쪽이 비어 섹션 전체가 왼쪽으로 쏠려 보였다(2026-09-29).
      판을 72% 로 좁히면 오른쪽 판(1 · 3)의 글은 화면 오른쪽 7할 쪽에, 왼쪽 판(2 · 4)의 글은 왼쪽에 서서
      넓은 화면처럼 좌우로 갈마드는 계단이 된다. 글은 왼쪽 정렬 그대로. 폰은 폭이 모자라 92% 유지 */
