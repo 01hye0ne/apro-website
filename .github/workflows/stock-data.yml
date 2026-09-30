@@ -1,11 +1,11 @@
 # 주식정보(apro-gray/ir-stock-c.html) 주가 데이터 — 금융위원회_주식시세정보(공공데이터포털) getStockPriceInfo.
-# 이 API 는 하루 한 번(전 영업일 종가, 오후 1시 무렵) 갱신된다. 평일 오후 1시~밤 9시(KST) 매시 정각에 에이프로(KR7262260003)
+# 이 API 는 하루 한 번(전 영업일 종가, 오후 1시 무렵) 갱신된다. 평일 오전 9시(KST, 정규장 여는 시각)에 에이프로(KR7262260003)
 # 최근 1년치를 받아 data 브랜치의 stock.json 에 쓴다 — main 에는 봇 커밋을 남기지 않는다.
 # 인증키는 저장소 비밀값 DATA_GO_KR_KEY(포털의 Encoding 키)에만 있다. 페이지는 raw.githubusercontent.com 에서 읽는다.
 name: stock-data
 on:
   schedule:
-    - cron: '0 4-12 * * 1-5'   # 해외 러너에서 포털 연결이 자주 끊겨 여러 번 시도한다 — 값이 바뀔 때만 커밋
+    - cron: '0,20,40 0 * * 1-5'   # 09:00 · 09:20 · 09:40 KST(2026-09-30 요청) — 해외 러너에서 포털 연결이 자주 끊겨 세 번 시도한다, 값이 바뀔 때만 커밋
   workflow_dispatch:
 permissions:
   contents: write
