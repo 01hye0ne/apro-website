@@ -166,6 +166,8 @@
 @media(min-width:901px){
   .navover .ov-row{grid-template-columns:clamp(200px,calc(100vw - 800px),320px) minmax(0,1fr)}
   .navover .ov-links{grid-template-columns:repeat(5,minmax(max-content,1fr))}
+  /* 대분류(24)와 하위 메뉴(16)를 윗변이 아니라 세로 가운데로 맞춘다 — 윗변 맞춤이라 하위 줄이 5 남짓 위로 떠 보였다(2026-09-30 요청) */
+  .navover .ov-row{align-items:center}
 }
 
 /* ── 도구 아이콘(언어 · 전체 메뉴) — A 의 크기 · 굵기로 (2026-09-28) ─────────────────────
