@@ -58,9 +58,9 @@
 .cprice-plot .area{fill:rgba(44,87,144,.08)}
 .cprice-plot .cross{stroke:var(--teritary);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;display:none}
 .cprice-plot.is-hover .cross{display:inline}
-.cprice-plot .hi,.cprice-plot .lo{position:absolute;right:8px;font-size:var(--fs-tag);color:var(--teritary);font-variant-numeric:tabular-nums;pointer-events:none}
-.cprice-plot .hi{top:6px}
-.cprice-plot .lo{bottom:6px}
+/* 최고 · 최저는 그래프 밖(기간 단추 줄 오른쪽)에 — 안쪽 모서리에 두니 선 끝과 겹쳤다 */
+.cprice-plot .hi{position:absolute;right:0;bottom:calc(100% + 16px);line-height:32px;font-size:var(--fs-meta);color:var(--teritary);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
+.cprice-plot .lo{display:none}
 .cprice-plot .tip{position:absolute;top:8px;transform:translateX(-50%);padding:6px 10px;background:var(--g900);color:#fff;
   font-size:var(--fs-meta);line-height:var(--lh-label);white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
 .cprice .range{margin:8px 0 0;display:flex;justify-content:space-between;font-size:var(--fs-tag);color:var(--teritary);font-variant-numeric:tabular-nums}
@@ -394,8 +394,7 @@
       var p = pts.map(function(o, i){ return (i ? 'L' : 'M') + o.x.toFixed(1) + ' ' + o.y.toFixed(1); }).join('');
       line.setAttribute('d', p);
       area.setAttribute('d', p + 'L' + W + ' ' + H + 'L0 ' + H + 'Z');
-      plot.querySelector('.hi').textContent = '최고 ' + fmt(hi);
-      plot.querySelector('.lo').textContent = '최저 ' + fmt(lo);
+      plot.querySelector('.hi').textContent = '최고 ' + fmt(hi) + ' · 최저 ' + fmt(lo);
       q('from').textContent = day(s[0][0]);
       q('to').textContent = day(s[s.length - 1][0]);
     }
