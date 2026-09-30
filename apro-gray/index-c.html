@@ -360,6 +360,11 @@
   .v2banner .kor{font-weight:400;font-size:var(--fs-h2);color:rgba(255,255,255,.9)}
   .v2banner .bnav .bt{font-weight:500;font-size:clamp(var(--fs-meta),1.1vw,var(--fs-body))}
   .v2banner .bnav .b.active .bt{font-weight:800}
+  /* 메인 줄 사이와 메인 ↔ 서브 사이가 거의 같아(13 · 14~16) 서브가 메인 셋째 줄처럼 붙어 보였다(같은 날 요청).
+     메인은 줄높이 1.2 → 1.15 로 한 덩어리로 묶고, 서브와는 10 → 24(900 아래 16) 띄운다 — 틈이 약 10 대 30 */
+  .v2banner .headline{gap:24px}
+  .v2banner .en{line-height:1.15}
+  @media(max-width:900px){ .v2banner .headline{gap:16px} }
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
