@@ -350,3 +350,9 @@
   .c-railnav button:disabled{opacity:.35;cursor:default}
   .c-railnav svg{display:block}
 }
+
+/* 게시글 상세(공지 · 보도자료 · 공시 · ESG 게시판) 머리 단추 — 900 이하에서 날짜 밑 줄로 내려가며 왼쪽에 붙었다.
+   넓은 화면처럼 오른쪽에 세운다(2026-09-30 요청) */
+@media(max-width:900px){
+  html .cpost-hd>.cbtns{justify-content:flex-end}
+}
