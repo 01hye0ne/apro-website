@@ -288,3 +288,41 @@
     new MutationObserver(paint).observe(document.querySelector('.sf-rail'), { subtree: true, attributes: true, attributeFilter: ['aria-current'] });
   paint();
 })();
+
+/* 푸터 — 아직 없는 쪽(Contact us · 이메일무단수집거부 · 개인정보처리방침, [data-soon])은 누르면 "준비 중" 알림을 잠깐 띄운다(2026-09-30 요청) */
+(function(){
+  var toast = null, timer = 0;
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[data-soon]');
+    if(!a) return;
+    e.preventDefault();
+    if(!toast){
+      toast = document.createElement('div');
+      toast.className = 'c-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = '준비 중입니다.';
+    toast.classList.add('is-on');
+    clearTimeout(timer);
+    timer = setTimeout(function(){ toast.classList.remove('is-on'); }, 1800);
+  });
+})();
+
+/* 맨 위로 가기(.totop) — 검은 단추가 검은 푸터 위에 오면 보이지 않았다(2026-09-30 요청). 단추 가운데가 푸터 위에 오면 흰 단추로 뒤집는다 */
+(function(){
+  var btn = document.querySelector('.totop'), foot = document.querySelector('.footer');
+  if(!btn || !foot) return;
+  var on = null, ticking = false;
+  function check(){
+    ticking = false;
+    var b = btn.getBoundingClientRect(), f = foot.getBoundingClientRect(), mid = (b.top + b.bottom) / 2;
+    var dark = f.top < mid && f.bottom > mid;
+    if(dark !== on){ on = dark; btn.classList.toggle('is-ondark', dark); }
+  }
+  function req(){ if(!ticking){ ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
+  check();
+})();
