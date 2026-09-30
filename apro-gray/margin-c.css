@@ -337,3 +337,9 @@
 @media(min-width:768px) and (max-width:1180px){
   html .sf-prod>.shot img{inset:12.5%;width:75%;height:75%}
 }
+
+/* 에너지 인프라 03 솔루션 마지막 카드 ↔ 아래 진입점(.bhop) — 태블릿(768~1180)에서 카드가 진입점 윗변에 딱 붙었다(2026-09-30 요청).
+   넓은 화면은 묶음 아래 여백(--sec-pad, 1400 에서 69)이 있다 — 태블릿은 64 */
+@media(min-width:768px) and (max-width:1180px){
+  html .sf-secs.is-prods{padding-bottom:64px}
+}
