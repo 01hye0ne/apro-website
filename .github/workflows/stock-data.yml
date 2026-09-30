@@ -22,7 +22,15 @@ jobs:
           import json, os, urllib.request, datetime
           url = ('https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo'
                  '?serviceKey=' + os.environ['KEY'] + '&resultType=json&numOfRows=260&pageNo=1&isinCd=KR7262260003')
-          r = json.load(urllib.request.urlopen(url, timeout=60))['response']
+          # 해외(GitHub 러너)에서는 가끔 연결이 시간 초과로 끊긴다 — 세 번까지 다시 부른다
+          import time
+          for k in range(3):
+              try:
+                  r = json.load(urllib.request.urlopen(url, timeout=90))['response']; break
+              except Exception as e:
+                  print('retry', k + 1, e); time.sleep(20)
+          else:
+              raise SystemExit('fetch failed')
           assert r['header']['resultCode'] == '00', r['header']
           it = r['body']['items']['item']
           assert it, 'empty'
@@ -50,8 +58,14 @@ jobs:
           if git fetch -q --depth 1 origin data; then git checkout -q -b data FETCH_HEAD; else git checkout -q --orphan data; fi
           cp ../out/stock.json stock.json
           git add stock.json
-          # 날짜 · 값이 같으면 fetched 만 바뀐다 — 그땐 커밋하지 않는다
-          if git diff --cached --quiet -- stock.json || [ "$(git show HEAD:stock.json 2>/dev/null | python3 -c 'import sys,json;d=json.load(sys.stdin);d.pop("fetched");print(json.dumps(d,sort_keys=True))')" = "$(python3 -c 'import json;d=json.load(open("stock.json"));d.pop("fetched");print(json.dumps(d,sort_keys=True))')" ]; then
+          # 날짜 · 값이 같으면 fetched 만 바뀐다 — 그땐 커밋하지 않는다(처음이라 앞 파일이 없으면 커밋)
+          git show HEAD:stock.json > ../prev.json 2>/dev/null || : > ../prev.json
+          if python3 -c 'import json,sys
+          def f(p):
+              try: d=json.load(open(p))
+              except Exception: return None
+              d.pop("fetched",None); return d
+          sys.exit(0 if f("../prev.json")==f("stock.json") else 1)'; then
             echo 'no change'; exit 0
           fi
           git commit -q -m "stock: $(python3 -c 'import json;print(json.load(open("stock.json"))["date"])')"
