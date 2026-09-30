@@ -285,24 +285,19 @@
   .cs-body .cways{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
-/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)은 네 장 모두 한 줄에 한 장(2026-09-30 요청).
-   설명이 든 에너지 인프라와 생김새를 맞춘다(이름만 든 장의 2×2 · 한 줄 셋을 푼다). 폰은 그대로 */
+/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)도 넓은 태블릿처럼 한 줄에 모두(넷이면 넷 · 셋이면 셋, 2026-09-30 요청).
+   같은 날 앞서 한 줄에 한 장 · 아이콘 왼쪽으로 눕혔던 것을 걷었다 — 아이콘 위 · 이름 아래 원래 짜임으로, 칸이 좁아 안 여백 16 · 이름 16.
+   설명이 든 에너지 인프라 셋도 한 줄. 폰은 그대로 */
 @media(min-width:768px) and (max-width:900px){
-  html .sf-subs:not(:has(.d)),html .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:1fr}
-}
-
-/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)도 폰처럼 아이콘을 이름 왼쪽에 눕힌다(2026-09-30 요청).
-   좁은 태블릿(768~900)만 — 넓은 태블릿(901~1180, 한 줄 넷 · 셋)은 원래대로 아이콘 위 · 이름 아래(같은 날 요청).
-   설명이 든 에너지 인프라 카드는 폰과 같이 그대로 */
-@media(min-width:768px) and (max-width:900px){
-  html .sf-intro .sf-subs:not(:has(.d)) li{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;padding:14px 16px}
-  html .sf-intro .sf-subs:not(:has(.d)) .ic{width:32px;height:32px}
+  html .sf-intro .sf-subs,html .sf-intro .sf-subs:has(>li:nth-child(3):last-child){width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}
+  html .sf-intro .sf-subs:has(>li:nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  html .sf-intro .sf-subs li{padding:16px}
+  html .sf-intro .sf-subs .nm{font-size:var(--fs-body)}
 }
 
 /* (2026-09-30) 넓은 태블릿 손가락 스크롤에 걸었던 스크롤 스냅(proximity)은 같은 날 걷었다 — 아이패드에서 관성 스크롤과
    부딪혀 버벅였고, 위로 되올릴 때(주소창이 다시 나오며 화면 키가 바뀐다) 앞 장 머리로 끌어당겨 더 심했다.
    한 장 넘김은 휠(각 장 스크립트)과 탭 줄 · 분류 단추에만 남긴다 */
-}
 
 /* 에너지 인프라 03 솔루션 — 넓은 태블릿(901~1180)도 넓은 화면처럼(2026-09-30 요청).
    윗단(눈금줄 · 제목 · 리드 · Certification)이 탭 줄 밑에 붙고, 그 아래로 제품 카드가 한 장씩 올라온다 —

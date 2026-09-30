@@ -389,6 +389,8 @@
        메뉴 목록처럼 무겁지 않게 줄 키는 44 → 40, 이름은 헤드라인과 같은 왼쪽 선에 */
     .v2banner .bnav{grid-template-columns:minmax(0,1fr)}
     .v2banner .bnav .b{height:40px;justify-content:flex-start;padding:0 12px}
+    /* 게이지 선은 폰에서 4 → 2(2026-09-30 요청 — 줄 키 40 에 4 는 굵었다) */
+    .v2banner .bnav .b::before{height:2px}
   }
   @media(prefers-reduced-motion:reduce){
     .v2banner .headline .en,.v2banner .headline .kor{animation:none!important}
@@ -1151,10 +1153,7 @@
       <div class="f-util">
         <div class="f-links">
           <a href="network-c.html">글로벌 네트워크</a><i class="sep"></i>
-          <a href="#" data-soon>Contact us</a><i class="sep"></i>
-          <a href="locations-c.html">사업장소재</a><i class="sep"></i>
-          <a href="#" data-soon>이메일무단수집거부</a><i class="sep"></i>
-          <a href="#" class="strong" data-soon>개인정보처리방침</a>
+          <a href="locations-c.html">사업장소재</a>
         </div>
         <div class="f-family" id="fFamily">
           <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
