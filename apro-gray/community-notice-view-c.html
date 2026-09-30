@@ -24,7 +24,7 @@
 <!-- 공지사항 상세 (2026-09-21) — 한 장의 틀이 주소의 ?id=<글번호> 로 notice-data.js 에서 내용을 채운다.
      목록(community-notice-c.html)의 서른네 줄이 모두 이 장으로 온다. 보도자료 상세(community-press-view-c.html)와
      같은 틀이고 다른 점은 셋이다 — 섬네일이 없고, 출처가 없고(메타는 작성일 한 줄), 공고문 머리글(.cpost-h)을
-     가운데 세운다. 본문이 남아 있는 글은 셋뿐이라 나머지는 "기존 사이트에서 보기" 로 보낸다(notice-data.js 참고).
+     가운데 세운다. 시안 C 는 2026-09-30 부터 서른네 글 본문을 모두 notice-data-c.js 에 채워 기존 사이트로 보내지 않는다.
      상세 페이지를 제대로 짤 때 이 <style> 은 content-layout.css 로 옮긴다 -->
 <style>
   /* 상세는 왼쪽 세로 히어로 없이 본문만 선다(2026-09-18) — 본문이 사이트 격자 폭(--maxw) 안 가운데에 놓인다 */
@@ -52,6 +52,21 @@
   .cpost-bd .txt>p:first-child{margin-top:0}
   .cs-body>.cblock>.cpost-hd+*{margin-top:0}
   .cpost-empty{color:var(--teritary)}
+  /* 본문 그림 · 표 · 링크 · 첨부 — 기존 사이트에서 옮긴 본문(2026-09-30) */
+  .cpost-bd .cpost-fig{margin:24px 0 0}
+  .cpost-bd .cpost-fig img{display:block;width:100%;max-width:1000px;height:auto;margin-inline:auto}
+  .cpost-bd .cpost-fig+.cpost-fig{margin-top:12px}
+  .cpost-bd .txt>:first-child{margin-top:0}
+  .cpost-bd p a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+  .cpost-tbl{margin-top:24px;overflow-x:auto}
+  .cpost-tbl table{width:100%;border-collapse:collapse;font-family:var(--suit);font-size:var(--fs-meta);
+    line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
+  .cpost-tbl td{padding:10px 12px;border:1px solid var(--border-g);vertical-align:top;word-break:keep-all}
+  .cpost-files{margin-top:32px;padding:16px 20px;background:var(--g100,#f4f6f8);display:flex;gap:16px;align-items:baseline;
+    font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls)}
+  .cpost-files .k{margin:0;flex-shrink:0;font-weight:700;color:var(--g900)}
+  .cpost-files ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+  .cpost-files a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
   /* 버튼이 머리로 올라가 본문 밑줄과 이전 · 다음 글 윗줄이 바로 만난다 — 틈(장 안 24)을 없애고 선은 하나만 */
   :is(.cs-body,:where(.cs-a>.cwrap))>.cblock>.cpost-nav{margin-top:0;border-top:0}
   .cpost-nav{border-top:1px solid var(--border-g)}
@@ -109,7 +124,6 @@
       <p class="cpost-meta"><span data-f="date"></span></p>
       <div class="cbtns">
         <a class="cbtn" href="community-notice-c.html">목록으로</a>
-        <a class="cbtn fill" id="postLink" href="#" target="_blank" rel="noopener" hidden>기존 사이트에서 보기</a>
       </div>
     </header>
     <div class="cpost-bd" id="postBody"></div>
@@ -230,7 +244,7 @@
 
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
-<script src="notice-data.js"></script>
+<script src="notice-data-c.js"></script>
 <script>
 /* 공지사항 상세 — ?id=<글번호> 로 notice-data.js 에서 글을 찾아 채운다.
    번호가 없거나 틀리면 가장 최근 글을 보인다. 이전 글은 더 오래된 글, 다음 글은 더 새 글이다.
@@ -245,19 +259,52 @@
   function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
 
   document.getElementById('post-t').textContent = p.t;
-  document.title = 'APRO | 에이프로 — ' + p.t + ' (A-1)';
+  document.title = 'APRO | 에이프로 — ' + p.t + ' (C)';
   root.querySelector('[data-f="date"]').textContent = p.d;
 
   var bd = document.getElementById('postBody');
   if(p.h) bd.appendChild(el('p', 'cpost-h', p.h));
   var txt = el('div', 'txt'); bd.appendChild(txt);
-  p.p.forEach(function(t){ txt.appendChild(el('p', null, t)); });
-  if(!p.p.length) txt.appendChild(el('p', 'cpost-empty', '본문은 기존 사이트에서 볼 수 있습니다.'));
-
-  /* 원본 글 — 기존 사이트(aproele.com) 공지사항 게시판이다 */
-  var go = document.getElementById('postLink');
-  go.href = 'https://aproele.com/bbs/board.php?bo_table=notice&wr_id=' + p.id;
-  go.hidden = false;
+  /* 본문 덩어리를 차례대로 세운다 — 문단 · 링크 문단 · 그림 · 표(notice-data-c.js 머리말 참고).
+     2026-09-30 부터 서른네 글 모두 본문이 이 사이트 안에 있다 — 기존 사이트로 보내는 단추를 걷었다 */
+  (p.b || []).forEach(function(b){
+    if(typeof b === 'string'){ txt.appendChild(el('p', null, b)); return; }
+    if(b.u){
+      var q = el('p'), a = el('a', null, b.t);
+      a.href = b.u; a.target = '_blank'; a.rel = 'noopener';
+      q.appendChild(a); txt.appendChild(q); return;
+    }
+    if(b.img){
+      var fig = el('figure', 'cpost-fig'), img = el('img');
+      img.src = b.img; img.width = b.w; img.height = b.h; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
+      fig.appendChild(img); txt.appendChild(fig); return;
+    }
+    if(b.tb){
+      var wrap = el('div', 'cpost-tbl'), tb = el('table'), body = el('tbody');
+      b.tb.forEach(function(r){
+        var tr = el('tr');
+        /* 칸은 글자열, 또는 합친 칸이면 [글자, 세로 합침, 가로 합침] */
+        r.forEach(function(c){
+          var td = el('td', null, Array.isArray(c) ? c[0] : c);
+          if(Array.isArray(c)){ if(c[1] > 1) td.rowSpan = c[1]; if(c[2] > 1) td.colSpan = c[2]; }
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+      tb.appendChild(body); wrap.appendChild(tb); txt.appendChild(wrap);
+    }
+  });
+  /* 첨부 파일 — 원본 PDF 를 assets 에 받아 두었다. 받기(download)로 연다 */
+  if(p.f && p.f.length){
+    var fl = el('div', 'cpost-files'), ul = el('ul');
+    fl.appendChild(el('p', 'k', '첨부파일'));
+    p.f.forEach(function(f){
+      var li = el('li'), a = el('a', null, f.n);
+      a.href = f.u; a.setAttribute('download', f.n);
+      li.appendChild(a); ul.appendChild(li);
+    });
+    fl.appendChild(ul); bd.appendChild(fl);
+  }
 
   [['prev', list[at + 1]], ['next', list[at - 1]]].forEach(function(x){
     var a = root.querySelector('[data-f="' + x[0] + '"]');
