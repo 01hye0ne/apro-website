@@ -284,9 +284,10 @@
   html .sf-subs:not(:has(.d)),html .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:1fr}
 }
 
-/* 사업영역 세부 소개 장 소분류 카드 — 태블릿(768~1180)도 폰처럼 아이콘을 이름 왼쪽에 눕힌다(2026-09-30 요청).
-   칸 배치(좁은 태블릿 한 줄에 한 장 · 넓은 태블릿 한 줄)는 그대로. 설명이 든 에너지 인프라 카드는 폰과 같이 그대로 */
-@media(min-width:768px) and (max-width:1180px){
+/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)도 폰처럼 아이콘을 이름 왼쪽에 눕힌다(2026-09-30 요청).
+   좁은 태블릿(768~900)만 — 넓은 태블릿(901~1180, 한 줄 넷 · 셋)은 원래대로 아이콘 위 · 이름 아래(같은 날 요청).
+   설명이 든 에너지 인프라 카드는 폰과 같이 그대로 */
+@media(min-width:768px) and (max-width:900px){
   html .sf-intro .sf-subs:not(:has(.d)) li{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;padding:14px 16px}
   html .sf-intro .sf-subs:not(:has(.d)) .ic{width:32px;height:32px}
 }
