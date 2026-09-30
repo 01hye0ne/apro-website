@@ -372,3 +372,16 @@
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   fit();
 })();
+
+/* 전체 메뉴 서랍(좁은 태블릿 768~900, gnb-c.css) — 서랍 밖 옅은 바탕을 누르면 닫는다(2026-09-30 요청).
+   여닫기는 business-layout.js(A · A-1 과 함께 쓰는 파일) 몫이라 그 닫기 단추를 대신 누른다 */
+(function(){
+  var o = document.getElementById('navover');
+  if(!o) return;
+  var mq = window.matchMedia('(min-width:768px) and (max-width:900px)');
+  o.addEventListener('click', function(e){
+    if(!mq.matches || e.target !== o) return;
+    var c = o.querySelector('.ov-close');
+    if(c) c.click();
+  });
+})();
