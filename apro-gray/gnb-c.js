@@ -245,3 +245,39 @@
   window.addEventListener('load', apply);
   apply();
 })();
+
+/* 사업영역 세부 태블릿(768~1180) — 가로 탭 줄은 지금 분류(01 ESS …)의 소분류만 보여서, 오른쪽 끝에 다음 · 이전 분류로
+   건너가는 단추 둘을 단다(2026-09-30 요청). 누르면 그 분류 첫 소분류 탭을 누른 것과 같다(넓은 태블릿은 장 스크립트가 한 장
+   넘김으로, 좁은 태블릿은 앵커로 옮긴다). 맨 끝 분류에서는 그쪽 단추가 꺼진다. 넓은 화면 · 폰에서는 CSS 가 감춘다 */
+(function(){
+  var wrap = document.querySelector('.sf-railwrap');
+  var grps = [].slice.call(document.querySelectorAll('.sf-rail .sf-grp'));
+  if(!wrap || grps.length < 2) return;
+  var ic = function(d){ return '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="' + d + '" stroke="currentColor" stroke-width="1.5"/></svg>'; };
+  var box = document.createElement('div');
+  box.className = 'c-railnav';
+  box.innerHTML = '<button type="button" data-dir="1" aria-label="다음 분류">' + ic('M3.5 6l4.5 4.5L12.5 6') + '</button>' +
+                  '<button type="button" data-dir="-1" aria-label="이전 분류">' + ic('M3.5 10l4.5-4.5L12.5 10') + '</button>';
+  wrap.appendChild(box);
+  var btns = [].slice.call(box.querySelectorAll('button'));
+  function cur(){
+    for(var i=0;i<grps.length;i++) if(grps[i].querySelector('a[aria-current="true"]')) return i;
+    return 0;
+  }
+  function paint(){
+    var i = cur();
+    btns[0].disabled = i >= grps.length - 1;
+    btns[1].disabled = i <= 0;
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var g = grps[cur() + (+b.getAttribute('data-dir'))];
+      var a = g && g.querySelector('a[href^="#"]');
+      if(a) a.click();
+    });
+  });
+  /* 지금 분류는 탭의 aria-current 가 옮겨 가며 정한다 — 그 변화를 따라 단추를 다시 켠다 */
+  if('MutationObserver' in window)
+    new MutationObserver(paint).observe(document.querySelector('.sf-rail'), { subtree: true, attributes: true, attributeFilter: ['aria-current'] });
+  paint();
+})();
