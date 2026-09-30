@@ -371,3 +371,17 @@
 @media(max-width:900px){
   html .sf-sec.is-prod .sf-phead{z-index:auto}
 }
+
+/* 게시글 상세 — 본문이 짧으면 푸터 아래 흰 여백이 남았다(2026-09-30 요청). 몸을 세로 flex 로 세워 화면 키를 채우고
+   본문 칸(.cs-solo)이 남는 키를 받아 푸터를 화면 바닥에 내린다. 네 장(공지 · 보도자료 · 공시 · ESG 게시판)만 */
+html body:has(.cpost-hd){display:flex;flex-direction:column;min-height:100svh}
+html body:has(.cpost-hd)>.cs-solo{flex:1 0 auto}
+
+/* 투자정보 · 지속가능경영 히어로 장 목록 — 1180 이하에서 지속가능경영(.cs-hero--low)만 판 바닥이고
+   투자정보 둘은 위에 붙어 있었다(2026-09-30 요청). 모두 바닥으로 맞춘다. 투자정보는 사옥(밝은 외벽)이
+   아래에 있어 목록이 묻히므로 바닥 쪽만 남색으로 짙게 누른다 */
+@media(max-width:1180px){
+  html .cs-hero .cs-toc{margin-top:auto}
+  html .cs-hero:not(.cs-hero--low):has(.cs-toc)::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(11,27,61,0) 40%,rgba(11,27,61,.72) 100%)}
+}
