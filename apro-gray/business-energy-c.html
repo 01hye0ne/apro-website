@@ -1007,6 +1007,10 @@
     .sf-feat li+li{border-left:0;border-top:1px solid var(--c-bd,var(--sf-line))}
     .sf-feat .ic{width:32px;height:32px}
   }
+  /* 넓은 태블릿(901~1180) — 카드가 화면 키를 채우니 특징 목록 아래가 비었다. 줄 넷이 목록 키를 똑같이 나눠 가진다(2026-09-30 요청) */
+  @media(min-width:901px) and (max-width:1180px){
+    .sf-feat li{flex:1 1 0;align-items:center}
+  }
 </style>
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
