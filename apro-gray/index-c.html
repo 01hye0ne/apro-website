@@ -552,7 +552,9 @@
   /* 제목은 2 · 4 번째 판 글과 같은 세로줄(--who-x)에 서고, 첫 판 윗선과 같은 높이에 앉는다(2026-09-29 요청) —
      첫 판이 오른쪽에 붙어 왼쪽이 비므로 제목 키(줄높이 1 = 1em)만큼 판을 끌어올려 제목 줄을 따로 두지 않는다.
      글자는 바깥 판 틈(12)만큼 내려 안쪽 판 윗변과 맞춘다. 좁은 화면은 판이 화면을 거의 다 써 겹치므로 아래에서 되돌린다 */
-  .hm-who .hm-ttl{position:relative;z-index:2;top:12px;margin-bottom:-1em;padding-left:var(--who-x);color:#fff}
+  /* 제목 가로 자리는 Business · News 제목과 같은 마진(--hm-m, GNB 로고 선)에 — 판 글 세로줄(--who-x)에 두니 셋 중 이것만
+     안으로 들어가 있었다(2026-09-30 요청 : 홈 섹션 제목 왼쪽 정렬 맞춤) */
+  .hm-who .hm-ttl{position:relative;z-index:2;top:12px;margin-bottom:-1em;padding-left:var(--hm-m);color:#fff}
   .hm-who-list{list-style:none;display:flex;flex-direction:column}
   /* 오른쪽에 붙는 판(1 · 3 · 4) — 기본값 */
   .hm-wv{margin-left:auto}
