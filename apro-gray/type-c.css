@@ -55,6 +55,11 @@
 .cboard td{font-size:var(--fs-meta);color:var(--teritary)}
 .cboard td.ttl{font-size:var(--fs-lead);color:var(--g900)}
 @media(max-width:760px){ .cboard td.ttl{font-size:var(--fs-h3)} }
+/* 정렬(2026-09-30 요청) — 제목 · 날짜 칸은 머리글까지 왼쪽으로 맞춘다. 머리글(제목 · 등록일)만 가운데라 글과 어긋났다.
+   번호 칸은 머리글 · 숫자 모두 가운데 그대로 */
+.cboard thead th:nth-child(2),.cboard thead th:last-child,.cboard td:last-child{text-align:left}
+/* 주식 현황 표(.cstock, 주식정보) — 칸을 모두 왼쪽 정렬로(같은 날 요청) */
+.cstock th,.cstock td{text-align:left}
 
 /* 게시판 머리줄 "총 n건"의 숫자 — 브랜드 파랑(2026-09-29 요청). 공지 · 보도자료 · ESG 게시판 */
 .clist-hd .count b{color:var(--brand)}
