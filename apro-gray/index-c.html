@@ -350,6 +350,11 @@
     color:var(--on-dark-sub);white-space:nowrap;transition:color .22s var(--ease)}
   .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:var(--on-dark)}
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
+  /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52 · 영문도 52 를 넘지 않게(2026-09-30 요청) */
+  @media(min-width:901px) and (max-width:1180px){
+    .v2banner .en{font-size:min(52px,4.4vw)}
+    .v2banner .headline.is-en .en{font-size:clamp(24px,calc(100cqi / 12.6),52px)}
+  }
 
   /* 좁은 화면 — 탭 줄은 두 칸씩 상자 묶음으로 푼다(A 와 같다). 문구 윗자리는 화면 키를 따라 준다 */
   @media(max-width:900px){
