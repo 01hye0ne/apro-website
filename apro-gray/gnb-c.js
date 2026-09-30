@@ -196,7 +196,7 @@
     var ph = document.querySelector('.sf-ph[data-for="' + sec.id + '"]');
     if(ph) pairs.push({ sec: sec, ph: ph });
   });
-  var mq = window.matchMedia('(min-width:768px)');
+  var mq = window.matchMedia('(min-width:901px)');   /* 좁은 태블릿(768~900)은 장 안에 둔다(같은 날 요청) */
   function sync(){
     var moved = false;
     pairs.forEach(function(p){
@@ -212,7 +212,7 @@
     measure();
   }
   /* 태블릿 — 기둥의 줄 ↔ 그림 사이와 그림 키를 재어 글 쪽이 같은 자리에 앉게 한다(margin-c.css). 화면 키에만 달려 스크롤과 무관 */
-  var tab = window.matchMedia('(min-width:768px) and (max-width:1180px)'), root = document.documentElement;
+  var tab = window.matchMedia('(min-width:901px) and (max-width:1180px)'), root = document.documentElement;
   var fline = document.querySelector('.sf-figcol>.sf-line');
   function measure(){
     if(!tab.matches || !fline){ root.style.removeProperty('--c-fig-gap'); root.style.removeProperty('--c-fig-h'); return; }

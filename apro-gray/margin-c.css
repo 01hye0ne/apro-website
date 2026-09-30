@@ -235,7 +235,7 @@
   .sf-intro{padding-top:88px;padding-bottom:88px}
 }
 
-/* 사업영역 세부 태블릿(768~1180) — 넓은 화면의 붙박이 그림 기둥을 그대로 쓴다(2026-09-30 요청).
+/* 사업영역 세부 넓은 태블릿(901~1180) — 넓은 화면의 붙박이 그림 기둥을 그대로 쓴다(2026-09-30 요청, 좁은 태블릿은 같은 날 뺐다).
    [그림 기둥 | 글] 1:1(사이 8, 글은 눈금에서 32 안쪽)로 서고, 기둥(번호 태그 눈금줄 + 그림 칸)은 탭 줄 밑에 붙박인다.
    그림은 장 안으로 옮기지 않고(gnb-c.js 가 기둥으로 되돌린다) 다음 장의 눈금줄이 칸을 훑는 높이에서
    넓은 화면처럼 밀려 갈린다(각 장 스크립트 slide). 그래서 아래 장의 그림은 미리 보이지 않고 글만 올라온다.
@@ -244,6 +244,13 @@
 @media(min-width:768px) and (max-width:1180px){
   /* 탭 줄 실제 키 51(글자 · 여백이 바뀌어 장 CSS 의 47 과 4 어긋났다) — 붙박이 · 기둥 가운데 셈이 이 값을 쓴다 */
   :root{--subnav-h:51px}
+}
+/* 좁은 태블릿(768~900)은 붙박이 기둥 없이 그림이 장 안에서 글과 함께 흐른다(같은 날 요청 — 세로 아이패드에서는 기둥 위아래가
+   270 남짓 비었다). 장 CSS 의 태블릿 규칙(그림 1:1 · 눈금줄이 두 칸을 가로지름)을 쓰되 그림 붙박이(sticky)만 푼다 */
+@media(min-width:768px) and (max-width:900px){
+  html .sf-sec>.sf-ph{position:relative;top:auto}
+}
+@media(min-width:901px) and (max-width:1180px){
   html .sf-main:has(>.sf-figwrap),html .sf-fix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
     column-gap:8px;align-items:start;padding-left:var(--c-m);padding-right:var(--c-m)}   /* 기둥 사이 8 — 넓은 화면과 같다 */
   html .sf-main:has(>.sf-figwrap)>.sf-railwrap{grid-column:1/-1;width:auto;
@@ -292,10 +299,10 @@
   html .sf-intro .sf-subs:not(:has(.d)) .ic{width:32px;height:32px}
 }
 
-/* 사업영역 세부 태블릿(768~1180) 손가락 스크롤 — 휠 넘김(각 장 스크립트)은 휠에만 걸리므로 아이패드 터치는
+/* 사업영역 세부 넓은 태블릿(901~1180) 손가락 스크롤 — 휠 넘김(각 장 스크립트)은 휠에만 걸리므로 아이패드 터치는
    스크롤 스냅으로 한 장씩 제자리(장 윗변 = 탭 줄 밑변, 눈금줄이 기둥 눈금줄과 한 높이)에 세운다(2026-09-30 요청).
    proximity — 장 가까이에서 멈출 때만 붙인다. 히어로 · 마을 · 푸터와 한 화면을 넘는 장의 중간은 그냥 흐른다 */
-@media(min-width:768px) and (max-width:1180px) and (pointer:coarse){
+@media(min-width:901px) and (max-width:1180px) and (pointer:coarse){
   html:has(.sf-figwrap){scroll-snap-type:y proximity}
   html .sf-intro.sf-step{scroll-snap-align:start;scroll-margin-top:var(--gnb-h)}
   html .sf-secs>.sf-sec.sf-step{scroll-snap-align:start;scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h))}
