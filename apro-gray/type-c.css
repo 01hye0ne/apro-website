@@ -89,7 +89,8 @@
 /* 사업영역 세부 — 번호 · 제품 태그 · 수치는 --c-num 을 쓰는데, 지금 장이 아니면 옅은 회색으로 바래야 한다.
    글자용 짝 --c-num-tx 를 두고 바래는 규칙(넓은 화면 .js .sf-sec:not(.is-on) .sf-txt)에서 함께 바랜다 */
 :root{--c-num-tx:var(--brand-2)}
-@media(min-width:1181px){ .js .sf-sec:not(.is-on) .sf-txt{--c-num-tx:var(--sf-line-s)} }
+/* 넓은 태블릿(901~)도 옅은 장을 칠하므로 함께(2026-09-30 요청 — 파란 글자만 안 바랬다). 에너지 인프라 03 은 장 · 제품 카드 단위로 바랜다 */
+@media(min-width:901px){ .js .sf-sec:not(.is-on),.js .sf-prod:not(.is-on){--c-num-tx:var(--sf-line-s)} }
 .sf-apps b,.sf-cert li.em,.sf-dl--row .k,.sf-prods .k,.sf-dl--row .v,.sf-prods .cap,.sf-num b{color:var(--c-num-tx)}
 
 /* 사업영역 세부 소개 장 소분류 카드 — 이름(.nm)은 짙은 브랜드 파랑 --brand, 설명(.d)은 보조 파랑 --brand-2 (2026-09-29 요청).
