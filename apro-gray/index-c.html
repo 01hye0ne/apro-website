@@ -522,13 +522,20 @@
   .hm-card .d{color:var(--on-dark-body)}
   .hm-card .sub a{font-weight:600;font-size:var(--fs-meta);color:var(--on-dark-sub)}
   @media(min-width:901px){ .hm-card h3{font-size:var(--fs-display-sm)} }
-  /* 태블릿 · 폰(1180 이하) — 소분류가 카드 폭을 넘어 잘렸고 옆으로 끌어야만 보였다(2026-09-30 요청). 줄을 바꿔 다 보이게 한다.
-     넘칠 일이 없으니 옆 스크롤 · 오른쪽 끝 흐림을 걷고, 줄 머리에 세로선이 오지 않게 구분선 대신 간격만 둔다 */
-  @media(max-width:1180px){
-    .hm-card .sub{flex-wrap:wrap;row-gap:6px;column-gap:20px;overflow:visible;-webkit-mask-image:none;mask-image:none}
-    .hm-card .sub li{gap:0}
-    .hm-card .sub li+li::before{display:none}
-  }
+  /* 소분류가 카드 폭을 넘으면 옆으로 천천히 흐른다(2026-09-30 요청 — 잘려서 끌어야만 보였다. 줄바꿈으로 풀었다가 같은 날 되돌리고 흐름으로).
+     스크립트가 넘치는 띠에만 .is-flow 를 달고 항목을 한 벌 더 붙인다 — 목록(.sub)을 감싼 창(.hm-flow)이 양 끝을 흐리고 목록이 통째로 흐른다
+     (창을 따로 두는 건 띠 윗선까지 흐려지지 않게).
+     두 벌이 똑같아야 이음매 없이 돌므로 흐를 때는 모든 항목 앞에 구분선을 두고(첫 항목도), 목록 끝에 간격 한 칸을 둔다.
+     올리거나(hover) 초점이 들면 멈춘다. 움직임 줄이기를 켠 사람에게는 흐르지 않는다(예전처럼 옆으로 끌기) */
+  .hm-card .hm-strip.is-flow .hm-flow{overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 20px,#000 calc(100% - 20px),transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 20px,#000 calc(100% - 20px),transparent)}
+  .hm-card .hm-strip.is-flow .sub{width:max-content;overflow:visible;padding-left:0;padding-right:var(--flow-gap,30px);-webkit-mask-image:none;mask-image:none;
+    animation:hmSubFlow var(--flow-dur,20s) linear infinite}
+  .hm-card .hm-strip.is-flow .sub li::before{content:"";width:9px;height:10px;box-sizing:border-box;flex-shrink:0;
+    border-left:1px solid rgba(255,255,255,.7);border-right:1px solid rgba(255,255,255,.7)}
+  .hm-card .hm-strip.is-flow:is(:hover,:focus-within) .sub{animation-play-state:paused}
+  @keyframes hmSubFlow{to{transform:translateX(-50%)}}
   /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
      화살표를 레일 아래 오른쪽에 두면 화면 오른쪽 아래에 떠 있는 '맨 위로' 단추와 겹친다.
      아코디언은 네 카드가 늘 다 보이므로 몇 번째인지 알리던 점 표시는 두지 않는다 */
@@ -750,6 +757,7 @@
     .hm-card .cap{gap:12px;padding-top:32px}
     .hm-card .crow{padding:0 16px}
     .hm-card .sub{gap:20px;padding:10px 16px}
+    .hm-card{--flow-gap:20px}   /* 흐르는 띠의 끝 간격 = 항목 사이 간격 */
     .hm-card .sub li{gap:20px}
     .hm-card .d{font-size:var(--fs-meta)}
     /* 넘기기 단추 — 카드가 위아래로 쌓이므로 화살표도 위(이전) · 아래(다음)로 돌리고, 한 단 작게(44 → 36 · 그림 20).
@@ -1609,6 +1617,42 @@
   upd();
   window.addEventListener('scroll', req, { passive: true });
   window.addEventListener('resize', req);
+})();
+</script>
+<script>
+/* 홈 Business 소분류 흐름 — 띠(.hm-strip)보다 목록이 길 때만 .is-flow 를 달고 항목을 한 벌 더 붙인다(덧붙인 벌은 읽기 · 탭에서 뺀다).
+   빠르기는 초당 40px 로 목록 길이에 맞춘다. 폭이 바뀌면 다시 잰다. 움직임 줄이기를 켰으면 하지 않는다 */
+(function(){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var strips = [].slice.call(document.querySelectorAll('.hm-card .hm-strip'));
+  function check(){
+    strips.forEach(function(st){
+      var ul = st.querySelector('.sub');
+      if(!ul) return;
+      if(!ul.parentNode.classList.contains('hm-flow')){
+        var w = document.createElement('div'); w.className = 'hm-flow';
+        ul.parentNode.insertBefore(w, ul); w.appendChild(ul);
+      }
+      [].slice.call(ul.querySelectorAll('li[data-clone]')).forEach(function(li){ li.remove(); });
+      st.classList.remove('is-flow');
+      ul.style.removeProperty('--flow-dur');
+      if(ul.scrollWidth <= ul.clientWidth + 1) return;
+      var items = [].slice.call(ul.children);
+      items.forEach(function(li){
+        var c = li.cloneNode(true);
+        c.setAttribute('data-clone', '');
+        c.setAttribute('aria-hidden', 'true');
+        [].forEach.call(c.querySelectorAll('a'), function(a){ a.setAttribute('tabindex', '-1'); });
+        ul.appendChild(c);
+      });
+      st.classList.add('is-flow');
+      ul.style.setProperty('--flow-dur', Math.max(8, ul.scrollWidth / 2 / 40) + 's');
+    });
+  }
+  var t = 0;
+  window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(check, 150); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(check);
+  check();
 })();
 </script>
 <script src="gnb-c.js"></script>
