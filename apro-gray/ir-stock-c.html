@@ -155,9 +155,10 @@
 
   <section class="cblock" id="price">
     <h2>주가 정보</h2>
-    <!-- 금융위원회_주식시세정보(공공데이터포털)를 GitHub Actions(.github/workflows/stock-data.yml)가 평일 하루 두 번 받아
+    <!-- 금융위원회_주식시세정보(공공데이터포털)를 GitHub Actions(.github/workflows/stock-data.yml)가 평일 하루 한 번 받아
          data 브랜치 stock.json 에 둔다(2026-09-30). 여기서는 그 파일만 읽는다 — 인증키는 페이지에 없다.
-         시세는 전 영업일 종가 기준이다(실시간 아님). 못 읽으면 안내 한 줄만 남긴다 -->
+         평일 09:00 KST 한 번 받는데 포털은 전 영업일 종가를 오후 1시쯤 올려, 보이는 값은 대개 전전 영업일 종가다 —
+         날짜는 머리의 "○ 종가 기준"이 알린다(실시간 아님). 못 읽으면 안내 한 줄만 남긴다 -->
     <div class="cprice" id="cprice" aria-busy="true">
       <div class="cprice-hd">
         <p class="nm"><b>에이프로</b><span class="cd">262260</span><span class="mk">KOSDAQ</span></p>
@@ -189,7 +190,7 @@
       </div>
     </div>
     <div class="cstock-foot">
-      <span>* 출처 : 금융위원회 주식시세정보(공공데이터포털) · 전 영업일 종가 기준</span>
+      <span>* 출처 : 금융위원회 주식시세정보(공공데이터포털) · 매 영업일 오전 9시 갱신</span>
       <span>(단위 : 원)</span>
     </div>
   </section>
