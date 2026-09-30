@@ -262,8 +262,9 @@
   var ic = function(d){ return '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="' + d + '" stroke="currentColor" stroke-width="1.5"/></svg>'; };
   var box = document.createElement('div');
   box.className = 'c-railnav';
-  box.innerHTML = '<button type="button" data-dir="1" aria-label="다음 분류">' + ic('M3.5 6l4.5 4.5L12.5 6') + '</button>' +
-                  '<button type="button" data-dir="-1" aria-label="이전 분류">' + ic('M3.5 10l4.5-4.5L12.5 10') + '</button>';
+  /* [위(이전) · 아래(다음)] 차례 — 아래 단추가 오른쪽 끝에 온다(같은 날 요청) */
+  box.innerHTML = '<button type="button" data-dir="-1" aria-label="이전 분류">' + ic('M3.5 10l4.5-4.5L12.5 10') + '</button>' +
+                  '<button type="button" data-dir="1" aria-label="다음 분류">' + ic('M3.5 6l4.5 4.5L12.5 6') + '</button>';
   wrap.appendChild(box);
   var btns = [].slice.call(box.querySelectorAll('button'));
   function cur(){
@@ -272,8 +273,8 @@
   }
   function paint(){
     var i = cur();
-    btns[0].disabled = i >= grps.length - 1;
-    btns[1].disabled = i <= 0;
+    btns[0].disabled = i <= 0;
+    btns[1].disabled = i >= grps.length - 1;
   }
   btns.forEach(function(b){
     b.addEventListener('click', function(){
