@@ -356,3 +356,9 @@
 @media(max-width:900px){
   html .cpost-hd>.cbtns{justify-content:flex-end}
 }
+
+/* 에너지 인프라 03 솔루션 — 폰 · 좁은 태블릿(900 이하)에서 장 머리(.sf-phead)가 붙박인 아코디언 제목 줄을 덮었다(2026-09-30).
+   장이 flex 라 윗단이 flex 칸이 되어, 붙박이가 아닌데도 넓은 화면용 z-index 8 이 살아 제목 줄(z 3) 위에 그려졌다 — 여기서는 푼다 */
+@media(max-width:900px){
+  html .sf-sec.is-prod .sf-phead{z-index:auto}
+}
