@@ -203,12 +203,20 @@
   .navover .navover-body{padding-top:80px;justify-content:flex-start}
 }
 
-/* 전체 메뉴(사이트맵) 좁은 태블릿(768~900) — 대분류 이름이 한 줄을 따로 먹어 목록이 세로로 길었다(2026-09-29 요청).
-   넓은 화면처럼 한 행에 [대분류 | 하위 두 칸]으로 세운다. 대분류와 첫 하위 줄은 글자 바닥선을 맞춘다. 폰은 제목 위 · 하위 두 칸 그대로 */
+/* 전체 메뉴(사이트맵) 좁은 태블릿(768~900) — 오른쪽에서 밀려 나오는 서랍(폭 440, 2026-09-30 요청 : 화면을 다 덮으니 너무 컸다).
+   전체 판(.navover)은 뒤를 옅게 누르는 바탕만 되고, 머리줄 · 목록이 오른쪽 440 에 선다. 바탕을 누르면 닫힌다(gnb-c.js).
+   서랍 안은 폰과 같은 [대분류 위 · 하위 두 칸] — 한때(9-29) 쓰던 [대분류 | 하위 두 칸] 한 행은 서랍 폭에 들지 않아 걷었다.
+   폰(767 이하)과 넓은 태블릿 · 넓은 화면은 화면 전체 사이트맵 그대로 */
 @media(min-width:768px) and (max-width:900px){
-  .navover .ov-row{grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline}
-  /* 목록이 짧아져 한 화면에 들므로 넓은 태블릿처럼 세로 가운데로(같은 날 요청). 위아래 80 은 머리줄 몫 */
-  .navover .navover-body{justify-content:center;padding-bottom:80px}
+  html .navover{background:rgba(14,22,30,.45);-webkit-backdrop-filter:none;backdrop-filter:none;overflow-x:hidden}
+  html .navover .navover-hd{left:auto;width:440px;padding:0 32px}
+  html .navover .navover-body{flex:1 0 auto;width:440px;max-width:none;margin:0 0 0 auto;padding:80px 32px 48px;justify-content:flex-start;
+    background:rgba(27,39,51,.94);-webkit-backdrop-filter:blur(20px) saturate(1.05);backdrop-filter:blur(20px) saturate(1.05);
+    box-shadow:-16px 0 48px rgba(0,0,0,.25)}
+  html .navover .ov-row{grid-template-columns:1fr;gap:14px;align-items:start;padding:24px 0}
+  html .navover .ov-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html .navover .navover-hd,html .navover .navover-body{transform:translateX(100%);transition:transform .45s var(--ease)}
+  html .navover.open .navover-hd,html .navover.open .navover-body{transform:none}
 }
 
 /* 맨 위로 가기(.totop) — 콘텐츠 열세 장(투자정보 · 지속가능경영 · 커뮤니티)은 단추 마크업만 있고 모양 · 동작이 없어
