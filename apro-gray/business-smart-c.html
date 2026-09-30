@@ -1151,8 +1151,11 @@
     /* 제목 줄이 붙박이(margin-c.css)라 [문의하기]도 스크립트가 줄 안으로 옮겨 함께 붙는다. 접힌 장에서는 감춘다 */
     .sf-acc-hd{position:relative;--c-num:var(--brand)}  /* 단추 색 토큰은 글 칸(.sf-txt)에만 있어 줄에도 둔다 */
     .sf-sec:not(.is-open)>.sf-acc-hd .sf-cta{display:none}
-    .sf-sec .sf-cta{position:absolute;z-index:2;top:17px;left:calc(16px + var(--acc-tw,0px) + 12px);right:auto;
+    /* 제목 폭을 아직 못 쟀으면(--acc-tw 없음) 제목 위에 얹히지 않게 오른쪽(열고 닫는 표 앞)에 세운다 —
+       아이폰에서 폭이 0 으로 재져 단추가 제목을 덮었다(2026-09-30) */
+    .sf-sec .sf-cta{position:absolute;z-index:2;top:17px;left:auto;right:56px;
                     height:32px;padding:0 12px}
+    .sf-sec.has-acc-tw .sf-cta{left:calc(16px + var(--acc-tw) + 12px);right:auto}
     /* 제품 사진 — 16:9 칸에서는 사진 위아래가 잘려 설명이 접시 · 실린더 위에 얹혔다(2026-09-29 요청).
        칸을 사진 비율(2100×1800 = 7:6) 그대로 두면 사진이 온전히 보이고, 물체 바닥(사진 높이의 72~78%)
        아래 빈 바닥에 설명(아래 16% 남짓)이 사진 안에 얹힌다. 한때 설명을 사진 밖 아래 띠로 뺐다가 되돌림 */
@@ -2571,7 +2574,8 @@
       if(!t) return;
       /* 제목 칸은 줄 폭을 다 먹으므로 칸이 아니라 글자 폭을 잰다 */
       var r = document.createRange(); r.selectNodeContents(t);
-      s.style.setProperty('--acc-tw', Math.ceil(r.getBoundingClientRect().width) + 'px');
+      var tw = Math.ceil(r.getBoundingClientRect().width);
+      if(tw){ s.style.setProperty('--acc-tw', tw + 'px'); s.classList.add('has-acc-tw'); }  /* 접힌 묶음 안(감춰진 줄)은 0 으로 재지므로 건너뛴다 */
     });
   }
   /* 모바일에서는 [문의하기]를 제목 줄 안으로 옮긴다 — 줄이 GNB 밑에 붙박일 때 함께 따라가도록. 넓어지면 제자리로 */
@@ -2590,6 +2594,9 @@
   window.addEventListener('load', put);
   window.addEventListener('resize', put);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(put);
+  /* 묶음(04 이차전지 소재 등)을 펼칠 때는 창 크기가 그대로라 resize 가 안 온다 — 장 크기가 바뀌면 다시 잰다(2026-09-30,
+     접힌 채 잰 폭 0 때문에 [문의하기]가 제목 위에 얹혔다) */
+  if(window.ResizeObserver){ var ro = new ResizeObserver(put); secs.forEach(function(s){ ro.observe(s); }); }
 })();
 </script>
 <script src="gnb-c.js"></script>
