@@ -246,3 +246,8 @@
                                                    transform .5s cubic-bezier(.22,1,.36,1) calc(var(--ci,0) * .06s)}
 /* 카드 격자는 칸이 차례로 나오므로 격자 자체는 가리지 않는다 */
 .c-rv .cs-body .cblock>:is(.cgrid,.ccreed,.cnews){opacity:1;transform:none}
+
+/* 콘텐츠 페이지 세로 히어로의 장 목록(.cs-toc) — 투자정보 · 지속가능경영은 눌러도 옮기지 않는 안내용 목록이다(2026-09-30 요청).
+   마크업에서 앵커(href)를 걷었다 — 손 모양 · 호버 판도 없앤다 */
+.cs-toc a:not([href]){cursor:default}
+.cs-toc a:not([href]):hover{background:none}
