@@ -183,44 +183,37 @@
   document.documentElement.classList.add('c-rv');
 })();
 
-/* 사업영역 세부 태블릿(768~1180) — 장 안 그림을 그 위 눈금줄(번호 태그 · 선)과 한 기둥(.c-phcol)으로 감싼다.
-   둘이 한 덩어리로 붙박여야 함께 붙고 함께 풀린다(margin-c.css). 그림을 장 안팎으로 옮기는 건
-   business-layout.js 몫이라(1181 이상은 붙박이 그림 기둥으로 돌아간다) 여기는 그 뒤에 감싸고 푼다.
-   폰(767 이하)과 넓은 화면에서는 기둥을 걷고 그림을 제자리로 돌린다 */
+/* 사업영역 세부 태블릿(768~1180) — 그림을 붙박이 기둥(.sf-figstack)에 둔다(margin-c.css).
+   business-layout.js 는 1180 이하에서 그림을 장 안으로 옮기는데(A · A-1 과 함께 쓰는 파일이라 그대로 둔다),
+   시안 C 는 태블릿도 넓은 화면처럼 기둥에서 그림을 민다 — 그 뒤에 돌아 768 이상이면 기둥으로 되돌리고,
+   폰(767 이하)이면 장 안에 둔다. 옮긴 뒤에는 장 스크립트에 알려(c-figs-moved) 그림 자리를 다시 잡게 한다 */
 (function(){
+  var stack = document.querySelector('.sf-figstack');
   var secs = [].slice.call(document.querySelectorAll('.sf-secs .sf-sec'));
-  if(!secs.length) return;
-  var mq = window.matchMedia('(min-width:768px) and (max-width:1180px)');
+  if(!stack || !secs.length) return;
+  var pairs = [];
+  secs.forEach(function(sec){
+    var ph = document.querySelector('.sf-ph[data-for="' + sec.id + '"]');
+    if(ph) pairs.push({ sec: sec, ph: ph });
+  });
+  var mq = window.matchMedia('(min-width:768px)');
   function sync(){
-    secs.forEach(function(sec){
-      var col = null, ph = null;
-      [].forEach.call(sec.children, function(el){
-        if(el.classList.contains('c-phcol')) col = el;
-        else if(el.classList.contains('sf-ph')) ph = el;
-      });
-      if(col && !ph) ph = col.querySelector(':scope>.sf-ph');
-      if(mq.matches && ph){
-        if(!col){
-          col = document.createElement('div');
-          col.className = 'c-phcol';
-          var ln = document.createElement('div');
-          ln.className = 'sf-line c-phline';
-          ln.setAttribute('aria-hidden', 'true');
-          var tag = sec.querySelector('.sf-txt>.sf-line .sf-tag--sec');
-          if(tag) ln.appendChild(tag.cloneNode(true));
-          ln.appendChild(document.createElement('i')).className = 'rule';
-          col.appendChild(ln);
-        }
-        if(ph.parentNode !== col){ sec.insertBefore(col, ph); col.appendChild(ph); }
-      }else if(col){
-        if(ph && ph.parentNode === col) sec.insertBefore(ph, col);
-        col.parentNode.removeChild(col);
+    var moved = false;
+    pairs.forEach(function(p){
+      if(mq.matches){
+        if(p.ph.parentNode !== stack){ stack.appendChild(p.ph); moved = true; }
+      }else if(p.ph.parentNode !== p.sec){
+        p.sec.insertBefore(p.ph, p.sec.firstChild);
+        p.ph.style.transform = ''; p.ph.style.visibility = ''; p.ph.style.removeProperty('--zoom');
+        moved = true;
       }
     });
+    if(moved) window.dispatchEvent(new Event('c-figs-moved'));
   }
   /* business-layout.js 가 같은 폭 변화에 그림을 먼저 옮긴 뒤에 돈다 */
   function later(){ setTimeout(sync, 0); }
   if(mq.addEventListener) mq.addEventListener('change', later); else if(mq.addListener) mq.addListener(later);
-  window.addEventListener('resize', later);
+  var big = window.matchMedia('(min-width:1181px)');
+  if(big.addEventListener) big.addEventListener('change', later); else if(big.addListener) big.addListener(later);
   sync();
 })();
