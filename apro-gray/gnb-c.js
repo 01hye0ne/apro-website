@@ -182,3 +182,45 @@
   items.forEach(function(el){ io.observe(el); });
   document.documentElement.classList.add('c-rv');
 })();
+
+/* 사업영역 세부 태블릿(768~1180) — 장 안 그림을 그 위 눈금줄(번호 태그 · 선)과 한 기둥(.c-phcol)으로 감싼다.
+   둘이 한 덩어리로 붙박여야 함께 붙고 함께 풀린다(margin-c.css). 그림을 장 안팎으로 옮기는 건
+   business-layout.js 몫이라(1181 이상은 붙박이 그림 기둥으로 돌아간다) 여기는 그 뒤에 감싸고 푼다.
+   폰(767 이하)과 넓은 화면에서는 기둥을 걷고 그림을 제자리로 돌린다 */
+(function(){
+  var secs = [].slice.call(document.querySelectorAll('.sf-secs .sf-sec'));
+  if(!secs.length) return;
+  var mq = window.matchMedia('(min-width:768px) and (max-width:1180px)');
+  function sync(){
+    secs.forEach(function(sec){
+      var col = null, ph = null;
+      [].forEach.call(sec.children, function(el){
+        if(el.classList.contains('c-phcol')) col = el;
+        else if(el.classList.contains('sf-ph')) ph = el;
+      });
+      if(col && !ph) ph = col.querySelector(':scope>.sf-ph');
+      if(mq.matches && ph){
+        if(!col){
+          col = document.createElement('div');
+          col.className = 'c-phcol';
+          var ln = document.createElement('div');
+          ln.className = 'sf-line c-phline';
+          ln.setAttribute('aria-hidden', 'true');
+          var tag = sec.querySelector('.sf-txt>.sf-line .sf-tag--sec');
+          if(tag) ln.appendChild(tag.cloneNode(true));
+          ln.appendChild(document.createElement('i')).className = 'rule';
+          col.appendChild(ln);
+        }
+        if(ph.parentNode !== col){ sec.insertBefore(col, ph); col.appendChild(ph); }
+      }else if(col){
+        if(ph && ph.parentNode === col) sec.insertBefore(ph, col);
+        col.parentNode.removeChild(col);
+      }
+    });
+  }
+  /* business-layout.js 가 같은 폭 변화에 그림을 먼저 옮긴 뒤에 돈다 */
+  function later(){ setTimeout(sync, 0); }
+  if(mq.addEventListener) mq.addEventListener('change', later); else if(mq.addListener) mq.addListener(later);
+  window.addEventListener('resize', later);
+  sync();
+})();
