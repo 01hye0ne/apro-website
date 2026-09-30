@@ -216,9 +216,12 @@
   var fline = document.querySelector('.sf-figcol>.sf-line');
   function measure(){
     if(!tab.matches || !fline){ root.style.removeProperty('--c-fig-gap'); root.style.removeProperty('--c-fig-h'); return; }
-    root.style.setProperty('--c-fig-gap', Math.round(stack.getBoundingClientRect().top - fline.getBoundingClientRect().bottom) + 'px');
-    root.style.setProperty('--c-fig-h', Math.round(stack.getBoundingClientRect().height) + 'px');
+    /* 값이 그대로면 쓰지 않는다 — 아이패드는 스크롤 중 주소창이 들고 날 때마다 resize 를 쏘는데, 문서 뿌리에 변수를
+       다시 쓰면 문서 전체 스타일을 다시 계산해 스크롤이 버벅였다(같은 날) */
+    set('--c-fig-gap', Math.round(stack.getBoundingClientRect().top - fline.getBoundingClientRect().bottom) + 'px');
+    set('--c-fig-h', Math.round(stack.getBoundingClientRect().height) + 'px');
   }
+  function set(k, v){ if(root.style.getPropertyValue(k) !== v) root.style.setProperty(k, v); }
   /* business-layout.js 가 같은 폭 변화에 그림을 먼저 옮긴 뒤에 돈다 */
   function later(){ setTimeout(sync, 0); }
   if(mq.addEventListener) mq.addEventListener('change', later); else if(mq.addListener) mq.addListener(later);
@@ -237,7 +240,10 @@
   function apply(){
     secs.forEach(function(sec){
       var hd = sec.querySelector('.sf-phead');
-      if(mq.matches && hd) sec.style.setProperty('--c-ph', hd.offsetHeight + 'px');
+      if(mq.matches && hd){
+        var v = hd.offsetHeight + 'px';
+        if(sec.style.getPropertyValue('--c-ph') !== v) sec.style.setProperty('--c-ph', v);   /* 그대로면 쓰지 않는다(위 --c-fig-gap 과 같은 까닭) */
+      }
       else sec.style.removeProperty('--c-ph');
     });
   }

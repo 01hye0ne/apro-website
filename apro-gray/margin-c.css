@@ -299,14 +299,9 @@
   html .sf-intro .sf-subs:not(:has(.d)) .ic{width:32px;height:32px}
 }
 
-/* 사업영역 세부 넓은 태블릿(901~1180) 손가락 스크롤 — 휠 넘김(각 장 스크립트)은 휠에만 걸리므로 아이패드 터치는
-   스크롤 스냅으로 한 장씩 제자리(장 윗변 = 탭 줄 밑변, 눈금줄이 기둥 눈금줄과 한 높이)에 세운다(2026-09-30 요청).
-   proximity — 장 가까이에서 멈출 때만 붙인다. 히어로 · 마을 · 푸터와 한 화면을 넘는 장의 중간은 그냥 흐른다 */
-@media(min-width:901px) and (max-width:1180px) and (pointer:coarse){
-  html:has(.sf-figwrap){scroll-snap-type:y proximity}
-  html .sf-intro.sf-step{scroll-snap-align:start;scroll-margin-top:var(--gnb-h)}
-  html .sf-secs>.sf-sec.sf-step{scroll-snap-align:start;scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h))}
-  html .sf-prod{scroll-snap-align:start;scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 24px)}
+/* (2026-09-30) 넓은 태블릿 손가락 스크롤에 걸었던 스크롤 스냅(proximity)은 같은 날 걷었다 — 아이패드에서 관성 스크롤과
+   부딪혀 버벅였고, 위로 되올릴 때(주소창이 다시 나오며 화면 키가 바뀐다) 앞 장 머리로 끌어당겨 더 심했다.
+   한 장 넘김은 휠(각 장 스크립트)과 탭 줄 · 분류 단추에만 남긴다 */
 }
 
 /* 에너지 인프라 03 솔루션 — 넓은 태블릿(901~1180)도 넓은 화면처럼(2026-09-30 요청).
@@ -327,9 +322,6 @@
   html .sf-sec.is-prod .sf-prod:first-child{margin-top:0}
   html .sf-sec.is-prod .sf-prod>.shot{flex:0 0 min(50%, calc(100svh - var(--gnb-h) - var(--subnav-h) - var(--c-ph,200px) - 26px))}
   html .sf-cert .dots{display:flex}
-}
-@media(min-width:901px) and (max-width:1180px) and (pointer:coarse){
-  html .sf-prod{scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + var(--c-ph,200px))}
 }
 
 /* 에너지 인프라 03 솔루션 제품 사진 — 태블릿(768~1180)에서 칸을 거의 꽉 채워(안쪽 16) 너무 커 보였다(2026-09-30 요청).
