@@ -314,11 +314,8 @@
      1185 아래에서 화면을 따라 준다(A 와 같다 — 좁아지면 국문이 글자 중간에서 세 줄로 접혔다) */
   .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--on-dark);white-space:pre-line}
-  /* 영문 — A-1 히어로 제목과 같은 글꼴 · 크기 식. 네 문구 중 가장 긴 줄(Industrial Safety Innovation)이
-     64 에서 12.57em 이라 칸 폭 ÷ 12.6 이면 칸에 딱 든다(A-1 과 같은 문장이라 같은 값).
-     줄높이는 국문과 같은 --lh-head(1.2) — 1 이면 네모난 Aldrich 두 줄이 붙어 보였다(2026-09-29 요청) */
-  .v2banner .headline.is-en .en{font-family:var(--ald);font-weight:400;font-size:clamp(24px,calc(100cqi / 12.6),64px);
-    line-height:var(--lh-head);letter-spacing:var(--ls-num)}
+  /* 히어로 문구는 모두 국문 서체(SUIT) 한 벌이다(2026-09-30 확정 — 앞서 영문 문구에 쓰던 Aldrich · 크기 식(.is-en)을 걷었다).
+     사업영역 넷도 국문이 메인 · 영문이 서브다(아래 MSG) */
   .v2banner .kor{font-family:var(--suit);font-weight:600;font-size:var(--fs-h3);line-height:var(--lh-label);
     letter-spacing:var(--ls);color:var(--on-dark-body)}
 
@@ -358,15 +355,13 @@
     color:var(--on-dark-sub);white-space:nowrap;transition:color .22s var(--ease)}
   .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:var(--on-dark)}
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
-  /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52 · 영문도 52 를 넘지 않게(2026-09-30 요청) */
+  /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
     .v2banner .en{font-size:min(52px,4.4vw)}
-    .v2banner .headline.is-en .en{font-size:clamp(24px,calc(100cqi / 12.6),52px)}
   }
   /* 좁은 태블릿(768~900) — 56 이 세로 아이패드에서 커 보여 44 안팎으로 줄인다(820 에서 44, 2026-09-30 요청). 폰은 그대로 */
   @media(min-width:768px) and (max-width:900px){
     html .v2banner .en{font-size:min(48px,5.4vw)}
-    html .v2banner .headline.is-en .en{font-size:clamp(24px,calc(100cqi / 12.6),48px)}
   }
 
   /* 좁은 화면 — 탭 줄은 두 칸씩 상자 묶음으로 푼다(A 와 같다). 문구 윗자리는 화면 키를 따라 준다 */
@@ -850,7 +845,6 @@
 <link rel="stylesheet" href="type-c.css" />
 </head>
 <body>
-
 <!-- ===================== 공통 GNB ===================== -->
 <header class="sf-gnb">
   <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
@@ -1340,11 +1334,11 @@
       { t:'에이프로는\n함께 나아가는 기업입니다',   s:'당신이 향하는 세상으로 우리도 같이 나아갑니다' },
       { t:'에이프로는\n에너지 인프라 기업입니다',    s:'지속가능한 차세대 에너지 선순환을 선도합니다' },
       { t:'에이프로는\n지구의 가치를 아는 기업입니다', s:'우리 모두의 환경과 자원을 위해 늘 고민합니다' },
-      // 영문 넷은 A-1(index-a1.html .hm-hl)과 같은 자리에서 두 줄로 고정한다 — & 뒤에서 끊는다(2026-09-21)
-      { t:'Smart &\nAutomated Manufacturing',  s:'이차전지 활성화 전 공정을 자체 기술로 완성합니다' },
-      { t:'Smart &\nResilient Power Grid',     s:'BESS·UPS로 안정적인 에너지 인프라를 구축합니다' },
-      { t:'Physical AI-based\nIndustrial Safety Innovation', s:'AI로 산업 현장의 안전과 효율을 높여 나갑니다' },
-      { t:'More Efficient &\nReliable Power',  s:'차세대 화합물 GaN 전력반도체를 선도합니다' }
+      // 사업영역 넷은 국문을 크게(메인), 영문을 작게(서브) — 2026-09-30 시안 C2 로 보고 확정. 국문은 두 줄로 끊는다
+      { t:'이차전지 활성화 전 공정을\n자체 기술로 완성합니다',   s:'Smart & Automated Manufacturing' },
+      { t:'BESS·UPS로 안정적인\n에너지 인프라를 구축합니다',   s:'Smart & Resilient Power Grid' },
+      { t:'AI로 산업 현장의\n안전과 효율을 높여 나갑니다',     s:'Physical AI-based Industrial Safety Innovation' },
+      { t:'차세대 화합물 GaN\n전력반도체를 선도합니다',        s:'More Efficient & Reliable Power' }
     ];
     var N = MSG.length;    // 7 segments → 0,5,…,30s
 
@@ -1374,8 +1368,6 @@
       window.setTimeout(function(){
         if(enEl){ enEl.textContent = MSG[idx].t; }     // 강조문구
         if(korEl){ korEl.textContent = MSG[idx].s; }   // 보조문구
-        // 영문 문구는 Aldrich 로(A-1 히어로와 같다) — 글자가 바뀌는 이 순간에 함께 갈아야 서체만 먼저 튀지 않는다
-        head.classList.toggle('is-en', /^[A-Za-z]/.test(MSG[idx].t));
         head.classList.remove('leaving');
         head.classList.remove('entering'); void head.offsetWidth;   // restart the rise-in animation
         head.classList.add('entering');
