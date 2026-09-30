@@ -193,7 +193,6 @@
 @media(max-width:1180px){
   .footer .f-nav{display:none}
   .footer{padding-top:40px}
-  .footer .f-util{padding-top:0}
 }
 
 /* 전체 메뉴(사이트맵) 모바일(900 이하) — 첫 묶음이 머리줄(로고 · ENG · 닫기, 높이 80 · 위에 떠 있음) 밑에 붙어
@@ -275,3 +274,12 @@ html .totop.is-ondark:hover{background:var(--point-200)}
    마크업에서 앵커(href)를 걷었다 — 손 모양 · 호버 판도 없앤다 */
 .cs-toc a:not([href]){cursor:default}
 .cs-toc a:not([href]):hover{background:none}
+
+/* 푸터 아래 줄 — 가운데 줄(정보 링크 · 패밀리 사이트, .f-util)을 걷고 FAMILY SITE 를 아래 줄 오른쪽 칸(.br)으로 옮겼다(2026-09-30 요청).
+   오른쪽 칸은 왼쪽 덩어리(로고 · 주소)와 위아래 끝을 맞춘다 — 위에 FAMILY SITE, 아래에 Copyright.
+   960 아래는 한 줄로 쌓여 주소 밑에 FAMILY SITE(온 폭) · Copyright 차례 */
+.footer .f-bottom .br{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px}
+@media(max-width:960px){
+  .footer .f-bottom .br{align-self:stretch;width:100%;align-items:stretch;gap:20px}
+  .footer .f-bottom .br .f-family,.footer .f-bottom .br .fbtn{width:100%}
+}
