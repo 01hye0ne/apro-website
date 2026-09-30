@@ -326,3 +326,11 @@
   window.addEventListener('resize', req);
   check();
 })();
+
+/* 사업영역 세부 폰 아코디언 표시 — 더하기(+ → 열리면 ×) 대신 꺾쇠(⌄ → 열리면 ⌃)로(2026-09-30 요청 : 아래로 펼쳐지니 꺾쇠가 자연스럽다).
+   표시는 business-layout.js(A · A-1 과 함께 쓰는 파일)가 만들므로 그 파일은 두고, 여기서 그림 선만 바꾼다. 뒤집기는 margin-c.css */
+(function(){
+  [].forEach.call(document.querySelectorAll('.sf-acc-ic path'), function(p){
+    p.setAttribute('d', 'M5 7.5L10 12.5L15 7.5');
+  });
+})();
