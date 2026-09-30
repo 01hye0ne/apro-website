@@ -400,3 +400,12 @@ html body:has(.cpost-hd)>.cs-solo{flex:1 0 auto}
 
 /* 사업영역 세부 폰 아코디언 꺾쇠(gnb-c.js 가 그림을 ⌄ 로 바꾼다) — 열리면 45° 돌려 × 로 만들던 것을 180° 뒤집어 ⌃ 로(2026-09-30 요청) */
 html .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(180deg)}
+
+/* 사업영역 세부 폰(767 이하) — 문단 · 목록 사이가 빽빽했다(2026-09-30 요청, iPhone 16 Pro Max). 한 단씩 띄운다 —
+   문단 사이 8 → 12, 글 덩어리 ↔ 목록 24 → 32, 목록 칸 위아래 8 → 12(번호 목록) · 16(점 목록) */
+@media(max-width:767px){
+  html .sf-body p+p{margin-top:12px}
+  html .sf-sec .sf-txtin{gap:32px}
+  html .sf-num li{padding-top:12px;padding-bottom:12px}
+  html .sf-dl li{padding-top:16px;padding-bottom:16px}
+}
