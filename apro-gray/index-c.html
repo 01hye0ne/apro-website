@@ -522,6 +522,13 @@
   .hm-card .d{color:var(--on-dark-body)}
   .hm-card .sub a{font-weight:600;font-size:var(--fs-meta);color:var(--on-dark-sub)}
   @media(min-width:901px){ .hm-card h3{font-size:var(--fs-display-sm)} }
+  /* 태블릿 · 폰(1180 이하) — 소분류가 카드 폭을 넘어 잘렸고 옆으로 끌어야만 보였다(2026-09-30 요청). 줄을 바꿔 다 보이게 한다.
+     넘칠 일이 없으니 옆 스크롤 · 오른쪽 끝 흐림을 걷고, 줄 머리에 세로선이 오지 않게 구분선 대신 간격만 둔다 */
+  @media(max-width:1180px){
+    .hm-card .sub{flex-wrap:wrap;row-gap:6px;column-gap:20px;overflow:visible;-webkit-mask-image:none;mask-image:none}
+    .hm-card .sub li{gap:0}
+    .hm-card .sub li+li::before{display:none}
+  }
   /* 머리 줄 — 제목 왼쪽, 넘기기 화살표 오른쪽(News 머리 줄과 같은 틀).
      화살표를 레일 아래 오른쪽에 두면 화면 오른쪽 아래에 떠 있는 '맨 위로' 단추와 겹친다.
      아코디언은 네 카드가 늘 다 보이므로 몇 번째인지 알리던 점 표시는 두지 않는다 */
