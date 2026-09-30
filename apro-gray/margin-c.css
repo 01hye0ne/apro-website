@@ -308,3 +308,26 @@
   html .sf-secs>.sf-sec.sf-step{scroll-snap-align:start;scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h))}
   html .sf-prod{scroll-snap-align:start;scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + 24px)}
 }
+
+/* 에너지 인프라 03 솔루션 — 넓은 태블릿(901~1180)도 넓은 화면처럼(2026-09-30 요청).
+   윗단(눈금줄 · 제목 · 리드 · Certification)이 탭 줄 밑에 붙고, 그 아래로 제품 카드가 한 장씩 올라온다 —
+   카드 한 장이 윗단 아래 남은 화면(아래 24)을 채우고, 휠 한 번에 한 장(장 스크립트 lineOf),
+   지금 카드가 아닌 카드는 옅게 · 인증 줄 오른쪽 점이 몇째인지 알린다. 윗단 키(--c-ph)는 gnb-c.js 가 잰다.
+   사진 칸은 카드 절반(1:1)이되 카드 키를 넘지 않는다 */
+@media(min-width:901px) and (max-width:1180px){
+  html .sf-secs.is-prods{gap:40px;padding-top:40px}
+  html .sf-secs.is-prods>.sf-sec.is-prod{padding-top:0;padding-bottom:0;border-top:0}
+  html .sf-sec.is-prod .sf-phead{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h));z-index:8;
+    padding-top:40px;margin-top:-40px;background:#fff}
+  html .sf-sec.is-prod .sf-phead::after{display:block;right:0}
+  html .sf-sec.is-prod .sf-ptexts{padding-bottom:0}
+  html .sf-sec.is-prod .sf-prods{gap:0}
+  html .sf-sec.is-prod .sf-prod{margin-top:-1px;
+    min-height:calc(100svh - var(--gnb-h) - var(--subnav-h) - var(--c-ph,200px) - 24px)}
+  html .sf-sec.is-prod .sf-prod:first-child{margin-top:0}
+  html .sf-sec.is-prod .sf-prod>.shot{flex:0 0 min(50%, calc(100svh - var(--gnb-h) - var(--subnav-h) - var(--c-ph,200px) - 26px))}
+  html .sf-cert .dots{display:flex}
+}
+@media(min-width:901px) and (max-width:1180px) and (pointer:coarse){
+  html .sf-prod{scroll-margin-top:calc(var(--gnb-h) + var(--subnav-h) + var(--c-ph,200px))}
+}

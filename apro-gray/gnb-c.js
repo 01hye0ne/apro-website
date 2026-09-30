@@ -227,3 +227,21 @@
   window.addEventListener('resize', measure);
   sync();
 })();
+
+/* 에너지 인프라 03 솔루션 — 넓은 태블릿(901~1180) 붙박이 윗단의 키를 장마다 재어 --c-ph 로 건다(margin-c.css).
+   카드가 그 아래 남은 화면을 채우고, 터치 스냅 자리도 이 값을 쓴다 */
+(function(){
+  var secs = [].slice.call(document.querySelectorAll('.sf-sec.is-prod'));
+  if(!secs.length) return;
+  var mq = window.matchMedia('(min-width:901px) and (max-width:1180px)');
+  function apply(){
+    secs.forEach(function(sec){
+      var hd = sec.querySelector('.sf-phead');
+      if(mq.matches && hd) sec.style.setProperty('--c-ph', hd.offsetHeight + 'px');
+      else sec.style.removeProperty('--c-ph');
+    });
+  }
+  window.addEventListener('resize', apply);
+  window.addEventListener('load', apply);
+  apply();
+})();
