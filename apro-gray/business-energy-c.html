@@ -720,7 +720,8 @@
   /* 지금 장이 아닌 장 — 쿨그레이 계단을 두 칸씩 내려 칠한다.
      좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
      .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
-  @media(min-width:1181px){
+  /* 태블릿(768~1180)도 붙박이 그림 기둥을 쓰므로 같이 칠한다(2026-09-30 요청 — 시안 C) */
+  @media(min-width:768px){
     .js .sf-sec:not(.is-on){
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
       --c-tick:var(--sf-line);--c-tagbg:var(--sf-gray100);
@@ -1668,7 +1669,13 @@
   function secPad(){
     return secsEl ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0;
   }
-  function line(){ return px('--gnb-h') + (window.matchMedia('(min-width:1181px)').matches ? secPad() : px('--subnav-h')); }
+  function line(){
+    if(window.matchMedia('(min-width:1181px)').matches) return px('--gnb-h') + secPad();
+    /* 태블릿 — 기둥이 탭 줄 밑 남은 화면 세로 가운데에 선다. 장 눈금줄(장 위 여백 아래)이 기둥 눈금줄과 맞는 높이 */
+    var w = document.querySelector('.sf-figwrap'), c = document.querySelector('.sf-figcol');
+    var off = (w && c) ? c.getBoundingClientRect().top - w.getBoundingClientRect().top : 0;
+    return px('--gnb-h') + px('--subnav-h') + off - (parseFloat(getComputedStyle(secs[0]).paddingTop) || 0);
+  }
   /* 카드도 장처럼 한 장씩 센다 — 카드가 서는 줄은 그 장 붙박이 윗단의 아래 변이다.
      지금 카드에만 .is-on 을 두어, 아직 올라오지 않은 카드가 옅게 남는다 */
   var prods = [].slice.call(document.querySelectorAll('.sf-prod'));
