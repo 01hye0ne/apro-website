@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>APRO | 에이프로 — 안심하고 믿을 수 있는 미래를 만드는 기업 (C)</title>
+<title>APRO | 에이프로 — 안심하고 믿을 수 있는 미래를 만드는 기업 (C2)</title>
 <meta name="description" content="에이프로(APRO). 스마트 제조·에너지 인프라·인공지능 플랫폼·화합물 전력 반도체를 아우르는 Global Top 5 Total Energy-Solution Provider." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -848,6 +848,8 @@
 <link rel="stylesheet" href="type-c.css" />
 </head>
 <body>
+<!-- 시안 C2 홈(2026-09-30) — index-c.html 을 복사해 히어로만 바꿨다 : 히어로 글꼴을 모두 국문 서체(SUIT)로,
+     사업영역 문구 넷은 국문 메인 · 영문 서브. 나머지(섹션 · GNB · 푸터 · 링크)는 C 와 같다(링크는 C 로 간다) -->
 
 <!-- ===================== 공통 GNB ===================== -->
 <header class="sf-gnb">
@@ -1341,11 +1343,11 @@
       { t:'에이프로는\n함께 나아가는 기업입니다',   s:'당신이 향하는 세상으로 우리도 같이 나아갑니다' },
       { t:'에이프로는\n에너지 인프라 기업입니다',    s:'지속가능한 차세대 에너지 선순환을 선도합니다' },
       { t:'에이프로는\n지구의 가치를 아는 기업입니다', s:'우리 모두의 환경과 자원을 위해 늘 고민합니다' },
-      // 영문 넷은 A-1(index-a1.html .hm-hl)과 같은 자리에서 두 줄로 고정한다 — & 뒤에서 끊는다(2026-09-21)
-      { t:'Smart &\nAutomated Manufacturing',  s:'이차전지 활성화 전 공정을 자체 기술로 완성합니다' },
-      { t:'Smart &\nResilient Power Grid',     s:'BESS·UPS로 안정적인 에너지 인프라를 구축합니다' },
-      { t:'Physical AI-based\nIndustrial Safety Innovation', s:'AI로 산업 현장의 안전과 효율을 높여 나갑니다' },
-      { t:'More Efficient &\nReliable Power',  s:'차세대 화합물 GaN 전력반도체를 선도합니다' }
+      // 시안 C2 — 사업영역 넷은 국문을 크게(메인), 영문을 작게(서브)로 뒤집었다(2026-09-30 요청). 국문은 두 줄로 끊는다
+      { t:'이차전지 활성화 전 공정을\n자체 기술로 완성합니다',   s:'Smart & Automated Manufacturing' },
+      { t:'BESS·UPS로 안정적인\n에너지 인프라를 구축합니다',   s:'Smart & Resilient Power Grid' },
+      { t:'AI로 산업 현장의\n안전과 효율을 높여 나갑니다',     s:'Physical AI-based Industrial Safety Innovation' },
+      { t:'차세대 화합물 GaN\n전력반도체를 선도합니다',        s:'More Efficient & Reliable Power' }
     ];
     var N = MSG.length;    // 7 segments → 0,5,…,30s
 
@@ -1375,8 +1377,8 @@
       window.setTimeout(function(){
         if(enEl){ enEl.textContent = MSG[idx].t; }     // 강조문구
         if(korEl){ korEl.textContent = MSG[idx].s; }   // 보조문구
-        // 영문 문구는 Aldrich 로(A-1 히어로와 같다) — 글자가 바뀌는 이 순간에 함께 갈아야 서체만 먼저 튀지 않는다
-        head.classList.toggle('is-en', /^[A-Za-z]/.test(MSG[idx].t));
+        // 시안 C2 — 히어로 글은 모두 국문 서체(SUIT)다. 영문 전용 서체 · 크기(.is-en, Aldrich)를 쓰지 않는다
+        head.classList.remove('is-en');
         head.classList.remove('leaving');
         head.classList.remove('entering'); void head.offsetWidth;   // restart the rise-in animation
         head.classList.add('entering');
