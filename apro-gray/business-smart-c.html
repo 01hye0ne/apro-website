@@ -1191,6 +1191,14 @@
        min-height 도 함께 둔다 : 고리의 글자 높이는 폭을 따라 줄지 않는데 설비는
        줄어들어서, 좁은 기기에서 비율만으로는 다시 붙는다 */
     .sf-sec>.sf-ph.has-map{aspect-ratio:4/3;min-height:280px}
+    /* 공정 맵이 있는 장(01-1)은 [설명 → 맵 → 공정 목록] 차례로(2026-09-30 요청 — 도식을 먼저, 목록과 자리 바꿈).
+       목록이 글 상자(.sf-txt > .sf-txtin) 안에 있어 상자를 풀고(display:contents) 세 조각을 장 안에서 다시 줄 세운다.
+       접힌 장은 위 규칙대로 통째로 감춘다(열린 장만 푼다) */
+    .sf-sec.is-open:has(>.sf-ph.has-map)>.sf-txt,
+    .sf-sec.is-open:has(>.sf-ph.has-map) .sf-txtin{display:contents}
+    .sf-sec:has(>.sf-ph.has-map) .sf-texts{order:2;margin-bottom:24px}
+    .sf-sec:has(>.sf-ph.has-map)>.sf-ph{margin-bottom:24px}
+    .sf-sec:has(>.sf-ph.has-map) .sf-num{order:4;margin-bottom:28px}
     /* 줄 이름과 같은 말인 제목만 접는다 — 스크립트가 .sf-acc-dup 로 짚어 준다.
        에너지 인프라처럼 줄은 소분류 이름 · 안은 장 제목으로 갈리는 곳은 그대로 둔다 */
     .sf-sec.sf-acc-dup h2:not(.sf-acc-hd){display:none}
