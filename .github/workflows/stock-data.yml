@@ -5,7 +5,7 @@
 name: stock-data
 on:
   schedule:
-    - cron: '0,20,40 0 * * 1-5'   # 09:00 · 09:20 · 09:40 KST(2026-09-30 요청) — 해외 러너에서 포털 연결이 자주 끊겨 세 번 시도한다, 값이 바뀔 때만 커밋
+    - cron: '0 0 * * 1-5'   # 하루 한 번 09:00 KST(2026-09-30 요청) — 연결이 끊기면 curl 이 안에서 여섯 번까지 다시 부른다, 값이 바뀔 때만 커밋
   workflow_dispatch:
 permissions:
   contents: write
