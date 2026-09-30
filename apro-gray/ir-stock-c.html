@@ -25,6 +25,62 @@
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
 <link rel="stylesheet" href="type-c.css" />
+<style>
+/* 주가 정보(.cprice) — 2026-09-30. 머리(종목 · 종가 · 대비) · 값 여섯 칸 · 종가 선 그래프.
+   오르면 빨강, 내리면 파랑(국내 시세 관례) */
+.cprice{margin-top:24px;border-top:2px solid var(--g900);font-family:var(--suit);color:var(--g900);
+  --up:#d6293e;--down:#2c5790}
+.cprice-hd{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px 24px;padding:24px 0;border-bottom:1px solid var(--border-g)}
+.cprice-hd .nm{grid-column:1/-1;margin:0;display:flex;align-items:center;gap:8px;font-size:var(--fs-body);letter-spacing:var(--ls)}
+.cprice-hd .nm b{font-weight:800}
+.cprice-hd .cd,.cprice-hd .mk{font-size:var(--fs-meta);color:var(--teritary)}
+.cprice-hd .mk{padding:2px 6px;border:1px solid var(--border-g);font-size:var(--fs-tag);letter-spacing:var(--ls-caps)}
+.cprice-hd .now{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px}
+.cprice-hd .px{font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls);font-variant-numeric:tabular-nums}
+.cprice-hd .un{font-weight:700;font-size:var(--fs-lead)}
+.cprice-hd .chg{margin-left:8px;font-weight:700;font-size:var(--fs-body);font-variant-numeric:tabular-nums}
+.cprice.is-up .chg{color:var(--up)}
+.cprice.is-down .chg{color:var(--down)}
+.cprice-hd .asof{margin:0;font-size:var(--fs-meta);color:var(--teritary);text-align:right}
+.cprice-kv{margin:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-bottom:1px solid var(--border-g)}
+.cprice-kv div{padding:16px;display:flex;flex-direction:column;gap:6px}
+.cprice-kv div+div{border-left:1px solid var(--border-g)}
+.cprice-kv dt{font-size:var(--fs-meta);color:var(--teritary)}
+.cprice-kv dd{margin:0;font-weight:700;font-size:var(--fs-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cprice-chart{padding-top:24px}
+.cprice-tabs{display:flex;gap:4px;margin-bottom:16px}
+.cprice-tabs button{height:32px;padding:0 12px;border:1px solid var(--border-g);background:#fff;cursor:pointer;
+  font-family:var(--suit);font-weight:700;font-size:var(--fs-meta);color:var(--sec)}
+.cprice-tabs button[aria-pressed="true"]{border-color:var(--g900);background:var(--g900);color:#fff}
+.cprice-plot{position:relative;height:240px;background:var(--secondary-bg)}
+.cprice-plot svg{display:block;width:100%;height:100%;overflow:visible;touch-action:pan-y}
+.cprice-plot .line{fill:none;stroke:var(--brand);stroke-width:2;vector-effect:non-scaling-stroke}
+.cprice-plot .area{fill:rgba(44,87,144,.08)}
+.cprice-plot .cross{stroke:var(--teritary);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;display:none}
+.cprice-plot.is-hover .cross{display:inline}
+.cprice-plot .hi,.cprice-plot .lo{position:absolute;right:8px;font-size:var(--fs-tag);color:var(--teritary);font-variant-numeric:tabular-nums;pointer-events:none}
+.cprice-plot .hi{top:6px}
+.cprice-plot .lo{bottom:6px}
+.cprice-plot .tip{position:absolute;top:8px;transform:translateX(-50%);padding:6px 10px;background:var(--g900);color:#fff;
+  font-size:var(--fs-meta);line-height:var(--lh-label);white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
+.cprice .range{margin:8px 0 0;display:flex;justify-content:space-between;font-size:var(--fs-tag);color:var(--teritary);font-variant-numeric:tabular-nums}
+.cprice.is-fail .cprice-kv,.cprice.is-fail .cprice-chart{display:none}
+@media(max-width:900px){
+  .cprice-kv{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cprice-kv div:nth-child(4){border-left:0}
+  .cprice-kv div:nth-child(n+4){border-top:1px solid var(--border-g)}
+}
+@media(max-width:767px){
+  .cprice-hd{grid-template-columns:minmax(0,1fr)}
+  .cprice-hd .asof{text-align:left}
+  .cprice-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cprice-kv div:nth-child(n){border-left:0;border-top:0}
+  .cprice-kv div:nth-child(even){border-left:1px solid var(--border-g)}
+  .cprice-kv div:nth-child(n+3){border-top:1px solid var(--border-g)}
+  .cprice-kv div{padding:12px}
+  .cprice-plot{height:200px}
+}
+</style>
 </head>
 <body>
 
@@ -99,8 +155,42 @@
 
   <section class="cblock" id="price">
     <h2>주가 정보</h2>
-    <div class="cnote">
-      <p>증권사 시세 API 필요</p>
+    <!-- 금융위원회_주식시세정보(공공데이터포털)를 GitHub Actions(.github/workflows/stock-data.yml)가 평일 하루 두 번 받아
+         data 브랜치 stock.json 에 둔다(2026-09-30). 여기서는 그 파일만 읽는다 — 인증키는 페이지에 없다.
+         시세는 전 영업일 종가 기준이다(실시간 아님). 못 읽으면 안내 한 줄만 남긴다 -->
+    <div class="cprice" id="cprice" aria-busy="true">
+      <div class="cprice-hd">
+        <p class="nm"><b>에이프로</b><span class="cd">262260</span><span class="mk">KOSDAQ</span></p>
+        <p class="now"><b class="px" data-k="close">-</b><span class="un">원</span><span class="chg" data-k="chg"></span></p>
+        <p class="asof" data-k="asof">불러오는 중…</p>
+      </div>
+      <dl class="cprice-kv">
+        <div><dt>시가</dt><dd data-k="open">-</dd></div>
+        <div><dt>고가</dt><dd data-k="high">-</dd></div>
+        <div><dt>저가</dt><dd data-k="low">-</dd></div>
+        <div><dt>거래량</dt><dd data-k="volume">-</dd></div>
+        <div><dt>거래대금</dt><dd data-k="value">-</dd></div>
+        <div><dt>시가총액</dt><dd data-k="cap">-</dd></div>
+      </dl>
+      <div class="cprice-chart">
+        <div class="cprice-tabs" role="group" aria-label="기간">
+          <button type="button" data-n="21" aria-pressed="false">1개월</button>
+          <button type="button" data-n="63" aria-pressed="true">3개월</button>
+          <button type="button" data-n="0" aria-pressed="false">1년</button>
+        </div>
+        <div class="cprice-plot">
+          <svg viewBox="0 0 800 240" preserveAspectRatio="none" aria-hidden="true">
+            <path class="area" d=""/><path class="line" d=""/><line class="cross" x1="0" x2="0" y1="0" y2="240"/>
+          </svg>
+          <span class="hi"></span><span class="lo"></span>
+          <span class="tip" hidden></span>
+        </div>
+        <p class="range"><span data-k="from"></span><span data-k="to"></span></p>
+      </div>
+    </div>
+    <div class="cstock-foot">
+      <span>* 출처 : 금융위원회 주식시세정보(공공데이터포털) · 전 영업일 종가 기준</span>
+      <span>(단위 : 원)</span>
     </div>
   </section>
 
@@ -254,6 +344,84 @@
       panels.forEach(function(p){ p.hidden = (p.getAttribute('data-fin') !== k); });
     });
   });
+})();
+</script>
+<script>
+/* 주가 정보 — data 브랜치의 stock.json(GitHub Actions 가 매일 받는다)을 읽어 채운다 */
+(function(){
+  var box = document.getElementById('cprice');
+  if(!box) return;
+  var SRC = 'https://raw.githubusercontent.com/01hye0ne/apro-website/data/stock.json';
+  var q = function(k){ return box.querySelector('[data-k="' + k + '"]'); };
+  var fmt = function(n){ return Math.round(n).toLocaleString('ko-KR'); };
+  var day = function(d){ return d.slice(0,4) + '.' + d.slice(4,6) + '.' + d.slice(6,8); };
+  var won = function(n){   /* 억 · 조 단위로 줄인다 */
+    if(n >= 1e12) return (n / 1e12).toFixed(2).replace(/\.?0+$/, '') + '조원';
+    if(n >= 1e8) return fmt(n / 1e8) + '억원';
+    return fmt(n / 1e4) + '만원';
+  };
+  function fail(){
+    box.classList.add('is-fail'); box.removeAttribute('aria-busy');
+    q('asof').textContent = '시세를 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.';
+  }
+  fetch(SRC, { cache: 'no-cache' }).then(function(r){ if(!r.ok) throw r.status; return r.json(); }).then(function(d){
+    box.removeAttribute('aria-busy');
+    q('close').textContent = fmt(d.close);
+    var s = d.vs > 0 ? '▲ ' : d.vs < 0 ? '▼ ' : '';
+    q('chg').textContent = s + fmt(Math.abs(d.vs)) + ' (' + (d.rate > 0 ? '+' : '') + d.rate.toFixed(2) + '%)';
+    box.classList.add(d.vs > 0 ? 'is-up' : d.vs < 0 ? 'is-down' : 'is-flat');
+    q('asof').textContent = day(d.date) + ' 종가 기준';
+    q('open').textContent = fmt(d.open);
+    q('high').textContent = fmt(d.high);
+    q('low').textContent = fmt(d.low);
+    q('volume').textContent = fmt(d.volume) + '주';
+    q('value').textContent = won(d.value);
+    q('cap').textContent = won(d.cap);
+    chart(d.series);
+  }).catch(fail);
+
+  function chart(all){
+    var plot = box.querySelector('.cprice-plot'), svg = plot.querySelector('svg');
+    var line = svg.querySelector('.line'), area = svg.querySelector('.area'), cross = svg.querySelector('.cross');
+    var tip = plot.querySelector('.tip'), W = 800, H = 240, PAD = 24, pts = [];
+    function draw(n){
+      var s = n ? all.slice(-n) : all;
+      var v = s.map(function(x){ return x[1]; });
+      var hi = Math.max.apply(null, v), lo = Math.min.apply(null, v), span = hi - lo || 1;
+      pts = s.map(function(x, i){
+        return { x: s.length > 1 ? i / (s.length - 1) * W : W / 2, y: PAD + (hi - x[1]) / span * (H - PAD * 2), d: x[0], v: x[1] };
+      });
+      var p = pts.map(function(o, i){ return (i ? 'L' : 'M') + o.x.toFixed(1) + ' ' + o.y.toFixed(1); }).join('');
+      line.setAttribute('d', p);
+      area.setAttribute('d', p + 'L' + W + ' ' + H + 'L0 ' + H + 'Z');
+      plot.querySelector('.hi').textContent = '최고 ' + fmt(hi);
+      plot.querySelector('.lo').textContent = '최저 ' + fmt(lo);
+      q('from').textContent = day(s[0][0]);
+      q('to').textContent = day(s[s.length - 1][0]);
+    }
+    function at(e){
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * W;
+      var o = pts[Math.max(0, Math.min(pts.length - 1, Math.round(x / W * (pts.length - 1))))];
+      cross.setAttribute('x1', o.x); cross.setAttribute('x2', o.x);
+      tip.hidden = false;
+      tip.textContent = day(o.d) + '  ' + fmt(o.v) + '원';
+      var px = o.x / W * r.width, half = tip.offsetWidth / 2;
+      tip.style.left = Math.max(half, Math.min(r.width - half, px)) + 'px';
+      plot.classList.add('is-hover');
+    }
+    function out(){ tip.hidden = true; plot.classList.remove('is-hover'); }
+    svg.addEventListener('pointermove', at);
+    svg.addEventListener('pointerdown', at);
+    svg.addEventListener('pointerleave', out);
+    var tabs = [].slice.call(box.querySelectorAll('.cprice-tabs button'));
+    tabs.forEach(function(b){
+      b.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-pressed', t === b ? 'true' : 'false'); });
+        out(); draw(+b.getAttribute('data-n'));
+      });
+    });
+    draw(63);
+  }
 })();
 </script>
 <script src="gnb-c.js"></script>
