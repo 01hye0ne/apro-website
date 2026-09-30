@@ -343,3 +343,18 @@
 @media(min-width:768px) and (max-width:1180px){
   html .sf-secs.is-prods{padding-bottom:64px}
 }
+
+/* 태블릿(768~1180) 가로 탭 줄 오른쪽 끝 — 다음 · 이전 분류 단추(gnb-c.js 가 단다, 2026-09-30 요청).
+   탭 줄 오른쪽 여백(--c-m)에 맞춰 세로 가운데에 서고, 탭 글자가 단추 밑으로 흐르지 않게 줄 오른쪽을 그만큼 비운다 */
+.c-railnav{display:none}
+@media(min-width:768px) and (max-width:1180px){
+  html .sf-railwrap:has(.c-railnav){position:sticky}
+  html .sf-railwrap .sf-rail{padding-right:calc(var(--c-m) + 72px)}
+  .c-railnav{display:flex;gap:4px;position:absolute;top:50%;right:var(--c-m);transform:translateY(-50%);z-index:2}
+  .c-railnav button{width:32px;height:32px;display:flex;align-items:center;justify-content:center;padding:0;
+    border:1px solid var(--sf-line,#e4e8ed);background:#fff;color:var(--sf-sec,#5a6675);cursor:pointer;
+    transition:color .2s,border-color .2s}
+  .c-railnav button:hover:not(:disabled){color:var(--brand);border-color:var(--brand)}
+  .c-railnav button:disabled{opacity:.35;cursor:default}
+  .c-railnav svg{display:block}
+}
