@@ -226,6 +226,17 @@
   .totop{right:20px;bottom:20px;width:44px;height:44px}
   .totop svg{width:18px;height:18px}
 }
+/* 푸터(검은 바탕) 위에서는 흰 단추 · 검은 화살표로 뒤집는다 — 검은 단추가 푸터에 묻혔다(2026-09-30 요청, gnb-c.js 가 .is-ondark 를 단다).
+   홈 · 회사소개는 .totop 규칙이 페이지 안에 따로 있어 html 을 붙여 이긴다 */
+html .totop.is-ondark{background:#fff;color:var(--g950);box-shadow:0 8px 24px rgba(0,0,0,.32)}
+html .totop.is-ondark:hover{background:var(--point-200)}
+
+/* 푸터 "준비 중" 알림(.c-toast) — 화면 아래 가운데에 잠깐 떴다 사라진다(gnb-c.js) */
+.c-toast{position:fixed;left:50%;bottom:40px;z-index:400;padding:12px 20px;background:#fff;color:var(--g900);
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-meta);line-height:var(--lh-label);letter-spacing:var(--ls);
+  box-shadow:0 12px 32px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translate(-50%,8px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.c-toast.is-on{opacity:1;transform:translate(-50%,0)}
 
 /* ── 콘텐츠 장(투자정보 · 지속가능경영 · 커뮤니티 — .cs-split) 움직임 (2026-09-29 요청) ─────────────────────
    ② 세로 히어로 첫 등장 — 사진 1.04 → 1(1.6초), 제목 · 한 줄 소개가 0.1초 차로 8 떠오름. 사업영역 세부 히어로와 한 가족
