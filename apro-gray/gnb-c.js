@@ -182,26 +182,3 @@
   items.forEach(function(el){ io.observe(el); });
   document.documentElement.classList.add('c-rv');
 })();
-
-/* 진단판 — 주소 끝에 ?dbg 를 붙였을 때만 뜬다(2026-09-30, 아이패드 붙박이 줄 확인용 · 원인 잡으면 걷는다) */
-(function(){
-  if(!/[?&]dbg/.test(location.search)) return;
-  var b = document.createElement('pre');
-  b.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999;margin:0;padding:8px 10px;background:rgba(0,0,0,.8);color:#0f0;font:12px/1.4 monospace;pointer-events:none;white-space:pre';
-  document.body.appendChild(b);
-  function r(el){ if(!el) return '-'; var q = el.getBoundingClientRect(); return Math.round(q.top) + '~' + Math.round(q.bottom) + ' ' + getComputedStyle(el).position; }
-  function paint(){
-    var v = window.visualViewport, g = document.querySelector('.sf-gnb');
-    b.textContent = [
-      'inner ' + innerWidth + 'x' + innerHeight + '  client ' + document.documentElement.clientHeight + '  scrollY ' + Math.round(scrollY),
-      'vv ' + (v ? Math.round(v.width) + 'x' + Math.round(v.height) + ' off ' + Math.round(v.offsetTop) + ' pgTop ' + Math.round(v.pageTop) + ' scale ' + v.scale.toFixed(2) : '-'),
-      'gnb ' + r(g) + '  ' + (g ? g.className : ''),
-      'rail ' + r(document.querySelector('.sf-railwrap')),
-      'ua ' + navigator.userAgent.slice(13, 110)
-    ].join(String.fromCharCode(10));
-  }
-  window.addEventListener('scroll', paint, { passive: true });
-  window.addEventListener('resize', paint);
-  if(window.visualViewport){ visualViewport.addEventListener('resize', paint); visualViewport.addEventListener('scroll', paint); }
-  setInterval(paint, 500); paint();
-})();
