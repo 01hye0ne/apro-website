@@ -249,9 +249,8 @@
   .cs-body .cways{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
-/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)도 이름만 있는 넷(스마트 제조 · 인공지능 플랫폼)은 한 줄에
-   (화합물 셋처럼, 2026-09-30 요청). 칸이 180 남짓이라 긴 이름(전기자동차 충전 플랫폼)은 낱말 단위로 두 줄에 접힌다.
-   설명이 붙은 에너지 인프라 셋은 그대로 한 줄 하나 */
+/* 사업영역 세부 소개 장 소분류 카드 — 좁은 태블릿(768~900)은 네 장 모두 한 줄에 한 장(2026-09-30 요청).
+   설명이 든 에너지 인프라와 생김새를 맞춘다(이름만 든 장의 2×2 · 한 줄 셋을 푼다). 폰은 그대로 */
 @media(min-width:768px) and (max-width:900px){
-  html .sf-subs:not(:has(.d)):has(>li:nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  html .sf-subs:not(:has(.d)),html .sf-subs:not(:has(.d)):has(>li:nth-child(3):last-child){grid-template-columns:1fr}
 }
