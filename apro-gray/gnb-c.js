@@ -334,3 +334,37 @@
     p.setAttribute('d', 'M5 7.5L10 12.5L15 7.5');
   });
 })();
+
+/* 콘텐츠 장 세로 히어로 장 목록(.cs-toc) 윗선 ↔ 본문 첫 장 아래 선(둘째 장 윗선) — 넓은 화면(1181 이상)에서 한 줄로 잇는다(2026-09-30 요청).
+   둘 다 제 틀(히어로 · 본문) 윗변에서 잰 거리라 스크롤과 상관없다. 짧은 쪽을 늘린다 —
+   본문 선이 더 아래면 목록을 내리고(margin-top), 목록이 더 아래면 첫 장 키를 늘린다(min-height).
+   히어로가 붙박이라 선이 이어져 보이는 건 페이지 맨 위에서다. 목록을 240 넘게 내려야 하거나 히어로 밖으로 밀려나면 맞추지 않는다 */
+(function(){
+  var hero = document.querySelector('.cs-split>.cs-hero'), body = document.querySelector('.cs-split>.cs-body');
+  var toc = hero && hero.querySelector('.cs-toc');
+  if(!toc || !body || body.children.length < 2) return;
+  var first = body.children[0], second = body.children[1];
+  var mq = window.matchMedia('(min-width:1181px)');
+  function fit(){
+    toc.style.marginTop = ''; first.style.minHeight = '';
+    if(!mq.matches) return;
+    /* 목록에는 등장 움직임(translateY)이 걸려 있어 화면 좌표 대신 offsetTop 으로 잰다(히어로가 sticky 라 offsetParent 다) */
+    var hr = hero.getBoundingClientRect();
+    var dT = toc.offsetTop;
+    var dL = second.getBoundingClientRect().top - body.getBoundingClientRect().top;
+    var diff = Math.round(dL - dT);
+    if(diff > 0){
+      /* 240 넘게 내려야 하면(첫 장이 긴 장) 맞추지 않는다 — 목록이 히어로 바닥으로 가라앉아 어색했다 */
+      if(diff > 240 || dT + toc.offsetHeight + diff > hr.height - 24) return;
+      toc.style.marginTop = diff + 'px';
+    } else if(diff < 0){
+      first.style.minHeight = (first.getBoundingClientRect().height - diff) + 'px';
+    }
+  }
+  var t = 0;
+  function later(){ clearTimeout(t); t = setTimeout(fit, 60); }
+  window.addEventListener('resize', later);
+  window.addEventListener('load', fit);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fit();
+})();
