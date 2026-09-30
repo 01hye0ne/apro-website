@@ -1686,7 +1686,9 @@
   function prodLine(el){
     var sec = el.closest ? el.closest('.sf-sec.is-prod') : null;
     var hd  = sec ? sec.querySelector('.sf-phead') : null;
-    return px('--gnb-h') + (hd ? hd.getBoundingClientRect().height : 0);
+    /* 넓은 태블릿 — 윗단이 탭 줄 밑에 붙는다 */
+    var tab = !window.matchMedia('(min-width:1181px)').matches ? px('--subnav-h') : 0;
+    return px('--gnb-h') + tab + (hd ? hd.getBoundingClientRect().height : 0);
   }
   function prodSpy(){
     if(!prods.length) return;
@@ -1880,7 +1882,7 @@
   }
   function lineOf(el){
     /* 태블릿 — 장 · 제품 카드 모두 탭 줄 밑변에 선다(장 눈금줄이 기둥 눈금줄과 한 높이) */
-    if(!big.matches && el.classList.contains('sf-prod')) return px('--gnb-h') + px('--subnav-h') + 24;
+    if(!big.matches && el.classList.contains('sf-prod')) return px('--gnb-h') + px('--subnav-h') + headH(el);
     if(!big.matches && el.classList.contains('sf-sec')) return px('--gnb-h') + px('--subnav-h');
     if(el.classList.contains('sf-prod')) return px('--gnb-h') + headH(el);
     return px('--gnb-h') +
