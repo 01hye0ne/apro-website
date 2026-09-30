@@ -544,8 +544,8 @@
        눈금 가로 300 → 200 · 세로 500 → 300 · 목록 윗선 300 → 200 · 칸선 200 → 100
      좁은 화면에서는 장이 세로로 눕고 앞뒤가 겹쳐 보이지 않아 칠하지 않는다.
      .js 를 앞에 두는 이유 — 스크립트가 죽으면 아무 장도 진해지지 않는다 */
-  /* 태블릿(768~1180)도 붙박이 그림 기둥을 쓰므로 같이 칠한다(2026-09-30 요청 — 시안 C) */
-  @media(min-width:768px){
+  /* 넓은 태블릿(901~1180)도 붙박이 그림 기둥을 쓰므로 같이 칠한다(2026-09-30 요청 — 시안 C) */
+  @media(min-width:901px){
     .js .sf-sec:not(.is-on) .sf-txt{
       --c-ttl:var(--sf-line-s);--c-body:var(--sf-line);--c-num:var(--sf-line-s);
       --c-rule:var(--sf-line);--c-tick:var(--sf-line-s);
@@ -1148,7 +1148,7 @@
   /* 좁은 화면(1180 이하)은 그림이 기둥을 떠나 장 안에 있다 — 밀 것이 없다 */
   /* 태블릿(768~1180)도 넓은 화면처럼 붙박이 기둥에서 그림을 민다(2026-09-30 요청 — 시안 C).
      그 폭에서는 장 윗줄이 GNB 에 더해 가로 탭 줄(--subnav-h) 밑에 서고, 장 안 눈금줄은 장 위 여백(40) 아래에 있다 */
-  var wideMq = window.matchMedia('(min-width:768px)');
+  var wideMq = window.matchMedia('(min-width:901px)');   /* 좁은 태블릿(768~900)은 그림이 장 안에서 흐른다(같은 날 요청) */
   var bigMq  = window.matchMedia('(min-width:1181px)');
   function ruleOff(s){ return bigMq.matches ? rOff : (parseFloat(getComputedStyle(s).paddingTop) || 0) + 8; }
   /* 그림이 장 안팎을 오가면(gnb-c.js) 칸마다 얹힌 자리를 처음부터 다시 잡는다 */
@@ -1250,7 +1250,7 @@
 (function(){
   /* 태블릿(768~1180)도 한 번 굴리면 한 장씩 넘긴다(2026-09-30 요청 — 시안 C, 넓은 화면처럼 그림 · 글이 딱 맞게).
      폰(767 이하)만 가로채지 않는다. big 은 넓은 화면(1181 이상) — 태블릿 줄 셈이 다르다 */
-  var narrow = window.matchMedia('(max-width:767px)');
+  var narrow = window.matchMedia('(max-width:900px)');   /* 좁은 태블릿도 가로채지 않는다(같은 날 요청) */
   var big    = window.matchMedia('(min-width:1181px)');
   var steps  = [].slice.call(document.querySelectorAll('.sf-step'));
   var nav    = document.getElementById('navover');
