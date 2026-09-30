@@ -272,6 +272,12 @@
           background:#fff;border-bottom:1px solid var(--hm-rule);word-break:keep-all}
   .hm-ttl{font-family:var(--ald);font-weight:400;font-size:var(--fs-display-sm);line-height:var(--lh-tight);
           letter-spacing:var(--ls-num);color:var(--g900)}
+  /* 섹션 제목 위 국문 라벨 — GNB 메뉴 이름 그대로(사업영역 · 회사정보 · 커뮤니티, 2026-09-30 요청 : 영문 제목 + 국문 GNB 이름).
+     제목 위에 띄워(absolute) 제목 줄 · 판 자리는 그대로 둔다. News 밑 설명 줄(.sub)은 이 라벨과 역할이 겹쳐 걷었다 */
+  .hm-ttl{position:relative}
+  .hm-ttl .hm-lbl{position:absolute;bottom:100%;margin-bottom:12px;white-space:nowrap;
+          font-family:var(--suit);font-weight:700;font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--brand)}
+  .hm-who .hm-ttl .hm-lbl{color:var(--on-dark-body)}
 
   /* ===================== BANNER — A 의 히어로를 A-1 체계로 (시안 C) =====================
      그림은 A(index.html) 그대로다 — 사옥 영상 한 편 위에 문구 일곱 개가 5초마다 바뀌고,
@@ -870,7 +876,7 @@
   <!-- ===================== BUSINESS (Figma 991:76) ===================== -->
   <section class="hm-sec hm-biz" id="hmBiz" aria-labelledby="hm-biz-t" aria-roledescription="아코디언">
     <div class="hm-bhead">
-      <h2 class="hm-ttl" id="hm-biz-t">Business</h2>
+      <h2 class="hm-ttl" id="hm-biz-t"><span class="hm-lbl">사업영역</span> Business</h2>
       <div class="hm-arrows" role="group" aria-label="카드 넘기기">
         <button type="button" data-go="-1" aria-label="이전 카드" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5.64648L8.00001 11.6465L8.00001 12.3535L14 18.3535L14.707 17.6465L9.06055 12L14.707 6.35352L14 5.64648Z" fill="currentColor"/></svg></button>
         <button type="button" data-go="1" aria-label="다음 카드"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 5.63026L16 11.6303L16 12.3373L10 18.3373L9.29297 17.6303L14.9395 11.9838L9.29297 6.33729L10 5.63026Z" fill="currentColor"/></svg></button>
@@ -960,7 +966,7 @@
   <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임을 계단으로 쌓았다. 글은 Figma 그대로다 -->
   <section class="hm-sec hm-who" id="hmWho" aria-labelledby="hm-who-t">
     <svg class="hm-who-dot" aria-hidden="true"><defs><radialGradient id="hmWhoHalo"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g class="trail"></g><circle class="halo" r="12"/><circle class="head" r="3"/></svg>
-    <h2 class="hm-ttl" id="hm-who-t">Who we are</h2>
+    <h2 class="hm-ttl" id="hm-who-t"><span class="hm-lbl">회사정보</span> Who we are</h2>
     <ol class="hm-who-list">
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
@@ -1010,8 +1016,7 @@
   <section class="hm-sec v2news" id="newsSection" aria-labelledby="hm-news-t">
     <div class="news-head">
       <div class="ttls">
-        <h2 class="hm-ttl" id="hm-news-t">News</h2>
-        <p class="sub">에이프로의 새로운 소식을 전해드립니다</p>
+        <h2 class="hm-ttl" id="hm-news-t"><span class="hm-lbl">커뮤니티</span> News</h2>
       </div>
       <a class="more" href="community-press-c.html">더보기<img src="../assets/icon-open-page.svg" alt="" aria-hidden="true" /></a>
     </div>
