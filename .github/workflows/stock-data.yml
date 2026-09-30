@@ -1,0 +1,58 @@
+# 주식정보(apro-gray/ir-stock-c.html) 주가 데이터 — 금융위원회_주식시세정보(공공데이터포털) getStockPriceInfo.
+# 이 API 는 하루 한 번(전 영업일 종가, 오후 1시 무렵) 갱신된다. 평일 오후 2시 · 6시(KST)에 에이프로(KR7262260003)
+# 최근 1년치를 받아 data 브랜치의 stock.json 에 쓴다 — main 에는 봇 커밋을 남기지 않는다.
+# 인증키는 저장소 비밀값 DATA_GO_KR_KEY(포털의 Encoding 키)에만 있다. 페이지는 raw.githubusercontent.com 에서 읽는다.
+name: stock-data
+on:
+  schedule:
+    - cron: '0 5,9 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: stock-data
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch
+        env:
+          KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, datetime
+          url = ('https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo'
+                 '?serviceKey=' + os.environ['KEY'] + '&resultType=json&numOfRows=260&pageNo=1&isinCd=KR7262260003')
+          r = json.load(urllib.request.urlopen(url, timeout=60))['response']
+          assert r['header']['resultCode'] == '00', r['header']
+          it = r['body']['items']['item']
+          assert it, 'empty'
+          it.sort(key=lambda x: x['basDt'])
+          n = lambda v: float(v) if '.' in v else int(v)
+          a = it[-1]
+          out = {
+            'name': a['itmsNm'], 'code': a['srtnCd'], 'market': a['mrktCtg'],
+            'date': a['basDt'], 'close': n(a['clpr']), 'vs': n(a['vs']), 'rate': n(a['fltRt']),
+            'open': n(a['mkp']), 'high': n(a['hipr']), 'low': n(a['lopr']),
+            'volume': n(a['trqu']), 'value': n(a['trPrc']), 'shares': n(a['lstgStCnt']), 'cap': n(a['mrktTotAmt']),
+            'series': [[x['basDt'], n(x['clpr'])] for x in it],
+            'fetched': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+          }
+          os.makedirs('out', exist_ok=True)
+          json.dump(out, open('out/stock.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+          print(out['date'], out['close'], len(out['series']))
+          PY
+      - name: commit to data branch
+        run: |
+          git init -q pub && cd pub
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth 1 origin data; then git checkout -q -b data FETCH_HEAD; else git checkout -q --orphan data; fi
+          cp ../out/stock.json stock.json
+          git add stock.json
+          # 날짜 · 값이 같으면 fetched 만 바뀐다 — 그땐 커밋하지 않는다
+          if git diff --cached --quiet -- stock.json || [ "$(git show HEAD:stock.json 2>/dev/null | python3 -c 'import sys,json;d=json.load(sys.stdin);d.pop("fetched");print(json.dumps(d,sort_keys=True))')" = "$(python3 -c 'import json;d=json.load(open("stock.json"));d.pop("fetched");print(json.dumps(d,sort_keys=True))')" ]; then
+            echo 'no change'; exit 0
+          fi
+          git commit -q -m "stock: $(python3 -c 'import json;print(json.load(open("stock.json"))["date"])')"
+          git push -q origin data
