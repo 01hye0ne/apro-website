@@ -209,11 +209,21 @@
       }
     });
     if(moved) window.dispatchEvent(new Event('c-figs-moved'));
+    measure();
+  }
+  /* 태블릿 — 기둥의 줄 ↔ 그림 사이와 그림 키를 재어 글 쪽이 같은 자리에 앉게 한다(margin-c.css). 화면 키에만 달려 스크롤과 무관 */
+  var tab = window.matchMedia('(min-width:768px) and (max-width:1180px)'), root = document.documentElement;
+  var fline = document.querySelector('.sf-figcol>.sf-line');
+  function measure(){
+    if(!tab.matches || !fline){ root.style.removeProperty('--c-fig-gap'); root.style.removeProperty('--c-fig-h'); return; }
+    root.style.setProperty('--c-fig-gap', Math.round(stack.getBoundingClientRect().top - fline.getBoundingClientRect().bottom) + 'px');
+    root.style.setProperty('--c-fig-h', Math.round(stack.getBoundingClientRect().height) + 'px');
   }
   /* business-layout.js 가 같은 폭 변화에 그림을 먼저 옮긴 뒤에 돈다 */
   function later(){ setTimeout(sync, 0); }
   if(mq.addEventListener) mq.addEventListener('change', later); else if(mq.addListener) mq.addListener(later);
   var big = window.matchMedia('(min-width:1181px)');
   if(big.addEventListener) big.addEventListener('change', later); else if(big.addListener) big.addListener(later);
+  window.addEventListener('resize', measure);
   sync();
 })();
