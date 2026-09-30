@@ -276,10 +276,13 @@ html .totop.is-ondark:hover{background:var(--point-200)}
 .cs-toc a:not([href]):hover{background:none}
 
 /* 푸터 아래 줄 — 가운데 줄(정보 링크 · 패밀리 사이트, .f-util)을 걷고 FAMILY SITE 를 아래 줄 오른쪽 칸(.br)으로 옮겼다(2026-09-30 요청).
-   오른쪽 칸은 왼쪽 덩어리(로고 · 주소)와 위아래 끝을 맞춘다 — 위에 FAMILY SITE, 아래에 Copyright.
-   960 아래는 한 줄로 쌓여 주소 밑에 FAMILY SITE(온 폭) · Copyright 차례 */
-.footer .f-bottom .br{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px}
+   Copyright 는 왼쪽 회사 정보 덩어리(.bl)의 마지막 줄 — 같은 날 요청 : 오른쪽 아래에 두니 떠 있는 '맨 위로' 단추에 가렸고,
+   회사 정보에 딸린 표기라 그 밑이 자연스럽다. 오른쪽 칸은 FAMILY SITE 하나로 로고 높이(위)에 선다.
+   960 아래는 한 줄로 쌓여 [로고 · 주소] → FAMILY SITE(온 폭) → Copyright(맨 끝) 차례 — .bl 을 풀어(display:contents) 차례를 잡는다 */
+.footer .f-bottom .br{align-self:flex-start}
 @media(max-width:960px){
-  .footer .f-bottom .br{align-self:stretch;width:100%;align-items:stretch;gap:20px}
+  .footer .f-bottom .bl{display:contents}
+  .footer .f-bottom .br{align-self:stretch;width:100%;order:2}
+  .footer .f-bottom .copy{order:3}
   .footer .f-bottom .br .f-family,.footer .f-bottom .br .fbtn{width:100%}
 }
