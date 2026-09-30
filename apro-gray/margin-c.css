@@ -346,20 +346,27 @@
   .c-railnav svg{display:block}
 }
 
-/* 게시글 상세(공지 · 보도자료 · 공시 · ESG 게시판) 머리 단추 — 900 이하에서 날짜 밑 줄로 내려가며 왼쪽에 붙었다.
-   넓은 화면처럼 오른쪽에 세운다(2026-09-30 요청) */
-@media(max-width:900px){
-  /* 제목 줄 오른쪽에 붙인다 — [제목 · 날짜 · 단추] 세 줄을 [제목 + 단추 · 날짜] 두 줄로(같은 날 요청). 단추는 제목 첫 줄 높이에 맞춘다 */
-  html .cpost-hd{grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start}
-  html .cpost-hd>.cbtns{grid-column:2;grid-row:1;margin-top:0;flex-wrap:nowrap;justify-content:flex-end}
-  html .cpost-hd>.cpost-meta{grid-column:1/-1}   /* 날짜 · 출처 줄은 단추 밑까지 온 폭을 쓴다 */
-}
-/* 폰 — 단추를 등록일 아래 줄로 되돌려 오른쪽에 세운다(같은 날 요청). 제목 옆에 두니 제목 칸이 좁아
-   여러 줄로 접혔다(보도자료는 단추 둘을 위아래로 쌓아도 세 줄) */
+/* 게시글 상세(공지 · 보도자료 · 공시 · ESG 게시판) 머리 — 모든 폭에서 [제목] / [등록일 · 출처 | 단추] 두 줄(2026-09-30 요청).
+   단추를 제목 줄이 아니라 등록일 줄 오른쪽에 세운다 — 제목이 온 폭을 써 덜 접힌다. 등록일 줄이 좁아지면 날짜 · 출처가 두 줄로 접힌다.
+   (같은 날 앞서 넓은 화면은 두 줄에 걸쳐 가운데 · 900 이하는 제목 줄 · 폰은 날짜 밑 줄에 두던 것을 하나로 모았다) */
+html .cpost-hd{grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center}
+html .cpost-hd>h1{grid-column:1/-1;grid-row:1}
+html .cpost-hd>.cpost-meta{grid-column:1;grid-row:2}
+html .cpost-hd>.cbtns{grid-column:2;grid-row:2;margin-top:12px;flex-wrap:nowrap;justify-content:flex-end}
+/* 폰 — 단추 둘(보도자료)이 등록일 칸을 좁혀 출처가 낱말 중간에서 접혔다. 단추를 한 단 작게, 출처 한 덩이는 끊지 않는다 */
 @media(max-width:767px){
-  html .cpost-hd{grid-template-columns:minmax(0,1fr)}
-  html .cpost-hd>.cbtns{grid-column:1;grid-row:auto;margin-top:20px;justify-content:flex-end}
+  html .cpost-hd{column-gap:12px}
+  html .cpost-hd .cbtns{gap:6px}
+  html .cpost-hd .cbtn{padding:7px 10px}
+  html .cpost-meta>*{white-space:nowrap}
 }
+
+/* 게시글 상세 글자 강약(같은 날 요청) — 본문과 이전 · 다음 글이 같은 16 · 짙은 글자라 한 무게로 읽혔다.
+   본문은 한 단 키우고(18, 폰은 16 그대로) 이전 · 다음 글은 한 단 낮춘다(14 · --sec, 이름표는 --teritary) */
+html .cpost-bd p{font-size:var(--fs-lead)}
+@media(max-width:767px){ html .cpost-bd p{font-size:var(--fs-body)} }
+html .cpost-nav a{padding:14px 8px;font-size:var(--fs-meta);color:var(--sec)}
+html .cpost-nav .k{flex-basis:56px;font-weight:600}
 
 /* 에너지 인프라 03 솔루션 — 폰 · 좁은 태블릿(900 이하)에서 장 머리(.sf-phead)가 붙박인 아코디언 제목 줄을 덮었다(2026-09-30).
    장이 flex 라 윗단이 flex 칸이 되어, 붙박이가 아닌데도 넓은 화면용 z-index 8 이 살아 제목 줄(z 3) 위에 그려졌다 — 여기서는 푼다 */
