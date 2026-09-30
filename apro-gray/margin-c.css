@@ -235,11 +235,14 @@
   .sf-intro{padding-top:88px;padding-bottom:88px}
 }
 
-/* 사업영역 세부 태블릿(768~1180) — 장 안 그림의 붙박이(sticky)를 걷는다(2026-09-30 요청).
-   글이 길면 그림이 탭 바 밑에 걸려 따라 내려오다 장 끝에서 풀려, 아이패드에서 그림이 위부터 가려졌다가
-   드러나는 것처럼 보였다. 그림은 글 옆 제자리(위 맞춤)에 선다 */
+/* 사업영역 세부 태블릿(768~1180) — 넓은 화면처럼 그림은 붙박고 오른쪽 글만 흐른다(2026-09-30 요청).
+   그림 칸은 세로형 3:4 로 세우되 화면(GNB · 탭 줄 · 위아래 24 를 뺀 높이)을 넘지 않는다 — 가로 아이패드에서
+   3:4 그대로면 칸이 화면보다 커진다. 공정 맵(.has-map)은 단계 배치가 정사각에 맞춰져 있어 1:1 그대로.
+   (같은 날 한때 붙박이를 걷었다가 되살림) */
 @media(min-width:768px) and (max-width:1180px){
-  .sf-sec>.sf-ph{position:relative;top:auto}
+  html .sf-sec>.sf-ph{position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);align-self:flex-start;
+    max-height:calc(100svh - var(--gnb-h) - var(--subnav-h) - 48px)}
+  html .sf-sec>.sf-ph:not(.has-map){aspect-ratio:3/4}
 }
 
 /* 좁은 태블릿(768~900) 콘텐츠 장 — 이사회 사람 카드(.cpeople)와 제보 방법 칸(.cways)을 세 칸으로(2026-09-30 요청).
