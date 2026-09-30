@@ -354,7 +354,16 @@
 /* 게시글 상세(공지 · 보도자료 · 공시 · ESG 게시판) 머리 단추 — 900 이하에서 날짜 밑 줄로 내려가며 왼쪽에 붙었다.
    넓은 화면처럼 오른쪽에 세운다(2026-09-30 요청) */
 @media(max-width:900px){
-  html .cpost-hd>.cbtns{justify-content:flex-end}
+  /* 제목 줄 오른쪽에 붙인다 — [제목 · 날짜 · 단추] 세 줄을 [제목 + 단추 · 날짜] 두 줄로(같은 날 요청). 단추는 제목 첫 줄 높이에 맞춘다 */
+  html .cpost-hd{grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start}
+  html .cpost-hd>.cbtns{grid-column:2;grid-row:1;margin-top:0;flex-wrap:nowrap;justify-content:flex-end}
+  html .cpost-hd>.cpost-meta{grid-column:1/-1}   /* 날짜 · 출처 줄은 단추 밑까지 온 폭을 쓴다 */
+}
+/* 폰 — 단추가 둘인 보도자료([목록으로 · 기사 원문 보기])는 나란히 두면 제목 칸이 150 남짓으로 좁아져 다섯 줄로 접혔다.
+   위아래로 쌓고 단추를 한 단 작게(높이 36) 해 제목 칸을 넓힌다 */
+@media(max-width:767px){
+  html .cpost-hd>.cbtns:has(>.cbtn:nth-child(2):not([hidden])){flex-direction:column;align-items:stretch;gap:6px}
+  html .cpost-hd>.cbtns:has(>.cbtn:nth-child(2):not([hidden]))>.cbtn{height:36px;padding:0 12px;justify-content:center}
 }
 
 /* 에너지 인프라 03 솔루션 — 폰 · 좁은 태블릿(900 이하)에서 장 머리(.sf-phead)가 붙박인 아코디언 제목 줄을 덮었다(2026-09-30).
