@@ -1317,13 +1317,13 @@
   }
   function arm(){ clearTimeout(quiet); quiet = setTimeout(function(){ armed = true; }, REARM); }
 
-  window.addEventListener('wheel', function(e){
-    if(narrow.matches || !e.deltaY) return;
+  /* 한 장 넘김 — 휠 한 번과 키보드 한 번이 같은 길을 탄다(2026-09-30 요청 : 키보드로도 휠과 같게) */
+  function step(dir, e){
+    if(narrow.matches) return;
     if(nav && nav.classList.contains('open')) return;
     arm();                                   /* 입력이 이어지는 동안 재무장을 미룬다 */
     if(paging){ e.preventDefault(); return; } /* 옮기는 중에는 아무것도 받지 않는다 */
 
-    var dir = e.deltaY > 0 ? 1 : -1;
     var i = current();
     if(i < 0) return;
 
@@ -1346,7 +1346,22 @@
     if(off > SLACK){ pageTo(window.scrollY + off); return; }
     var nx = i + dir;
     pageTo(nx < 0 ? 0 : topOf(steps[Math.min(steps.length - 1, nx)]));
+  }
+  window.addEventListener('wheel', function(e){
+    if(e.deltaY) step(e.deltaY > 0 ? 1 : -1, e);
   }, { passive:false });
+  /* 키보드 — ↓ · PageDown · Space 는 다음 장, ↑ · PageUp · Shift+Space 는 앞 장.
+     글 입력 칸 · 단추 · 스스로 화살표를 쓰는 칸(탭 목록 등, 먼저 막으면 defaultPrevented)은 건드리지 않는다.
+     키를 누르고 있어도(자동 반복) 휠처럼 한 장만 넘긴다(arm) */
+  var KEYS = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1 };
+  window.addEventListener('keydown', function(e){
+    if(e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+    var dir = e.key === ' ' || e.key === 'Spacebar' ? (e.shiftKey ? -1 : 1) : KEYS[e.key];
+    if(!dir) return;
+    var t = e.target;
+    if(t && t.closest && t.closest('input,textarea,select,button,[contenteditable],[role=tab],[role=tablist],[role=slider]')) return;
+    step(dir, e);
+  });
 
   /* 좌측 인덱스 클릭도 같은 이동을 태운다 — 앵커 점프와 휠의 느낌이 달라지면
      같은 페이지가 두 가지로 움직이는 것처럼 보인다 */
