@@ -235,22 +235,27 @@
   .sf-intro{padding-top:88px;padding-bottom:88px}
 }
 
-/* 사업영역 세부 태블릿(768~1180) — 넓은 화면처럼 그림은 붙박고 오른쪽 글만 흐른다(2026-09-30 요청).
-   그림과 그 위 장 머리 눈금줄(번호 태그 · 선)을 한 기둥(.c-phcol, gnb-c.js 가 감싼다)으로 묶어 함께 붙인다 —
-   따로 붙이면 둘이 풀리는 자리가 달라 그림만 먼저 올라가 줄과 벌어졌다(같은 날 요청).
-   그림 칸은 세로형 3:4 로 세우되 화면(GNB · 탭 줄 · 위아래 24 · 줄 16 + 사이 24 를 뺀 높이)을 넘지 않는다.
-   공정 맵(.has-map)은 단계 배치가 정사각에 맞춰져 있어 1:1 그대로.
-   글 쪽 줄은 기둥 몫(태그 · 선)을 접고 눈금부터 선다 — 기둥 줄이 사이 24 를 건너 그 눈금에 닿는다 */
+/* 사업영역 세부 태블릿(768~1180) — 넓은 화면의 붙박이 그림 기둥을 그대로 쓴다(2026-09-30 요청).
+   [그림 기둥 | 글] 1:1(사이 24)로 서고, 기둥(번호 태그 눈금줄 + 그림 칸)은 탭 줄 밑에 붙박인다.
+   그림은 장 안으로 옮기지 않고(gnb-c.js 가 기둥으로 되돌린다) 다음 장의 눈금줄이 칸을 훑는 높이에서
+   넓은 화면처럼 밀려 갈린다(각 장 스크립트 slide). 그래서 아래 장의 그림은 미리 보이지 않고 글만 올라온다.
+   그림 칸은 세로형 3:4, 화면(GNB · 탭 줄 · 위 40 · 줄 16 + 사이 24 · 아래 24)을 넘지 않는다.
+   에너지 인프라는 01 · 02 묶음(.sf-fix)만 기둥이 있고 03 솔루션은 한 기둥 그대로 */
 @media(min-width:768px) and (max-width:1180px){
-  .sf-sec>.c-phcol{flex:1 1 0;min-width:0;position:sticky;top:calc(var(--gnb-h) + var(--subnav-h) + 24px);
-    align-self:flex-start;display:flex;flex-direction:column;gap:24px}
-  .c-phcol>.c-phline{margin-right:-24px}
-  html .c-phcol>.sf-ph{position:relative;inset:auto;flex:none;width:100%;max-width:none;margin:0;
-    transform:none;visibility:visible;--zoom:1;aspect-ratio:1;
-    max-height:calc(100svh - var(--gnb-h) - var(--subnav-h) - 88px)}
-  html .c-phcol>.sf-ph:not(.has-map){aspect-ratio:3/4}
-  html .sf-sec:has(>.c-phcol)>.sf-txt>.sf-line{margin-left:0}
-  html .sf-sec:has(>.c-phcol)>.sf-txt>.sf-line :is(.sf-tag--sec,.sf-rule--fig){display:none}
+  html .sf-main:has(>.sf-figwrap),html .sf-fix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:24px;align-items:start;padding-left:var(--c-m);padding-right:var(--c-m)}
+  html .sf-main:has(>.sf-figwrap)>.sf-railwrap{grid-column:1/-1;width:auto;
+    margin-left:calc(-1 * var(--c-m));margin-right:calc(-1 * var(--c-m))}
+  html :is(.sf-main,.sf-fix)>.sf-figwrap{grid-column:1;display:block;position:sticky;
+    top:calc(var(--gnb-h) + var(--subnav-h));height:auto;padding-top:40px}
+  html :is(.sf-main,.sf-fix)>.sf-secs{grid-column:2;min-width:0}
+  html :is(.sf-main,.sf-fix)>.sf-secs>.sf-sec{padding-left:0;padding-right:0}
+  html .sf-figcol{height:auto;min-height:0}
+  html .sf-figcol>.sf-line{margin-right:-26px}   /* 사이 24 + 눈금 2 를 건너 글 쪽 눈금과 겹친다 */
+  html .sf-figstack{flex:none;width:100%;aspect-ratio:3/4;
+    max-height:calc(100svh - var(--gnb-h) - var(--subnav-h) - 104px)}
+  html .sf-line .sf-tag--sec,html .sf-line .sf-rule--fig{display:none}
+  html .sf-sec>.sf-txt>.sf-line{margin-left:0}
 }
 
 /* 좁은 태블릿(768~900) 콘텐츠 장 — 이사회 사람 카드(.cpeople)와 제보 방법 칸(.cways)을 세 칸으로(2026-09-30 요청).

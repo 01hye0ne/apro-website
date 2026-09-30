@@ -1649,7 +1649,7 @@
   var secs  = [].slice.call(document.querySelectorAll('.sf-sec'));
   var links = [].slice.call(document.querySelectorAll('.sf-rail a'));
   var secsEl = document.querySelector('.sf-secs');
-  var figs   = [].slice.call(document.querySelectorAll('.sf-figstack .sf-ph'));
+  var figs   = [].slice.call(document.querySelectorAll('.sf-ph[data-for]'));   /* 태블릿에서는 business-layout.js 가 먼저 장 안으로 옮겨 두므로 자리를 가리지 않고 모은다(gnb-c.js 가 기둥으로 되돌린다) */
   var tag    = document.getElementById('sfTag');
   var reels  = tag ? [].slice.call(tag.querySelectorAll('.r')) : [];
   if(!secs.length) return;
@@ -1668,7 +1668,7 @@
   function secPad(){
     return secsEl ? parseFloat(getComputedStyle(secsEl).paddingTop) || 0 : 0;
   }
-  function line(){ return px('--gnb-h') + secPad(); }
+  function line(){ return px('--gnb-h') + (window.matchMedia('(min-width:1181px)').matches ? secPad() : px('--subnav-h')); }
   /* 카드도 장처럼 한 장씩 센다 — 카드가 서는 줄은 그 장 붙박이 윗단의 아래 변이다.
      지금 카드에만 .is-on 을 두어, 아직 올라오지 않은 카드가 옅게 남는다 */
   var prods = [].slice.call(document.querySelectorAll('.sf-prod'));
@@ -1747,7 +1747,13 @@
                       .getPropertyValue('--rule-off')) || 0;
   }
   /* 좁은 화면(1180 이하)은 그림이 기둥을 떠나 장 안에 있다 — 밀 것이 없다 */
-  var wideMq = window.matchMedia('(min-width:1181px)');
+  /* 태블릿(768~1180)도 넓은 화면처럼 붙박이 기둥에서 그림을 민다(2026-09-30 요청 — 시안 C).
+     그 폭에서는 장 윗줄이 GNB 에 더해 가로 탭 줄(--subnav-h) 밑에 서고, 장 안 눈금줄은 장 위 여백(40) 아래에 있다 */
+  var wideMq = window.matchMedia('(min-width:768px)');
+  var bigMq  = window.matchMedia('(min-width:1181px)');
+  function ruleOff(s){ return bigMq.matches ? rOff : (parseFloat(getComputedStyle(s).paddingTop) || 0) + 8; }
+  /* 그림이 장 안팎을 오가면(gnb-c.js) 칸마다 얹힌 자리를 처음부터 다시 잡는다 */
+  window.addEventListener('c-figs-moved', function(){ seamA = seamB = -1; onScroll(); });
   function slide(){
     if(!wideMq.matches) return;
     var stack = figs.length ? figs[0].parentNode : null;
@@ -1763,7 +1769,7 @@
     if(b === a) b = null;
     var seam = H;
     if(b) seam = Math.max(0, Math.min(H,
-      secs[n + 1].getBoundingClientRect().top + rOff - sr.top));
+      secs[n + 1].getBoundingClientRect().top + ruleOff(secs[n + 1]) - sr.top));
     if(a !== seamA || b !== seamB){
       for(i=0;i<figs.length;i++){
         var on = (figs[i] === a || figs[i] === b);
