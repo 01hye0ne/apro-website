@@ -354,6 +354,12 @@
     font-size:clamp(var(--fs-meta),1.3vw,var(--fs-lead));line-height:var(--lh-label);letter-spacing:var(--ls);
     color:var(--on-dark-sub);white-space:nowrap;transition:color .22s var(--ease)}
   .v2banner .bnav .b.active .bt,.v2banner .bnav .b:hover .bt{color:var(--on-dark)}
+  /* 히어로 위계(2026-09-30 요청) — 메인 → 서브 → 하단 탭. 서브는 한 단 크게(24, --fs-h2) 하되 굵기는 내려(400) 메인과 다투지 않게,
+     흰 90%. 하단 탭은 꺼진 칸을 가볍게(16 · 500 · 흰 60%), 켜진 칸만 굵게(800 · 흰색 + 게이지) — 크기는 바꾸지 않는다(차례가 넘을 때 글자가 들썩인다).
+     900 아래 크기는 아래 규칙 그대로(서브 16 · 탭 14), 굵기만 따른다 */
+  .v2banner .kor{font-weight:400;font-size:var(--fs-h2);color:rgba(255,255,255,.9)}
+  .v2banner .bnav .bt{font-weight:500;font-size:clamp(var(--fs-meta),1.1vw,var(--fs-body))}
+  .v2banner .bnav .b.active .bt{font-weight:800}
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
