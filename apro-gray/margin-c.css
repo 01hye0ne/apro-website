@@ -420,3 +420,7 @@ html .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(180deg)}
     align-content:center;align-items:stretch;column-gap:var(--c-g)}
   html .lc-map{grid-column:2;align-self:stretch;justify-self:end;width:auto;max-width:100%;height:auto;aspect-ratio:1.7}
 }
+
+/* 목록 페이지 넘김 — 가운데가 아니라 목록 왼쪽 끝("총 N건" 과 같은 세로선)에 붙인다(2026-10-01).
+   목록 머리 · 표 글자가 모두 왼쪽에서 시작하는데 번호만 가운데 떠 있어 따로 노는 느낌이었다 */
+html .cpager{justify-content:flex-start}
