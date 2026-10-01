@@ -49,6 +49,17 @@
 .sf-gnb .sf-menus{gap:var(--mm-gap)}
 .sf-gnb .sf-menus>li>a{width:var(--mm-col);box-sizing:border-box;justify-content:center}
 .sf-gnb .sf-menus .caret{display:none}
+/* 대분류는 평소 좁게(108) 모여 있다가 메가 판이 열릴 때(.c-open)만 판의 열 폭(--mm-col · --mm-gap)으로 벌어진다(2026-10-01).
+   넓은 칸 그대로면 콘텐츠 장 왼쪽 세로 히어로 경계에 첫 대분류가 걸쳐 어긋나 보였다. 벌어지는 동안 커서 밑으로
+   미끄러져 든 다른 대분류가 판을 바꾸지 않게 gnb-c.js 가 0.4 초 잠근다 */
+@media(min-width:901px){
+  .sf-gnb .sf-menus{gap:0;transition:gap .38s cubic-bezier(.22,1,.36,1)}
+  .sf-gnb .sf-menus>li>a{width:min(108px,var(--mm-col));
+    transition:width .38s cubic-bezier(.22,1,.36,1),color .2s,background .2s}
+  .sf-gnb.c-open .sf-menus{gap:var(--mm-gap)}
+  .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col)}
+}
+@media(prefers-reduced-motion:reduce){ .sf-gnb .sf-menus,.sf-gnb .sf-menus>li>a{transition:none} }
 
 /* 판 — 바 바로 밑에서 열린다. 자리는 바 키 --c-gnb-h(아래 절) — A-1 의 --gnb-h 는 콘텐츠 장 :root 에
    옛 A 값 72 가 남아 있어 판이 바에서 8px 떨어져 떴다 */
