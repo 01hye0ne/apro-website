@@ -29,6 +29,26 @@
   measure();
   window.addEventListener('load', measure);
   window.addEventListener('resize', measure);
+
+  /* 평소(판이 닫혔을 때) 대분류 칸 폭 --mm-idle — 묶음 양 끝이 콘텐츠 장 본문 왼쪽 선(과 그 거울 자리)에 오게 한다(2026-10-01).
+     선은 세로 히어로 틀의 식 그대로다: 히어로 폭 clamp(340, 다섯째 열 x − 여백, 560) + 여백(margin-c.css · content-side.css).
+     모든 장이 같은 식을 써서 히어로가 없는 장도 대분류 자리가 같다. 108 아래로는 줄이지 않고(글자가 붙는다),
+     판의 열 폭(--mm-col)을 넘지 않는다 — 1830~1920 쯤에서만 선에 닿고 그 밖은 108 이다 */
+  function idle(){
+    var W = gnb.clientWidth, cs = getComputedStyle(document.documentElement);
+    var cm = parseFloat(cs.getPropertyValue('--c-m'));
+    var v = 108;
+    if (W > 1280 && W <= 1920 && cm > 0) {
+      var gw = Math.min(1440 - 2 * cm, W - 2 * cm), col = (gw - 11 * 24) / 12;
+      var x5 = (W - gw) / 2 + 4 * col + 4 * 24;
+      var line = Math.min(Math.max(x5 - cm, 340), 560) + cm;
+      var mm = parseFloat(getComputedStyle(gnb).getPropertyValue('--mm-col')) || 176;
+      v = Math.max(108, Math.min(mm, (W - 2 * line) / 5));
+    }
+    gnb.style.setProperty('--mm-idle', v.toFixed(1) + 'px');
+  }
+  idle();
+  window.addEventListener('resize', idle);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
   /* 판은 바 바로 밑 층에 둔다 — 바의 층이 장마다 다르다(세부 넷 60 · 나머지 100) */
