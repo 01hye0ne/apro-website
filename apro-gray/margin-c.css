@@ -411,3 +411,12 @@ html .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(180deg)}
   html .sf-num li{padding-top:12px;padding-bottom:12px}
   html .sf-dl li{padding-top:16px;padding-bottom:16px}
 }
+
+/* 사업장소재 넓은 화면(901 이상) — 지도 키를 왼쪽 정보 칸 키에 맞춘다(2026-10-01 요청). 지도가 띠 키(화면을 채우는 첫 화면)를
+   다 먹어 창이 높으면 정보 칸보다 위아래로 컸다. 띠를 한 줄 그리드로 바꿔 줄 키는 정보 칸이 정하고, 그 줄을 띠 세로 가운데에 둔다.
+   지도는 그 키를 채우고 폭은 키 × 1.7 까지(넓은 화면에서 2:1 슬래브로 늘지 않게, 남는 폭은 사이 여백) — 오른쪽 끝에 붙는다 */
+@media(min-width:901px){
+  html .lc-band{display:grid;grid-template-columns:min(664px,calc(50% - var(--c-g) / 2)) minmax(0,1fr);
+    align-content:center;align-items:stretch;column-gap:var(--c-g)}
+  html .lc-map{grid-column:2;align-self:stretch;justify-self:end;width:auto;max-width:100%;height:auto;aspect-ratio:1.7}
+}
