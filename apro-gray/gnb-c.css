@@ -298,3 +298,12 @@ html .totop.is-ondark:hover{background:var(--point-200)}
   .footer .f-bottom .copy{order:3}
   .footer .f-bottom .br .f-family,.footer .f-bottom .br .fbtn{width:100%}
 }
+
+/* ===================== 캡처 모드 — 주소에 ?shot=1 (2026-10-01) =====================
+   아이폰 Safari '전체 페이지' 캡처는 화면을 PDF 처럼 다시 그리는데, 뒤 흐림(backdrop-filter) · 가장자리 마스크가
+   검게 칠해지고 아직 화면에 안 든 등장 연출(.rv)은 투명한 채로 찍힌다. gnb-c.js 가 html.c-shot 을 걸면
+   흐림 · 마스크를 끄고 등장 연출을 다 띄운 모습으로 둔다. 평소 주소에서는 아무것도 바뀌지 않는다 */
+html.c-shot *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.c-shot .hm-wv .out{-webkit-mask-image:none!important;mask-image:none!important}
+html.c-shot .hm-wv .in{background:rgba(255,255,255,.06)}
+html.c-shot .rv{opacity:1!important;transform:none!important;translate:none!important;transition:none!important}

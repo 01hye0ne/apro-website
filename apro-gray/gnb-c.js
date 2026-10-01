@@ -416,3 +416,12 @@
     if(c) c.click();
   });
 })();
+
+/* ── 캡처 모드(?shot=1) — 전체 페이지 캡처용(gnb-c.css 끝 참고). 늦게 불러오는 그림을 바로 받고,
+   등장 연출이 기다리는 .is-in 을 미리 붙인다. 평소 주소에서는 아무 일도 하지 않는다 ── */
+(function(){
+  if(!/[?&]shot=1(&|$)/.test(location.search)) return;
+  document.documentElement.classList.add('c-shot');
+  [].forEach.call(document.querySelectorAll('img[loading="lazy"]'), function(img){ img.loading = 'eager'; });
+  [].forEach.call(document.querySelectorAll('.hm-wv, [data-reveal] .hcard'), function(el){ el.classList.add('is-in'); });
+})();
