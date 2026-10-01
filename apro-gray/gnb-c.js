@@ -35,7 +35,7 @@
   var z = parseInt(getComputedStyle(gnb).zIndex, 10);
   if(z > 0) mega.style.zIndex = z - 1;
 
-  var t = 0, isOpen = false;
+  var t = 0, isOpen = false, lockUntil = 0;
   function mark(i){
     items.forEach(function(li, k){
       var on = k === i;
@@ -48,6 +48,7 @@
     clearTimeout(t);
     if(!isOpen){
       isOpen = true;
+      lockUntil = Date.now() + 400;   /* 대분류가 벌어지는 동안(gnb-c.css .c-open) 판을 바꾸지 않는다 */
       gnb.classList.add('c-open');
       mega.classList.add('open');
       mega.setAttribute('aria-hidden', 'false');
@@ -67,7 +68,10 @@
   function leave(){ clearTimeout(t); t = setTimeout(close, 140); }
 
   items.forEach(function(li, i){
-    li.addEventListener('mouseenter', function(){ open(i); });
+    li.addEventListener('mouseenter', function(){
+      if(isOpen && Date.now() < lockUntil && !li.classList.contains('is-open')) return;
+      open(i);
+    });
     li.addEventListener('focusin', function(){ open(i); });
   });
   cols.forEach(function(c, i){
