@@ -310,7 +310,7 @@
   .v2banner .headline.entering .kor{animation:bnRise .7s cubic-bezier(.25,.46,.45,.94) .06s both}
   /* 국문 크기는 상한 64 — 사다리의 --fs-display(96)는 영문 한 줄짜리라 두 줄 국문에는 크다.
      1185 아래에서 화면을 따라 준다(A 와 같다 — 좁아지면 국문이 글자 중간에서 세 줄로 접혔다) */
-  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:var(--lh-head);
+  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(48px,5.4vw);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--on-dark);white-space:pre-line}
   /* 히어로 문구는 모두 국문 서체(SUIT) 한 벌이다(2026-09-30 확정 — 앞서 영문 문구에 쓰던 Aldrich · 크기 식(.is-en)을 걷었다).
      사업영역 넷도 국문이 메인 · 영문이 서브다(아래 MSG) */
@@ -369,7 +369,7 @@
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
-    .v2banner .en{font-size:min(52px,4.4vw)}
+    .v2banner .en{font-size:min(48px,4.4vw)}
   }
   /* 좁은 태블릿(768~900) — 56 이 세로 아이패드에서 커 보여 44 안팎으로 줄인다(820 에서 44, 2026-09-30 요청). 폰은 그대로 */
   @media(min-width:768px) and (max-width:900px){
