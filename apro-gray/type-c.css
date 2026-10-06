@@ -207,3 +207,12 @@ html .cpost-nav .k{font-weight:400}
    Aldrich 는 이제 숫자 14 · 영문 큰 제목 48 · 히어로 96 셋만 */
 .ci-hero h1,.co-vband .eyebrow,.gn-stats .k{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls)}
 .co-val .no,.co-apro .vals li::before{font-size:var(--fs-meta)}
+
+/* ── 번호 자간 (2026-10-07 "넘버링은 01-2 태그처럼 띄어 쓴 느낌으로 다 맞추고 싶어") ───────────────────
+   사업영역 세부 숫자 태그(.sf-tag)는 숫자마다 고정 폭 칸(1ch + 1px)에 하나씩 들어가 글자 사이가 벌어져 보인다.
+   다른 번호는 --ls-num(−6%)으로 오히려 좁혀 붙어 보였다. Aldrich 는 tabular-nums 를 지원하지 않아(1 이 좁다)
+   칸을 흉내 낼 수 없으므로, 재어 보니 비슷한 간격이 나는 자간 +0.14em(14px 에서 약 2px — 태그는 넓은 숫자 0 · 2 사이가 1~2px, 좁은 1 만 더 벌어진다)을 번호 자리에 준다.
+   날짜(2026-06-30)는 번호가 아니라 그대로 둔다 */
+:root{--ls-no:.14em}
+.sf-num b,.sf-apps b,.sf-grp>.hd>span:first-child,.sf-acc-grp>span:first-child,.sf-map .ring b,
+.cgrid .mark:not(:has(svg)),.co-val .no,.co-apro .vals li::before,.cboard td.no{letter-spacing:var(--ls-no)}
