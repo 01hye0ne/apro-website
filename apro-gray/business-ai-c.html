@@ -476,15 +476,15 @@
      장을 넘길 때마다 오른쪽 눈금 줄의 시작점이 흔들린다.
      자리마다 0~9 를 세로로 이어 둔 띠(.r)를 두고, 지금 숫자만큼 끌어올려 보여 준다
      — 바뀔 때 글자가 갈리는 대신 계기판처럼 굴러간다 */
-  .sf-tag{width:41px;height:16px;flex-shrink:0;display:flex;align-items:center;
+  .sf-tag{width:52px;height:20px;flex-shrink:0;display:flex;align-items:center;
           justify-content:center;padding:2px 4px 0;background:var(--sf-ter);color:#fff;
-          font-family:var(--ald);font-size:var(--t-tag);line-height:var(--lh-tight);letter-spacing:var(--ls-caps)}
+          font-family:var(--ald);font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls-caps)}
   /* 한 칸 = 숫자 0 의 폭(1ch) + 자간 1. 어떤 숫자가 와도 칸이 같으므로 태그 전체
      가로가 고정된다 — 폰트가 바뀌어도 ch 가 따라가서 잘리지 않는다 */
-  .sf-tag .r{display:block;width:calc(1ch + 1px);height:11px;overflow:hidden}
+  .sf-tag .r{display:block;width:calc(1ch + 1px);height:15px;overflow:hidden}
   .sf-tag .r>span{display:block;transition:transform .55s var(--ease)}
-  .sf-tag .r b{display:block;height:11px;font-weight:400;text-align:center}
-  .sf-tag .s{display:block;width:5px;text-align:center}
+  .sf-tag .r b{display:block;height:15px;font-weight:400;text-align:center}
+  .sf-tag .s{display:block;width:7px;text-align:center}
   @media(prefers-reduced-motion:reduce){.sf-tag .r>span{transition:none}}
 
   /* 글 열 — 셋 중 이 기둥만 흐른다. 장의 본문 띠를 꽉 채워야 목록이 그림 바닥에
@@ -1010,7 +1010,7 @@
   <div class="sf-figwrap">
     <div class="sf-figcol">
       <!-- 눈금 줄은 아홉 장이 똑같아서 한 벌만 둔다. 숫자만 자리마다 굴러간다 -->
-      <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-11px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
+      <div class="sf-line"><span class="sf-tag" id="sfTag" role="img" aria-label="01-1"><span class="r"><span style="transform:translateY(0px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="r"><span style="transform:translateY(-15px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="s">-</span><span class="r"><span style="transform:translateY(-15px)"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><i class="rule"></i><i class="tick"></i></div>
       <div class="sf-figstack">
         <figure class="sf-ph is-on has-img" data-for="sf01-1"><img src="../assets/industrial-safety-robot-dog.jpg" alt="펌프 설비 사이를 점검하는 사족 보행 안전 진단 로봇" decoding="async" /></figure>
         <figure class="sf-ph has-img is-shot" data-for="sf01-2"><img src="../assets/aprism-robot-ops-device.webp" alt="로봇 통합 운영 플랫폼 APRISM 관제 화면 — 3D 현장 지도 위 로봇 위치와 미션 진행 목록" decoding="async" /></figure>
@@ -1370,7 +1370,7 @@
     if(!m || !reels.length) return;
     for(var i=0;i<3;i++){
       var b = reels[i].firstElementChild;
-      if(b) b.style.transform = 'translateY(' + (-11 * +m[i + 1]) + 'px)';
+      if(b) b.style.transform = 'translateY(' + (-15 * +m[i + 1]) + 'px)';
     }
     tag.setAttribute('aria-label', m[1] + m[2] + '-' + m[3]);
   }
