@@ -80,13 +80,13 @@
   .gn-lab{position:absolute;transform:translateY(-50%);
           padding:.42em .7em;
           background:#fff;box-shadow:0 2px 8px rgba(27,39,51,.18);
-          font-family:var(--suit);font-weight:600;font-size:clamp(9px,1.45cqw,15px);
+          font-family:var(--suit);font-weight:600;font-size:clamp(9px,1.45cqw,var(--fs-meta));
           line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--brand);
           white-space:nowrap;
           transition:opacity .5s var(--ease) 1.8s}
   .gn-lab--l{transform:translate(-100%,-50%);text-align:right}
   .gn-lab em{display:block;margin-top:.15em;font-style:normal;font-weight:400;
-             font-size:clamp(8px,1.2cqw,13px);color:var(--brand-2)}
+             font-size:clamp(8px,1.2cqw,var(--fs-tag));color:var(--brand-2)}
   /* 앰비언트 핑 — 본사와 법인 넷에서 흰 고리가 퍼졌다 사라진다. 시작을 어긋내 두어
      차례로 빛난다(본사 → 미시간 → 폴란드 → 남경 → 카라왕, 곡선이 뻗는 차례와 같다).
      A 판 스마트 제조 지도(.gdot--corp 의 mkPulse, business-layout.css)와 같은 결이다.
