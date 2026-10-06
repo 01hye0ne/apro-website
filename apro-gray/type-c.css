@@ -154,7 +154,7 @@
 .cform-k,.cform-submit,.cs-hero h1,.cmodal-open,
 .sf-tickrow b,.sf-rail a,.sf-texts .cat,.sf-cert .ttl,.sf-cert li.em,.sf-feat .k,.sf-prod .use b,
 .sf-map .ring li.is-on i,.sf-map .it b,.sf-cta,.sf-dl .k,.sf-dl--row .k,.sf-prods .k,.sf-picks .nm,
-.cpost-files .k,.co-val .pair,.co-val .pair b,.co-apro .vals li::before,
+.cpost-files .k,.co-val .pair,.co-val .pair b,
 .hm-card .sub a,.v2news .news-list .ttl,.cprice-hd .nm b,.lc-rows dt,.lc-tab .nm{font-weight:600}
 /* 홈 히어로 하단 탭 — 꺼진 칸 400 · 켜진 칸 600(크기는 그대로 — 차례가 넘을 때 글자가 들썩이지 않게) */
 .v2banner .bnav .bt{font-weight:400}
