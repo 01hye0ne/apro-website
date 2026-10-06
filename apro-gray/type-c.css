@@ -115,18 +115,18 @@
 /* 카드 격자 번호(.cgrid .mark 안 글자 — 지배구조 윤리헌장 01~04) — SUIT 800 대신 Aldrich(2026-09-29 요청).
    공정 번호 · AAA 번호 · 게시판 날짜처럼 사이트의 숫자 글꼴에 맞춘다. 아이콘(svg)이 든 표시는 그대로.
    Aldrich 는 400 한 굵기라 크기를 한 단 올린다(14 → 16) */
-.cgrid .mark:not(:has(svg)){font-family:"Aldrich",var(--suit);font-weight:400;font-size:var(--fs-body);letter-spacing:var(--ls-num)}
+.cgrid .mark:not(:has(svg)){font-family:"Aldrich",var(--suit);font-weight:400;font-size:var(--fs-meta);letter-spacing:var(--ls-num)}
 
 /* 사업영역 세부 소분류 묶음 번호(인덱스 · 가로 띠의 묶음 머리 .sf-grp>.hd, 모바일 묶음 띠 .sf-acc-grp 의 "01") — Aldrich(2026-09-29 요청).
    장 번호 태그 · 공정 번호와 같은 숫자 글꼴. 크기 · 굵기는 옆 이름 그대로 두고 글꼴만 */
 .sf-grp>.hd>span:first-child,.sf-acc-grp>span:first-child{font-family:"Aldrich",var(--suit);font-weight:400;
-  font-size:var(--fs-body)}   /* 크기는 목록 번호(.sf-num b)와 같은 16(2026-10-06 12 → 16, 작은 글 키우기) */
+  font-size:var(--fs-meta)}   /* 크기는 목록 번호(.sf-num b)와 같은 Aldrich 14(2026-10-07 16 → 14, Aldrich 는 커 보여 SUIT 16 옆에서 한 단 내림) */
 /* 번호와 이름 사이 4 → 8(같은 날 요청) — 번호가 12 로 작아지며 이름에 붙어 보였다 */
 .sf-grp>.hd,.sf-acc-grp{gap:8px}
 
 /* 사업영역 세부 단계 번호 — 공정 맵 고리의 번호(.sf-map .ring b, 16)가 옆 목록 번호(.sf-num b, 12)보다 컸다(2026-09-29 요청).
    목록은 그대로 두고 고리 번호만 목록과 같은 12(--fs-tag)로 */
-.sf-map .ring b{font-size:var(--fs-body)}   /* 2026-10-06 목록 번호와 함께 16 */
+.sf-map .ring b{font-size:var(--fs-meta)}   /* 2026-10-07 목록 번호와 함께 Aldrich 14 */
 
 /* ── 같은 역할 · 한 값 (2026-10-06 "타이포 스타일이 많다" 피드백) ─────────────────────────────
    한 화면에 같은 크기 · 다른 굵기가 나란히 서서 스타일이 많아 보였다. 굵기는 400 · 600 · 800 세 단만 쓰고
@@ -174,11 +174,11 @@
       C 에서는 --fs-tag 를 --fs-meta(14)에 묶어 한 칸으로 합친다(사업영역 세부 --t-tag 도 따라온다)
    2) Aldrich 14 → 16 — 게시판 번호 · 날짜 · 쪽 번호. Aldrich 는 라벨 · 숫자에 16 하나만 쓴다 */
 :root{--fs-tag:var(--fs-meta)}
-.cboard tbody td:not(.ttl),.cnews .date,.cpager button:not(.arw),.cpost-meta [data-f="date"]{font-size:var(--fs-body)}
+.cboard tbody td:not(.ttl),.cnews .date,.cpager button:not(.arw),.cpost-meta [data-f="date"]{font-size:var(--fs-meta)}
 /* 사업영역 세부의 Aldrich 번호(단계 · 적용 분야 · 레일 그룹 머리) · 홈 뉴스 날짜도 16 으로.
    굴러가는 숫자 태그 .sf-tag 는 칸 크기 · 한 칸 높이가 글자 크기에 묶여 있어 각 장 <style> · 스크립트에서 함께 키웠다(41×16 · 11 → 52×20 · 15) */
 .sf-num b,.sf-apps b,
-.v2news .ncard .date,.v2news .news-list .date{font-size:var(--fs-body)}
+.v2news .ncard .date,.v2news .news-list .date{font-size:var(--fs-meta)}
 /* 단계 · 적용 분야 번호 칸은 12px 두 자리에 맞춘 18 고정이라 16 에서 "0 / 2" 로 꺾였다 — 두 자리가 드는 26 으로 */
 .sf-num b,.sf-apps b{width:26px;white-space:nowrap}
 
@@ -198,3 +198,12 @@
 .gn-list li,.gn-lab,.cboard thead th,.ctable th small,.sf-dl--row .v,.hm-card .sub a{font-weight:400}
 /* 이전 · 다음 글 머리 — margin-c.css 가 html 을 붙여 600 을 다시 박아 둔 자리라 같은 세기로 덮는다 */
 html .cpost-nav .k{font-weight:400}
+
+/* ── Aldrich 14 · 영문 라벨 SUIT (2026-10-07 "aldrich 16 을 14 로, 회사정보 · 네트워크 영문 라벨은 suit 스타일로") ──────
+   Aldrich 는 글자 폭이 넓고 숫자가 커서 16 이면 옆 SUIT 16 보다 커 보였다 — 번호 · 날짜 · 쪽 번호를 14 로 내린다
+   (위 블록들의 16 을 14 로 고침, 사업영역 세부 굴러가는 태그 .sf-tag 는 각 장에서 47×18 · 한 칸 13 으로).
+   회사정보 세 장(회사 소개 · 글로벌 네트워크 · 사업장 소재)의 영문 라벨은 숫자가 아니라 글이라 SUIT 라벨 16 / 600 으로 —
+   히어로 이름(About · Global Network · Location), VISION 2030, 네트워크 수치 이름(Global Bases · Years History).
+   Aldrich 는 이제 숫자 14 · 영문 큰 제목 48 · 히어로 96 셋만 */
+.ci-hero h1,.co-vband .eyebrow,.gn-stats .k{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls)}
+.co-val .no,.co-apro .vals li::before{font-size:var(--fs-meta)}
