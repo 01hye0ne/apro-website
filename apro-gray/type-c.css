@@ -133,3 +133,38 @@
    (700 · 500 은 걷음 — 각 장 <style> 에서 직접 고침), 같은 역할은 장이 달라도 한 값으로 맞춘다.
    보도자료 목록 제목(.cnews, content-layout.css 는 A · A-1 도 써서 여기서 덮음)도 게시판 글 제목 18 / 600 으로 */
 .cnews .ttl{font-weight:600}
+
+/* ── 한 크기 · 굵기 두 단 (2026-10-06 "한 화면에 보이는 수를 줄여보자") ─────────────────────────
+   위 정리 뒤에도 한 화면에 16px 이 400 · 600 · 800, 14px 이 400 · 600 · 800 세 벌씩 함께 섰다.
+   규칙: 굵기 800 은 소제목(--fs-h3) 이상 제목에만. 그보다 작은 글(--fs-lead 18 · --fs-body 16 · --fs-meta 14 · --fs-tag 12)은
+   보통 400 · 강조 600 두 단만 쓴다. 지금 칸 · 현재 메뉴처럼 800 으로 갈랐던 상태는 색 · 밑줄이 이미 가른다.
+   원래 규칙과 같은 선택자로 덮는다(이 파일이 페이지 <style> 뒤에 온다). A · A-1 원본은 그대로다 */
+
+/* 1) 작은 글의 800 · 700 → 600 */
+.footer .f-col .head,.footer .f-col a[aria-current],.footer .f-links a.strong,
+.ov-links a[aria-current],.sf-mega .hd,.c-mega .c-col a[aria-current],
+.sf-gnb .sf-menus>li>a[aria-current],.sf-gnb .sf-drop a[aria-current],
+.sf-menus>li>a[aria-current],.sf-drop a[aria-current],
+.kv .k,.bhtag,.fsteps li b,.fsteps li span,.hblock .lbl,.hcard ul li b,.hthumbs .th .nm,.glab,.gpop figcaption,
+.ccard .no,.ccard>.cvalues>li,.cgrid .mark,.ccreed .no,
+.ctable thead th,.ctable tr.sum td,.cfin-tabs button[aria-current],
+.cstock thead th,.cstock tr.sum th,.cstock tr.sum td,.cchart .yr,
+.cboard thead th,.clist-hd .count b,
+.cnews .ttl,.cdoc h4,.cdoc th,.ctoc p,.cdetails summary,.cnote strong,.cway .k,.cflow thead th,
+.cform-k,.cform-submit,.cs-hero h1,.cmodal-open,
+.sf-tickrow b,.sf-rail a,.sf-texts .cat,.sf-cert .ttl,.sf-cert li.em,.sf-feat .k,.sf-prod .use b,
+.sf-map .ring li.is-on i,.sf-map .it b,.sf-cta,.sf-dl .k,.sf-dl--row .k,.sf-prods .k,.sf-picks .nm,
+.cpost-files .k,.co-val .pair,.co-val .pair b,.co-apro .vals li::before,
+.hm-card .sub a,.v2news .news-list .ttl,.cprice-hd .nm b,.lc-rows dt,.lc-tab .nm{font-weight:600}
+/* 홈 히어로 하단 탭 — 꺼진 칸 400 · 켜진 칸 600(크기는 그대로 — 차례가 넘을 때 글자가 들썩이지 않게) */
+.v2banner .bnav .bt{font-weight:400}
+.v2banner .bnav .b.active .bt{font-weight:600}
+
+/* 2) 줄글의 600 → 400 — 사업영역 · 회사정보 · 이사회 이력만 600 이라 다른 장 줄글(400)과 갈렸다(2026-09-15 보류분) */
+.sf-body p,.sf-subs .d,.sf-texts p,.sf-feat .d,.sf-dl .d,.sf-prods .d,.co-val .d,.cperson li{font-weight:400}
+.sf-texts p.cat{font-weight:600}
+/* 쪽 번호 — Aldrich 는 굵기가 한 벌(400)이라 800 은 가짜 굵게였다. 지금 쪽은 파란 바탕이 가르므로 400 그대로,
+   크기는 목록의 번호 · 날짜(Aldrich 14)에 맞추고, 화살표(‹ ›)는 18 → 본문 16 */
+.cpager button[aria-current]{font-weight:400}
+.cpager button:not(.arw){font-size:var(--fs-meta)}
+.cpager .arw{font-size:var(--fs-body)}
