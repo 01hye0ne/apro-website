@@ -181,3 +181,20 @@
 .v2news .ncard .date,.v2news .news-list .date{font-size:var(--fs-body)}
 /* 단계 · 적용 분야 번호 칸은 12px 두 자리에 맞춘 18 고정이라 16 에서 "0 / 2" 로 꺾였다 — 두 자리가 드는 26 으로 */
 .sf-num b,.sf-apps b{width:26px;white-space:nowrap}
+
+/* ── 스타일 12 개 (2026-10-06 "12개로 갈게") ─────────────────────────────────────────────────
+   15 개에서 위계가 덜 상하는 셋을 더 합쳤다 — 홈 히어로 64 → 48(index-c.html, 홈 사업영역 카드 제목과 같은 칸),
+   그리고 아래 둘. 남은 12 = Aldrich 16 · 48 · 96 / SUIT 14 · 16/400 · 16/600 · 18/600 · 20/800 · 24/400 · 24/800 · 38/800 · 48/800 */
+
+/* 1) 리드 문장 18 / 400 → 본문 16 / 400 — 지속가능경영 · 윤리신고 첫 문장, 신고 채널 · IR 연락처 값, 보도자료 본문 인용.
+   --fs-lead(18)는 600 으로만 남는다(게시판 글 제목 · 조항 제목) */
+.cs-body .cblock>p.lead,.cs-body .cway .v,.cs-body .cway .v a,.cs-body .cpost-bd .txt p,.cs-body .cblock>.body p{font-size:var(--fs-body)}
+
+/* 2) 14px 은 400 한 굵기 — 단추 · 머리줄 · 태그 · 탭 · 지명 · 직함 · 언어 선택 · FAMILY SITE.
+   14 는 보조 글 자리라 굵기로 다시 가르지 않는다. 지금 칸(탭 · 언어)은 색 · 바탕이 가른다 */
+.footer .fbtn span,.footer .f-col a[aria-current],.ov-lang,.sf-lang .sf-drop a,.sf-gnb .sf-drop a[aria-current],.sf-drop a[aria-current],
+.cperson .role,.cchart .yr,.cprice-tabs button,.sf-prod .use b,.sf-prod .use span,.p-lists .tag,.sf-cnt .cap span,
+.sf-grp>.hd>span,.sf-acc-grp>span,.sf-globe .tag,.cbtn,.cpost-meta .cat,.tx .cap,.eq .k,.cpost-nav .k,
+.gn-list li,.gn-lab,.cboard thead th,.ctable th small,.sf-dl--row .v,.hm-card .sub a{font-weight:400}
+/* 이전 · 다음 글 머리 — margin-c.css 가 html 을 붙여 600 을 다시 박아 둔 자리라 같은 세기로 덮는다 */
+html .cpost-nav .k{font-weight:400}
