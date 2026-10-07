@@ -33,7 +33,7 @@
 .cprice-hd{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px 24px;padding:24px 0;border-bottom:1px solid var(--border-g)}
 .cprice-hd .nm{grid-column:1/-1;margin:0;display:flex;align-items:center;gap:8px;font-size:var(--fs-body);letter-spacing:var(--ls)}
 .cprice-hd .nm b{font-weight:600}
-.cprice-hd .cd,.cprice-hd .mk{font-size:var(--fs-meta);color:var(--teritary)}
+.cprice-hd .cd,.cprice-hd .mk{font-size:var(--fs-meta);color:var(--tx-meta)}
 .cprice-hd .mk{padding:2px 6px;border:1px solid var(--border-g);font-size:var(--fs-tag);letter-spacing:var(--ls-caps)}
 .cprice-hd .now{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px}
 .cprice-hd .px{font-weight:800;font-size:var(--fs-h1);line-height:var(--lh-head);letter-spacing:var(--ls);font-variant-numeric:tabular-nums}
@@ -41,11 +41,11 @@
 .cprice-hd .chg{margin-left:8px;font-weight:600;font-size:var(--fs-body);font-variant-numeric:tabular-nums}
 .cprice.is-up .chg{color:var(--up)}
 .cprice.is-down .chg{color:var(--down)}
-.cprice-hd .asof{margin:0;font-size:var(--fs-meta);color:var(--teritary);text-align:right}
+.cprice-hd .asof{margin:0;font-size:var(--fs-meta);color:var(--tx-meta);text-align:right}
 .cprice-kv{margin:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-bottom:1px solid var(--border-g)}
 .cprice-kv div{padding:16px;display:flex;flex-direction:column;gap:6px}
 .cprice-kv div+div{border-left:1px solid var(--border-g)}
-.cprice-kv dt{font-size:var(--fs-meta);color:var(--teritary)}
+.cprice-kv dt{font-size:var(--fs-meta);color:var(--tx-meta)}
 .cprice-kv dd{margin:0;font-weight:600;font-size:var(--fs-body);font-variant-numeric:tabular-nums;white-space:nowrap}
 .cprice-chart{padding-top:24px}
 .cprice-tabs{display:flex;gap:4px;margin-bottom:16px}
@@ -59,11 +59,11 @@
 .cprice-plot .cross{stroke:var(--teritary);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;display:none}
 .cprice-plot.is-hover .cross{display:inline}
 /* 최고 · 최저는 그래프 밖(기간 단추 줄 오른쪽)에 — 안쪽 모서리에 두니 선 끝과 겹쳤다 */
-.cprice-plot .hi{position:absolute;right:0;bottom:calc(100% + 16px);line-height:32px;font-size:var(--fs-meta);color:var(--teritary);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
+.cprice-plot .hi{position:absolute;right:0;bottom:calc(100% + 16px);line-height:32px;font-size:var(--fs-meta);color:var(--tx-meta);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
 .cprice-plot .lo{display:none}
 .cprice-plot .tip{position:absolute;top:8px;transform:translateX(-50%);padding:6px 10px;background:var(--g900);color:#fff;
   font-size:var(--fs-meta);line-height:var(--lh-label);white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
-.cprice .range{margin:8px 0 0;display:flex;justify-content:space-between;font-size:var(--fs-tag);color:var(--teritary);font-variant-numeric:tabular-nums}
+.cprice .range{margin:8px 0 0;display:flex;justify-content:space-between;font-size:var(--fs-tag);color:var(--tx-meta);font-variant-numeric:tabular-nums}
 .cprice.is-fail .cprice-kv,.cprice.is-fail .cprice-chart{display:none}
 @media(max-width:900px){
   .cprice-kv{grid-template-columns:repeat(3,minmax(0,1fr))}
