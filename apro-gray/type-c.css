@@ -227,3 +227,13 @@ html .cpost-nav .k{font-weight:400}
    900 이하에서 --fs-lead 가 16 으로 내려가던 것도 18 로 맞춘다(본문보다 작아지지 않게) */
 :root{--fs-body:18px}
 @media(max-width:900px){ :root{--fs-lead:18px} }
+
+/* ── 시험판 이어서: UI 글 16 / 600 (2026-10-07 "16 수트 하나 만들어서 GNB · 메뉴 · 라벨 · 메가메뉴 하위 항목에") ──────
+   본문을 18 로 올린 뒤 길잡이 글까지 18 이라 무거웠다. 길잡이(GNB · 메가메뉴 · 전체메뉴 · 푸터 메뉴 제목 ·
+   왼쪽 목차 · 장 이름 · 사업영역 세부 레일)와 작은 라벨은 --fs-ui 16 / 600 한 벌로. 메가메뉴 하위 항목도 600 —
+   지금 장은 색이 가른다. 게시판 글 제목 · 조항 제목 · 표 머리 · 제품명 · 탭 · 단추는 18 / 600 그대로 */
+:root{--fs-ui:16px}
+.sf-gnb .sf-menus>li>a,.c-mega .c-col a,.ov-links a,.footer .f-col .head,
+.cs-hero h1,.cs-toc a,.sf-rail a,.cs-body .cblock>ul>li>a,
+.hm-ttl .hm-lbl,.ci-hero h1,.co-vband .eyebrow,.gn-stats .k,.lc-rows dt,.lc-head .en,.cway .k,.cform-k,.ctoc p,
+.sf-texts .cat,.sf-cert .ttl,.bhop .bhtag .en,.bhnow .en,.cprice-hd .nm b{font-size:var(--fs-ui);font-weight:600}
