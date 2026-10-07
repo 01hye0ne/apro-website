@@ -425,3 +425,67 @@
   [].forEach.call(document.querySelectorAll('img[loading="lazy"]'), function(img){ img.loading = 'eager'; });
   [].forEach.call(document.querySelectorAll('.hm-wv, [data-reveal] .hcard'), function(el){ el.classList.add('is-in'); });
 })();
+
+/* ── 푸터 정책 팝업(개인정보처리방침 · 이메일무단수집거부, 2026-10-07) — 모양은 gnb-c.css 끝.
+   글(policy-c.js)은 처음 누를 때 불러온다. <dialog> 의 showModal 이 초점 가두기 · Esc 닫기를 맡고,
+   바깥(흐린 바탕) 누르기 · 닫기 단추로도 닫힌다. 닫으면 누른 링크로 초점을 돌려준다 ── */
+(function(){
+  var btns = document.querySelectorAll('.footer [data-policy]');
+  if(!btns.length || typeof HTMLDialogElement === 'undefined') return;
+  var dlg, ttl, bd, last;
+  function mk(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+  function load(cb){
+    if(window.APRO_POLICY) return cb();
+    var s = document.createElement('script');
+    s.src = 'policy-c.js';
+    s.onload = cb;
+    document.head.appendChild(s);
+  }
+  function build(){
+    dlg = mk('dialog', 'pol-dlg');
+    dlg.setAttribute('aria-labelledby', 'polTtl');
+    var hd = mk('div', 'pol-hd');
+    ttl = mk('h2'); ttl.id = 'polTtl';
+    var x = mk('button', 'pol-x'); x.type = 'button'; x.setAttribute('aria-label', '닫기');
+    x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5"/></svg>';
+    x.addEventListener('click', function(){ dlg.close(); });
+    hd.appendChild(ttl); hd.appendChild(x);
+    bd = mk('div', 'pol-bd');
+    dlg.appendChild(hd); dlg.appendChild(bd);
+    dlg.addEventListener('click', function(e){ if(e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', function(){
+      document.documentElement.classList.remove('pol-lock');
+      if(last) last.focus();
+    });
+    document.body.appendChild(dlg);
+  }
+  function render(key){
+    var d = window.APRO_POLICY[key].ko, ul = null;
+    ttl.textContent = d.title;
+    bd.textContent = '';
+    function put(it){
+      var k = it[0], t = it[1];
+      if(k === 'li'){
+        if(!ul){ ul = mk('ul'); bd.appendChild(ul); }
+        ul.appendChild(mk('li', null, t));
+        return;
+      }
+      ul = null;
+      bd.appendChild(mk(k === 'h' ? 'h3' : k === 's' ? 'h4' : 'p', null, t));
+    }
+    d.intro.forEach(put);
+    d.arts.forEach(function(a){ put(['h', a.t]); a.b.forEach(put); });
+    bd.scrollTop = 0;
+  }
+  [].forEach.call(btns, function(b){
+    b.addEventListener('click', function(){
+      last = b;
+      load(function(){
+        if(!dlg) build();
+        render(b.getAttribute('data-policy'));
+        document.documentElement.classList.add('pol-lock');
+        dlg.showModal();
+      });
+    });
+  });
+})();
