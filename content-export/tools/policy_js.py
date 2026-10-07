@@ -1,63 +1,62 @@
 # -*- coding: utf-8 -*-
-"""04_푸터_정책문서.xlsx → apro-gray/policy-c.js (푸터 '개인정보처리방침' · '이메일무단수집거부' 팝업 글).
+"""국문영문글정리.xlsx '푸터' 시트 → apro-gray/policy-c.js (푸터 '개인정보처리방침' · '이메일무단수집거부' 팝업 글).
 
-엑셀의 한 행 = 문단 하나. 조제목은 조 머리, 소제목은 굵은 머리글, 본문은 문단, 목록은 글머리 줄로 옮긴다.
-국문 · 영문을 함께 담는다(영문 장은 아직 없어 팝업은 국문만 쓴다). 엑셀을 고친 뒤 다시 돌리면 된다:
+푸터 시트에서 자리표가 policy| 로 시작하는 줄이 팝업 글이다(policy|문서|순번|종류).
+국문 = 변경 문구(있으면, '삭제'면 뺀다) 아니면 현재 문구, 영문 = 영문 문구(비면 영문판에서 뺀다).
+종류 h 는 조 머리 — 그 앞의 줄은 머리말. 팝업 제목은 푸터 정책 링크 줄(자리표 footer|링크 이름 …)에서 가져온다.
+영문 장은 아직 없어 팝업은 국문만 쓴다. 엑셀을 고친 뒤 다시 돌리면 된다:
   python content-export/tools/policy_js.py
 """
 import io, json, sys
 from openpyxl import load_workbook
 
 sys.stdout.reconfigure(encoding="utf-8")
-SRC = "content-export/04_푸터_정책문서.xlsx"
+BOOK = "content-export/국문영문글정리.xlsx"
 OUT = "apro-gray/policy-c.js"
-KIND = {"조제목": "h", "소제목": "s", "본문": "p", "목록": "li"}
+TITLE_EN = {"privacy": "Privacy Policy", "email": "Refusal of Unauthorized Email Collection"}
 
 
-def privacy(ws):
-    """조항 · 조 제목 · 구분 · 순서 · 내용 — 조 단위로 묶는다(조항이 빈 첫 줄은 머리말)"""
-    intro, arts, cur = [], [], None
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        art, _title, kind, _n, text = row[:5]
-        if not text:
-            continue
-        k = KIND.get(kind, "p")
-        if not art:
-            intro.append([k, str(text).strip()])
-            continue
-        if k == "h":
-            cur = {"t": str(text).strip(), "b": []}
-            arts.append(cur)
-        elif cur is not None:
-            cur["b"].append([k, str(text).strip()])
-    return {"intro": intro, "arts": arts}
-
-
-def email(ws, lang):
-    out = []
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        lg, kind, _n, text = row[:4]
-        if lg != lang or not text:
-            continue
-        out.append([KIND.get(kind, "p"), str(text).strip()])
-    return {"intro": out, "arts": []}
+def txt(v):
+    return str(v).strip() if v is not None and str(v).strip() else None
 
 
 def main():
-    wb = load_workbook(SRC, read_only=True)
-    data = {
-        "privacy": {"ko": {"title": "개인정보처리방침", **privacy(wb["개인정보처리방침_국문"])},
-                    "en": {"title": "Privacy Policy", **privacy(wb["개인정보처리방침_영문"])}},
-        "email": {"ko": {"title": "이메일무단수집거부", **email(wb["이메일무단수집거부"], "한국어")},
-                  "en": {"title": "Refusal of Unauthorized Email Collection", **email(wb["이메일무단수집거부"], "영문")}},
-    }
-    js = ("/* 푸터 정책 팝업 글 — content-export/tools/policy_js.py 가 04_푸터_정책문서.xlsx 에서 만든다. 손으로 고치지 말 것.\n"
+    ws = load_workbook(BOOK, read_only=True)["푸터"]
+    docs = {k: {"ko": {"title": None, "intro": [], "arts": []}, "en": {"title": TITLE_EN[k], "intro": [], "arts": []}}
+            for k in ("privacy", "email")}
+    cur = {k: {"ko": None, "en": None} for k in docs}
+    links = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        cur_t, new_t, en_t, loc = row[5], row[6], row[7], str(row[9] or "")
+        if loc.startswith("footer|링크 이름"):
+            links.append((txt(new_t) or txt(cur_t), txt(en_t)))
+            continue
+        if not loc.startswith("policy|"):
+            continue
+        _, doc, _i, kind = loc.split("|")
+        ko = None if txt(new_t) == "삭제" else (txt(new_t) or txt(cur_t))
+        for lang, t in (("ko", ko), ("en", txt(en_t))):
+            if not t:
+                continue
+            d = docs[doc][lang]
+            if kind == "h":
+                cur[doc][lang] = {"t": t, "b": []}
+                d["arts"].append(cur[doc][lang])
+            elif cur[doc][lang] is None:
+                d["intro"].append([kind, t])
+            else:
+                cur[doc][lang]["b"].append([kind, t])
+    for k, (ko_title, en_title) in zip(("privacy", "email"), links):
+        docs[k]["ko"]["title"] = ko_title
+        if en_title:
+            docs[k]["en"]["title"] = en_title
+    js = ("/* 푸터 정책 팝업 글 — content-export/tools/policy_js.py 가 국문영문글정리.xlsx '푸터' 시트에서 만든다. 손으로 고치지 말 것.\n"
           "   [종류, 글] — h 조 머리 · s 굵은 머리글 · p 문단 · li 글머리 줄 */\n"
-          "window.APRO_POLICY = " + json.dumps(data, ensure_ascii=False, indent=1) + ";\n")
+          "window.APRO_POLICY = " + json.dumps(docs, ensure_ascii=False, indent=1) + ";\n")
     io.open(OUT, "w", encoding="utf-8", newline="\n").write(js)
-    for k, v in data.items():
-        print(k, "ko 조 %d · 머리말 %d" % (len(v["ko"]["arts"]), len(v["ko"]["intro"])),
-              "| en 조 %d" % len(v["en"]["arts"]))
+    for k, v in docs.items():
+        print(k, "| ko '%s' 조 %d 머리말 %d" % (v["ko"]["title"], len(v["ko"]["arts"]), len(v["ko"]["intro"])),
+              "| en '%s' 조 %d 머리말 %d" % (v["en"]["title"], len(v["en"]["arts"]), len(v["en"]["intro"])))
 
 
 if __name__ == "__main__":

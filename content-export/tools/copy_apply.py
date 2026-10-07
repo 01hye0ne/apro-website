@@ -16,7 +16,7 @@ from copy_pull import chunk          # 뽑을 때와 똑같은 잣대로 견준�
 
 SHEETS = {"스마트 제조": "smart", "에너지 인프라": "energy",
           "인공지능 플랫폼": "ai", "화합물 전력 반도체": "semicon"}
-BOOK = "content-export/04_사업영역_문구.xlsx"
+BOOK = "content-export/국문영문글정리.xlsx"
 
 
 def norm(s):

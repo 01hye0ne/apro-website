@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""홈(시안 C, apro-gray/index-c.html) 문구를 04_사업영역_문구.xlsx 에 '홈' 시트로 더한다.
+"""홈(시안 C, apro-gray/index-c.html) 문구를 국문영문글정리.xlsx 에 '홈' 시트로 더한다.
 
 사업영역 시트들은 그대로 두고(채워 둔 칸 보존) 홈 시트만 새로 만든다 — 이미 있으면 바꿔 끼운다.
 열 · 색 · 자리표 형식은 copy_xlsx.py 와 같다. 같은 문구가 여러 자리에 있으면 한 줄로 합친다.
@@ -16,7 +16,7 @@ from copy import copy
 sys.stdout.reconfigure(encoding="utf-8")
 
 SRC = "apro-gray/index-c.html"
-OUT = "content-export/04_사업영역_문구.xlsx"
+OUT = "content-export/국문영문글정리.xlsx"
 SHEET = "홈"
 
 HEAD = ["순번", "섹션", "자리", "구분", "묶음", "현재 문구", "변경 문구", "영문 문구",
