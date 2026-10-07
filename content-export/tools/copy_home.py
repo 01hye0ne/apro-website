@@ -81,6 +81,10 @@ def role(e):
         if t == "p" and "d" in c:                   return ("Business", "카드 설명", "문구")
         if t == "a" and e.getparent().tag == "li":  return ("Business", "소분류 링크", "문구")
         return None
+    if up(e, "hm-who-intro") is not None:
+        if "t" in c: return ("Who we are", "소개 굵은 줄", "문구")
+        if "d" in c: return ("Who we are", "소개 문단", "문구")
+        return None
     wv = up(e, "hm-wv")
     if wv is not None:
         if "no" in c:             return ("Who we are", "번호", "번호")
