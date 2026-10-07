@@ -52,7 +52,7 @@
      머리줄            --fs-meta · 600 · --sec (제목 줄보다 앞에 나서지 않게)
    좁은 화면(760 이하)의 제목 --fs-h3 은 그대로 */
 .cboard thead th{font-size:var(--fs-meta);font-weight:600;color:var(--sec)}
-.cboard td{font-size:var(--fs-meta);color:var(--teritary)}
+.cboard td{font-size:var(--fs-meta);color:var(--tx-meta)}   /* 2026-10-07 --teritary → --tx-meta(아래 "읽기 쉽게" 블록) */
 .cboard td.ttl{font-size:var(--fs-lead);color:var(--g900)}
 @media(max-width:760px){ .cboard td.ttl{font-size:var(--fs-h3)} }
 /* 정렬(2026-09-30 요청) — 제목 · 날짜 칸은 머리글까지 왼쪽으로 맞춘다. 머리글(제목 · 등록일)만 가운데라 글과 어긋났다.
@@ -207,3 +207,17 @@ html .cpost-nav .k{font-weight:400}
    Aldrich 는 이제 숫자 14 · 영문 큰 제목 48 · 히어로 96 셋만 */
 .ci-hero h1,.co-vband .eyebrow,.gn-stats .k{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls)}
 .co-val .no,.co-apro .vals li::before{font-size:var(--fs-meta)}
+
+/* ── 읽기 쉽게 — 30~50 대 독자 (2026-10-07) ─────────────────────────────────────────────────────
+   1) 줄글 한 줄 길이 — 콘텐츠 장 본문 폭(약 1,190)을 줄글이 끝까지 써서 한 줄이 80 자를 넘었다.
+      줄 끝에서 다음 줄 처음을 놓치기 쉬워 줄글만 760(16px 에서 한글 45~50 자)에서 끊는다. 표 · 카드 · 게시판은 그대로 */
+:root{--measure:760px}
+.cs-body .cblock>p,.cs-body .cblock>p.lead,.cs-body .cblock>.body p,.cs-body .cdoc :is(p,li),.cs-body .cgov-board .hd .lead,
+.crow .txt .d{max-width:var(--measure)}
+
+/* 2) 14px 옅은 회색 — --teritary(#96a3b3)는 흰 바탕 대비 2.57:1 로, 작은 글 기준(4.5:1)에 한참 못 미쳤다.
+      정보가 담긴 14px 글(날짜 · 번호 칸 · 단위 · 출처 · 주가 보조 · 이전/다음 글)만 --tx-meta #6b7785(4.56:1)로 진하게.
+      --teritary 자체는 그대로 둔다 — 사업영역 세부의 "아직 안 보는 장" 흐림 · 다른 사업영역 옅은 태그처럼 일부러 옅은 자리가 쓴다 */
+:root{--tx-meta:#6b7785}
+.cnews .date,.v2news .ncard .date,.v2news .news-list .date,.cpost-meta span,.cpost-nav .k,html .cpost-nav .k,
+.cchart .yr,.cfin-unit,.cstock-foot span{color:var(--tx-meta)}
