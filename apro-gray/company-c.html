@@ -344,6 +344,8 @@
      끝에서 테두리 한 칸 바깥, 곧 테두리 자리 그대로다.
      :last-of-type 으로 잡는다 — 목록 끝에 다른 요소가 붙어도 마지막 판을 가리키게 */
   .co-val:last-of-type .out{position:relative}
+  /* 넓은 화면은 띠가 아래 사진 판(.co-apro .fig) 안 지붕선까지 내려간다(스크립트) — 그 SVG 가 사진에 덮이지 않게 판을 위로 */
+  .co-val:last-of-type{z-index:2}
   .co-val:last-of-type .out::after,
   .co-val:last-of-type .in::after{content:"";position:absolute;top:100%;right:-1px;width:1px;
                                   height:calc(var(--vgap) + 32px);background:var(--border-g);pointer-events:none}
@@ -429,6 +431,8 @@
   .co-apro .keys li:nth-child(4){margin-left:calc(13.8 / 56.2 * 100%)}
   .co-apro .keys li:nth-child(5){margin-left:calc(21.4 / 56.2 * 100%)}
   .co-apro .keys li:nth-child(6){margin-left:calc(28.9 / 56.2 * 100%)}
+  /* 띠가 하늘로 내려와 표 왼끝에 붙을 때(스크립트가 .is-sky) — 글이 띠에 닿지 않게 띄운다. 선은 띠에서 출발 */
+  .co-apro .fig.is-sky .keys li{padding-left:clamp(16px,1.25vw,24px)}
   /* 좁은 화면(~1023) — 사진 좌표에 얹으면 이름이 겹친다. 같은 도식을 세로로 푼다 :
      문장 → 로고 글자별로 묶은 이름(왼쪽 큰 글자 A · P · R · O, Aldrich) → 로고가 보이게 자른 사진.
      판 바탕은 사진 하늘색이라 사진 윗변이 이음매 없이 이어진다 */
@@ -735,12 +739,28 @@
       svg.firstChild.appendChild(g);
       return g;
     }
+    /* 마지막 섹션까지 내려가는 판(넓은 화면 1280~, 2026-10-07 요청) — 띠가 사진 윗변에서 멈추지 않고 하늘을 지나 사옥 지붕선까지
+       내려온다. 그라데이션은 사진 윗변까지 원래 색(… → 밤하늘 남색)을 마치고, 하늘에서는 흰색 쪽으로 옅어진다.
+       stops 를 처음과 같은 꼴로 두고 끝에 두 칸(파랑 · 흰색)을 더해 둔 뒤, 늘어나는 몫(f = 사진 윗변까지의 비율)만큼 앞 칸을 당긴다 */
+    var SKY = [['#4077b7', .35], ['#ffffff', 1]];
+    function restop(g, base, f){
+      var st = g.querySelectorAll('stop');
+      base.forEach(function(b, i){ st[i].setAttribute('offset', b[0] * f); });
+      SKY.forEach(function(c, j){
+        var e = st[base.length + j];
+        e.setAttribute('offset', f + (1 - f) * c[1]);
+        e.setAttribute('stop-color', f < 1 ? c[0] : base[base.length - 1][1]);
+      });
+    }
+    var ROOF = .497;   /* 사진(hq-logo-sky, 16:9) 속 지붕선 높이 — 판 키에 대한 비율 */
+    var deep = window.matchMedia ? matchMedia('(min-width: 1280px)') : { matches:false };
     var items = cards.map(function(li, k){
       var svg = document.createElementNS(NS, 'svg');
       svg.setAttribute('class', 'co-draw');
       svg.setAttribute('aria-hidden', 'true');
       svg.appendChild(document.createElementNS(NS, 'defs'));
-      var gf = grad(svg, 'coGF' + k, GF), gl = grad(svg, 'coGL' + k, GL);
+      var gf = grad(svg, 'coGF' + k, GF.concat(SKY.map(function(c){ return [1, c[0]]; }))),
+          gl = grad(svg, 'coGL' + k, GL.concat(SKY.map(function(c){ return [1, c[0]]; })));
       var pf = document.createElementNS(NS, 'path'), po = document.createElementNS(NS, 'path'), pi = document.createElementNS(NS, 'path');
       pf.setAttribute('class', 'fill');
       pf.style.stroke = 'url(#coGF' + k + ')';
@@ -800,9 +820,26 @@
       var top0 = items[0].out.getBoundingClientRect().top;
       var figE = document.querySelector('.co-apro .fig');
       var end0 = figE ? figE.getBoundingClientRect().top : items[items.length - 1].li.getBoundingClientRect().bottom;
+      /* 하늘까지 내려가는가 — 넓은 화면이고 마지막 판의 선이 왼쪽에 설 때(사진 왼쪽 하늘 ~ 표 사이를 지난다) */
+      var last = items[items.length - 1], lastLeft = parseFloat(getComputedStyle(last.out).borderLeftWidth) > 0;
+      var sky = !!(figE && deep.matches && lastLeft), end1 = end0;
+      var keys = figE && figE.querySelector('.keys'), msg = figE && figE.querySelector('.msg');
+      if(figE) figE.classList.toggle('is-sky', sky);
+      if(sky){
+        var fr = figE.getBoundingClientRect(), lo = last.out.getBoundingClientRect(), ln = last.inn.getBoundingClientRect();
+        end1 = fr.top + fr.height * ROOF;
+        /* 표 왼끝을 띠 안쪽 선에 붙이고, 문장은 띠 바깥 선 앞 40 에서 멈춘다 */
+        if(keys) keys.style.left = (ln.left - fr.left) + 'px';
+        if(msg) msg.style.maxWidth = Math.max(160, lo.left - fr.left - parseFloat(getComputedStyle(figE).paddingLeft) - 40) + 'px';
+      } else {
+        if(keys) keys.style.left = '';
+        if(msg) msg.style.maxWidth = '';
+      }
+      var f = (end0 - top0) / Math.max(1, end1 - top0);
       items.forEach(function(it){
         var b = it.li.getBoundingClientRect();
-        [it.gF, it.gL].forEach(function(g){ g.setAttribute('y1', top0 - b.top); g.setAttribute('y2', end0 - b.top); });
+        [it.gF, it.gL].forEach(function(g){ g.setAttribute('y1', top0 - b.top); g.setAttribute('y2', end1 - b.top); });
+        restop(it.gF, GF, f); restop(it.gL, GL, f);
         var so = getComputedStyle(it.out), si = getComputedStyle(it.inn);
         /* 선이 왼쪽에 있으면(홀수 장 — 오른쪽에 붙은 판) 왼쪽 테두리 두께가 잡힌다 */
         var left = parseFloat(so.borderLeftWidth) > 0;
@@ -811,7 +848,7 @@
         it.ext = 0;
         if(it === items[items.length - 1]){
           var fig = document.querySelector('.co-apro .fig');
-          if(fig) it.ext = Math.max(0, fig.getBoundingClientRect().top - b.bottom);
+          if(fig) it.ext = Math.max(0, end1 - b.bottom);
         }
         it.go = edge(o.left - b.left, o.top - b.top, o.width, o.height + it.ext,
                      parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left);
@@ -873,6 +910,7 @@
     items.forEach(function(it){ it.cur = it.goal; paint(it); });
     window.addEventListener('scroll', kick, { passive:true });
     window.addEventListener('resize', refit);
+    if(deep.addEventListener) deep.addEventListener('change', refit);
     window.addEventListener('load', refit);
     if(window.ResizeObserver) new ResizeObserver(refit).observe(document.querySelector('.co-values'));
   })();
