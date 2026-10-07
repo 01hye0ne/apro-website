@@ -408,20 +408,17 @@
      판을 가르던 3×2 격자와 테두리는 걷었다 : 사진 위에 선을 긋는 대신 글만 얹는다 */
   .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
                  justify-content:space-between;color:#fff}
-  /* 핵심가치 — 번호 붙은 여섯 줄. 번호는 CSS 가 센다(01 · 02 …).
-     폭은 가장 긴 이름(Aggressiveness)에 맞춘 고정값이다 : 줄 끝의 가는 선이 들쭉날쭉하면
-     여섯이 한 묶음으로 보이지 않는다. 첫 줄 위에도 선을 그어 묶음을 닫는다.
-     이름 글자는 사업영역 세부의 키워드(.sf-subs .nm — SUIT 800 · --fs-h3 · --lh-head · --ls-num)와 같다(2026-09-18).
-     색만 다르다 — 밤하늘 사진 위라 브랜드 파랑 대신 흰색이다 */
-  .co-apro .vals{width:min(250px,42%);list-style:none;counter-reset:val;
-                 border-top:1px solid rgba(255,255,255,.28)}
-  .co-apro .vals li{display:flex;align-items:baseline;gap:14px;padding:10px 2px;
-                    border-bottom:1px solid rgba(255,255,255,.28);
-                    font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);
-                    line-height:var(--lh-head);letter-spacing:var(--ls-num)}
-  .co-apro .vals li::before{counter-increment:val;content:counter(val,decimal-leading-zero);
-                    flex:none;width:24px;font-family:var(--ald);font-weight:400;font-size:var(--fs-body);   /* 번호는 사이트의 숫자 글꼴 Aldrich 16(2026-10-06) — 폭을 못박아 01~06 뒤 이름이 한 줄에 선다 */
-                    letter-spacing:var(--ls-num);color:rgba(255,255,255,.72)}
+  /* 핵심가치 — 동그라미 여섯 개, 3 × 2(2026-10-07 요청: 옛 A-1 시안의 원 배치). 원 지름 --d, 옆 원과는 테두리가 맞닿고
+     아랫줄은 지름의 10% 만큼 윗줄에 겹쳐 올라간다. 원 안에 영문(SUIT 600 · --fs-ui) 위 · 국문(SUIT 400 · --fs-meta) 아래 */
+  .co-apro .vals{--d:clamp(120px,9.3vw,178px);display:grid;grid-template-columns:repeat(3,var(--d));
+                 list-style:none;margin:0;padding:0}
+  .co-apro .vals li{width:var(--d);aspect-ratio:1;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+                    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+                    text-align:center;white-space:nowrap;color:#fff}
+  .co-apro .vals li:nth-child(n+4){margin-top:calc(var(--d) * -.1)}
+  .co-apro .vals b{font-family:var(--suit);font-weight:600;font-size:var(--fs-ui);line-height:var(--lh-label);letter-spacing:var(--ls)}
+  .co-apro .vals span{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
+                      letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
   /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
      SUIT 400 · --fs-h2 · --lh-label. 줄 끊김은 <span> 이 정하므로 폭 상한은 두지 않는다 */
   .co-apro p{font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
@@ -449,9 +446,11 @@
     /* 좁은 화면은 문구가 사옥 위에 얹혀 묻힌다 — 아래에서만 짙어지는 막을 깐다 */
     .co-apro .fig::after{content:"";position:absolute;inset:0;pointer-events:none;
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
-    .co-apro .vals{width:min(240px,72%)}
-    .co-apro .vals li{padding:7px 2px;font-size:var(--fs-meta);letter-spacing:var(--ls)}
-    .co-apro .vals li::before{font-size:var(--fs-meta)}   /* 이름이 14 로 줄 때 번호도 함께 */
+    /* 원 셋이 판 폭(여백 16 안쪽)을 나눠 쓴다 — 가장 긴 Aggressiveness 가 들어가게 이름은 14 */
+    .co-apro .vals{--d:min(120px,calc((100vw - 32px) / 3))}
+    .co-apro .vals b{font-size:var(--fs-meta)}
+    /* 좁은 화면은 원이 사옥 위에 얹힌다 — 옅은 밤색 막을 깔아 글을 지킨다 */
+    .co-apro .vals li{background:rgba(6,12,28,.42);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
     .co-apro p{font-size:var(--fs-h2);letter-spacing:var(--ls)}
     .co-apro p span{display:inline}
   }
@@ -593,8 +592,8 @@
         <div class="line">
           <p><span>에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, </span><span>6대 핵심가치<span class="nw">(Core 6-Values)</span>와 AAA 전략을 실천하여 </span><span>글로벌 종합 에너지 솔루션 기업으로 나아갑니다</span></p>
           <ol class="vals" aria-label="6대 핵심가치">
-            <li>Advance</li><li>Aggressiveness</li><li>Agility</li>
-            <li>Pioneer</li><li>Remarkability</li><li>Organism</li>
+            <li><b>Advance</b><span>진보</span></li><li><b>Aggressiveness</b><span>적극성</span></li><li><b>Agility</b><span>민첩성</span></li>
+            <li><b>Pioneer</b><span>개척</span></li><li><b>Remarkability</b><span>탁월함</span></li><li><b>Organism</b><span>유기적 조직</span></li>
           </ol>
         </div>
       </div>
