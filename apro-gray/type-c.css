@@ -253,3 +253,5 @@ html .cpost-nav .k{font-weight:400}
 .cdetails{border:0}
 .cdetails summary{border:1px solid #d9dfe6}
 .cdetails>div{border:1px solid var(--border-g);border-top:0}
+/* 본문 칸(.cdoc)의 위 띄움 24 가 margin 이라 테가 본문 칸으로 옮겨 온 뒤 제목줄과 테 사이가 벌어졌다 — 안쪽 여백으로 돌린다(8 + 24) */
+.cdetails>.cdoc{margin-top:0;padding-top:32px}
