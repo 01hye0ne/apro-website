@@ -337,6 +337,10 @@
   /* 두 선 사이 틈을 채우는 면 — 틈 한가운데를 지나는 굵은 선이라 선과 같은 방식(dashoffset)으로 차오른다.
      두께는 스크립트가 틈(바깥 테두리 아래 ~ 안쪽 테두리 위)에 맞춰 넣는다. 경로가 SVG 맨 앞이라 선 아래에 깔린다 */
   .co-draw path.fill{stroke:#d6e3f6;stroke-width:20}
+  /* 선 끝 빛 점 — 스크립트가 띠 맨 앞에 옮긴다. 흰 점 + 보조 파랑 테두리라 흰 바탕 · 짙은 띠 어디서나 보인다 */
+  .co-draw .tip{opacity:0;transition:opacity .4s var(--ease)}
+  .co-draw .tip.is-on{opacity:1}
+  .co-draw .tip .core{fill:#fff;stroke:var(--brand-2);stroke-width:1.5}
   /* 마지막 판의 두 선(바깥 · 안쪽)을 닫는 그림 윗변까지 잇는 회색 바탕. 길이 = 판과 닫는 문구
      사이 간격(--vgap) + 그림의 위 여백(32). 파란 선은 스크립트가 같은 길이만큼 경로를 늘려 그린다.
      선마다 제 테두리 상자(.out · .in)에 매단다 — 판 폭이 소수점(959.875 등)이라 목록 끝에서
@@ -749,9 +753,26 @@
       pf.style.stroke = 'url(#coGF' + k + ')';
       po.style.stroke = pi.style.stroke = 'url(#coGL' + k + ')';
       svg.appendChild(pf); svg.appendChild(po); svg.appendChild(pi);
+      /* 선 끝 빛 점(2026-10-07) — 차오르는 띠의 맨 앞(면 가운데 길)에 흰 점 + 파란 번짐. 홈 Who we are 의 흐르는 점과 같은 결.
+         그 판이 그려지는 동안만 보이고(시작 전 · 다 찬 뒤엔 숨김), 움직임 줄이기에서는 쓰지 않는다 */
+      var hg = document.createElementNS(NS, 'radialGradient');
+      hg.id = 'coHalo' + k;
+      [[0, 'rgba(64,119,183,.5)'], [1, 'rgba(64,119,183,0)']].forEach(function(st){
+        var e = document.createElementNS(NS, 'stop');
+        e.setAttribute('offset', st[0]); e.setAttribute('stop-color', st[1]);
+        hg.appendChild(e);
+      });
+      svg.firstChild.appendChild(hg);
+      var dot = document.createElementNS(NS, 'g');
+      dot.setAttribute('class', 'tip');
+      var halo = document.createElementNS(NS, 'circle'), core = document.createElementNS(NS, 'circle');
+      halo.setAttribute('r', 16); halo.setAttribute('fill', 'url(#coHalo' + k + ')');
+      core.setAttribute('r', 3.5); core.setAttribute('class', 'core');
+      dot.appendChild(halo); dot.appendChild(core);
+      svg.appendChild(dot);
       li.appendChild(svg);
       return { li:li, out:li.querySelector('.out'), inn:li.querySelector('.in'),
-               no:li.querySelector('.no'), bx:0, gf:null, gl:null, gF:gf, gL:gl,
+               no:li.querySelector('.no'), bx:0, gF:gf, gL:gl, dot:dot,
                pf:pf, po:po, pi:pi, lf:0, lo:0, lI:0, cur:0, goal:0 };
     });
 
@@ -848,6 +869,14 @@
       it.po.style.strokeDashoffset = it.lo - so;
       it.pi.style.strokeDashoffset = it.lI - si;
       if(it.no) it.no.classList.toggle('is-lit', it.lo > 0 && so >= it.bx);
+      /* 점은 한 번에 하나 — 앞 판이 다 찬 뒤에 다음 판의 점이 나온다(판이 겹쳐 차오르는 구간에서 둘이 뜨지 않게) */
+      var k = items.indexOf(it), prev = k > 0 ? items[k - 1] : null;
+      var on = !still && it.cur > .002 && it.cur < .998 && (!prev || prev.cur >= .998);
+      if(on){
+        var p = it.pf.getPointAtLength(sf);
+        it.dot.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
+      }
+      it.dot.classList.toggle('is-on', on);
     }
     function goals(){
       var vh = window.innerHeight;
