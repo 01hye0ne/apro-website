@@ -237,3 +237,12 @@ html .cpost-nav .k{font-weight:400}
 .cs-hero h1,.cs-toc a,.sf-rail a,.cs-body .cblock>ul>li>a,
 .hm-ttl .hm-lbl,.ci-hero h1,.co-vband .eyebrow,.gn-stats .k,.lc-rows dt,.lc-head .en,.cway .k,.cform-k,.ctoc p,
 .sf-texts .cat,.sf-cert .ttl,.bhop .bhtag .en,.bhnow .en,.cprice-hd .nm b{font-size:var(--fs-ui);font-weight:600}
+
+/* ── SUIT 24 / 800 행간 1.4 (2026-10-07 "스타일 자체의 행간을 바꿔줘") ──────────────────────────────
+   홈 Who we are 소개 줄을 1.2 → 1.4 로 넓힌 뒤, 같은 스타일 전체를 맞춘다 — 두 줄로 꺾이는 제목(판 제목 · 게시글 제목 ·
+   규정 장 제목)이 1.2 에서 답답했다. 섹션 제목 · 게시글 제목 · 이사회 이름 · 규정 장 제목 · 팝업 제목 · 홈 판 · 카드 ·
+   사업영역 세부 영역 이름(히어로 · 아코디언 · 다른 사업영역) · 전체 메뉴 대분류 · IR 태그라인 */
+.cs-body .cblock>h2,.cgov-board .hd h2,.cpost-hd h1,.cperson .nm,.cdoc h3,.cmodal-hd h2,.ctagline,
+.hm-wv h3,.hm-who-intro .t,.hm-card .fold .nm,
+.sf-herocap .ko,.sf-acc-t,.bhop .bhtag .ko,.bhnow .ko,
+.navover .ov-cat,.cblock>.ctagline{line-height:var(--lh-label)}
