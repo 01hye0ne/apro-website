@@ -71,36 +71,10 @@
   </header>
 
   <main class="cs-body">
-  <!-- 결산공고(전자공고)와 DART 공시를 한 장에 탭으로 세운다 (2026-09-18) — 둘 다
-       '회사가 낸 공시'라 장을 나눠 세로로 잇기보다 갈래로 고르는 편이 읽힌다.
-       탭 부품은 재무정보의 표 넷이 쓰던 것(.cfin-tabs · .cfin-panel)을 그대로 쓰고,
-       칸 수만 --tabs 로 알린다 -->
+  <!-- 전자공고(결산공고 게시판)는 전자공고 장(ir-finance-c.html)으로 옮겼다(2026-10-07) — 이 장은 DART 공시 목록 하나 -->
   <section class="cblock" id="disclosure">
     <h2 class="sr-only">공시정보</h2>
-    <div class="cfin-tabs" style="--tabs:2">
-      <button type="button" data-fin="notice" aria-current="true">전자공고</button>
-      <button type="button" data-fin="dart">공시 자료</button>
-    </div>
-
-    <div class="cfin-panel" data-fin="notice" id="settlement">
-    <table class="cboard" data-per-sm="5">
-      <thead><tr><th>번호</th><th>제목</th><th>등록일</th></tr></thead>
-      <tbody>
-        <tr><td class="no">12</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=12">주식회사 에이프로 제26기 결산공고</a></td><td>2026-03-30</td></tr>
-        <tr><td class="no">11</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=11">주식회사 에이프로 제26기 사업보고서 및 감사보고서</a></td><td>2026-03-19</td></tr>
-        <tr><td class="no">10</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=10">주식회사 에이프로 제25기 결산공고</a></td><td>2025-03-27</td></tr>
-        <tr><td class="no">9</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=9">주식회사 에이프로 제25기 사업보고서 및 감사보고서</a></td><td>2025-03-19</td></tr>
-        <tr><td class="no">8</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=8">주식회사 에이프로 제24기 결산공고</a></td><td>2024-03-28</td></tr>
-        <tr><td class="no">7</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=7">주식회사 에이프로 제24기 사업보고서 및 감사보고서</a></td><td>2024-03-20</td></tr>
-        <tr><td class="no">6</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=6">주식회사 에이프로 제23기 결산공고</a></td><td>2023-03-31</td></tr>
-        <tr><td class="no">5</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=5">주식회사 에이프로 제23기 사업보고서 및 감사보고서</a></td><td>2023-03-22</td></tr>
-        <tr><td class="no">4</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=4">주식회사 에이프로 제22기 결산공고</a></td><td>2022-03-31</td></tr>
-        <tr><td class="no">3</td><td class="ttl"><a href="ir-disclosure-view-c.html?id=3">주식회사 에이프로 제22기 사업보고서 및 감사보고서</a></td><td>2022-03-23</td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <div class="cfin-panel" data-fin="dart" id="dart" hidden>
+    <div id="dart">
     <!-- DART 가 IR 페이지용으로 내주는 임베드 주소다. 질의문의 textCrpNM 에는 회사
          이름 대신 종목코드(262260, 코스닥 에이프로)를 넣는다 — 이름으로 넣으면 같은
          글자를 쓰는 회사가 섞일 수 있어 코드 쪽이 확실하다. 목록은 저쪽에서 채우므로
@@ -311,25 +285,6 @@
 <!-- GNB·전체메뉴·푸터 드롭다운은 공용 스크립트가 맡는다.
      (히어로·소분류 탭·카드 캐러셀 모듈은 이 페이지에 해당 요소가 없어 스스로 빠진다) -->
 <script src="business-layout.js"></script>
-<script>
-/* 재무제표 4종 전환 — 표 네 벌을 미리 깔아 두고 보여줄 하나만 남긴다.
-   서버를 타지 않으므로 새로고침 없이 즉시 바뀐다 */
-(function(){
-  var tabs = [].slice.call(document.querySelectorAll('.cfin-tabs button'));
-  var panels = [].slice.call(document.querySelectorAll('.cfin-panel'));
-  if(!tabs.length){ return; }
-  tabs.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var k = btn.getAttribute('data-fin');
-      tabs.forEach(function(b){
-        if(b === btn){ b.setAttribute('aria-current','true'); }
-        else { b.removeAttribute('aria-current'); }
-      });
-      panels.forEach(function(p){ p.hidden = (p.getAttribute('data-fin') !== k); });
-    });
-  });
-})();
-</script>
 <script src="gnb-c.js"></script>
 </body>
 </html>
