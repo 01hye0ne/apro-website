@@ -1,4 +1,4 @@
-/* 푸터 정책 팝업 글 — content-export/tools/policy_js.py 가 04_푸터_정책문서.xlsx 에서 만든다. 손으로 고치지 말 것.
+/* 푸터 정책 팝업 글 — content-export/tools/policy_js.py 가 국문영문글정리.xlsx '푸터' 시트에서 만든다. 손으로 고치지 말 것.
    [종류, 글] — h 조 머리 · s 굵은 머리글 · p 문단 · li 글머리 줄 */
 window.APRO_POLICY = {
  "privacy": {
@@ -390,11 +390,11 @@ window.APRO_POLICY = {
      "t": "Article 4 (Provision of Personal Information to Third Parties)",
      "b": [
       [
-       "p",
+       "li",
        "The Company processes the personal information of users only within the scope specified in Article 1 (Purpose of Processing Personal Information), and provides personal information to third parties only in cases falling under Articles 17 and 18 of the Personal Information Protection Act, such as with the user's consent or special provisions of the law."
       ],
       [
-       "p",
+       "li",
        "In principle, the Company does not provide users' personal information to external parties."
       ]
      ]
@@ -403,11 +403,11 @@ window.APRO_POLICY = {
      "t": "Article 5 (Delegation of Personal Information Processing)",
      "b": [
       [
-       "p",
+       "li",
        "The Company does not currently entrust the processing of personal information to external parties."
       ],
       [
-       "p",
+       "li",
        "If the Company enters into an entrustment contract in the future, it will specify matters regarding the prohibition of personal information processing other than for the purpose of performing entrusted tasks, technical and managerial protection measures, management and supervision of the trustee, and liability such as compensation for damages in documents such as contracts in accordance with Article 26 of the Personal Information Protection Act."
       ]
      ]
@@ -416,15 +416,15 @@ window.APRO_POLICY = {
      "t": "Article 6 (Rights and Obligations of Information Subjects and Methods of Exercise)",
      "b": [
       [
-       "p",
+       "li",
        "The information subject may exercise the right to request access to, correction of, deletion of, or suspension of processing of personal information at any time against the Company."
       ],
       [
-       "p",
+       "li",
        "The exercise of rights pursuant to Paragraph 1 may be made in writing, by email, or by facsimile (FAX) to the Company, and the Company will take action without delay."
       ],
       [
-       "p",
+       "li",
        "The exercise of rights under Paragraph 1 may be made through a legal representative of the information subject or a person who has been delegated."
       ]
      ]
@@ -433,11 +433,11 @@ window.APRO_POLICY = {
      "t": "Article 7 (Destruction of Personal Information)",
      "b": [
       [
-       "p",
+       "li",
        "The Company destroys personal information without delay when it becomes unnecessary, such as the expiration of the retention period or achievement of the processing purpose."
       ],
       [
-       "p",
+       "li",
        "Information in the form of electronic files shall be destroyed using technical methods that cannot reproduce records, and personal information printed on paper shall be destroyed by shredding or incineration."
       ]
      ]
@@ -446,19 +446,19 @@ window.APRO_POLICY = {
      "t": "Article 8 (Measures to Ensure the Safety of Personal Information)",
      "b": [
       [
-       "p",
+       "s",
        "The Company takes the following measures to ensure the safety of personal information:"
       ],
       [
-       "p",
+       "li",
        "Administrative Measures: Establishment and implementation of internal management plans, regular employee training, etc."
       ],
       [
-       "p",
+       "li",
        "Technical Measures: Management of access rights to personal information processing systems, installation of access control systems, encryption of unique identification information, and installation of security programs."
       ],
       [
-       "p",
+       "li",
        "Physical Measures: Access control to computer rooms, data storage rooms, etc."
       ]
      ]
@@ -467,11 +467,11 @@ window.APRO_POLICY = {
      "t": "Article 9 (Installation/Operation of Automatic Personal Information Collection Devices and Matters Concerning Rejection)",
      "b": [
       [
-       "p",
+       "li",
        "The Company uses \"cookies\" to store and retrieve usage information from time to time to provide users with individual customized services."
       ],
       [
-       "p",
+       "li",
        "Cookies are small amounts of information sent by the server (http) used to operate the website to the user's computer browser and are sometimes stored on the hard disk of the user's PC."
       ],
       [
@@ -488,7 +488,7 @@ window.APRO_POLICY = {
      "t": "Article 10 (Privacy Officer)",
      "b": [
       [
-       "p",
+       "s",
        "The Company is responsible for the overall handling of personal information processing and has designated a Privacy Officer as follows to handle complaints and provide remedies for information subjects related to personal information processing."
       ],
       [
@@ -496,19 +496,19 @@ window.APRO_POLICY = {
        "Privacy Officer"
       ],
       [
-       "p",
+       "li",
        "Name: Sang-ho Kim"
       ],
       [
-       "p",
+       "li",
        "Position: Department Manager"
       ],
       [
-       "p",
+       "li",
        "Contact: sangho.kim@aproele.com"
       ],
       [
-       "p",
+       "li",
        "※ You will be connected to the department in charge of personal information protection."
       ]
      ]
@@ -521,15 +521,15 @@ window.APRO_POLICY = {
        "Information subjects may request access to personal information under Article 35 of the Personal Information Protection Act to the following department:"
       ],
       [
-       "p",
+       "li",
        "Department: AI/Information Security Team"
       ],
       [
-       "p",
+       "li",
        "Person in Charge: Min-seok Kang"
       ],
       [
-       "p",
+       "li",
        "Contact: aproeleit@aproele.com"
       ]
      ]
@@ -542,19 +542,19 @@ window.APRO_POLICY = {
        "Information subjects may inquire with the following organizations for remedies and consultations regarding personal information infringement:"
       ],
       [
-       "p",
+       "li",
        "Personal Information Infringement Report Center (privacy.kisa.or.kr / Dial 118 without area code)"
       ],
       [
-       "p",
+       "li",
        "Personal Information Dispute Mediation Committee (koprc.go.kr / Dial 1833-6972 without area code)"
       ],
       [
-       "p",
+       "li",
        "Supreme Prosecutors' Office Cyber Investigation Division (spo.go.kr / Dial 1301 without area code)"
       ],
       [
-       "p",
+       "li",
        "National Police Agency Cyber Bureau (cyberbureau.police.go.kr / Dial 182 without area code)"
       ]
      ]
@@ -630,7 +630,7 @@ window.APRO_POLICY = {
      "A-PRO Co., Ltd. rejects the unauthorized collection of email addresses posted on this website through the use of automated email collection programs or other technical devices. Please be advised that any violation of this policy may result in criminal punishment under the \"Act on Promotion of Information and Communications Network Utilization and Information Protection, etc.\""
     ],
     [
-     "p",
+     "s",
      "[Relevant Law: Act on Promotion of Information and Communications Network Utilization and Information Protection, etc.]"
     ],
     [

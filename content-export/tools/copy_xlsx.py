@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from copy_pull import pull, AREAS
 
-OUT = "content-export/04_사업영역_문구.xlsx"
+OUT = "content-export/국문영문글정리.xlsx"
 
 # ── 자리 이름 → 구분 ────────────────────────────────────────────────────
 KIND = {
@@ -201,7 +201,7 @@ def build(out=OUT, prev=OUT):
     guide.column_dimensions["A"].width = 4
     guide.column_dimensions["B"].width = 118
     lines = [
-        ("t", "사업영역 세부 · 홈(시안 C) 문구 정리"),
+        ("t", "국문 · 영문 글 정리 — 홈 · 푸터 · 사업영역 세부(시안 C)"),
         ("", ""),
         ("h", "이 파일이 담은 것"),
         ("p", "지금 사업영역 세부 네 장(시안 C, business-*-c.html)에 들어가 있는 문구 전부입니다. 시트가 사업영역이고, "
