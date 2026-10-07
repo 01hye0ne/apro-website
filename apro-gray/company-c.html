@@ -416,6 +416,14 @@
                     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
                     text-align:center;white-space:nowrap;color:#fff}
   .co-apro .vals li:nth-child(n+4){margin-top:calc(var(--d) * -.1)}
+  /* 넓은 화면 — 문장과 원 사이를 반으로(2026-10-07 요청). 원을 판 바닥에 붙이던 space-between 을 풀고 문장 아래 고정 간격
+     (지름의 85%, 1920 에서 151 — 예전 간격 ~300 의 절반)으로 둔다. 판은 비율 대신 글 높이를 따라 줄고, 사진은 아래를 붙든 채
+     위 하늘만 덜 보인다 */
+  @media(min-width:901px){
+    .co-apro .fig{aspect-ratio:auto;min-height:0}
+    .co-apro .line{justify-content:flex-start}
+    .co-apro .vals{margin-top:calc(var(--d) * .85)}
+  }
   .co-apro .vals b{font-family:var(--suit);font-weight:600;font-size:var(--fs-ui);line-height:var(--lh-label);letter-spacing:var(--ls)}
   .co-apro .vals span{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                       letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
