@@ -190,7 +190,8 @@
    A 는 지구본 선 1.5 · 메뉴 줄 폭 24 · 굵기 1.8. 상자는 A-1 규격 24 그대로 두고 안의 그림만 키운다 —
    지구본 선 1 → 1.5, 메뉴 줄 폭 14 → 20 · 굵기 1 → 1.5(윗줄 짧은 눈금 + 긴 선, 아랫줄 긴 선의 A-1 모양은 유지).
    누르면 X 로 엇갈리는 움직임도 새 치수에 맞춘다(두 줄 사이 10 의 절반 5 씩 가운데로) */
-.sf-gnb .sf-tools svg :is(circle,path){stroke-width:1.5}
+.sf-gnb .sf-tools svg :is(circle,path){stroke-width:1.8}   /* 2026-10-07 1.5 → 1.8 — 둥근 선은 가장자리가 흐려 같은 1.5 라도 메뉴 줄(가로 1.5, 1배율 화면에서 약 2px 로 보임)보다 가늘어 보였다 */
+@media(min-resolution:2dppx){ .sf-gnb .sf-tools svg :is(circle,path){stroke-width:1.5} }   /* 고해상도(2배 이상)는 둥근 선도 또렷해 원래 1.5 가 메뉴 줄과 같아 보인다 */
 .sf-gnb .sf-burger .bar{height:1.5px}
 .sf-gnb .sf-burger .a{left:2px;top:6.5px;width:4px}
 .sf-gnb .sf-burger .b{left:2px;top:6.5px;width:14px;transform:translateX(6px)}
