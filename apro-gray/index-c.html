@@ -584,7 +584,15 @@
      글자는 바깥 판 틈(12)만큼 내려 안쪽 판 윗변과 맞춘다. 좁은 화면은 판이 화면을 거의 다 써 겹치므로 아래에서 되돌린다 */
   /* 제목 가로 자리는 Business · News 제목과 같은 마진(--hm-m, GNB 로고 선)에 — 판 글 세로줄(--who-x)에 두니 셋 중 이것만
      안으로 들어가 있었다(2026-09-30 요청 : 홈 섹션 제목 왼쪽 정렬 맞춤) */
-  .hm-who .hm-ttl{position:relative;z-index:2;top:12px;margin-bottom:-1em;padding-left:var(--hm-m);color:#fff}
+  .hm-who .hm-ttl{position:relative;z-index:2;top:12px;padding-left:var(--hm-m);color:#fff}
+  /* 소개 문장(2026-10-07) — 제목 밑 왼쪽에 [굵은 한 줄 · 설명]. 네 판 계단은 이 밑에서 시작한다(전엔 제목이 첫 판 옆에 걸쳐 있었다:
+     margin-bottom:-1em). 있는 스타일만 — 굵은 줄 SUIT 24/800(섹션 제목) · 설명 SUIT 18/400(본문), 폭은 줄글 한계 --measure */
+  .hm-who-intro{position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;
+                margin:44px 0 72px;padding-left:var(--hm-m);padding-right:var(--hm-m);max-width:calc(var(--measure,760px) + var(--hm-m))}
+  .hm-who-intro .t{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);
+                   letter-spacing:var(--ls);color:#fff;word-break:keep-all}
+  .hm-who-intro .d{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
+                   letter-spacing:var(--ls);color:var(--on-dark-body);word-break:keep-all}
   .hm-who-list{list-style:none;display:flex;flex-direction:column}
   /* 오른쪽에 붙는 판(1 · 3 · 4) — 기본값 */
   .hm-wv{margin-left:auto}
@@ -817,6 +825,7 @@
     /* 띠를 세로로 0.4 배(48) 눌러 담는다 */
     .hm-who{--seam-k:.4}
     .hm-who .hm-ttl{top:0;margin-bottom:24px;padding-left:var(--hm-m)}
+    .hm-who-intro{margin:0 0 40px}
     .hm-wv:nth-child(n){width:92%}
     /* 글이 화면 끝 여백(16)까지 오므로 흐리는 폭도 그만큼만 */
     .hm-who{--who-fade:var(--hm-m)}
@@ -1030,6 +1039,10 @@
   <section class="hm-sec hm-who" id="hmWho" aria-labelledby="hm-who-t">
     <svg class="hm-who-dot" aria-hidden="true"><defs><radialGradient id="hmWhoHalo"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g class="trail"></g><circle class="halo" r="12"/><circle class="head" r="3"/></svg>
     <h2 class="hm-ttl" id="hm-who-t"><span class="hm-lbl">핵심역량</span> Who we are</h2>
+    <div class="hm-who-intro">
+      <p class="t">에너지의 내일을 설계하는 Total Energy Solution Provider, 에이프로입니다.</p>
+      <p class="d">에이프로는 독보적인 전력 변환 및 정밀 제어 기술을 바탕으로 글로벌 친환경 에너지 산업의 성장을 이끄는 혁신 기업입니다. 배터리 제조 공정부터 차세대 모빌리티, 스마트 그리드에 이르기까지, 에너지가 생산되고 소비되는 모든 과정에 최적화된 통합 솔루션을 제공합니다.</p>
+    </div>
     <ol class="hm-who-list">
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
