@@ -141,7 +141,29 @@ def pull():
     return list(rows.values())
 
 
-def build():
+def carry(prev):
+    """앞 판 홈 시트에서 사람이 채운 칸(변경 · 영문 · 비고)을 현재 문구 기준으로 모은다"""
+    keep = {}
+    if not prev:
+        return keep
+    try:
+        ws = load_workbook(prev)[SHEET]
+    except (KeyError, FileNotFoundError):
+        return keep
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        cur = " ".join(str(row[5] or "").split())
+        if not cur:
+            continue
+        auto_note = re.compile(r"^(같은 문구|카드 제목 자리|사업영역 세부 시트|GNB · 메가)")
+        notes = [l for l in str(row[8] or "").split("\n") if l and not auto_note.match(l)]
+        en = row[7]
+        keep[cur] = {"new": row[6], "en": en if en and " ".join(str(en).split()) != cur else None,
+                     "note": "\n".join(notes) or None}
+    return keep
+
+
+def build(prev=OUT):
+    old = carry(prev)
     wb = load_workbook(OUT)
     if SHEET in wb.sheetnames:
         del wb[SHEET]
@@ -173,11 +195,14 @@ def build():
             notes.append("사업영역 세부 시트의 소분류 이름과 같은 글 — 한쪽을 바꾸면 함께 고칩니다")
         if "카드 이름" in m["roles"] or "하단 탭" in m["roles"] and t != "에이프로":
             notes.append("GNB · 메가 메뉴 · 푸터의 사업영역 이름도 함께 고칩니다")
-        en = None
-        if kind not in ("번호",) and not HAN.search(t):
+        got = old.get(" ".join(t.split()), {})
+        if got.get("note"):
+            notes.append(got["note"])
+        en = got.get("en")
+        if not en and kind not in ("번호",) and not HAN.search(t):
             en = t                                   # 영문뿐인 줄은 미리 채운다
         ws.append([n, " · ".join(m["secs"]), " · ".join(m["roles"]), kind, None,
-                   t, None, en, "\n".join(notes) or None, "\n".join(m["locs"])])
+                   t, got.get("new"), en, "\n".join(notes) or None, "\n".join(m["locs"])])
         row = ws[ws.max_row]
         for c in row:
             c.border = bd
@@ -205,7 +230,7 @@ def build():
                         ("홈(시안 C, index-c.html)의 문구입니다. 히어로 · Business · Who we are · News 순서로, 화면에 보이는 순서대로 담았습니다.", body_style),
                         ("채우는 법은 사업영역 시트와 같습니다 — 노란 칸에 한글, 파란 칸에 영문. 같은 문구가 여러 자리에 있으면(사업영역 이름이 히어로 탭 · 카드에 함께 있는 것 등) 한 줄로 합쳤습니다.", body_style),
                         ("보도자료 기사 제목 · 날짜는 게시판 글이라 넣지 않았습니다. 게시판에서 고칩니다.", body_style),
-                        ("사업영역 시트는 A-1 장 기준으로 뽑은 그대로입니다(2026-09-17). 홈 시트만 지금 시안 C 기준입니다.", body_style)]:
+                        ("모든 시트가 시안 C 기준입니다(2026-10-07 다시 뽑음). 9 월 A-1 판에서 채운 영문 · 비고는 문구가 같은 줄로 옮겨 담았습니다.", body_style)]:
             c = g.cell(row=r, column=2, value=txt)
             c.font, c.alignment = copy(st.font), copy(st.alignment)
             r += 1
@@ -217,4 +242,5 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    # 앞 판(채운 칸을 옮겨 올 파일)을 따로 줄 수 있다 — copy_xlsx.py 로 새로 만든 뒤에는 홈 시트가 없으므로
+    build(sys.argv[1] if len(sys.argv) > 1 else OUT)
