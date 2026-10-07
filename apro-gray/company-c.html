@@ -405,6 +405,8 @@
   .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:16/9;
                 padding:calc(56.25% * .14 + clamp(12px,1vw,20px) - .2em) 44px 0;background:#2873e0}
   .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  /* 사옥만 오린 겹(같은 캔버스 · 투명 바탕)을 맨 위에 — 하늘로 내려온 AAA 띠(마지막 판 SVG, z-index 2)가 사옥 뒤로 들어간다 */
+  .co-apro .fig>img.bld{z-index:3;pointer-events:none}
   /* 문장 — 사옥 왼끝(30.7%) 앞 빈 하늘 기둥, 가로선 표의 첫 칸(2026-10-07 요청: 떠 보이던 자리를 표에 묶음).
      첫 가로선(14%)이 왼 여백까지 늘어나 문장 위를 덮고, 첫 줄은 Advance 와 같은 높이에서 시작한다
      (위 여백 = 판 키의 14% = 폭의 56.25% × .14 + 이름 줄의 선 아래 띄움 − 줄높이 위 여유 .2em) */
@@ -439,6 +441,7 @@
   @media(max-width:1023px){
     .co-apro .fig{aspect-ratio:auto;display:flex;flex-direction:column;padding:64px var(--c-m,16px) 0;
                   background:#2879e5}   /* 사진 윗변 하늘색 — 이음매가 안 보이게 */
+    .co-apro .fig>img.bld{display:none}
     .co-apro .fig>img{position:static;order:3;width:calc(100% + 2 * var(--c-m,16px));max-width:none;height:auto;
                       aspect-ratio:6/5;margin:48px calc(-1 * var(--c-m,16px)) 0;object-position:55% 0;
                       -webkit-mask-image:linear-gradient(180deg,transparent,#000 24%);mask-image:linear-gradient(180deg,transparent,#000 24%)}
@@ -593,6 +596,7 @@
     <div class="co-apro">
       <div class="fig">
         <img src="../assets/hq-logo-sky.jpg" srcset="../assets/hq-logo-sky-1280.jpg 1280w, ../assets/hq-logo-sky.jpg 2560w" sizes="100vw" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" loading="lazy" />
+        <img class="bld" src="../assets/hq-logo-sky-building.webp" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" loading="lazy" />
         <p class="msg">에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치<span class="nw">(Core 6-Values)</span>와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다</p>
         <ol class="keys" aria-label="6대 핵심가치 — 첫 글자를 이으면 A-PRO">
           <li data-l="A"><b>Advance</b><span>진보</span></li><li data-l="A"><b>Aggressiveness</b><span>적극성</span></li><li data-l="A"><b>Agility</b><span>민첩성</span></li>
@@ -752,7 +756,8 @@
         e.setAttribute('stop-color', f < 1 ? c[0] : base[base.length - 1][1]);
       });
     }
-    var ROOF = .497;   /* 사진(hq-logo-sky, 16:9) 속 지붕선 높이 — 판 키에 대한 비율 */
+    var ROOF = .497;   /* 사진(hq-logo-sky, 16:9) 속 지붕선 높이 — 판 키에 대한 비율. 흰색은 여기서 다 찬다 */
+    var BEHIND = .62;  /* 띠 끝 — 지붕선 아래 사옥 뒤(사옥 겹 .bld 가 덮는다)까지 들어가 끝이 안 보이게 */
     var deep = window.matchMedia ? matchMedia('(min-width: 1280px)') : { matches:false };
     var items = cards.map(function(li, k){
       var svg = document.createElementNS(NS, 'svg');
@@ -822,12 +827,13 @@
       var end0 = figE ? figE.getBoundingClientRect().top : items[items.length - 1].li.getBoundingClientRect().bottom;
       /* 하늘까지 내려가는가 — 넓은 화면이고 마지막 판의 선이 왼쪽에 설 때(사진 왼쪽 하늘 ~ 표 사이를 지난다) */
       var last = items[items.length - 1], lastLeft = parseFloat(getComputedStyle(last.out).borderLeftWidth) > 0;
-      var sky = !!(figE && deep.matches && lastLeft), end1 = end0;
+      var sky = !!(figE && deep.matches && lastLeft), end1 = end0, endB = end0;
       var keys = figE && figE.querySelector('.keys'), msg = figE && figE.querySelector('.msg');
       if(figE) figE.classList.toggle('is-sky', sky);
       if(sky){
         var fr = figE.getBoundingClientRect(), lo = last.out.getBoundingClientRect(), ln = last.inn.getBoundingClientRect();
         end1 = fr.top + fr.height * ROOF;
+        var endB = fr.top + fr.height * BEHIND;
         /* 표 왼끝을 띠 안쪽 선에 붙이고, 문장은 띠 바깥 선 앞 40 에서 멈춘다 */
         if(keys) keys.style.left = (ln.left - fr.left) + 'px';
         if(msg) msg.style.maxWidth = Math.max(160, lo.left - fr.left - parseFloat(getComputedStyle(figE).paddingLeft) - 40) + 'px';
@@ -848,7 +854,7 @@
         it.ext = 0;
         if(it === items[items.length - 1]){
           var fig = document.querySelector('.co-apro .fig');
-          if(fig) it.ext = Math.max(0, end1 - b.bottom);
+          if(fig) it.ext = Math.max(0, endB - b.bottom);
         }
         it.go = edge(o.left - b.left, o.top - b.top, o.width, o.height + it.ext,
                      parseFloat(left ? so.borderTopLeftRadius : so.borderTopRightRadius) || 0, left);
