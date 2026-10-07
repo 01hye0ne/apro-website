@@ -637,9 +637,15 @@
   }
   /* 글 기둥은 네 판 모두 503 — 2 번째 판만 이름 밑선이 그보다 짧은 323 까지다(시안 그대로) */
   .hm-wv .body{display:flex;flex-direction:column;gap:20px;max-width:503px}
-  .hm-wv:nth-child(2) .hd{width:64.2%}
-  .hm-wv .hd{display:flex;flex-direction:column;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--who-line)}
-  .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-display-sm);line-height:var(--lh-head);
+  .hm-wv:nth-child(2) .hd{width:auto}   /* 2026-10-07 새 문구 — 제목이 길어 64.2% 폭이면 세 줄로 꺾였다 */
+  .hm-wv .hd{display:flex;flex-direction:column;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--who-line)}
+  /* 2026-10-07 새 문구 — 판마다 [번호 · 긴 제목 한 줄 · 문단]. 있는 스타일만 쓴다:
+     번호 Aldrich 14(번호 · 날짜) · 제목 SUIT 24/800(섹션 제목, 제목이 길어 48 이면 서너 줄로 꺾였다) · 문단 SUIT 18/400(본문) */
+  .hm-wv .no{font-family:var(--ald);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-tight);letter-spacing:var(--ls-num);
+             color:var(--on-dark-sub)}
+  .hm-wv .d{margin:0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
+            color:var(--on-dark-body);word-break:keep-all}
+  .hm-wv h3{font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);word-break:keep-all;
             letter-spacing:var(--ls)}
   .hm-wv .msg{display:flex;flex-direction:column;gap:8px;font-family:var(--suit);font-weight:600;
               font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls)}
@@ -827,7 +833,7 @@
     .hm-wv:nth-child(4) .in{border-radius:0 40px 0 0;padding:40px 20px 40px var(--hm-m)}
     .hm-wv .body{max-width:none}
     .hm-wv:nth-child(2) .hd{width:auto}
-    .hm-wv h3{font-size:var(--fs-h1)}
+    .hm-wv h3{font-size:var(--fs-h2)}
   }
   /* 세로로 든 큰 태블릿(901~1180 · 세로 방향 — 12.9 · 11 인치 아이패드 Pro 세로 등, 2026-09-30 요청) — 폭은 넓은 태블릿이지만
      화면이 세로로 길어, 가로 아코디언(카드 키 360 남짓)이 한 화면 높이 섹션 가운데에 떠 위아래가 크게 비었다.
@@ -1020,50 +1026,38 @@
   </section>
 
   <!-- ===================== WHO WE ARE (Figma 1338:8490, 2026-09-18 갱신) ===================== -->
-  <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임을 계단으로 쌓았다. 글은 Figma 그대로다 -->
+  <!-- 핵심역량 네 판 — 회사소개 AAA 전략 판의 짜임을 계단으로 쌓았다. 글은 2026-10-07 새 문구(번호 · 제목 · 문단) -->
   <section class="hm-sec hm-who" id="hmWho" aria-labelledby="hm-who-t">
     <svg class="hm-who-dot" aria-hidden="true"><defs><radialGradient id="hmWhoHalo"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g class="trail"></g><circle class="halo" r="12"/><circle class="head" r="3"/></svg>
     <h2 class="hm-ttl" id="hm-who-t"><span class="hm-lbl">핵심역량</span> Who we are</h2>
     <ol class="hm-who-list">
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
-          <h3>진보된 기술력</h3>
-          <p class="msg"><span lang="en">Applied Electronics, Electric and Mechatronics</span><span>첨단 전자·전기·메카트로닉스 기술력</span></p>
+          <span class="no" aria-hidden="true">01</span>
+          <h3>전력 변환 기술 기반의 Total Energy Solution</h3>
         </div>
-        <ul>
-          <li><b>전원 변환:</b> 고효율 변환 및 사용자 정의</li>
-          <li><b>소프트웨어:</b> 수집된 데이터 분석</li>
-          <li><b>제어 및 측정:</b> 고정밀 I-V-L 측정, 고속 제어, 하드웨어 펌웨어 개발</li>
-          <li><b>기계 메커니즘:</b> 확장성 설계, 간편한 유지관리 설계, 사용자 친화적 설계</li>
-        </ul>
+        <p class="d">에이프로는 2차전지 활성화 공정 장비부터 ESS, 초고속 전기차 충전 인프라, 우주 발사체 전원 시스템까지 폭넓은 포트폴리오를 구축하고 있습니다. 끊임없는 연구개발을 통해 고효율, 고밀도 전력 변환 기술을 고도화하며 지속 가능한 미래 에너지 생태계를 완성해 나갑니다.</p>
       </div></div></div></li>
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
-          <h3>고객 맞춤 제작</h3>
-          <p class="msg"><span lang="en">Diversification &amp; Customization</span><span>다양한 요구에 대응하는 맞춤형 제작</span></p>
+          <span class="no" aria-hidden="true">02</span>
+          <h3>소재부터 시스템까지 잇는 수직 계열화 역량 (Materials to System)</h3>
         </div>
-        <ul>
-          <li>사양에 따라 맞춤 제작 가능</li>
-        </ul>
+        <p class="d">우리의 혁신은 시스템의 가장 깊은 곳, '반도체'에서 시작됩니다. 차세대 고효율 질화갈륨(GaN) 전력반도체 핵심 소재(Epi-Wafer)와 소자를 직접 설계하고 내재화함으로써, 기존의 한계를 뛰어넘는 초소형·초고효율 전력 변환 모듈을 실현합니다.</p>
       </div></div></div></li>
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
-          <h3>통합설계</h3>
-          <p class="msg"><span lang="en">Our founding philosophy has always been focused on optimization</span><span>최적화를 지향하는 통합설계</span></p>
+          <span class="no" aria-hidden="true">03</span>
+          <h3>In-house 설계를 통한 완벽한 시스템 통합 (SI) 및 지능형 플랫폼</h3>
         </div>
-        <ul>
-          <li>A-PRO의 창업 철학은 항상 품질과 안전 제일 개념에 중점을 두어 모든 기기의 디자인을 최적화하는 설계에 중점을 두었습니다.</li>
-          <li>A-PRO는 제품 성능, 재료 선택, 사이클 수명, 시뮬레이션, 검증, 공급망, 제품, 비용 등과 같은 요소를 고려하여 고객에게 최적의 통합 솔루션을 통해 장비 개발 및 품질을 구현 하고 있습니다.</li>
-        </ul>
+        <p class="d">기구, 회로, 소프트웨어에 이르는 100% In-house 설계 역량을 통해 고객의 다양한 요구에 최적화된 하드웨어 시스템을 구축합니다. 나아가 AI 기반의 배터리 진단 플랫폼과 산업 안전 로보틱스 등 지능형 소프트웨어를 융합하여, 시스템의 안정성과 운영 효율을 극대화하는 스마트 솔루션을 제공합니다.</p>
       </div></div></div></li>
       <li class="hm-wv"><div class="out"><div class="in"><div class="body">
         <div class="hd">
-          <h3>자동화 공정</h3>
-          <p class="msg"><span lang="en">Advanced flexibility and a high level of specialization</span><span>높은 유연성과 전문성을 갖춘 자동화 공정</span></p>
+          <span class="no" aria-hidden="true">04</span>
+          <h3>세계를 무대로 하는 글로벌 파트너</h3>
         </div>
-        <ul>
-          <li>A-PRO의 스마트 제조 시스템은 제품이 생산되는 모든 과정을 항상 모니터링 할 수 있도록 지능형 추적 시스템을 고객에게 제공하고 있습니다. 고객 맞춤형 제작 프로세스와 스마트 제조 시스템은 우수한 품질 관리를 유지하면서, 고객의 요구사항을 즉각 수용할 수 있는 A-PRO의 특화된 서비스입니다.</li>
-        </ul>
+        <p class="d">미국, 유럽, 중국, 동남아시아 등 전 세계 핵심 거점에 현지 법인과 전문가 네트워크를 구축했습니다. 글로벌 탑티어 배터리 제조사 및 완성차 기업들과 긴밀히 협력하며, 어떤 환경에서도 기민(Agile)하게 대응하고 최고 품질의 고객 지원을 약속합니다.</p>
       </div></div></div></li>
     </ol>
   </section>
@@ -1481,10 +1475,9 @@
   cards.forEach(function(card){
     var i = 0;
     function mark(el){ el.classList.add('rv'); el.style.setProperty('--i', i++); }
-    mark(card.querySelector('h3'));
-    [].forEach.call(card.querySelectorAll('.msg>span'), mark);
+    [].forEach.call(card.querySelectorAll('.hd>.no, .hd>h3, .msg>span'), mark);
     card.querySelector('.hd').style.setProperty('--i', i++);
-    [].forEach.call(card.querySelectorAll('li'), mark);
+    [].forEach.call(card.querySelectorAll('li, .body>.d'), mark);
   });
   sec.classList.add('is-rv');
   var io = new IntersectionObserver(function(es){
