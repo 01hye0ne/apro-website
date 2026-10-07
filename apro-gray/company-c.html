@@ -401,9 +401,11 @@
      좌표는 원본에서 잰 값 : 로고 글자 윗변 59.8% · 지붕선 50% · 사옥 왼끝 30.7% · 글자 왼끝 A 32.8 · P 46.6 · R 54.2 · O 61.7 · 안테나 91 */
   .co-apro{padding-inline:0}
   .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:16/9;
-                padding:calc(56.25% * .17) 44px 0;background:#2873e0}
+                padding:calc(56.25% * .14 + clamp(12px,1vw,20px) - .2em) 44px 0;background:#2873e0}
   .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  /* 문장 — 사옥 왼끝(30.7%) 앞 빈 하늘 기둥. 윗변을 첫 이름 줄(17%)에 맞춘다(위 여백 = 판 키의 17% = 폭의 56.25% × .17) */
+  /* 문장 — 사옥 왼끝(30.7%) 앞 빈 하늘 기둥, 가로선 표의 첫 칸(2026-10-07 요청: 떠 보이던 자리를 표에 묶음).
+     첫 가로선(14%)이 왼 여백까지 늘어나 문장 위를 덮고, 첫 줄은 Advance 와 같은 높이에서 시작한다
+     (위 여백 = 판 키의 14% = 폭의 56.25% × .14 + 이름 줄의 선 아래 띄움 − 줄높이 위 여유 .2em) */
   .co-apro .msg{position:relative;z-index:1;width:calc(29% - 44px);margin:0;color:#fff;
                 font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);line-height:var(--lh-label);
                 letter-spacing:var(--ls);word-break:keep-all}
@@ -417,6 +419,9 @@
   .co-apro .keys span{font-family:var(--suit);font-weight:400;font-size:clamp(14px,.9375vw,18px);line-height:var(--lh-label);
                       letter-spacing:var(--ls);color:rgba(255,255,255,.86)}
   .co-apro .keys li:nth-child(-n+3){right:11%}
+  /* 첫 층의 선은 왼 여백(--c-m)부터 — 문장 칸까지 덮는다. 그 자리의 줄 선(1번)은 걷는다 */
+  .co-apro .keys::before{content:"";position:absolute;left:var(--c-m,44px);right:11%;top:14%;height:1px;background:rgba(255,255,255,.55)}
+  .co-apro .keys li:nth-child(1)::before{content:none}
   .co-apro .keys li:nth-child(-n+3)::before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;
                       background:rgba(255,255,255,.55)}
   .co-apro .keys li:nth-child(1){--x:32.8;--y:14}
@@ -444,6 +449,7 @@
     .co-apro .keys li:is(:nth-child(1),:nth-child(n+4))::before{content:attr(data-l);position:absolute;left:0;top:12px;width:auto;height:auto;
                       background:none;font-family:var(--ald);font-weight:400;font-size:36px;line-height:1;color:#fff}
     .co-apro .keys li:is(:nth-child(2),:nth-child(3))::before{content:none}
+    .co-apro .keys::before{content:none}
   }
 
   @media(max-width:700px){ .co-vband .imgs{grid-template-columns:minmax(0,1fr)} }
