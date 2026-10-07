@@ -460,6 +460,31 @@
                       background:none;font-family:var(--ald);font-weight:400;font-size:36px;line-height:1;color:#fff}
     .co-apro .keys li:is(:nth-child(2),:nth-child(3))::before{content:none}
   }
+  /* 폰(~767) — 핵심가치를 로고처럼 계단으로(2026-10-07 요청): A 줄에 세 이름을 세 칸으로, P · R · O 는 한 줄씩 내려가며
+     A 의 1 · 2 · 3 칸 아래에 선다. 왼쪽 큰 글자(A · P · R · O)는 줄마다 하나. 층 높이가 같아(70) 가로선은 바탕 무늬로 긋는다.
+     칸 폭은 이름 길이대로(auto) 두고 양끝 정렬 — 가장 긴 Aggressiveness 도 한 줄에 선다.
+     사진은 로고가 크게 보이게 1.8 배로 키워 지붕 위 하늘을 걷어 낸다(위로 사진 키의 43.7% 를 올려 숨김) — 목록과 사진 사이가 좁아진다 */
+  @media(max-width:767px){
+    .co-apro .keys{position:relative;left:auto;right:auto;top:auto;display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;
+                   grid-auto-rows:70px;padding-left:44px;
+                   background:repeating-linear-gradient(180deg,rgba(255,255,255,.32) 0 1px,transparent 1px 70px)}
+    .co-apro .keys li,.co-apro .keys li:is(:nth-child(4),:nth-child(5),:nth-child(6)),
+    .co-apro .keys li:is(:nth-child(1),:nth-child(n+4)){position:static;margin-left:0;padding:13px 0 0;border-top:0}
+    .co-apro .keys b{font-size:var(--fs-ui);font-weight:600;line-height:var(--lh-label)}
+    .co-apro .keys li:nth-child(1){grid-area:1 / 1}
+    .co-apro .keys li:nth-child(2){grid-area:1 / 2}
+    .co-apro .keys li:nth-child(3){grid-area:1 / 3}
+    .co-apro .keys li:nth-child(4){grid-area:2 / 1}
+    .co-apro .keys li:nth-child(5){grid-area:3 / 2}
+    .co-apro .keys li:nth-child(6){grid-area:4 / 3}
+    .co-apro .keys li:is(:nth-child(1),:nth-child(n+4))::before{top:17px}
+    .co-apro .keys li:nth-child(4)::before{top:87px}
+    .co-apro .keys li:nth-child(5)::before{top:157px}
+    .co-apro .keys li:nth-child(6)::before{top:227px}
+    .co-apro .fig>img{width:180%;aspect-ratio:auto;object-fit:fill;
+                      margin:calc(-44.2% + 24px) 0 0 calc(50% - 51.6% * 1.8 - var(--c-m,16px) * .8);
+                      -webkit-mask-image:linear-gradient(180deg,transparent 43.6%,#000 47%);mask-image:linear-gradient(180deg,transparent 43.6%,#000 47%)}
+  }
 
   @media(max-width:700px){ .co-vband .imgs{grid-template-columns:minmax(0,1fr)} }
   @media(max-width:900px){
