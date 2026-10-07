@@ -409,8 +409,9 @@
   .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
                  justify-content:space-between;color:#fff}
   /* 핵심가치 — 동그라미 여섯 개, 3 × 2(2026-10-07 요청: 옛 A-1 시안의 원 배치). 원 지름 --d, 옆 원과는 테두리가 맞닿고
-     아랫줄은 지름의 10% 만큼 윗줄에 겹쳐 올라간다. 원 안에 영문(SUIT 600 · --fs-ui) 위 · 국문(SUIT 400 · --fs-meta) 아래 */
-  .co-apro .vals{--d:clamp(120px,9.3vw,178px);display:grid;grid-template-columns:repeat(3,var(--d));
+     아랫줄은 지름의 10% 만큼 윗줄에 겹쳐 올라간다. 원 안에 영문(SUIT 800 · --fs-h3, 옛 목록의 이름 글자 그대로) 위 · 국문(SUIT 400 · --fs-meta) 아래.
+     지름은 가장 긴 Aggressiveness(20 · 800 ≈ 150)가 원 안 여백을 두고 들어가는 크기 */
+  .co-apro .vals{--d:clamp(176px,10.4vw,200px);display:grid;grid-template-columns:repeat(3,var(--d));
                  list-style:none;margin:0;padding:0}
   .co-apro .vals li{width:var(--d);aspect-ratio:1;border-radius:50%;border:1px solid rgba(255,255,255,.22);
                     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
@@ -424,7 +425,7 @@
     .co-apro .line{justify-content:flex-start}
     .co-apro .vals{margin-top:calc(var(--d) * .85)}
   }
-  .co-apro .vals b{font-family:var(--suit);font-weight:600;font-size:var(--fs-ui);line-height:var(--lh-label);letter-spacing:var(--ls)}
+  .co-apro .vals b{font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);line-height:var(--lh-head);letter-spacing:var(--ls-num)}
   .co-apro .vals span{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                       letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
   /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
@@ -456,7 +457,7 @@
                          background:linear-gradient(0deg,rgba(6,12,28,.8) 0%,rgba(6,12,28,0) 55%)}
     /* 원 셋이 판 폭(여백 16 안쪽)을 나눠 쓴다 — 가장 긴 Aggressiveness 가 들어가게 이름은 14 */
     .co-apro .vals{--d:min(120px,calc((100vw - 32px) / 3))}
-    .co-apro .vals b{font-size:var(--fs-meta)}
+    .co-apro .vals b{font-size:var(--fs-meta);font-weight:600;letter-spacing:var(--ls)}   /* 폰은 원이 작아 14 — 800 은 20 이상만이라 600 */
     /* 좁은 화면은 원이 사옥 위에 얹힌다 — 옅은 밤색 막을 깔아 글을 지킨다 */
     .co-apro .vals li{background:rgba(6,12,28,.42);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
     .co-apro p{font-size:var(--fs-h2);letter-spacing:var(--ls)}
