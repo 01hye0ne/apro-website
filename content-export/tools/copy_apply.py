@@ -163,7 +163,7 @@ def read_book(path=BOOK):
     return all_rows
 
 
-EN_OUT = "content-export/data/business-a1-en.json"
+EN_OUT = "content-export/data/business-c-en.json"   # 2026-10-07 시안 C 기준으로 옮김(A · A-1 은 얼림)
 
 
 def save_en(rows):
@@ -201,7 +201,7 @@ def run(dry=True, only=None, hold=()):
              "raw_new": r["new"], "xp": r["xp"], "nk": r["nk"]})
 
     for key, rows in jobs.items():
-        path = "apro-gray/business-%s-a1.html" % key
+        path = "apro-gray/business-%s-c.html" % key
         src = io.open(path, encoding="utf-8", newline="").read().replace("\r\n", "\n")
         tree = LH.parse(io.StringIO(src))
         ok = bad = 0

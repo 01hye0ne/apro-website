@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""사업영역 세부 네 장(A-1)의 문구를 자리와 함께 뽑는다.
+"""사업영역 세부 네 장(시안 C, 2026-10-07 까지는 A-1)의 문구를 자리와 함께 뽑는다.
 
 한 줄 = 화면에 보이는 문구 한 덩이. <br> 로 나뉜 줄은 한 덩이로 묶고
 줄바꿈은 \n 으로 남긴다 — 되돌려 넣을 때 그대로 <br> 로 되살린다.
@@ -186,7 +186,7 @@ def pull(path):
 if __name__ == "__main__":
     out = {}
     for key, name in AREAS:
-        rows = pull("apro-gray/business-%s-a1.html" % key)
+        rows = pull("apro-gray/business-%s-c.html" % key)
         out[key] = rows
         print("%-8s %3d 덩이" % (key, len(rows)))
     io.open("copy_rows.json", "w", encoding="utf-8").write(

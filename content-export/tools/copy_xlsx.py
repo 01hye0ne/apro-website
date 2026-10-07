@@ -125,7 +125,7 @@ def build(out=OUT, prev=OUT):
     # 장마다 같은 문구를 먼저 한 줄로 합치고, 그래도 여러 장에 걸친 문구에만 묶음 번호를 단다
     data = {}
     for key, name in AREAS:
-        path = "apro-gray/business-%s-a1.html" % key
+        path = "apro-gray/business-%s-c.html" % key
         data[key] = merge(pull(path), rail_map(path))
     tally = Counter()
     for rows in data.values():
@@ -201,10 +201,10 @@ def build(out=OUT, prev=OUT):
     guide.column_dimensions["A"].width = 4
     guide.column_dimensions["B"].width = 118
     lines = [
-        ("t", "사업영역 세부(A-1) 문구 정리"),
+        ("t", "사업영역 세부 · 홈(시안 C) 문구 정리"),
         ("", ""),
         ("h", "이 파일이 담은 것"),
-        ("p", "지금 사업영역 세부 네 장(business-*-a1.html)에 들어가 있는 문구 전부입니다. 시트가 사업영역이고, "
+        ("p", "지금 사업영역 세부 네 장(시안 C, business-*-c.html)에 들어가 있는 문구 전부입니다. 시트가 사업영역이고, "
               "시트 안에서 섹션 순서대로, 화면에 보이는 순서대로 늘어놓았습니다. 모두 %d 줄입니다." % total),
         ("p", "GNB · 메가 메뉴 · 푸터 · 전체 메뉴처럼 모든 장이 함께 쓰는 문구는 넣지 않았습니다. "
               "히어로 아래 흐르는 띠지도 넣지 않았습니다 — 좌측 인덱스와 같은 이름이라 그쪽만 고치면 함께 바뀝니다."),
