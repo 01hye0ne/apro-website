@@ -206,7 +206,7 @@ html .cpost-nav .k{font-weight:400}
    히어로 이름(About · Global Network · Location), VISION 2030, 네트워크 수치 이름(Global Bases · Years History).
    Aldrich 는 이제 숫자 14 · 영문 큰 제목 48 · 히어로 96 셋만 */
 .ci-hero h1,.co-vband .eyebrow,.gn-stats .k{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls)}
-.co-val .no,.co-apro .vals li::before{font-size:var(--fs-meta)}
+.co-val .no{font-size:var(--fs-meta)}
 
 /* ── 읽기 쉽게 — 30~50 대 독자 (2026-10-07) ─────────────────────────────────────────────────────
    1) 줄글 한 줄 길이 — 콘텐츠 장 본문 폭(약 1,190)을 줄글이 끝까지 써서 한 줄이 80 자를 넘었다.
