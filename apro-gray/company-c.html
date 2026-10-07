@@ -402,9 +402,13 @@
      판이 커지고 줄어도 사진과 같은 비율로 움직여 글자 기둥을 벗어나지 않는다.
      좌표는 원본에서 잰 값 : 로고 글자 윗변 59.8% · 지붕선 50% · 사옥 왼끝 30.7% · 글자 왼끝 A 32.8 · P 46.6 · R 54.2 · O 61.7 · 안테나 91 */
   .co-apro{padding-inline:0}
-  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;aspect-ratio:16/9;
-                padding:calc(56.25% * .14 + clamp(12px,1vw,20px) - .2em) 44px 0;background:#2873e0}
-  .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  /* 넓은 화면(1280~)은 사진 위쪽 하늘을 --crop(사진 키의 몫)만큼 잘라 판 키를 줄인다(2026-10-07 요청: 표 위 · 지붕 위 하늘을 반으로).
+     --kt = 표 윗변의 사진 속 높이(사진 키의 몫). 판 위 여백 = 사진 키 × (kt − crop). 1279 아래는 지붕이 이미 가까워 자르지 않는다 */
+  .co-apro .fig{position:relative;overflow:hidden;margin-block:32px 0;--crop:0;--kt:.14;
+                aspect-ratio:calc(16 / (9 * (1 - var(--crop))));
+                padding:calc(56.25% * (var(--kt) - var(--crop)) + clamp(12px,1vw,20px) - .2em) 44px 0;background:#2873e0}
+  @media(min-width:1280px){ .co-apro .fig{--crop:.11;--kt:.18} }
+  .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%}
   /* 사옥만 오린 겹(같은 캔버스 · 투명 바탕)을 맨 위에 — 하늘로 내려온 AAA 띠(마지막 판 SVG, z-index 2)가 사옥 뒤로 들어간다 */
   .co-apro .fig>img.bld{z-index:3;pointer-events:none}
   /* 문장 — 사옥 왼끝(30.7%) 앞 빈 하늘 기둥, 가로선 표의 첫 칸(2026-10-07 요청: 떠 보이던 자리를 표에 묶음).
@@ -419,7 +423,7 @@
      층마다 위 가로선 · 위아래 같은 여백(--kp) · 영문 · 국문. 문장 위로는 선을 긋지 않는다.
      한 층에 둘이 선다(A 줄 + P · R · O 줄) : 같은 칸에 겹쳐 놓고 뒤엣것을 제 글자 왼끝 기둥만큼 민다
      (밀 거리 = (글자 왼끝 − 32.8) / 표 폭 56.2 — P 46.6 · R 54.2 · O 61.7) */
-  .co-apro .keys{position:absolute;left:32.8%;right:11%;top:14%;z-index:1;margin:0;padding:0;list-style:none;
+  .co-apro .keys{position:absolute;left:32.8%;right:11%;top:calc((var(--kt) - var(--crop)) / (1 - var(--crop)) * 100%);z-index:1;margin:0;padding:0;list-style:none;
                  display:grid;grid-template-columns:minmax(0,1fr);--kp:clamp(12px,1vw,20px)}
   .co-apro .keys li{grid-column:1;padding:var(--kp) 0;display:flex;flex-direction:column;gap:clamp(4px,.4vw,8px);
                     color:#fff;white-space:nowrap}
@@ -796,7 +800,9 @@
       if(figE) figE.classList.toggle('is-sky', sky);
       if(sky){
         var fr = figE.getBoundingClientRect(), lo = last.out.getBoundingClientRect(), ln = last.inn.getBoundingClientRect();
-        var endB = fr.top + fr.height * BEHIND;
+        /* 판이 사진 위를 잘라 냈으면(--crop) 사진 속 높이를 판 높이로 옮긴다 */
+        var crop = parseFloat(getComputedStyle(figE).getPropertyValue('--crop')) || 0;
+        var endB = fr.top + fr.height * (BEHIND - crop) / (1 - crop);
         /* 표 왼끝을 띠 안쪽 선에 붙이고, 문장은 띠 바깥 선 앞 40 에서 멈춘다 */
         if(keys) keys.style.left = (ln.left - fr.left) + 'px';
         if(msg) msg.style.maxWidth = Math.max(160, lo.left - fr.left - parseFloat(getComputedStyle(figE).paddingLeft) - 40) + 'px';
