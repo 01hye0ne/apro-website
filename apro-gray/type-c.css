@@ -221,3 +221,9 @@ html .cpost-nav .k{font-weight:400}
 :root{--tx-meta:#6b7785}
 .cnews .date,.v2news .ncard .date,.v2news .news-list .date,.cpost-meta span,.cpost-nav .k,html .cpost-nav .k,
 .cchart .yr,.cfin-unit,.cstock-foot span{color:var(--tx-meta)}
+
+/* ── 시험판: 16 단 → 18 (2026-10-07, 브랜치 trial-body18-c — main 에 안 합침) ──────────────────────
+   본문 · 메뉴 · 라벨(--fs-body)을 18 로. 16/600 은 기존 18/600(게시판 글 제목 · 조항 제목)과 합쳐져 스타일 12 → 11.
+   900 이하에서 --fs-lead 가 16 으로 내려가던 것도 18 로 맞춘다(본문보다 작아지지 않게) */
+:root{--fs-body:18px}
+@media(max-width:900px){ :root{--fs-lead:18px} }
