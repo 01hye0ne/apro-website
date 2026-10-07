@@ -310,7 +310,7 @@
   .v2banner .headline.entering .kor{animation:bnRise .7s cubic-bezier(.25,.46,.45,.94) .06s both}
   /* 국문 크기는 상한 64 — 사다리의 --fs-display(96)는 영문 한 줄짜리라 두 줄 국문에는 크다.
      1185 아래에서 화면을 따라 준다(A 와 같다 — 좁아지면 국문이 글자 중간에서 세 줄로 접혔다) */
-  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(48px,5.4vw);line-height:var(--lh-head);
+  .v2banner .en{font-family:var(--suit);font-weight:800;font-size:min(64px,5.4vw);line-height:var(--lh-head);
     letter-spacing:var(--ls);color:var(--on-dark);white-space:pre-line}
   /* 히어로 문구는 모두 국문 서체(SUIT) 한 벌이다(2026-09-30 확정 — 앞서 영문 문구에 쓰던 Aldrich · 크기 식(.is-en)을 걷었다).
      사업영역 넷도 국문이 메인 · 영문이 서브다(아래 MSG) */
@@ -369,7 +369,7 @@
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
-    .v2banner .en{font-size:min(48px,4.4vw)}
+    .v2banner .en{font-size:min(52px,4.4vw)}
   }
   /* 좁은 태블릿(768~900) — 56 이 세로 아이패드에서 커 보여 44 안팎으로 줄인다(820 에서 44, 2026-09-30 요청). 폰은 그대로 */
   @media(min-width:768px) and (max-width:900px){
@@ -524,14 +524,14 @@
                   text-decoration:none;transition:color .2s var(--ease)}
   .hm-card .sub a:hover,.hm-card .sub a:focus-visible{color:#fff}
   /* 펴진 카드 글 강약(2026-09-29 요청) — 이름 · 설명 · 소분류가 모두 흰 글자 16~38 에 굵기도 비슷해 한 덩어리로 읽혔다.
-       이름  한 단 크게(--fs-display-sm 48) — 가장 강
+       이름  --fs-h1(38, 2026-10-07 까지 48) — 가장 강
        설명  크기 그대로 · 흰 80%(--on-dark-body) — 중
        소분류 14 · 600 · 흰 60%(--on-dark-sub) — 약, 올리면 흰색
      이름과 설명 사이는 8 → 12 로 조금 띄운다 */
   .hm-card .txt{gap:12px}
   .hm-card .d{color:var(--on-dark-body)}
   .hm-card .sub a{font-weight:600;font-size:var(--fs-meta);color:var(--on-dark-sub)}
-  @media(min-width:901px){ .hm-card h3{font-size:var(--fs-display-sm)} }
+  /* 2026-10-07 48 → 38(--fs-h1, 장 제목 단계) — 히어로 문구를 64 로 되돌리며 48/800 을 이 카드만 쓰게 되어 장 제목과 합쳤다(스타일 12 유지) */
   /* 소분류가 카드 폭을 넘으면 옆으로 천천히 흐른다(2026-09-30 요청 — 잘려서 끌어야만 보였다. 줄바꿈으로 풀었다가 같은 날 되돌리고 흐름으로).
      스크립트가 넘치는 띠에만 .is-flow 를 달고 항목을 한 벌 더 붙인다 — 목록(.sub)을 감싼 창(.hm-flow)이 양 끝을 흐리고 목록이 통째로 흐른다
      (창을 따로 두는 건 띠 윗선까지 흐려지지 않게).
