@@ -308,3 +308,46 @@ html.c-shot *{-webkit-backdrop-filter:none!important;backdrop-filter:none!import
 html.c-shot .hm-wv .out{-webkit-mask-image:none!important;mask-image:none!important}
 html.c-shot .hm-wv .in{background:rgba(255,255,255,.06)}
 html.c-shot .rv{opacity:1!important;transform:none!important;translate:none!important;transition:none!important}
+
+/* ===================== 푸터 정책 링크 · 팝업 (2026-10-07) =====================
+   "푸터에 이메일무단수집거부와 개인정보처리방침이 추가돼야 한다" — Copyright 줄 오른쪽에 [개인정보처리방침 | 이메일무단수집거부].
+   개인정보처리방침은 개인정보보호위원회 작성지침대로 다른 링크와 구분되게(흰색) — 굵기 · 크기는 새로 만들지 않고 14 / 400 그대로.
+   누르면 팝업(<dialog>)이 뜬다. 글은 policy-c.js(04_푸터_정책문서.xlsx 에서 만든 것)를 누를 때 불러온다 — gnb-c.js 끝 */
+.footer .f-legal{display:flex;align-items:center;flex-wrap:wrap;gap:6px 17px}
+.footer .f-legal .copy{margin:0}
+.footer .f-pol{position:relative;padding:0;border:0;background:none;cursor:pointer;
+  font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);
+  color:var(--on-dark-body);opacity:.75;white-space:nowrap;transition:opacity .2s}
+.footer .f-pol::before{content:"";position:absolute;left:-9px;top:50%;width:1px;height:12px;margin-top:-6px;background:var(--white-300)}
+.footer .f-pol.is-key{color:#fff;opacity:1}
+.footer .f-pol:hover{opacity:1;text-decoration:underline;text-underline-offset:3px}
+.footer .f-pol:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(max-width:960px){ .footer .f-bottom .f-legal{order:3} }
+/* 좁은 화면 — 링크 둘을 한 줄, Copyright 를 그 밑 줄로(저작권 줄 끝에서 꺾여 구분선이 줄머리에 매달리지 않게) */
+@media(max-width:600px){
+  .footer .f-legal .copy{order:2;width:100%}
+  .footer .f-pol.is-key::before{display:none}
+}
+
+html.pol-lock{overflow:hidden}
+.pol-dlg{margin:auto;width:min(800px,calc(100vw - 32px));max-height:min(84vh,860px);padding:0;border:0;   /* margin:auto — 사이트 초기화(* margin 0)가 dialog 가운데 정렬을 지운다 */
+  background:#fff;color:var(--g900);box-shadow:0 24px 64px rgba(14,22,30,.28)}
+.pol-dlg[open]{display:flex;flex-direction:column}
+.pol-dlg::backdrop{background:rgba(14,22,30,.56)}
+.pol-hd{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px 20px 32px;border-bottom:1px solid var(--border-g)}
+.pol-hd h2{margin:0;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-head);letter-spacing:var(--ls)}
+.pol-x{flex:none;width:40px;height:40px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center;color:var(--g900)}
+.pol-x svg{width:24px;height:24px}
+.pol-x:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
+.pol-bd{overflow:auto;overscroll-behavior:contain;padding:24px 32px 40px}
+.pol-bd h3,.pol-bd h4{margin:28px 0 8px;font-family:var(--suit);font-weight:600;font-size:var(--fs-lead);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900)}
+.pol-bd h4{margin-top:16px}
+.pol-bd>:first-child{margin-top:0}
+.pol-bd p,.pol-bd li{margin:0 0 6px;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
+.pol-bd ul{margin:0 0 6px;padding:0;list-style:none}
+@media(max-width:767px){
+  .pol-dlg{width:calc(100vw - 24px);max-height:88vh}
+  .pol-hd{padding:16px 12px 16px 20px}
+  .pol-bd{padding:20px 20px 32px}
+}
