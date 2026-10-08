@@ -1,7 +1,7 @@
 # 실행: python content-export/tools/iso/module_liquid_cooling.py assets/ess-module-liquid-cooling.svg
 """Module Liquid Cooling — 에어 쿨링과 같은 흰 젖빛 반투명 케이스 · 연한 파랑 셀.
-셀 밑에 냉각판(청록)이 깔리고, 오른쪽 옆면 피팅 둘로 냉각수가 들어와(파랑) 데워져 나간다(빨강).
-안쪽 배관은 반투명 벽 너머로 비친다. 실제 제품 사진(옆면 호스 피팅 둘)을 따랐다."""
+셀 밑에 냉각판(청록)이 깔린다. 냉각수는 왼쪽에서 들어와(파랑) 판을 따라 흐르고, 셀의 열이 판으로 내려가며(빨강 ↓)
+데워진 냉각수는 오른쪽 옆면 피팅으로 나간다(빨강). 2026-10-08 클라이언트 참고 자료(Coolant Inlet 왼쪽 · Outlet 오른쪽)대로."""
 import sys
 from iso import Iso, DEEP, BLUE, RED, ribbon3, plane
 
@@ -14,13 +14,22 @@ EDGE, CE, SEAM = '#0c0d10', '#474c59', '#c3cbe0'
 PLATE_EDGE = '#1d8a99'
 
 g = Iso(40)
+
+
+def fade(gid, a, b, color, o0, o1, s0=0, s1=1):
+    (x1, y1), (x2, y2) = g.p(*a), g.p(*b)
+    g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
+                   f'<stop offset="{s0}" stop-color="{color}" stop-opacity="{o0}"/><stop offset="{s1}" stop-color="{color}" stop-opacity="{o1}"/></linearGradient>')
+    return f'url(#{gid})'
+
 L, D, H, T = 11.8, 8.0, 2.7, 0.28          # 오른쪽에 배관 자리(≈1)를 두려고 에어 쿨링보다 0.8 넓다
 N, ct, cg = 8, 1.0, 0.26
 rows = [(T + 0.3, 3.4), (T + 0.3 + 3.4 + 0.45, 3.4)]
 ch, pz = 1.85, 0.6                          # 셀 높이 · 냉각판 두께
 cx0 = T + 0.31
 # 피팅 자리(오른쪽 면) — 들어옴(아래) · 나감(위)
-FIT = dict(inn=(D - 1.1, 0.9), out=(D - 2.9, 1.9))
+FIT = dict(out=(D - 2.2, 1.35))           # 나가는 피팅 하나(오른쪽 면)
+INLET_Y = D - 0.6                          # 들어오는 쪽(왼쪽 끝) — 냉각판 높이
 
 g.box(-0.25, -0.25, -0.22, L + 0.5, D + 0.5, 0.22, pal=BASE, out=EDGE, sw=2)
 g.box(0, 0, 0, L, T, H, pal=CASE, out=CE, face_op=0.55)
@@ -42,7 +51,7 @@ def pipe(pts3, color, sw=15):
     d = 'M' + ' L'.join('%.1f %.1f' % g.p(*q) for q in pts3)
     g.raw(f'<path d="{d}" stroke="#ffffff" stroke-width="{sw + 5}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
           f'<path d="{d}" stroke="{color}" stroke-width="{sw}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>')
-for k, color in (('out', RED), ('inn', BLUE)):
+for k, color in (('out', RED),):
     yy, zz = FIT[k]
     xi = L - T - 0.65
     pipe([(L - T, yy, zz), (xi, yy, zz), (xi, yy, pz + 0.12)], color)
@@ -51,7 +60,7 @@ g.box(L - T, T, 0, T, D - 2 * T, H, pal=CASE, out=CE, face_op=0.55)
 g.box(0, D - T, 0, L, T, H, pal=CASE, out=CE, face_op=0.55)
 # 젖빛 벽 너머로 비치게 — 안쪽 배관을 반투명으로 한 번 더(에어 쿨링 셀 사이 공기와 같은 x-ray 표현)
 g.raw('<g opacity=".6">')
-for k, color in (('out', RED), ('inn', BLUE)):
+for k, color in (('out', RED),):
     yy, zz = FIT[k]
     xi = L - T - 0.65
     pipe([(L - T, yy, zz), (xi, yy, zz), (xi, yy, pz + 0.12)], color, sw=12)
@@ -85,25 +94,30 @@ plane(g, (L, 0, H), 'y', right)
 g.box(-0.04, -0.04, H, L + 0.08, D + 0.08, 0.16, pal=CASE, out=CE, face_op=0.3)
 
 # 냉각판 속 물길 — 앞면 판 높이(x-ray). 들어온 냉각수가 판을 따라 흐르며 셀 열을 받아 데워진다
-(px1, py1), (px2, py2) = g.p(L - 0.9, D, pz / 2), g.p(0.9, D, pz / 2)
+(px1, py1), (px2, py2) = g.p(0.9, D, pz / 2), g.p(L - 0.9, D, pz / 2)
 g.defs['flow'] = (f'<linearGradient id="flow" gradientUnits="userSpaceOnUse" x1="{px1:.1f}" y1="{py1:.1f}" x2="{px2:.1f}" y2="{py2:.1f}">'
-                  f'<stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/></linearGradient>')
+                  f'<stop offset=".72" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/></linearGradient>')
 g.raw('<g opacity=".85">')
 for k in range(9):
-    x1 = L - 1.0 - k * 1.15
-    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 - 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2)
+    x1 = 0.75 + k * 1.15
+    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 + 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2)
 g.raw('</g>')
+# 셀의 열이 냉각판으로 — 뒤 줄 셀을 지나 내려가는 빨강 화살표(x-ray)
+g.raw('<g opacity=".9">')
+for j, x in enumerate((2.0, 4.5, 7.0, 9.5)):
+    a, b = (x, 2.1, pz + ch - 0.1), (x, 2.1, pz + 0.15)
+    ribbon3(g, a, b, (1, 0, 0), 0.13, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2)
+g.raw('</g>')
+# 들어오는 찬 냉각수 — 왼쪽 끝에서 판으로
+a, b = (-4.4, INLET_Y, pz / 2 - 0.1), (-0.15, INLET_Y, pz / 2 - 0.1)
+ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cin', a, b, BLUE, 0, 1, 0, .55), hl=0.85, hw2=2.1)
 
 
-def fade(gid, a, b, color, o0, o1, s0=0, s1=1):
-    (x1, y1), (x2, y2) = g.p(*a), g.p(*b)
-    g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
-                   f'<stop offset="{s0}" stop-color="{color}" stop-opacity="{o0}"/><stop offset="{s1}" stop-color="{color}" stop-opacity="{o1}"/></linearGradient>')
-    return f'url(#{gid})'
+
 
 
 # 바깥 피팅(금속 너트 + 슬리브)과 냉각수 화살표 — 위(나감)를 먼저, 아래(들어옴)를 나중에
-for k in ('out', 'inn'):
+for k in ('out',):
     yy, zz = FIT[k]
     g.box(L, yy - 0.34, zz - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
     g.box(L + 0.32, yy - 0.24, zz - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
