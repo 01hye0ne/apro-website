@@ -130,8 +130,14 @@
     s.onload = function(){ D = window.APRO_I18N_EN || {}; cb(); };
     document.head.appendChild(s);
   }
+  /* 국문 이름에 곁들인 영문 꾸밈 줄 — 영문 보기에선 큰 이름과 겹말이 되어 숨긴다(2026-10-08, 방법 1).
+     자리: 사업영역 허브 카드 이름 밑(.p-title .en) · 세부 페이지 제목 밑(h1 .en) · 다른 사업영역 이동 꼬리표(.bhtag/.bhnow .en)
+     · 사업장소재 이름 위(.lc-head .en) · 회사 소개 핵심가치 원 풀이(company-c.html 안 규칙). 새 자리는 data-en-hide 로 */
+  var HIDE = 'html[lang="en"] .p-title > .en, html[lang="en"] h1 > .en, html[lang="en"] .bhtag > .en, html[lang="en"] .bhnow > .en,'
+           + 'html[lang="en"] .lc-head > .en, html[lang="en"] [data-en-hide]{display:none !important}';
   function english(){
     root.lang = 'en';
+    var st = document.createElement('style'); st.textContent = HIDE; document.head.appendChild(st);
     load(function(){
       run();
       new MutationObserver(function(ms){
