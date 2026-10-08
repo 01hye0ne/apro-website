@@ -119,8 +119,28 @@ def ribbon(g, x0, x1, y, z, hw, fill, head=True, hl=0.9, opacity=1, plane='y'):
     g.poly(pts, fill=fill, extra=op)
 
 
-def ribbon3(g, a, b, wv, hw, fill, hl=0.9, opacity=1, hw2=2.1):
-    """3차원 넓은 화살표 a → b, 띠 폭 방향 wv(단위 벡터)"""
+FLOW_CSS = ('<style>'
+            '.flow{animation:isoflow var(--t,2.6s) cubic-bezier(.45,0,.35,1) infinite;animation-delay:var(--dl,0s)}'
+            '@keyframes isoflow{0%{opacity:.2;transform:translate(calc(var(--dx)*-1),calc(var(--dy)*-1))}'
+            '30%{opacity:1}75%{opacity:1}100%{opacity:.2;transform:translate(var(--dx),var(--dy))}}'
+            '@media (prefers-reduced-motion:reduce){.flow{animation:none}}'
+            '</style>')
+
+
+def ribbon3(g, a, b, wv, hw, fill, hl=0.9, opacity=1, hw2=2.1, flow=None, amp=0.45, dur=None):
+    """3차원 넓은 화살표 a → b, 띠 폭 방향 wv(단위 벡터).
+    flow=지연(초)을 주면 화살표만 제 방향으로 짧게 미끄러지며 흐른다(앞뒤로 amp 단위, SVG 안 CSS — img 로 넣어도 움직임,
+    동작 줄이기 설정이면 멈춤, 2026-10-08)"""
+    if flow is not None:
+        (x1, y1), (x2, y2) = g.p(*a), g.p(*b)
+        n = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** .5 or 1
+        k = amp * g.s / n
+        g.defs['flowcss'] = FLOW_CSS
+        t = f';--t:{dur}s' if dur else ''
+        g.raw(f'<g class="flow" style="--dx:{(x2 - x1) * k:.1f}px;--dy:{(y2 - y1) * k:.1f}px;--dl:{flow:.2f}s{t}">')
+        ribbon3(g, a, b, wv, hw, fill, hl, opacity, hw2)
+        g.raw('</g>')
+        return
     ax, ay, az = a; bx, by, bz = b
     L = ((bx - ax) ** 2 + (by - ay) ** 2 + (bz - az) ** 2) ** .5
     d = ((bx - ax) / L, (by - ay) / L, (bz - az) / L)

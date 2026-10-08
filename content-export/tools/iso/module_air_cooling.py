@@ -92,10 +92,10 @@ def fade(gid, a, b, color, o0, o1, s0=0, s1=1):
 for j, x in enumerate((2.3, 4.5, 6.7, 8.9)):
     y = D * 0.45
     a, b = (x, y, H - 0.1 + (0.26 if VAR else 0)), (x, y, H + 3.7)
-    ribbon3(g, a, b, (1, 0, 0), 0.34, fade(f'hot{j}', a, b, RED, 0.0, 1, 0, .7), hl=1.0, hw2=2.0)
+    ribbon3(g, a, b, (1, 0, 0), 0.34, fade(f'hot{j}', a, b, RED, 0.0, 1, 0, .7), hl=1.0, hw2=2.0, flow=1.3 + j * 0.25)   # 흐름 모션
 # 찬 공기 — 앞 그릴로 들어간다
 for j, x in enumerate((2.2, 4.4, 6.6, 8.8)):
     a, b = (x, D + 3.6, 0.75), (x, D + 0.25, 0.75)
-    ribbon3(g, a, b, (1, 0, 0), 0.3, fade(f'cool{j}', a, b, BLUE, 0.0, 1, 0, .6), hl=0.95, hw2=2.0)
+    ribbon3(g, a, b, (1, 0, 0), 0.3, fade(f'cool{j}', a, b, BLUE, 0.0, 1, 0, .6), hl=0.95, hw2=2.0, flow=j * 0.25)       # 흐름 모션 — 찬 공기가 먼저, 더운 공기가 뒤따라
 
 open(sys.argv[1], 'w', encoding='utf-8').write(g.svg(600, 12))
