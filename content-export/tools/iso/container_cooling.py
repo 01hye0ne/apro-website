@@ -42,13 +42,16 @@ g.box(0, T, 0, T, D - T, H, pal=CASE, out=CE, face_op=WOP)
 g.box(T, T, 0, L - 2 * T, D - 2 * T, 0.12, pal=FLOOR, out=CE, sw=1.2)
 
 # 배터리 랙 — 뒤 벽을 따라 한 줄
-x_end = L - 0.5 if KIND == 'air' else L - 3.1
+CX0, CW = T + 0.15, 2.35                   # 칠러(리퀴드) — 컨테이너 맨 안쪽(문 반대 끝, 2026-10-08 사용자)
+CD = 0.55 + 2.1 + 0.6                      # 칠러 앞면 y — 랙(깊이 2.1) 앞 배관 줄까지만, 랙 줄과 나란히
+x0r = 0.6 if KIND == 'air' else CX0 + CW + 0.35
+x_end = L - 0.5
 NR, rg = (9 if KIND == 'air' else 7), 0.14
-rw = (x_end - 0.6 - (NR - 1) * rg) / NR
+rw = (x_end - x0r - (NR - 1) * rg) / NR
 ry0, rd, rh = 0.55, 2.1, 4.6
 racks = []
 for i in range(NR):
-    x = 0.6 + i * (rw + rg)
+    x = x0r + i * (rw + rg)
     racks.append(x)
     g.box(x, ry0, 0.12, rw, rd, rh, pal=RACK)
     # 랙 앞면(+y) 모듈 칸 줄 · 상태 표시 점
@@ -57,7 +60,6 @@ for i in range(NR):
     plane(g, (x, ry0 + rd, 0.12 + rh), 'x', lines)
 
 ztop = 0.12 + rh                           # 랙 윗면
-CX0, CW = L - 2.75, 2.35                    # 칠러(안쪽 끝) x 시작 · 길이
 yp = ry0 + rd + 0.32                        # 순환 배관이 지나는 줄(랙 앞)
 zt, zb = ztop - 0.3, 0.5                    # 위 회수관(빨강) · 아래 공급관(파랑)
 risers = [x - rg / 2 for x in racks] + [racks[-1] + rw + rg / 2]
@@ -71,16 +73,16 @@ def loop_pipes():
         g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
                        f'<stop offset=".15" stop-color="{BLUE}"/><stop offset=".85" stop-color="{RED}"/></linearGradient>')
         pipe([(xr, yp, zb), (xr, yp, zt)], f'url(#{gid})', 8)
-    pipe([(risers[0], yp, zt), (CX0, yp, zt)], RED, 11)
-    pipe([(risers[0], yp, zb), (CX0, yp, zb)], BLUE, 11)
+    pipe([(risers[-1], yp, zt), (CX0 + CW, yp, zt)], RED, 11)
+    pipe([(risers[-1], yp, zb), (CX0 + CW, yp, zb)], BLUE, 11)
 
 
 def chiller():
-    """칠러 — 안쪽 끝(문 쪽), 앞면(+y)에 팬 그릴"""
-    g.box(CX0, 0.45, 0.12, CW, D - 1.0, 4.7, pal=UNIT, out=CE)
+    """칠러 — 맨 안쪽 끝, 앞면(+y)에 팬 그릴"""
+    g.box(CX0, 0.45, 0.12, CW, CD - 0.45, 4.7, pal=UNIT, out=CE)
     fan = ''.join(f'<path d="M.25 {w:.2f} H{CW - .25:.2f}" stroke="#7d869a" stroke-width=".07"/>' for w in [0.4 + k * 0.22 for k in range(9)])
     fan += f'<rect x=".2" y="2.55" width="{CW - .4:.2f}" height="1.9" fill="none" stroke="#9aa2b3" stroke-width=".05"/><circle cx="{CW / 2:.2f}" cy="3.5" r=".1" fill="#5d6475"/>'
-    plane(g, (CX0, D - 0.55, 4.82), 'x', fan)
+    plane(g, (CX0, CD, 4.82), 'x', fan)
 
 
 if KIND == 'liquid':
@@ -114,7 +116,7 @@ lu = ()
 for u in lu:
     front += louver(u, H - 1.95, 1.5, 1.35, 7)
 if KIND == 'liquid':
-    front += louver(L - 3.2, 1.9, 1.15, 3.2, 14)
+    front += louver(CX0 + 0.6, 1.9, 1.15, 3.2, 14)      # 칠러 앞 통풍 루버
 front += (f'<text x="{L * 0.36:.2f}" y="2.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="800" font-size="1.15" fill="{NAVY}">A-PRO</text>'
           f'<text x="{L * 0.36:.2f}" y="3.35" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
 plane(g, (0, D, H), 'x', front)
@@ -139,10 +141,10 @@ for (x, y, z) in [(0, D - c, -0.02), (L - c, D - c, -0.02), (L - c, 0, -0.02), (
 # ── 흐름 ──
 if KIND == 'liquid':
     g.raw('<g opacity=".95">')
-    for k in range(3):                        # 파랑 칠러 → 랙(←, 아래) · 빨강 랙 → 칠러(→, 위)
-        xa = CX0 - 0.7 - k * 3.2
-        ribbon3(g, (xa, yp + 0.05, zb), (xa - 0.95, yp + 0.05, zb), (0, 0, 1), 0.14, BLUE, hl=0.42, hw2=2.2)
-        ribbon3(g, (xa - 0.95, yp + 0.05, zt), (xa, yp + 0.05, zt), (0, 0, 1), 0.14, RED, hl=0.42, hw2=2.2)
+    for k in range(3):                        # 파랑 칠러 → 랙(→, 아래) · 빨강 랙 → 칠러(←, 위)
+        xa = CX0 + CW + 0.7 + k * 3.2
+        ribbon3(g, (xa, yp + 0.05, zb), (xa + 0.95, yp + 0.05, zb), (0, 0, 1), 0.14, BLUE, hl=0.42, hw2=2.2)
+        ribbon3(g, (xa + 0.95, yp + 0.05, zt), (xa, yp + 0.05, zt), (0, 0, 1), 0.14, RED, hl=0.42, hw2=2.2)
     g.raw('</g>')
 
 if KIND == 'air':
