@@ -3,7 +3,7 @@
 셀 밑에 냉각판(청록)이 깔린다. 냉각수는 왼쪽에서 들어와(파랑) 판을 따라 흐르고, 셀의 열이 판으로 내려가며(빨강 ↓)
 데워진 냉각수는 오른쪽 옆면 피팅으로 나간다(빨강). 2026-10-08 클라이언트 참고 자료(Coolant Inlet 왼쪽 · Outlet 오른쪽)대로."""
 import sys
-from iso import Iso, DEEP, BLUE, RED, ribbon3, plane
+from iso import logo, Iso, DEEP, BLUE, RED, ribbon3, plane
 
 CASE = dict(top=('#ffffff', '#f4f7fd'), left=('#eef2fb', '#e1e7f5'), right=('#f5f8fe', '#e9eef8'))
 CELL = dict(top=('#dbe7ff', '#cbdbff'), left=('#a4bbee', '#91abe4'), right=('#bacdf6', '#abc2f0'))
@@ -67,7 +67,7 @@ front = (
     + '<rect x="1.86" y=".64" width=".38" height=".4" rx=".03" fill="#1d2025"/>'
     + ''.join(f'<circle cx="{u}" cy="{w}" r=".055" fill="#8a909b"/>' for u in (1.5, 2.6) for w in (.38, 1.3))
     + f'<rect x="{L / 2 - 1.3}" y=".42" width="2.6" height=".78" rx=".08" fill="#121418" stroke="#4d525c" stroke-width=".035"/>'
-    + f'<text x="{L / 2}" y=".98" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="800" font-size=".48" fill="#ffffff" letter-spacing=".02">A-PRO</text>'
+    + logo(L / 2 - 0.95, 0.42 + (0.78 - 1.9 * 17 / 78) / 2, 1.9, '#ffffff')   # GNB 로고 흰색(logo-apro-white 와 같은 path)
     + f'<rect x="{L - 2.35}" y=".3" width="1.15" height="1.1" rx=".07" fill="#f07c2c" stroke="#a94f14" stroke-width=".045"/>'
     + f'<rect x="{L - 2.12}" y=".52" width=".69" height=".66" rx=".05" fill="#b8551a" stroke="#7d3a10" stroke-width=".03"/>'
     + f'<rect x="{L - 1.95}" y=".64" width=".35" height=".42" rx=".03" fill="#e4e7ee"/>'

@@ -131,3 +131,11 @@ def plane(g, origin, axis, body):
     else:
         m = (-C30 * s, S30 * s, 0, s)
     g.items.append(f'<g transform="matrix({m[0]:.3f} {m[1]:.3f} {m[2]:.3f} {m[3]:.3f} {X:.2f} {Y:.2f})">{body}</g>')
+
+
+def logo(x, y, width, fill):
+    """A-PRO 로고(GNB 와 같은 assets/logo-apro-blue.svg 의 path, 78×17)를 면 위 (x, y) 에 폭 width 로. 면 그림(plane) 안에서 쓴다"""
+    import os, re
+    src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'assets', 'logo-apro-blue.svg'), encoding='utf-8').read()
+    d = re.search(r'<path d="([^"]+)"', src).group(1)
+    return f'<g transform="translate({x:.3f} {y:.3f}) scale({width / 78:.5f})"><path d="{d}" fill="{fill}"/></g>'

@@ -3,7 +3,7 @@
 위를 걷어 낸 단면이라 안의 회백색 셀이 보인다. 찬 공기는 앞 그릴로 들어가고(파랑) 더운 공기는 위로 빠진다(빨강)."""
 import sys, os
 VAR = os.environ.get('LID', 'white')     # 'white' 흰 젖빛 반투명 케이스(2026-10-08 확정) · '' 열린 검정 단면 · 'lid' 검정 반투명 뚜껑 · 'all' 검정 뚜껑+벽 반투명
-from iso import Iso, LIGHT, DEEP, BLUE, RED, ribbon3, plane
+from iso import logo, Iso, LIGHT, DEEP, BLUE, RED, ribbon3, plane
 
 BLK = dict(top=('#454a55', '#3a3e48'), left=('#24272e', '#1c1f25'), right=('#2e3139', '#25282f'))
 BLK_IN = dict(top=('#454a55', '#3a3e48'), left=('#3a3e48', '#31353e'), right=('#363a43', '#2d3139'))
@@ -64,7 +64,7 @@ front = (
     + ''.join(f'<circle cx="{u}" cy="{w}" r=".055" fill="#8a909b"/>' for u in (1.5, 2.6) for w in (.38, 1.3))
     # A-PRO 명판
     + f'<rect x="{L / 2 - 1.3}" y=".42" width="2.6" height=".78" rx=".08" fill="#121418" stroke="#4d525c" stroke-width=".035"/>'
-    + f'<text x="{L / 2}" y=".98" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="800" font-size=".48" fill="#ffffff" letter-spacing=".02">A-PRO</text>'
+    + logo(L / 2 - 0.95, 0.42 + (0.78 - 1.9 * 17 / 78) / 2, 1.9, '#ffffff')   # GNB 로고 흰색(logo-apro-white 와 같은 path)
     # 주황 커넥터
     + f'<rect x="{L - 2.35}" y=".3" width="1.15" height="1.1" rx=".07" fill="#f07c2c" stroke="#a94f14" stroke-width=".045"/>'
     + f'<rect x="{L - 2.12}" y=".52" width=".69" height=".66" rx=".05" fill="#b8551a" stroke="#7d3a10" stroke-width=".03"/>'
