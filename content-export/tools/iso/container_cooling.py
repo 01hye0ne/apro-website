@@ -2,7 +2,7 @@
 #       python content-export/tools/iso/container_cooling.py liquid assets/ess-container-liquid-cooling.svg
 """Container Air / Liquid Cooling — 모듈 두 장과 같은 말씨(흰 젖빛 반투명 케이스 · 연한 파랑 배터리).
 실제 컨테이너 사진처럼 골판 벽 · A-PRO 로고 · 끝면 문 · 모서리 쇠붙이 · 검정 밑틀.
-air    : 아래 루버로 찬 공기(파랑)가 들어가고 지붕 통풍구로 더운 공기(빨강)가 빠진다
+air    : 문(옆면)에 붙은 HVAC 로 찬 공기(파랑)를 안으로 들여 랙 줄을 따라 흘린다 — 밖으로 빼는 더운 바람은 없다(2026-10-08 클라이언트)
 liquid : 안쪽 끝 칠러가 랙마다 찬 냉각수(파랑)를 보내고 데워진 냉각수(빨강)를 돌려받는다"""
 import sys
 from iso import Iso, DEEP, BLUE, RED, ribbon3, plane
@@ -94,13 +94,10 @@ def louver(u, w, bw, bh, n):
     return s
 
 
-lu = (1.3, 4.4, 7.5, 10.6) if KIND == 'air' else ()
+lu = ()
 for u in lu:
     front += louver(u, H - 1.95, 1.5, 1.35, 7)
-if KIND == 'air':
-    for u in (6.6, 8.3, 10.0, 11.7):
-        front += louver(u, 0.5, 1.1, 0.55, 4)
-else:
+if KIND == 'liquid':
     front += louver(L - 3.2, 1.9, 1.15, 3.2, 14)
 front += (f'<text x="{L * 0.36:.2f}" y="2.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="800" font-size="1.15" fill="{NAVY}">A-PRO</text>'
           f'<text x="{L * 0.36:.2f}" y="3.35" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
@@ -142,13 +139,29 @@ if KIND == 'liquid':
         ribbon3(g, (xa - 1.0, YR, zp + 0.02), (xa, YR, zp + 0.02), (0, 1, 0), 0.13, RED, hl=0.42, hw2=2.2)
 
 if KIND == 'air':
-    for j, u in enumerate((6.6, 8.3, 10.0, 11.7)):                       # 더운 공기 — 지붕 위로
-        x, y = u + 0.55, D * 0.5
-        a, b = (x, y, H + 0.2), (x, y, H + 3.0)
-        ribbon3(g, a, b, (1, 0, 0), 0.32, fade(f'hot{j}', a, b, RED, 0, 1, 0, .7), hl=0.95, hw2=2.0)
-    for j, u in enumerate(lu):                                           # 찬 공기 — 아래 루버로
-        x = u + 0.75
-        a, b = (x, D + 3.4, 1.15), (x, D + 0.2, 1.15)
-        ribbon3(g, a, b, (1, 0, 0), 0.3, fade(f'cool{j}', a, b, BLUE, 0, 1, 0, .6), hl=0.95, hw2=2.0)
+    # 문짝(앞쪽 문)에 붙은 HVAC — 위아래 흡입 그릴 둘 + 가운데 판
+    hy0, hy1, hz0, hz1 = D / 2 + 0.3, D - 0.5, 0.9, 5.3
+    g.box(L, hy0, hz0, 0.5, hy1 - hy0, hz1 - hz0, pal=UNIT, out=CE)
+    hw_, hh = hy1 - hy0, hz1 - hz0
+    grill = lambda w0, w1: (f'<rect x=".22" y="{w0:.2f}" width="{hw_ - .44:.2f}" height="{w1 - w0:.2f}" fill="#e6e9f0" stroke="#7d869a" stroke-width=".05"/>'
+                            + ''.join(f'<path d="M.32 {w0 + .16 + k * .2:.2f} H{hw_ - .32:.2f}" stroke="#5d6475" stroke-width=".07"/>' for k in range(int((w1 - w0 - .2) / .2))))
+    hv = grill(0.3, 1.75) + grill(hh - 1.75, hh - 0.3)
+    hv += f'<rect x=".22" y="2.0" width="{hw_ - .44:.2f}" height="{hh - 4.0:.2f}" fill="none" stroke="#9aa2b3" stroke-width=".05"/><circle cx="{hw_ / 2:.2f}" cy="{hh / 2:.2f}" r=".1" fill="#5d6475"/>'
+    plane(g, (L + 0.5, hy0, hz1), 'y', hv)
+    # 찬 공기 — 밖에서 HVAC 로 들어간다
+    yc = (hy0 + hy1) / 2
+    for j, z in enumerate((hz1 - 0.95, (hz0 + hz1) / 2, hz0 + 0.95)):
+        a, b = (L + 4.0, yc, z), (L + 0.65, yc, z)
+        ribbon3(g, a, b, (0, 0, 1), 0.28, fade(f'cool{j}', a, b, BLUE, 0, 1, 0, .6), hl=0.95, hw2=2.0)
+    # 안 — 찬 공기가 랙 줄을 따라 흐른다(벽 너머 x-ray, 문 쪽에서 안쪽으로 옅어짐)
+    yi = ry0 + rd + 0.45
+    for j, z in enumerate((2.35, 1.15)):
+        (x1, y1), (x2, y2) = g.p(L - 0.6, yi, z), g.p(4.6, yi, z)
+        gid = f'in{j}'
+        g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
+                       f'<stop offset="0" stop-color="{BLUE}" stop-opacity=".75"/><stop offset="1" stop-color="{BLUE}" stop-opacity=".2"/></linearGradient>')
+        for k in range(3):                       # 셋 — 넷째는 앞면 로고와 겹친다
+            xa = L - 0.8 - k * 3.4
+            ribbon3(g, (xa, yi, z), (xa - 2.4, yi, z), (0, 0, 1), 0.3, f'url(#{gid})', hl=0.9, hw2=1.9)
 
 open(sys.argv[2], 'w', encoding='utf-8').write(g.svg(600, 12))
