@@ -123,11 +123,13 @@ def ribbon3(g, a, b, wv, hw, fill, hl=0.9, opacity=1, hw2=2.1):
 
 
 def plane(g, origin, axis, body):
-    """면 위 2차원 그림 — origin(3차원)에서 u 는 axis('x' 또는 y') 방향, w 는 아래(-z). 단위는 3차원 단위"""
+    """면 위 2차원 그림 — origin(3차원)에서 u 는 axis('x' 또는 'y') 방향, w 는 아래(-z). 'z' 는 윗면(u=x, w=y). 단위는 3차원 단위"""
     X, Y = g.p(*origin)
     s = g.s
     if axis == 'x':
         m = (C30 * s, S30 * s, 0, s)
+    elif axis == 'z':                       # 윗면 — u 는 x 방향, w 는 y 방향
+        m = (C30 * s, S30 * s, -C30 * s, S30 * s)
     else:
         m = (-C30 * s, S30 * s, 0, s)
     g.items.append(f'<g transform="matrix({m[0]:.3f} {m[1]:.3f} {m[2]:.3f} {m[3]:.3f} {X:.2f} {Y:.2f})">{body}</g>')

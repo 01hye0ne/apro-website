@@ -44,7 +44,9 @@ g.box(T, T, 0, L - 2 * T, D - 2 * T, 0.12, pal=FLOOR, out=CE, sw=1.2)
 
 # 배터리 랙 — 뒤 벽을 따라 한 줄
 CX0, CW = T + 0.15, 2.35                   # 칠러(리퀴드) — 컨테이너 맨 안쪽(문 반대 끝, 2026-10-08 사용자)
-CD = 0.55 + 2.1                            # 칠러 앞면 y — 랙과 같은 깊이(랙이 칠러 위로 겹치게, 2026-10-08 사용자)
+CD = D - 0.6                               # 칠러 앞면 y — 앞쪽으로 깊게(2026-10-08 사용자). 랙보다 안쪽(x 작음)이라 랙은 여전히 칠러 위로 겹친다
+CH = 4.7                                   # 칠러 높이
+HOLE = dict(red=1.3, blue=0.55)            # 칠러 옆면(문 쪽 면) 아래 배관 구멍 높이
 x0r = 0.6 if KIND == 'air' else CX0 + CW + 0.35
 x_end = L - 0.5
 NR, rg = (9 if KIND == 'air' else 7), 0.14
@@ -74,16 +76,31 @@ def loop_pipes():
         g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
                        f'<stop offset=".15" stop-color="{BLUE}"/><stop offset=".85" stop-color="{RED}"/></linearGradient>')
         pipe([(xr, yp, zb), (xr, yp, zt)], f'url(#{gid})', 8)
-    pipe([(risers[-1], yp, zt), (CX0 + CW, yp, zt)], RED, 11)
-    pipe([(risers[-1], yp, zb), (CX0 + CW, yp, zb)], BLUE, 11)
+    xd = CX0 + CW + 0.32                    # 칠러 앞에서 아래로 꺾어 구멍으로
+    pipe([(risers[-1], yp, zt), (xd, yp, zt), (xd, yp, HOLE['red']), (CX0 + CW, yp, HOLE['red'])], RED, 11)
+    pipe([(risers[-1], yp, zb), (xd, yp, zb), (xd, yp, HOLE['blue']), (CX0 + CW, yp, HOLE['blue'])], BLUE, 11)
 
 
 def chiller():
     """칠러 — 맨 안쪽 끝, 앞면(+y)에 팬 그릴"""
-    g.box(CX0, 0.45, 0.12, CW, CD - 0.45, 4.7, pal=CHILL, out=CE)
-    fan = ''.join(f'<path d="M.25 {w:.2f} H{CW - .25:.2f}" stroke="#7d869a" stroke-width=".07"/>' for w in [0.4 + k * 0.22 for k in range(9)])
-    fan += f'<rect x=".2" y="2.55" width="{CW - .4:.2f}" height="1.9" fill="none" stroke="#9aa2b3" stroke-width=".05"/><circle cx="{CW / 2:.2f}" cy="3.5" r=".1" fill="#5d6475"/>'
-    plane(g, (CX0, CD, 4.82), 'x', fan)
+    g.box(CX0, 0.45, 0.12, CW, CD - 0.45, CH, pal=CHILL, out=CE)
+    zc = 0.12 + CH
+    fan = ''.join(f'<path d="M.25 {w:.2f} H{CW - .25:.2f}" stroke="#5d6475" stroke-width=".07"/>' for w in [0.4 + k * 0.22 for k in range(9)])
+    fan += f'<rect x=".2" y="2.55" width="{CW - .4:.2f}" height="1.9" fill="none" stroke="#5d6475" stroke-width=".05"/><circle cx="{CW / 2:.2f}" cy="3.5" r=".1" fill="#3d4352"/>'
+    plane(g, (CX0, CD, zc), 'x', fan)
+    # 윗면 둥근 팬 둘 — 테 · 날개 · 가운데 축
+    top = ''
+    for v in ((CD - 0.45) * 0.3, (CD - 0.45) * 0.72):
+        cu, r = CW / 2, 0.82
+        top += f'<circle cx="{cu:.2f}" cy="{v:.2f}" r="{r}" fill="#5d6475" stroke="#3d4352" stroke-width=".06"/>'
+        top += f'<circle cx="{cu:.2f}" cy="{v:.2f}" r="{r - .12:.2f}" fill="#7d8597"/>'
+        top += ''.join(f'<path d="M{cu:.2f} {v:.2f} L{cu + (r - .18) * __import__("math").cos(a):.3f} {v + (r - .18) * __import__("math").sin(a):.3f}" stroke="#3d4352" stroke-width=".09" stroke-linecap="round"/>'
+                       for a in [k * 3.14159 / 3 + .3 for k in range(6)])
+        top += f'<circle cx="{cu:.2f}" cy="{v:.2f}" r=".16" fill="#3d4352"/>'
+    plane(g, (CX0, 0.45, zc), 'z', top)
+    # 옆면(문 쪽 면) 아래 배관 구멍
+    holes = ''.join(f'<circle cx="{yp - 0.45:.2f}" cy="{CH + 0.12 - z:.2f}" r=".24" fill="#2a2e36" stroke="#3d4352" stroke-width=".05"/>' for z in HOLE.values())
+    plane(g, (CX0 + CW, 0.45, zc), 'y', holes)
 
 
 if KIND == 'liquid':
