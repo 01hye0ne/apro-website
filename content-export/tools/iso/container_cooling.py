@@ -8,6 +8,8 @@ import sys
 from iso import Iso, DEEP, BLUE, RED, ribbon3, plane
 
 KIND = sys.argv[1]
+import os as _os
+LOGO_FIX = _os.environ.get('LOGO_FIX', 'mask') # 'mask' 로고 둘레만 벽 너머 배관 덧그림을 걷음(2026-10-08 확정) · 'outline' 글자 흰 외곽선(시험) · '' 없음
 CASE = dict(top=('#ffffff', '#f4f7fd'), left=('#eef2fb', '#e1e7f5'), right=('#f5f8fe', '#e9eef8'))
 RACK = dict(top=('#dbe7ff', '#cbdbff'), left=('#a4bbee', '#91abe4'), right=('#bacdf6', '#abc2f0'))
 FLOOR = dict(top=('#e6ebf6', '#dde3f1'), left=('#cfd6e8', '#cfd6e8'), right=('#d8deee', '#d8deee'))
@@ -117,7 +119,15 @@ g.box(L - T, T, 0, T, D - 2 * T, H, pal=CASE, out=CE, face_op=WOP)
 g.box(0, D - T, 0, L, T, H, pal=CASE, out=CE, face_op=WOP)
 
 if KIND == 'liquid':
-    g.raw('<g opacity=".7">')                 # 젖빛 벽 너머로 또렷이 — 배관만 한 번 더(칠러는 덧그리면 랙을 덮는다)
+    mk = ''
+    if LOGO_FIX == 'mask':                   # 로고 둘레(앞면)만 덧그림을 걷어 — 그 자리 배관은 젖빛 벽 너머로만 보인다
+        LWm = 5.2
+        poly = [(L / 2 - LWm / 2 - .7, D, H - 1.2), (L / 2 + LWm / 2 + .7, D, H - 1.2), (L / 2 + LWm / 2 + .7, D, H - 4.1), (L / 2 - LWm / 2 - .7, D, H - 4.1)]
+        g.defs['lmblur'] = '<filter id="lmblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>'
+        g.defs['lm'] = (f'<mask id="lm" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="6000" height="6000">'
+                        f'<rect x="-3000" y="-3000" width="6000" height="6000" fill="#fff"/><path d="{g.path(poly)}" fill="#000" filter="url(#lmblur)"/></mask>')
+        mk = ' mask="url(#lm)"'
+    g.raw(f'<g opacity=".7"{mk}>')                 # 젖빛 벽 너머로 또렷이 — 배관만 한 번 더(칠러는 덧그리면 랙을 덮는다)
     loop_pipes()
     g.raw('</g>')
 
@@ -144,8 +154,11 @@ _logo = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'
 LOGO_D, LOGO_FILL = re.search(r'<path d="([^"]+)" fill="([^"]+)"', _logo).groups()
 LW = 5.2                                    # 로고 폭(단위) — 78 → 5.2
 lk = LW / 78
-front += f'<g transform="translate({L / 2 - LW / 2:.3f} 1.85) scale({lk:.5f})"><path d="{LOGO_D}" fill="{LOGO_FILL}"/></g>'
-front += (f'<text x="{L / 2:.2f}" y="3.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
+_ol = (f' stroke="#ffffff" stroke-width="{0.16 / lk:.2f}" stroke-linejoin="round" paint-order="stroke"' if LOGO_FIX == 'outline' else '')
+_ot = (' stroke="#ffffff" stroke-width=".12" stroke-linejoin="round" paint-order="stroke"' if LOGO_FIX == 'outline' else '')
+# 로고 · 글자는 화살표보다 위 — 따로 모아 맨 마지막에 그린다
+front_logo = f'<g transform="translate({L / 2 - LW / 2:.3f} 1.85) scale({lk:.5f})"><path d="{LOGO_D}" fill="{LOGO_FILL}"{_ol}/></g>'
+front_logo += (f'<text x="{L / 2:.2f}" y="3.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a"{_ot}>ENERGY STORAGE SYSTEM</text>')
 plane(g, (0, D, H), 'x', front)
 
 # ── 끝면(문) 디테일 ──
@@ -199,5 +212,7 @@ if KIND == 'air':
         for k in range(3):                       # 셋 — 넷째는 앞면 로고와 겹친다
             xa = L - 0.8 - k * 3.4
             ribbon3(g, (xa, yi, z), (xa - 2.4, yi, z), (0, 0, 1), 0.3, f'url(#{gid})', hl=0.9, hw2=1.9)
+
+plane(g, (0, D, H), 'x', front_logo)
 
 open(sys.argv[2], 'w', encoding='utf-8').write(g.svg(600, 12))
