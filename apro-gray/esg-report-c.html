@@ -228,6 +228,12 @@
                  inputmode="numeric" placeholder="010-0000-0000" />
         </div>
       </div>
+      <div class="cform-row">
+        <span class="cform-k">자동입력 방지 <abbr class="req" title="필수">*</abbr></span>
+        <div class="cform-v cform-v--captcha">
+          <div id="rpTurnstile"></div>
+        </div>
+      </div>
     </form>
     <button type="submit" form="reportForm" class="cform-submit">제보하기</button>
     <p class="cform-msg" id="rpMsg" role="status" hidden></p>
@@ -360,14 +366,34 @@
     else{host.value='';host.readOnly=false;host.focus();}
   });
 
+  /* 3) 로봇 확인 — Cloudflare Turnstile(2026-10-08). 지금은 Cloudflare 가 공개한 시험용 키라 늘 통과한다
+        (1x00000000000000000000AA — 아무 도메인에서나 돈다). 정식 키로 바꿀 때는 sitekey 만 갈고,
+        받은 토큰은 접수 서버가 비밀 키로 siteverify 에 물어 확인해야 한다 — 비밀 키는 페이지에 두지 않는다.
+        화면 글 언어는 영문 보기(i18n-c.js 가 html lang 을 en 으로)를 따른다 */
+  var TS_KEY='1x00000000000000000000AA', tsId=null;
+  var EN=function(){return document.documentElement.lang==='en';};
+  function say(t){msg.textContent=t;msg.hidden=false;}
+  window.rpTsReady=function(){
+    if(!window.turnstile)return;
+    tsId=turnstile.render('#rpTurnstile',{
+      sitekey:TS_KEY,size:'flexible',theme:'light',language:EN()?'en':'ko',
+      'error-callback':function(){say('로봇 확인을 불러오지 못했습니다. 새로고침한 뒤 다시 시도해 주세요.');}
+    });
+  };
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
+    if(!window.turnstile||tsId===null||!turnstile.getResponse(tsId)){
+      say('로봇이 아닌지 확인을 마친 뒤 다시 눌러 주세요.');
+      return;
+    }
     msg.textContent='지금은 접수 서버가 연결되어 있지 않아 온라인 제보가 저장되지 않습니다. '
       +'전화 031-689-3963 또는 서신으로 보내 주시면 같은 절차로 처리됩니다.';
     msg.hidden=false;
   });
 })();
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=rpTsReady" async defer></script>
 <script src="gnb-c.js"></script>
 <script src="i18n-c.js"></script>
 </body>
