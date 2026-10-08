@@ -393,7 +393,7 @@ window.APRO_I18N_EN = {
 "소듐 이온 배터리": "Sodium-Ion Battery",
 "소재 입고 및 검수": "Material Receiving & Inspection",
 "소재부터 시스템까지 잇는 수직 계열화 역량 (Materials to System)": "Vertical Integration: From Materials to Systems",
-"솔루션": "SOLUTION",
+"솔루션": "Solution",
 "수자원 관리": "Water Management",
 "수자원의 지속 가능한 이용을 위해 용수 사용량을 절감하고 재사용 및 재활용량을 증가시켜 효율적으로 관리합니다.": "For sustainable water use, we reduce water consumption and increase reuse and recycling to manage water efficiently.",
 "순간적인 전력 중단에도 안정적인 운영이 요구되는 산업시설 및 주요 생산설비를 위한 배터리 백업 솔루션입니다.": "This is a battery backup solution for industrial facilities and key production equipment that require stable operation even during momentary power outages.",

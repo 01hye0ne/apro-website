@@ -69,21 +69,28 @@
       var only = null, n = 0, text = false;
       for(var c = el.firstChild; c; c = c.nextSibling){
         if(c.nodeType === 3 && c.nodeValue.trim()) text = true;
-        else if(c.nodeType === 1 && c.tagName !== 'svg' && c.tagName !== 'IMG'){ only = c; n++; }
+        /* 글 없는 꾸밈(점 · 아이콘 span)은 세지 않는다 — 그대로 두고 글 든 쪽에 넣는다 */
+        else if(c.nodeType === 1 && c.tagName !== 'svg' && c.tagName !== 'IMG' && c.textContent.trim()){ only = c; n++; }
       }
       if(text || n !== 1 || only.tagName === 'BR') return el;
       el = only;
     }
   }
   function put(el, en){
-    /* 링크 · 단추 안의 아이콘(svg · img)은 남기고 글만 바꾼다 */
-    var keep = [].filter.call(el.childNodes, function(c){ return c.nodeType === 1 && (c.tagName === 'svg' || c.tagName === 'IMG'); });
+    /* 글 없는 꾸밈(아이콘 svg · img, 점 span)은 남기고 글만 바꾼다 — 글 앞에 있던 것은 앞에, 뒤에 있던 것은 뒤에 */
+    var pre = [], post = [], seen = false;
+    [].forEach.call(el.childNodes, function(c){
+      var deco = c.nodeType === 1 && c.tagName !== 'BR' && (c.tagName === 'svg' || c.tagName === 'IMG' || !c.textContent.trim());
+      if(deco) (seen ? post : pre).push(c);
+      else if(c.textContent.trim()) seen = true;
+    });
     el.textContent = '';
+    pre.forEach(function(k){ el.appendChild(k); });
     en.split('\n').forEach(function(l, i){
       if(i) el.appendChild(document.createElement('br'));
       el.appendChild(document.createTextNode(l));
     });
-    keep.forEach(function(k){ el.appendChild(k); });
+    post.forEach(function(k){ el.appendChild(k); });
   }
   function doText(t){
     var raw = t.nodeValue, en = look(flat(raw));
