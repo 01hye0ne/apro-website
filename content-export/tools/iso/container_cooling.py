@@ -138,7 +138,7 @@ if KIND == 'liquid':
             pipe([(L, pts[0][1], zp), (L + 1.4, pts[0][1], zp), (L + 1.4, pts[0][1], 4.4)], c, w)
     for k in range(4):                                                   # 파랑 → 랙으로(←) · 빨강 → 유닛으로(→)
         xa = L - 1.3 - k * 3.3
-        ribbon3(g, (xa, YB, zp + 0.02), (xa - 1.0, YB, zp + 0.02), (1, -1, 0) if False else (0, 1, 0), 0.13, BLUE, hl=0.42, hw2=2.2)
+        ribbon3(g, (xa, YB, zp + 0.02), (xa - 1.0, YB, zp + 0.02), (0, 1, 0), 0.13, BLUE, hl=0.42, hw2=2.2)
         ribbon3(g, (xa - 1.0, YR, zp + 0.02), (xa, YR, zp + 0.02), (0, 1, 0), 0.13, RED, hl=0.42, hw2=2.2)
 
 if KIND == 'air':
