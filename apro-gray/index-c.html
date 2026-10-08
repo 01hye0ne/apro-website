@@ -370,15 +370,16 @@
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 1180 아래 메인 문구는 한 줄 식으로 화면을 따라 준다(2026-10-08 요청) — 구간마다 식이 달라(901~1180 4.4vw · 768~900 5.4vw ·
      폰 7vw) 경계를 넘을 때 글자가 튀었다(767 에서 42 → 54). 짚은 점은 그대로 둔다: 390 → 28 · 820(세로 아이패드) → 44 ·
-     1035 이상 → 52(가로 아이패드 1180 포함). 1181 위는 위 기본값 min(52, 5.4vw) = 52 로 이어진다 */
+     1035 이상 → 52(가로 아이패드 1180 포함). 1181 위는 위 기본값 min(52, 5.4vw) = 52 로 이어진다.
+     서브 문구도 같은 까닭으로 이었다 — 900 경계에서 20 → 18 로 떨어졌다. 900 아래 18 · 1180 에서 20(위 --fs-h2 와 만난다) */
   @media(max-width:1180px){
     html .v2banner .en{font-size:clamp(28px,calc(13.5px + 3.72vw),52px)}
+    html .v2banner .kor{font-size:clamp(18px,calc(11.57px + .714vw),20px)}
   }
 
   /* 좁은 화면 — 탭 줄은 두 칸씩 상자 묶음으로 푼다(A 와 같다). 문구 윗자리는 화면 키를 따라 준다 */
   @media(max-width:900px){
     .v2banner .v2b-inner{padding-top:calc(var(--c-gnb-h) + clamp(64px,18vh,var(--hm-pad)));padding-bottom:20px}
-    .v2banner .kor{font-size:var(--fs-body)}
     /* 좁은 태블릿(768~900)은 넓은 화면처럼 한 줄 다섯 칸 그대로(2026-09-29 요청) — 칸 폭 147 이상이라
        가장 긴 이름(화합물 전력 반도체)도 14 글자 크기면 한 줄에 든다. 상자 묶음은 폰(767 이하)만 */
     .v2banner .bnav .bt{font-size:var(--fs-meta)}
