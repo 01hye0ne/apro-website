@@ -1,7 +1,7 @@
 # 실행: python content-export/tools/iso/module_liquid_cooling.py assets/ess-module-liquid-cooling.svg
 """Module Liquid Cooling — 에어 쿨링과 같은 흰 젖빛 반투명 케이스 · 연한 파랑 셀.
-셀 밑에 냉각판(청록)이 깔린다. 냉각수는 왼쪽에서 들어와(파랑) 판을 따라 흐르고, 셀의 열이 판으로 내려가며(빨강 ↓)
-데워진 냉각수는 오른쪽 옆면 피팅으로 나간다(빨강). 2026-10-08 클라이언트 참고 자료(Coolant Inlet 왼쪽 · Outlet 오른쪽)대로."""
+셀 밑에 냉각판(청록)이 깔린다. 찬 냉각수는 옆면 피팅으로 들어와(파랑) 판을 따라 흐르고, 셀의 열이 판으로 내려가며(빨강 ↓)
+데워진 냉각수는 반대 끝으로 나간다(빨강). 좌우 반전 화면에서 Inlet 왼쪽 · Outlet 오른쪽(클라이언트 참고 자료 순서)."""
 import sys
 from iso import logo, Iso, DEEP, BLUE, RED, ribbon3, plane
 
@@ -29,7 +29,7 @@ ch, pz = 1.85, 0.6                          # 셀 높이 · 냉각판 두께
 cx0 = T + 0.31
 # 피팅 자리(오른쪽 면) — 들어옴(아래) · 나감(위)
 FIT = dict(out=(1.0, 0.5))                # 옆면 오른쪽(뒤) 구석 냉각판 높이 피팅 하나 — 2026-10-08 사용자
-INLET_Y = D - 0.6                          # 들어오는 쪽(왼쪽 끝) — 냉각판 높이
+INLET_Y = D - 0.6                          # x = 0 끝 나감 화살표 줄 — 냉각판 높이
 
 g.box(-0.25, -0.25, -0.22, L + 0.5, D + 0.5, 0.22, pal=BASE, out=EDGE, sw=2)
 g.box(0, 0, 0, L, T, H, pal=CASE, out=CE, face_op=0.55)
@@ -80,14 +80,15 @@ plane(g, (L, 0, H), 'y', right)
 
 g.box(-0.04, -0.04, H, L + 0.08, D + 0.08, 0.16, pal=CASE, out=CE, face_op=0.3)
 
-# 냉각판 속 물길 — 앞면 판 높이(x-ray). 들어온 냉각수가 판을 따라 흐르며 셀 열을 받아 데워진다
-(px1, py1), (px2, py2) = g.p(0.9, D, pz / 2), g.p(L - 0.9, D, pz / 2)
+# 냉각판 속 물길 — 앞면 판 높이(x-ray). 옆면 피팅(x = L)으로 들어온 냉각수가 판을 따라 x = 0 끝으로 흐르며 데워진다
+# (좌우 반전 화면에서 왼쪽 → 오른쪽으로 읽히게, 2026-10-08 사용자)
+(px1, py1), (px2, py2) = g.p(L - 0.9, D, pz / 2), g.p(0.9, D, pz / 2)
 g.defs['flow'] = (f'<linearGradient id="flow" gradientUnits="userSpaceOnUse" x1="{px1:.1f}" y1="{py1:.1f}" x2="{px2:.1f}" y2="{py2:.1f}">'
                   f'<stop offset=".72" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/></linearGradient>')
 g.raw('<g opacity=".85">')
 for k in range(9):
-    x1 = 0.75 + k * 1.15
-    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 + 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2)
+    x1 = L - 0.75 - k * 1.15
+    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 - 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2)
 g.raw('</g>')
 # 셀의 열이 냉각판으로 — 뒤 줄 셀을 지나 내려가는 빨강 화살표(x-ray)
 g.raw('<g opacity=".9">')
@@ -96,24 +97,15 @@ for j, y in enumerate((rows[0][0] + rows[0][1] / 2, rows[1][0] + rows[1][1] / 2)
     a, b = (XL + 0.02, y, pz + ch + 0.9), (XL + 0.02, y, pz + 0.1)
     ribbon3(g, a, b, (0, 1, 0), 0.22, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2)
 g.raw('</g>')
-# 찬 냉각수 들어옴(Inlet) — 왼쪽 끝 냉각판 높이로, 모듈을 가리킨다
-a, b = (-3.3, INLET_Y, pz / 2 - 0.1), (-0.15, INLET_Y, pz / 2 - 0.1)
+# 데워진 냉각수 나감(Outlet) — x = 0 끝 냉각판 높이에서 바깥으로(반전 화면의 오른쪽)
+a, b = (-0.15, INLET_Y, pz / 2 - 0.1), (-3.3, INLET_Y, pz / 2 - 0.1)
+ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1)
+
+# 옆면 피팅(금속 너트 + 슬리브) — 찬 냉각수 들어옴(Inlet), 끝이 피팅을 가리킨다(반전 화면의 왼쪽)
+yy, zz = FIT['out']
+g.box(L, yy - 0.34, zz - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
+g.box(L + 0.32, yy - 0.24, zz - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
+a, b = (L + 4.1, yy, zz), (L + 0.9, yy, zz)
 ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cin', a, b, BLUE, 0, 1, 0, .55), hl=0.85, hw2=2.1)
-
-
-
-
-
-# 바깥 피팅(금속 너트 + 슬리브)과 냉각수 화살표 — 위(나감)를 먼저, 아래(들어옴)를 나중에
-for k in ('out',):
-    yy, zz = FIT[k]
-    g.box(L, yy - 0.34, zz - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
-    g.box(L + 0.32, yy - 0.24, zz - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
-    if k == 'inn':     # 찬 냉각수가 들어온다 — 끝이 피팅을 가리킨다
-        a, b = (L + 4.1, yy, zz), (L + 0.9, yy, zz)
-        ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cin', a, b, BLUE, 0, 1, 0, .55), hl=0.85, hw2=2.1)
-    else:              # 데워진 냉각수가 나간다
-        a, b = (L + 0.9, yy, zz), (L + 4.1, yy, zz)     # 데워진 냉각수 나감(Outlet) — 바깥으로
-        ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1)
 
 open(sys.argv[1], 'w', encoding='utf-8').write(g.svg(600, 12))
