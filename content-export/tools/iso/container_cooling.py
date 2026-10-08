@@ -117,8 +117,15 @@ for u in lu:
     front += louver(u, H - 1.95, 1.5, 1.35, 7)
 if KIND == 'liquid':
     front += louver(CX0 + 0.6, 1.9, 1.15, 3.2, 14)      # 칠러 앞 통풍 루버
-front += (f'<text x="{L * 0.36:.2f}" y="2.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="800" font-size="1.15" fill="{NAVY}">A-PRO</text>'
-          f'<text x="{L * 0.36:.2f}" y="3.35" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
+# A-PRO 로고 — GNB 로고(assets/logo-apro-blue.svg, 78×17 path 하나)를 그대로 앞면 각도로. 앞면 가운데
+import os, re
+_logo = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'assets', 'logo-apro-blue.svg'), encoding='utf-8').read()
+LOGO_D, LOGO_FILL = re.search(r'<path d="([^"]+)" fill="([^"]+)"', _logo).groups()
+LW = 5.2                                    # 로고 폭(단위) — 78 → 5.2
+lk = LW / 78
+front += f'<rect x="{L / 2 - LW / 2 - .45:.2f}" y="1.45" width="{LW + .9:.2f}" height="2.45" rx=".12" fill="#ffffff" fill-opacity=".86"/>'   # 로고 뒤 흰 판 — 안의 배관 · 화살표와 떼어 읽히게
+front += f'<g transform="translate({L / 2 - LW / 2:.3f} 1.85) scale({lk:.5f})"><path d="{LOGO_D}" fill="{LOGO_FILL}"/></g>'
+front += (f'<text x="{L / 2:.2f}" y="3.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
 plane(g, (0, D, H), 'x', front)
 
 # ── 끝면(문) 디테일 ──
