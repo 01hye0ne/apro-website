@@ -460,7 +460,9 @@
     document.body.appendChild(dlg);
   }
   function render(key){
-    var d = window.APRO_POLICY[key].ko, ul = null;
+    /* 영문 보기(i18n-c.js 가 <html lang="en">)이고 영문 글이 있으면 영문 */
+    var P = window.APRO_POLICY[key], en = document.documentElement.lang === 'en' && P.en && P.en.arts.length;
+    var d = en ? P.en : P.ko, ul = null;
     ttl.textContent = d.title;
     bd.textContent = '';
     function put(it){
