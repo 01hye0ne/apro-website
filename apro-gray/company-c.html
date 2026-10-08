@@ -417,6 +417,8 @@
                     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
                     text-align:center;white-space:nowrap;color:#fff}
   .co-apro .vals li:nth-child(n+4){margin-top:calc(var(--d) * -.1)}
+  /* 영문 보기(i18n-c.js)에서는 원 아래 풀이(국문 이름의 영문)가 영문 이름과 겹말이 되어 숨긴다 */
+  html[lang="en"] .co-apro .vals span{display:none}
   /* 넓은 화면 — 문장과 원 사이를 반으로(2026-10-07 요청). 원을 판 바닥에 붙이던 space-between 을 풀고 문장 아래 고정 간격
      (지름의 85%, 1920 에서 151 — 예전 간격 ~300 의 절반)으로 둔다. 판은 비율 대신 글 높이를 따라 줄고, 사진은 아래를 붙든 채
      위 하늘만 덜 보인다 */
@@ -1133,5 +1135,6 @@
 })();
 </script>
 <script src="gnb-c.js"></script>
+<script src="i18n-c.js"></script>
 </body>
 </html>
