@@ -54,7 +54,7 @@ def rack(power):
         face += f'<g transform="translate({fr + .15:.2f} {w:.2f})">{module_face(inner_w, hh, kind == "slim")}</g>'
         w += hh + 0.1
     face += f'<rect x="0" y="{H - .45:.2f}" width="{W}" height=".45" fill="#15171b"/>'
-    plane(g, (0, Dp, zb + H), 'x', face)
+    plane(g, (0, Dp, zb + H), 'x', face, flipw=W)
     # 옆면 — 손잡이 홈 · 나사
     side = f'<rect x="{Dp - 1.2:.2f}" y="1.6" width=".22" height=".9" rx=".1" fill="#0b0c0f"/>'
     side += ''.join(f'<circle cx="{u:.2f}" cy="{w:.2f}" r=".06" fill="#4d535e"/>' for u in (0.3, Dp - 0.3) for w in (0.3, H - 0.3))
@@ -92,7 +92,7 @@ def bms_module():
     board += ''.join(f'<path d="M{.4 + k * .65:.2f} 2.0 H{.4 + k * .65 + .4:.2f} V2.9" stroke="#3f9a62" stroke-width=".03" fill="none"/>' for k in range(13))
     board += logo(1.15, 2.2, 2.0, '#ffffff')
     board += '<rect x=".2" y="2.05" width=".7" height=".75" rx=".06" fill="#101215"/>'
-    plane(g, (0.55, 0.45 + T, 0.2 + Hh), 'x', board)
+    plane(g, (0.55, 0.45 + T, 0.2 + Hh), 'x', board, flipw=Lx - 1.1)
     g.box(Lx - 0.55, 0, 0, 0.55, 1.0, Hh + 0.4, pal=BLK, out=EDGE)         # 오른쪽 브래킷
     br = ''.join(f'<rect x=".14" y="{w:.2f}" width=".27" height=".4" rx=".08" fill="#e9ecf2"/>' for w in (1.3, Hh - 1.3))
     plane(g, (0, 1.0, Hh + 0.4), 'x', br)
@@ -117,7 +117,7 @@ def bms_rack():
     face += logo((Lx - .7) / 2 - lw / 2, 0.45, lw, '#ffffff')
     face += f'<rect x="{(Lx - .7) / 2 - .62:.2f}" y="1.15" width="1.24" height=".6" rx=".12" fill="#121418" stroke="#4d525c" stroke-width=".03"/>'
     face += f'<text x="{(Lx - .7) / 2:.2f}" y="1.6" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".42" fill="#ffffff">BPU</text>'
-    plane(g, (0.35, Dp, Hh), 'x', face)
+    plane(g, (0.35, Dp, Hh), 'x', face, flipw=Lx - 0.7)
     for x in (0.05, Lx - 0.3):                                              # 은색 손잡이
         g.box(x, Dp, 0.45, 0.25, 0.42, 0.12, pal=SILV, out=CE, sw=1.2)
         g.box(x, Dp, Hh - 0.57, 0.25, 0.42, 0.12, pal=SILV, out=CE, sw=1.2)
@@ -149,7 +149,7 @@ def bms_system():
         return s
     face += louver(dw * 2 - 1.15, 1.6, 0.8, 1.3, 9) + louver(dw * 2 - 1.15, 3.0, 0.8, 1.3, 9)
     face += louver(dw * 2 + .9, 1.85, 1.2, 5.6, 34)
-    plane(g, (0, Dp, Hh + 0.55), 'x', face)
+    plane(g, (0, Dp, Hh + 0.55), 'x', face, flipw=Lx)
     side = f'<rect x=".25" y=".2" width="{Dp - .5:.2f}" height="{Hh - .4:.2f}" fill="none" stroke="#d3d8e1" stroke-width=".04"/>'
     plane(g, (Lx, 0, Hh + 0.55), 'y', side)
 

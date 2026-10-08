@@ -1,8 +1,16 @@
 # 그림 원본은 Figma "GT Diagram Kit (복제본)" Workspace 페이지에도 벡터로 들어 있다 — 큰 수정은 여기서, 손맛은 Figma 에서.
 """GT Diagram Kit(아이소메트릭) 말씨로 그리는 작은 SVG 도구.
-좌표: x → 화면 오른쪽 아래, y → 화면 왼쪽 아래, z → 위. 보이는 면은 +x(오른쪽) · +y(왼쪽) · 윗면.
-킷 규칙: 실루엣에만 굵은 진회색 선, 면은 위가 가장 밝은 3단 그라데이션."""
-import math
+좌표: x → 화면 오른쪽 아래, y → 화면 왼쪽 아래, z → 위(MIRROR 면 좌우 반대). 보이는 면은 +x · +y · 윗면.
+킷 규칙: 실루엣에만 굵은 진회색 선, 면은 위가 가장 밝은 3단 그라데이션.
+
+MIRROR(기본 켬, 2026-10-08 사용자): 화면을 좌우로 뒤집어 앞면(+y)이 오른쪽을 보게 한다.
+  · 명암은 킷 그대로(왼쪽 면 어둡게) — box() 가 좌우 면 색을 맞바꾼다
+  · 면 그림(plane)의 글자 · 로고는 거울 글씨가 되지 않게 바로 세운다
+  · 실물 배치가 있는 면(모듈 앞판 등)은 plane(..., flipw=면 폭) 으로 면 그림을 한 번 더 뒤집어 실물 그대로
+  ISO_MIRROR=0 이면 예전(앞면이 왼쪽)대로."""
+import math, os, re
+
+MIRROR = os.environ.get('ISO_MIRROR', '1') == '1'
 
 C30, S30 = math.cos(math.pi / 6), 0.5
 OUT = '#474c59'
@@ -21,7 +29,7 @@ class Iso:
         self.pts = []
 
     def p(self, x, y, z):
-        X = (x - y) * C30 * self.s
+        X = (x - y) * C30 * self.s * (-1 if MIRROR else 1)
         Y = ((x + y) * S30 - z) * self.s
         self.pts.append((X, Y))
         return X, Y
@@ -48,8 +56,9 @@ class Iso:
         top = [(X0, Y0, Z1), (X1, Y0, Z1), (X1, Y1, Z1), (X0, Y1, Z1)]
         left = [(X0, Y1, Z0), (X1, Y1, Z0), (X1, Y1, Z1), (X0, Y1, Z1)]    # +y 면
         right = [(X1, Y0, Z0), (X1, Y1, Z0), (X1, Y1, Z1), (X1, Y0, Z1)]   # +x 면
-        g.append(f'<path d="{self.path(left)}" fill="{self.grad(*pal["left"])}"{fo}/>')
-        g.append(f'<path d="{self.path(right)}" fill="{self.grad(*pal["right"])}"{fo}/>')
+        pl, pr = (pal["right"], pal["left"]) if MIRROR else (pal["left"], pal["right"])   # 뒤집으면 +y 면이 오른쪽 — 명암은 킷대로
+        g.append(f'<path d="{self.path(left)}" fill="{self.grad(*pl)}"{fo}/>')
+        g.append(f'<path d="{self.path(right)}" fill="{self.grad(*pr)}"{fo}/>')
         g.append(f'<path d="{self.path(top)}" fill="{self.grad(*pal["top"])}"{fo}/>')
         # 안쪽 모서리 — 아주 옅게
         g.append(f'<path d="{self.path([(X1, Y1, Z0), (X1, Y1, Z1), (X0, Y1, Z1)], False)} M{" L".join("%.1f %.1f" % self.p(*a) for a in [(X1, Y0, Z1), (X1, Y1, Z1)])}" '
@@ -122,7 +131,15 @@ def ribbon3(g, a, b, wv, hw, fill, hl=0.9, opacity=1, hw2=2.1):
     g.poly(pts, fill=fill, extra=op)
 
 
-def plane(g, origin, axis, body):
+def _unmirror(body):
+    """뒤집힌 면 그림 안의 글자 · 로고만 다시 바로 — 글자는 제 x 를 축으로, 로고(78 폭 path)는 제 가운데를 축으로"""
+    body = re.sub(r'<text x="([-\d.]+)"', lambda m: f'<text transform="matrix(-1 0 0 1 {2 * float(m.group(1)):.3f} 0)" x="{m.group(1)}"', body)
+    return re.sub(r'<g transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)"><path d="M59\.655',
+                  lambda m: (f'<g transform="translate({float(m.group(1)) + 78 * float(m.group(3)):.3f} {m.group(2)}) '
+                             f'scale(-{m.group(3)} {m.group(3)})"><path d="M59.655'), body)
+
+
+def plane(g, origin, axis, body, flipw=None):
     """면 위 2차원 그림 — origin(3차원)에서 u 는 axis('x' 또는 'y') 방향, w 는 아래(-z). 'z' 는 윗면(u=x, w=y). 단위는 3차원 단위"""
     X, Y = g.p(*origin)
     s = g.s
@@ -132,6 +149,12 @@ def plane(g, origin, axis, body):
         m = (C30 * s, S30 * s, -C30 * s, S30 * s)
     else:
         m = (-C30 * s, S30 * s, 0, s)
+    if MIRROR:
+        m = (-m[0], m[1], -m[2], m[3])
+        if flipw is not None:          # 면 그림을 한 번 더 뒤집어 실물 배치 · 바른 글자 그대로
+            body = f'<g transform="translate({flipw:.3f} 0) scale(-1 1)">{body}</g>'
+        else:                          # 안쪽 물체와 자리를 맞춰야 하는 면 — 배치는 뒤집힌 채, 글자 · 로고만 바로
+            body = _unmirror(body)
     g.items.append(f'<g transform="matrix({m[0]:.3f} {m[1]:.3f} {m[2]:.3f} {m[3]:.3f} {X:.2f} {Y:.2f})">{body}</g>')
 
 

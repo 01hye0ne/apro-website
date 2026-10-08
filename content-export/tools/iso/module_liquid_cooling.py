@@ -73,7 +73,7 @@ front = (
     + f'<rect x="{L - 1.95}" y=".64" width=".35" height=".42" rx=".03" fill="#e4e7ee"/>'
     + ''.join(f'<circle cx="{u}" cy="{w}" r=".05" fill="#c8ccd4"/>' for u in (L - 2.25, L - 1.3) for w in (.4, 1.3))
 )
-plane(g, (0, D, H), 'x', front)
+plane(g, (0, D, H), 'x', front, flipw=L)            # 실물 배치(검정 커넥터 왼쪽 · 주황 오른쪽) 그대로
 right = (f'<rect x=".1" y=".1" width="{D - .2}" height="{H - .2}" fill="none" stroke="{SEAM}" stroke-width=".03"/>'
          + ''.join(f'<circle cx="{u}" cy="{w}" r=".075" fill="#5d636e" stroke="#0c0d10" stroke-width=".02"/>' for u in (0.22, D - 0.22) for w in (0.22, H - 0.22)))
 plane(g, (L, 0, H), 'y', right)
