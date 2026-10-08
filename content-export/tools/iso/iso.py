@@ -40,16 +40,17 @@ class Iso:
                           f'<stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>')
         return f'url(#{key})'
 
-    def box(self, x, y, z, dx, dy, dz, pal=LIGHT, out=OUT, sw=2.2, name=None, opacity=None):
+    def box(self, x, y, z, dx, dy, dz, pal=LIGHT, out=OUT, sw=2.2, name=None, opacity=None, face_op=None):
         """속이 찬 상자 하나 — 세 면 칠 + 실루엣 외곽선(킷처럼 안쪽 모서리엔 선이 없다)"""
         g = []
+        fo = f' fill-opacity="{face_op}"' if face_op is not None else ''
         X0, X1, Y0, Y1, Z0, Z1 = x, x + dx, y, y + dy, z, z + dz
         top = [(X0, Y0, Z1), (X1, Y0, Z1), (X1, Y1, Z1), (X0, Y1, Z1)]
         left = [(X0, Y1, Z0), (X1, Y1, Z0), (X1, Y1, Z1), (X0, Y1, Z1)]    # +y 면
         right = [(X1, Y0, Z0), (X1, Y1, Z0), (X1, Y1, Z1), (X1, Y0, Z1)]   # +x 면
-        g.append(f'<path d="{self.path(left)}" fill="{self.grad(*pal["left"])}"/>')
-        g.append(f'<path d="{self.path(right)}" fill="{self.grad(*pal["right"])}"/>')
-        g.append(f'<path d="{self.path(top)}" fill="{self.grad(*pal["top"])}"/>')
+        g.append(f'<path d="{self.path(left)}" fill="{self.grad(*pal["left"])}"{fo}/>')
+        g.append(f'<path d="{self.path(right)}" fill="{self.grad(*pal["right"])}"{fo}/>')
+        g.append(f'<path d="{self.path(top)}" fill="{self.grad(*pal["top"])}"{fo}/>')
         # 안쪽 모서리 — 아주 옅게
         g.append(f'<path d="{self.path([(X1, Y1, Z0), (X1, Y1, Z1), (X0, Y1, Z1)], False)} M{" L".join("%.1f %.1f" % self.p(*a) for a in [(X1, Y0, Z1), (X1, Y1, Z1)])}" '
                  f'fill="none" stroke="#ffffff" stroke-opacity=".75" stroke-width="{sw * .55:.1f}" stroke-linejoin="round"/>')
