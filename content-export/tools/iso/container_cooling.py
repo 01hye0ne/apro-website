@@ -3,7 +3,7 @@
 """Container Air / Liquid Cooling — 모듈 두 장과 같은 말씨(흰 젖빛 반투명 케이스 · 연한 파랑 배터리).
 실제 컨테이너 사진처럼 골판 벽 · A-PRO 로고 · 끝면 문 · 모서리 쇠붙이 · 검정 밑틀.
 air    : 문(옆면)에 붙은 HVAC 로 찬 공기(파랑)를 안으로 들여 랙 줄을 따라 흘린다 — 밖으로 빼는 더운 바람은 없다(2026-10-08 클라이언트)
-liquid : 안쪽 끝 칠러가 랙마다 찬 냉각수(파랑)를 보내고 데워진 냉각수(빨강)를 돌려받는다"""
+liquid : 안쪽 끝 칠러가 랙 앞을 두르는 순환 배관으로 찬 냉각수(파랑, 아래)를 보내고 데워진 냉각수(빨강, 위)를 돌려받는다(2026-10-08 클라이언트 참고 자료)"""
 import sys
 from iso import Iso, DEEP, BLUE, RED, ribbon3, plane
 
@@ -42,8 +42,8 @@ g.box(0, T, 0, T, D - T, H, pal=CASE, out=CE, face_op=WOP)
 g.box(T, T, 0, L - 2 * T, D - 2 * T, 0.12, pal=FLOOR, out=CE, sw=1.2)
 
 # 배터리 랙 — 뒤 벽을 따라 한 줄
-x_end = L - 0.5
-NR, rg = 9, 0.14
+x_end = L - 0.5 if KIND == 'air' else L - 3.1
+NR, rg = (9 if KIND == 'air' else 7), 0.14
 rw = (x_end - 0.6 - (NR - 1) * rg) / NR
 ry0, rd, rh = 0.55, 2.1, 4.6
 racks = []
@@ -57,29 +57,45 @@ for i in range(NR):
     plane(g, (x, ry0 + rd, 0.12 + rh), 'x', lines)
 
 ztop = 0.12 + rh                           # 랙 윗면
-zp = ztop + 0.35                            # 배관 높이(랙 위)
-YB, YR = ry0 + rd * 0.32, ry0 + rd * 0.72   # 파랑(공급) · 빨강(회수) 줄
-PIPES = []
+CX0, CW = L - 2.75, 2.35                    # 칠러(안쪽 끝) x 시작 · 길이
+yp = ry0 + rd + 0.32                        # 순환 배관이 지나는 줄(랙 앞)
+zt, zb = ztop - 0.3, 0.5                    # 위 회수관(빨강) · 아래 공급관(파랑)
+risers = [x - rg / 2 for x in racks] + [racks[-1] + rw + rg / 2]
+
+
+def loop_pipes():
+    """랙을 두르는 순환 배관 — 위 빨강 · 아래 파랑 · 랙 사이 세로관(아래 파랑 → 위 빨강)"""
+    for j, xr in enumerate(risers):
+        (x1, y1), (x2, y2) = g.p(xr, yp, zb), g.p(xr, yp, zt)
+        gid = f'rs{j}'
+        g.defs[gid] = (f'<linearGradient id="{gid}" gradientUnits="userSpaceOnUse" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}">'
+                       f'<stop offset=".15" stop-color="{BLUE}"/><stop offset=".85" stop-color="{RED}"/></linearGradient>')
+        pipe([(xr, yp, zb), (xr, yp, zt)], f'url(#{gid})', 8)
+    pipe([(risers[0], yp, zt), (CX0, yp, zt)], RED, 11)
+    pipe([(risers[0], yp, zb), (CX0, yp, zb)], BLUE, 11)
+
+
+def chiller():
+    """칠러 — 안쪽 끝(문 쪽), 앞면(+y)에 팬 그릴"""
+    g.box(CX0, 0.45, 0.12, CW, D - 1.0, 4.7, pal=UNIT, out=CE)
+    fan = ''.join(f'<path d="M.25 {w:.2f} H{CW - .25:.2f}" stroke="#7d869a" stroke-width=".07"/>' for w in [0.4 + k * 0.22 for k in range(9)])
+    fan += f'<rect x=".2" y="2.55" width="{CW - .4:.2f}" height="1.9" fill="none" stroke="#9aa2b3" stroke-width=".05"/><circle cx="{CW / 2:.2f}" cy="3.5" r=".1" fill="#5d6475"/>'
+    plane(g, (CX0, D - 0.55, 4.82), 'x', fan)
+
+
 if KIND == 'liquid':
-    # 랙마다 위에서 짧게 내려 꽂고, 두 줄이 끝면을 지나 바깥 냉각 유닛 윗면으로 들어간다
-    for x in racks:
-        xc = x + rw / 2
-        PIPES.append(([(xc, YB, zp), (xc, YB, ztop)], BLUE, 7))
-        PIPES.append(([(xc, YR, zp), (xc, YR, ztop)], RED, 7))
-    for yy, c in ((YB, BLUE), (YR, RED)):
-        PIPES.append(([(racks[0] + rw / 2, yy, zp), (L + 1.4, yy, zp), (L + 1.4, yy, 4.4)], c, 12))
+    chiller()
+    loop_pipes()
 
 # 오른쪽 끝 벽(문) · 앞 벽(긴 면)
 g.box(L - T, T, 0, T, D - 2 * T, H, pal=CASE, out=CE, face_op=WOP)
 g.box(0, D - T, 0, L, T, H, pal=CASE, out=CE, face_op=WOP)
 
 if KIND == 'liquid':
-    g.raw('<g opacity=".55">')
-    for pts, c, w in PIPES:
-        inner = [q for q in pts if q[0] <= L - T]
-        if len(pts) == 3:
-            inner = [pts[0], (L - T, pts[0][1], pts[0][2])]
-        pipe(inner, c, w)
+    g.raw('<g opacity=".6">')                 # 젖빛 벽 너머로 또렷이 — 칠러 · 배관을 한 번 더
+    chiller()
+    g.raw('</g><g opacity=".7">')
+    loop_pipes()
     g.raw('</g>')
 
 # ── 앞면(긴 면) 디테일 — 골판 · 로고 · 루버 ──
@@ -122,21 +138,12 @@ for (x, y, z) in [(0, D - c, -0.02), (L - c, D - c, -0.02), (L - c, 0, -0.02), (
 
 # ── 흐름 ──
 if KIND == 'liquid':
-    ux0, uw = L + 0.35, 2.2
-    g.box(ux0, 0.6, 0, uw, D - 1.2, 4.4, pal=UNIT, out=CE)              # 냉각 유닛(칠러)
-    fan = ''.join(f'<circle cx="{u:.2f}" cy="1.25" r=".72" fill="#8f98aa" stroke="#474c59" stroke-width=".05"/><circle cx="{u:.2f}" cy="1.25" r=".18" fill="#474c59"/>'
-                  for u in (1.2, D - 2.4))
-    fan += ''.join(f'<path d="M.3 {w:.2f} H{D - 1.5:.2f}" stroke="#9aa2b3" stroke-width=".06"/>' for w in (2.6, 2.9, 3.2, 3.5, 3.8))
-    plane(g, (ux0 + uw, 0.6, 4.4), 'y', fan)
-    side = f'<rect x=".25" y=".3" width="{uw - .5:.2f}" height="3.8" fill="none" stroke="#9aa2b3" stroke-width=".05"/>'
-    plane(g, (ux0, D - 0.6, 4.4), 'x', side)
-    for pts, c, w in PIPES:                                              # 끝면 밖 배관(지붕 높이 → 유닛 윗면)
-        if len(pts) == 3:
-            pipe([(L, pts[0][1], zp), (L + 1.4, pts[0][1], zp), (L + 1.4, pts[0][1], 4.4)], c, w)
-    for k in range(4):                                                   # 파랑 → 랙으로(←) · 빨강 → 유닛으로(→)
-        xa = L - 1.3 - k * 3.3
-        ribbon3(g, (xa, YB, zp + 0.02), (xa - 1.0, YB, zp + 0.02), (0, 1, 0), 0.13, BLUE, hl=0.42, hw2=2.2)
-        ribbon3(g, (xa - 1.0, YR, zp + 0.02), (xa, YR, zp + 0.02), (0, 1, 0), 0.13, RED, hl=0.42, hw2=2.2)
+    g.raw('<g opacity=".95">')
+    for k in range(3):                        # 파랑 칠러 → 랙(←, 아래) · 빨강 랙 → 칠러(→, 위)
+        xa = CX0 - 0.7 - k * 3.2
+        ribbon3(g, (xa, yp + 0.05, zb), (xa - 0.95, yp + 0.05, zb), (0, 0, 1), 0.14, BLUE, hl=0.42, hw2=2.2)
+        ribbon3(g, (xa - 0.95, yp + 0.05, zt), (xa, yp + 0.05, zt), (0, 0, 1), 0.14, RED, hl=0.42, hw2=2.2)
+    g.raw('</g>')
 
 if KIND == 'air':
     # 문짝(앞쪽 문)에 붙은 HVAC — 위아래 흡입 그릴 둘 + 가운데 판
