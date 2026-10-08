@@ -53,6 +53,7 @@ NR, rg = (9 if KIND == 'air' else 7), 0.14
 rw = (x_end - x0r - (NR - 1) * rg) / NR
 ry0, rd, rh = 0.55, 2.1, 4.6
 racks = []
+RACK_AT = len(g.items)                     # 칠러는 랙보다 먼저 그려야 랙이 위로 겹친다 — 칠러 조각을 이 자리로 옮겨 넣는다
 for i in range(NR):
     x = x0r + i * (rw + rg)
     racks.append(x)
@@ -104,7 +105,11 @@ def chiller():
 
 
 if KIND == 'liquid':
+    n0 = len(g.items)
     chiller()
+    chunk = g.items[n0:]                     # 칠러 조각을 떼어
+    del g.items[n0:]
+    g.items[RACK_AT:RACK_AT] = chunk         # 랙 앞으로(2026-10-08: 사이트에서 칠러가 랙 위로 올라와 보였다)
     loop_pipes()
 
 # 오른쪽 끝 벽(문) · 앞 벽(긴 면)
