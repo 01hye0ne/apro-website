@@ -32,6 +32,8 @@ FIT = dict(out=(1.0, 0.5))                # 옆면 오른쪽(뒤) 구석 냉각�
 INLET_Y = D - 0.6                          # x = 0 끝 나감 화살표 줄 — 냉각판 높이
 
 g.box(-0.25, -0.25, -0.22, L + 0.5, D + 0.5, 0.22, pal=BASE, out=EDGE, sw=2)
+# 나감 쪽 피팅 높이(아래 피팅은 화살표 바로 앞에서 그린다)
+OUT_Z = 0.5
 g.box(0, 0, 0, L, T, H, pal=CASE, out=CE, face_op=0.55)
 g.box(0, T, 0, T, D - T, H, pal=CASE, out=CE, face_op=0.55)
 # 냉각판 — 셀 밑을 다 덮는다
@@ -98,7 +100,11 @@ for j, y in enumerate((rows[0][0] + rows[0][1] / 2, rows[1][0] + rows[1][1] / 2)
     ribbon3(g, a, b, (0, 1, 0), 0.22, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2, flow=0.9 + j * 0.2, amp=0.3)
 g.raw('</g>')
 # 데워진 냉각수 나감(Outlet) — x = 0 끝 냉각판 높이에서 바깥으로(반전 화면의 오른쪽)
-a, b = (-0.15, INLET_Y, pz / 2 - 0.1), (-3.3, INLET_Y, pz / 2 - 0.1)
+# 나감 쪽 피팅 — 들어옴 피팅과 같은 금속 너트 + 슬리브(2026-10-08 사용자). x = 0 끝 면은 안 보이는 면이라
+# 케이스 위에 그려 화면 오른쪽으로 튀어나온 모양이 보이게 한다
+g.box(-0.32, INLET_Y - 0.34, OUT_Z - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
+g.box(-0.82, INLET_Y - 0.24, OUT_Z - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
+a, b = (-0.9, INLET_Y, OUT_Z), (-4.1, INLET_Y, OUT_Z)        # 피팅에서 바깥으로
 ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1, flow=1.7)
 
 # 옆면 피팅(금속 너트 + 슬리브) — 찬 냉각수 들어옴(Inlet), 끝이 피팅을 가리킨다(반전 화면의 왼쪽)
