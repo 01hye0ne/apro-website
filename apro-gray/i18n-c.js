@@ -25,6 +25,10 @@
             .map(function(l){ return l.trim(); }).filter(Boolean).join('\n');
   }
   function textOf(el){
+    /* white-space:pre-line 자리(홈 히어로 문구)는 소스 줄바꿈이 곧 화면 줄바꿈이다 */
+    if(/^pre/.test(getComputedStyle(el).whiteSpace) && !el.firstElementChild){
+      return el.textContent.split('\n').map(function(l){ return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join('\n');
+    }
     var out = '';
     (function walk(n){
       for(var c = n.firstChild; c; c = c.nextSibling){
@@ -59,6 +63,18 @@
     for(var i = 0; i < PAT.length; i++){ var m = s.match(PAT[i][0]); if(m) return PAT[i][1](m); }
     return null;
   }
+  /* 글을 감싸기만 하는 원소(.b > .bt 처럼 자식 하나에 글이 다 든 것)는 그 안쪽에 넣어 꾸밈을 지킨다 */
+  function inner(el){
+    for(;;){
+      var only = null, n = 0, text = false;
+      for(var c = el.firstChild; c; c = c.nextSibling){
+        if(c.nodeType === 3 && c.nodeValue.trim()) text = true;
+        else if(c.nodeType === 1 && c.tagName !== 'svg' && c.tagName !== 'IMG'){ only = c; n++; }
+      }
+      if(text || n !== 1 || only.tagName === 'BR') return el;
+      el = only;
+    }
+  }
   function put(el, en){
     /* 링크 · 단추 안의 아이콘(svg · img)은 남기고 글만 바꾼다 */
     var keep = [].filter.call(el.childNodes, function(c){ return c.nodeType === 1 && (c.tagName === 'svg' || c.tagName === 'IMG'); });
@@ -86,7 +102,7 @@
     doAttrs(node);
     if(!node.firstElementChild || inlineOnly(node)){
       var en = look(textOf(node));
-      if(en){ put(node, en); return; }
+      if(en){ put(inner(node), en); return; }
     }
     for(var c = node.firstChild; c; c = c.nextSibling) tr(c);
   }
