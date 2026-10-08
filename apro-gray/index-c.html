@@ -368,19 +368,16 @@
   /* 폰(767 이하)은 판 세로 30% — 45% 는 아래 탭 다섯 줄 판이 무거워 문구가 처져 보였다(2026-10-08 요청) */
   @media(max-width:767px){ .v2banner .headline{top:30%} }
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
-  /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
-  @media(min-width:901px) and (max-width:1180px){
-    .v2banner .en{font-size:min(52px,4.4vw)}
-  }
-  /* 좁은 태블릿(768~900) — 56 이 세로 아이패드에서 커 보여 44 안팎으로 줄인다(820 에서 44, 2026-09-30 요청). 폰은 그대로 */
-  @media(min-width:768px) and (max-width:900px){
-    html .v2banner .en{font-size:min(48px,5.4vw)}
+  /* 1180 아래 메인 문구는 한 줄 식으로 화면을 따라 준다(2026-10-08 요청) — 구간마다 식이 달라(901~1180 4.4vw · 768~900 5.4vw ·
+     폰 7vw) 경계를 넘을 때 글자가 튀었다(767 에서 42 → 54). 짚은 점은 그대로 둔다: 390 → 28 · 820(세로 아이패드) → 44 ·
+     1035 이상 → 52(가로 아이패드 1180 포함). 1181 위는 위 기본값 min(52, 5.4vw) = 52 로 이어진다 */
+  @media(max-width:1180px){
+    html .v2banner .en{font-size:clamp(28px,calc(13.5px + 3.72vw),52px)}
   }
 
   /* 좁은 화면 — 탭 줄은 두 칸씩 상자 묶음으로 푼다(A 와 같다). 문구 윗자리는 화면 키를 따라 준다 */
   @media(max-width:900px){
     .v2banner .v2b-inner{padding-top:calc(var(--c-gnb-h) + clamp(64px,18vh,var(--hm-pad)));padding-bottom:20px}
-    .v2banner .en{font-size:clamp(28px,7vw,56px)}
     .v2banner .kor{font-size:var(--fs-body)}
     /* 좁은 태블릿(768~900)은 넓은 화면처럼 한 줄 다섯 칸 그대로(2026-09-29 요청) — 칸 폭 147 이상이라
        가장 긴 이름(화합물 전력 반도체)도 14 글자 크기면 한 줄에 든다. 상자 묶음은 폰(767 이하)만 */
