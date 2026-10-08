@@ -363,8 +363,10 @@
   .v2banner .en{line-height:1.15}
   @media(max-width:900px){ .v2banner .headline{gap:16px} }
   /* 문구 자리는 판 세로 45%(같은 날 요청) — 정확한 가운데(50%)는 아래 탭 판과 함께 무게가 아래로 쏠려 보였다(눈이 느끼는 가운데는
-     조금 위다). 폰도 같다 */
+     조금 위다). 폰은 30% — 바로 아래 규칙 */
   .v2banner .headline{top:45%}
+  /* 폰(767 이하)은 판 세로 30% — 45% 는 아래 탭 다섯 줄 판이 무거워 문구가 처져 보였다(2026-10-08 요청) */
+  @media(max-width:767px){ .v2banner .headline{top:30%} }
   @media(max-width:1280px){ .v2banner .bnav .b{padding:20px 10px} }
   /* 넓은 태블릿(901~1180) — 문구가 화면에 비해 커 보여(가로 아이패드 64) 한 단 줄인다: 국문 52(2026-09-30 요청) */
   @media(min-width:901px) and (max-width:1180px){
