@@ -13,6 +13,7 @@ RACK = dict(top=('#dbe7ff', '#cbdbff'), left=('#a4bbee', '#91abe4'), right=('#ba
 FLOOR = dict(top=('#e6ebf6', '#dde3f1'), left=('#cfd6e8', '#cfd6e8'), right=('#d8deee', '#d8deee'))
 BASE = dict(top=('#3a3e47', '#33373f'), left=('#16181d', '#121418'), right=('#1d2026', '#181a1f'))
 CAST = dict(top=('#5d636e', '#4d535e'), left=('#2a2e36', '#22252c'), right=('#353a43', '#2c3038'))
+CHILL = dict(top=('#c9ced8', '#b9bfcb'), left=('#7d8597', '#6d7588'), right=('#9aa1b0', '#8b93a3'))   # 칠러 — 젖빛 너머로 보이게 짙은 회색
 UNIT = dict(top=('#f1f3f7', '#dfe3ea'), left=('#a9b0bd', '#959dac'), right=('#c4cad4', '#b3bac6'))
 EDGE, CE, SEAM = '#0c0d10', '#474c59', '#c9d0e2'
 NAVY = '#1f3f8f'
@@ -43,7 +44,7 @@ g.box(T, T, 0, L - 2 * T, D - 2 * T, 0.12, pal=FLOOR, out=CE, sw=1.2)
 
 # 배터리 랙 — 뒤 벽을 따라 한 줄
 CX0, CW = T + 0.15, 2.35                   # 칠러(리퀴드) — 컨테이너 맨 안쪽(문 반대 끝, 2026-10-08 사용자)
-CD = 0.55 + 2.1 + 0.6                      # 칠러 앞면 y — 랙(깊이 2.1) 앞 배관 줄까지만, 랙 줄과 나란히
+CD = 0.55 + 2.1                            # 칠러 앞면 y — 랙과 같은 깊이(랙이 칠러 위로 겹치게, 2026-10-08 사용자)
 x0r = 0.6 if KIND == 'air' else CX0 + CW + 0.35
 x_end = L - 0.5
 NR, rg = (9 if KIND == 'air' else 7), 0.14
@@ -79,7 +80,7 @@ def loop_pipes():
 
 def chiller():
     """칠러 — 맨 안쪽 끝, 앞면(+y)에 팬 그릴"""
-    g.box(CX0, 0.45, 0.12, CW, CD - 0.45, 4.7, pal=UNIT, out=CE)
+    g.box(CX0, 0.45, 0.12, CW, CD - 0.45, 4.7, pal=CHILL, out=CE)
     fan = ''.join(f'<path d="M.25 {w:.2f} H{CW - .25:.2f}" stroke="#7d869a" stroke-width=".07"/>' for w in [0.4 + k * 0.22 for k in range(9)])
     fan += f'<rect x=".2" y="2.55" width="{CW - .4:.2f}" height="1.9" fill="none" stroke="#9aa2b3" stroke-width=".05"/><circle cx="{CW / 2:.2f}" cy="3.5" r=".1" fill="#5d6475"/>'
     plane(g, (CX0, CD, 4.82), 'x', fan)
@@ -94,9 +95,7 @@ g.box(L - T, T, 0, T, D - 2 * T, H, pal=CASE, out=CE, face_op=WOP)
 g.box(0, D - T, 0, L, T, H, pal=CASE, out=CE, face_op=WOP)
 
 if KIND == 'liquid':
-    g.raw('<g opacity=".6">')                 # 젖빛 벽 너머로 또렷이 — 칠러 · 배관을 한 번 더
-    chiller()
-    g.raw('</g><g opacity=".7">')
+    g.raw('<g opacity=".7">')                 # 젖빛 벽 너머로 또렷이 — 배관만 한 번 더(칠러는 덧그리면 랙을 덮는다)
     loop_pipes()
     g.raw('</g>')
 
@@ -123,7 +122,6 @@ _logo = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'
 LOGO_D, LOGO_FILL = re.search(r'<path d="([^"]+)" fill="([^"]+)"', _logo).groups()
 LW = 5.2                                    # 로고 폭(단위) — 78 → 5.2
 lk = LW / 78
-front += f'<rect x="{L / 2 - LW / 2 - .45:.2f}" y="1.45" width="{LW + .9:.2f}" height="2.45" rx=".12" fill="#ffffff" fill-opacity=".86"/>'   # 로고 뒤 흰 판 — 안의 배관 · 화살표와 떼어 읽히게
 front += f'<g transform="translate({L / 2 - LW / 2:.3f} 1.85) scale({lk:.5f})"><path d="{LOGO_D}" fill="{LOGO_FILL}"/></g>'
 front += (f'<text x="{L / 2:.2f}" y="3.55" text-anchor="middle" font-family="SUIT, Pretendard, Arial, sans-serif" font-weight="700" font-size=".44" fill="#3a3f4a">ENERGY STORAGE SYSTEM</text>')
 plane(g, (0, D, H), 'x', front)
