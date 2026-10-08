@@ -88,24 +88,24 @@ g.defs['flow'] = (f'<linearGradient id="flow" gradientUnits="userSpaceOnUse" x1=
 g.raw('<g opacity=".85">')
 for k in range(9):
     x1 = L - 0.75 - k * 1.15
-    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 - 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2)
+    ribbon3(g, (x1, D + 0.02, pz / 2), (x1 - 0.8, D + 0.02, pz / 2), (0, 0, 1), 0.08, 'url(#flow)', hl=0.32, hw2=2.2, flow=0.35 + k * 0.15, amp=0.3)   # 판 속 물결
 g.raw('</g>')
 # 셀의 열이 냉각판으로 — 뒤 줄 셀을 지나 내려가는 빨강 화살표(x-ray)
 g.raw('<g opacity=".9">')
 XL = cx0 + (N - 1) * (ct + cg) + ct          # 오른쪽 끝 셀의 옆면
 for j, y in enumerate((rows[0][0] + rows[0][1] / 2, rows[1][0] + rows[1][1] / 2)):
     a, b = (XL + 0.02, y, pz + ch + 0.9), (XL + 0.02, y, pz + 0.1)
-    ribbon3(g, a, b, (0, 1, 0), 0.22, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2)
+    ribbon3(g, a, b, (0, 1, 0), 0.22, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2, flow=0.9 + j * 0.2, amp=0.3)
 g.raw('</g>')
 # 데워진 냉각수 나감(Outlet) — x = 0 끝 냉각판 높이에서 바깥으로(반전 화면의 오른쪽)
 a, b = (-0.15, INLET_Y, pz / 2 - 0.1), (-3.3, INLET_Y, pz / 2 - 0.1)
-ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1)
+ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1, flow=1.7)
 
 # 옆면 피팅(금속 너트 + 슬리브) — 찬 냉각수 들어옴(Inlet), 끝이 피팅을 가리킨다(반전 화면의 왼쪽)
 yy, zz = FIT['out']
 g.box(L, yy - 0.34, zz - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
 g.box(L + 0.32, yy - 0.24, zz - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
 a, b = (L + 4.1, yy, zz), (L + 0.9, yy, zz)
-ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cin', a, b, BLUE, 0, 1, 0, .55), hl=0.85, hw2=2.1)
+ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cin', a, b, BLUE, 0, 1, 0, .55), hl=0.85, hw2=2.1, flow=0)
 
 open(sys.argv[1], 'w', encoding='utf-8').write(g.svg(600, 12))

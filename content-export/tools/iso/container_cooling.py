@@ -183,8 +183,8 @@ if KIND == 'liquid':
     g.raw('<g opacity=".95">')
     for k in range(3):                        # 파랑 칠러 → 랙(→, 아래) · 빨강 랙 → 칠러(←, 위)
         xa = CX0 + CW + 0.7 + k * 3.2
-        ribbon3(g, (xa, yp + 0.05, zb), (xa + 0.95, yp + 0.05, zb), (0, 0, 1), 0.14, BLUE, hl=0.42, hw2=2.2)
-        ribbon3(g, (xa + 0.95, yp + 0.05, zt), (xa, yp + 0.05, zt), (0, 0, 1), 0.14, RED, hl=0.42, hw2=2.2)
+        ribbon3(g, (xa, yp + 0.05, zb), (xa + 0.95, yp + 0.05, zb), (0, 0, 1), 0.14, BLUE, hl=0.42, hw2=2.2, flow=k * 0.3, amp=0.35)            # 칠러에서 멀어지며 차례로
+        ribbon3(g, (xa + 0.95, yp + 0.05, zt), (xa, yp + 0.05, zt), (0, 0, 1), 0.14, RED, hl=0.42, hw2=2.2, flow=1.3 + (2 - k) * 0.3, amp=0.35)  # 칠러로 돌아오며 차례로
     g.raw('</g>')
 
 if KIND == 'air':
@@ -201,7 +201,7 @@ if KIND == 'air':
     yc = (hy0 + hy1) / 2
     for j, z in enumerate((hz1 - 0.95, (hz0 + hz1) / 2, hz0 + 0.95)):
         a, b = (L + 4.0, yc, z), (L + 0.65, yc, z)
-        ribbon3(g, a, b, (0, 0, 1), 0.28, fade(f'cool{j}', a, b, BLUE, 0, 1, 0, .6), hl=0.95, hw2=2.0)
+        ribbon3(g, a, b, (0, 0, 1), 0.28, fade(f'cool{j}', a, b, BLUE, 0, 1, 0, .6), hl=0.95, hw2=2.0, flow=j * 0.25)
     # 안 — 찬 공기가 랙 줄을 따라 흐른다(벽 너머 x-ray, 문 쪽에서 안쪽으로 옅어짐)
     yi = ry0 + rd + 0.45
     for j, z in enumerate((2.35, 1.15)):
@@ -211,7 +211,7 @@ if KIND == 'air':
                        f'<stop offset="0" stop-color="{BLUE}" stop-opacity=".75"/><stop offset="1" stop-color="{BLUE}" stop-opacity=".2"/></linearGradient>')
         for k in range(3):                       # 셋 — 넷째는 앞면 로고와 겹친다
             xa = L - 0.8 - k * 3.4
-            ribbon3(g, (xa, yi, z), (xa - 2.4, yi, z), (0, 0, 1), 0.3, f'url(#{gid})', hl=0.9, hw2=1.9)
+            ribbon3(g, (xa, yi, z), (xa - 2.4, yi, z), (0, 0, 1), 0.3, f'url(#{gid})', hl=0.9, hw2=1.9, flow=0.9 + k * 0.35 + j * 0.15)   # 문에서 안으로
 
 plane(g, (0, D, H), 'x', front_logo)
 
