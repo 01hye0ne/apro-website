@@ -52,6 +52,10 @@ def pipe(pts3, color, sw=15):
 
 
 g.box(L - T, T, 0, T, D - 2 * T, H, pal=CASE, out=CE, face_op=0.55)
+# 나감 쪽 피팅 — 들어옴 피팅과 같은 금속 너트 + 슬리브. x = 0 끝 면에 붙어 앞면(A-PRO 면) 뒤에 있으므로
+# 앞 벽보다 먼저 그린다(2026-10-12 사용자: 배출구가 앞면 위로 올라와 보였다)
+g.box(-0.82, INLET_Y - 0.24, OUT_Z - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
+g.box(-0.32, INLET_Y - 0.34, OUT_Z - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
 g.box(0, D - T, 0, L, T, H, pal=CASE, out=CE, face_op=0.55)
 
 
@@ -100,10 +104,6 @@ for j, y in enumerate((rows[0][0] + rows[0][1] / 2, rows[1][0] + rows[1][1] / 2)
     ribbon3(g, a, b, (0, 1, 0), 0.22, fade(f'heat{j}', a, b, RED, 0.15, 1, 0, .55), hl=0.42, hw2=2.2, flow=0.9 + j * 0.2, amp=0.3)
 g.raw('</g>')
 # 데워진 냉각수 나감(Outlet) — x = 0 끝 냉각판 높이에서 바깥으로(반전 화면의 오른쪽)
-# 나감 쪽 피팅 — 들어옴 피팅과 같은 금속 너트 + 슬리브(2026-10-08 사용자). x = 0 끝 면은 안 보이는 면이라
-# 케이스 위에 그려 화면 오른쪽으로 튀어나온 모양이 보이게 한다
-g.box(-0.32, INLET_Y - 0.34, OUT_Z - 0.34, 0.32, 0.68, 0.68, pal=METAL, out=CE, sw=1.8)
-g.box(-0.82, INLET_Y - 0.24, OUT_Z - 0.24, 0.5, 0.48, 0.48, pal=METAL, out=CE, sw=1.6)
 a, b = (-0.9, INLET_Y, OUT_Z), (-4.1, INLET_Y, OUT_Z)        # 피팅에서 바깥으로
 ribbon3(g, a, b, (0, 0, 1), 0.26, fade('cout', a, b, RED, 1, 1), hl=0.85, hw2=2.1, flow=1.7)
 
