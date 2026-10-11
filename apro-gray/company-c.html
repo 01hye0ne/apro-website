@@ -271,6 +271,10 @@
   .co-vband .lead{font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);
                   color:var(--on-dark-body);font-feature-settings:"lnum" 1,"tnum" 1}
   .co-vband .lead span{display:block}
+  /* 1180 아래는 첫 화면이 한 화면 키를 풀어(글이 가운데에 서지 않고) VISION 2030 이 GNB 밑에 붙었다 — 회사정보 다른 두 장의
+     히어로(.ci-hero, gnb-c.css)와 같은 윗여백을 준다: GNB 밑 88, 900 아래 48 (2026-10-12 요청) */
+  @media(max-width:1180px){ html .co-vband{padding-top:calc(88px + var(--c-gnb-h))} }
+  @media(max-width:900px){ html .co-vband{padding-top:calc(48px + var(--c-gnb-h))} }
   .co-vband .lead span+span{margin-top:2px}
   /* ── Vision 제목 타이핑 (2026-09-21 요청 — A 회사소개와 같은 방식) ──
      글자를 낱개 <span class="ch"> 로 싸 두고 opacity 만 켜므로 줄이 흔들리지 않는다.
