@@ -38,6 +38,9 @@ def main():
             for ko in (cur, new if new and new != "삭제" else ""):
                 if not ko or not HAN.search(ko) or ko == en:
                     continue
+                # 게시판 건수 '총 n건' 은 n 이 검색 따라 바뀐다 — i18n-c.js 가 '건'만 바꾼다(통째로 넣으면 숫자가 굳는다)
+                if re.fullmatch(r"총 \d+건", ko):
+                    continue
                 pick[ko][en] += 1
                 # 여러 줄 문구는 한 줄로 이은 꼴과, 줄 수가 같으면 줄마다도 넣는다
                 kl, el = ko.split("\n"), en.split("\n")
