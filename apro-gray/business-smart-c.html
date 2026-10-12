@@ -412,6 +412,17 @@
              transition:background .3s var(--ease),color .3s var(--ease)}
   .sf-rail a:hover{color:var(--brand)}
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
+  /* 고무 덩어리(rubber-rail.js) — 스크립트가 붙으면 링크 배경 대신 덩어리 하나가 옮겨 다닌다.
+     덮인 칸만 흰 글자(.on-blob). 묶음 머리는 덩어리 위에 서서, 건널 때 밑으로 지나간다 */
+  .sf-rail.is-rubber{position:relative}
+  .sf-rail.is-rubber a,.sf-rail.is-rubber .sf-grp>.hd{position:relative;z-index:1}
+  .sf-rail.is-rubber a{transition:color .12s linear}
+  .sf-blob{position:absolute;left:0;right:0;top:0;z-index:0;pointer-events:none;
+           background:var(--brand);transform-origin:50% 0;will-change:transform,height;
+           transition:opacity .2s var(--ease)}
+  .sf-rail.is-rubber a[aria-current="true"]{background:none;color:var(--sf-ter)}
+  .sf-rail.is-rubber a.on-blob{color:#fff}
+  .sf-rail.is-rubber a.blob-line{border-bottom-color:transparent}
 
   /* 가운데 그림 기둥 — 인덱스와 똑같이 화면에 붙는다.
      안쪽 .sf-figstack 이 장의 본문 띠(위아래 176 을 뺀 자리)와 같은 높이를 갖는다
@@ -1063,6 +1074,9 @@
     .sf-rail a{border-bottom:0;padding:14px 12px}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
+    /* 고무 덩어리는 가로 탭에서 밑줄(2px)로 눕는다 */
+    .sf-rail.is-rubber a[aria-current="true"]{color:var(--brand);box-shadow:none}
+    .sf-rail.is-row .sf-blob{top:auto;bottom:0;right:auto;height:2px}
     /* 빈 기둥만 남으므로 접는다 */
     .sf-figwrap{display:none}
     /* 공정 맵은 사진이 아니라 도식이라 그냥 줄이면 글자가 뭉갠다 — 짜임은 그대로
@@ -2618,6 +2632,7 @@
     <path d="M5 12l7-7 7 7" />
   </svg>
 </button>
+<script src="rubber-rail.js"></script>
 <script src="gnb-c.js"></script>
 <script src="i18n-c.js"></script>
 </body>
