@@ -462,18 +462,40 @@
   function render(key){
     /* 영문 보기(i18n-c.js 가 <html lang="en">)이고 영문 글이 있으면 영문 */
     var P = window.APRO_POLICY[key], en = document.documentElement.lang === 'en' && P.en && P.en.arts.length;
-    var d = en ? P.en : P.ko, ul = null;
+    var d = en ? P.en : P.ko;
     ttl.textContent = d.title;
     bd.textContent = '';
+    /* 글 위계(2026-10-12 요청 — 두산에너빌리티 처리방침처럼 제목 · 목록 사이 강약과 행간).
+       데이터는 [조 머리 h · 굵은 머리글 s · 문단 p · 줄 li] 뿐이라, 줄머리 기호로 단계를 가른다:
+         1. ① (번호)        → .pol-n1  번호를 내어 쓰고(걸린 들여쓰기), 쌍점 앞 이름은 굵게
+         A. - · ※ •(하위)  → .pol-n2  한 단 들여 연하게
+         그 밖              → 문단
+       '제74조 (벌칙)' 처럼 문단으로 들어온 조 머리는 머리글로, 마흔 자 넘는 굵은 머리글은 문단으로.
+       한 조 안에 ① ② 가 나오면 그 뒤 1. 2. 는 한 단(.is-sub), A. - 는 두 단 들어간다(제2조 ① > 1. > A.).
+       끝의 게시일 · 시행일 줄은 작은 보조 글자(.pol-date) */
+    var N1 = /^((?:\d{1,2}\.)|[①-⑳])\s*(.*)$/, N2 = /^((?:[A-Z]\.)|[-·※•])\s*(.*)$/;
+    function line(cls, m, bold){
+      var e = mk('p', cls);
+      e.appendChild(mk('span', 'mk', m[1]));
+      var tx = mk('span', 'tx'), t = m[2], c = bold ? t.indexOf(':') : -1;
+      if(c > 0 && c < 40){ tx.appendChild(mk('b', null, t.slice(0, c + 1))); tx.appendChild(document.createTextNode(t.slice(c + 1))); }
+      else tx.textContent = t;
+      e.appendChild(tx);
+      return e;
+    }
+    var circ = false;
     function put(it){
-      var k = it[0], t = it[1];
-      if(k === 'li'){
-        if(!ul){ ul = mk('ul'); bd.appendChild(ul); }
-        ul.appendChild(mk('li', null, t));
-        return;
+      var k = it[0], t = it[1], m;
+      if(k === 'h'){ circ = false; bd.appendChild(mk('h3', null, t)); return; }
+      if(/^(게시일|시행일|공고일|Posted|Effective|Date)/i.test(t)){ bd.appendChild(mk('p', 'pol-date', t)); return; }
+      if(k === 's' && t.length <= 40 || k === 'p' && /^제\d+조/.test(t) && t.length <= 40){ bd.appendChild(mk('h4', null, t)); return; }
+      if((m = t.match(N1))){
+        var isC = /^[①-⑳]/.test(m[1]);
+        bd.appendChild(line('pol-n1' + (circ && !isC ? ' is-sub' : ''), m, true));
+        if(isC) circ = true;
       }
-      ul = null;
-      bd.appendChild(mk(k === 'h' ? 'h3' : k === 's' ? 'h4' : 'p', null, t));
+      else if((m = t.match(N2))) bd.appendChild(line('pol-n2' + (circ ? ' is-sub' : ''), m, false));
+      else bd.appendChild(mk('p', null, t));
     }
     d.intro.forEach(put);
     d.arts.forEach(function(a){ put(['h', a.t]); a.b.forEach(put); });
