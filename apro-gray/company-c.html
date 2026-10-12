@@ -436,7 +436,7 @@
                       letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
   /* 테두리 빛(2026-10-12, React Bits 의 Border Glow 를 원에 맞게) — 커서를 빛 하나로 보고, 원 여섯이 모두 그쪽 면의 테두리만
      밝힌다. 누를 수 있는 단추처럼 보이지 않게 원 하나만 켜지 않는다. 커서 가까운 원만 켜지고 먼 원은 꺼져 있다.
-     은은하게 — 가장 밝아도 반 남짓(같은 날 요청). 들어올 때 한 바퀴 돌던 빛은 걷었다(같은 날 요청) — 폰은 마우스가 없어 빛이 없다.
+     세기는 처음 값으로 — 한때 반 남짓으로 낮췄다가 다시 올렸다(같은 날 요청). 들어올 때 한 바퀴 돌던 빛은 걷었다(같은 날 요청) — 폰은 마우스가 없어 빛이 없다.
      --ga : 빛이 오는 방향(위 0deg, 시계 방향) · --gv : 세기 0~1. 값은 스크립트가 원마다 준다.
      또렷한 선(::before)과 번진 선(.gl, 흐림을 준 껍데기 안에 같은 고리) 두 겹 — 번짐은 옆 원을 덮지 않게 작게 둔다.
      원 안은 칠하지 않는다(글을 흐리지 않게) */
@@ -450,7 +450,7 @@
       -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
       opacity:var(--gv)}
   .co-apro .vals .gl{position:absolute;inset:0;border-radius:50%;pointer-events:none;filter:blur(6px)}
-  .co-apro .vals .gl>i{inset:-2px;padding:5px;opacity:calc(var(--gv) * .6)}
+  .co-apro .vals .gl>i{inset:-2px;padding:5px;opacity:var(--gv)}
   /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
      SUIT 400 · --fs-h2 · --lh-label. 줄 끊김은 <span> 이 정하므로 폭 상한은 두지 않는다 */
   .co-apro p{font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
@@ -1172,7 +1172,7 @@
   /* 원마다 : 커서 쪽 방향 · 세기(지금 / 목표) */
   var st = lis.map(function(){ return { a: 0, v: 0, t: 0 }; });
   var px = 0, py = 0, inside = false, raf = 0;
-  var PEAK = .55;    /* 가장 밝을 때 */
+  var PEAK = 1;      /* 가장 밝을 때 */
   var REACH = 1.8;   /* 원 지름의 이만큼 넘게 떨어진 원은 꺼진다 — 바로 옆 원까지만 옅게 닿는다 */
 
   function aimPointer(){
@@ -1181,7 +1181,8 @@
       var dx = px - cx, dy = py - cy;
       st[i].a = Math.atan2(dy, dx) * 180 / Math.PI + 90;
       var near = 1 - Math.sqrt(dx * dx + dy * dy) / (r.width * REACH);
-      st[i].t = inside ? Math.max(0, Math.min(1, near)) * PEAK : 0;
+      /* 가까이서 빨리 밝아지게 0.6 제곱 — 원 테두리 근처에서 거의 다 켜진다 */
+      st[i].t = inside ? Math.pow(Math.max(0, Math.min(1, near)), .6) * PEAK : 0;
     }
   }
   function frame(){
