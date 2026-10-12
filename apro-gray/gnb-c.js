@@ -472,6 +472,7 @@
          그 밖              → 문단
        '제74조 (벌칙)' 처럼 문단으로 들어온 조 머리는 머리글로, 마흔 자 넘는 굵은 머리글은 문단으로.
        한 조 안에 ① ② 가 나오면 그 뒤 1. 2. 는 한 단(.is-sub), A. - 는 두 단 들어간다(제2조 ① > 1. > A.).
+       • 줄 바로 밑의 - 줄은 그 • 의 풀이라 한 단 더 들어간다(2026-10-12 처리방침 — • 회원 서비스 운영 > - 법적 근거).
        끝의 게시일 · 시행일 줄은 작은 보조 글자(.pol-date) */
     var N1 = /^((?:\d{1,2}\.)|[①-⑳])\s*(.*)$/, N2 = /^((?:[A-Z]\.)|[-·※•])\s*(.*)$/;
     function line(cls, m, bold){
@@ -483,10 +484,10 @@
       e.appendChild(tx);
       return e;
     }
-    var circ = false;
+    var circ = false, dot = false;
     function put(it){
       var k = it[0], t = it[1], m;
-      if(k === 'h'){ circ = false; bd.appendChild(mk('h3', null, t)); return; }
+      if(k === 'h'){ circ = dot = false; bd.appendChild(mk('h3', null, t)); return; }
       if(/^(게시일|시행일|공고일|Posted|Effective|Date)/i.test(t)){ bd.appendChild(mk('p', 'pol-date', t)); return; }
       if(k === 's' && t.length <= 40 || k === 'p' && /^제\d+조/.test(t) && t.length <= 40){ bd.appendChild(mk('h4', null, t)); return; }
       if((m = t.match(N1))){
@@ -494,8 +495,14 @@
         bd.appendChild(line('pol-n1' + (circ && !isC ? ' is-sub' : ''), m, true));
         if(isC) circ = true;
       }
-      else if((m = t.match(N2))) bd.appendChild(line('pol-n2' + (circ ? ' is-sub' : ''), m, false));
+      else if((m = t.match(N2))){
+        var under = dot && m[1] === '-';
+        if(m[1] === '•') dot = true; else if(!under) dot = false;
+        bd.appendChild(line('pol-n2' + (circ || under ? ' is-sub' : ''), m, false));
+        return;
+      }
       else bd.appendChild(mk('p', null, t));
+      dot = false;
     }
     d.intro.forEach(put);
     d.arts.forEach(function(a){ put(['h', a.t]); a.b.forEach(put); });
