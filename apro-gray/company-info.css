@@ -22,8 +22,6 @@
   padding:88px 20px 40px var(--ci-m);border-bottom:1px solid rgba(255,255,255,.2);word-break:keep-all}
 .ci-hero h1{margin:0;font-family:"Aldrich",sans-serif;font-weight:400;font-size:var(--fs-body);line-height:var(--lh-tight);
   letter-spacing:var(--ls-num);color:#fff}
-/* 회사정보 세 장 머리말은 대문자로 맞춘다(2026-10-12) — 회사 소개 VISION 2030 과 같게. 소스 글은 그대로(Global Network · Locations) */
-.ci-hero h1{text-transform:uppercase}
 /* 문장이 여러 줄이면 Figma 처럼 줄마다 <span> 하나.
    굵기는 투자정보 세로 히어로 문장(.cs-hero .sub, content-side.css)과 같은 400 —
    ExtraBold 800 은 두 틀의 첫 화면이 서로 다른 목소리로 읽혔다 */
