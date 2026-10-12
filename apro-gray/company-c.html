@@ -435,8 +435,8 @@
   .co-apro .vals span{font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-label);
                       letter-spacing:var(--ls);color:rgba(255,255,255,.72)}
   /* 테두리 빛(2026-10-12, React Bits 의 Border Glow 를 원에 맞게) — 커서를 빛 하나로 보고, 원 여섯이 모두 그쪽 면의 테두리만
-     밝힌다. 누를 수 있는 단추처럼 보이지 않게 원 하나만 켜지 않는다. 화면에 들어올 때는 원마다 차례로(A·A·A·P·R·O)
-     빛이 한 바퀴 돌고 꺼진다 — 마우스가 없는 폰에서도 보이는 몫이다.
+     밝힌다. 누를 수 있는 단추처럼 보이지 않게 원 하나만 켜지 않는다. 커서 가까운 원만 켜지고 먼 원은 꺼져 있다.
+     은은하게 — 가장 밝아도 반 남짓(같은 날 요청). 들어올 때 한 바퀴 돌던 빛은 걷었다(같은 날 요청) — 폰은 마우스가 없어 빛이 없다.
      --ga : 빛이 오는 방향(위 0deg, 시계 방향) · --gv : 세기 0~1. 값은 스크립트가 원마다 준다.
      또렷한 선(::before)과 번진 선(.gl, 흐림을 준 껍데기 안에 같은 고리) 두 겹 — 번짐은 옆 원을 덮지 않게 작게 둔다.
      원 안은 칠하지 않는다(글을 흐리지 않게) */
@@ -450,7 +450,7 @@
       -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
       opacity:var(--gv)}
   .co-apro .vals .gl{position:absolute;inset:0;border-radius:50%;pointer-events:none;filter:blur(6px)}
-  .co-apro .vals .gl>i{inset:-2px;padding:5px;opacity:var(--gv)}
+  .co-apro .vals .gl>i{inset:-2px;padding:5px;opacity:calc(var(--gv) * .6)}
   /* 문구는 맨 위 히어로 문장(.ci-hero .sub, company-info.css)과 같은 목소리다 —
      SUIT 400 · --fs-h2 · --lh-label. 줄 끊김은 <span> 이 정하므로 폭 상한은 두지 않는다 */
   .co-apro p{font-family:var(--suit);font-weight:400;font-size:var(--fs-h2);
@@ -1163,49 +1163,36 @@
   var fig = document.querySelector('.co-apro .fig');
   var lis = [].slice.call(document.querySelectorAll('.co-apro .vals li'));
   if(!fig || !lis.length) return;
-  var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
   lis.forEach(function(li){
     var g = document.createElement('i');
     g.className = 'gl'; g.setAttribute('aria-hidden', 'true');
     g.appendChild(document.createElement('i'));
     li.appendChild(g);
   });
-  /* 원마다 : 커서 쪽 방향 · 세기(지금 / 목표) · 한 바퀴 훑기 시작 시각 */
-  var st = lis.map(function(){ return { a: 0, v: 0, t: 0, s0: -1 }; });
+  /* 원마다 : 커서 쪽 방향 · 세기(지금 / 목표) */
+  var st = lis.map(function(){ return { a: 0, v: 0, t: 0 }; });
   var px = 0, py = 0, inside = false, raf = 0;
+  var PEAK = .55;    /* 가장 밝을 때 */
+  var REACH = 1.8;   /* 원 지름의 이만큼 넘게 떨어진 원은 꺼진다 — 바로 옆 원까지만 옅게 닿는다 */
 
-  /* 커서 세기 — 가까운 원이 밝고, 판 안이면 먼 원도 옅게(.3) 켜 둔다 */
   function aimPointer(){
     for(var i=0;i<lis.length;i++){
       var r = lis[i].getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       var dx = px - cx, dy = py - cy;
       st[i].a = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-      var near = 1 - Math.sqrt(dx * dx + dy * dy) / (r.width * 2.6);
-      st[i].t = inside ? Math.max(.35, Math.min(1, Math.pow(Math.max(0, near), .6))) : 0;
+      var near = 1 - Math.sqrt(dx * dx + dy * dy) / (r.width * REACH);
+      st[i].t = inside ? Math.max(0, Math.min(1, near)) * PEAK : 0;
     }
   }
-  /* 한 바퀴 훑기(원본의 animated) — 110deg 에서 시작해 한 바퀴 돌며 켜졌다 꺼진다. 1.6초 */
-  var SWEEP = 1600;
-  function sweepAt(e){
-    var k = e / SWEEP, ease = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-    return { a: 110 + 360 * ease, v: Math.sin(Math.PI * k) };
-  }
-  function frame(now){
+  function frame(){
     raf = 0;
     var busy = false;
     for(var i=0;i<lis.length;i++){
-      var o = st[i], a = o.a, v;
+      var o = st[i];
       o.v += (o.t - o.v) * .14;
       if(Math.abs(o.t - o.v) > .004) busy = true; else o.v = o.t;
-      v = o.v;
-      if(o.s0 >= 0){
-        var e = now - o.s0;
-        if(e < 0) busy = true;
-        else if(e < SWEEP){ var w = sweepAt(e); if(w.v > v){ a = w.a; v = w.v; } busy = true; }
-        else o.s0 = -1;
-      }
-      lis[i].style.setProperty('--ga', a.toFixed(1) + 'deg');
-      lis[i].style.setProperty('--gv', v.toFixed(3));
+      lis[i].style.setProperty('--ga', o.a.toFixed(1) + 'deg');
+      lis[i].style.setProperty('--gv', o.v.toFixed(3));
     }
     if(busy) raf = requestAnimationFrame(frame);
   }
@@ -1219,18 +1206,6 @@
   fig.addEventListener('pointerleave', function(){ inside = false; aimPointer(); kick(); });
   /* 판 안에 커서를 둔 채 스크롤하면 원이 커서 밑에서 움직인다 — 방향을 다시 잰다 */
   window.addEventListener('scroll', function(){ if(inside){ aimPointer(); kick(); } }, { passive: true });
-
-  /* 원 묶음이 화면에 들어오면 한 번 — 원마다 180ms 씩 늦게 */
-  if('IntersectionObserver' in window && !calm.matches){
-    var io = new IntersectionObserver(function(es){
-      if(!es[0].isIntersecting) return;
-      io.disconnect();
-      var t0 = performance.now() + 200;
-      st.forEach(function(o, i){ o.s0 = t0 + i * 180; });
-      kick();
-    }, { threshold: .6 });
-    io.observe(document.querySelector('.co-apro .vals'));
-  }
 })();
 </script>
 <script src="gnb-c.js"></script>
