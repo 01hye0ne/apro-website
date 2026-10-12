@@ -15,6 +15,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 BOOK = "content-export/국문영문글정리.xlsx"
 OUT = "apro-gray/i18n-en.js"
 HAN = re.compile(r"[가-힣]")
+CTX = ("섹션 라벨",)   # 엑셀 '자리' 칸 값 — 이 자리 글은 자리 열쇠로만 사전에 든다
 
 
 def norm(v):
@@ -34,6 +35,12 @@ def main():
                 continue
             cur, new, en, loc = norm(row[5]), norm(row[6]), norm(row[7]), str(row[9] or "")
             if not en or loc.startswith("policy|"):
+                continue
+            # 자리에 따라 영문이 다른 글(홈 섹션 라벨) — '<자리>|<국문>' 열쇠로만 넣는다. 페이지 원소에 data-i18n-ctx="<자리>"
+            if str(row[2] or "") in CTX:
+                ko = new if new and new != "삭제" else cur
+                if ko:
+                    pick[str(row[2]) + "|" + ko][en] += 1
                 continue
             for ko in (cur, new if new and new != "삭제" else ""):
                 if not ko or not HAN.search(ko) or ko == en:
