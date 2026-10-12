@@ -161,6 +161,7 @@ window.APRO_I18N_EN = {
 "공금 횡령 및 금품 수수, 청탁, 업무 관련 부정 행위 등": "Embezzlement of public funds, receipt of money and valuables, solicitation, work-related misconduct, etc.",
 "공기 흡배기 방향을 표시한 에어 쿨링 타입 ESS 컨테이너": "Air-cooled ESS container with airflow directions marked",
 "공기 흡배기 방향을 표시한 에어 쿨링 타입 배터리 모듈": "Air-cooled battery module with airflow directions marked",
+"공시자료": "Disclosures",
 "공시정보": "Disclosure",
 "공지사항": "Notice",
 "공지사항 검색": "Search notices",
