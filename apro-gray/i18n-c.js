@@ -116,9 +116,10 @@
   function run(){
     busy = true;
     tr(document.body);
-    /* 게시판 건수 '총 <b>n</b>건' — 끝의 '건'은 낱말 하나로 사전에 둘 수 없어 여기서 */
+    /* 게시판 건수 '총 <b>n</b>건' → 'Total n posts' — 끝의 '건'은 낱말 하나로 사전에 둘 수 없어 여기서.
+       n 은 검색에 따라 바뀌므로 엑셀의 '총 n건' 줄(영문 'Total n posts')은 사전에 넣지 않는다(i18n_js.py) */
     [].forEach.call(document.querySelectorAll('.clist-hd .count'), function(p){
-      [].forEach.call(p.childNodes, function(n){ if(n.nodeType === 3 && n.nodeValue.trim() === '건') n.nodeValue = ' items'; });
+      [].forEach.call(p.childNodes, function(n){ if(n.nodeType === 3 && n.nodeValue.trim() === '건') n.nodeValue = ' posts'; });
     });
     var t = look(flat(document.title)); if(t) document.title = t;
     busy = false;
