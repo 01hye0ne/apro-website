@@ -746,7 +746,6 @@ window.APRO_I18N_EN = {
 "차세대 화합물 GaN": "Leading next-generation compound",
 "차세대 화합물 GaN\n전력반도체를 선도합니다": "Leading next-generation compound\nGaN power semiconductors",
 "차세대 화합물 GaN 전력반도체를 선도합니다": "Leading next-generation compound GaN power semiconductors",
-"책임 있는 경영을 통해 더 나은 가치를 실현하겠습니다.": "We create greater value through responsible management.",
 "책임있는 공급망 관리": "Responsible Supply Chain Management",
 "책임있는 공급망의 핵심가치": "Core Values of a Responsible Supply Chain",
 "처리 절차": "Processing Procedure",
