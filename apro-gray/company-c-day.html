@@ -433,6 +433,13 @@
   .co-apro .keys span{font-family:var(--suit);font-weight:400;font-size:clamp(14px,.9375vw,18px);line-height:var(--lh-label);
                       letter-spacing:var(--ls);color:rgba(255,255,255,.86)}
   .co-apro .keys li:nth-child(-n+3){border-top:1px solid rgba(255,255,255,.55)}
+  /* 첫 글자 강조(2026-10-12 시험) — 여섯 이름의 첫 글자만 흰색, 나머지는 옅게 — 세로로 A · A · A · P · R · O 가 읽혀
+     아래 간판 A-PRO 와 이어진다. 좁은 화면(~1023)은 왼쪽 큰 글자가 같은 일을 해서 쓰지 않는다 */
+  .co-apro .keys .ini{font-style:normal}
+  @media(min-width:1024px){
+    .co-apro .keys b{color:rgba(255,255,255,.6)}
+    .co-apro .keys b .ini{color:#fff}
+  }
   .co-apro .keys li:nth-child(1),.co-apro .keys li:nth-child(4){grid-row:1}
   .co-apro .keys li:nth-child(2),.co-apro .keys li:nth-child(5){grid-row:2}
   .co-apro .keys li:nth-child(3),.co-apro .keys li:nth-child(6){grid-row:3}
@@ -626,8 +633,8 @@
         <img src="../assets/hq-logo-sky.jpg" srcset="../assets/hq-logo-sky-1280.jpg 1280w, ../assets/hq-logo-sky.jpg 2560w" sizes="100vw" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" loading="lazy" />
         <p class="msg">에이프로는 구성원이 자부심을 갖고 성장할 수 있는 ‘일하기 좋은 일터’를 기반으로, 6대 핵심가치<span class="nw">(Core 6-Values)</span>와 AAA 전략을 실천하여 글로벌 종합 에너지 솔루션 기업으로 나아갑니다</p>
         <ol class="keys" aria-label="6대 핵심가치 — 첫 글자를 이으면 A-PRO">
-          <li data-l="A"><b>Advance</b><span>진보</span></li><li data-l="A"><b>Aggressiveness</b><span>적극성</span></li><li data-l="A"><b>Agility</b><span>민첩성</span></li>
-          <li data-l="P"><b>Pioneer</b><span>개척</span></li><li data-l="R"><b>Remarkability</b><span>탁월함</span></li><li data-l="O"><b>Organism</b><span>유기적 조직</span></li>
+          <li data-l="A"><b><i class="ini">A</i>dvance</b><span>진보</span></li><li data-l="A"><b><i class="ini">A</i>ggressiveness</b><span>적극성</span></li><li data-l="A"><b><i class="ini">A</i>gility</b><span>민첩성</span></li>
+          <li data-l="P"><b><i class="ini">P</i>ioneer</b><span>개척</span></li><li data-l="R"><b><i class="ini">R</i>emarkability</b><span>탁월함</span></li><li data-l="O"><b><i class="ini">O</i>rganism</b><span>유기적 조직</span></li>
         </ol>
       </div>
     </div>
