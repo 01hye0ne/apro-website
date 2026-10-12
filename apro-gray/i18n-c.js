@@ -107,6 +107,13 @@
     if(node.nodeType === 3){ if(!node.parentElement || !node.parentElement.closest('[data-no-i18n]')) doText(node); return; }
     if(node.nodeType !== 1 || SKIP[node.tagName] || node.closest('[data-no-i18n]')) return;
     doAttrs(node);
+    /* 같은 국문이라도 자리에 따라 영문이 다를 때(홈 섹션 라벨 '사업영역' → What We Do, GNB 는 Business) —
+       원소에 data-i18n-ctx="<엑셀 '자리' 칸>" 을 달면 사전의 '<자리>|<국문>' 열쇠를 먼저 찾는다(2026-10-12) */
+    var ctx = node.getAttribute('data-i18n-ctx');
+    if(ctx){
+      var ce = look(ctx + '|' + textOf(node));
+      if(ce){ put(inner(node), ce); return; }
+    }
     if(!node.firstElementChild || inlineOnly(node)){
       var en = look(textOf(node));
       if(en){ put(inner(node), en); return; }
