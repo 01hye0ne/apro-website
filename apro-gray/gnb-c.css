@@ -340,23 +340,24 @@ html.pol-lock{overflow:hidden}
 .pol-x svg{width:24px;height:24px}
 .pol-x:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
 .pol-bd{overflow:auto;overscroll-behavior:contain;padding:32px 32px 48px}
-/* 글 위계(2026-10-12) — 조 머리 20 · 800 > 머리글 16 · 600 > 문단 · 번호 줄 16 · 400 진하게 > 하위 줄 16 · 400 연하게.
+/* 글 위계(2026-10-12) — 조 머리 24 · 800 > 머리글 18 · 600 > 번호 줄 이름 18 · 600 진하게 > 문단 · 번호 줄 18 · 400 회색 > 하위 줄 18 · 400 회색 들여씀.
+   같은 날 강약을 더 달라는 요청으로 조 머리를 20 → 24(사이트 스타일 6, 행간 1.4)로, 줄글을 진한 색 → --sec 로 내렸다 — 제목 · 굵은 이름만 진하다.
    사이는 조 48 > 문단 16 > 번호 줄 12 > 하위 줄 4 — 한 번호 아래 하위 줄은 붙여 한 덩이로 읽히게. 줄 기호는 내어 써 글머리가 세로로 선다 */
-.pol-bd h3{margin:48px 0 16px;font-family:var(--suit);font-weight:800;font-size:var(--fs-h3);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--g900)}
-.pol-bd h4{margin:24px 0 0;font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--g900)}
+.pol-bd h3{margin:56px 0 16px;font-family:var(--suit);font-weight:800;font-size:var(--fs-h2);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
+.pol-bd h4{margin:24px 0 0;font-family:var(--suit);font-weight:600;font-size:var(--fs-lead);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
 .pol-bd>:first-child{margin-top:0}
 .pol-bd p{margin:16px 0 0;font-family:var(--suit);font-weight:400;font-size:var(--fs-body);line-height:var(--lh-body);
-  letter-spacing:var(--ls);color:var(--g900);word-break:keep-all}
+  letter-spacing:var(--ls);color:var(--sec);word-break:keep-all}
 .pol-bd h3+p,.pol-bd h4+p{margin-top:8px}
 .pol-bd .pol-n1,.pol-bd .pol-n2{display:flex;gap:6px}
 .pol-bd .pol-n1{margin-top:12px}
 .pol-bd .pol-n1 .mk{flex:none;min-width:1.25em;font-variant-numeric:tabular-nums}
-.pol-bd .pol-n1 b{font-weight:600}
+.pol-bd .pol-n1 b{font-weight:600;color:var(--g900)}
 .pol-bd{--pol-ind:calc(1.25em + 6px)}   /* 한 단 들여쓰기 = 번호 칸 + 사이 — 하위 줄 글머리가 윗 줄 글머리에 선다 */
 .pol-bd .pol-n1.is-sub{padding-left:var(--pol-ind)}
 .pol-bd .pol-n2{margin-top:4px;padding-left:var(--pol-ind);color:var(--sec)}
 .pol-bd .pol-n2.is-sub{padding-left:calc(2 * var(--pol-ind))}
-.pol-bd .pol-date{margin-top:32px;font-size:var(--fs-meta);color:var(--sec)}
+.pol-bd .pol-date{margin-top:32px;font-size:var(--fs-meta);line-height:var(--lh-label);color:var(--tx-meta,#6b7785)}
 .pol-bd .pol-n2 .mk{flex:none;min-width:.9em}
 .pol-bd .tx{min-width:0}
 @media(max-width:767px){
