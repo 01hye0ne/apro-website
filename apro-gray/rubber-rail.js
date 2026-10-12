@@ -3,7 +3,7 @@
    켜고 끄는 대신 파란 덩어리 하나가 옮겨 간다. 앞 가장자리가 먼저 뛰고 뒤 가장자리가
    늦게 따라와서, 건너는 동안 늘어났다가 도착하면 살짝 눌리며 선다.
    - 지금 장은 스크롤스파이가 aria-current 로 정한다 — 여기서는 그 변화만 지켜본다
-   - 넓은 화면(1181~) : 세로 레일, 덩어리가 링크 칸을 덮는다. 덮인 링크만 흰 글자
+   - 넓은 화면(1181~) : 세로 레일, 덩어리가 링크 칸을 덮는다. 덮인 링크만 흰 글자, 덮인 칸 밑줄은 걷는다
    - 태블릿(768~1180) : 가로 탭, 밑줄만 늘어났다 줄어든다. 묶음이 바뀌면 탭 줄이 통째로
      갈리므로 그때는 뛰지 않고 제자리에 놓는다
    - 움직임 줄이기 설정이면 늘 제자리에 놓는다
@@ -62,15 +62,17 @@
     for(var i=0;i<links.length;i++){
       var b = links[i].__box;
       if(!b) continue;
-      var m = (b.s + b.e) / 2;
+      var m = (b.s + b.e) / 2, ln = b.e - .5;   /* ln — 칸 밑줄(1px)의 가운데 */
       links[i].classList.toggle('on-blob', A.x <= m && m <= B.x);
+      /* 칸 밑줄은 덩어리보다 위 층이라 덩어리를 가로질러 보인다 — 덮인 밑줄은 걷는다 */
+      links[i].classList.toggle('blob-line', A.x < ln && ln < B.x);
     }
   }
   function measureAll(){
     for(var i=0;i<links.length;i++) links[i].__box = vertical ? box(links[i]) : null;
   }
   function clearText(){
-    for(var i=0;i<links.length;i++) links[i].classList.remove('on-blob');
+    for(var i=0;i<links.length;i++) links[i].classList.remove('on-blob', 'blob-line');
   }
 
   function stepSpring(p, cfg, dt){
