@@ -259,6 +259,7 @@ html .cpost-nav .k{font-weight:400}
 /* ── 페이지 이름 20 / 800 (2026-10-12 요청) ─────────────────────────────────────────────────────
    콘텐츠 장 세로 히어로의 페이지 이름(환경 · 전자공고 …)이 UI 글 16 / 600 이라 꼬리표처럼 읽혔다 — 장의 제목(h1)이므로
    소제목 스타일 20 / 800(--fs-h3, 900 이하 18)으로 올린다. 아래 문장(24 / 400)과는 굵기로 갈린다.
-   회사정보 세 장의 대문자 머리말(VISION 2030 · GLOBAL NETWORK · LOCATIONS)은 대문자가 같은 크기에서 훨씬 무거워 한 단 낮춘 18 / 800 */
+   회사정보 세 장의 대문자 머리말(VISION 2030 · GLOBAL NETWORK · LOCATIONS)은 대문자가 같은 굵기에서도 꽉 차 보여 기존 18 / 600(--fs-lead)으로 —
+   눈으로는 한글 20 / 800 과 비슷한 무게이고, 스타일 수(12)와 굵기 규칙(18 은 400 · 600)을 지킨다 */
 .cs-hero h1{font-size:var(--fs-h3);font-weight:800;line-height:var(--lh-head)}
-.ci-hero h1,.co-vband .eyebrow{font-size:var(--fs-lead);font-weight:800;line-height:var(--lh-head)}
+.ci-hero h1,.co-vband .eyebrow{font-size:var(--fs-lead);font-weight:600;line-height:var(--lh-head)}
