@@ -1247,9 +1247,9 @@
     'float c=.2+.05*sin(uv.x*5.5+t*1.6)+.07*sn(vec2(uv.x*1.4+t,t*.6));',
     'float d=uv.y-c;',
     'float up=exp(-max(d,0.)/.17);float dn=exp(-pow(min(d,0.)/.04,2.));float band=d>0.?up:dn;',
-    /* 빛기둥 — 가로로 촘촘한 노이즈가 천천히 흐른다 */
-    'float rays=.55+.45*sn(vec2(uv.x*ar*7.+t*2.,t*1.2));',
-    'float a=band*rays*(.75+.25*sn(vec2(uv.x*2.-t,1.7)));',
+    /* 빛기둥 — 가로 노이즈가 천천히 흐른다. 촘촘하면(7) 짧게 끊겨 보여 덩어리가 옆으로 길게 이어지게 낮췄다(2026-10-13 요청) */
+    'float rays=.55+.45*sn(vec2(uv.x*ar*2.6+t*1.2,t*1.));',
+    'float a=band*rays*(.75+.25*sn(vec2(uv.x*1.1-t,1.7)));',
     /* 색 — 브랜드 파랑(#4077b7) → 청록 → 옅은 하늘(#9ab9df), 줄 가까이는 흰빛을 조금 */
     'vec3 c1=vec3(.25,.47,.72),c2=vec3(.33,.72,.80),c3=vec3(.60,.73,.87);',
     'vec3 col=mix(c1,c2,smoothstep(.0,.35,uv.x+.1*sn(vec2(t,uv.y))));col=mix(col,c3,smoothstep(.35,.7,uv.x));',
