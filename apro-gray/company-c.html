@@ -408,6 +408,14 @@
      'A-PRO 글로벌 센터' 간판까지 담는다(시안이 그렇게 잘라 두었다). 위로 잘리는 것은
      빈 밤하늘뿐이다 */
   .co-apro .fig>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%}
+  /* 오로라(2026-10-13, React Bits 의 Aurora 를 바닥 띠로) — 사진 아래쪽 하늘을 원 뒤로 지나가는 옅은 빛띠.
+     사진과 사옥이 한 장이라 사옥 뒤로 보낼 수 없다 — 오른쪽(사옥)에 닿기 전에 마스크로 사라진다.
+     밝기는 원 테두리 빛이 위에서 또렷하도록 옅게(screen 섞기). 그리기는 아래 스크립트(WebGL, 절반 해상도) */
+  .co-apro .fig>.aurora{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+      mix-blend-mode:screen;opacity:0;transition:opacity 1.6s var(--ease);
+      -webkit-mask-image:linear-gradient(90deg,#000 0,#000 46%,transparent 72%);
+              mask-image:linear-gradient(90deg,#000 0,#000 46%,transparent 72%)}
+  .co-apro .fig>.aurora.is-on{opacity:.7}
   /* 글은 판 왼쪽에 모인다 — 문구가 위, 6대 핵심가치가 아래다(2026-09-18 시안).
      판을 가르던 3×2 격자와 테두리는 걷었다 : 사진 위에 선을 긋는 대신 글만 얹는다 */
   .co-apro .line{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
@@ -1207,6 +1215,85 @@
   fig.addEventListener('pointerleave', function(){ inside = false; aimPointer(); kick(); });
   /* 판 안에 커서를 둔 채 스크롤하면 원이 커서 밑에서 움직인다 — 방향을 다시 잰다 */
   window.addEventListener('scroll', function(){ if(inside){ aimPointer(); kick(); } }, { passive: true });
+})();
+</script>
+<script>
+/* 오로라 — 셰이더 하나를 판 크기 절반 해상도로 그린다. 판이 화면에 있을 때만 돌고, 움직임 줄이기면 한 장면만.
+   띠의 가운데 줄은 판 바닥에서 20% 높이를 물결친다. 줄 위로는 길게 옅어지고(빛기둥), 아래로는 짧게 끊긴다 */
+(function(){
+  var fig = document.querySelector('.co-apro .fig');
+  var img = fig && fig.querySelector(':scope>img');
+  if(!img) return;
+  var cv = document.createElement('canvas');
+  cv.className = 'aurora'; cv.setAttribute('aria-hidden', 'true');
+  var gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
+  if(!gl) return;
+  img.insertAdjacentElement('afterend', cv);
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var FS = [
+    'precision mediump float;uniform vec2 uRes;uniform float uTime;',
+    /* 2D 심플렉스 노이즈(Ashima Arts, MIT) — 원본 Aurora 와 같은 노이즈 */
+    'vec3 perm(vec3 x){return mod(((x*34.)+1.)*x,289.);}',
+    'float sn(vec2 v){const vec4 C=vec4(.211324865405187,.366025403784439,-.577350269189626,.024390243902439);',
+    'vec2 i=floor(v+dot(v,C.yy));vec2 x0=v-i+dot(i,C.xx);vec2 i1=(x0.x>x0.y)?vec2(1.,0.):vec2(0.,1.);',
+    'vec4 x12=x0.xyxy+C.xxzz;x12.xy-=i1;i=mod(i,289.);',
+    'vec3 p=perm(perm(i.y+vec3(0.,i1.y,1.))+i.x+vec3(0.,i1.x,1.));',
+    'vec3 m=max(.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.);m=m*m;m=m*m;',
+    'vec3 x=2.*fract(p*C.www)-1.;vec3 h=abs(x)-.5;vec3 ox=floor(x+.5);vec3 a0=x-ox;',
+    'm*=1.79284291400159-.85373472095314*(a0*a0+h*h);vec3 g;g.x=a0.x*x0.x+h.x*x0.y;g.yz=a0.yz*x12.xz+h.yz*x12.yw;',
+    'return 130.*dot(m,g);}',
+    'void main(){vec2 uv=gl_FragCoord.xy/uRes;float ar=uRes.x/uRes.y;float t=uTime*.05;',
+    /* 가운데 줄 — 긴 물결 + 노이즈 */
+    'float c=.2+.05*sin(uv.x*5.5+t*1.6)+.07*sn(vec2(uv.x*1.4+t,t*.6));',
+    'float d=uv.y-c;',
+    'float up=exp(-max(d,0.)/.17);float dn=exp(-pow(min(d,0.)/.04,2.));float band=d>0.?up:dn;',
+    /* 빛기둥 — 가로로 촘촘한 노이즈가 천천히 흐른다 */
+    'float rays=.55+.45*sn(vec2(uv.x*ar*7.+t*2.,t*1.2));',
+    'float a=band*rays*(.75+.25*sn(vec2(uv.x*2.-t,1.7)));',
+    /* 색 — 브랜드 파랑(#4077b7) → 청록 → 옅은 하늘(#9ab9df), 줄 가까이는 흰빛을 조금 */
+    'vec3 c1=vec3(.25,.47,.72),c2=vec3(.33,.72,.80),c3=vec3(.60,.73,.87);',
+    'vec3 col=mix(c1,c2,smoothstep(.0,.35,uv.x+.1*sn(vec2(t,uv.y))));col=mix(col,c3,smoothstep(.35,.7,uv.x));',
+    'col=mix(col,vec3(.8,.92,1.),pow(band,4.)*.35);',
+    'gl_FragColor=vec4(col*a,a);}'
+  ].join('\n');
+  function sh(type, src){ var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; }
+  var pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr, gl.LINK_STATUS)){ cv.remove(); return; }
+  gl.useProgram(pr);
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(pr, 'p');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  var uRes = gl.getUniformLocation(pr, 'uRes'), uTime = gl.getUniformLocation(pr, 'uTime');
+
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var raf = 0, seen = false, t0 = performance.now(), T = 40;   /* T — 움직임 줄이기에서 보여 줄 한 장면의 시각 */
+  function size(){
+    var w = Math.max(1, Math.round(cv.clientWidth * .5)), h = Math.max(1, Math.round(cv.clientHeight * .5));
+    if(cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; gl.viewport(0, 0, w, h); }
+  }
+  function draw(sec){
+    size();
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uTime, sec);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  function loop(now){
+    raf = 0;
+    draw(T + (now - t0) / 1000);
+    if(seen && !calm.matches && !document.hidden) raf = requestAnimationFrame(loop);
+  }
+  function go(){ if(!raf) raf = requestAnimationFrame(loop); }
+  new IntersectionObserver(function(es){
+    seen = es[0].isIntersecting;
+    if(seen){ cv.classList.add('is-on'); go(); }
+  }).observe(fig);
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden && seen) go(); });
+  if(window.ResizeObserver) new ResizeObserver(function(){ if(!raf) draw(T + (performance.now() - t0) / 1000); }).observe(fig);
 })();
 </script>
 <script src="gnb-c.js"></script>
