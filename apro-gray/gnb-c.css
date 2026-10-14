@@ -18,7 +18,7 @@
 .sf-gnb,.c-mega{--mm-col:176px;--mm-gap:8px}
 @media(max-width:1600px){.sf-gnb,.c-mega{--mm-col:150px}}
 @media(max-width:1280px){.sf-gnb,.c-mega{--mm-col:min(150px, calc((100vw - 356px) / 5))}}
-/* 판이 열렸을 때 칸 폭은 열마다 따로(2026-10-14 요청 — 영문 보기에서 넷째 사업영역 'Compound GaN Semiconductors'(226)가
+/* 영문 보기에서 판이 열렸을 때 칸 폭은 열마다 따로(2026-10-14 요청 — 영문 보기에서 넷째 사업영역 'Compound GaN Semiconductors'(226)가
    칸 176 을 넘어 옆 칸을 침범했다). 칸 = 그 열에서 가장 긴 영문 글자(국문은 모두 이보다 짧다, 16px 에서 잼) + 사이 --mm-g.
    글자끼리의 빈 틈이 어느 열 사이나 같아진다. 긴 영문: 사업영역 230 · 회사정보 110(Global Network) · 투자정보 124(Electronic Notices)
    · 지속가능경영 122(Reporting Center) · 커뮤니티 98(Press Release). 1180 아래는 자리가 모자라 사업영역 칸을 146(Energy Infrastructure 한 줄)으로 두고
@@ -64,12 +64,14 @@
   /* 평소 칸 폭 --mm-idle 은 gnb-c.js 가 콘텐츠 장 본문 왼쪽 선에 묶음 양 끝이 오도록 재서 준다(1920 에서 약 124) */
   .sf-gnb .sf-menus>li>a{width:min(var(--mm-idle,108px),var(--mm-col));
     transition:width .38s cubic-bezier(.22,1,.36,1),color .2s,background .2s}
-  .sf-gnb.c-open .sf-menus{gap:0}
-  .sf-gnb.c-open .sf-menus>li:nth-child(1)>a{width:calc(var(--mm-l1) + var(--mm-g))}
-  .sf-gnb.c-open .sf-menus>li:nth-child(2)>a{width:calc(var(--mm-l2) + var(--mm-g))}
-  .sf-gnb.c-open .sf-menus>li:nth-child(3)>a{width:calc(var(--mm-l3) + var(--mm-g))}
-  .sf-gnb.c-open .sf-menus>li:nth-child(4)>a{width:calc(var(--mm-l4) + var(--mm-g))}
-  .sf-gnb.c-open .sf-menus>li:nth-child(5)>a{width:calc(var(--mm-l5) + var(--mm-g))}
+  .sf-gnb.c-open .sf-menus{gap:var(--mm-gap)}
+  .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col)}
+  html[lang="en"] .sf-gnb.c-open .sf-menus{gap:0}
+  html[lang="en"] .sf-gnb.c-open .sf-menus>li:nth-child(1)>a{width:calc(var(--mm-l1) + var(--mm-g))}
+  html[lang="en"] .sf-gnb.c-open .sf-menus>li:nth-child(2)>a{width:calc(var(--mm-l2) + var(--mm-g))}
+  html[lang="en"] .sf-gnb.c-open .sf-menus>li:nth-child(3)>a{width:calc(var(--mm-l3) + var(--mm-g))}
+  html[lang="en"] .sf-gnb.c-open .sf-menus>li:nth-child(4)>a{width:calc(var(--mm-l4) + var(--mm-g))}
+  html[lang="en"] .sf-gnb.c-open .sf-menus>li:nth-child(5)>a{width:calc(var(--mm-l5) + var(--mm-g))}
 }
 @media(prefers-reduced-motion:reduce){ .sf-gnb .sf-menus,.sf-gnb .sf-menus>li>a{transition:none} }
 
@@ -87,14 +89,17 @@
    글자는 SUIT 400 --fs-body · 줄높이 --lh-head · 자간 --ls, 지금 장은 800.
    한동안 A-1 메가 판 값(줄 사이 20 · 굵기 600)이었는데 답답해 보였다 — A-1 판은 제목 · 목록 · 세로선이 칸을
    나눠 20 이 맞았지만, 목록만 선 A 식 열에서는 촘촘했다. 굵기 400 은 사다리의 보조 글자 몫이다(2026-09-28) */
-.c-mega .c-cols{display:flex;justify-content:center;gap:0;padding:22px 0}
+.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:22px 0}
 .c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:28px}
-.c-mega .c-col:nth-child(1){width:calc(var(--mm-l1) + var(--mm-g))}
-.c-mega .c-col:nth-child(2){width:calc(var(--mm-l2) + var(--mm-g))}
-.c-mega .c-col:nth-child(3){width:calc(var(--mm-l3) + var(--mm-g))}
-.c-mega .c-col:nth-child(4){width:calc(var(--mm-l4) + var(--mm-g))}
-.c-mega .c-col:nth-child(5){width:calc(var(--mm-l5) + var(--mm-g))}
-@media(max-width:1180px){ .c-mega .c-col:nth-child(1) a{white-space:normal;max-width:var(--mm-l1)} }
+/* 열마다 폭은 영문 보기에서만(2026-10-14 — 국문에 쓰니 글자가 짧아 칸 폭 차이가 그대로 간격 차이로 보여 투자정보가 비껴 섰다).
+   국문은 같은 폭 칸(--mm-col · --mm-gap) 그대로 */
+html[lang="en"] .c-mega .c-cols{gap:0}
+html[lang="en"] .c-mega .c-col:nth-child(1){width:calc(var(--mm-l1) + var(--mm-g))}
+html[lang="en"] .c-mega .c-col:nth-child(2){width:calc(var(--mm-l2) + var(--mm-g))}
+html[lang="en"] .c-mega .c-col:nth-child(3){width:calc(var(--mm-l3) + var(--mm-g))}
+html[lang="en"] .c-mega .c-col:nth-child(4){width:calc(var(--mm-l4) + var(--mm-g))}
+html[lang="en"] .c-mega .c-col:nth-child(5){width:calc(var(--mm-l5) + var(--mm-g))}
+@media(max-width:1180px){ html[lang="en"] .c-mega .c-col:nth-child(1) a{white-space:normal;max-width:var(--mm-l1)} }
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
   font-weight:400;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
   white-space:nowrap;text-decoration:none;transition:color .18s}
