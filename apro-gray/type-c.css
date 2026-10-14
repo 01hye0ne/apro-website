@@ -242,6 +242,10 @@ html .cpost-nav .k{font-weight:400}
 .c-mega .c-col a{font-weight:400;color:var(--tx-meta,#6b7785)}
 .c-mega .c-col a:hover,.c-mega .c-col a:focus-visible{color:var(--g900,#1b2733)}
 .c-mega .c-col a[aria-current]{font-weight:600;color:var(--gnb-brand,#2c5790)}
+/* GNB 대분류도 같은 두 단(2026-10-14 요청 — 판이 닫혔을 때 지금 장 대분류가 색으로만 갈려 굵기가 안 보였다).
+   기본 400 · 지금 장 600. 16 은 400 · 600 두 단 규칙 그대로 */
+.sf-gnb .sf-menus>li>a{font-weight:400}
+.sf-gnb .sf-menus>li>a[aria-current]{font-weight:600}
 /* 투자정보 · 지속가능경영 · 커뮤니티 등 세로 히어로 왼쪽 목차는 400(2026-10-14 요청 — 사진 위 흰 글이 무거웠다) */
 .cs-toc a{font-weight:400}
 
