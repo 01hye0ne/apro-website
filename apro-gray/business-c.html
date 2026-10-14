@@ -246,6 +246,9 @@
   .hd-back .box{width:28px;height:28px;flex-shrink:0;border:1px solid currentColor;display:grid;place-content:center}
   .hd-back .box svg{width:18px;height:18px}
   .hd-back .lbl{font-family:var(--suit);font-weight:600;font-size:var(--fs-body);line-height:var(--lh-tight);letter-spacing:var(--ls);white-space:nowrap}
+  /* [홈으로] 글 단추 → 집 아이콘 하나(2026-10-14 요청). 오른쪽 메뉴 단추처럼 상자 없는 선 그림, 누르는 자리는 40 */
+  .hd-home{width:40px;height:40px;justify-content:center;margin-left:-8px}
+  .hd-home svg{width:26px;height:26px;display:block}
   @keyframes hdIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
   /* ===================== SHARED: hamburger + full-screen overlay ===================== */
@@ -298,7 +301,7 @@
 <!-- ===================== SUB GNB ===================== -->
 <header class="subhd is-biz">
   <div class="hd-left">
-    <a class="hd-back" href="index-c.html" aria-label="홈으로"><span class="box"><svg viewBox="0 0 20 20" fill="none"><path d="M12 4 6 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">홈으로</span></a>
+    <a class="hd-back hd-home" href="index-c.html" aria-label="홈으로"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 10.5 12 3.5l8.5 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9v11h4.75v-6h3.5v6h4.75V9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
   </div>
   <div class="hd-right">
       <button class="menu-toggle" type="button" aria-label="전체 메뉴 열기" aria-controls="navover" aria-expanded="false"><span></span><span></span></button>
