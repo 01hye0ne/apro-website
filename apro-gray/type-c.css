@@ -237,6 +237,13 @@ html .cpost-nav .k{font-weight:400}
 .cs-hero h1,.cs-toc a,.sf-rail a,.cs-body .cblock>ul>li>a,
 .hm-ttl .hm-lbl,.ci-hero h1,.co-vband .eyebrow,.gn-stats .k,.lc-rows dt,.lc-head .en,.cway .k,.cform-k,.ctoc p,
 .sf-texts .cat,.sf-cert .ttl,.bhop .bhtag .en,.bhnow .en,.cprice-hd .nm b{font-size:var(--fs-ui);font-weight:600}
+/* 메가메뉴 하위 항목 세 단(2026-10-14 요청 — 기본 · 호버 · 지금 장의 강약이 약했다. 셋 다 600 이라 굵기로는 갈리지 않았다).
+   기본 400 · 옅은 회색(--tx-meta), 호버 진한 글색(--g900), 지금 장 600 · 브랜드. 16 은 400 · 600 두 단 규칙 그대로 */
+.c-mega .c-col a{font-weight:400;color:var(--tx-meta,#6b7785)}
+.c-mega .c-col a:hover,.c-mega .c-col a:focus-visible{color:var(--g900,#1b2733)}
+.c-mega .c-col a[aria-current]{font-weight:600;color:var(--gnb-brand,#2c5790)}
+/* 투자정보 · 지속가능경영 · 커뮤니티 등 세로 히어로 왼쪽 목차는 400(2026-10-14 요청 — 사진 위 흰 글이 무거웠다) */
+.cs-toc a{font-weight:400}
 
 /* ── SUIT 24 / 800 행간 1.4 (2026-10-07 "스타일 자체의 행간을 바꿔줘") ──────────────────────────────
    홈 Who we are 소개 줄을 1.2 → 1.4 로 넓힌 뒤, 같은 스타일 전체를 맞춘다 — 두 줄로 꺾이는 제목(판 제목 · 게시글 제목 ·
