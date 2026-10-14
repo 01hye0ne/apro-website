@@ -22,7 +22,7 @@
    영문 이름이 길어(넷째 사업영역 'Compound GaN Semiconductors' 226) 국문 칸 176 을 넘어 옆 칸을 침범했다. 열마다 폭을 달리했더니
    가운데 열(투자정보 · IR)이 화면 가운데에서 비껴 서서, 다섯 칸 같은 폭 한 값으로 두 언어가 같이 쓴다.
    칸 = 남는 폭(화면 − 여백 둘 − 로고 · 도구 자리 204)의 1/5, 많아야 230(가장 긴 영문 226 이 한 줄로 드는 폭).
-   그보다 좁아지면 칸을 넘는 영문 이름만 두 줄로 접는다(국문은 가장 긴 것이 116 이라 접히지 않는다).
+   그보다 좁아져도 이름은 한 줄 그대로다(아래 .c-col a).
    묶음 왼쪽 끝은 여백 + 102 라 로고(여백 + 78)와 24 떨어진다. --mm-col 은 판이 닫혔을 때 칸 폭(--mm-idle)의 상한으로만 남는다 */
 .sf-gnb,.c-mega{--mm-col-u:clamp(120px,calc((100vw - 2 * var(--c-m) - 204px) / 5),230px)}
 
@@ -87,7 +87,10 @@
    나눠 20 이 맞았지만, 목록만 선 A 식 열에서는 촘촘했다. 굵기 400 은 사다리의 보조 글자 몫이다(2026-09-28) */
 .c-mega .c-cols{display:flex;justify-content:center;gap:0;padding:22px 0}
 .c-mega .c-col{width:var(--mm-col-u);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:28px}
-.c-mega .c-cols .c-col a{white-space:normal;max-width:calc(var(--mm-col-u) - 4px)}
+/* 이름은 늘 한 줄(2026-10-14 요청 — 영문 'Compound GaN Semiconductors' 가 1440 아래에서 두 줄로 접혔다). 칸보다 길면 칸 밖으로 조금 넘친다 —
+   그 줄(사업영역 넷째) 옆 회사정보 열은 셋째 줄까지라 부딪히지 않는다 */
+/* 1000 아래(태블릿 가로 끝 ~ 901)는 칸이 120 대로 좁아져 영문 'Energy Infrastructure' 가 옆 'Global Network' 에 닿는다 — 글자를 14 / 400(스타일 13)으로 한 단 내린다. 국문도 같이 */
+@media(max-width:1000px){ .c-mega .c-cols .c-col a{font-size:var(--fs-meta)} }
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
   font-weight:400;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
   white-space:nowrap;text-decoration:none;transition:color .18s}
