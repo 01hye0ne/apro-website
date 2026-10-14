@@ -58,12 +58,14 @@
 .sf-gnb .sf-menus .caret{display:none}
 /* 대분류는 평소 좁게(--mm-idle, 108 이상) 모여 있다가 메가 판이 열릴 때(.c-open)만 판의 열 폭(--mm-col · --mm-gap)으로 벌어진다(2026-10-01).
    넓은 칸 그대로면 콘텐츠 장 왼쪽 세로 히어로 경계에 첫 대분류가 걸쳐 어긋나 보였다. 벌어지는 동안 커서 밑으로
-   미끄러져 든 다른 대분류가 판을 바꾸지 않게 gnb-c.js 가 0.4 초 잠근다 */
+   미끄러져 든 다른 대분류가 판을 바꾸지 않게 gnb-c.js 가 0.6 초 잠근다 */
 @media(min-width:901px){
-  .sf-gnb .sf-menus{gap:0;transition:gap .38s cubic-bezier(.22,1,.36,1)}
+  /* 벌어지는 움직임 0.6 초 · 천천히 시작해 천천히 멈춤(2026-10-14 요청 — 0.38 초 · 급히 튀는 곡선이라 칸이 230 으로 넓어진 뒤 급변해 보였다).
+     판(.c-mega)도 같은 곡선 0.45 초, gnb-c.js 잠금도 0.6 초 */
+  .sf-gnb .sf-menus{gap:0;transition:gap .6s cubic-bezier(.45,0,.2,1)}
   /* 평소 칸 폭 --mm-idle 은 gnb-c.js 가 콘텐츠 장 본문 왼쪽 선에 묶음 양 끝이 오도록 재서 준다(1920 에서 약 124) */
   .sf-gnb .sf-menus>li>a{width:min(var(--mm-idle,108px),var(--mm-col));
-    transition:width .38s cubic-bezier(.22,1,.36,1),color .2s,background .2s}
+    transition:width .6s cubic-bezier(.45,0,.2,1),color .2s,background .2s}
   .sf-gnb.c-open .sf-menus{gap:0}
   .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col-u)}
 }
@@ -77,7 +79,7 @@
   border-bottom:1px solid var(--gnb-line,#e4e8ed);   /* 윗선은 두지 않는다 — 바의 밑선과 겹쳐 두 줄로 보였다 */
   box-shadow:0 24px 48px rgba(14,22,30,.12);
   opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none;
-  transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),visibility .3s}
+  transition:opacity .45s cubic-bezier(.45,0,.2,1),transform .45s cubic-bezier(.45,0,.2,1),visibility .45s}
 .c-mega.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
 /* 판 안 — 위아래 여백 22(A-1 판 44 의 절반, 2026-09-28 요청), 줄 사이 28(A 의 30 에 가깝게).
    글자는 SUIT 400 --fs-body · 줄높이 --lh-head · 자간 --ls, 지금 장은 800.
