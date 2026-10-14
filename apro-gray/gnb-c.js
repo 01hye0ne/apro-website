@@ -75,7 +75,7 @@
     clearTimeout(t);
     if(!isOpen){
       isOpen = true;
-      lockUntil = Date.now() + 400;   /* 대분류가 벌어지는 동안(gnb-c.css .c-open) 판을 바꾸지 않는다 */
+      lockUntil = Date.now() + 600;   /* 대분류가 벌어지는 동안(gnb-c.css .c-open, 0.6 초) 판을 바꾸지 않는다 */
       gnb.classList.add('c-open');
       mega.classList.add('open');
       mega.setAttribute('aria-hidden', 'false');
