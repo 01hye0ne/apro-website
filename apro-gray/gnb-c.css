@@ -18,11 +18,13 @@
 .sf-gnb,.c-mega{--mm-col:176px;--mm-gap:8px}
 @media(max-width:1600px){.sf-gnb,.c-mega{--mm-col:150px}}
 @media(max-width:1280px){.sf-gnb,.c-mega{--mm-col:min(150px, calc((100vw - 356px) / 5))}}
-/* 영문 보기 칸 폭(2026-10-14) — 영문 이름이 길어(넷째 사업영역 'Compound GaN Semiconductors' 226) 국문 칸 176 을 넘어 옆 칸을 침범했다.
-   열마다 폭을 달리했더니 가운데 열(IR)이 화면 가운데에서 비껴 서서, 국문처럼 다섯 칸 같은 폭으로 둔다.
-   칸 = 남는 폭(화면 − 여백 둘 − 로고 · 도구 자리 204)의 1/5, 많아야 250(226 + 사이 24 — 286 까지 열면 넓은 화면에서 메뉴가 양쪽으로 퍼졌다). 그보다 좁아지면 칸을 넘는 이름만 두 줄로 접는다.
-   묶음 왼쪽 끝은 여백 + 102 라 로고(여백 + 78)와 24 떨어진다 */
-html[lang="en"] .sf-gnb,html[lang="en"] .c-mega{--mm-col-en:clamp(120px,calc((100vw - 2 * var(--c-m) - 204px) / 5),250px)}
+/* 판이 열렸을 때 칸 폭 --mm-col-u — 국문 · 영문 한 값(2026-10-14 요청 "통일감 있게").
+   영문 이름이 길어(넷째 사업영역 'Compound GaN Semiconductors' 226) 국문 칸 176 을 넘어 옆 칸을 침범했다. 열마다 폭을 달리했더니
+   가운데 열(투자정보 · IR)이 화면 가운데에서 비껴 서서, 다섯 칸 같은 폭 한 값으로 두 언어가 같이 쓴다.
+   칸 = 남는 폭(화면 − 여백 둘 − 로고 · 도구 자리 204)의 1/5, 많아야 230(가장 긴 영문 226 이 한 줄로 드는 폭).
+   그보다 좁아지면 칸을 넘는 영문 이름만 두 줄로 접는다(국문은 가장 긴 것이 116 이라 접히지 않는다).
+   묶음 왼쪽 끝은 여백 + 102 라 로고(여백 + 78)와 24 떨어진다. --mm-col 은 판이 닫혔을 때 칸 폭(--mm-idle)의 상한으로만 남는다 */
+.sf-gnb,.c-mega{--mm-col-u:clamp(120px,calc((100vw - 2 * var(--c-m) - 204px) / 5),230px)}
 
 /* 시안 C 좌우 여백 --c-m — A 의 여백 사다리를 A-1 격자 단위로 옮긴 것 (2026-09-28).
    A 는 84(1601~) · 64(1281~1600) · 40(1280 아래). A-1 은 마진 44 · 거터 20 이므로
@@ -62,10 +64,8 @@ html[lang="en"] .sf-gnb,html[lang="en"] .c-mega{--mm-col-en:clamp(120px,calc((10
   /* 평소 칸 폭 --mm-idle 은 gnb-c.js 가 콘텐츠 장 본문 왼쪽 선에 묶음 양 끝이 오도록 재서 준다(1920 에서 약 124) */
   .sf-gnb .sf-menus>li>a{width:min(var(--mm-idle,108px),var(--mm-col));
     transition:width .38s cubic-bezier(.22,1,.36,1),color .2s,background .2s}
-  .sf-gnb.c-open .sf-menus{gap:var(--mm-gap)}
-  .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col)}
-  html[lang="en"] .sf-gnb.c-open .sf-menus{gap:0}
-  html[lang="en"] .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col-en)}
+  .sf-gnb.c-open .sf-menus{gap:0}
+  .sf-gnb.c-open .sf-menus>li>a{width:var(--mm-col-u)}
 }
 @media(prefers-reduced-motion:reduce){ .sf-gnb .sf-menus,.sf-gnb .sf-menus>li>a{transition:none} }
 
@@ -83,11 +83,9 @@ html[lang="en"] .sf-gnb,html[lang="en"] .c-mega{--mm-col-en:clamp(120px,calc((10
    글자는 SUIT 400 --fs-body · 줄높이 --lh-head · 자간 --ls, 지금 장은 800.
    한동안 A-1 메가 판 값(줄 사이 20 · 굵기 600)이었는데 답답해 보였다 — A-1 판은 제목 · 목록 · 세로선이 칸을
    나눠 20 이 맞았지만, 목록만 선 A 식 열에서는 촘촘했다. 굵기 400 은 사다리의 보조 글자 몫이다(2026-09-28) */
-.c-mega .c-cols{display:flex;justify-content:center;gap:var(--mm-gap);padding:22px 0}
-.c-mega .c-col{width:var(--mm-col);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:28px}
-html[lang="en"] .c-mega .c-cols{gap:0}
-html[lang="en"] .c-mega .c-col{width:var(--mm-col-en)}
-html[lang="en"] .c-mega .c-col a{white-space:normal;max-width:calc(var(--mm-col-en) - 16px)}
+.c-mega .c-cols{display:flex;justify-content:center;gap:0;padding:22px 0}
+.c-mega .c-col{width:var(--mm-col-u);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:28px}
+.c-mega .c-cols .c-col a{white-space:normal;max-width:calc(var(--mm-col-u) - 4px)}
 .c-mega .c-col a{text-align:center;font-family:var(--suit,"SUIT Variable","Pretendard",sans-serif);
   font-weight:400;font-size:var(--fs-body);line-height:var(--lh-head);letter-spacing:var(--ls);color:var(--gnb-sec,#5a6675);
   white-space:nowrap;text-decoration:none;transition:color .18s}
