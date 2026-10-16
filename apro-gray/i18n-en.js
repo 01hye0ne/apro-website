@@ -601,7 +601,7 @@ window.APRO_I18N_EN = {
 "임직원은 회사의 물적 재산, 지적재산권, 영업비밀 등을 보호하여야 하며, 사적인 목적을 위해 사용하지 않는다.": "Employees must protect the company's physical assets, intellectual property rights, and trade secrets, and do not use them for private purposes.",
 "임직원은 회사의 이익에 영향을 미칠 수 있는 중요한 정보를 외부에 유출하지 않는다.": "Employees do not leak important information that may affect the company's interests to the outside.",
 "자동입력 방지": "Verification",
-"자동화 설비": "Automation System",
+"자동화 설비": "Automation equipment",
 "자동화 시스템": "Automation System",
 "자본": "Equity",
 "자본과부채총계": "Total Liabilities and Equity",
