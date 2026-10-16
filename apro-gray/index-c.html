@@ -573,7 +573,9 @@
   /* 키는 네 판이 정한다 — 장 공통의 한 화면 높이(min-height)를 풀어, 화면이 판보다 길어도
      마지막 판 아래에 빈 바탕이 늘어나지 않게 한다 */
   .hm-who{--who-line:rgba(255,255,255,.2);--who-x:18.96cqw;--who-fade:11.11cqw;container-type:inline-size;
-          justify-content:flex-start;gap:0;padding:var(--hm-pad) 0 0;min-height:0;
+          justify-content:flex-start;gap:0;padding:var(--hm-pad) 0 var(--hm-pad);min-height:0;
+          /* 아래 여백도 위와 같은 한 단계(2026-10-16 요청 — 바다 수평선이 넷째 판 글에 걸쳤다). 사진은 섹션 키에 맞춰 덮이고
+             수평선이 사진 높이 94% 자리라, 섹션이 길어진 만큼 수평선이 내려와 모든 폭에서 넷째 판 글 끝보다 아래에 온다 */
           /* 위 여백은 큰 섹션 한 단계(160 · 좁은 화면 128) — 줄무늬 띠(120)가 이 안에 깔린다. 2026-09-29 에 88 로 줄였다가
              진입이 답답하다며 되돌림(판 안 여백 · 글 사이 간격은 줄인 그대로) */
           background:var(--brand-2) url(../assets/blue-sky-horizon.jpg) 34% 0/cover no-repeat;
