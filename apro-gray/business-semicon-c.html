@@ -394,10 +394,11 @@
               background:var(--sf-gray100);font-family:var(--suit);font-weight:600;
               font-size:var(--t-2xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);color:var(--sf-ter);
               white-space:nowrap}
+  /* 긴 영문 이름(Industrial Safety Diagnosis Solution 등)은 칸(215) 안에서 줄을 바꾼다(2026-10-19 요청 — 넘쳐 잘렸다). 태블릿 가로 탭은 한 줄 그대로 */
   .sf-rail a{display:flex;align-items:center;padding:8px;overflow:hidden;
              border-bottom:1px solid var(--sf-line);font-family:var(--suit);
              font-weight:800;font-size:var(--t-xs);line-height:var(--lh-label);letter-spacing:var(--ls-num);
-             color:var(--sf-ter);white-space:nowrap;
+             color:var(--sf-ter);white-space:normal;word-break:keep-all;
              transition:background .3s var(--ease),color .3s var(--ease)}
   .sf-rail a:hover{color:var(--brand)}
   .sf-rail a[aria-current="true"]{background:var(--brand);color:#fff}
@@ -638,7 +639,7 @@
     .sf-grp:not(:has(a[aria-current="true"])){display:none}
     .sf-grp>.hd{display:flex;align-self:center;margin-right:8px;
                 font-size:var(--t-xs)}  /* 옆 탭 글자와 같은 크기(2026-09-22 요청) */
-    .sf-rail a{border-bottom:0;padding:14px 12px}
+    .sf-rail a{border-bottom:0;padding:14px 12px;white-space:nowrap}
     .sf-rail a[aria-current="true"]{background:none;color:var(--brand);
                                     box-shadow:inset 0 -2px 0 var(--brand)}
     /* 고무 덩어리는 가로 탭에서 밑줄(2px)로 눕는다 */
