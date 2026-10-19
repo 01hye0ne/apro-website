@@ -154,6 +154,9 @@
    그늘은 바보다 길게(×1.6) 내려 끝이 바 밑변에서 선으로 끊기지 않게 한다 */
 .sf-gnb.c-clear{background:transparent;border-bottom-color:transparent;
   -webkit-backdrop-filter:none;backdrop-filter:none}
+/* 사업영역 세부 네 장(.sf-main)은 히어로를 벗어나면 불투명 흰 바(2026-10-19 요청 — 에너지 솔루션 그림 · 회색 판이
+   유리 바 뒤로 비쳐 바만 얼룩져 보였다). 히어로 위(.c-clear)는 그대로 투명 */
+body:has(.sf-main) .sf-gnb:not(.c-clear){background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
 .sf-gnb::before{content:"";position:absolute;left:0;right:0;top:0;height:160%;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,14,22,.38),rgba(6,14,22,0));opacity:0;
   transition:opacity .35s cubic-bezier(.22,1,.36,1)}
