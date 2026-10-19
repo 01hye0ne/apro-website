@@ -103,6 +103,17 @@
       if(en) el.setAttribute(a, en);
     });
   }
+  function eachOwn(el){
+    var n = 0;
+    for(var c = el.firstChild; c; c = c.nextSibling){
+      if(c.nodeType === 3){ if(c.nodeValue.trim()) return false; continue; }
+      if(c.nodeType !== 1 || c.tagName === 'BR') continue;
+      if(!c.textContent.trim()) continue;
+      if(!look(textOf(c))) return false;
+      n++;
+    }
+    return n >= 2;
+  }
   function tr(node){
     if(node.nodeType === 3){ if(!node.parentElement || !node.parentElement.closest('[data-no-i18n]')) doText(node); return; }
     if(node.nodeType !== 1 || SKIP[node.tagName] || node.closest('[data-no-i18n]')) return;
@@ -115,6 +126,9 @@
       if(ce){ put(inner(node), ce); return; }
     }
     if(!node.firstElementChild || inlineOnly(node)){
+      /* 꾸밈 덩어리(span 등)가 둘 이상이고 덩어리마다 영문이 따로 있으면 덩어리별로 바꾼다(2026-10-19 — 사업영역 세부 인트로
+         .sf-lead 의 옅은 줄 .a · 굵은 파랑 줄 .b 가 문단 통째 번역에 지워졌다). 덩어리 밖에 글이 있으면(<b>A</b>dvance) 통째로 */
+      if(eachOwn(node)){ for(var k = node.firstChild; k; k = k.nextSibling) tr(k); return; }
       var en = look(textOf(node));
       if(en){ put(inner(node), en); return; }
     }
