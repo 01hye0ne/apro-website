@@ -345,7 +345,7 @@ html.c-shot .rv{opacity:1!important;transform:none!important;translate:none!impo
 /* 좁은 화면 — 링크 둘을 한 줄, Copyright 를 그 밑 줄로(저작권 줄 끝에서 꺾여 구분선이 줄머리에 매달리지 않게) */
 @media(max-width:600px){
   .footer .f-legal .copy{order:2;width:100%}
-  .footer .f-pol.is-key::before{display:none}
+  .footer .f-legal>.copy+.f-pol::before{display:none}   /* 줄 맨 앞 링크(Contact Us, 2026-10-22 부터 맨 앞)의 구분선 */
 }
 
 html.pol-lock{overflow:hidden}
