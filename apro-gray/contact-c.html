@@ -13,15 +13,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="business-layout.css" />
-<link rel="stylesheet" href="content-layout.css?v=20261022" />
+<link rel="stylesheet" href="content-layout.css?v=20261022b" />
 <link rel="stylesheet" href="content-side.css" />
 <!-- ============================================================
      Contact Us (시안 C, 2026-10-22) — 옛 홈페이지 문의하기(/contact) 한 장을 옮겼다. 글 원본 content-export/06_Contact_Us.xlsx
      ('Contact Us 문구' 시트는 국문영문글정리.xlsx 에도 같은 시트로 넣었다 — 영문 보기 사전).
      진입점은 푸터 아래 줄 이메일무단수집거부 오른쪽(모든 장). GNB · 메가 메뉴 · 전체 메뉴에는 없다.
      틀은 콘텐츠 장 공용 세로 히어로(content-side.css), 부품은 내/외부 신고채널과 같은 문의처 칸(.cways)과 양식(.cform).
-     옛 사이트와 다른 점: 내용은 위지윅(Summernote) 대신 여러 줄 입력, 자동등록방지는 숫자 그림 대신 Cloudflare Turnstile
-     (신고채널과 같은 것), 안내 카드의 사진 셋은 받지 않아 넣지 않았다 -->
+     옛 사이트와 다른 점: 내용은 위지윅(Summernote) 대신 여러 줄 입력, 자동등록방지는 옛 사이트처럼 숫자 그림 + 입력(2026-10-22 요청 — 처음엔
+     신고채널과 같은 Cloudflare Turnstile 이었다), 안내 카드의 사진 셋은 받지 않아 넣지 않았다 -->
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
 <link rel="stylesheet" href="type-c.css" />
@@ -152,8 +152,16 @@
         </div>
       </div>
       <div class="cform-row">
-        <span class="cform-k">자동등록방지 <abbr class="req" title="필수">*</abbr></span>
-        <div class="cform-v cform-v--captcha"><div id="ctTurnstile"></div></div>
+        <label class="cform-k" for="ctCaptcha">자동등록방지 <abbr class="req" title="필수">*</abbr></label>
+        <!-- 숫자 그림 + 새로고침 + 입력. 시안은 그림을 페이지가 그린다(아래 스크립트) — 실제 서버에서는 서버가 숫자 그림을 내주고
+             값은 서버에 두어 대조한다(옛 사이트 svg-captcha · 쿠키 방식). 그림은 <img> 로 바꿔 끼우면 된다 -->
+        <div class="cform-v cform-v--captcha">
+          <div class="cform-cap">
+            <canvas id="ctCapImg" width="150" height="52" role="img" aria-label="자동등록방지 숫자 그림"></canvas>
+            <button type="button" class="r" id="ctCapNew" aria-label="새로고침" title="새로고침"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          </div>
+          <input type="text" id="ctCaptcha" name="captcha" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="자동등록방지 숫자를 순서대로 입력하세요." required />
+        </div>
       </div>
     </form>
     <button type="submit" form="contactForm" class="cform-submit">문의하기</button>
@@ -271,7 +279,7 @@
      1) 첨부: 눌러 고르거나 끌어다 놓는다. 고른 파일은 이름 · 크기 목록으로 보이고 하나씩 뺄 수 있다. 합계 20MB 를 넘으면 막는다.
      2) 빈 필수 칸은 브라우저 기본 말풍선 대신 아래 알림 칸에 알리고 그 칸으로 간다(영문 보기 글도 함께).
      3) 보내기는 막는다 — 받아 줄 서버가 아직 없다. 서버가 붙으면 막는 줄(say(t('off')))을 걷고 FormData(form) 로 보내면 된다.
-        결과 글은 MSG 를 쓴다(06_Contact_Us.xlsx '알림 메시지' 8줄 + 이 시안에서 새로 쓴 4줄) -->
+        결과 글은 MSG 를 쓴다(06_Contact_Us.xlsx '알림 메시지' 8줄 + 이 시안에서 새로 쓴 3줄) -->
 <script>
 (function(){
   var form=document.getElementById('contactForm');
@@ -289,10 +297,9 @@
     captcha:{ko:'자동등록방지 코드가 일치하지 않습니다.',en:'The CAPTCHA code does not match.'},
     net:{ko:'서버 통신 중 오류가 발생했습니다.',en:'An error occurred during server communication.'},
     size:{ko:'첨부파일 총 용량은 20MB를 초과할 수 없습니다.',en:'Total attachment size cannot exceed 20MB.'},
-    /* 아래 넷은 이 시안에서 새로 쓴 글 */
+    /* 아래 셋은 이 시안에서 새로 쓴 글 */
     need:{ko:'필수 항목을 입력해 주세요: ',en:'Please fill in the required field: '},
     mail:{ko:'이메일 주소 형식을 확인해 주세요.',en:'Please check the email address format.'},
-    robot:{ko:'자동등록방지 확인을 마친 뒤 다시 눌러 주세요.',en:'Please complete the CAPTCHA check and try again.'},
     off:{ko:'지금은 접수 서버가 연결되어 있지 않아 문의가 전송되지 않습니다. 위 문의처의 이메일이나 전화로 연락해 주세요.',
          en:'Inquiries cannot be sent yet because the server is not connected. Please contact us by the email or phone number above.'}
   };
@@ -324,14 +331,30 @@
   ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('is-over');});});
   drop.addEventListener('drop',function(e){if(e.dataTransfer)add(e.dataTransfer.files);});
 
-  /* 자동등록방지 — Cloudflare Turnstile. 신고채널과 같은 시험용 키(늘 통과). 정식 키로 바꿀 때는 sitekey 만 갈고,
-     토큰은 접수 서버가 비밀 키로 siteverify 에 물어 확인한다(틀리면 MSG.captcha) */
-  var TS_KEY='1x00000000000000000000AA', tsId=null;
-  window.ctTsReady=function(){
-    if(!window.turnstile)return;
-    tsId=turnstile.render('#ctTurnstile',{sitekey:TS_KEY,size:'flexible',theme:'light',language:EN()?'en':'ko',
-      'error-callback':function(){say(t('fail'));}});
-  };
+  /* 자동등록방지 — 숫자 여섯 자리 그림. 시안에서는 여기서 숫자를 뽑아 그리고 여기서 대조한다(흉내).
+     실제로는 서버가 숫자를 정해 그림만 내주고, 보낸 값(name="captcha")을 서버가 대조한다 — 틀리면 MSG.captcha 후 새 그림 */
+  var cap=document.getElementById('ctCapImg'), capIn=document.getElementById('ctCaptcha'), code='';
+  function draw(){
+    var x=cap.getContext('2d'), w=cap.width, h=cap.height, dpr=Math.min(2,window.devicePixelRatio||1);
+    if(cap.width!==150*dpr){cap.width=150*dpr;cap.height=52*dpr;w=cap.width;h=cap.height;}
+    x.setTransform(dpr,0,0,dpr,0,0);
+    code='';for(var i=0;i<6;i++)code+=Math.floor(Math.random()*10);
+    x.fillStyle='#f4f6f8';x.fillRect(0,0,150,52);
+    for(i=0;i<2;i++){   /* 가로지르는 선 둘 */
+      x.strokeStyle=i?'#96a3b3':'#2c5790';x.globalAlpha=.55;x.lineWidth=1.2;x.beginPath();
+      x.moveTo(4,10+Math.random()*32);x.bezierCurveTo(50,Math.random()*52,100,Math.random()*52,146,10+Math.random()*32);x.stroke();
+    }
+    x.globalAlpha=1;x.textBaseline='middle';x.textAlign='center';
+    for(i=0;i<6;i++){
+      x.save();x.translate(18+i*22.8,27+(Math.random()*8-4));x.rotate((Math.random()-.5)*.5);
+      x.font='400 '+(24+Math.floor(Math.random()*5))+'px Aldrich, sans-serif';
+      x.fillStyle=i%2?'#1b2733':'#2c5790';x.fillText(code[i],0,0);x.restore();
+    }
+  }
+  function renew(){draw();capIn.value='';}
+  document.getElementById('ctCapNew').addEventListener('click',function(){renew();capIn.focus();});
+  draw();
+  if(document.fonts&&document.fonts.load)document.fonts.load('24px Aldrich').then(draw,function(){});
 
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -343,12 +366,11 @@
     var mail=document.getElementById('ctEmail');
     if(!mail.checkValidity()){say(t('mail'));mail.focus();return;}
     if(sum(files)>MAX){say(t('size'));return;}
-    if(!window.turnstile||tsId===null||!turnstile.getResponse(tsId)){say(t('robot'));return;}
+    if(capIn.value.trim()!==code){say(t('captcha'));renew();capIn.focus();return;}
     say(t('off'));
   });
 })();
 </script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ctTsReady" async defer></script>
 <script src="gnb-c.js"></script>
 <script src="i18n-c.js"></script>
 </body>
