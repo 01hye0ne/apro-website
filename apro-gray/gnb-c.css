@@ -383,7 +383,10 @@ html.pol-lock{overflow:hidden}
 }
 
 /* 영문 보기 — 영문이 없는 게시글 자리 안내(i18n-c.js posts(), 2026-10-22). 빈 상자 .cempty 와 같은 판에 진한 글 · 단추 */
-html[lang="en"] .cblock.is-en-empty>:not(.cen-note):not(h2){display:none!important}
+/* 목록 장은 머리(건수 · 검색 .clist-hd)와 표 머리줄(.cboard thead)을 남기고 그 밑에 안내(2026-10-22 요청). 상세 장(#post)은 안내만 */
+html[lang="en"] .cblock.is-en-empty>:not(.cen-note):not(h2):not(.clist-hd):not(.cboard){display:none!important}
+html[lang="en"] .cblock.is-en-empty .cboard tbody{display:none!important}
+html[lang="en"] .cblock.is-en-empty .clist-hd~.cen-note{margin-top:24px}
 .cen-note{margin-top:28px;padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;
   border:1px solid var(--border-g,#e4e8ed);border-radius:var(--r,0);background:var(--secondary-bg,#f4f6f8)}
 #post .cen-note{margin-top:0}

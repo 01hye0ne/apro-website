@@ -202,6 +202,14 @@
       var box = document.getElementById(LIST[page][1]);
       if(box && !box.querySelector('[data-en]')){
         box.classList.add('is-en-empty'); box.appendChild(note(LIST[page][0] + ' are not yet available in English.'));
+        /* 머리(건수 · 검색 · 표 머리줄)는 남긴다(2026-10-22 요청). 영문 글이 없으니 건수는 0 — 검색하면 목록 스크립트가
+           국문 줄 수로 다시 쓰므로(business-layout.js, 0.12 초 뒤) 바뀔 때마다 0 으로 되돌린다 */
+        var num = box.querySelector('.clist-hd .count b');
+        if(num){
+          num.textContent = '0';
+          new MutationObserver(function(){ if(num.textContent !== '0') num.textContent = '0'; })
+            .observe(num, { childList:true, characterData:true, subtree:true });
+        }
       }
     }
     var news = document.getElementById('newsSection');
