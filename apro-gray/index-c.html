@@ -454,6 +454,16 @@
      접힌 칸이 좁은 폭(1181~1280, 약 130)에서 한 줄이 칸보다 길면 낱말 단위로 한 번 더 접힌다 */
   .hm-card .fold .nm{writing-mode:horizontal-tb;transform:none;line-height:var(--lh-head);white-space:nowrap}
   .hm-card .fold .nm br{display:none}
+  /* 영문 이름은 접힌 띠에서 늘 두 줄(2026-10-22 요청 — 한 줄이면 "Energy Infrastructure" · "Compound GaN Semiconductors"가
+     띠 폭을 넘어 잘렸다). 사전을 거치지 않도록 영문 두 줄을 마크업에 따로 두고(.nm-en), 국문은 data-en-hide 로 영문 보기에서 숨긴다.
+     폰(가로 띠)은 위처럼 한 줄 */
+  .hm-card .fold .nm-en{display:none}
+  html[lang="en"] .hm-card .fold .nm-en{display:inline}
+  @media(min-width:901px){ html[lang="en"] .hm-card .fold .nm-en br{display:inline} }
+  /* 세로로 든 큰 태블릿(901~1180 세로)은 가로 띠라 한 줄로 */
+  @media(min-width:901px) and (max-width:1180px) and (orientation:portrait){ html[lang="en"] .hm-card .fold .nm-en br{display:none} }
+  /* 1280 이하 띠 150 은 "Semiconductors"(16 글자 크기 약 132) + 안 여백 16×2 가 안 들어 영문만 168 로 */
+  @media(min-width:901px) and (max-width:1280px){ html[lang="en"] .hm-track{--fold:max(calc(100cqi * .125),168px)} }
   /* 펼침 신호 "+" — 이름이 가로가 되며 약해진 '접힌 띠' 느낌을 되살린다(2026-09-29 요청). 폰 가로 띠의 + 와 같은 모양.
      이름이 띠 폭을 거의 다 쓰므로 띠 오른쪽 위 구석에 둔다(폰은 아래 규칙이 이름 오른쪽 끝에 둔다) */
   @media(min-width:901px){
@@ -960,7 +970,7 @@
         <li class="hm-card is-open">
           <img src="../assets/carousel-battery.jpg" alt="" decoding="async" />
           <a class="hit" href="business-smart-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">스마트 <br />제조</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm"><span data-en-hide>스마트 <br />제조</span><span class="nm-en">Smart <br />Factory</span></span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -979,7 +989,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-ess.jpg" alt="" decoding="async" />
           <a class="hit" href="business-energy-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">에너지 <br />인프라</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm"><span data-en-hide>에너지 <br />인프라</span><span class="nm-en">Energy <br />Infrastructure</span></span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -997,7 +1007,7 @@
         <li class="hm-card">
           <img src="../assets/carousel-safety-robot.jpg" alt="" decoding="async" />
           <a class="hit" href="business-ai-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">인공지능 <br />플랫폼</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm"><span data-en-hide>인공지능 <br />플랫폼</span><span class="nm-en">AI <br />Platform</span></span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
@@ -1016,7 +1026,7 @@
         <li class="hm-card">
           <img src="../assets/gan-hero-aixtron.jpg" alt="" decoding="async" />
           <a class="hit" href="business-semicon-c.html" tabindex="-1" aria-hidden="true"></a>
-          <span class="fold" aria-hidden="true"><span class="nm">화합물 전력 <br />반도체</span></span>
+          <span class="fold" aria-hidden="true"><span class="nm"><span data-en-hide>화합물 전력 <br />반도체</span><span class="nm-en">Compound GaN <br />Semiconductors</span></span></span>
           <div class="cap">
             <div class="crow">
               <div class="txt">
