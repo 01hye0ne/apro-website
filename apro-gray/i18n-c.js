@@ -226,6 +226,24 @@
         if(!it.hasAttribute('data-en') && !it.querySelector('[data-en]')) it.classList.add('is-ko-only');
       });
       var ul = news.querySelector('.news-list');
+      var cards = news.querySelectorAll('.ncard:not(.is-ko-only)');
+      var kept = cards.length + (ul ? ul.querySelectorAll('li:not(.is-ko-only)').length : 0);
+      /* 1~2 건이면 카드 없이 목록 줄로만(2026-10-22 — 카드 한 장만 서면 어색했다). 3 건 이상은 카드 + 목록 그대로.
+         카드를 목록 줄로 옮겨 목록 맨 위에 둔다(카드가 더 최근 글) */
+      if(ul && cards.length && kept < 3){
+        var go = ul.querySelector('.go');
+        [].slice.call(cards).reverse().forEach(function(c){
+          var li = document.createElement('li'); li.setAttribute('data-en', '');
+          var a = document.createElement('a'); a.href = c.getAttribute('href');
+          [['ttl', '.title'], ['date', '.date']].forEach(function(k){
+            var s = document.createElement('span'); s.className = k[0];
+            s.textContent = (c.querySelector(k[1]) || {}).textContent || ''; a.appendChild(s);
+          });
+          if(go) a.appendChild(go.cloneNode(true));
+          li.appendChild(a); ul.insertBefore(li, ul.firstChild);
+        });
+        news.querySelector('.news-row').classList.add('is-ko-only');
+      }
       if(ul && !ul.querySelector('li:not(.is-ko-only)')) ul.classList.add('is-ko-only');
     }
   }
