@@ -250,6 +250,8 @@
   function english(){
     root.lang = 'en';
     posts();
+    /* 사전이 못 잡는 글(한글이 없는 글 — Contact Us 전화번호 국제 표기 등)은 원소에 영문을 직접 단다(2026-10-22) */
+    [].forEach.call(document.querySelectorAll('[data-en-text]'), function(el){ el.textContent = el.getAttribute('data-en-text'); });
     var st = document.createElement('style'); st.textContent = HIDE; document.head.appendChild(st);
     load(function(){
       run();

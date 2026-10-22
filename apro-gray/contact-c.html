@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APRO | 에이프로 — Contact Us (C)</title>
+<link rel="icon" href="../assets/favicon.ico" sizes="32x32" />
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<meta name="description" content="에이프로(APRO) 문의하기 — 제품 및 기술 · 채용 · IR / PR 문의처와 온라인 문의 작성." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="business-layout.css" />
+<link rel="stylesheet" href="content-layout.css" />
+<link rel="stylesheet" href="content-side.css" />
+<!-- ============================================================
+     Contact Us (시안 C, 2026-10-22) — 옛 홈페이지 문의하기(/contact) 한 장을 옮겼다. 글 원본 content-export/06_Contact_Us.xlsx
+     ('Contact Us 문구' 시트는 국문영문글정리.xlsx 에도 같은 시트로 넣었다 — 영문 보기 사전).
+     진입점은 푸터 아래 줄 이메일무단수집거부 오른쪽(모든 장). GNB · 메가 메뉴 · 전체 메뉴에는 없다.
+     틀은 콘텐츠 장 공용 세로 히어로(content-side.css), 부품은 내/외부 신고채널과 같은 문의처 칸(.cways)과 양식(.cform).
+     옛 사이트와 다른 점: 내용은 위지윅(Summernote) 대신 여러 줄 입력, 자동등록방지는 숫자 그림 대신 Cloudflare Turnstile
+     (신고채널과 같은 것), 안내 카드의 사진 셋은 받지 않아 넣지 않았다 -->
+<link rel="stylesheet" href="gnb-c.css" />
+<link rel="stylesheet" href="margin-c.css" />
+<link rel="stylesheet" href="type-c.css" />
+</head>
+<body>
+
+<!-- ===================== GNB ===================== -->
+<!-- ===================== 공통 GNB ===================== -->
+<header class="sf-gnb">
+  <a class="logo" href="index-c.html" aria-label="A-PRO 홈"><img src="../assets/logo-apro-blue.svg" alt="A-PRO" /></a>
+  <ul class="sf-menus">
+    <li data-mega="mega-biz"><a href="business-c.html" aria-haspopup="true" aria-expanded="false">사업영역<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-com"><a href="company-c.html" aria-haspopup="true" aria-expanded="false">회사정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-ir"><a href="ir-finance-c.html" aria-haspopup="true" aria-expanded="false">투자정보<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-esg"><a href="esg-environment-c.html" aria-haspopup="true" aria-expanded="false">지속가능경영<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+    <li data-mega="mega-cmm"><a href="community-notice-c.html" aria-haspopup="true" aria-expanded="false">커뮤니티<svg class="caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7V17M7 12H17" stroke="currentColor" stroke-width="1.5"/></svg></a></li>
+  </ul>
+  <div class="sf-tools">
+    <div class="sf-lang" id="sfLang">
+      <button type="button" id="sfLangBtn" aria-haspopup="true" aria-expanded="false" aria-label="언어 선택"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1"/><path d="M4 12h16M12 4c2.2 2.4 3.2 5.2 3.2 8s-1 5.6-3.2 8c-2.2-2.4-3.2-5.2-3.2-8S9.8 6.4 12 4z" stroke="currentColor" stroke-width="1"/></svg></button>
+      <div class="sf-drop"><a href="#" aria-current="true">KOR</a><a href="#">ENG</a></div>
+    </div>
+    <button type="button" class="menu-toggle sf-burger" aria-controls="navover" aria-expanded="false" aria-label="전체 메뉴 열기"><span class="bar a"></span><span class="bar b"></span><span class="bar c"></span></button>
+  </div>
+</header>
+<div class="sf-gnb-sp" aria-hidden="true"></div>
+
+<!-- 메가 판 — 시안 C 는 A 의 방식: 한 장이 화면 폭으로 열리고, 하위 메뉴가 제 대분류 밑에 선다 (gnb-c.css) -->
+<div class="c-mega" id="cMega" aria-hidden="true" aria-label="전체 메뉴">
+  <div class="c-cols">
+    <div class="c-col"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    <div class="c-col"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    <div class="c-col"><a href="ir-finance-c.html">전자공고</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    <div class="c-col"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">거버넌스</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html">ESG 게시판</a></div>
+    <div class="c-col"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+  </div>
+</div>
+
+<!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
+<div class="cs-split">
+  <header class="cs-hero cs-hero--low" style="--pos:50% 50%;--pos-m:50% 50%">
+    <img class="cs-hero-bg" src="../assets/hq-logo-sky.jpg" srcset="../assets/hq-logo-sky-1280.jpg 1280w, ../assets/hq-logo-sky.jpg 2560w" sizes="100vw" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
+    <div class="cs-hero-page">
+      <h1>Contact Us</h1>
+      <p class="sub">A-PRO에 대한 궁금한 점이나 문의사항을 남겨주시면 신속하게 답변 드리겠습니다.</p>
+    </div>
+    <div class="cs-toc" data-label="Contact Us 목차">
+      <a>문의처</a>
+      <a>문의 작성</a>
+    </div>
+  </header>
+
+  <main class="cs-body">
+  <!-- 문의처 셋 — 내/외부 신고채널 '제보 방법'과 같은 칸(.cways). 영문 보기에서 전화번호는 국제 표기(data-en-text, i18n-c.js) -->
+  <section class="cblock" id="contacts">
+    <h2>문의처</h2>
+    <div class="cways">
+      <div class="cway">
+        <p class="k">제품 및 기술문의</p>
+        <p class="v"><a href="tel:+82-31-479-8621" data-en-text="+82-31-479-8621">031-479-8621</a><a class="m" href="mailto:sales@aproele.com">sales@aproele.com</a></p>
+      </div>
+      <div class="cway">
+        <p class="k">채용문의</p>
+        <p class="v"><a href="tel:+82-10-4426-2464" data-en-text="+82-10-4426-2464">010-4426-2464</a><a class="m" href="mailto:recruit@aproele.com">recruit@aproele.com</a></p>
+      </div>
+      <div class="cway">
+        <p class="k">IR / PR</p>
+        <p class="v"><a href="tel:+82-31-689-3963" data-en-text="+82-31-689-3963">031-689-3963</a><a class="m" href="mailto:ir@aproele.com">ir@aproele.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 문의 작성 — 신고채널 양식(.cform)과 같은 줄 짜임. 전송 이름(name)은 06_Contact_Us.xlsx '폼 설계' 그대로 -->
+  <section class="cblock" id="inquiry">
+    <h2>문의 작성</h2>
+    <form class="cform" id="contactForm" enctype="multipart/form-data" novalidate>
+      <div class="cform-row">
+        <label class="cform-k" for="ctCompany">회사 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="text" id="ctCompany" name="company" autocomplete="organization" placeholder="회사명을 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctName">성명 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="text" id="ctName" name="name" autocomplete="name" placeholder="성명을 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctPosition">직급 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="text" id="ctPosition" name="position" autocomplete="organization-title" placeholder="직급을 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctPhone">전화번호 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="tel" id="ctPhone" name="phone" autocomplete="tel" placeholder="전화번호를 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctEmail">이메일 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="email" id="ctEmail" name="email" autocomplete="email" placeholder="이메일 주소를 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctCategory">카테고리</label>
+        <div class="cform-v">
+          <!-- 값은 영문 키 — 이 값으로 수신 메일이 갈린다(tech · partnership → sales@, recruit → recruit@, ir → ir@) -->
+          <select id="ctCategory" name="category">
+            <option value="tech">제품 및 기술</option>
+            <option value="partnership">협력</option>
+            <option value="recruit">채용</option>
+            <option value="ir">IR</option>
+          </select>
+        </div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctTitle">제목 <abbr class="req" title="필수">*</abbr></label>
+        <div class="cform-v"><input type="text" id="ctTitle" name="title" maxlength="100" placeholder="제목을 입력하세요" required /></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctContent">내용</label>
+        <div class="cform-v"><textarea id="ctContent" name="content"></textarea></div>
+      </div>
+      <div class="cform-row">
+        <label class="cform-k" for="ctFiles">파일첨부</label>
+        <div class="cform-v cform-v--file">
+          <label class="cform-drop" id="ctDrop">
+            <input type="file" id="ctFiles" name="files" multiple />
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 15v5h16v-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="t">클릭하거나 파일을 이곳으로 드래그하세요.</span>
+            <span class="s">여러 개의 파일을 첨부할 수 있습니다.</span>
+          </label>
+          <ul class="cform-files" id="ctFileList" hidden></ul>
+          <p class="cform-note">※ 첨부파일은 최대 20MB까지 업로드할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="cform-row">
+        <span class="cform-k">자동등록방지 <abbr class="req" title="필수">*</abbr></span>
+        <div class="cform-v cform-v--captcha"><div id="ctTurnstile"></div></div>
+      </div>
+    </form>
+    <button type="submit" form="contactForm" class="cform-submit">문의하기</button>
+    <p class="cform-msg" id="ctMsg" role="status" hidden></p>
+  </section>
+  </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <nav class="f-nav" aria-label="사이트맵">
+      <div class="f-col">
+        <p class="head">사업영역</p>
+        <ul><li><a href="business-smart-c.html">스마트 제조</a></li><li><a href="business-energy-c.html">에너지 인프라</a></li><li><a href="business-ai-c.html">인공지능 플랫폼</a></li><li><a href="business-semicon-c.html">화합물 전력 반도체</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">회사 정보</p>
+        <ul><li><a href="company-c.html">회사 소개</a></li><li><a href="network-c.html">글로벌 네트워크</a></li><li><a href="locations-c.html">사업장소재</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">투자정보</p>
+        <ul><li><a href="ir-finance-c.html">전자공고</a></li><li><a href="ir-disclosure-c.html">공시정보</a></li><li><a href="ir-stock-c.html">주식정보</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">지속가능경영</p>
+        <ul><li><a href="esg-environment-c.html">환경</a></li><li><a href="esg-social-c.html">사회</a></li><li><a href="esg-governance-c.html">거버넌스</a></li><li><a href="esg-report-c.html">내/외부 신고채널</a></li><li><a href="esg-board-c.html">ESG 게시판</a></li></ul>
+      </div>
+      <div class="f-col">
+        <p class="head">커뮤니티</p>
+        <ul><li><a href="community-notice-c.html">공지사항</a></li><li><a href="community-press-c.html">보도자료</a></li></ul>
+      </div>
+    </nav>
+
+    <div class="f-bottom">
+      <div class="bl">
+        <img class="logo" src="../assets/logo-apro-white.svg" alt="A-PRO" />
+        <div class="infos">
+          <div class="line">
+            <span>주)에이프로</span><i class="sep"></i>
+            <span>대표이사 : 임 종 현</span><i class="sep"></i>
+            <span>사업자등록번호 : 123-81-58293</span>
+          </div>
+          <div class="line">
+            <span>주소 : 경기도 안양시 동안구 부림로 170번길 41-14</span><i class="sep"></i>
+            <span>Tel : 031-441-4001</span><i class="sep"></i>
+            <span>Fax : 031-477-4020</span>
+          </div>
+        </div>
+        <div class="f-legal">
+          <p class="copy">Copyright ⓒ APRO Co., LTD. All rights reserved.</p>
+          <button type="button" class="f-pol is-key" data-policy="privacy" aria-haspopup="dialog">개인정보처리방침</button>
+          <button type="button" class="f-pol" data-policy="email" aria-haspopup="dialog">이메일무단수집거부</button>
+          <a class="f-pol" href="contact-c.html" aria-current="page">Contact Us</a>
+        </div>
+      </div>
+      <div class="br">
+        <div class="f-family" id="fFamily">
+          <button type="button" class="fbtn" aria-haspopup="true" aria-expanded="false">
+            <span>FAMILY SITE</span><i class="arw"></i>
+          </button>
+          <div class="fmenu">
+            <a href="http://www.aprosemicon.com/main/main.php" target="_blank" rel="noopener">에이프로 세미콘</a>
+            <a href="https://www.k-bia.or.kr/" target="_blank" rel="noopener">한국배터리산업협회</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== OVERLAY MENU ===================== -->
+<div class="navover" id="navover" role="dialog" aria-modal="true" aria-label="전체 메뉴" aria-hidden="true">
+  <div class="navover-hd">
+    <a class="ov-logo" href="index-c.html"><img src="../assets/logo-apro-white.svg" alt="A-PRO" /></a>
+    <div class="ov-tools">
+      <a class="ov-lang" href="#">ENG</a>
+      <button class="ov-close" type="button" aria-label="메뉴 닫기"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="navover-body">
+    <div class="ov-row">
+      <div class="ov-cat">사업영역</div>
+      <div class="ov-links"><a href="business-smart-c.html">스마트 제조</a><a href="business-energy-c.html">에너지 인프라</a><a href="business-ai-c.html">인공지능 플랫폼</a><a href="business-semicon-c.html">화합물 전력 반도체</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">회사 정보</div>
+      <div class="ov-links"><a href="company-c.html">회사 소개</a><a href="network-c.html">글로벌 네트워크</a><a href="locations-c.html">사업장소재</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">투자정보</div>
+      <div class="ov-links"><a href="ir-finance-c.html">전자공고</a><a href="ir-disclosure-c.html">공시정보</a><a href="ir-stock-c.html">주식정보</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">지속가능경영</div>
+      <div class="ov-links"><a href="esg-environment-c.html">환경</a><a href="esg-social-c.html">사회</a><a href="esg-governance-c.html">거버넌스</a><a href="esg-report-c.html">내/외부 신고채널</a><a href="esg-board-c.html">ESG 게시판</a></div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-cat">커뮤니티</div>
+      <div class="ov-links"><a href="community-notice-c.html">공지사항</a><a href="community-press-c.html">보도자료</a></div>
+    </div>
+  </nav>
+</div>
+
+<!-- ===================== 맨 위로 가기 ===================== -->
+<button type="button" class="totop" id="totop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<script src="business-layout.js"></script>
+<!-- 문의 양식 — 이 쪽에만 있는 동작이라 공용 스크립트에 넣지 않았다(신고채널 양식과 같은 방식).
+     1) 첨부: 눌러 고르거나 끌어다 놓는다. 고른 파일은 이름 · 크기 목록으로 보이고 하나씩 뺄 수 있다. 합계 20MB 를 넘으면 막는다.
+     2) 빈 필수 칸은 브라우저 기본 말풍선 대신 아래 알림 칸에 알리고 그 칸으로 간다(영문 보기 글도 함께).
+     3) 보내기는 막는다 — 받아 줄 서버가 아직 없다. 서버가 붙으면 막는 줄(say(t('off')))을 걷고 FormData(form) 로 보내면 된다.
+        결과 글은 MSG 를 쓴다(06_Contact_Us.xlsx '알림 메시지' 8줄 + 이 시안에서 새로 쓴 4줄) -->
+<script>
+(function(){
+  var form=document.getElementById('contactForm');
+  if(!form)return;
+  var input=document.getElementById('ctFiles'), drop=document.getElementById('ctDrop'),
+      list=document.getElementById('ctFileList'), msg=document.getElementById('ctMsg');
+  var EN=function(){return document.documentElement.lang==='en';};
+  var MAX=20*1024*1024, files=[];
+  var MSG={
+    ok:{ko:'문의가 성공적으로 접수되었습니다.',en:'Your inquiry has been successfully submitted.'},
+    tech:{ko:'문의가 접수되었습니다. 담당자가 확인 후 sales@aproele.com으로 답변 드리겠습니다.',en:'Your inquiry has been received. Our representative will review it and respond to sales@aproele.com.'},
+    recruit:{ko:'채용 관련 문의가 접수되었습니다. 담당자가 확인 후 답변 드리겠습니다.',en:'Your recruitment inquiry has been received. Our representative will review and respond.'},
+    ir:{ko:'IR 문의가 접수되었습니다. 담당자가 확인 후 답변 드리겠습니다.',en:'Your IR inquiry has been received. Our representative will review and respond.'},
+    fail:{ko:'오류가 발생했습니다.',en:'An error has occurred.'},
+    captcha:{ko:'자동등록방지 코드가 일치하지 않습니다.',en:'The CAPTCHA code does not match.'},
+    net:{ko:'서버 통신 중 오류가 발생했습니다.',en:'An error occurred during server communication.'},
+    size:{ko:'첨부파일 총 용량은 20MB를 초과할 수 없습니다.',en:'Total attachment size cannot exceed 20MB.'},
+    /* 아래 넷은 이 시안에서 새로 쓴 글 */
+    need:{ko:'필수 항목을 입력해 주세요: ',en:'Please fill in the required field: '},
+    mail:{ko:'이메일 주소 형식을 확인해 주세요.',en:'Please check the email address format.'},
+    robot:{ko:'자동등록방지 확인을 마친 뒤 다시 눌러 주세요.',en:'Please complete the CAPTCHA check and try again.'},
+    off:{ko:'지금은 접수 서버가 연결되어 있지 않아 문의가 전송되지 않습니다. 위 문의처의 이메일이나 전화로 연락해 주세요.',
+         en:'Inquiries cannot be sent yet because the server is not connected. Please contact us by the email or phone number above.'}
+  };
+  function t(k){return MSG[k][EN()?'en':'ko'];}
+  function say(s){msg.textContent=s;msg.hidden=false;}
+  function size(n){return n<1024*1024?Math.max(1,Math.round(n/1024))+' KB':(n/1024/1024).toFixed(1)+' MB';}
+  function sum(a){return a.reduce(function(s,f){return s+f.size;},0);}
+  function sync(){
+    /* input.files 를 목록과 맞춘다 — 서버가 붙으면 FormData(form) 가 이 파일들을 싣는다 */
+    try{var dt=new DataTransfer();files.forEach(function(f){dt.items.add(f);});input.files=dt.files;}catch(e){}
+    list.textContent='';
+    files.forEach(function(f,i){
+      var li=document.createElement('li'), n=document.createElement('span'), z=document.createElement('span'), x=document.createElement('button');
+      n.className='n';n.textContent=f.name;z.className='z';z.textContent=size(f.size);
+      x.type='button';x.className='x';x.setAttribute('aria-label',(EN()?'Remove ':'빼기 ')+f.name);
+      x.innerHTML='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5"/></svg>';
+      x.addEventListener('click',function(){files.splice(i,1);msg.hidden=true;sync();});
+      li.appendChild(n);li.appendChild(z);li.appendChild(x);list.appendChild(li);
+    });
+    list.hidden=!files.length;
+  }
+  function add(fl){
+    var next=files.concat([].slice.call(fl||[]));
+    if(sum(next)>MAX){say(t('size'));sync();return;}
+    files=next;msg.hidden=true;sync();
+  }
+  input.addEventListener('change',function(){add([].slice.call(input.files));});
+  ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('is-over');});});
+  ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('is-over');});});
+  drop.addEventListener('drop',function(e){if(e.dataTransfer)add(e.dataTransfer.files);});
+
+  /* 자동등록방지 — Cloudflare Turnstile. 신고채널과 같은 시험용 키(늘 통과). 정식 키로 바꿀 때는 sitekey 만 갈고,
+     토큰은 접수 서버가 비밀 키로 siteverify 에 물어 확인한다(틀리면 MSG.captcha) */
+  var TS_KEY='1x00000000000000000000AA', tsId=null;
+  window.ctTsReady=function(){
+    if(!window.turnstile)return;
+    tsId=turnstile.render('#ctTurnstile',{sitekey:TS_KEY,size:'flexible',theme:'light',language:EN()?'en':'ko',
+      'error-callback':function(){say(t('fail'));}});
+  };
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var bad=[].filter.call(form.querySelectorAll('[required]'),function(el){return !el.value.trim();})[0];
+    if(bad){
+      var k=form.querySelector('label[for="'+bad.id+'"]');
+      say(t('need')+(k?k.firstChild.textContent.trim():''));bad.focus();return;
+    }
+    var mail=document.getElementById('ctEmail');
+    if(!mail.checkValidity()){say(t('mail'));mail.focus();return;}
+    if(sum(files)>MAX){say(t('size'));return;}
+    if(!window.turnstile||tsId===null||!turnstile.getResponse(tsId)){say(t('robot'));return;}
+    say(t('off'));
+  });
+})();
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ctTsReady" async defer></script>
+<script src="gnb-c.js"></script>
+<script src="i18n-c.js"></script>
+</body>
+</html>
