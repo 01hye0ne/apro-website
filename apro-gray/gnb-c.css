@@ -337,6 +337,8 @@ html.c-shot .rv{opacity:1!important;transform:none!important;translate:none!impo
 .footer .f-pol::before{content:"";position:absolute;left:-9px;top:50%;width:1px;height:12px;margin-top:-6px;background:var(--white-300)}
 .footer a.f-pol{text-decoration:none}
 .footer .f-pol.is-key{color:#fff;opacity:1}
+/* Contact Us 도 잘 보이게(2026-10-22 요청) — 흰색 100% · 굵기는 400 그대로. 개인정보처리방침은 굵게(600)로 여전히 따로 선다 */
+.footer a.f-pol[href$="contact-c.html"]{color:#fff;opacity:1}
 .footer .f-pol:hover{opacity:1;text-decoration:underline;text-underline-offset:3px}
 .footer .f-pol:focus-visible{outline:2px solid #fff;outline-offset:3px}
 @media(max-width:960px){ .footer .f-bottom .f-legal{order:3} }
