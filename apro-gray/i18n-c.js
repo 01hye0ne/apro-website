@@ -166,8 +166,12 @@
            + 'html[lang="en"] .lc-head > .en, html[lang="en"] [data-en-hide]{display:none !important}';
   /* 영문 글이 없는 게시글은 영문 보기에서 숨기고, 빈자리에 안내를 둔다(2026-10-22 결정). 글에 영문이 있으면 그 글(목록 줄 · 카드 ·
      상세 #post)에 data-en 을 단다 — 지금은 한 건도 없어 게시판이 통째로 안내로 바뀐다. 목록 일부만 영문인 경우의 쪽 넘김은
-     실제 게시판(서버)에서 거른다. 대상: 공지사항 · 보도자료 · ESG 게시판(목록 · 상세)과 홈 News */
-  var BOARD = { 'community-notice': 'Notices', 'community-press': 'Press releases', 'esg-board': 'ESG board posts' };
+     실제 게시판(서버)에서 거른다. 대상: 공지사항 · 보도자료 · ESG 게시판 · 전자공고(목록 · 상세)와 홈 News.
+     목록 장 → [게시판 이름, 목록 묶음 id], 상세 장 → 돌아갈 목록 장 */
+  var LIST = { 'community-notice-c': ['Notices', 'list'], 'community-press-c': ['Press releases', 'list'],
+               'esg-board-c': ['ESG board posts', 'list'], 'ir-finance-c': ['Electronic notices', 'settlement'] };
+  var VIEW = { 'community-notice-view-c': 'community-notice-c.html', 'community-press-view-c': 'community-press-c.html',
+               'esg-board-view-c': 'esg-board-c.html', 'ir-disclosure-view-c': 'ir-finance-c.html' };
   function toKo(e){ e.preventDefault(); set('ko'); location.reload(); }
   function koBtn(cls){
     var b = document.createElement('a'); b.href = '#'; b.className = cls; b.textContent = 'View in Korean';
@@ -186,20 +190,18 @@
   }
   function posts(){
     var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
-    var view = page.match(/^(.*)-view-c$/), key = (view ? view[1] : page.replace(/-c$/, ''));
-    if(BOARD[key]){
-      if(view){
-        var post = document.getElementById('post');
-        if(post && !post.hasAttribute('data-en')){
-          var n = note('This post is not yet available in English.', key + '-c.html');
-          n.querySelector('p').lastChild.nodeValue = 'Please view it in Korean for now.';
-          post.classList.add('is-en-empty'); post.appendChild(n);
-        }
-      } else {
-        var box = document.getElementById('list');
-        if(box && !box.querySelector('[data-en]')){
-          box.classList.add('is-en-empty'); box.appendChild(note(BOARD[key] + ' are not yet available in English.'));
-        }
+    if(VIEW[page]){
+      var post = document.getElementById('post');
+      if(post && !post.hasAttribute('data-en')){
+        var n = note('This post is not yet available in English.', VIEW[page]);
+        n.querySelector('p').lastChild.nodeValue = 'Please view it in Korean for now.';
+        post.classList.add('is-en-empty'); post.appendChild(n);
+      }
+    }
+    if(LIST[page]){
+      var box = document.getElementById(LIST[page][1]);
+      if(box && !box.querySelector('[data-en]')){
+        box.classList.add('is-en-empty'); box.appendChild(note(LIST[page][0] + ' are not yet available in English.'));
       }
     }
     var news = document.getElementById('newsSection');
