@@ -383,8 +383,7 @@ html.pol-lock{overflow:hidden}
 }
 
 /* 영문 보기 — 영문이 없는 게시글 자리 안내(i18n-c.js posts(), 2026-10-22). 빈 상자 .cempty 와 같은 판에 진한 글 · 단추 */
-html[lang="en"] #list.is-en-empty>:not(.cen-note):not(h2){display:none!important}
-html[lang="en"] #post.is-en-empty>:not(.cen-note){display:none!important}
+html[lang="en"] .cblock.is-en-empty>:not(.cen-note):not(h2){display:none!important}
 .cen-note{margin-top:28px;padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;
   border:1px solid var(--border-g,#e4e8ed);border-radius:var(--r,0);background:var(--secondary-bg,#f4f6f8)}
 #post .cen-note{margin-top:0}
