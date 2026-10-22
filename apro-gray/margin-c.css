@@ -399,6 +399,11 @@ html body:has(.cpost-hd)>.cs-solo{flex:1 0 auto}
 @media(min-width:1921px){
   html .cs-split>.cs-hero{flex-basis:calc(var(--c-m) + 476px);padding-right:84px}   /* 476 = 글 칸 392 + 오른쪽 안 여백 84(1920 때 값) */
 }
+/* 같은 틀의 본문(.cs-body) — 1921 이상에서 왼쪽 안 여백도 --c-m 으로 커져, 히어로가 이미 늘어난 왼쪽 몫을 받은 데다 본문이 한 번 더 비웠다
+   (2026-10-22 요청, 2560 에서 글 폭 1176 → 880). 왼쪽은 1920 때 값 84 로 두고 오른쪽만 --c-m — 1920 짜임이 통째로 가운데에 선다 */
+@media(min-width:1921px){
+  html .cs-body>:is(.cblock,.cgov-board){padding-left:84px}
+}
 
 /* 사업영역 세부 폰 아코디언 꺾쇠(gnb-c.js 가 그림을 ⌄ 로 바꾼다) — 열리면 45° 돌려 × 로 만들던 것을 180° 뒤집어 ⌃ 로(2026-09-30 요청) */
 html .sf-sec.is-open>.sf-acc-hd .sf-acc-ic{transform:rotate(180deg)}
