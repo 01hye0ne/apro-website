@@ -1061,7 +1061,6 @@ ul.cul li::before{content:"";position:absolute;left:0;top:calc(.8em - 2px);width
 .cform-drop:hover,.cform-drop.is-over{border-color:var(--brand);background:var(--secondary-bg)}
 .cform-drop:focus-within{outline:2px solid var(--brand);outline-offset:1px}
 .cform .cform-drop input{position:absolute;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none}
-.cform-drop svg{width:24px;height:24px;margin-bottom:4px;color:var(--brand)}
 .cform-drop .t{font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--g900)}
 .cform-drop .s,.cform-note{font-family:var(--suit);font-size:var(--fs-meta);line-height:var(--lh-label);letter-spacing:var(--ls);color:var(--tx-meta)}
 .cform-note{margin:0}
