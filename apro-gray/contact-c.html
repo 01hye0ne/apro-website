@@ -25,6 +25,19 @@
 <link rel="stylesheet" href="gnb-c.css" />
 <link rel="stylesheet" href="margin-c.css" />
 <link rel="stylesheet" href="type-c.css" />
+<style>
+/* Contact Us 히어로 — 사옥이 판 오른쪽 아래만 차게 줄인다(2026-10-22 요청). 사진(16:9) 속 건물은 가로 31% · 세로 50% 에서 시작해
+   오른쪽 · 아래 끝까지 간다. 넓은 화면(1181 이상, 세로 판)에서는 그 모서리를 판 가로 25% · 세로 67% 에 놓고 사진 아래를 판 바닥에 붙인다 —
+   사진 키 = 판 키 33% ÷ 0.497 ≈ 66.4%, 폭 = 그 × 16/9. 위의 빈 곳은 사진 하늘색으로 채우고, 사진 위끝은 흐려 이음매를 없앤다.
+   태블릿 · 폰(가로 판)은 사진 하늘 · 간판이 그대로 보이게 가운데를 쓴다 */
+.cs-hero--hq{--pos-m:50% 50%}
+@media(min-width:1181px){
+  .cs-hero--hq{container-type:size;background:#2773e1}
+  .cs-hero--hq .cs-hero-bg{inset:auto;bottom:0;left:calc(25cqw - 36.5cqh);width:118cqh;height:66.4cqh;max-width:none;
+    object-fit:cover;object-position:50% 50%;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%);mask-image:linear-gradient(180deg,transparent 0,#000 18%)}
+}
+</style>
 </head>
 <body>
 
@@ -62,7 +75,7 @@
 
 <!-- ===================== 히어로 · 본문 — content-side.css ===================== -->
 <div class="cs-split">
-  <header class="cs-hero cs-hero--low" style="--pos:50% 50%;--pos-m:50% 50%">
+  <header class="cs-hero cs-hero--low cs-hero--hq">
     <img class="cs-hero-bg" src="../assets/hq-logo-sky.jpg" srcset="../assets/hq-logo-sky-1280.jpg 1280w, ../assets/hq-logo-sky.jpg 2560w" sizes="100vw" width="2560" height="1440" alt="" aria-hidden="true" decoding="async" />
     <div class="cs-hero-page">
       <h1>Contact Us</h1>
