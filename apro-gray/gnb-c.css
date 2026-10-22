@@ -335,6 +335,7 @@ html.c-shot .rv{opacity:1!important;transform:none!important;translate:none!impo
   font-family:var(--suit);font-weight:400;font-size:var(--fs-meta);line-height:var(--lh-body);letter-spacing:var(--ls);
   color:var(--on-dark-body);opacity:.75;white-space:nowrap;transition:opacity .2s}
 .footer .f-pol::before{content:"";position:absolute;left:-9px;top:50%;width:1px;height:12px;margin-top:-6px;background:var(--white-300)}
+.footer a.f-pol{text-decoration:none}
 .footer .f-pol.is-key{color:#fff;opacity:1}
 .footer .f-pol:hover{opacity:1;text-decoration:underline;text-underline-offset:3px}
 .footer .f-pol:focus-visible{outline:2px solid #fff;outline-offset:3px}
