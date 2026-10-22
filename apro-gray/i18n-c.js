@@ -219,6 +219,14 @@
       var hn = note('News is not yet available in English.');
       hn.querySelector('p').lastChild.nodeValue = 'Please view it in Korean for now.';
       news.appendChild(hn);
+    } else if(news){
+      /* 영문 글이 일부만 있으면 그 글만 남긴다(2026-10-22) — 카드는 칸 폭 그대로 왼쪽부터, 목록이 다 비면 목록 자리를 접는다.
+         data-en 은 카드(a.ncard) 또는 목록 줄(li, 안의 a 도 됨)에 단다 */
+      [].forEach.call(news.querySelectorAll('.ncard, .news-list li'), function(it){
+        if(!it.hasAttribute('data-en') && !it.querySelector('[data-en]')) it.classList.add('is-ko-only');
+      });
+      var ul = news.querySelector('.news-list');
+      if(ul && !ul.querySelector('li:not(.is-ko-only)')) ul.classList.add('is-ko-only');
     }
   }
   function english(){

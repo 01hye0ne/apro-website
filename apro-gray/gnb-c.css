@@ -396,6 +396,7 @@ html[lang="en"] .cblock.is-en-empty .clist-hd~.cen-note{margin-top:24px}
 /* 홈 News — 카드 · 목록 · 더보기 자리에 같은 안내 상자. 홈은 content-layout.css 를 안 불러 단추(.cbtn) 모양을 여기 같은 값으로 둔다 */
 html[lang="en"] #newsSection.is-en-empty .news-row,html[lang="en"] #newsSection.is-en-empty .news-list,
 html[lang="en"] #newsSection.is-en-empty .more{display:none!important}
+html[lang="en"] #newsSection .is-ko-only{display:none!important}
 #newsSection .cen-note{margin-top:0}
 #newsSection .cen-note .cbtns{display:flex;flex-wrap:wrap;gap:10px}
 #newsSection .cen-note .cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border:1px solid var(--brand,#2c5790);
