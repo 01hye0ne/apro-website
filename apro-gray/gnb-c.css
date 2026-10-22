@@ -388,14 +388,19 @@ html[lang="en"] .cblock.is-en-empty>:not(.cen-note):not(h2):not(.clist-hd):not(.
 html[lang="en"] .cblock.is-en-empty .cboard tbody{display:none!important}
 html[lang="en"] .cblock.is-en-empty .clist-hd~.cen-note{margin-top:24px}
 .cen-note{margin-top:28px;padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;
-  border:1px solid var(--border-g,#e4e8ed);border-radius:var(--r,0);background:var(--secondary-bg,#f4f6f8)}
+  border:1px solid var(--border-g,#e4e8ed);border-radius:var(--r,4px);background:var(--secondary-bg,#f4f6f8)}
 #post .cen-note{margin-top:0}
 .cen-note p{margin:0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--sec,#445464)}
 .cen-note p b{display:block;margin-bottom:4px;font-weight:600;color:var(--g900,#1b2733)}
 .cen-note .cbtns{margin-top:0;justify-content:center}
-/* 홈 News — 카드 · 목록 · 더보기 자리에 한 줄 */
+/* 홈 News — 카드 · 목록 · 더보기 자리에 같은 안내 상자. 홈은 content-layout.css 를 안 불러 단추(.cbtn) 모양을 여기 같은 값으로 둔다 */
 html[lang="en"] #newsSection.is-en-empty .news-row,html[lang="en"] #newsSection.is-en-empty .news-list,
 html[lang="en"] #newsSection.is-en-empty .more{display:none!important}
-.cen-line{margin:0;font-family:var(--suit);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--ls);color:var(--sec,#445464)}
-.cen-link{color:var(--brand,#2c5790);font-weight:600;text-decoration:underline;text-underline-offset:3px}
-.cen-link:focus-visible{outline:2px solid var(--brand-2,#4077b7);outline-offset:2px}
+#newsSection .cen-note{margin-top:0}
+#newsSection .cen-note .cbtns{display:flex;flex-wrap:wrap;gap:10px}
+#newsSection .cen-note .cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border:1px solid var(--brand,#2c5790);
+  border-radius:var(--r,4px);background:var(--brand,#2c5790);color:#fff;text-decoration:none;
+  font-family:var(--suit);font-weight:600;font-size:var(--fs-body);letter-spacing:var(--ls);
+  transition:background .24s cubic-bezier(.22,1,.36,1),border-color .24s cubic-bezier(.22,1,.36,1)}
+#newsSection .cen-note .cbtn:hover{background:var(--point-900,#223858);border-color:var(--point-900,#223858)}
+#newsSection .cen-note .cbtn:focus-visible{outline:2px solid var(--brand-2,#4077b7);outline-offset:2px}

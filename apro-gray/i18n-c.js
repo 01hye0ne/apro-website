@@ -215,10 +215,10 @@
     var news = document.getElementById('newsSection');
     if(news && !news.querySelector('[data-en]')){
       news.classList.add('is-en-empty');
-      var line = document.createElement('p'); line.className = 'cen-line'; line.setAttribute('data-no-i18n', '');
-      line.appendChild(document.createTextNode('News is not yet available in English. '));
-      line.appendChild(koBtn('cen-link'));
-      news.appendChild(line);
+      /* 게시판 장과 같은 안내 상자(2026-10-22 요청 — 한 줄 글이라 빈 곳처럼 보였다) */
+      var hn = note('News is not yet available in English.');
+      hn.querySelector('p').lastChild.nodeValue = 'Please view it in Korean for now.';
+      news.appendChild(hn);
     }
   }
   function english(){
