@@ -134,12 +134,13 @@
       <div class="cform-row">
         <label class="cform-k" for="ctCategory">카테고리</label>
         <div class="cform-v">
-          <!-- 값은 영문 키 — 이 값으로 수신 메일이 갈린다(tech · partnership → sales@, recruit → recruit@, ir → ir@) -->
+          <!-- 값은 영문 키 — 이 값으로 수신 메일이 갈린다. 받는 주소는 관리자 화면(설정 > 메일 설정)의 카테고리별 값을 따른다(2026-10-23).
+             문의처 카드의 공개 주소(sales@ · recruit@ · ir@)와 달라도 된다 -->
           <select id="ctCategory" name="category">
             <option value="tech">제품 및 기술</option>
             <option value="partnership">협력</option>
             <option value="recruit">채용</option>
-            <option value="ir">IR</option>
+            <option value="ir">IR / PR</option>
           </select>
         </div>
       </div>
@@ -303,7 +304,8 @@
   var MAX=20*1024*1024, files=[];
   var MSG={
     ok:{ko:'문의가 성공적으로 접수되었습니다.',en:'Your inquiry has been successfully submitted.'},
-    tech:{ko:'문의가 접수되었습니다. 담당자가 확인 후 sales@aproele.com으로 답변 드리겠습니다.',en:'Your inquiry has been received. Our representative will review it and respond to sales@aproele.com.'},
+    /* 제품 및 기술 — 옛 문구는 'sales@aproele.com으로 답변'이었으나 받는 주소가 관리자 설정을 따르므로 주소를 뺐다(2026-10-23) */
+    tech:{ko:'문의가 접수되었습니다. 담당자가 확인 후 답변 드리겠습니다.',en:'Your inquiry has been received. Our representative will review it and respond.'},
     recruit:{ko:'채용 관련 문의가 접수되었습니다. 담당자가 확인 후 답변 드리겠습니다.',en:'Your recruitment inquiry has been received. Our representative will review and respond.'},
     ir:{ko:'IR 문의가 접수되었습니다. 담당자가 확인 후 답변 드리겠습니다.',en:'Your IR inquiry has been received. Our representative will review and respond.'},
     fail:{ko:'오류가 발생했습니다.',en:'An error has occurred.'},
